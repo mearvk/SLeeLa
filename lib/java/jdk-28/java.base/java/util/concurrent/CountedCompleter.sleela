@@ -59,38 +59,63 @@ class CountedCompleter<T> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  CountedCompleter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  CountedCompleter() { }
   @JavaProtected
-  CountedCompleter(java.util.concurrent.CountedCompleter<?> completer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.<init>(java.util.concurrent.CountedCompleter<?>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  CountedCompleter(java.util.concurrent.CountedCompleter<?> completer) { }
   @JavaProtected
-  CountedCompleter(java.util.concurrent.CountedCompleter<?> completer, int initialPendingCount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.<init>(java.util.concurrent.CountedCompleter<?>, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  CountedCompleter(java.util.concurrent.CountedCompleter<?> completer, int initialPendingCount) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void compute() { throw new AbstractMethodError("java.util.concurrent.CountedCompleter.compute()"); }
-  public final java.util.concurrent.CountedCompleter<?> getRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.getRoot()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void compute() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.concurrent.CountedCompleter<?> getRoot() { return null; }
   @JavaProtected
-  final boolean exec() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.exec()"); }
-  public void complete(T rawResult) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.complete(T)"); }
-  public void onCompletion(java.util.concurrent.CountedCompleter<?> caller) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.onCompletion(java.util.concurrent.CountedCompleter<?>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final boolean exec() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void complete(T rawResult) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void onCompletion(java.util.concurrent.CountedCompleter<?> caller) { }
   @JavaProtected
-  void setRawResult(T t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.setRawResult(T)"); }
-  public final void tryComplete() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.tryComplete()"); }
-  public final java.util.concurrent.CountedCompleter<?> firstComplete() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.firstComplete()"); }
-  public final void helpComplete(int maxTasks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.helpComplete(int)"); }
-  public boolean onExceptionalCompletion(java.lang.Throwable ex, java.util.concurrent.CountedCompleter<?> caller) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.onExceptionalCompletion(java.lang.Throwable, java.util.concurrent.CountedCompleter<?>)"); }
-  public final java.util.concurrent.CountedCompleter<?> getCompleter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.getCompleter()"); }
-  public final int getPendingCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.getPendingCount()"); }
-  public final void setPendingCount(int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.setPendingCount(int)"); }
-  public final void addToPendingCount(int delta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.addToPendingCount(int)"); }
-  public final boolean compareAndSetPendingCount(int expected, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.compareAndSetPendingCount(int, int)"); }
-  public final int decrementPendingCountUnlessZero() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.decrementPendingCountUnlessZero()"); }
-  public final void propagateCompletion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.propagateCompletion()"); }
-  public final java.util.concurrent.CountedCompleter<?> nextComplete() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.nextComplete()"); }
-  public final void quietlyCompleteRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.quietlyCompleteRoot()"); }
-  public T getRawResult() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.CountedCompleter.getRawResult()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setRawResult(T t) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void tryComplete() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.concurrent.CountedCompleter<?> firstComplete() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void helpComplete(int maxTasks) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean onExceptionalCompletion(java.lang.Throwable ex, java.util.concurrent.CountedCompleter<?> caller) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.concurrent.CountedCompleter<?> getCompleter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getPendingCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setPendingCount(int count) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void addToPendingCount(int delta) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean compareAndSetPendingCount(int expected, int count) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int decrementPendingCountUnlessZero() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void propagateCompletion() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.concurrent.CountedCompleter<?> nextComplete() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void quietlyCompleteRoot() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public T getRawResult() { return null; }
   < ---- END java signatures ---- >
 }

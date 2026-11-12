@@ -59,8 +59,10 @@ class ElementKindVisitorPreview<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ElementKindVisitorPreview() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.ElementKindVisitorPreview.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ElementKindVisitorPreview() { }
   @JavaProtected
-  ElementKindVisitorPreview(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.ElementKindVisitorPreview.<init>(R)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ElementKindVisitorPreview(R defaultValue) { }
   < ---- END java constructors ---- >
 }

@@ -58,23 +58,37 @@ class Timer {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Timer(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Timer.<init>(java.lang.String)"); }
-  public Timer(boolean isDaemon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Timer.<init>(boolean)"); }
-  public Timer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Timer.<init>()"); }
-  public Timer(java.lang.String name, boolean isDaemon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Timer.<init>(java.lang.String, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Timer(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Timer(boolean isDaemon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Timer() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Timer(java.lang.String name, boolean isDaemon) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void cancel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Timer.cancel()"); }
-  public void schedule(java.util.TimerTask task, java.util.Date firstTime, long period) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Timer.schedule(java.util.TimerTask, java.util.Date, long)"); }
-  public void schedule(java.util.TimerTask task, long delay, long period) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Timer.schedule(java.util.TimerTask, long, long)"); }
-  public void schedule(java.util.TimerTask task, long delay) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Timer.schedule(java.util.TimerTask, long)"); }
-  public void schedule(java.util.TimerTask task, java.util.Date time) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Timer.schedule(java.util.TimerTask, java.util.Date)"); }
-  public void scheduleAtFixedRate(java.util.TimerTask task, java.util.Date firstTime, long period) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Timer.scheduleAtFixedRate(java.util.TimerTask, java.util.Date, long)"); }
-  public void scheduleAtFixedRate(java.util.TimerTask task, long delay, long period) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Timer.scheduleAtFixedRate(java.util.TimerTask, long, long)"); }
-  public int purge() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Timer.purge()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void cancel() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void schedule(java.util.TimerTask task, java.util.Date firstTime, long period) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void schedule(java.util.TimerTask task, long delay, long period) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void schedule(java.util.TimerTask task, long delay) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void schedule(java.util.TimerTask task, java.util.Date time) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void scheduleAtFixedRate(java.util.TimerTask task, java.util.Date firstTime, long period) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void scheduleAtFixedRate(java.util.TimerTask task, long delay, long period) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int purge() { return 0; }
   < ---- END java signatures ---- >
 }

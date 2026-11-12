@@ -58,27 +58,45 @@ class SynthSeparatorUI {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SynthSeparatorUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SynthSeparatorUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void update(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.update(java.awt.Graphics, javax.swing.JComponent)"); }
-  public javax.swing.plaf.synth.SynthContext getContext(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.getContext(javax.swing.JComponent)"); }
-  public void installListeners(javax.swing.JSeparator c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.installListeners(javax.swing.JSeparator)"); }
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.getPreferredSize(javax.swing.JComponent)"); }
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.getMinimumSize(javax.swing.JComponent)"); }
-  public void paintBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.paintBorder(javax.swing.plaf.synth.SynthContext, java.awt.Graphics, int, int, int, int)"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.installUI(javax.swing.JComponent)"); }
-  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.uninstallUI(javax.swing.JComponent)"); }
-  public void propertyChange(java.beans.PropertyChangeEvent evt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.propertyChange(java.beans.PropertyChangeEvent)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.createUI(javax.swing.JComponent)"); }
-  public void installDefaults(javax.swing.JSeparator c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.installDefaults(javax.swing.JSeparator)"); }
-  public void uninstallListeners(javax.swing.JSeparator c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.uninstallListeners(javax.swing.JSeparator)"); }
-  public void uninstallDefaults(javax.swing.JSeparator c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.uninstallDefaults(javax.swing.JSeparator)"); }
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.getMaximumSize(javax.swing.JComponent)"); }
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSeparatorUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void update(java.awt.Graphics g, javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.synth.SynthContext getContext(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installListeners(javax.swing.JSeparator c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void propertyChange(java.beans.PropertyChangeEvent evt) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installDefaults(javax.swing.JSeparator c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallListeners(javax.swing.JSeparator c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallDefaults(javax.swing.JSeparator c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
   < ---- END java signatures ---- >
 }

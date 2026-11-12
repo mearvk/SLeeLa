@@ -58,13 +58,20 @@ class DocumentEvent {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getLength() { throw new AbstractMethodError("javax.swing.event.DocumentEvent.getLength()"); }
-  public abstract javax.swing.event.DocumentEvent.EventType getType() { throw new AbstractMethodError("javax.swing.event.DocumentEvent.getType()"); }
-  public abstract int getOffset() { throw new AbstractMethodError("javax.swing.event.DocumentEvent.getOffset()"); }
-  public abstract javax.swing.event.DocumentEvent.ElementChange getChange(javax.swing.text.Element elem) { throw new AbstractMethodError("javax.swing.event.DocumentEvent.getChange(javax.swing.text.Element)"); }
-  public abstract javax.swing.text.Document getDocument() { throw new AbstractMethodError("javax.swing.event.DocumentEvent.getDocument()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.event.DocumentEvent.EventType getType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getOffset() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.event.DocumentEvent.ElementChange getChange(javax.swing.text.Element elem) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.Document getDocument() { return null; }
   < ---- END java signatures ---- >
 }

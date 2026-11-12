@@ -58,23 +58,37 @@ class LongAdder {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LongAdder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAdder.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LongAdder() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAdder.reset()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAdder.toString()"); }
-  public int intValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAdder.intValue()"); }
-  public long longValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAdder.longValue()"); }
-  public float floatValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAdder.floatValue()"); }
-  public double doubleValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAdder.doubleValue()"); }
-  public void add(long x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAdder.add(long)"); }
-  public void increment() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAdder.increment()"); }
-  public long sum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAdder.sum()"); }
-  public void decrement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAdder.decrement()"); }
-  public long sumThenReset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAdder.sumThenReset()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reset() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int intValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long longValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float floatValue() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double doubleValue() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void add(long x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void increment() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long sum() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void decrement() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long sumThenReset() { return 0; }
   < ---- END java signatures ---- >
 }

@@ -59,24 +59,39 @@ class AccessibleObject {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AccessibleObject() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessibleObject.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AccessibleObject() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static void setAccessible(java.lang.reflect.AccessibleObject[] array, boolean flag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[], boolean)"); }
-  public void setAccessible(boolean flag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessibleObject.setAccessible(boolean)"); }
-  public boolean isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessibleObject.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)"); }
-  public <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessibleObject.getAnnotation(java.lang.Class<T>)"); }
-  public <T extends java.lang.annotation.Annotation> T[] getAnnotationsByType(java.lang.Class<T> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessibleObject.getAnnotationsByType(java.lang.Class<T>)"); }
-  public java.lang.annotation.Annotation[] getAnnotations() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessibleObject.getAnnotations()"); }
-  public <T extends java.lang.annotation.Annotation> T getDeclaredAnnotation(java.lang.Class<T> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)"); }
-  public <T extends java.lang.annotation.Annotation> T[] getDeclaredAnnotationsByType(java.lang.Class<T> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)"); }
-  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessibleObject.getDeclaredAnnotations()"); }
-  public final boolean trySetAccessible() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessibleObject.trySetAccessible()"); }
-  public final boolean canAccess(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessibleObject.canAccess(java.lang.Object)"); }
-  public boolean isAccessible() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessibleObject.isAccessible()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setAccessible(java.lang.reflect.AccessibleObject[] array, boolean flag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAccessible(boolean flag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation> annotationClass) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.lang.annotation.Annotation> T[] getAnnotationsByType(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.annotation.Annotation[] getAnnotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.lang.annotation.Annotation> T getDeclaredAnnotation(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.lang.annotation.Annotation> T[] getDeclaredAnnotationsByType(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean trySetAccessible() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean canAccess(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAccessible() { return false; }
   < ---- END java signatures ---- >
 }

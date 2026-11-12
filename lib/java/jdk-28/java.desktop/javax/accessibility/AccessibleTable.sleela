@@ -58,30 +58,54 @@ class AccessibleTable {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.accessibility.Accessible getAccessibleCaption() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleCaption()"); }
-  public abstract void setAccessibleCaption(javax.accessibility.Accessible a) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.setAccessibleCaption(javax.accessibility.Accessible)"); }
-  public abstract javax.accessibility.Accessible getAccessibleSummary() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleSummary()"); }
-  public abstract void setAccessibleSummary(javax.accessibility.Accessible a) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.setAccessibleSummary(javax.accessibility.Accessible)"); }
-  public abstract int getAccessibleRowCount() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleRowCount()"); }
-  public abstract int getAccessibleColumnCount() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleColumnCount()"); }
-  public abstract int getAccessibleRowExtentAt(int r, int c) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleRowExtentAt(int, int)"); }
-  public abstract int getAccessibleColumnExtentAt(int r, int c) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleColumnExtentAt(int, int)"); }
-  public abstract javax.accessibility.AccessibleTable getAccessibleRowHeader() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleRowHeader()"); }
-  public abstract void setAccessibleRowHeader(javax.accessibility.AccessibleTable table) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.setAccessibleRowHeader(javax.accessibility.AccessibleTable)"); }
-  public abstract javax.accessibility.AccessibleTable getAccessibleColumnHeader() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleColumnHeader()"); }
-  public abstract void setAccessibleColumnHeader(javax.accessibility.AccessibleTable table) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.setAccessibleColumnHeader(javax.accessibility.AccessibleTable)"); }
-  public abstract javax.accessibility.Accessible getAccessibleRowDescription(int r) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleRowDescription(int)"); }
-  public abstract void setAccessibleRowDescription(int r, javax.accessibility.Accessible a) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.setAccessibleRowDescription(int, javax.accessibility.Accessible)"); }
-  public abstract javax.accessibility.Accessible getAccessibleColumnDescription(int c) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleColumnDescription(int)"); }
-  public abstract void setAccessibleColumnDescription(int c, javax.accessibility.Accessible a) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.setAccessibleColumnDescription(int, javax.accessibility.Accessible)"); }
-  public abstract boolean isAccessibleSelected(int r, int c) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.isAccessibleSelected(int, int)"); }
-  public abstract boolean isAccessibleRowSelected(int r) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.isAccessibleRowSelected(int)"); }
-  public abstract boolean isAccessibleColumnSelected(int c) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.isAccessibleColumnSelected(int)"); }
-  public abstract int[] getSelectedAccessibleRows() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getSelectedAccessibleRows()"); }
-  public abstract int[] getSelectedAccessibleColumns() { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getSelectedAccessibleColumns()"); }
-  public abstract javax.accessibility.Accessible getAccessibleAt(int r, int c) { throw new AbstractMethodError("javax.accessibility.AccessibleTable.getAccessibleAt(int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.accessibility.Accessible getAccessibleCaption() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAccessibleCaption(javax.accessibility.Accessible a) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.accessibility.Accessible getAccessibleSummary() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAccessibleSummary(javax.accessibility.Accessible a) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getAccessibleRowCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getAccessibleColumnCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getAccessibleRowExtentAt(int r, int c) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getAccessibleColumnExtentAt(int r, int c) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.accessibility.AccessibleTable getAccessibleRowHeader() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAccessibleRowHeader(javax.accessibility.AccessibleTable table) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.accessibility.AccessibleTable getAccessibleColumnHeader() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAccessibleColumnHeader(javax.accessibility.AccessibleTable table) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.accessibility.Accessible getAccessibleRowDescription(int r) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAccessibleRowDescription(int r, javax.accessibility.Accessible a) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.accessibility.Accessible getAccessibleColumnDescription(int c) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAccessibleColumnDescription(int c, javax.accessibility.Accessible a) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isAccessibleSelected(int r, int c) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isAccessibleRowSelected(int r) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isAccessibleColumnSelected(int c) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int[] getSelectedAccessibleRows() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int[] getSelectedAccessibleColumns() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.accessibility.Accessible getAccessibleAt(int r, int c) { return null; }
   < ---- END java signatures ---- >
 }

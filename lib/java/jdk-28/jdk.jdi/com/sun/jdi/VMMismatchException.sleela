@@ -58,7 +58,9 @@ class VMMismatchException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public VMMismatchException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.VMMismatchException.<init>()"); }
-  public VMMismatchException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.VMMismatchException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public VMMismatchException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public VMMismatchException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

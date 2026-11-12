@@ -58,52 +58,95 @@ class RowSetMetaDataImpl {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RowSetMetaDataImpl() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RowSetMetaDataImpl() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public <T> T unwrap(java.lang.Class<T> iface) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.unwrap(java.lang.Class<T>)"); }
-  public boolean isReadOnly(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.isReadOnly(int)"); }
-  public boolean isWritable(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.isWritable(int)"); }
-  public boolean isSigned(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.isSigned(int)"); }
-  public void setCurrency(int columnIndex, boolean property) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setCurrency(int, boolean)"); }
-  public boolean isCaseSensitive(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.isCaseSensitive(int)"); }
-  public void setCaseSensitive(int columnIndex, boolean property) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setCaseSensitive(int, boolean)"); }
-  public void setScale(int columnIndex, int scale) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setScale(int, int)"); }
-  public void setColumnCount(int columnCount) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setColumnCount(int)"); }
-  public int getColumnCount() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.getColumnCount()"); }
-  public java.lang.String getColumnName(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.getColumnName(int)"); }
-  public int getPrecision(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.getPrecision(int)"); }
-  public void setPrecision(int columnIndex, int precision) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setPrecision(int, int)"); }
-  public boolean isWrapperFor(java.lang.Class<?> interfaces) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.isWrapperFor(java.lang.Class<?>)"); }
-  public int isNullable(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.isNullable(int)"); }
-  public int getScale(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.getScale(int)"); }
-  public boolean isAutoIncrement(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.isAutoIncrement(int)"); }
-  public boolean isSearchable(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.isSearchable(int)"); }
-  public boolean isCurrency(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.isCurrency(int)"); }
-  public int getColumnDisplaySize(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.getColumnDisplaySize(int)"); }
-  public java.lang.String getColumnLabel(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.getColumnLabel(int)"); }
-  public java.lang.String getSchemaName(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.getSchemaName(int)"); }
-  public java.lang.String getTableName(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.getTableName(int)"); }
-  public java.lang.String getCatalogName(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.getCatalogName(int)"); }
-  public int getColumnType(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.getColumnType(int)"); }
-  public java.lang.String getColumnTypeName(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.getColumnTypeName(int)"); }
-  public boolean isDefinitelyWritable(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.isDefinitelyWritable(int)"); }
-  public java.lang.String getColumnClassName(int columnIndex) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.getColumnClassName(int)"); }
-  public void setAutoIncrement(int columnIndex, boolean property) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setAutoIncrement(int, boolean)"); }
-  public void setSearchable(int columnIndex, boolean property) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setSearchable(int, boolean)"); }
-  public void setNullable(int columnIndex, int property) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setNullable(int, int)"); }
-  public void setSigned(int columnIndex, boolean property) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setSigned(int, boolean)"); }
-  public void setColumnDisplaySize(int columnIndex, int size) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setColumnDisplaySize(int, int)"); }
-  public void setColumnLabel(int columnIndex, java.lang.String label) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setColumnLabel(int, java.lang.String)"); }
-  public void setColumnName(int columnIndex, java.lang.String columnName) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setColumnName(int, java.lang.String)"); }
-  public void setSchemaName(int columnIndex, java.lang.String schemaName) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setSchemaName(int, java.lang.String)"); }
-  public void setTableName(int columnIndex, java.lang.String tableName) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setTableName(int, java.lang.String)"); }
-  public void setCatalogName(int columnIndex, java.lang.String catalogName) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setCatalogName(int, java.lang.String)"); }
-  public void setColumnType(int columnIndex, int SQLType) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setColumnType(int, int)"); }
-  public void setColumnTypeName(int columnIndex, java.lang.String typeName) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetMetaDataImpl.setColumnTypeName(int, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public <T> T unwrap(java.lang.Class<T> iface) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public boolean isReadOnly(int columnIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public boolean isWritable(int columnIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public boolean isSigned(int columnIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setCurrency(int columnIndex, boolean property) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public boolean isCaseSensitive(int columnIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setCaseSensitive(int columnIndex, boolean property) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setScale(int columnIndex, int scale) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setColumnCount(int columnCount) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public int getColumnCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.lang.String getColumnName(int columnIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public int getPrecision(int columnIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setPrecision(int columnIndex, int precision) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public boolean isWrapperFor(java.lang.Class<?> interfaces) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public int isNullable(int columnIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public int getScale(int columnIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public boolean isAutoIncrement(int columnIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public boolean isSearchable(int columnIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public boolean isCurrency(int columnIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public int getColumnDisplaySize(int columnIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.lang.String getColumnLabel(int columnIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.lang.String getSchemaName(int columnIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.lang.String getTableName(int columnIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.lang.String getCatalogName(int columnIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public int getColumnType(int columnIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.lang.String getColumnTypeName(int columnIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public boolean isDefinitelyWritable(int columnIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.lang.String getColumnClassName(int columnIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setAutoIncrement(int columnIndex, boolean property) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setSearchable(int columnIndex, boolean property) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setNullable(int columnIndex, int property) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setSigned(int columnIndex, boolean property) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setColumnDisplaySize(int columnIndex, int size) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setColumnLabel(int columnIndex, java.lang.String label) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setColumnName(int columnIndex, java.lang.String columnName) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setSchemaName(int columnIndex, java.lang.String schemaName) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setTableName(int columnIndex, java.lang.String tableName) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setCatalogName(int columnIndex, java.lang.String catalogName) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setColumnType(int columnIndex, int SQLType) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void setColumnTypeName(int columnIndex, java.lang.String typeName) { }
   < ---- END java signatures ---- >
 }

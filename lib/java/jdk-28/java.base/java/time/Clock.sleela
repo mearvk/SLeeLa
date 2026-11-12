@@ -59,27 +59,45 @@ class Clock {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Clock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Clock.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Clock() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Clock.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Clock.hashCode()"); }
-  public static java.time.Clock offset(java.time.Clock baseClock, java.time.Duration offsetDuration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Clock.offset(java.time.Clock, java.time.Duration)"); }
-  public long millis() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Clock.millis()"); }
-  public static java.time.Clock system(java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Clock.system(java.time.ZoneId)"); }
-  public static java.time.Clock fixed(java.time.Instant fixedInstant, java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Clock.fixed(java.time.Instant, java.time.ZoneId)"); }
-  public abstract java.time.Instant instant() { throw new AbstractMethodError("java.time.Clock.instant()"); }
-  public static java.time.Clock systemUTC() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Clock.systemUTC()"); }
-  public static java.time.Clock systemDefaultZone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Clock.systemDefaultZone()"); }
-  public static java.time.Clock tickMillis(java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Clock.tickMillis(java.time.ZoneId)"); }
-  public static java.time.Clock tickSeconds(java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Clock.tickSeconds(java.time.ZoneId)"); }
-  public static java.time.Clock tickMinutes(java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Clock.tickMinutes(java.time.ZoneId)"); }
-  public static java.time.Clock tick(java.time.Clock baseClock, java.time.Duration tickDuration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Clock.tick(java.time.Clock, java.time.Duration)"); }
-  public abstract java.time.ZoneId getZone() { throw new AbstractMethodError("java.time.Clock.getZone()"); }
-  public abstract java.time.Clock withZone(java.time.ZoneId zone) { throw new AbstractMethodError("java.time.Clock.withZone(java.time.ZoneId)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Clock offset(java.time.Clock baseClock, java.time.Duration offsetDuration) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long millis() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Clock system(java.time.ZoneId zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Clock fixed(java.time.Instant fixedInstant, java.time.ZoneId zone) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.Instant instant() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Clock systemUTC() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Clock systemDefaultZone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Clock tickMillis(java.time.ZoneId zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Clock tickSeconds(java.time.ZoneId zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Clock tickMinutes(java.time.ZoneId zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Clock tick(java.time.Clock baseClock, java.time.Duration tickDuration) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.ZoneId getZone() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.Clock withZone(java.time.ZoneId zone) { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,7 +58,9 @@ class BindException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BindException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.BindException.<init>(java.lang.String)"); }
-  public BindException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.BindException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BindException(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BindException() { }
   < ---- END java constructors ---- >
 }

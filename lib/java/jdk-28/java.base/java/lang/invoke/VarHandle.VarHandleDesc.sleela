@@ -59,14 +59,22 @@ class VarHandleDesc {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.VarHandleDesc.toString()"); }
-  public java.lang.invoke.VarHandle resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup lookup) throws java.lang.ReflectiveOperationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.VarHandleDesc.resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup)"); }
-  public static java.lang.invoke.VarHandle.VarHandleDesc ofField(java.lang.constant.ClassDesc declaringClass, java.lang.String name, java.lang.constant.ClassDesc fieldType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.VarHandleDesc.ofField(java.lang.constant.ClassDesc, java.lang.String, java.lang.constant.ClassDesc)"); }
-  public java.lang.constant.ClassDesc varType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.VarHandleDesc.varType()"); }
-  public static java.lang.invoke.VarHandle.VarHandleDesc ofStaticField(java.lang.constant.ClassDesc declaringClass, java.lang.String name, java.lang.constant.ClassDesc fieldType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.VarHandleDesc.ofStaticField(java.lang.constant.ClassDesc, java.lang.String, java.lang.constant.ClassDesc)"); }
-  public static java.lang.invoke.VarHandle.VarHandleDesc ofArray(java.lang.constant.ClassDesc arrayClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.VarHandleDesc.ofArray(java.lang.constant.ClassDesc)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ReflectiveOperationException")
+  public java.lang.invoke.VarHandle resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup lookup) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.invoke.VarHandle.VarHandleDesc ofField(java.lang.constant.ClassDesc declaringClass, java.lang.String name, java.lang.constant.ClassDesc fieldType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.constant.ClassDesc varType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.invoke.VarHandle.VarHandleDesc ofStaticField(java.lang.constant.ClassDesc declaringClass, java.lang.String name, java.lang.constant.ClassDesc fieldType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.invoke.VarHandle.VarHandleDesc ofArray(java.lang.constant.ClassDesc arrayClass) { return null; }
   < ---- END java signatures ---- >
 }

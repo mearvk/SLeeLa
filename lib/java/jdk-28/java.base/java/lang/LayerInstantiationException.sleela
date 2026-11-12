@@ -58,9 +58,13 @@ class LayerInstantiationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LayerInstantiationException(java.lang.String msg, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.LayerInstantiationException.<init>(java.lang.String, java.lang.Throwable)"); }
-  public LayerInstantiationException(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.LayerInstantiationException.<init>(java.lang.Throwable)"); }
-  public LayerInstantiationException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.LayerInstantiationException.<init>(java.lang.String)"); }
-  public LayerInstantiationException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.LayerInstantiationException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LayerInstantiationException(java.lang.String msg, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LayerInstantiationException(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LayerInstantiationException(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LayerInstantiationException() { }
   < ---- END java constructors ---- >
 }

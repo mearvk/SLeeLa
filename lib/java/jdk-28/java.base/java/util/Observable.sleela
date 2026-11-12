@@ -58,23 +58,35 @@ class Observable {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Observable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Observable.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Observable() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void notifyObservers(java.lang.Object arg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Observable.notifyObservers(java.lang.Object)"); }
-  public void notifyObservers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Observable.notifyObservers()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void notifyObservers(java.lang.Object arg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void notifyObservers() { }
   @JavaProtected
-  synchronized void clearChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Observable.clearChanged()"); }
-  public synchronized void addObserver(java.util.Observer o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Observable.addObserver(java.util.Observer)"); }
-  public synchronized void deleteObserver(java.util.Observer o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Observable.deleteObserver(java.util.Observer)"); }
-  public synchronized void deleteObservers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Observable.deleteObservers()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  synchronized void clearChanged() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addObserver(java.util.Observer o) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void deleteObserver(java.util.Observer o) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void deleteObservers() { }
   @JavaProtected
-  synchronized void setChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Observable.setChanged()"); }
-  public synchronized boolean hasChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Observable.hasChanged()"); }
-  public synchronized int countObservers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Observable.countObservers()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  synchronized void setChanged() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean hasChanged() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int countObservers() { return 0; }
   < ---- END java signatures ---- >
 }

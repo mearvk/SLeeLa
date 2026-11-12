@@ -58,42 +58,78 @@ class HTMLTableElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getFrame() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getFrame()"); }
-  public abstract java.lang.String getRules() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getRules()"); }
-  public abstract java.lang.String getSummary() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getSummary()"); }
-  public abstract void setBorder(java.lang.String border) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.setBorder(java.lang.String)"); }
-  public abstract void setWidth(java.lang.String width) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.setWidth(java.lang.String)"); }
-  public abstract java.lang.String getCellSpacing() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getCellSpacing()"); }
-  public abstract void setCellSpacing(java.lang.String cellSpacing) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.setCellSpacing(java.lang.String)"); }
-  public abstract org.w3c.dom.html.HTMLElement insertRow(int index) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.insertRow(int)"); }
-  public abstract java.lang.String getBorder() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getBorder()"); }
-  public abstract void setFrame(java.lang.String frame) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.setFrame(java.lang.String)"); }
-  public abstract org.w3c.dom.html.HTMLCollection getRows() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getRows()"); }
-  public abstract java.lang.String getBgColor() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getBgColor()"); }
-  public abstract java.lang.String getWidth() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getWidth()"); }
-  public abstract java.lang.String getAlign() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getAlign()"); }
-  public abstract void setAlign(java.lang.String align) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.setAlign(java.lang.String)"); }
-  public abstract void setBgColor(java.lang.String bgColor) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.setBgColor(java.lang.String)"); }
-  public abstract org.w3c.dom.html.HTMLTableCaptionElement getCaption() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getCaption()"); }
-  public abstract void setCaption(org.w3c.dom.html.HTMLTableCaptionElement caption) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.setCaption(org.w3c.dom.html.HTMLTableCaptionElement)"); }
-  public abstract org.w3c.dom.html.HTMLTableSectionElement getTHead() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getTHead()"); }
-  public abstract void setTHead(org.w3c.dom.html.HTMLTableSectionElement tHead) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.setTHead(org.w3c.dom.html.HTMLTableSectionElement)"); }
-  public abstract org.w3c.dom.html.HTMLTableSectionElement getTFoot() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getTFoot()"); }
-  public abstract void setTFoot(org.w3c.dom.html.HTMLTableSectionElement tFoot) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.setTFoot(org.w3c.dom.html.HTMLTableSectionElement)"); }
-  public abstract org.w3c.dom.html.HTMLCollection getTBodies() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getTBodies()"); }
-  public abstract java.lang.String getCellPadding() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.getCellPadding()"); }
-  public abstract void setCellPadding(java.lang.String cellPadding) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.setCellPadding(java.lang.String)"); }
-  public abstract void setRules(java.lang.String rules) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.setRules(java.lang.String)"); }
-  public abstract void setSummary(java.lang.String summary) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.setSummary(java.lang.String)"); }
-  public abstract org.w3c.dom.html.HTMLElement createTHead() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.createTHead()"); }
-  public abstract void deleteTHead() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.deleteTHead()"); }
-  public abstract org.w3c.dom.html.HTMLElement createTFoot() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.createTFoot()"); }
-  public abstract void deleteTFoot() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.deleteTFoot()"); }
-  public abstract org.w3c.dom.html.HTMLElement createCaption() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.createCaption()"); }
-  public abstract void deleteCaption() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.deleteCaption()"); }
-  public abstract void deleteRow(int index) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableElement.deleteRow(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getFrame() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getRules() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSummary() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBorder(java.lang.String border) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setWidth(java.lang.String width) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCellSpacing() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCellSpacing(java.lang.String cellSpacing) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.html.HTMLElement insertRow(int index) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getBorder() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setFrame(java.lang.String frame) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLCollection getRows() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getBgColor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getWidth() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAlign() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAlign(java.lang.String align) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBgColor(java.lang.String bgColor) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLTableCaptionElement getCaption() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCaption(org.w3c.dom.html.HTMLTableCaptionElement caption) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLTableSectionElement getTHead() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTHead(org.w3c.dom.html.HTMLTableSectionElement tHead) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLTableSectionElement getTFoot() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTFoot(org.w3c.dom.html.HTMLTableSectionElement tFoot) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLCollection getTBodies() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCellPadding() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCellPadding(java.lang.String cellPadding) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setRules(java.lang.String rules) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSummary(java.lang.String summary) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLElement createTHead() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void deleteTHead() { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLElement createTFoot() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void deleteTFoot() { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLElement createCaption() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void deleteCaption() { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void deleteRow(int index) { }
   < ---- END java signatures ---- >
 }

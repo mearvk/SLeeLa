@@ -58,12 +58,18 @@ class DoublePredicate {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean test(double value) { throw new AbstractMethodError("java.util.function.DoublePredicate.test(double)"); }
-  public default java.util.function.DoublePredicate or(java.util.function.DoublePredicate other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.function.DoublePredicate.or(java.util.function.DoublePredicate)"); }
-  public default java.util.function.DoublePredicate negate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.function.DoublePredicate.negate()"); }
-  public default java.util.function.DoublePredicate and(java.util.function.DoublePredicate other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.function.DoublePredicate.and(java.util.function.DoublePredicate)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean test(double value) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.function.DoublePredicate or(java.util.function.DoublePredicate other) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.function.DoublePredicate negate() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.function.DoublePredicate and(java.util.function.DoublePredicate other) { return null; }
   < ---- END java signatures ---- >
 }

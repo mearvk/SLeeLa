@@ -64,71 +64,108 @@ class BasicProgressBarUI {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicProgressBarUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicProgressBarUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void installListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.installListeners()"); }
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getPreferredSize(javax.swing.JComponent)"); }
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getMinimumSize(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListeners() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void paintIndeterminate(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.paintIndeterminate(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintIndeterminate(java.awt.Graphics g, javax.swing.JComponent c) { }
   @JavaProtected
-  void paintDeterminate(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.paintDeterminate(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintDeterminate(java.awt.Graphics g, javax.swing.JComponent c) { }
   @JavaProtected
-  int getAnimationIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getAnimationIndex()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getAnimationIndex() { return 0; }
   @JavaProtected
-  int getBoxLength(int availableLength, int otherDimension) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getBoxLength(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getBoxLength(int availableLength, int otherDimension) { return 0; }
   @JavaProtected
-  java.awt.Rectangle getBox(java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getBox(java.awt.Rectangle)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Rectangle getBox(java.awt.Rectangle r) { return null; }
   @JavaProtected
-  int getCellLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getCellLength()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getCellLength() { return 0; }
   @JavaProtected
-  int getCellSpacing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getCellSpacing()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getCellSpacing() { return 0; }
   @JavaProtected
-  int getAmountFull(java.awt.Insets b, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getAmountFull(java.awt.Insets, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getAmountFull(java.awt.Insets b, int width, int height) { return 0; }
   @JavaProtected
-  java.awt.Point getStringPlacement(java.awt.Graphics g, java.lang.String progressString, int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getStringPlacement(java.awt.Graphics, java.lang.String, int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Point getStringPlacement(java.awt.Graphics g, java.lang.String progressString, int x, int y, int width, int height) { return null; }
   @JavaProtected
-  java.awt.Dimension getPreferredInnerHorizontal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getPreferredInnerHorizontal()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Dimension getPreferredInnerHorizontal() { return null; }
   @JavaProtected
-  java.awt.Dimension getPreferredInnerVertical() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getPreferredInnerVertical()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Dimension getPreferredInnerVertical() { return null; }
   @JavaProtected
-  void setAnimationIndex(int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.setAnimationIndex(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setAnimationIndex(int newValue) { }
   @JavaProtected
-  void startAnimationTimer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.startAnimationTimer()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void startAnimationTimer() { }
   @JavaProtected
-  void stopAnimationTimer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.stopAnimationTimer()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void stopAnimationTimer() { }
   @JavaProtected
-  void setCellLength(int cellLen) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.setCellLength(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setCellLength(int cellLen) { }
   @JavaProtected
-  void setCellSpacing(int cellSpace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.setCellSpacing(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setCellSpacing(int cellSpace) { }
   @JavaProtected
-  final int getFrameCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getFrameCount()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final int getFrameCount() { return 0; }
   @JavaProtected
-  void incrementAnimationIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.incrementAnimationIndex()"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.installUI(javax.swing.JComponent)"); }
-  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.uninstallUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void incrementAnimationIndex() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(javax.swing.JComponent c) { }
   @JavaProtected
-  java.awt.Color getSelectionForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getSelectionForeground()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Color getSelectionForeground() { return null; }
   @JavaProtected
-  java.awt.Color getSelectionBackground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getSelectionBackground()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Color getSelectionBackground() { return null; }
   @JavaProtected
-  void paintString(java.awt.Graphics g, int x, int y, int width, int height, int amountFull, java.awt.Insets b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.paintString(java.awt.Graphics, int, int, int, int, int, java.awt.Insets)"); }
-  public int getBaseline(javax.swing.JComponent c, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getBaseline(javax.swing.JComponent, int, int)"); }
-  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getBaselineResizeBehavior(javax.swing.JComponent)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintString(java.awt.Graphics g, int x, int y, int width, int height, int amountFull, java.awt.Insets b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBaseline(javax.swing.JComponent c, int width, int height) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { return null; }
   @JavaProtected
-  void installDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.installDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults() { }
   @JavaProtected
-  void uninstallListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.uninstallListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallListeners() { }
   @JavaProtected
-  void uninstallDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.uninstallDefaults()"); }
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.getMaximumSize(javax.swing.JComponent)"); }
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicProgressBarUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
   < ---- END java signatures ---- >
 }

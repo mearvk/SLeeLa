@@ -58,17 +58,25 @@ class RowSorterEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RowSorterEvent(javax.swing.RowSorter<?> source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.RowSorterEvent.<init>(javax.swing.RowSorter<?>)"); }
-  public RowSorterEvent(javax.swing.RowSorter<?> source, javax.swing.event.RowSorterEvent.Type type, int[] previousRowIndexToModel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.RowSorterEvent.<init>(javax.swing.RowSorter<?>, javax.swing.event.RowSorterEvent.Type, int[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RowSorterEvent(javax.swing.RowSorter<?> source) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RowSorterEvent(javax.swing.RowSorter<?> source, javax.swing.event.RowSorterEvent.Type type, int[] previousRowIndexToModel) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.swing.event.RowSorterEvent.Type getType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.RowSorterEvent.getType()"); }
-  public int getPreviousRowCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.RowSorterEvent.getPreviousRowCount()"); }
-  public int convertPreviousRowIndexToModel(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.RowSorterEvent.convertPreviousRowIndexToModel(int)"); }
-  public javax.swing.RowSorter<?> getSource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.RowSorterEvent.getSource()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.RowSorterEvent.Type getType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getPreviousRowCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int convertPreviousRowIndexToModel(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.RowSorter<?> getSource() { return null; }
   < ---- END java signatures ---- >
 }

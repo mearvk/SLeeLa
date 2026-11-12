@@ -59,6 +59,7 @@ class ButtonUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ButtonUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.ButtonUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ButtonUI() { }
   < ---- END java constructors ---- >
 }

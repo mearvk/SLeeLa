@@ -58,35 +58,61 @@ class Area {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Area() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.<init>()"); }
-  public Area(java.awt.Shape s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.<init>(java.awt.Shape)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Area() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Area(java.awt.Shape s) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.reset()"); }
-  public boolean equals(java.awt.geom.Area other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.equals(java.awt.geom.Area)"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.clone()"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.isEmpty()"); }
-  public void add(java.awt.geom.Area rhs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.add(java.awt.geom.Area)"); }
-  public boolean contains(java.awt.geom.Point2D p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.contains(java.awt.geom.Point2D)"); }
-  public boolean contains(double x, double y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.contains(double, double)"); }
-  public boolean contains(double x, double y, double w, double h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.contains(double, double, double, double)"); }
-  public void transform(java.awt.geom.AffineTransform t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.transform(java.awt.geom.AffineTransform)"); }
-  public java.awt.Rectangle getBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.getBounds()"); }
-  public void subtract(java.awt.geom.Area rhs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.subtract(java.awt.geom.Area)"); }
-  public boolean intersects(double x, double y, double w, double h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.intersects(double, double, double, double)"); }
-  public boolean intersects(java.awt.geom.Rectangle2D r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.intersects(java.awt.geom.Rectangle2D)"); }
-  public void intersect(java.awt.geom.Area rhs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.intersect(java.awt.geom.Area)"); }
-  public boolean isRectangular() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.isRectangular()"); }
-  public java.awt.geom.Rectangle2D getBounds2D() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.getBounds2D()"); }
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.getPathIterator(java.awt.geom.AffineTransform)"); }
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.getPathIterator(java.awt.geom.AffineTransform, double)"); }
-  public void exclusiveOr(java.awt.geom.Area rhs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.exclusiveOr(java.awt.geom.Area)"); }
-  public boolean isPolygonal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.isPolygonal()"); }
-  public boolean isSingular() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.isSingular()"); }
-  public java.awt.geom.Area createTransformedArea(java.awt.geom.AffineTransform t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Area.createTransformedArea(java.awt.geom.AffineTransform)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reset() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.awt.geom.Area other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void add(java.awt.geom.Area rhs) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.awt.geom.Point2D p) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(double x, double y) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(double x, double y, double w, double h) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void transform(java.awt.geom.AffineTransform t) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getBounds() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void subtract(java.awt.geom.Area rhs) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean intersects(double x, double y, double w, double h) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean intersects(java.awt.geom.Rectangle2D r) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void intersect(java.awt.geom.Area rhs) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRectangular() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getBounds2D() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void exclusiveOr(java.awt.geom.Area rhs) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPolygonal() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSingular() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Area createTransformedArea(java.awt.geom.AffineTransform t) { return null; }
   < ---- END java signatures ---- >
 }

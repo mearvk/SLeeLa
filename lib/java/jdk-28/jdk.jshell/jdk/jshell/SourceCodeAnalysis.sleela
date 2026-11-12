@@ -58,18 +58,30 @@ class SourceCodeAnalysis {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract jdk.jshell.SourceCodeAnalysis.SnippetWrapper wrapper(jdk.jshell.Snippet snippet) { throw new AbstractMethodError("jdk.jshell.SourceCodeAnalysis.wrapper(jdk.jshell.Snippet)"); }
-  public abstract java.util.List<jdk.jshell.SourceCodeAnalysis.Highlight> highlights(java.lang.String snippet) { throw new AbstractMethodError("jdk.jshell.SourceCodeAnalysis.highlights(java.lang.String)"); }
-  public abstract jdk.jshell.SourceCodeAnalysis.CompletionInfo analyzeCompletion(java.lang.String input) { throw new AbstractMethodError("jdk.jshell.SourceCodeAnalysis.analyzeCompletion(java.lang.String)"); }
-  public abstract java.util.List<jdk.jshell.SourceCodeAnalysis.Suggestion> completionSuggestions(java.lang.String input, int cursor, int[] anchor) { throw new AbstractMethodError("jdk.jshell.SourceCodeAnalysis.completionSuggestions(java.lang.String, int, int[])"); }
-  public abstract java.util.List<jdk.jshell.SourceCodeAnalysis.Documentation> documentation(java.lang.String input, int cursor, boolean computeJavadoc) { throw new AbstractMethodError("jdk.jshell.SourceCodeAnalysis.documentation(java.lang.String, int, boolean)"); }
-  public abstract java.lang.String analyzeType(java.lang.String code, int cursor) { throw new AbstractMethodError("jdk.jshell.SourceCodeAnalysis.analyzeType(java.lang.String, int)"); }
-  public abstract jdk.jshell.SourceCodeAnalysis.QualifiedNames listQualifiedNames(java.lang.String code, int cursor) { throw new AbstractMethodError("jdk.jshell.SourceCodeAnalysis.listQualifiedNames(java.lang.String, int)"); }
-  public abstract java.util.List<jdk.jshell.SourceCodeAnalysis.SnippetWrapper> wrappers(java.lang.String input) { throw new AbstractMethodError("jdk.jshell.SourceCodeAnalysis.wrappers(java.lang.String)"); }
-  public abstract java.util.List<jdk.jshell.Snippet> sourceToSnippets(java.lang.String input) { throw new AbstractMethodError("jdk.jshell.SourceCodeAnalysis.sourceToSnippets(java.lang.String)"); }
-  public abstract java.util.Collection<jdk.jshell.Snippet> dependents(jdk.jshell.Snippet snippet) { throw new AbstractMethodError("jdk.jshell.SourceCodeAnalysis.dependents(jdk.jshell.Snippet)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.jshell.SourceCodeAnalysis.SnippetWrapper wrapper(jdk.jshell.Snippet snippet) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<jdk.jshell.SourceCodeAnalysis.Highlight> highlights(java.lang.String snippet) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.jshell.SourceCodeAnalysis.CompletionInfo analyzeCompletion(java.lang.String input) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<jdk.jshell.SourceCodeAnalysis.Suggestion> completionSuggestions(java.lang.String input, int cursor, int[] anchor) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<jdk.jshell.SourceCodeAnalysis.Documentation> documentation(java.lang.String input, int cursor, boolean computeJavadoc) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String analyzeType(java.lang.String code, int cursor) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.jshell.SourceCodeAnalysis.QualifiedNames listQualifiedNames(java.lang.String code, int cursor) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<jdk.jshell.SourceCodeAnalysis.SnippetWrapper> wrappers(java.lang.String input) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<jdk.jshell.Snippet> sourceToSnippets(java.lang.String input) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Collection<jdk.jshell.Snippet> dependents(jdk.jshell.Snippet snippet) { return null; }
   < ---- END java signatures ---- >
 }

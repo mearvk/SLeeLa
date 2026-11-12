@@ -58,14 +58,22 @@ class MultipleMaster {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getNumDesignAxes() { throw new AbstractMethodError("java.awt.font.MultipleMaster.getNumDesignAxes()"); }
-  public abstract float[] getDesignAxisRanges() { throw new AbstractMethodError("java.awt.font.MultipleMaster.getDesignAxisRanges()"); }
-  public abstract float[] getDesignAxisDefaults() { throw new AbstractMethodError("java.awt.font.MultipleMaster.getDesignAxisDefaults()"); }
-  public abstract java.lang.String[] getDesignAxisNames() { throw new AbstractMethodError("java.awt.font.MultipleMaster.getDesignAxisNames()"); }
-  public abstract java.awt.Font deriveMMFont(float[] axes) { throw new AbstractMethodError("java.awt.font.MultipleMaster.deriveMMFont(float[])"); }
-  public abstract java.awt.Font deriveMMFont(float[] glyphWidths, float avgStemWidth, float typicalCapHeight, float typicalXHeight, float italicAngle) { throw new AbstractMethodError("java.awt.font.MultipleMaster.deriveMMFont(float[], float, float, float, float)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getNumDesignAxes() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float[] getDesignAxisRanges() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public float[] getDesignAxisDefaults() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getDesignAxisNames() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Font deriveMMFont(float[] axes) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Font deriveMMFont(float[] glyphWidths, float avgStemWidth, float typicalCapHeight, float typicalXHeight, float italicAngle) { return null; }
   < ---- END java signatures ---- >
 }

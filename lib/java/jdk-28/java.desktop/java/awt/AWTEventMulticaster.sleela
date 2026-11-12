@@ -64,60 +64,109 @@ class AWTEventMulticaster {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AWTEventMulticaster(java.util.EventListener a, java.util.EventListener b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.<init>(java.util.EventListener, java.util.EventListener)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AWTEventMulticaster(java.util.EventListener a, java.util.EventListener b) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static java.awt.event.WindowListener remove(java.awt.event.WindowListener l, java.awt.event.WindowListener oldl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.remove(java.awt.event.WindowListener, java.awt.event.WindowListener)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.event.WindowListener remove(java.awt.event.WindowListener l, java.awt.event.WindowListener oldl) { return null; }
   @JavaProtected
-  java.util.EventListener remove(java.util.EventListener oldl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.remove(java.util.EventListener)"); }
-  public static java.awt.event.MouseMotionListener add(java.awt.event.MouseMotionListener a, java.awt.event.MouseMotionListener b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.add(java.awt.event.MouseMotionListener, java.awt.event.MouseMotionListener)"); }
-  protected static void save(java.io.ObjectOutputStream s, java.lang.String k, java.util.EventListener l) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.save(java.io.ObjectOutputStream, java.lang.String, java.util.EventListener)"); }
-  public void componentResized(java.awt.event.ComponentEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.componentResized(java.awt.event.ComponentEvent)"); }
-  public void componentMoved(java.awt.event.ComponentEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.componentMoved(java.awt.event.ComponentEvent)"); }
-  public void componentShown(java.awt.event.ComponentEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.componentShown(java.awt.event.ComponentEvent)"); }
-  public void componentHidden(java.awt.event.ComponentEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.componentHidden(java.awt.event.ComponentEvent)"); }
-  public void focusGained(java.awt.event.FocusEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.focusGained(java.awt.event.FocusEvent)"); }
-  public void focusLost(java.awt.event.FocusEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.focusLost(java.awt.event.FocusEvent)"); }
-  public void keyTyped(java.awt.event.KeyEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.keyTyped(java.awt.event.KeyEvent)"); }
-  public void keyPressed(java.awt.event.KeyEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.keyPressed(java.awt.event.KeyEvent)"); }
-  public void keyReleased(java.awt.event.KeyEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.keyReleased(java.awt.event.KeyEvent)"); }
-  public void mousePressed(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.mousePressed(java.awt.event.MouseEvent)"); }
-  public void mouseReleased(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.mouseReleased(java.awt.event.MouseEvent)"); }
-  public void mouseClicked(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.mouseClicked(java.awt.event.MouseEvent)"); }
-  public void mouseExited(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.mouseExited(java.awt.event.MouseEvent)"); }
-  public void mouseEntered(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.mouseEntered(java.awt.event.MouseEvent)"); }
-  public void mouseMoved(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.mouseMoved(java.awt.event.MouseEvent)"); }
-  public void mouseDragged(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.mouseDragged(java.awt.event.MouseEvent)"); }
-  public void mouseWheelMoved(java.awt.event.MouseWheelEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.mouseWheelMoved(java.awt.event.MouseWheelEvent)"); }
-  public void inputMethodTextChanged(java.awt.event.InputMethodEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.inputMethodTextChanged(java.awt.event.InputMethodEvent)"); }
-  public void caretPositionChanged(java.awt.event.InputMethodEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.caretPositionChanged(java.awt.event.InputMethodEvent)"); }
-  public void hierarchyChanged(java.awt.event.HierarchyEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.hierarchyChanged(java.awt.event.HierarchyEvent)"); }
-  public void ancestorMoved(java.awt.event.HierarchyEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.ancestorMoved(java.awt.event.HierarchyEvent)"); }
-  public void ancestorResized(java.awt.event.HierarchyEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.ancestorResized(java.awt.event.HierarchyEvent)"); }
-  protected static java.util.EventListener removeInternal(java.util.EventListener l, java.util.EventListener oldl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.removeInternal(java.util.EventListener, java.util.EventListener)"); }
-  public void windowOpened(java.awt.event.WindowEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.windowOpened(java.awt.event.WindowEvent)"); }
-  public void windowClosing(java.awt.event.WindowEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.windowClosing(java.awt.event.WindowEvent)"); }
-  public void windowClosed(java.awt.event.WindowEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.windowClosed(java.awt.event.WindowEvent)"); }
-  public void windowIconified(java.awt.event.WindowEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.windowIconified(java.awt.event.WindowEvent)"); }
-  public void windowDeiconified(java.awt.event.WindowEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.windowDeiconified(java.awt.event.WindowEvent)"); }
-  public void windowActivated(java.awt.event.WindowEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.windowActivated(java.awt.event.WindowEvent)"); }
-  public void windowDeactivated(java.awt.event.WindowEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.windowDeactivated(java.awt.event.WindowEvent)"); }
-  public void windowStateChanged(java.awt.event.WindowEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.windowStateChanged(java.awt.event.WindowEvent)"); }
-  public void windowGainedFocus(java.awt.event.WindowEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.windowGainedFocus(java.awt.event.WindowEvent)"); }
-  public void windowLostFocus(java.awt.event.WindowEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.windowLostFocus(java.awt.event.WindowEvent)"); }
-  public void actionPerformed(java.awt.event.ActionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.actionPerformed(java.awt.event.ActionEvent)"); }
-  public void itemStateChanged(java.awt.event.ItemEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.itemStateChanged(java.awt.event.ItemEvent)"); }
-  public void adjustmentValueChanged(java.awt.event.AdjustmentEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.adjustmentValueChanged(java.awt.event.AdjustmentEvent)"); }
-  public void textValueChanged(java.awt.event.TextEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.textValueChanged(java.awt.event.TextEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.util.EventListener remove(java.util.EventListener oldl) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.event.MouseMotionListener add(java.awt.event.MouseMotionListener a, java.awt.event.MouseMotionListener b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  protected static void save(java.io.ObjectOutputStream s, java.lang.String k, java.util.EventListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void componentResized(java.awt.event.ComponentEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void componentMoved(java.awt.event.ComponentEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void componentShown(java.awt.event.ComponentEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void componentHidden(java.awt.event.ComponentEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void focusGained(java.awt.event.FocusEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void focusLost(java.awt.event.FocusEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void keyTyped(java.awt.event.KeyEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void keyPressed(java.awt.event.KeyEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void keyReleased(java.awt.event.KeyEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mousePressed(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseReleased(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseClicked(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseExited(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseEntered(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseMoved(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseDragged(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseWheelMoved(java.awt.event.MouseWheelEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void inputMethodTextChanged(java.awt.event.InputMethodEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void caretPositionChanged(java.awt.event.InputMethodEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void hierarchyChanged(java.awt.event.HierarchyEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ancestorMoved(java.awt.event.HierarchyEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ancestorResized(java.awt.event.HierarchyEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static java.util.EventListener removeInternal(java.util.EventListener l, java.util.EventListener oldl) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void windowOpened(java.awt.event.WindowEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void windowClosing(java.awt.event.WindowEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void windowClosed(java.awt.event.WindowEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void windowIconified(java.awt.event.WindowEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void windowDeiconified(java.awt.event.WindowEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void windowActivated(java.awt.event.WindowEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void windowDeactivated(java.awt.event.WindowEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void windowStateChanged(java.awt.event.WindowEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void windowGainedFocus(java.awt.event.WindowEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void windowLostFocus(java.awt.event.WindowEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void actionPerformed(java.awt.event.ActionEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void itemStateChanged(java.awt.event.ItemEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void adjustmentValueChanged(java.awt.event.AdjustmentEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void textValueChanged(java.awt.event.TextEvent e) { }
   @JavaProtected
-  void saveInternal(java.io.ObjectOutputStream s, java.lang.String k) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.saveInternal(java.io.ObjectOutputStream, java.lang.String)"); }
-  protected static java.util.EventListener addInternal(java.util.EventListener a, java.util.EventListener b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.addInternal(java.util.EventListener, java.util.EventListener)"); }
-  public static <T extends java.util.EventListener> T[] getListeners(java.util.EventListener l, java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.getListeners(java.util.EventListener, java.lang.Class<T>)"); }
-  public void componentAdded(java.awt.event.ContainerEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.componentAdded(java.awt.event.ContainerEvent)"); }
-  public void componentRemoved(java.awt.event.ContainerEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTEventMulticaster.componentRemoved(java.awt.event.ContainerEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void saveInternal(java.io.ObjectOutputStream s, java.lang.String k) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static java.util.EventListener addInternal(java.util.EventListener a, java.util.EventListener b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T extends java.util.EventListener> T[] getListeners(java.util.EventListener l, java.lang.Class<T> listenerType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void componentAdded(java.awt.event.ContainerEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void componentRemoved(java.awt.event.ContainerEvent e) { }
   < ---- END java signatures ---- >
 }

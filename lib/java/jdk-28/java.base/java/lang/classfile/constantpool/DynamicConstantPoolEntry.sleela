@@ -58,13 +58,20 @@ class DynamicConstantPoolEntry {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default java.lang.classfile.constantpool.Utf8Entry name() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.constantpool.DynamicConstantPoolEntry.name()"); }
-  public default java.lang.classfile.constantpool.Utf8Entry type() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.constantpool.DynamicConstantPoolEntry.type()"); }
-  public abstract java.lang.classfile.BootstrapMethodEntry bootstrap() { throw new AbstractMethodError("java.lang.classfile.constantpool.DynamicConstantPoolEntry.bootstrap()"); }
-  public abstract java.lang.classfile.constantpool.NameAndTypeEntry nameAndType() { throw new AbstractMethodError("java.lang.classfile.constantpool.DynamicConstantPoolEntry.nameAndType()"); }
-  public abstract int bootstrapMethodIndex() { throw new AbstractMethodError("java.lang.classfile.constantpool.DynamicConstantPoolEntry.bootstrapMethodIndex()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.constantpool.Utf8Entry name() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.constantpool.Utf8Entry type() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.BootstrapMethodEntry bootstrap() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.NameAndTypeEntry nameAndType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int bootstrapMethodIndex() { return 0; }
   < ---- END java signatures ---- >
 }

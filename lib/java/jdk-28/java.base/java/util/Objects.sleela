@@ -58,29 +58,52 @@ class Objects {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static boolean equals(java.lang.Object a, java.lang.Object b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.equals(java.lang.Object, java.lang.Object)"); }
-  public static java.lang.String toString(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.toString(java.lang.Object)"); }
-  public static java.lang.String toString(java.lang.Object o, java.lang.String nullDefault) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.toString(java.lang.Object, java.lang.String)"); }
-  public static int checkIndex(int index, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.checkIndex(int, int)"); }
-  public static long checkIndex(long index, long length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.checkIndex(long, long)"); }
-  public static int hashCode(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.hashCode(java.lang.Object)"); }
-  public static <T> int compare(T a, T b, java.util.Comparator<? super T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.compare(T, T, java.util.Comparator<? super T>)"); }
-  public static int hash(java.lang.Object... values) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.hash(java.lang.Object...)"); }
-  public static <T> T requireNonNull(T obj, java.util.function.Supplier<java.lang.String> messageSupplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.requireNonNull(T, java.util.function.Supplier<java.lang.String>)"); }
-  public static <T> T requireNonNull(T obj, java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.requireNonNull(T, java.lang.String)"); }
-  public static <T> T requireNonNull(T obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.requireNonNull(T)"); }
-  public static long checkFromToIndex(long fromIndex, long toIndex, long length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.checkFromToIndex(long, long, long)"); }
-  public static int checkFromToIndex(int fromIndex, int toIndex, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.checkFromToIndex(int, int, int)"); }
-  public static int checkFromIndexSize(int fromIndex, int size, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.checkFromIndexSize(int, int, int)"); }
-  public static long checkFromIndexSize(long fromIndex, long size, long length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.checkFromIndexSize(long, long, long)"); }
-  public static boolean deepEquals(java.lang.Object a, java.lang.Object b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.deepEquals(java.lang.Object, java.lang.Object)"); }
-  public static java.lang.String toIdentityString(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.toIdentityString(java.lang.Object)"); }
-  public static boolean isNull(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.isNull(java.lang.Object)"); }
-  public static boolean nonNull(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.nonNull(java.lang.Object)"); }
-  public static <T> T requireNonNullElse(T obj, T defaultObj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.requireNonNullElse(T, T)"); }
-  public static <T> T requireNonNullElseGet(T obj, java.util.function.Supplier<? extends T> supplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Objects.requireNonNullElseGet(T, java.util.function.Supplier<? extends T>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean equals(java.lang.Object a, java.lang.Object b) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String toString(java.lang.Object o) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String toString(java.lang.Object o, java.lang.String nullDefault) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int checkIndex(int index, int length) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long checkIndex(long index, long length) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int hashCode(java.lang.Object o) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> int compare(T a, T b, java.util.Comparator<? super T> c) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int hash(java.lang.Object... values) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> T requireNonNull(T obj, java.util.function.Supplier<java.lang.String> messageSupplier) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> T requireNonNull(T obj, java.lang.String message) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> T requireNonNull(T obj) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long checkFromToIndex(long fromIndex, long toIndex, long length) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int checkFromToIndex(int fromIndex, int toIndex, int length) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int checkFromIndexSize(int fromIndex, int size, int length) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long checkFromIndexSize(long fromIndex, long size, long length) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean deepEquals(java.lang.Object a, java.lang.Object b) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String toIdentityString(java.lang.Object o) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isNull(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean nonNull(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> T requireNonNullElse(T obj, T defaultObj) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> T requireNonNullElseGet(T obj, java.util.function.Supplier<? extends T> supplier) { return null; }
   < ---- END java signatures ---- >
 }

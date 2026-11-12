@@ -58,7 +58,9 @@ class OutOfMemoryError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public OutOfMemoryError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.OutOfMemoryError.<init>()"); }
-  public OutOfMemoryError(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.OutOfMemoryError.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OutOfMemoryError() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OutOfMemoryError(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

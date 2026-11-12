@@ -58,34 +58,53 @@ class MetalComboBoxUI {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MetalComboBoxUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MetalComboBoxUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.getMinimumSize(javax.swing.JComponent)"); }
-  public void paintCurrentValueBackground(java.awt.Graphics g, java.awt.Rectangle bounds, boolean hasFocus) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.paintCurrentValueBackground(java.awt.Graphics, java.awt.Rectangle, boolean)"); }
-  public void paintCurrentValue(java.awt.Graphics g, java.awt.Rectangle bounds, boolean hasFocus) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.paintCurrentValue(java.awt.Graphics, java.awt.Rectangle, boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintCurrentValueBackground(java.awt.Graphics g, java.awt.Rectangle bounds, boolean hasFocus) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintCurrentValue(java.awt.Graphics g, java.awt.Rectangle bounds, boolean hasFocus) { }
   @JavaProtected
-  void editablePropertyChanged(java.beans.PropertyChangeEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.editablePropertyChanged(java.beans.PropertyChangeEvent)"); }
-  public void layoutComboBox(java.awt.Container parent, javax.swing.plaf.metal.MetalComboBoxUI.MetalComboBoxLayoutManager manager) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.layoutComboBox(java.awt.Container, javax.swing.plaf.metal.MetalComboBoxUI.MetalComboBoxLayoutManager)"); }
-  public void configureEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.configureEditor()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void editablePropertyChanged(java.beans.PropertyChangeEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void layoutComboBox(java.awt.Container parent, javax.swing.plaf.metal.MetalComboBoxUI.MetalComboBoxLayoutManager manager) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void configureEditor() { }
   @JavaProtected
-  java.awt.LayoutManager createLayoutManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.createLayoutManager()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.LayoutManager createLayoutManager() { return null; }
   @JavaProtected
-  javax.swing.ComboBoxEditor createEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.createEditor()"); }
-  public int getBaseline(javax.swing.JComponent c, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.getBaseline(javax.swing.JComponent, int, int)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.createUI(javax.swing.JComponent)"); }
-  public java.beans.PropertyChangeListener createPropertyChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.createPropertyChangeListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.ComboBoxEditor createEditor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBaseline(javax.swing.JComponent c, int width, int height) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
   @JavaProtected
-  javax.swing.plaf.basic.ComboPopup createPopup() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.createPopup()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.basic.ComboPopup createPopup() { return null; }
   @JavaProtected
-  javax.swing.JButton createArrowButton() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.createArrowButton()"); }
-  public void unconfigureEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.unconfigureEditor()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JButton createArrowButton() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void unconfigureEditor() { }
   @JavaProtected
-  void removeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.removeListeners()"); }
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalComboBoxUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void removeListeners() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
   < ---- END java signatures ---- >
 }

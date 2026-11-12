@@ -58,6 +58,7 @@ class NonReadableChannelException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NonReadableChannelException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.NonReadableChannelException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NonReadableChannelException() { }
   < ---- END java constructors ---- >
 }

@@ -58,26 +58,43 @@ class DocTrees {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DocTrees() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.DocTrees.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DocTrees() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.lang.model.type.TypeMirror getType(com.sun.source.util.DocTreePath path) { throw new AbstractMethodError("com.sun.source.util.DocTrees.getType(com.sun.source.util.DocTreePath)"); }
-  public static com.sun.source.util.DocTrees instance(javax.tools.JavaCompiler.CompilationTask task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.DocTrees.instance(javax.tools.JavaCompiler.CompilationTask)"); }
-  public abstract javax.lang.model.element.Element getElement(com.sun.source.util.DocTreePath path) { throw new AbstractMethodError("com.sun.source.util.DocTrees.getElement(com.sun.source.util.DocTreePath)"); }
-  public abstract com.sun.source.doctree.DocCommentTree getDocCommentTree(javax.lang.model.element.Element e, java.lang.String relativePath) throws java.io.IOException { throw new AbstractMethodError("com.sun.source.util.DocTrees.getDocCommentTree(javax.lang.model.element.Element, java.lang.String)"); }
-  public abstract com.sun.source.doctree.DocCommentTree getDocCommentTree(com.sun.source.util.TreePath path) { throw new AbstractMethodError("com.sun.source.util.DocTrees.getDocCommentTree(com.sun.source.util.TreePath)"); }
-  public abstract com.sun.source.util.DocSourcePositions getSourcePositions() { throw new AbstractMethodError("com.sun.source.util.DocTrees.getSourcePositions()"); }
-  public abstract java.text.BreakIterator getBreakIterator() { throw new AbstractMethodError("com.sun.source.util.DocTrees.getBreakIterator()"); }
-  public abstract javax.lang.model.util.Elements.DocCommentKind getDocCommentKind(com.sun.source.util.TreePath path) { throw new AbstractMethodError("com.sun.source.util.DocTrees.getDocCommentKind(com.sun.source.util.TreePath)"); }
-  public abstract com.sun.source.util.DocTreePath getDocTreePath(javax.tools.FileObject fileObject, javax.lang.model.element.PackageElement packageElement) { throw new AbstractMethodError("com.sun.source.util.DocTrees.getDocTreePath(javax.tools.FileObject, javax.lang.model.element.PackageElement)"); }
-  public abstract java.util.List<com.sun.source.doctree.DocTree> getFirstSentence(java.util.List<? extends com.sun.source.doctree.DocTree> list) { throw new AbstractMethodError("com.sun.source.util.DocTrees.getFirstSentence(java.util.List<? extends com.sun.source.doctree.DocTree>)"); }
-  public abstract void printMessage(javax.tools.Diagnostic.Kind kind, java.lang.CharSequence msg, com.sun.source.doctree.DocTree t, com.sun.source.doctree.DocCommentTree c, com.sun.source.tree.CompilationUnitTree root) { throw new AbstractMethodError("com.sun.source.util.DocTrees.printMessage(javax.tools.Diagnostic.Kind, java.lang.CharSequence, com.sun.source.doctree.DocTree, com.sun.source.doctree.DocCommentTree, com.sun.source.tree.CompilationUnitTree)"); }
-  public abstract void setBreakIterator(java.text.BreakIterator breakIterator) { throw new AbstractMethodError("com.sun.source.util.DocTrees.setBreakIterator(java.text.BreakIterator)"); }
-  public abstract com.sun.source.util.DocTreeFactory getDocTreeFactory() { throw new AbstractMethodError("com.sun.source.util.DocTrees.getDocTreeFactory()"); }
-  public abstract java.lang.String getCharacters(com.sun.source.doctree.EntityTree tree) { throw new AbstractMethodError("com.sun.source.util.DocTrees.getCharacters(com.sun.source.doctree.EntityTree)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.type.TypeMirror getType(com.sun.source.util.DocTreePath path) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static com.sun.source.util.DocTrees instance(javax.tools.JavaCompiler.CompilationTask task) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.Element getElement(com.sun.source.util.DocTreePath path) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public com.sun.source.doctree.DocCommentTree getDocCommentTree(javax.lang.model.element.Element e, java.lang.String relativePath) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.doctree.DocCommentTree getDocCommentTree(com.sun.source.util.TreePath path) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.util.DocSourcePositions getSourcePositions() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.text.BreakIterator getBreakIterator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.util.Elements.DocCommentKind getDocCommentKind(com.sun.source.util.TreePath path) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.util.DocTreePath getDocTreePath(javax.tools.FileObject fileObject, javax.lang.model.element.PackageElement packageElement) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.source.doctree.DocTree> getFirstSentence(java.util.List<? extends com.sun.source.doctree.DocTree> list) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void printMessage(javax.tools.Diagnostic.Kind kind, java.lang.CharSequence msg, com.sun.source.doctree.DocTree t, com.sun.source.doctree.DocCommentTree c, com.sun.source.tree.CompilationUnitTree root) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBreakIterator(java.text.BreakIterator breakIterator) { }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.util.DocTreeFactory getDocTreeFactory() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCharacters(com.sun.source.doctree.EntityTree tree) { return null; }
   < ---- END java signatures ---- >
 }

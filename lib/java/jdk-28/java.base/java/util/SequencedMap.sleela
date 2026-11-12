@@ -58,18 +58,30 @@ class SequencedMap<K, V> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.SequencedMap<K, V> reversed() { throw new AbstractMethodError("java.util.SequencedMap.reversed()"); }
-  public default java.util.SequencedSet<K> sequencedKeySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SequencedMap.sequencedKeySet()"); }
-  public default java.util.SequencedCollection<V> sequencedValues() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SequencedMap.sequencedValues()"); }
-  public default java.util.SequencedSet<java.util.Map.Entry<K, V>> sequencedEntrySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SequencedMap.sequencedEntrySet()"); }
-  public default V putFirst(K k, V v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SequencedMap.putFirst(K, V)"); }
-  public default V putLast(K k, V v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SequencedMap.putLast(K, V)"); }
-  public default java.util.Map.Entry<K, V> firstEntry() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SequencedMap.firstEntry()"); }
-  public default java.util.Map.Entry<K, V> lastEntry() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SequencedMap.lastEntry()"); }
-  public default java.util.Map.Entry<K, V> pollFirstEntry() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SequencedMap.pollFirstEntry()"); }
-  public default java.util.Map.Entry<K, V> pollLastEntry() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SequencedMap.pollLastEntry()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.SequencedMap<K, V> reversed() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.SequencedSet<K> sequencedKeySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.SequencedCollection<V> sequencedValues() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.SequencedSet<java.util.Map.Entry<K, V>> sequencedEntrySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V putFirst(K k, V v) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V putLast(K k, V v) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Map.Entry<K, V> firstEntry() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Map.Entry<K, V> lastEntry() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Map.Entry<K, V> pollFirstEntry() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Map.Entry<K, V> pollLastEntry() { return null; }
   < ---- END java signatures ---- >
 }

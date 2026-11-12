@@ -58,7 +58,9 @@ class InvalidPropertiesFormatException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidPropertiesFormatException(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.InvalidPropertiesFormatException.<init>(java.lang.Throwable)"); }
-  public InvalidPropertiesFormatException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.InvalidPropertiesFormatException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidPropertiesFormatException(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidPropertiesFormatException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

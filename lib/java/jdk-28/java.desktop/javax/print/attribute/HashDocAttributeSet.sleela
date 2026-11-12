@@ -58,8 +58,11 @@ class HashDocAttributeSet {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public HashDocAttributeSet(javax.print.attribute.DocAttributeSet attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashDocAttributeSet.<init>(javax.print.attribute.DocAttributeSet)"); }
-  public HashDocAttributeSet(javax.print.attribute.DocAttribute[] attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashDocAttributeSet.<init>(javax.print.attribute.DocAttribute[])"); }
-  public HashDocAttributeSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashDocAttributeSet.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashDocAttributeSet(javax.print.attribute.DocAttributeSet attributes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashDocAttributeSet(javax.print.attribute.DocAttribute[] attributes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashDocAttributeSet() { }
   < ---- END java constructors ---- >
 }

@@ -58,18 +58,26 @@ class ThreadLocal<T> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ThreadLocal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ThreadLocal.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ThreadLocal() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ThreadLocal.remove()"); }
-  public T get() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ThreadLocal.get()"); }
-  public void set(T value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ThreadLocal.set(T)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public T get() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void set(T value) { }
   @JavaProtected
-  T initialValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ThreadLocal.initialValue()"); }
-  public static <S> java.lang.ThreadLocal<S> withInitial(java.util.function.Supplier<? extends S> supplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ThreadLocal.withInitial(java.util.function.Supplier<? extends S>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  T initialValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <S> java.lang.ThreadLocal<S> withInitial(java.util.function.Supplier<? extends S> supplier) { return null; }
   < ---- END java signatures ---- >
 }

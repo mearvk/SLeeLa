@@ -69,40 +69,74 @@ class Lookup {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.toString()"); }
-  public java.lang.Class<?> findClass(java.lang.String targetName) throws java.lang.ClassNotFoundException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.findClass(java.lang.String)"); }
-  public java.lang.Class<?> defineClass(byte[] bytes) throws java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.defineClass(byte[])"); }
-  public java.lang.invoke.MethodHandles.Lookup in(java.lang.Class<?> requestedLookupClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.in(java.lang.Class<?>)"); }
-  public <T> java.lang.Class<T> ensureInitialized(java.lang.Class<T> targetClass) throws java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.ensureInitialized(java.lang.Class<T>)"); }
-  public java.lang.invoke.MethodHandleInfo revealDirect(java.lang.invoke.MethodHandle target) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.revealDirect(java.lang.invoke.MethodHandle)"); }
-  public java.lang.Class<?> lookupClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.lookupClass()"); }
-  public java.lang.Class<?> previousLookupClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.previousLookupClass()"); }
-  public java.lang.invoke.MethodHandle findVirtual(java.lang.Class<?> refc, java.lang.String name, java.lang.invoke.MethodType type) throws java.lang.NoSuchMethodException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.findVirtual(java.lang.Class<?>, java.lang.String, java.lang.invoke.MethodType)"); }
-  public java.lang.invoke.MethodHandle findStatic(java.lang.Class<?> refc, java.lang.String name, java.lang.invoke.MethodType type) throws java.lang.NoSuchMethodException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.findStatic(java.lang.Class<?>, java.lang.String, java.lang.invoke.MethodType)"); }
-  public java.lang.invoke.MethodHandle unreflect(java.lang.reflect.Method m) throws java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.unreflect(java.lang.reflect.Method)"); }
-  public java.lang.invoke.MethodHandle unreflectConstructor(java.lang.reflect.Constructor<?> c) throws java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.unreflectConstructor(java.lang.reflect.Constructor<?>)"); }
-  public int lookupModes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.lookupModes()"); }
-  public boolean hasFullPrivilegeAccess() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.hasFullPrivilegeAccess()"); }
-  public <T> java.lang.Class<T> accessClass(java.lang.Class<T> targetClass) throws java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.accessClass(java.lang.Class<T>)"); }
-  public java.lang.invoke.MethodHandles.Lookup dropLookupMode(int modeToDrop) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.dropLookupMode(int)"); }
-  public java.lang.invoke.MethodHandles.Lookup defineHiddenClass(byte[] bytes, boolean initialize, java.lang.invoke.MethodHandles.Lookup.ClassOption... options) throws java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.defineHiddenClass(byte[], boolean, java.lang.invoke.MethodHandles.Lookup.ClassOption...)"); }
-  public java.lang.invoke.MethodHandles.Lookup defineHiddenClassWithClassData(byte[] bytes, java.lang.Object classData, boolean initialize, java.lang.invoke.MethodHandles.Lookup.ClassOption... options) throws java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.defineHiddenClassWithClassData(byte[], java.lang.Object, boolean, java.lang.invoke.MethodHandles.Lookup.ClassOption...)"); }
-  public java.lang.invoke.MethodHandle findConstructor(java.lang.Class<?> refc, java.lang.invoke.MethodType type) throws java.lang.NoSuchMethodException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.findConstructor(java.lang.Class<?>, java.lang.invoke.MethodType)"); }
-  public java.lang.invoke.MethodHandle findSpecial(java.lang.Class<?> refc, java.lang.String name, java.lang.invoke.MethodType type, java.lang.Class<?> specialCaller) throws java.lang.NoSuchMethodException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.findSpecial(java.lang.Class<?>, java.lang.String, java.lang.invoke.MethodType, java.lang.Class<?>)"); }
-  public java.lang.invoke.MethodHandle findGetter(java.lang.Class<?> refc, java.lang.String name, java.lang.Class<?> type) throws java.lang.NoSuchFieldException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.findGetter(java.lang.Class<?>, java.lang.String, java.lang.Class<?>)"); }
-  public java.lang.invoke.MethodHandle findSetter(java.lang.Class<?> refc, java.lang.String name, java.lang.Class<?> type) throws java.lang.NoSuchFieldException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.findSetter(java.lang.Class<?>, java.lang.String, java.lang.Class<?>)"); }
-  public java.lang.invoke.VarHandle findVarHandle(java.lang.Class<?> recv, java.lang.String name, java.lang.Class<?> type) throws java.lang.NoSuchFieldException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.findVarHandle(java.lang.Class<?>, java.lang.String, java.lang.Class<?>)"); }
-  public java.lang.invoke.MethodHandle findStaticGetter(java.lang.Class<?> refc, java.lang.String name, java.lang.Class<?> type) throws java.lang.NoSuchFieldException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.findStaticGetter(java.lang.Class<?>, java.lang.String, java.lang.Class<?>)"); }
-  public java.lang.invoke.MethodHandle findStaticSetter(java.lang.Class<?> refc, java.lang.String name, java.lang.Class<?> type) throws java.lang.NoSuchFieldException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.findStaticSetter(java.lang.Class<?>, java.lang.String, java.lang.Class<?>)"); }
-  public java.lang.invoke.VarHandle findStaticVarHandle(java.lang.Class<?> decl, java.lang.String name, java.lang.Class<?> type) throws java.lang.NoSuchFieldException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.findStaticVarHandle(java.lang.Class<?>, java.lang.String, java.lang.Class<?>)"); }
-  public java.lang.invoke.MethodHandle bind(java.lang.Object receiver, java.lang.String name, java.lang.invoke.MethodType type) throws java.lang.NoSuchMethodException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.bind(java.lang.Object, java.lang.String, java.lang.invoke.MethodType)"); }
-  public java.lang.invoke.MethodHandle unreflectSpecial(java.lang.reflect.Method m, java.lang.Class<?> specialCaller) throws java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.unreflectSpecial(java.lang.reflect.Method, java.lang.Class<?>)"); }
-  public java.lang.invoke.MethodHandle unreflectGetter(java.lang.reflect.Field f) throws java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.unreflectGetter(java.lang.reflect.Field)"); }
-  public java.lang.invoke.MethodHandle unreflectSetter(java.lang.reflect.Field f) throws java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.unreflectSetter(java.lang.reflect.Field)"); }
-  public java.lang.invoke.VarHandle unreflectVarHandle(java.lang.reflect.Field f) throws java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.unreflectVarHandle(java.lang.reflect.Field)"); }
-  public boolean hasPrivateAccess() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodHandles.Lookup.hasPrivateAccess()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException, java.lang.IllegalAccessException")
+  public java.lang.Class<?> findClass(java.lang.String targetName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
+  public java.lang.Class<?> defineClass(byte[] bytes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodHandles.Lookup in(java.lang.Class<?> requestedLookupClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
+  public <T> java.lang.Class<T> ensureInitialized(java.lang.Class<T> targetClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodHandleInfo revealDirect(java.lang.invoke.MethodHandle target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> lookupClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> previousLookupClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle findVirtual(java.lang.Class<?> refc, java.lang.String name, java.lang.invoke.MethodType type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle findStatic(java.lang.Class<?> refc, java.lang.String name, java.lang.invoke.MethodType type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle unreflect(java.lang.reflect.Method m) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle unreflectConstructor(java.lang.reflect.Constructor<?> c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lookupModes() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasFullPrivilegeAccess() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
+  public <T> java.lang.Class<T> accessClass(java.lang.Class<T> targetClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodHandles.Lookup dropLookupMode(int modeToDrop) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandles.Lookup defineHiddenClass(byte[] bytes, boolean initialize, java.lang.invoke.MethodHandles.Lookup.ClassOption... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandles.Lookup defineHiddenClassWithClassData(byte[] bytes, java.lang.Object classData, boolean initialize, java.lang.invoke.MethodHandles.Lookup.ClassOption... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle findConstructor(java.lang.Class<?> refc, java.lang.invoke.MethodType type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle findSpecial(java.lang.Class<?> refc, java.lang.String name, java.lang.invoke.MethodType type, java.lang.Class<?> specialCaller) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle findGetter(java.lang.Class<?> refc, java.lang.String name, java.lang.Class<?> type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle findSetter(java.lang.Class<?> refc, java.lang.String name, java.lang.Class<?> type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException, java.lang.IllegalAccessException")
+  public java.lang.invoke.VarHandle findVarHandle(java.lang.Class<?> recv, java.lang.String name, java.lang.Class<?> type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle findStaticGetter(java.lang.Class<?> refc, java.lang.String name, java.lang.Class<?> type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle findStaticSetter(java.lang.Class<?> refc, java.lang.String name, java.lang.Class<?> type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException, java.lang.IllegalAccessException")
+  public java.lang.invoke.VarHandle findStaticVarHandle(java.lang.Class<?> decl, java.lang.String name, java.lang.Class<?> type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle bind(java.lang.Object receiver, java.lang.String name, java.lang.invoke.MethodType type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle unreflectSpecial(java.lang.reflect.Method m, java.lang.Class<?> specialCaller) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle unreflectGetter(java.lang.reflect.Field f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
+  public java.lang.invoke.MethodHandle unreflectSetter(java.lang.reflect.Field f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
+  public java.lang.invoke.VarHandle unreflectVarHandle(java.lang.reflect.Field f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasPrivateAccess() { return false; }
   < ---- END java signatures ---- >
 }

@@ -64,57 +64,97 @@ class JDialog {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JDialog(java.awt.Window owner) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.<init>(java.awt.Window)"); }
-  public JDialog(java.awt.Dialog owner, java.lang.String title, boolean modal, java.awt.GraphicsConfiguration gc_) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.<init>(java.awt.Dialog, java.lang.String, boolean, java.awt.GraphicsConfiguration)"); }
-  public JDialog(java.awt.Dialog owner, java.lang.String title, boolean modal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.<init>(java.awt.Dialog, java.lang.String, boolean)"); }
-  public JDialog(java.awt.Dialog owner, java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.<init>(java.awt.Dialog, java.lang.String)"); }
-  public JDialog(java.awt.Window owner, java.lang.String title, java.awt.Dialog.ModalityType modalityType, java.awt.GraphicsConfiguration gc_) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.<init>(java.awt.Window, java.lang.String, java.awt.Dialog.ModalityType, java.awt.GraphicsConfiguration)"); }
-  public JDialog(java.awt.Window owner, java.lang.String title, java.awt.Dialog.ModalityType modalityType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.<init>(java.awt.Window, java.lang.String, java.awt.Dialog.ModalityType)"); }
-  public JDialog(java.awt.Window owner, java.awt.Dialog.ModalityType modalityType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.<init>(java.awt.Window, java.awt.Dialog.ModalityType)"); }
-  public JDialog(java.awt.Frame owner, boolean modal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.<init>(java.awt.Frame, boolean)"); }
-  public JDialog() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JDialog(java.awt.Window owner) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JDialog(java.awt.Dialog owner, java.lang.String title, boolean modal, java.awt.GraphicsConfiguration gc_) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JDialog(java.awt.Dialog owner, java.lang.String title, boolean modal) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JDialog(java.awt.Dialog owner, java.lang.String title) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JDialog(java.awt.Window owner, java.lang.String title, java.awt.Dialog.ModalityType modalityType, java.awt.GraphicsConfiguration gc_) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JDialog(java.awt.Window owner, java.lang.String title, java.awt.Dialog.ModalityType modalityType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JDialog(java.awt.Window owner, java.awt.Dialog.ModalityType modalityType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JDialog(java.awt.Frame owner, boolean modal) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JDialog() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove(java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.remove(java.awt.Component)"); }
-  public void update(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.update(java.awt.Graphics)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(java.awt.Component comp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void update(java.awt.Graphics g) { }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.paramString()"); }
-  public void setTransferHandler(javax.swing.TransferHandler newHandler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.setTransferHandler(javax.swing.TransferHandler)"); }
-  public javax.swing.TransferHandler getTransferHandler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.getTransferHandler()"); }
-  public void repaint(long time, int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.repaint(long, int, int, int, int)"); }
-  public java.awt.Graphics getGraphics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.getGraphics()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTransferHandler(javax.swing.TransferHandler newHandler) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.TransferHandler getTransferHandler() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void repaint(long time, int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Graphics getGraphics() { return null; }
   @JavaProtected
-  void processWindowEvent(java.awt.event.WindowEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.processWindowEvent(java.awt.event.WindowEvent)"); }
-  public javax.swing.JRootPane getRootPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.getRootPane()"); }
-  public javax.swing.JLayeredPane getLayeredPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.getLayeredPane()"); }
-  public java.awt.Container getContentPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.getContentPane()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processWindowEvent(java.awt.event.WindowEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JRootPane getRootPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JLayeredPane getLayeredPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Container getContentPane() { return null; }
   @JavaProtected
-  javax.swing.JRootPane createRootPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.createRootPane()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JRootPane createRootPane() { return null; }
   @JavaProtected
-  void setRootPane(javax.swing.JRootPane root) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.setRootPane(javax.swing.JRootPane)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setRootPane(javax.swing.JRootPane root) { }
   @JavaProtected
-  void setRootPaneCheckingEnabled(boolean enabled) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.setRootPaneCheckingEnabled(boolean)"); }
-  public static boolean isDefaultLookAndFeelDecorated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.isDefaultLookAndFeelDecorated()"); }
-  public void setJMenuBar(javax.swing.JMenuBar menu) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.setJMenuBar(javax.swing.JMenuBar)"); }
-  public javax.swing.JMenuBar getJMenuBar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.getJMenuBar()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setRootPaneCheckingEnabled(boolean enabled) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDefaultLookAndFeelDecorated() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setJMenuBar(javax.swing.JMenuBar menu) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JMenuBar getJMenuBar() { return null; }
   @JavaProtected
-  boolean isRootPaneCheckingEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.isRootPaneCheckingEnabled()"); }
-  public void setContentPane(java.awt.Container contentPane) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.setContentPane(java.awt.Container)"); }
-  public void setLayeredPane(javax.swing.JLayeredPane layeredPane) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.setLayeredPane(javax.swing.JLayeredPane)"); }
-  public java.awt.Component getGlassPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.getGlassPane()"); }
-  public void setGlassPane(java.awt.Component glassPane) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.setGlassPane(java.awt.Component)"); }
-  public void setDefaultCloseOperation(int operation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.setDefaultCloseOperation(int)"); }
-  public int getDefaultCloseOperation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.getDefaultCloseOperation()"); }
-  public static void setDefaultLookAndFeelDecorated(boolean defaultLookAndFeelDecorated) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.setDefaultLookAndFeelDecorated(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isRootPaneCheckingEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setContentPane(java.awt.Container contentPane) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayeredPane(javax.swing.JLayeredPane layeredPane) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getGlassPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setGlassPane(java.awt.Component glassPane) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultCloseOperation(int operation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDefaultCloseOperation() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setDefaultLookAndFeelDecorated(boolean defaultLookAndFeelDecorated) { }
   @JavaProtected
-  void dialogInit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.dialogInit()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.getAccessibleContext()"); }
-  public void setLayout(java.awt.LayoutManager manager) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.setLayout(java.awt.LayoutManager)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void dialogInit() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayout(java.awt.LayoutManager manager) { }
   @JavaProtected
-  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JDialog.addImpl(java.awt.Component, java.lang.Object, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
   < ---- END java signatures ---- >
 }

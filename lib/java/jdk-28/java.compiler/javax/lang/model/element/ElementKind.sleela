@@ -145,15 +145,24 @@ class ElementKind {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean isInterface() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.ElementKind.isInterface()"); }
-  public boolean isField() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.ElementKind.isField()"); }
-  public boolean isExecutable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.ElementKind.isExecutable()"); }
-  public boolean isInitializer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.ElementKind.isInitializer()"); }
-  public boolean isClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.ElementKind.isClass()"); }
-  public boolean isDeclaredType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.ElementKind.isDeclaredType()"); }
-  public boolean isVariable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.ElementKind.isVariable()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isInterface() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isField() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isExecutable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isInitializer() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isClass() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDeclaredType() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isVariable() { return false; }
   < ---- END java signatures ---- >
 }

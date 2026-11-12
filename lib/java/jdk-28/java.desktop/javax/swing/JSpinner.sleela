@@ -58,34 +58,57 @@ class JSpinner {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JSpinner(javax.swing.SpinnerModel model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.<init>(javax.swing.SpinnerModel)"); }
-  public JSpinner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JSpinner(javax.swing.SpinnerModel model) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JSpinner() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.getValue()"); }
-  public void setValue(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.setValue(java.lang.Object)"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.updateUI()"); }
-  public void setUI(javax.swing.plaf.SpinnerUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.setUI(javax.swing.plaf.SpinnerUI)"); }
-  public javax.swing.plaf.SpinnerUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.getUI()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.getUIClassID()"); }
-  public void commitEdit() throws java.text.ParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.commitEdit()"); }
-  public javax.swing.JComponent getEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.getEditor()"); }
-  public void setEditor(javax.swing.JComponent editor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.setEditor(javax.swing.JComponent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValue(java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.SpinnerUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.SpinnerUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
+  public void commitEdit() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JComponent getEditor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEditor(javax.swing.JComponent editor) { }
   @JavaProtected
-  javax.swing.JComponent createEditor(javax.swing.SpinnerModel model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.createEditor(javax.swing.SpinnerModel)"); }
-  public javax.swing.SpinnerModel getModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.getModel()"); }
-  public void removeChangeListener(javax.swing.event.ChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.removeChangeListener(javax.swing.event.ChangeListener)"); }
-  public void addChangeListener(javax.swing.event.ChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.addChangeListener(javax.swing.event.ChangeListener)"); }
-  public void setModel(javax.swing.SpinnerModel model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.setModel(javax.swing.SpinnerModel)"); }
-  public javax.swing.event.ChangeListener[] getChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.getChangeListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JComponent createEditor(javax.swing.SpinnerModel model) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.SpinnerModel getModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeChangeListener(javax.swing.event.ChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addChangeListener(javax.swing.event.ChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setModel(javax.swing.SpinnerModel model) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.ChangeListener[] getChangeListeners() { return null; }
   @JavaProtected
-  void fireStateChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.fireStateChanged()"); }
-  public java.lang.Object getNextValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.getNextValue()"); }
-  public java.lang.Object getPreviousValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.getPreviousValue()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.getAccessibleContext()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireStateChanged() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getNextValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getPreviousValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

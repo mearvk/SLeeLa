@@ -58,7 +58,9 @@ class ZipException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ZipException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.ZipException.<init>()"); }
-  public ZipException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.ZipException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ZipException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ZipException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

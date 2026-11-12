@@ -58,7 +58,9 @@ class UnsupportedEncodingException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnsupportedEncodingException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.UnsupportedEncodingException.<init>()"); }
-  public UnsupportedEncodingException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.UnsupportedEncodingException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsupportedEncodingException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsupportedEncodingException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

@@ -58,19 +58,29 @@ class SSLEngineResult {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SSLEngineResult(javax.net.ssl.SSLEngineResult.Status status, javax.net.ssl.SSLEngineResult.HandshakeStatus handshakeStatus, int bytesConsumed, int bytesProduced) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLEngineResult.<init>(javax.net.ssl.SSLEngineResult.Status, javax.net.ssl.SSLEngineResult.HandshakeStatus, int, int)"); }
-  public SSLEngineResult(javax.net.ssl.SSLEngineResult.Status status, javax.net.ssl.SSLEngineResult.HandshakeStatus handshakeStatus, int bytesConsumed, int bytesProduced, long sequenceNumber) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLEngineResult.<init>(javax.net.ssl.SSLEngineResult.Status, javax.net.ssl.SSLEngineResult.HandshakeStatus, int, int, long)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SSLEngineResult(javax.net.ssl.SSLEngineResult.Status status, javax.net.ssl.SSLEngineResult.HandshakeStatus handshakeStatus, int bytesConsumed, int bytesProduced) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SSLEngineResult(javax.net.ssl.SSLEngineResult.Status status, javax.net.ssl.SSLEngineResult.HandshakeStatus handshakeStatus, int bytesConsumed, int bytesProduced, long sequenceNumber) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLEngineResult.toString()"); }
-  public final long sequenceNumber() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLEngineResult.sequenceNumber()"); }
-  public final javax.net.ssl.SSLEngineResult.HandshakeStatus getHandshakeStatus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLEngineResult.getHandshakeStatus()"); }
-  public final int bytesConsumed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLEngineResult.bytesConsumed()"); }
-  public final int bytesProduced() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLEngineResult.bytesProduced()"); }
-  public final javax.net.ssl.SSLEngineResult.Status getStatus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLEngineResult.getStatus()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long sequenceNumber() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.net.ssl.SSLEngineResult.HandshakeStatus getHandshakeStatus() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int bytesConsumed() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int bytesProduced() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.net.ssl.SSLEngineResult.Status getStatus() { return null; }
   < ---- END java signatures ---- >
 }

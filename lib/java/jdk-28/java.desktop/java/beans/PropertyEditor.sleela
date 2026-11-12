@@ -58,20 +58,34 @@ class PropertyEditor {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object getValue() { throw new AbstractMethodError("java.beans.PropertyEditor.getValue()"); }
-  public abstract void setValue(java.lang.Object value) { throw new AbstractMethodError("java.beans.PropertyEditor.setValue(java.lang.Object)"); }
-  public abstract void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new AbstractMethodError("java.beans.PropertyEditor.addPropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public abstract void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new AbstractMethodError("java.beans.PropertyEditor.removePropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public abstract boolean isPaintable() { throw new AbstractMethodError("java.beans.PropertyEditor.isPaintable()"); }
-  public abstract void paintValue(java.awt.Graphics gfx, java.awt.Rectangle box) { throw new AbstractMethodError("java.beans.PropertyEditor.paintValue(java.awt.Graphics, java.awt.Rectangle)"); }
-  public abstract java.lang.String getJavaInitializationString() { throw new AbstractMethodError("java.beans.PropertyEditor.getJavaInitializationString()"); }
-  public abstract java.lang.String getAsText() { throw new AbstractMethodError("java.beans.PropertyEditor.getAsText()"); }
-  public abstract void setAsText(java.lang.String text) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("java.beans.PropertyEditor.setAsText(java.lang.String)"); }
-  public abstract java.lang.String[] getTags() { throw new AbstractMethodError("java.beans.PropertyEditor.getTags()"); }
-  public abstract java.awt.Component getCustomEditor() { throw new AbstractMethodError("java.beans.PropertyEditor.getCustomEditor()"); }
-  public abstract boolean supportsCustomEditor() { throw new AbstractMethodError("java.beans.PropertyEditor.supportsCustomEditor()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setValue(java.lang.Object value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isPaintable() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void paintValue(java.awt.Graphics gfx, java.awt.Rectangle box) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getJavaInitializationString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAsText() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public void setAsText(java.lang.String text) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getTags() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Component getCustomEditor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean supportsCustomEditor() { return false; }
   < ---- END java signatures ---- >
 }

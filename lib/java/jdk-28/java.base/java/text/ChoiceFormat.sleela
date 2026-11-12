@@ -58,30 +58,51 @@ class ChoiceFormat {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ChoiceFormat(double[] limits, java.lang.String[] formats) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.<init>(double[], java.lang.String[])"); }
-  public ChoiceFormat(java.lang.String newPattern) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ChoiceFormat(double[] limits, java.lang.String[] formats) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ChoiceFormat(java.lang.String newPattern) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.clone()"); }
-  public java.lang.StringBuffer format(long number, java.lang.StringBuffer toAppendTo, java.text.FieldPosition status) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.format(long, java.lang.StringBuffer, java.text.FieldPosition)"); }
-  public java.lang.StringBuffer format(double number, java.lang.StringBuffer toAppendTo, java.text.FieldPosition status) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.format(double, java.lang.StringBuffer, java.text.FieldPosition)"); }
-  public java.lang.Number parse(java.lang.String text, java.text.ParsePosition status) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.parse(java.lang.String, java.text.ParsePosition)"); }
-  public static double nextDouble(double d, boolean positive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.nextDouble(double, boolean)"); }
-  public static final double nextDouble(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.nextDouble(double)"); }
-  public boolean isStrict() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.isStrict()"); }
-  public void applyPattern(java.lang.String newPattern) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.applyPattern(java.lang.String)"); }
-  public java.lang.String toPattern() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.toPattern()"); }
-  public void setStrict(boolean strict) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.setStrict(boolean)"); }
-  public java.lang.Object[] getFormats() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.getFormats()"); }
-  public static final double previousDouble(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.previousDouble(double)"); }
-  public void setChoices(double[] limits, java.lang.String[] formats) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.setChoices(double[], java.lang.String[])"); }
-  public double[] getLimits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.ChoiceFormat.getLimits()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuffer format(long number, java.lang.StringBuffer toAppendTo, java.text.FieldPosition status) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuffer format(double number, java.lang.StringBuffer toAppendTo, java.text.FieldPosition status) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Number parse(java.lang.String text, java.text.ParsePosition status) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double nextDouble(double d, boolean positive) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final double nextDouble(double d) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isStrict() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void applyPattern(java.lang.String newPattern) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toPattern() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setStrict(boolean strict) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] getFormats() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final double previousDouble(double d) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setChoices(double[] limits, java.lang.String[] formats) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double[] getLimits() { return null; }
   < ---- END java signatures ---- >
 }

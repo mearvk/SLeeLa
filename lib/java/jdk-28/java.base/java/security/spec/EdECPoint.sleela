@@ -58,14 +58,19 @@ class EdECPoint {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public EdECPoint(boolean xOdd, java.math.BigInteger y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.EdECPoint.<init>(boolean, java.math.BigInteger)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EdECPoint(boolean xOdd, java.math.BigInteger y) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.math.BigInteger getY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.EdECPoint.getY()"); }
-  public boolean isXOdd() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.EdECPoint.isXOdd()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger getY() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isXOdd() { return false; }
   < ---- END java signatures ---- >
 }

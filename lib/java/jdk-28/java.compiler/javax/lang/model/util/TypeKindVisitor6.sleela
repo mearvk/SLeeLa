@@ -59,28 +59,46 @@ class TypeKindVisitor6<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  TypeKindVisitor6() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TypeKindVisitor6() { }
   @JavaProtected
-  TypeKindVisitor6(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.<init>(R)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TypeKindVisitor6(R defaultValue) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public R visitNoType(javax.lang.model.type.NoType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitNoType(javax.lang.model.type.NoType, P)"); }
-  public R visitPrimitive(javax.lang.model.type.PrimitiveType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitPrimitive(javax.lang.model.type.PrimitiveType, P)"); }
-  public R visitNoTypeAsModule(javax.lang.model.type.NoType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitNoTypeAsModule(javax.lang.model.type.NoType, P)"); }
-  public R visitPrimitiveAsBoolean(javax.lang.model.type.PrimitiveType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitPrimitiveAsBoolean(javax.lang.model.type.PrimitiveType, P)"); }
-  public R visitPrimitiveAsByte(javax.lang.model.type.PrimitiveType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitPrimitiveAsByte(javax.lang.model.type.PrimitiveType, P)"); }
-  public R visitPrimitiveAsShort(javax.lang.model.type.PrimitiveType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitPrimitiveAsShort(javax.lang.model.type.PrimitiveType, P)"); }
-  public R visitPrimitiveAsInt(javax.lang.model.type.PrimitiveType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitPrimitiveAsInt(javax.lang.model.type.PrimitiveType, P)"); }
-  public R visitPrimitiveAsLong(javax.lang.model.type.PrimitiveType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitPrimitiveAsLong(javax.lang.model.type.PrimitiveType, P)"); }
-  public R visitPrimitiveAsChar(javax.lang.model.type.PrimitiveType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitPrimitiveAsChar(javax.lang.model.type.PrimitiveType, P)"); }
-  public R visitPrimitiveAsFloat(javax.lang.model.type.PrimitiveType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitPrimitiveAsFloat(javax.lang.model.type.PrimitiveType, P)"); }
-  public R visitPrimitiveAsDouble(javax.lang.model.type.PrimitiveType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitPrimitiveAsDouble(javax.lang.model.type.PrimitiveType, P)"); }
-  public R visitNoTypeAsVoid(javax.lang.model.type.NoType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitNoTypeAsVoid(javax.lang.model.type.NoType, P)"); }
-  public R visitNoTypeAsPackage(javax.lang.model.type.NoType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitNoTypeAsPackage(javax.lang.model.type.NoType, P)"); }
-  public R visitNoTypeAsNone(javax.lang.model.type.NoType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor6.visitNoTypeAsNone(javax.lang.model.type.NoType, P)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitNoType(javax.lang.model.type.NoType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitPrimitive(javax.lang.model.type.PrimitiveType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitNoTypeAsModule(javax.lang.model.type.NoType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitPrimitiveAsBoolean(javax.lang.model.type.PrimitiveType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitPrimitiveAsByte(javax.lang.model.type.PrimitiveType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitPrimitiveAsShort(javax.lang.model.type.PrimitiveType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitPrimitiveAsInt(javax.lang.model.type.PrimitiveType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitPrimitiveAsLong(javax.lang.model.type.PrimitiveType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitPrimitiveAsChar(javax.lang.model.type.PrimitiveType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitPrimitiveAsFloat(javax.lang.model.type.PrimitiveType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitPrimitiveAsDouble(javax.lang.model.type.PrimitiveType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitNoTypeAsVoid(javax.lang.model.type.NoType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitNoTypeAsPackage(javax.lang.model.type.NoType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitNoTypeAsNone(javax.lang.model.type.NoType t, P p) { return null; }
   < ---- END java signatures ---- >
 }

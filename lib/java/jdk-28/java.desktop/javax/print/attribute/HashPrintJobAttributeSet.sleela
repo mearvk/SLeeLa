@@ -58,8 +58,11 @@ class HashPrintJobAttributeSet {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public HashPrintJobAttributeSet(javax.print.attribute.PrintJobAttributeSet attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashPrintJobAttributeSet.<init>(javax.print.attribute.PrintJobAttributeSet)"); }
-  public HashPrintJobAttributeSet(javax.print.attribute.PrintJobAttribute[] attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashPrintJobAttributeSet.<init>(javax.print.attribute.PrintJobAttribute[])"); }
-  public HashPrintJobAttributeSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashPrintJobAttributeSet.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashPrintJobAttributeSet(javax.print.attribute.PrintJobAttributeSet attributes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashPrintJobAttributeSet(javax.print.attribute.PrintJobAttribute[] attributes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashPrintJobAttributeSet() { }
   < ---- END java constructors ---- >
 }

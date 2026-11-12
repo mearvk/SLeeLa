@@ -59,29 +59,49 @@ class AtomicIntegerFieldUpdater<T> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AtomicIntegerFieldUpdater() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicIntegerFieldUpdater.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AtomicIntegerFieldUpdater() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int get(T obj) { throw new AbstractMethodError("java.util.concurrent.atomic.AtomicIntegerFieldUpdater.get(T)"); }
-  public abstract void set(T obj, int newValue) { throw new AbstractMethodError("java.util.concurrent.atomic.AtomicIntegerFieldUpdater.set(T, int)"); }
-  public abstract boolean compareAndSet(T obj, int expect, int update) { throw new AbstractMethodError("java.util.concurrent.atomic.AtomicIntegerFieldUpdater.compareAndSet(T, int, int)"); }
-  public abstract boolean weakCompareAndSet(T obj, int expect, int update) { throw new AbstractMethodError("java.util.concurrent.atomic.AtomicIntegerFieldUpdater.weakCompareAndSet(T, int, int)"); }
-  public int getAndSet(T obj, int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicIntegerFieldUpdater.getAndSet(T, int)"); }
-  public int getAndAdd(T obj, int delta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicIntegerFieldUpdater.getAndAdd(T, int)"); }
-  public int incrementAndGet(T obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicIntegerFieldUpdater.incrementAndGet(T)"); }
-  public abstract void lazySet(T obj, int newValue) { throw new AbstractMethodError("java.util.concurrent.atomic.AtomicIntegerFieldUpdater.lazySet(T, int)"); }
-  public int getAndIncrement(T obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicIntegerFieldUpdater.getAndIncrement(T)"); }
-  public int getAndDecrement(T obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicIntegerFieldUpdater.getAndDecrement(T)"); }
-  public int decrementAndGet(T obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicIntegerFieldUpdater.decrementAndGet(T)"); }
-  public int addAndGet(T obj, int delta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicIntegerFieldUpdater.addAndGet(T, int)"); }
-  public final int getAndUpdate(T obj, java.util.function.IntUnaryOperator updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicIntegerFieldUpdater.getAndUpdate(T, java.util.function.IntUnaryOperator)"); }
-  public final int updateAndGet(T obj, java.util.function.IntUnaryOperator updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicIntegerFieldUpdater.updateAndGet(T, java.util.function.IntUnaryOperator)"); }
-  public final int getAndAccumulate(T obj, int x, java.util.function.IntBinaryOperator accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicIntegerFieldUpdater.getAndAccumulate(T, int, java.util.function.IntBinaryOperator)"); }
-  public final int accumulateAndGet(T obj, int x, java.util.function.IntBinaryOperator accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicIntegerFieldUpdater.accumulateAndGet(T, int, java.util.function.IntBinaryOperator)"); }
-  public static <U> java.util.concurrent.atomic.AtomicIntegerFieldUpdater<U> newUpdater(java.lang.Class<U> tclass, java.lang.String fieldName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicIntegerFieldUpdater.newUpdater(java.lang.Class<U>, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int get(T obj) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void set(T obj, int newValue) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean compareAndSet(T obj, int expect, int update) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean weakCompareAndSet(T obj, int expect, int update) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAndSet(T obj, int newValue) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAndAdd(T obj, int delta) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int incrementAndGet(T obj) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void lazySet(T obj, int newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAndIncrement(T obj) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAndDecrement(T obj) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int decrementAndGet(T obj) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int addAndGet(T obj, int delta) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getAndUpdate(T obj, java.util.function.IntUnaryOperator updateFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int updateAndGet(T obj, java.util.function.IntUnaryOperator updateFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getAndAccumulate(T obj, int x, java.util.function.IntBinaryOperator accumulatorFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int accumulateAndGet(T obj, int x, java.util.function.IntBinaryOperator accumulatorFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <U> java.util.concurrent.atomic.AtomicIntegerFieldUpdater<U> newUpdater(java.lang.Class<U> tclass, java.lang.String fieldName) { return null; }
   < ---- END java signatures ---- >
 }

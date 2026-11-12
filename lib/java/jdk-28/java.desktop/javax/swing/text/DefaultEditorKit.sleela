@@ -112,19 +112,29 @@ class DefaultEditorKit {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultEditorKit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultEditorKit.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultEditorKit() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void write(java.io.OutputStream out, javax.swing.text.Document doc, int pos, int len) throws java.io.IOException, javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultEditorKit.write(java.io.OutputStream, javax.swing.text.Document, int, int)"); }
-  public void read(java.io.InputStream in, javax.swing.text.Document doc, int pos) throws java.io.IOException, javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultEditorKit.read(java.io.InputStream, javax.swing.text.Document, int)"); }
-  public javax.swing.text.ViewFactory getViewFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultEditorKit.getViewFactory()"); }
-  public javax.swing.text.Caret createCaret() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultEditorKit.createCaret()"); }
-  public javax.swing.text.Document createDefaultDocument() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultEditorKit.createDefaultDocument()"); }
-  public java.lang.String getContentType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultEditorKit.getContentType()"); }
-  public javax.swing.Action[] getActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultEditorKit.getActions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.swing.text.BadLocationException")
+  public void write(java.io.OutputStream out, javax.swing.text.Document doc, int pos, int len) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.swing.text.BadLocationException")
+  public void read(java.io.InputStream in, javax.swing.text.Document doc, int pos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.ViewFactory getViewFactory() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Caret createCaret() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Document createDefaultDocument() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getContentType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Action[] getActions() { return null; }
   < ---- END java signatures ---- >
 }

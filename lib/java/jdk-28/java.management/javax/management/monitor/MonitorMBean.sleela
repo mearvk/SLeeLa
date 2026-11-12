@@ -58,21 +58,36 @@ class MonitorMBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void start() { throw new AbstractMethodError("javax.management.monitor.MonitorMBean.start()"); }
-  public abstract void stop() { throw new AbstractMethodError("javax.management.monitor.MonitorMBean.stop()"); }
-  public abstract boolean isActive() { throw new AbstractMethodError("javax.management.monitor.MonitorMBean.isActive()"); }
-  public abstract javax.management.ObjectName getObservedObject() { throw new AbstractMethodError("javax.management.monitor.MonitorMBean.getObservedObject()"); }
-  public abstract java.lang.String getObservedAttribute() { throw new AbstractMethodError("javax.management.monitor.MonitorMBean.getObservedAttribute()"); }
-  public abstract void addObservedObject(javax.management.ObjectName object) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.management.monitor.MonitorMBean.addObservedObject(javax.management.ObjectName)"); }
-  public abstract void removeObservedObject(javax.management.ObjectName object) { throw new AbstractMethodError("javax.management.monitor.MonitorMBean.removeObservedObject(javax.management.ObjectName)"); }
-  public abstract boolean containsObservedObject(javax.management.ObjectName object) { throw new AbstractMethodError("javax.management.monitor.MonitorMBean.containsObservedObject(javax.management.ObjectName)"); }
-  public abstract javax.management.ObjectName[] getObservedObjects() { throw new AbstractMethodError("javax.management.monitor.MonitorMBean.getObservedObjects()"); }
-  public abstract void setObservedObject(javax.management.ObjectName object) { throw new AbstractMethodError("javax.management.monitor.MonitorMBean.setObservedObject(javax.management.ObjectName)"); }
-  public abstract void setObservedAttribute(java.lang.String attribute) { throw new AbstractMethodError("javax.management.monitor.MonitorMBean.setObservedAttribute(java.lang.String)"); }
-  public abstract long getGranularityPeriod() { throw new AbstractMethodError("javax.management.monitor.MonitorMBean.getGranularityPeriod()"); }
-  public abstract void setGranularityPeriod(long period) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.management.monitor.MonitorMBean.setGranularityPeriod(long)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void start() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void stop() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isActive() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.ObjectName getObservedObject() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getObservedAttribute() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public void addObservedObject(javax.management.ObjectName object) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeObservedObject(javax.management.ObjectName object) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean containsObservedObject(javax.management.ObjectName object) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.ObjectName[] getObservedObjects() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setObservedObject(javax.management.ObjectName object) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setObservedAttribute(java.lang.String attribute) { }
+  @throwable("java.lang.AbstractMethodError")
+  public long getGranularityPeriod() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public void setGranularityPeriod(long period) { }
   < ---- END java signatures ---- >
 }

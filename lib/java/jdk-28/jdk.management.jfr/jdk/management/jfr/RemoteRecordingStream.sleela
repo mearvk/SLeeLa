@@ -58,35 +58,61 @@ class RemoteRecordingStream {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RemoteRecordingStream(javax.management.MBeanServerConnection connection, java.nio.file.Path directory) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.<init>(javax.management.MBeanServerConnection, java.nio.file.Path)"); }
-  public RemoteRecordingStream(javax.management.MBeanServerConnection connection) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.<init>(javax.management.MBeanServerConnection)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public RemoteRecordingStream(javax.management.MBeanServerConnection connection, java.nio.file.Path directory) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public RemoteRecordingStream(javax.management.MBeanServerConnection connection) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean remove(java.lang.Object action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.remove(java.lang.Object)"); }
-  public void start() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.start()"); }
-  public boolean stop() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.stop()"); }
-  public void dump(java.nio.file.Path destination) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.dump(java.nio.file.Path)"); }
-  public jdk.jfr.EventSettings enable(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.enable(java.lang.String)"); }
-  public void onClose(java.lang.Runnable action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.onClose(java.lang.Runnable)"); }
-  public void awaitTermination() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.awaitTermination()"); }
-  public void awaitTermination(java.time.Duration timeout) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.awaitTermination(java.time.Duration)"); }
-  public jdk.jfr.EventSettings disable(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.disable(java.lang.String)"); }
-  public void setMaxAge(java.time.Duration maxAge) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.setMaxAge(java.time.Duration)"); }
-  public void setSettings(java.util.Map<java.lang.String, java.lang.String> settings) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.setSettings(java.util.Map<java.lang.String, java.lang.String>)"); }
-  public void setStartTime(java.time.Instant startTime) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.setStartTime(java.time.Instant)"); }
-  public void setMaxSize(long maxSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.setMaxSize(long)"); }
-  public void onMetadata(java.util.function.Consumer<jdk.jfr.consumer.MetadataEvent> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.onMetadata(java.util.function.Consumer<jdk.jfr.consumer.MetadataEvent>)"); }
-  public void onEvent(java.util.function.Consumer<jdk.jfr.consumer.RecordedEvent> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.onEvent(java.util.function.Consumer<jdk.jfr.consumer.RecordedEvent>)"); }
-  public void onEvent(java.lang.String eventName, java.util.function.Consumer<jdk.jfr.consumer.RecordedEvent> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.onEvent(java.lang.String, java.util.function.Consumer<jdk.jfr.consumer.RecordedEvent>)"); }
-  public void onFlush(java.lang.Runnable action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.onFlush(java.lang.Runnable)"); }
-  public void setReuse(boolean reuse) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.setReuse(boolean)"); }
-  public void setOrdered(boolean ordered) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.setOrdered(boolean)"); }
-  public void setEndTime(java.time.Instant endTime) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.setEndTime(java.time.Instant)"); }
-  public void startAsync() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.startAsync()"); }
-  public void onError(java.util.function.Consumer<java.lang.Throwable> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RemoteRecordingStream.onError(java.util.function.Consumer<java.lang.Throwable>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Object action) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void start() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean stop() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void dump(java.nio.file.Path destination) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jfr.EventSettings enable(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void onClose(java.lang.Runnable action) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void awaitTermination() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void awaitTermination(java.time.Duration timeout) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jfr.EventSettings disable(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaxAge(java.time.Duration maxAge) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSettings(java.util.Map<java.lang.String, java.lang.String> settings) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setStartTime(java.time.Instant startTime) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaxSize(long maxSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void onMetadata(java.util.function.Consumer<jdk.jfr.consumer.MetadataEvent> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void onEvent(java.util.function.Consumer<jdk.jfr.consumer.RecordedEvent> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void onEvent(java.lang.String eventName, java.util.function.Consumer<jdk.jfr.consumer.RecordedEvent> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void onFlush(java.lang.Runnable action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setReuse(boolean reuse) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOrdered(boolean ordered) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEndTime(java.time.Instant endTime) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void startAsync() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void onError(java.util.function.Consumer<java.lang.Throwable> action) { }
   < ---- END java signatures ---- >
 }

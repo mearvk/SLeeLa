@@ -58,13 +58,20 @@ class ConstantInstruction {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.classfile.TypeKind typeKind() { throw new AbstractMethodError("java.lang.classfile.instruction.ConstantInstruction.typeKind()"); }
-  public abstract java.lang.constant.ConstantDesc constantValue() { throw new AbstractMethodError("java.lang.classfile.instruction.ConstantInstruction.constantValue()"); }
-  public static java.lang.classfile.instruction.ConstantInstruction.IntrinsicConstantInstruction ofIntrinsic(java.lang.classfile.Opcode op) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.ConstantInstruction.ofIntrinsic(java.lang.classfile.Opcode)"); }
-  public static java.lang.classfile.instruction.ConstantInstruction.ArgumentConstantInstruction ofArgument(java.lang.classfile.Opcode op, int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.ConstantInstruction.ofArgument(java.lang.classfile.Opcode, int)"); }
-  public static java.lang.classfile.instruction.ConstantInstruction.LoadConstantInstruction ofLoad(java.lang.classfile.Opcode op, java.lang.classfile.constantpool.LoadableConstantEntry constant) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.ConstantInstruction.ofLoad(java.lang.classfile.Opcode, java.lang.classfile.constantpool.LoadableConstantEntry)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.TypeKind typeKind() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.constant.ConstantDesc constantValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.instruction.ConstantInstruction.IntrinsicConstantInstruction ofIntrinsic(java.lang.classfile.Opcode op) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.instruction.ConstantInstruction.ArgumentConstantInstruction ofArgument(java.lang.classfile.Opcode op, int value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.instruction.ConstantInstruction.LoadConstantInstruction ofLoad(java.lang.classfile.Opcode op, java.lang.classfile.constantpool.LoadableConstantEntry constant) { return null; }
   < ---- END java signatures ---- >
 }

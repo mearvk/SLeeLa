@@ -58,7 +58,9 @@ class SAXNotRecognizedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SAXNotRecognizedException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.SAXNotRecognizedException.<init>()"); }
-  public SAXNotRecognizedException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.SAXNotRecognizedException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SAXNotRecognizedException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SAXNotRecognizedException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

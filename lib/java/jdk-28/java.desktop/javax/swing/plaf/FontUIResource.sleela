@@ -58,7 +58,9 @@ class FontUIResource {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FontUIResource(java.lang.String name, int style, int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.FontUIResource.<init>(java.lang.String, int, int)"); }
-  public FontUIResource(java.awt.Font font) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.FontUIResource.<init>(java.awt.Font)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FontUIResource(java.lang.String name, int style, int size) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FontUIResource(java.awt.Font font) { }
   < ---- END java constructors ---- >
 }

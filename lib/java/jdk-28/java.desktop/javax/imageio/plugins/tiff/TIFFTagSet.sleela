@@ -58,16 +58,23 @@ class TIFFTagSet {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TIFFTagSet(java.util.List<javax.imageio.plugins.tiff.TIFFTag> tags) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFTagSet.<init>(java.util.List<javax.imageio.plugins.tiff.TIFFTag>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TIFFTagSet(java.util.List<javax.imageio.plugins.tiff.TIFFTag> tags) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.SortedSet<java.lang.Integer> getTagNumbers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFTagSet.getTagNumbers()"); }
-  public java.util.SortedSet<java.lang.String> getTagNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFTagSet.getTagNames()"); }
-  public javax.imageio.plugins.tiff.TIFFTag getTag(int tagNumber) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFTagSet.getTag(int)"); }
-  public javax.imageio.plugins.tiff.TIFFTag getTag(java.lang.String tagName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFTagSet.getTag(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.SortedSet<java.lang.Integer> getTagNumbers() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.SortedSet<java.lang.String> getTagNames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.plugins.tiff.TIFFTag getTag(int tagNumber) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.plugins.tiff.TIFFTag getTag(java.lang.String tagName) { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,28 +58,47 @@ class Timestamp {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Timestamp(int year, int month, int date, int hour, int minute, int second, int nano) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.<init>(int, int, int, int, int, int, int)"); }
-  public Timestamp(long time) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.<init>(long)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Timestamp(int year, int month, int date, int hour, int minute, int second, int nano) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Timestamp(long time) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.sql.Timestamp ts) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.equals(java.sql.Timestamp)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.hashCode()"); }
-  public int compareTo(java.sql.Timestamp ts) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.compareTo(java.sql.Timestamp)"); }
-  public static java.sql.Timestamp valueOf(java.time.LocalDateTime dateTime) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.valueOf(java.time.LocalDateTime)"); }
-  public static java.sql.Timestamp valueOf(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.valueOf(java.lang.String)"); }
-  public static java.sql.Timestamp from(java.time.Instant instant) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.from(java.time.Instant)"); }
-  public boolean before(java.sql.Timestamp ts) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.before(java.sql.Timestamp)"); }
-  public boolean after(java.sql.Timestamp ts) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.after(java.sql.Timestamp)"); }
-  public java.time.Instant toInstant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.toInstant()"); }
-  public long getTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.getTime()"); }
-  public void setTime(long time) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.setTime(long)"); }
-  public java.time.LocalDateTime toLocalDateTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.toLocalDateTime()"); }
-  public int getNanos() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.getNanos()"); }
-  public void setNanos(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Timestamp.setNanos(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.sql.Timestamp ts) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.sql.Timestamp ts) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.sql.Timestamp valueOf(java.time.LocalDateTime dateTime) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.sql.Timestamp valueOf(java.lang.String s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.sql.Timestamp from(java.time.Instant instant) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean before(java.sql.Timestamp ts) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean after(java.sql.Timestamp ts) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Instant toInstant() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getTime() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTime(long time) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDateTime toLocalDateTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNanos() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNanos(int n) { }
   < ---- END java signatures ---- >
 }

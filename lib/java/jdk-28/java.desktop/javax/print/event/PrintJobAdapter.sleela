@@ -59,18 +59,27 @@ class PrintJobAdapter {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  PrintJobAdapter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.event.PrintJobAdapter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  PrintJobAdapter() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void printDataTransferCompleted(javax.print.event.PrintJobEvent pje) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.event.PrintJobAdapter.printDataTransferCompleted(javax.print.event.PrintJobEvent)"); }
-  public void printJobCompleted(javax.print.event.PrintJobEvent pje) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.event.PrintJobAdapter.printJobCompleted(javax.print.event.PrintJobEvent)"); }
-  public void printJobFailed(javax.print.event.PrintJobEvent pje) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.event.PrintJobAdapter.printJobFailed(javax.print.event.PrintJobEvent)"); }
-  public void printJobCanceled(javax.print.event.PrintJobEvent pje) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.event.PrintJobAdapter.printJobCanceled(javax.print.event.PrintJobEvent)"); }
-  public void printJobNoMoreEvents(javax.print.event.PrintJobEvent pje) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.event.PrintJobAdapter.printJobNoMoreEvents(javax.print.event.PrintJobEvent)"); }
-  public void printJobRequiresAttention(javax.print.event.PrintJobEvent pje) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.event.PrintJobAdapter.printJobRequiresAttention(javax.print.event.PrintJobEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printDataTransferCompleted(javax.print.event.PrintJobEvent pje) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printJobCompleted(javax.print.event.PrintJobEvent pje) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printJobFailed(javax.print.event.PrintJobEvent pje) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printJobCanceled(javax.print.event.PrintJobEvent pje) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printJobNoMoreEvents(javax.print.event.PrintJobEvent pje) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printJobRequiresAttention(javax.print.event.PrintJobEvent pje) { }
   < ---- END java signatures ---- >
 }

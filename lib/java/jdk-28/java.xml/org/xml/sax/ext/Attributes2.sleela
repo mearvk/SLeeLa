@@ -58,14 +58,22 @@ class Attributes2 {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean isSpecified(java.lang.String uri, java.lang.String localName) { throw new AbstractMethodError("org.xml.sax.ext.Attributes2.isSpecified(java.lang.String, java.lang.String)"); }
-  public abstract boolean isSpecified(java.lang.String qName) { throw new AbstractMethodError("org.xml.sax.ext.Attributes2.isSpecified(java.lang.String)"); }
-  public abstract boolean isSpecified(int index) { throw new AbstractMethodError("org.xml.sax.ext.Attributes2.isSpecified(int)"); }
-  public abstract boolean isDeclared(int index) { throw new AbstractMethodError("org.xml.sax.ext.Attributes2.isDeclared(int)"); }
-  public abstract boolean isDeclared(java.lang.String uri, java.lang.String localName) { throw new AbstractMethodError("org.xml.sax.ext.Attributes2.isDeclared(java.lang.String, java.lang.String)"); }
-  public abstract boolean isDeclared(java.lang.String qName) { throw new AbstractMethodError("org.xml.sax.ext.Attributes2.isDeclared(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSpecified(java.lang.String uri, java.lang.String localName) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSpecified(java.lang.String qName) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSpecified(int index) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDeclared(int index) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDeclared(java.lang.String uri, java.lang.String localName) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDeclared(java.lang.String qName) { return false; }
   < ---- END java signatures ---- >
 }

@@ -58,7 +58,9 @@ class AgentLoadException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AgentLoadException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.AgentLoadException.<init>()"); }
-  public AgentLoadException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.AgentLoadException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AgentLoadException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AgentLoadException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

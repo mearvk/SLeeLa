@@ -58,33 +58,57 @@ class CardLayout {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CardLayout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.<init>()"); }
-  public CardLayout(int hgap, int vgap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.<init>(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CardLayout() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CardLayout(int hgap, int vgap) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.toString()"); }
-  public void next(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.next(java.awt.Container)"); }
-  public void last(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.last(java.awt.Container)"); }
-  public void first(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.first(java.awt.Container)"); }
-  public void previous(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.previous(java.awt.Container)"); }
-  public void show(java.awt.Container parent, java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.show(java.awt.Container, java.lang.String)"); }
-  public int getHgap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.getHgap()"); }
-  public void setHgap(int hgap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.setHgap(int)"); }
-  public int getVgap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.getVgap()"); }
-  public void setVgap(int vgap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.setVgap(int)"); }
-  public void removeLayoutComponent(java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.removeLayoutComponent(java.awt.Component)"); }
-  public void addLayoutComponent(java.awt.Component comp, java.lang.Object constraints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.addLayoutComponent(java.awt.Component, java.lang.Object)"); }
-  public void addLayoutComponent(java.lang.String name, java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.addLayoutComponent(java.lang.String, java.awt.Component)"); }
-  public void layoutContainer(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.layoutContainer(java.awt.Container)"); }
-  public void invalidateLayout(java.awt.Container target) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.invalidateLayout(java.awt.Container)"); }
-  public java.awt.Dimension preferredLayoutSize(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.preferredLayoutSize(java.awt.Container)"); }
-  public java.awt.Dimension minimumLayoutSize(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.minimumLayoutSize(java.awt.Container)"); }
-  public java.awt.Dimension maximumLayoutSize(java.awt.Container target) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.maximumLayoutSize(java.awt.Container)"); }
-  public float getLayoutAlignmentX(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.getLayoutAlignmentX(java.awt.Container)"); }
-  public float getLayoutAlignmentY(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CardLayout.getLayoutAlignmentY(java.awt.Container)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void next(java.awt.Container parent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void last(java.awt.Container parent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void first(java.awt.Container parent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void previous(java.awt.Container parent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void show(java.awt.Container parent, java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHgap() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHgap(int hgap) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVgap() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVgap(int vgap) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeLayoutComponent(java.awt.Component comp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addLayoutComponent(java.awt.Component comp, java.lang.Object constraints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addLayoutComponent(java.lang.String name, java.awt.Component comp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void layoutContainer(java.awt.Container parent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void invalidateLayout(java.awt.Container target) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension preferredLayoutSize(java.awt.Container parent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension minimumLayoutSize(java.awt.Container parent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension maximumLayoutSize(java.awt.Container target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getLayoutAlignmentX(java.awt.Container parent) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getLayoutAlignmentY(java.awt.Container parent) { return 0.0; }
   < ---- END java signatures ---- >
 }

@@ -84,37 +84,64 @@ class TitledBorder {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TitledBorder(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition, java.awt.Font titleFont, java.awt.Color titleColor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.<init>(javax.swing.border.Border, java.lang.String, int, int, java.awt.Font, java.awt.Color)"); }
-  public TitledBorder(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition, java.awt.Font titleFont) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.<init>(javax.swing.border.Border, java.lang.String, int, int, java.awt.Font)"); }
-  public TitledBorder(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.<init>(javax.swing.border.Border, java.lang.String, int, int)"); }
-  public TitledBorder(java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.<init>(java.lang.String)"); }
-  public TitledBorder(javax.swing.border.Border border) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.<init>(javax.swing.border.Border)"); }
-  public TitledBorder(javax.swing.border.Border border, java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.<init>(javax.swing.border.Border, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TitledBorder(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition, java.awt.Font titleFont, java.awt.Color titleColor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TitledBorder(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition, java.awt.Font titleFont) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TitledBorder(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TitledBorder(java.lang.String title) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TitledBorder(javax.swing.border.Border border) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TitledBorder(javax.swing.border.Border border, java.lang.String title) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getTitle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.getTitle()"); }
-  public void setBorder(javax.swing.border.Border border) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.setBorder(javax.swing.border.Border)"); }
-  public void setTitle(java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.setTitle(java.lang.String)"); }
-  public java.awt.Dimension getMinimumSize(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.getMinimumSize(java.awt.Component)"); }
-  public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.paintBorder(java.awt.Component, java.awt.Graphics, int, int, int, int)"); }
-  public javax.swing.border.Border getBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.getBorder()"); }
-  public java.awt.Insets getBorderInsets(java.awt.Component c, java.awt.Insets insets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.getBorderInsets(java.awt.Component, java.awt.Insets)"); }
-  public int getBaseline(java.awt.Component c, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.getBaseline(java.awt.Component, int, int)"); }
-  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.getBaselineResizeBehavior(java.awt.Component)"); }
-  public boolean isBorderOpaque() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.isBorderOpaque()"); }
-  public void setTitleJustification(int titleJustification) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.setTitleJustification(int)"); }
-  public void setTitlePosition(int titlePosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.setTitlePosition(int)"); }
-  public int getTitlePosition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.getTitlePosition()"); }
-  public int getTitleJustification() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.getTitleJustification()"); }
-  public java.awt.Font getTitleFont() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.getTitleFont()"); }
-  public java.awt.Color getTitleColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.getTitleColor()"); }
-  public void setTitleFont(java.awt.Font titleFont) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.setTitleFont(java.awt.Font)"); }
-  public void setTitleColor(java.awt.Color titleColor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.setTitleColor(java.awt.Color)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getTitle() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBorder(javax.swing.border.Border border) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTitle(java.lang.String title) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(java.awt.Component c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.border.Border getBorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getBorderInsets(java.awt.Component c, java.awt.Insets insets) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBaseline(java.awt.Component c, int width, int height) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(java.awt.Component c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBorderOpaque() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTitleJustification(int titleJustification) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTitlePosition(int titlePosition) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTitlePosition() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTitleJustification() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font getTitleFont() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getTitleColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTitleFont(java.awt.Font titleFont) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTitleColor(java.awt.Color titleColor) { }
   @JavaProtected
-  java.awt.Font getFont(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.TitledBorder.getFont(java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Font getFont(java.awt.Component c) { return null; }
   < ---- END java signatures ---- >
 }

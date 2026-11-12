@@ -58,33 +58,57 @@ class Inflater {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Inflater(boolean nowrap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.<init>(boolean)"); }
-  public Inflater() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Inflater(boolean nowrap) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Inflater() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.reset()"); }
-  public int inflate(java.nio.ByteBuffer output) throws java.util.zip.DataFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.inflate(java.nio.ByteBuffer)"); }
-  public int inflate(byte[] output) throws java.util.zip.DataFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.inflate(byte[])"); }
-  public int inflate(byte[] output, int off, int len) throws java.util.zip.DataFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.inflate(byte[], int, int)"); }
-  public void end() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.end()"); }
-  public void setInput(byte[] input, int off, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.setInput(byte[], int, int)"); }
-  public void setInput(byte[] input) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.setInput(byte[])"); }
-  public void setInput(java.nio.ByteBuffer input) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.setInput(java.nio.ByteBuffer)"); }
-  public void setDictionary(java.nio.ByteBuffer dictionary) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.setDictionary(java.nio.ByteBuffer)"); }
-  public void setDictionary(byte[] dictionary, int off, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.setDictionary(byte[], int, int)"); }
-  public void setDictionary(byte[] dictionary) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.setDictionary(byte[])"); }
-  public boolean finished() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.finished()"); }
-  public int getAdler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.getAdler()"); }
-  public long getBytesRead() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.getBytesRead()"); }
-  public long getBytesWritten() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.getBytesWritten()"); }
-  public int getRemaining() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.getRemaining()"); }
-  public boolean needsInput() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.needsInput()"); }
-  public boolean needsDictionary() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.needsDictionary()"); }
-  public int getTotalIn() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.getTotalIn()"); }
-  public int getTotalOut() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.getTotalOut()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reset() { }
+  @throwable("java.lang.UnsupportedOperationException, java.util.zip.DataFormatException")
+  public int inflate(java.nio.ByteBuffer output) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.util.zip.DataFormatException")
+  public int inflate(byte[] output) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.util.zip.DataFormatException")
+  public int inflate(byte[] output, int off, int len) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void end() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInput(byte[] input, int off, int len) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInput(byte[] input) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInput(java.nio.ByteBuffer input) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDictionary(java.nio.ByteBuffer dictionary) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDictionary(byte[] dictionary, int off, int len) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDictionary(byte[] dictionary) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean finished() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAdler() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getBytesRead() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getBytesWritten() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRemaining() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean needsInput() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean needsDictionary() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTotalIn() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTotalOut() { return 0; }
   < ---- END java signatures ---- >
 }

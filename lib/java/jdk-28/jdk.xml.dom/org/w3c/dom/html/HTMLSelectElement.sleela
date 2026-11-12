@@ -58,30 +58,54 @@ class HTMLSelectElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.getName()"); }
-  public abstract void remove(int index) { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.remove(int)"); }
-  public abstract int getLength() { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.getLength()"); }
-  public abstract java.lang.String getValue() { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.getValue()"); }
-  public abstract void add(org.w3c.dom.html.HTMLElement element, org.w3c.dom.html.HTMLElement before) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.add(org.w3c.dom.html.HTMLElement, org.w3c.dom.html.HTMLElement)"); }
-  public abstract void setName(java.lang.String name) { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.setName(java.lang.String)"); }
-  public abstract void setValue(java.lang.String value) { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.setValue(java.lang.String)"); }
-  public abstract java.lang.String getType() { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.getType()"); }
-  public abstract int getSize() { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.getSize()"); }
-  public abstract void setSize(int size) { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.setSize(int)"); }
-  public abstract void focus() { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.focus()"); }
-  public abstract void blur() { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.blur()"); }
-  public abstract void setSelectedIndex(int selectedIndex) { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.setSelectedIndex(int)"); }
-  public abstract int getSelectedIndex() { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.getSelectedIndex()"); }
-  public abstract int getTabIndex() { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.getTabIndex()"); }
-  public abstract org.w3c.dom.html.HTMLCollection getOptions() { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.getOptions()"); }
-  public abstract boolean getDisabled() { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.getDisabled()"); }
-  public abstract void setDisabled(boolean disabled) { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.setDisabled(boolean)"); }
-  public abstract void setTabIndex(int tabIndex) { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.setTabIndex(int)"); }
-  public abstract org.w3c.dom.html.HTMLFormElement getForm() { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.getForm()"); }
-  public abstract boolean getMultiple() { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.getMultiple()"); }
-  public abstract void setMultiple(boolean multiple) { throw new AbstractMethodError("org.w3c.dom.html.HTMLSelectElement.setMultiple(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void remove(int index) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getValue() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void add(org.w3c.dom.html.HTMLElement element, org.w3c.dom.html.HTMLElement before) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setName(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setValue(java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getSize() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSize(int size) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void focus() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void blur() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSelectedIndex(int selectedIndex) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getSelectedIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getTabIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLCollection getOptions() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getDisabled() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDisabled(boolean disabled) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTabIndex(int tabIndex) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLFormElement getForm() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getMultiple() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMultiple(boolean multiple) { }
   < ---- END java signatures ---- >
 }

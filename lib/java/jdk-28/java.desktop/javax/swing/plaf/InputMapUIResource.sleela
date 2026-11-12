@@ -58,6 +58,7 @@ class InputMapUIResource {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InputMapUIResource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.InputMapUIResource.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InputMapUIResource() { }
   < ---- END java constructors ---- >
 }

@@ -58,7 +58,9 @@ class VMDisconnectedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public VMDisconnectedException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.VMDisconnectedException.<init>()"); }
-  public VMDisconnectedException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.VMDisconnectedException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public VMDisconnectedException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public VMDisconnectedException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

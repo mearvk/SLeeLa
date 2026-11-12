@@ -58,19 +58,29 @@ class PrinterStateReasons {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PrinterStateReasons() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PrinterStateReasons.<init>()"); }
-  public PrinterStateReasons(java.util.Map<javax.print.attribute.standard.PrinterStateReason, javax.print.attribute.standard.Severity> map) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PrinterStateReasons.<init>(java.util.Map<javax.print.attribute.standard.PrinterStateReason, javax.print.attribute.standard.Severity>)"); }
-  public PrinterStateReasons(int initialCapacity, float loadFactor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PrinterStateReasons.<init>(int, float)"); }
-  public PrinterStateReasons(int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PrinterStateReasons.<init>(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PrinterStateReasons() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PrinterStateReasons(java.util.Map<javax.print.attribute.standard.PrinterStateReason, javax.print.attribute.standard.Severity> map) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PrinterStateReasons(int initialCapacity, float loadFactor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PrinterStateReasons(int initialCapacity) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PrinterStateReasons.getName()"); }
-  public javax.print.attribute.standard.Severity put(javax.print.attribute.standard.PrinterStateReason reason, javax.print.attribute.standard.Severity severity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PrinterStateReasons.put(javax.print.attribute.standard.PrinterStateReason, javax.print.attribute.standard.Severity)"); }
-  public java.util.Set<javax.print.attribute.standard.PrinterStateReason> printerStateReasonSet(javax.print.attribute.standard.Severity severity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PrinterStateReasons.printerStateReasonSet(javax.print.attribute.standard.Severity)"); }
-  public final java.lang.Class<? extends javax.print.attribute.Attribute> getCategory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PrinterStateReasons.getCategory()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.print.attribute.standard.Severity put(javax.print.attribute.standard.PrinterStateReason reason, javax.print.attribute.standard.Severity severity) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<javax.print.attribute.standard.PrinterStateReason> printerStateReasonSet(javax.print.attribute.standard.Severity severity) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Class<? extends javax.print.attribute.Attribute> getCategory() { return null; }
   < ---- END java signatures ---- >
 }

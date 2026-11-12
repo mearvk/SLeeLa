@@ -64,16 +64,23 @@ class SAXTransformerFactory {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SAXTransformerFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.sax.SAXTransformerFactory.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SAXTransformerFactory() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.xml.transform.sax.TransformerHandler newTransformerHandler() throws javax.xml.transform.TransformerConfigurationException { throw new AbstractMethodError("javax.xml.transform.sax.SAXTransformerFactory.newTransformerHandler()"); }
-  public abstract javax.xml.transform.sax.TransformerHandler newTransformerHandler(javax.xml.transform.Templates templates) throws javax.xml.transform.TransformerConfigurationException { throw new AbstractMethodError("javax.xml.transform.sax.SAXTransformerFactory.newTransformerHandler(javax.xml.transform.Templates)"); }
-  public abstract javax.xml.transform.sax.TemplatesHandler newTemplatesHandler() throws javax.xml.transform.TransformerConfigurationException { throw new AbstractMethodError("javax.xml.transform.sax.SAXTransformerFactory.newTemplatesHandler()"); }
-  public abstract org.xml.sax.XMLFilter newXMLFilter(javax.xml.transform.Templates templates) throws javax.xml.transform.TransformerConfigurationException { throw new AbstractMethodError("javax.xml.transform.sax.SAXTransformerFactory.newXMLFilter(javax.xml.transform.Templates)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.xml.transform.TransformerConfigurationException")
+  public javax.xml.transform.sax.TransformerHandler newTransformerHandler() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.transform.TransformerConfigurationException")
+  public javax.xml.transform.sax.TransformerHandler newTransformerHandler(javax.xml.transform.Templates templates) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.transform.TransformerConfigurationException")
+  public javax.xml.transform.sax.TemplatesHandler newTemplatesHandler() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.transform.TransformerConfigurationException")
+  public org.xml.sax.XMLFilter newXMLFilter(javax.xml.transform.Templates templates) { return null; }
   < ---- END java signatures ---- >
 }

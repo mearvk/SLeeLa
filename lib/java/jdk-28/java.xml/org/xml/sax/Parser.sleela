@@ -58,15 +58,24 @@ class Parser {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void parse(java.lang.String systemId) throws org.xml.sax.SAXException, java.io.IOException { throw new AbstractMethodError("org.xml.sax.Parser.parse(java.lang.String)"); }
-  public abstract void parse(org.xml.sax.InputSource source) throws org.xml.sax.SAXException, java.io.IOException { throw new AbstractMethodError("org.xml.sax.Parser.parse(org.xml.sax.InputSource)"); }
-  public abstract void setLocale(java.util.Locale locale) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.Parser.setLocale(java.util.Locale)"); }
-  public abstract void setDocumentHandler(org.xml.sax.DocumentHandler handler) { throw new AbstractMethodError("org.xml.sax.Parser.setDocumentHandler(org.xml.sax.DocumentHandler)"); }
-  public abstract void setDTDHandler(org.xml.sax.DTDHandler handler) { throw new AbstractMethodError("org.xml.sax.Parser.setDTDHandler(org.xml.sax.DTDHandler)"); }
-  public abstract void setEntityResolver(org.xml.sax.EntityResolver resolver) { throw new AbstractMethodError("org.xml.sax.Parser.setEntityResolver(org.xml.sax.EntityResolver)"); }
-  public abstract void setErrorHandler(org.xml.sax.ErrorHandler handler) { throw new AbstractMethodError("org.xml.sax.Parser.setErrorHandler(org.xml.sax.ErrorHandler)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException, java.io.IOException")
+  public void parse(java.lang.String systemId) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException, java.io.IOException")
+  public void parse(org.xml.sax.InputSource source) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void setLocale(java.util.Locale locale) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDocumentHandler(org.xml.sax.DocumentHandler handler) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDTDHandler(org.xml.sax.DTDHandler handler) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setEntityResolver(org.xml.sax.EntityResolver resolver) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setErrorHandler(org.xml.sax.ErrorHandler handler) { }
   < ---- END java signatures ---- >
 }

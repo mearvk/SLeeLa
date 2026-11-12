@@ -59,12 +59,18 @@ class OfField<F extends java.lang.invoke.TypeDescriptor.OfField<F>> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract F componentType() { throw new AbstractMethodError("java.lang.invoke.TypeDescriptor.OfField.componentType()"); }
-  public abstract boolean isPrimitive() { throw new AbstractMethodError("java.lang.invoke.TypeDescriptor.OfField.isPrimitive()"); }
-  public abstract boolean isArray() { throw new AbstractMethodError("java.lang.invoke.TypeDescriptor.OfField.isArray()"); }
-  public abstract F arrayType() { throw new AbstractMethodError("java.lang.invoke.TypeDescriptor.OfField.arrayType()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public F componentType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isPrimitive() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isArray() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public F arrayType() { return null; }
   < ---- END java signatures ---- >
 }

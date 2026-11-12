@@ -58,46 +58,83 @@ class DefaultListModel<E> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultListModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultListModel() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public E remove(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.remove(int)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.size()"); }
-  public E get(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.get(int)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.toString()"); }
-  public int indexOf(java.lang.Object elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.indexOf(java.lang.Object)"); }
-  public int indexOf(java.lang.Object elem, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.indexOf(java.lang.Object, int)"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.clear()"); }
-  public int lastIndexOf(java.lang.Object elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.lastIndexOf(java.lang.Object)"); }
-  public int lastIndexOf(java.lang.Object elem, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.lastIndexOf(java.lang.Object, int)"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.isEmpty()"); }
-  public void add(int index, E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.add(int, E)"); }
-  public java.lang.Object[] toArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.toArray()"); }
-  public boolean contains(java.lang.Object elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.contains(java.lang.Object)"); }
-  public java.util.Enumeration<E> elements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.elements()"); }
-  public void addAll(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.addAll(java.util.Collection<? extends E>)"); }
-  public void addAll(int index, java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.addAll(int, java.util.Collection<? extends E>)"); }
-  public void trimToSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.trimToSize()"); }
-  public E set(int index, E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.set(int, E)"); }
-  public int getSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.getSize()"); }
-  public int capacity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.capacity()"); }
-  public void ensureCapacity(int minCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.ensureCapacity(int)"); }
-  public E elementAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.elementAt(int)"); }
-  public void removeRange(int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.removeRange(int, int)"); }
-  public void copyInto(java.lang.Object[] anArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.copyInto(java.lang.Object[])"); }
-  public void setSize(int newSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.setSize(int)"); }
-  public E firstElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.firstElement()"); }
-  public E lastElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.lastElement()"); }
-  public void setElementAt(E element, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.setElementAt(E, int)"); }
-  public void insertElementAt(E element, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.insertElementAt(E, int)"); }
-  public void removeElementAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.removeElementAt(int)"); }
-  public void removeAllElements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.removeAllElements()"); }
-  public void addElement(E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.addElement(E)"); }
-  public boolean removeElement(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.removeElement(java.lang.Object)"); }
-  public E getElementAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultListModel.getElementAt(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public E remove(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E get(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int indexOf(java.lang.Object elem) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int indexOf(java.lang.Object elem, int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lastIndexOf(java.lang.Object elem) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lastIndexOf(java.lang.Object elem, int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void add(int index, E element) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] toArray() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.lang.Object elem) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Enumeration<E> elements() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addAll(java.util.Collection<? extends E> c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addAll(int index, java.util.Collection<? extends E> c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void trimToSize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E set(int index, E element) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int capacity() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ensureCapacity(int minCapacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E elementAt(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeRange(int fromIndex, int toIndex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void copyInto(java.lang.Object[] anArray) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSize(int newSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E firstElement() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E lastElement() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setElementAt(E element, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertElementAt(E element, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeElementAt(int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAllElements() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addElement(E element) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean removeElement(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E getElementAt(int index) { return null; }
   < ---- END java signatures ---- >
 }

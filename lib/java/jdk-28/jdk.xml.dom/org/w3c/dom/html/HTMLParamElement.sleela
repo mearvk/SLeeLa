@@ -58,16 +58,26 @@ class HTMLParamElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("org.w3c.dom.html.HTMLParamElement.getName()"); }
-  public abstract java.lang.String getValue() { throw new AbstractMethodError("org.w3c.dom.html.HTMLParamElement.getValue()"); }
-  public abstract void setName(java.lang.String name) { throw new AbstractMethodError("org.w3c.dom.html.HTMLParamElement.setName(java.lang.String)"); }
-  public abstract void setValue(java.lang.String value) { throw new AbstractMethodError("org.w3c.dom.html.HTMLParamElement.setValue(java.lang.String)"); }
-  public abstract java.lang.String getType() { throw new AbstractMethodError("org.w3c.dom.html.HTMLParamElement.getType()"); }
-  public abstract void setType(java.lang.String type) { throw new AbstractMethodError("org.w3c.dom.html.HTMLParamElement.setType(java.lang.String)"); }
-  public abstract java.lang.String getValueType() { throw new AbstractMethodError("org.w3c.dom.html.HTMLParamElement.getValueType()"); }
-  public abstract void setValueType(java.lang.String valueType) { throw new AbstractMethodError("org.w3c.dom.html.HTMLParamElement.setValueType(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setName(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setValue(java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setType(java.lang.String type) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getValueType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setValueType(java.lang.String valueType) { }
   < ---- END java signatures ---- >
 }

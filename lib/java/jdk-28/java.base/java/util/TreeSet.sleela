@@ -58,42 +58,75 @@ class TreeSet<E> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TreeSet(java.util.SortedSet<E> s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.<init>(java.util.SortedSet<E>)"); }
-  public TreeSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TreeSet(java.util.SortedSet<E> s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TreeSet() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.remove(java.lang.Object)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.size()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.clone()"); }
-  public E floor(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.floor(E)"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.clear()"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.isEmpty()"); }
-  public boolean add(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.add(E)"); }
-  public java.util.Iterator<E> iterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.iterator()"); }
-  public boolean contains(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.contains(java.lang.Object)"); }
-  public E last() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.last()"); }
-  public java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.spliterator()"); }
-  public boolean addAll(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.addAll(java.util.Collection<? extends E>)"); }
-  public E first() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.first()"); }
-  public void addFirst(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.addFirst(E)"); }
-  public void addLast(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.addLast(E)"); }
-  public E lower(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.lower(E)"); }
-  public java.util.Comparator<? super E> comparator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.comparator()"); }
-  public E pollFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.pollFirst()"); }
-  public E pollLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.pollLast()"); }
-  public java.util.Iterator<E> descendingIterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.descendingIterator()"); }
-  public java.util.NavigableSet<E> descendingSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.descendingSet()"); }
-  public E ceiling(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.ceiling(E)"); }
-  public E higher(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.higher(E)"); }
-  public java.util.NavigableSet<E> subSet(E fromElement, boolean fromInclusive, E toElement, boolean toInclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.subSet(E, boolean, E, boolean)"); }
-  public java.util.SortedSet<E> subSet(E fromElement, E toElement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.subSet(E, E)"); }
-  public java.util.NavigableSet<E> headSet(E toElement, boolean inclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.headSet(E, boolean)"); }
-  public java.util.SortedSet<E> headSet(E toElement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.headSet(E)"); }
-  public java.util.NavigableSet<E> tailSet(E fromElement, boolean inclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.tailSet(E, boolean)"); }
-  public java.util.SortedSet<E> tailSet(E fromElement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TreeSet.tailSet(E)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E floor(E e) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean add(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Iterator<E> iterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E last() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Spliterator<E> spliterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean addAll(java.util.Collection<? extends E> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E first() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addFirst(E e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addLast(E e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E lower(E e) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Comparator<? super E> comparator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E pollFirst() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E pollLast() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Iterator<E> descendingIterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.NavigableSet<E> descendingSet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E ceiling(E e) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E higher(E e) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.NavigableSet<E> subSet(E fromElement, boolean fromInclusive, E toElement, boolean toInclusive) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.SortedSet<E> subSet(E fromElement, E toElement) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.NavigableSet<E> headSet(E toElement, boolean inclusive) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.SortedSet<E> headSet(E toElement) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.NavigableSet<E> tailSet(E fromElement, boolean inclusive) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.SortedSet<E> tailSet(E fromElement) { return null; }
   < ---- END java signatures ---- >
 }

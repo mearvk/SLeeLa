@@ -58,17 +58,28 @@ class IIOReadProgressListener {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void imageStarted(javax.imageio.ImageReader source, int imageIndex) { throw new AbstractMethodError("javax.imageio.event.IIOReadProgressListener.imageStarted(javax.imageio.ImageReader, int)"); }
-  public abstract void imageProgress(javax.imageio.ImageReader source, float percentageDone) { throw new AbstractMethodError("javax.imageio.event.IIOReadProgressListener.imageProgress(javax.imageio.ImageReader, float)"); }
-  public abstract void thumbnailStarted(javax.imageio.ImageReader source, int imageIndex, int thumbnailIndex) { throw new AbstractMethodError("javax.imageio.event.IIOReadProgressListener.thumbnailStarted(javax.imageio.ImageReader, int, int)"); }
-  public abstract void thumbnailProgress(javax.imageio.ImageReader source, float percentageDone) { throw new AbstractMethodError("javax.imageio.event.IIOReadProgressListener.thumbnailProgress(javax.imageio.ImageReader, float)"); }
-  public abstract void thumbnailComplete(javax.imageio.ImageReader source) { throw new AbstractMethodError("javax.imageio.event.IIOReadProgressListener.thumbnailComplete(javax.imageio.ImageReader)"); }
-  public abstract void sequenceStarted(javax.imageio.ImageReader source, int minIndex) { throw new AbstractMethodError("javax.imageio.event.IIOReadProgressListener.sequenceStarted(javax.imageio.ImageReader, int)"); }
-  public abstract void sequenceComplete(javax.imageio.ImageReader source) { throw new AbstractMethodError("javax.imageio.event.IIOReadProgressListener.sequenceComplete(javax.imageio.ImageReader)"); }
-  public abstract void readAborted(javax.imageio.ImageReader source) { throw new AbstractMethodError("javax.imageio.event.IIOReadProgressListener.readAborted(javax.imageio.ImageReader)"); }
-  public abstract void imageComplete(javax.imageio.ImageReader source) { throw new AbstractMethodError("javax.imageio.event.IIOReadProgressListener.imageComplete(javax.imageio.ImageReader)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void imageStarted(javax.imageio.ImageReader source, int imageIndex) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void imageProgress(javax.imageio.ImageReader source, float percentageDone) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void thumbnailStarted(javax.imageio.ImageReader source, int imageIndex, int thumbnailIndex) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void thumbnailProgress(javax.imageio.ImageReader source, float percentageDone) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void thumbnailComplete(javax.imageio.ImageReader source) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void sequenceStarted(javax.imageio.ImageReader source, int minIndex) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void sequenceComplete(javax.imageio.ImageReader source) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void readAborted(javax.imageio.ImageReader source) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void imageComplete(javax.imageio.ImageReader source) { }
   < ---- END java signatures ---- >
 }

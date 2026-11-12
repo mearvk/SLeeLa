@@ -65,29 +65,49 @@ class Polygon {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Polygon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.<init>()"); }
-  public Polygon(int[] xpoints, int[] ypoints, int npoints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.<init>(int[], int[], int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Polygon() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Polygon(int[] xpoints, int[] ypoints, int npoints) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.reset()"); }
-  public boolean contains(double x, double y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.contains(double, double)"); }
-  public boolean contains(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.contains(int, int)"); }
-  public boolean contains(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.contains(java.awt.Point)"); }
-  public boolean contains(double x, double y, double w, double h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.contains(double, double, double, double)"); }
-  public java.awt.Rectangle getBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.getBounds()"); }
-  public void invalidate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.invalidate()"); }
-  public boolean intersects(java.awt.geom.Rectangle2D r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.intersects(java.awt.geom.Rectangle2D)"); }
-  public boolean intersects(double x, double y, double w, double h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.intersects(double, double, double, double)"); }
-  public void translate(int deltaX, int deltaY) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.translate(int, int)"); }
-  public boolean inside(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.inside(int, int)"); }
-  public java.awt.geom.Rectangle2D getBounds2D() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.getBounds2D()"); }
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.getPathIterator(java.awt.geom.AffineTransform, double)"); }
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.getPathIterator(java.awt.geom.AffineTransform)"); }
-  public java.awt.Rectangle getBoundingBox() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.getBoundingBox()"); }
-  public void addPoint(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Polygon.addPoint(int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reset() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(double x, double y) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(int x, int y) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.awt.Point p) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(double x, double y, double w, double h) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getBounds() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void invalidate() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean intersects(java.awt.geom.Rectangle2D r) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean intersects(double x, double y, double w, double h) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void translate(int deltaX, int deltaY) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean inside(int x, int y) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getBounds2D() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getBoundingBox() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addPoint(int x, int y) { }
   < ---- END java signatures ---- >
 }

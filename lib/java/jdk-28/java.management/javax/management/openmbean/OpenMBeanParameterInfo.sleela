@@ -58,23 +58,40 @@ class OpenMBeanParameterInfo {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.getName()"); }
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.equals(java.lang.Object)"); }
-  public abstract java.lang.String toString() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.toString()"); }
-  public abstract int hashCode() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.hashCode()"); }
-  public abstract java.lang.Object getDefaultValue() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.getDefaultValue()"); }
-  public abstract java.lang.String getDescription() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.getDescription()"); }
-  public abstract javax.management.openmbean.OpenType<?> getOpenType() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.getOpenType()"); }
-  public abstract java.util.Set<?> getLegalValues() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.getLegalValues()"); }
-  public abstract boolean hasLegalValues() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.hasLegalValues()"); }
-  public abstract boolean hasMinValue() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.hasMinValue()"); }
-  public abstract boolean hasMaxValue() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.hasMaxValue()"); }
-  public abstract boolean isValue(java.lang.Object obj) { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.isValue(java.lang.Object)"); }
-  public abstract java.lang.Comparable<?> getMinValue() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.getMinValue()"); }
-  public abstract java.lang.Comparable<?> getMaxValue() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.getMaxValue()"); }
-  public abstract boolean hasDefaultValue() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanParameterInfo.hasDefaultValue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getDefaultValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDescription() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.openmbean.OpenType<?> getOpenType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<?> getLegalValues() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasLegalValues() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasMinValue() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasMaxValue() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isValue(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Comparable<?> getMinValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Comparable<?> getMaxValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasDefaultValue() { return false; }
   < ---- END java signatures ---- >
 }

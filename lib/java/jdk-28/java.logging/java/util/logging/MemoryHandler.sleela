@@ -58,19 +58,29 @@ class MemoryHandler {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MemoryHandler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.MemoryHandler.<init>()"); }
-  public MemoryHandler(java.util.logging.Handler target, int size, java.util.logging.Level pushLevel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.MemoryHandler.<init>(java.util.logging.Handler, int, java.util.logging.Level)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MemoryHandler() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MemoryHandler(java.util.logging.Handler target, int size, java.util.logging.Level pushLevel) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void flush() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.MemoryHandler.flush()"); }
-  public synchronized void publish(java.util.logging.LogRecord record_) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.MemoryHandler.publish(java.util.logging.LogRecord)"); }
-  public synchronized void push() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.MemoryHandler.push()"); }
-  public boolean isLoggable(java.util.logging.LogRecord record_) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.MemoryHandler.isLoggable(java.util.logging.LogRecord)"); }
-  public synchronized void setPushLevel(java.util.logging.Level newLevel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.MemoryHandler.setPushLevel(java.util.logging.Level)"); }
-  public java.util.logging.Level getPushLevel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.MemoryHandler.getPushLevel()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void flush() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void publish(java.util.logging.LogRecord record_) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void push() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLoggable(java.util.logging.LogRecord record_) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setPushLevel(java.util.logging.Level newLevel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.logging.Level getPushLevel() { return null; }
   < ---- END java signatures ---- >
 }

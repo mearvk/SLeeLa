@@ -58,18 +58,30 @@ class MidiDevice {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean isOpen() { throw new AbstractMethodError("javax.sound.midi.MidiDevice.isOpen()"); }
-  public abstract void open() throws javax.sound.midi.MidiUnavailableException { throw new AbstractMethodError("javax.sound.midi.MidiDevice.open()"); }
-  public abstract javax.sound.midi.MidiDevice.Info getDeviceInfo() { throw new AbstractMethodError("javax.sound.midi.MidiDevice.getDeviceInfo()"); }
-  public abstract long getMicrosecondPosition() { throw new AbstractMethodError("javax.sound.midi.MidiDevice.getMicrosecondPosition()"); }
-  public abstract int getMaxReceivers() { throw new AbstractMethodError("javax.sound.midi.MidiDevice.getMaxReceivers()"); }
-  public abstract int getMaxTransmitters() { throw new AbstractMethodError("javax.sound.midi.MidiDevice.getMaxTransmitters()"); }
-  public abstract javax.sound.midi.Receiver getReceiver() throws javax.sound.midi.MidiUnavailableException { throw new AbstractMethodError("javax.sound.midi.MidiDevice.getReceiver()"); }
-  public abstract java.util.List<javax.sound.midi.Receiver> getReceivers() { throw new AbstractMethodError("javax.sound.midi.MidiDevice.getReceivers()"); }
-  public abstract javax.sound.midi.Transmitter getTransmitter() throws javax.sound.midi.MidiUnavailableException { throw new AbstractMethodError("javax.sound.midi.MidiDevice.getTransmitter()"); }
-  public abstract java.util.List<javax.sound.midi.Transmitter> getTransmitters() { throw new AbstractMethodError("javax.sound.midi.MidiDevice.getTransmitters()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isOpen() { return false; }
+  @throwable("java.lang.AbstractMethodError, javax.sound.midi.MidiUnavailableException")
+  public void open() { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.midi.MidiDevice.Info getDeviceInfo() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getMicrosecondPosition() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMaxReceivers() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMaxTransmitters() { return 0; }
+  @throwable("java.lang.AbstractMethodError, javax.sound.midi.MidiUnavailableException")
+  public javax.sound.midi.Receiver getReceiver() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<javax.sound.midi.Receiver> getReceivers() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.sound.midi.MidiUnavailableException")
+  public javax.sound.midi.Transmitter getTransmitter() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<javax.sound.midi.Transmitter> getTransmitters() { return null; }
   < ---- END java signatures ---- >
 }

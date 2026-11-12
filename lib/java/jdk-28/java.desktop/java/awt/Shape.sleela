@@ -58,17 +58,28 @@ class Shape {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean contains(double x, double y, double w, double h) { throw new AbstractMethodError("java.awt.Shape.contains(double, double, double, double)"); }
-  public abstract boolean contains(double x, double y) { throw new AbstractMethodError("java.awt.Shape.contains(double, double)"); }
-  public abstract boolean contains(java.awt.geom.Rectangle2D r) { throw new AbstractMethodError("java.awt.Shape.contains(java.awt.geom.Rectangle2D)"); }
-  public abstract java.awt.Rectangle getBounds() { throw new AbstractMethodError("java.awt.Shape.getBounds()"); }
-  public abstract boolean intersects(java.awt.geom.Rectangle2D r) { throw new AbstractMethodError("java.awt.Shape.intersects(java.awt.geom.Rectangle2D)"); }
-  public abstract boolean intersects(double x, double y, double w, double h) { throw new AbstractMethodError("java.awt.Shape.intersects(double, double, double, double)"); }
-  public abstract java.awt.geom.Rectangle2D getBounds2D() { throw new AbstractMethodError("java.awt.Shape.getBounds2D()"); }
-  public abstract java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { throw new AbstractMethodError("java.awt.Shape.getPathIterator(java.awt.geom.AffineTransform, double)"); }
-  public abstract java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { throw new AbstractMethodError("java.awt.Shape.getPathIterator(java.awt.geom.AffineTransform)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean contains(double x, double y, double w, double h) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean contains(double x, double y) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean contains(java.awt.geom.Rectangle2D r) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Rectangle getBounds() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean intersects(java.awt.geom.Rectangle2D r) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean intersects(double x, double y, double w, double h) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.geom.Rectangle2D getBounds2D() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { return null; }
   < ---- END java signatures ---- >
 }

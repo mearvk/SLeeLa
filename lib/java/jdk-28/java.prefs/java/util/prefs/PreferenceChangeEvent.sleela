@@ -58,15 +58,21 @@ class PreferenceChangeEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PreferenceChangeEvent(java.util.prefs.Preferences node, java.lang.String key, java.lang.String newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.prefs.PreferenceChangeEvent.<init>(java.util.prefs.Preferences, java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PreferenceChangeEvent(java.util.prefs.Preferences node, java.lang.String key, java.lang.String newValue) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.prefs.PreferenceChangeEvent.getKey()"); }
-  public java.util.prefs.Preferences getNode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.prefs.PreferenceChangeEvent.getNode()"); }
-  public java.lang.String getNewValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.prefs.PreferenceChangeEvent.getNewValue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getKey() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.prefs.Preferences getNode() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getNewValue() { return null; }
   < ---- END java signatures ---- >
 }

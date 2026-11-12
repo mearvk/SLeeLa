@@ -58,33 +58,60 @@ class Method {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getName()"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.hashCode()"); }
-  public int getModifiers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getModifiers()"); }
-  public java.lang.reflect.TypeVariable<java.lang.reflect.Method>[] getTypeParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getTypeParameters()"); }
-  public void setAccessible(boolean flag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.setAccessible(boolean)"); }
-  public java.lang.Class<?> getReturnType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getReturnType()"); }
-  public java.lang.Class<?>[] getParameterTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getParameterTypes()"); }
-  public java.lang.String toGenericString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.toGenericString()"); }
-  public boolean isSynthetic() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.isSynthetic()"); }
-  public java.lang.Class<?> getDeclaringClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getDeclaringClass()"); }
-  public <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getAnnotation(java.lang.Class<T>)"); }
-  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getDeclaredAnnotations()"); }
-  public boolean isVarArgs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.isVarArgs()"); }
-  public int getParameterCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getParameterCount()"); }
-  public java.lang.annotation.Annotation[][] getParameterAnnotations() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getParameterAnnotations()"); }
-  public java.lang.reflect.Type[] getGenericParameterTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getGenericParameterTypes()"); }
-  public java.lang.reflect.Type[] getGenericExceptionTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getGenericExceptionTypes()"); }
-  public boolean isDefault() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.isDefault()"); }
-  public java.lang.reflect.Type getGenericReturnType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getGenericReturnType()"); }
-  public java.lang.Class<?>[] getExceptionTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getExceptionTypes()"); }
-  public boolean isBridge() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.isBridge()"); }
-  public java.lang.Object getDefaultValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getDefaultValue()"); }
-  public java.lang.reflect.AnnotatedType getAnnotatedReturnType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Method.getAnnotatedReturnType()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getModifiers() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.TypeVariable<java.lang.reflect.Method>[] getTypeParameters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAccessible(boolean flag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getReturnType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?>[] getParameterTypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toGenericString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSynthetic() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getDeclaringClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isVarArgs() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getParameterCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.annotation.Annotation[][] getParameterAnnotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.Type[] getGenericParameterTypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.Type[] getGenericExceptionTypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDefault() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.Type getGenericReturnType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?>[] getExceptionTypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBridge() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getDefaultValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.AnnotatedType getAnnotatedReturnType() { return null; }
   < ---- END java signatures ---- >
 }

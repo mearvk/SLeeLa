@@ -58,24 +58,39 @@ class DataBufferByte {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DataBufferByte(byte[][] dataArray, int size, int[] offsets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferByte.<init>(byte[][], int, int[])"); }
-  public DataBufferByte(byte[][] dataArray, int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferByte.<init>(byte[][], int)"); }
-  public DataBufferByte(byte[] dataArray, int size, int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferByte.<init>(byte[], int, int)"); }
-  public DataBufferByte(int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferByte.<init>(int)"); }
-  public DataBufferByte(int size, int numBanks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferByte.<init>(int, int)"); }
-  public DataBufferByte(byte[] dataArray, int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferByte.<init>(byte[], int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataBufferByte(byte[][] dataArray, int size, int[] offsets) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataBufferByte(byte[][] dataArray, int size) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataBufferByte(byte[] dataArray, int size, int offset) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataBufferByte(int size) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataBufferByte(int size, int numBanks) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataBufferByte(byte[] dataArray, int size) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public byte[] getData(int bank) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferByte.getData(int)"); }
-  public byte[] getData() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferByte.getData()"); }
-  public int getElem(int bank, int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferByte.getElem(int, int)"); }
-  public int getElem(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferByte.getElem(int)"); }
-  public void setElem(int i, int val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferByte.setElem(int, int)"); }
-  public void setElem(int bank, int i, int val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferByte.setElem(int, int, int)"); }
-  public byte[][] getBankData() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferByte.getBankData()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getData(int bank) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getData() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getElem(int bank, int i) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getElem(int i) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setElem(int i, int val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setElem(int bank, int i, int val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[][] getBankData() { return null; }
   < ---- END java signatures ---- >
 }

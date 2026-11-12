@@ -58,15 +58,21 @@ class BeanDescriptor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BeanDescriptor(java.lang.Class<?> beanClass, java.lang.Class<?> customizerClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.BeanDescriptor.<init>(java.lang.Class<?>, java.lang.Class<?>)"); }
-  public BeanDescriptor(java.lang.Class<?> beanClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.BeanDescriptor.<init>(java.lang.Class<?>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BeanDescriptor(java.lang.Class<?> beanClass, java.lang.Class<?> customizerClass) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BeanDescriptor(java.lang.Class<?> beanClass) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Class<?> getBeanClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.BeanDescriptor.getBeanClass()"); }
-  public java.lang.Class<?> getCustomizerClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.BeanDescriptor.getCustomizerClass()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getBeanClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getCustomizerClass() { return null; }
   < ---- END java signatures ---- >
 }

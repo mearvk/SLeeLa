@@ -62,17 +62,28 @@ class ClassType {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean isEnum() { throw new AbstractMethodError("com.sun.jdi.ClassType.isEnum()"); }
-  public abstract com.sun.jdi.ObjectReference newInstance(com.sun.jdi.ThreadReference thread, com.sun.jdi.Method method, java.util.List<? extends com.sun.jdi.Value> arguments, int options) throws com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException, com.sun.jdi.IncompatibleThreadStateException, com.sun.jdi.InvocationException { throw new AbstractMethodError("com.sun.jdi.ClassType.newInstance(com.sun.jdi.ThreadReference, com.sun.jdi.Method, java.util.List<? extends com.sun.jdi.Value>, int)"); }
-  public abstract java.util.List<com.sun.jdi.InterfaceType> interfaces() { throw new AbstractMethodError("com.sun.jdi.ClassType.interfaces()"); }
-  public abstract com.sun.jdi.ClassType superclass() { throw new AbstractMethodError("com.sun.jdi.ClassType.superclass()"); }
-  public abstract void setValue(com.sun.jdi.Field field, com.sun.jdi.Value value) throws com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException { throw new AbstractMethodError("com.sun.jdi.ClassType.setValue(com.sun.jdi.Field, com.sun.jdi.Value)"); }
-  public abstract java.util.List<com.sun.jdi.InterfaceType> allInterfaces() { throw new AbstractMethodError("com.sun.jdi.ClassType.allInterfaces()"); }
-  public abstract com.sun.jdi.Value invokeMethod(com.sun.jdi.ThreadReference thread, com.sun.jdi.Method method, java.util.List<? extends com.sun.jdi.Value> arguments, int options) throws com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException, com.sun.jdi.IncompatibleThreadStateException, com.sun.jdi.InvocationException { throw new AbstractMethodError("com.sun.jdi.ClassType.invokeMethod(com.sun.jdi.ThreadReference, com.sun.jdi.Method, java.util.List<? extends com.sun.jdi.Value>, int)"); }
-  public abstract java.util.List<com.sun.jdi.ClassType> subclasses() { throw new AbstractMethodError("com.sun.jdi.ClassType.subclasses()"); }
-  public abstract com.sun.jdi.Method concreteMethodByName(java.lang.String name, java.lang.String signature) { throw new AbstractMethodError("com.sun.jdi.ClassType.concreteMethodByName(java.lang.String, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isEnum() { return false; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException, com.sun.jdi.IncompatibleThreadStateException, com.sun.jdi.InvocationException")
+  public com.sun.jdi.ObjectReference newInstance(com.sun.jdi.ThreadReference thread, com.sun.jdi.Method method, java.util.List<? extends com.sun.jdi.Value> arguments, int options) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.InterfaceType> interfaces() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.ClassType superclass() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException")
+  public void setValue(com.sun.jdi.Field field, com.sun.jdi.Value value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.InterfaceType> allInterfaces() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException, com.sun.jdi.IncompatibleThreadStateException, com.sun.jdi.InvocationException")
+  public com.sun.jdi.Value invokeMethod(com.sun.jdi.ThreadReference thread, com.sun.jdi.Method method, java.util.List<? extends com.sun.jdi.Value> arguments, int options) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.ClassType> subclasses() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.Method concreteMethodByName(java.lang.String name, java.lang.String signature) { return null; }
   < ---- END java signatures ---- >
 }

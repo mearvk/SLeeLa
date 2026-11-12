@@ -58,17 +58,25 @@ class SimpleLinkRequest {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SimpleLinkRequest(jdk.dynalink.CallSiteDescriptor callSiteDescriptor, boolean callSiteUnstable, java.lang.Object... arguments) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.support.SimpleLinkRequest.<init>(jdk.dynalink.CallSiteDescriptor, boolean, java.lang.Object...)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SimpleLinkRequest(jdk.dynalink.CallSiteDescriptor callSiteDescriptor, boolean callSiteUnstable, java.lang.Object... arguments) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object[] getArguments() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.support.SimpleLinkRequest.getArguments()"); }
-  public java.lang.Object getReceiver() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.support.SimpleLinkRequest.getReceiver()"); }
-  public jdk.dynalink.CallSiteDescriptor getCallSiteDescriptor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.support.SimpleLinkRequest.getCallSiteDescriptor()"); }
-  public boolean isCallSiteUnstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.support.SimpleLinkRequest.isCallSiteUnstable()"); }
-  public jdk.dynalink.linker.LinkRequest replaceArguments(jdk.dynalink.CallSiteDescriptor newCallSiteDescriptor, java.lang.Object... newArguments) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.support.SimpleLinkRequest.replaceArguments(jdk.dynalink.CallSiteDescriptor, java.lang.Object...)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] getArguments() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getReceiver() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.dynalink.CallSiteDescriptor getCallSiteDescriptor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCallSiteUnstable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.dynalink.linker.LinkRequest replaceArguments(jdk.dynalink.CallSiteDescriptor newCallSiteDescriptor, java.lang.Object... newArguments) { return null; }
   < ---- END java signatures ---- >
 }

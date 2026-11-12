@@ -58,23 +58,37 @@ class FieldPosition {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FieldPosition(java.text.Format.Field attribute, int fieldID) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.FieldPosition.<init>(java.text.Format.Field, int)"); }
-  public FieldPosition(java.text.Format.Field attribute) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.FieldPosition.<init>(java.text.Format.Field)"); }
-  public FieldPosition(int field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.FieldPosition.<init>(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FieldPosition(java.text.Format.Field attribute, int fieldID) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FieldPosition(java.text.Format.Field attribute) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FieldPosition(int field) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.FieldPosition.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.FieldPosition.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.FieldPosition.hashCode()"); }
-  public int getField() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.FieldPosition.getField()"); }
-  public void setBeginIndex(int bi) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.FieldPosition.setBeginIndex(int)"); }
-  public void setEndIndex(int ei) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.FieldPosition.setEndIndex(int)"); }
-  public java.text.Format.Field getFieldAttribute() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.FieldPosition.getFieldAttribute()"); }
-  public int getBeginIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.FieldPosition.getBeginIndex()"); }
-  public int getEndIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.FieldPosition.getEndIndex()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getField() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBeginIndex(int bi) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEndIndex(int ei) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.Format.Field getFieldAttribute() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBeginIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getEndIndex() { return 0; }
   < ---- END java signatures ---- >
 }

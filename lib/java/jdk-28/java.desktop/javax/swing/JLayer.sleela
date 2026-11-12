@@ -58,49 +58,86 @@ class JLayer<V extends java.awt.Component> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JLayer(V view, javax.swing.plaf.LayerUI<V> ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.<init>(V, javax.swing.plaf.LayerUI<V>)"); }
-  public JLayer(V view) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.<init>(V)"); }
-  public JLayer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JLayer(V view, javax.swing.plaf.LayerUI<V> ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JLayer(V view) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JLayer() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove(java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.remove(java.awt.Component)"); }
-  public void removeAll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.removeAll()"); }
-  public void setBorder(javax.swing.border.Border border) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.setBorder(javax.swing.border.Border)"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.updateUI()"); }
-  public void setUI(javax.swing.plaf.LayerUI<? super V> ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.setUI(javax.swing.plaf.LayerUI<? super V>)"); }
-  public javax.swing.plaf.LayerUI<? super V> getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.getUI()"); }
-  public boolean isOptimizedDrawingEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.isOptimizedDrawingEnabled()"); }
-  public javax.swing.border.Border getBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.getBorder()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(java.awt.Component comp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAll() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBorder(javax.swing.border.Border border) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.LayerUI<? super V> ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.LayerUI<? super V> getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isOptimizedDrawingEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.border.Border getBorder() { return null; }
   @JavaProtected
-  void paintComponent(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.paintComponent(java.awt.Graphics)"); }
-  public void paintImmediately(int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.paintImmediately(int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintComponent(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintImmediately(int x, int y, int w, int h) { }
   @JavaProtected
-  boolean isPaintingOrigin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.isPaintingOrigin()"); }
-  public javax.swing.JPanel createGlassPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.createGlassPane()"); }
-  public void propertyChange(java.beans.PropertyChangeEvent evt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.propertyChange(java.beans.PropertyChangeEvent)"); }
-  public V getView() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.getView()"); }
-  public void setView(V view) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.setView(V)"); }
-  public long getLayerEventMask() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.getLayerEventMask()"); }
-  public void setLayerEventMask(long layerEventMask) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.setLayerEventMask(long)"); }
-  public java.awt.Dimension getPreferredScrollableViewportSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.getPreferredScrollableViewportSize()"); }
-  public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.getScrollableUnitIncrement(java.awt.Rectangle, int, int)"); }
-  public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.getScrollableBlockIncrement(java.awt.Rectangle, int, int)"); }
-  public boolean getScrollableTracksViewportWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.getScrollableTracksViewportWidth()"); }
-  public boolean getScrollableTracksViewportHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.getScrollableTracksViewportHeight()"); }
-  public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.imageUpdate(java.awt.Image, int, int, int, int, int)"); }
-  public javax.swing.JPanel getGlassPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.getGlassPane()"); }
-  public void setGlassPane(javax.swing.JPanel glassPane) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.setGlassPane(javax.swing.JPanel)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.getAccessibleContext()"); }
-  public void setLayout(java.awt.LayoutManager mgr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.setLayout(java.awt.LayoutManager)"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.addNotify()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isPaintingOrigin() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JPanel createGlassPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void propertyChange(java.beans.PropertyChangeEvent evt) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V getView() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setView(V view) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getLayerEventMask() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayerEventMask(long layerEventMask) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredScrollableViewportSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getScrollableTracksViewportWidth() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getScrollableTracksViewportHeight() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int w, int h) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JPanel getGlassPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setGlassPane(javax.swing.JPanel glassPane) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayout(java.awt.LayoutManager mgr) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
   @JavaProtected
-  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.addImpl(java.awt.Component, java.lang.Object, int)"); }
-  public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.removeNotify()"); }
-  public void doLayout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.doLayout()"); }
-  public void paint(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLayer.paint(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void doLayout() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g) { }
   < ---- END java signatures ---- >
 }

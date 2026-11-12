@@ -58,14 +58,22 @@ class MultipleGradientPaint {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final float[] getFractions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MultipleGradientPaint.getFractions()"); }
-  public final java.awt.Color[] getColors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MultipleGradientPaint.getColors()"); }
-  public final java.awt.MultipleGradientPaint.CycleMethod getCycleMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MultipleGradientPaint.getCycleMethod()"); }
-  public final int getTransparency() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MultipleGradientPaint.getTransparency()"); }
-  public final java.awt.MultipleGradientPaint.ColorSpaceType getColorSpace() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MultipleGradientPaint.getColorSpace()"); }
-  public final java.awt.geom.AffineTransform getTransform() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MultipleGradientPaint.getTransform()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final float[] getFractions() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.Color[] getColors() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.MultipleGradientPaint.CycleMethod getCycleMethod() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getTransparency() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.MultipleGradientPaint.ColorSpaceType getColorSpace() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.geom.AffineTransform getTransform() { return null; }
   < ---- END java signatures ---- >
 }

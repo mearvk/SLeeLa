@@ -58,39 +58,63 @@ class DefaultDesktopManager {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultDesktopManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultDesktopManager() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void removeIconFor(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.removeIconFor(javax.swing.JInternalFrame)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void removeIconFor(javax.swing.JInternalFrame f) { }
   @JavaProtected
-  boolean wasIcon(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.wasIcon(javax.swing.JInternalFrame)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean wasIcon(javax.swing.JInternalFrame f) { return false; }
   @JavaProtected
-  void setWasIcon(javax.swing.JInternalFrame f, java.lang.Boolean value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.setWasIcon(javax.swing.JInternalFrame, java.lang.Boolean)"); }
-  public void setBoundsForFrame(javax.swing.JComponent f, int newX, int newY, int newWidth, int newHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.setBoundsForFrame(javax.swing.JComponent, int, int, int, int)"); }
-  public void iconifyFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.iconifyFrame(javax.swing.JInternalFrame)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setWasIcon(javax.swing.JInternalFrame f, java.lang.Boolean value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBoundsForFrame(javax.swing.JComponent f, int newX, int newY, int newWidth, int newHeight) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void iconifyFrame(javax.swing.JInternalFrame f) { }
   @JavaProtected
-  java.awt.Rectangle getBoundsForIconOf(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.getBoundsForIconOf(javax.swing.JInternalFrame)"); }
-  public void openFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.openFrame(javax.swing.JInternalFrame)"); }
-  public void closeFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.closeFrame(javax.swing.JInternalFrame)"); }
-  public void maximizeFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.maximizeFrame(javax.swing.JInternalFrame)"); }
-  public void minimizeFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.minimizeFrame(javax.swing.JInternalFrame)"); }
-  public void deiconifyFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.deiconifyFrame(javax.swing.JInternalFrame)"); }
-  public void activateFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.activateFrame(javax.swing.JInternalFrame)"); }
-  public void deactivateFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.deactivateFrame(javax.swing.JInternalFrame)"); }
-  public void beginDraggingFrame(javax.swing.JComponent f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.beginDraggingFrame(javax.swing.JComponent)"); }
-  public void dragFrame(javax.swing.JComponent f, int newX, int newY) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.dragFrame(javax.swing.JComponent, int, int)"); }
-  public void endDraggingFrame(javax.swing.JComponent f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.endDraggingFrame(javax.swing.JComponent)"); }
-  public void beginResizingFrame(javax.swing.JComponent f, int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.beginResizingFrame(javax.swing.JComponent, int)"); }
-  public void resizeFrame(javax.swing.JComponent f, int newX, int newY, int newWidth, int newHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.resizeFrame(javax.swing.JComponent, int, int, int, int)"); }
-  public void endResizingFrame(javax.swing.JComponent f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.endResizingFrame(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Rectangle getBoundsForIconOf(javax.swing.JInternalFrame f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void openFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void closeFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void maximizeFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void minimizeFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void deiconifyFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void activateFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void deactivateFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void beginDraggingFrame(javax.swing.JComponent f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void dragFrame(javax.swing.JComponent f, int newX, int newY) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void endDraggingFrame(javax.swing.JComponent f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void beginResizingFrame(javax.swing.JComponent f, int direction) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void resizeFrame(javax.swing.JComponent f, int newX, int newY, int newWidth, int newHeight) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void endResizingFrame(javax.swing.JComponent f) { }
   @JavaProtected
-  void setPreviousBounds(javax.swing.JInternalFrame f, java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.setPreviousBounds(javax.swing.JInternalFrame, java.awt.Rectangle)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setPreviousBounds(javax.swing.JInternalFrame f, java.awt.Rectangle r) { }
   @JavaProtected
-  java.awt.Rectangle getPreviousBounds(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultDesktopManager.getPreviousBounds(javax.swing.JInternalFrame)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Rectangle getPreviousBounds(javax.swing.JInternalFrame f) { return null; }
   < ---- END java signatures ---- >
 }

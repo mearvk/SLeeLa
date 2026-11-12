@@ -59,21 +59,33 @@ class SelectableChannel {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SelectableChannel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.SelectableChannel.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SelectableChannel() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean isRegistered() { throw new AbstractMethodError("java.nio.channels.SelectableChannel.isRegistered()"); }
-  public final java.nio.channels.SelectionKey register(java.nio.channels.Selector sel, int ops) throws java.nio.channels.ClosedChannelException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.SelectableChannel.register(java.nio.channels.Selector, int)"); }
-  public abstract java.nio.channels.SelectionKey register(java.nio.channels.Selector sel, int ops, java.lang.Object att) throws java.nio.channels.ClosedChannelException { throw new AbstractMethodError("java.nio.channels.SelectableChannel.register(java.nio.channels.Selector, int, java.lang.Object)"); }
-  public abstract java.nio.channels.spi.SelectorProvider provider() { throw new AbstractMethodError("java.nio.channels.SelectableChannel.provider()"); }
-  public abstract int validOps() { throw new AbstractMethodError("java.nio.channels.SelectableChannel.validOps()"); }
-  public abstract java.nio.channels.SelectionKey keyFor(java.nio.channels.Selector sel) { throw new AbstractMethodError("java.nio.channels.SelectableChannel.keyFor(java.nio.channels.Selector)"); }
-  public abstract java.nio.channels.SelectableChannel configureBlocking(boolean block) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.SelectableChannel.configureBlocking(boolean)"); }
-  public abstract boolean isBlocking() { throw new AbstractMethodError("java.nio.channels.SelectableChannel.isBlocking()"); }
-  public abstract java.lang.Object blockingLock() { throw new AbstractMethodError("java.nio.channels.SelectableChannel.blockingLock()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isRegistered() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.nio.channels.ClosedChannelException")
+  public final java.nio.channels.SelectionKey register(java.nio.channels.Selector sel, int ops) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.nio.channels.ClosedChannelException")
+  public java.nio.channels.SelectionKey register(java.nio.channels.Selector sel, int ops, java.lang.Object att) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.channels.spi.SelectorProvider provider() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int validOps() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.channels.SelectionKey keyFor(java.nio.channels.Selector sel) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.channels.SelectableChannel configureBlocking(boolean block) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isBlocking() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object blockingLock() { return null; }
   < ---- END java signatures ---- >
 }

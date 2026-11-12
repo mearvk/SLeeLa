@@ -59,28 +59,47 @@ class Throwable {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Throwable(java.lang.String message, java.lang.Throwable cause, boolean enableSuppression, boolean writableStackTrace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.<init>(java.lang.String, java.lang.Throwable, boolean, boolean)"); }
-  public Throwable(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.<init>(java.lang.Throwable)"); }
-  public Throwable(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.<init>(java.lang.String, java.lang.Throwable)"); }
-  public Throwable(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.<init>(java.lang.String)"); }
-  public Throwable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Throwable(java.lang.String message, java.lang.Throwable cause, boolean enableSuppression, boolean writableStackTrace) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Throwable(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Throwable(java.lang.String message, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Throwable(java.lang.String message) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Throwable() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void printStackTrace() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.printStackTrace()"); }
-  public void printStackTrace(java.io.PrintWriter s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.printStackTrace(java.io.PrintWriter)"); }
-  public java.lang.StackTraceElement[] getStackTrace() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.getStackTrace()"); }
-  public synchronized java.lang.Throwable fillInStackTrace() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.fillInStackTrace()"); }
-  public synchronized java.lang.Throwable getCause() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.getCause()"); }
-  public synchronized java.lang.Throwable initCause(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.initCause(java.lang.Throwable)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.toString()"); }
-  public java.lang.String getMessage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.getMessage()"); }
-  public final synchronized java.lang.Throwable[] getSuppressed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.getSuppressed()"); }
-  public java.lang.String getLocalizedMessage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.getLocalizedMessage()"); }
-  public void setStackTrace(java.lang.StackTraceElement[] stackTrace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.setStackTrace(java.lang.StackTraceElement[])"); }
-  public final synchronized void addSuppressed(java.lang.Throwable exception) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Throwable.addSuppressed(java.lang.Throwable)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printStackTrace() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printStackTrace(java.io.PrintWriter s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StackTraceElement[] getStackTrace() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Throwable fillInStackTrace() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Throwable getCause() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Throwable initCause(java.lang.Throwable cause) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getMessage() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final synchronized java.lang.Throwable[] getSuppressed() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLocalizedMessage() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setStackTrace(java.lang.StackTraceElement[] stackTrace) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final synchronized void addSuppressed(java.lang.Throwable exception) { }
   < ---- END java signatures ---- >
 }

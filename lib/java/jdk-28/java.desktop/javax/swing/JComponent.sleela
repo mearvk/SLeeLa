@@ -69,165 +69,304 @@ class JComponent {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JComponent() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void update(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.update(java.awt.Graphics)"); }
-  public boolean contains(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.contains(int, int)"); }
-  public java.awt.Rectangle getBounds(java.awt.Rectangle rv) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getBounds(java.awt.Rectangle)"); }
-  public java.awt.Point getLocation(java.awt.Point rv) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getLocation(java.awt.Point)"); }
-  public java.awt.Dimension getSize(java.awt.Dimension rv) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getSize(java.awt.Dimension)"); }
-  public void setOpaque(boolean isOpaque) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setOpaque(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void update(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(int x, int y) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getBounds(java.awt.Rectangle rv) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Point getLocation(java.awt.Point rv) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getSize(java.awt.Dimension rv) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOpaque(boolean isOpaque) { }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.paramString()"); }
-  public boolean isOpaque() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.isOpaque()"); }
-  public void enable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.enable()"); }
-  public void setVisible(boolean aFlag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setVisible(boolean)"); }
-  public void disable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.disable()"); }
-  public int getX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getX()"); }
-  public int getY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getY()"); }
-  public boolean isPaintingTile() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.isPaintingTile()"); }
-  public final boolean isPaintingForPrint() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.isPaintingForPrint()"); }
-  public void setRequestFocusEnabled(boolean requestFocusEnabled) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setRequestFocusEnabled(boolean)"); }
-  public boolean isRequestFocusEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.isRequestFocusEnabled()"); }
-  public void grabFocus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.grabFocus()"); }
-  public void setVerifyInputWhenFocusTarget(boolean verifyInputWhenFocusTarget) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setVerifyInputWhenFocusTarget(boolean)"); }
-  public boolean getVerifyInputWhenFocusTarget() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getVerifyInputWhenFocusTarget()"); }
-  public void setBorder(javax.swing.border.Border border) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setBorder(javax.swing.border.Border)"); }
-  public void setAlignmentY(float alignmentY) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setAlignmentY(float)"); }
-  public void setAlignmentX(float alignmentX) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setAlignmentX(float)"); }
-  public void setInputVerifier(javax.swing.InputVerifier inputVerifier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setInputVerifier(javax.swing.InputVerifier)"); }
-  public javax.swing.InputVerifier getInputVerifier() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getInputVerifier()"); }
-  public void setDebugGraphicsOptions(int debugOptions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setDebugGraphicsOptions(int)"); }
-  public int getDebugGraphicsOptions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getDebugGraphicsOptions()"); }
-  public void unregisterKeyboardAction(javax.swing.KeyStroke aKeyStroke) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.unregisterKeyboardAction(javax.swing.KeyStroke)"); }
-  public javax.swing.KeyStroke[] getRegisteredKeyStrokes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getRegisteredKeyStrokes()"); }
-  public int getConditionForKeyStroke(javax.swing.KeyStroke aKeyStroke) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getConditionForKeyStroke(javax.swing.KeyStroke)"); }
-  public java.awt.event.ActionListener getActionForKeyStroke(javax.swing.KeyStroke aKeyStroke) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getActionForKeyStroke(javax.swing.KeyStroke)"); }
-  public void resetKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.resetKeyboardActions()"); }
-  public boolean requestDefaultFocus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.requestDefaultFocus()"); }
-  public void setToolTipText(java.lang.String text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setToolTipText(java.lang.String)"); }
-  public java.awt.Point getToolTipLocation(java.awt.event.MouseEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getToolTipLocation(java.awt.event.MouseEvent)"); }
-  public java.awt.Point getPopupLocation(java.awt.event.MouseEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getPopupLocation(java.awt.event.MouseEvent)"); }
-  public javax.swing.JToolTip createToolTip() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.createToolTip()"); }
-  public boolean getAutoscrolls() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getAutoscrolls()"); }
-  public void setTransferHandler(javax.swing.TransferHandler newHandler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setTransferHandler(javax.swing.TransferHandler)"); }
-  public javax.swing.TransferHandler getTransferHandler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getTransferHandler()"); }
-  public java.awt.Rectangle getVisibleRect() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getVisibleRect()"); }
-  public java.awt.Container getTopLevelAncestor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getTopLevelAncestor()"); }
-  public void setDoubleBuffered(boolean aFlag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setDoubleBuffered(boolean)"); }
-  public void firePropertyChange(java.lang.String propertyName, boolean oldValue, boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.firePropertyChange(java.lang.String, boolean, boolean)"); }
-  public void firePropertyChange(java.lang.String propertyName, char oldValue, char newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.firePropertyChange(java.lang.String, char, char)"); }
-  public void firePropertyChange(java.lang.String propertyName, int oldValue, int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.firePropertyChange(java.lang.String, int, int)"); }
-  public void requestFocus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.requestFocus()"); }
-  public boolean requestFocus(boolean temporary) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.requestFocus(boolean)"); }
-  public int getHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getHeight()"); }
-  public java.awt.Dimension getPreferredSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getPreferredSize()"); }
-  public java.awt.Dimension getMinimumSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getMinimumSize()"); }
-  public void setFocusTraversalKeys(int id, java.util.Set<? extends java.awt.AWTKeyStroke> keystrokes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setFocusTraversalKeys(int, java.util.Set<? extends java.awt.AWTKeyStroke>)"); }
-  public void setEnabled(boolean enabled) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setEnabled(boolean)"); }
-  public void repaint(long tm, int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.repaint(long, int, int, int, int)"); }
-  public void repaint(java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.repaint(java.awt.Rectangle)"); }
-  public void hide() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.hide()"); }
-  public void setForeground(java.awt.Color fg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setForeground(java.awt.Color)"); }
-  public void setBackground(java.awt.Color bg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setBackground(java.awt.Color)"); }
-  public java.awt.Graphics getGraphics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getGraphics()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isOpaque() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void enable() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVisible(boolean aFlag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void disable() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getX() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getY() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPaintingTile() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isPaintingForPrint() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRequestFocusEnabled(boolean requestFocusEnabled) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRequestFocusEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void grabFocus() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVerifyInputWhenFocusTarget(boolean verifyInputWhenFocusTarget) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getVerifyInputWhenFocusTarget() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBorder(javax.swing.border.Border border) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAlignmentY(float alignmentY) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAlignmentX(float alignmentX) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInputVerifier(javax.swing.InputVerifier inputVerifier) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.InputVerifier getInputVerifier() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDebugGraphicsOptions(int debugOptions) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDebugGraphicsOptions() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void unregisterKeyboardAction(javax.swing.KeyStroke aKeyStroke) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.KeyStroke[] getRegisteredKeyStrokes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getConditionForKeyStroke(javax.swing.KeyStroke aKeyStroke) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.event.ActionListener getActionForKeyStroke(javax.swing.KeyStroke aKeyStroke) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void resetKeyboardActions() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean requestDefaultFocus() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToolTipText(java.lang.String text) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Point getToolTipLocation(java.awt.event.MouseEvent event) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Point getPopupLocation(java.awt.event.MouseEvent event) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JToolTip createToolTip() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getAutoscrolls() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTransferHandler(javax.swing.TransferHandler newHandler) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.TransferHandler getTransferHandler() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getVisibleRect() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Container getTopLevelAncestor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDoubleBuffered(boolean aFlag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void firePropertyChange(java.lang.String propertyName, boolean oldValue, boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void firePropertyChange(java.lang.String propertyName, char oldValue, char newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void firePropertyChange(java.lang.String propertyName, int oldValue, int newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void requestFocus() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean requestFocus(boolean temporary) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHeight() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFocusTraversalKeys(int id, java.util.Set<? extends java.awt.AWTKeyStroke> keystrokes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEnabled(boolean enabled) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void repaint(long tm, int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void repaint(java.awt.Rectangle r) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void hide() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setForeground(java.awt.Color fg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBackground(java.awt.Color bg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Graphics getGraphics() { return null; }
   @JavaProtected
-  void processKeyEvent(java.awt.event.KeyEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.processKeyEvent(java.awt.event.KeyEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processKeyEvent(java.awt.event.KeyEvent e) { }
   @JavaProtected
-  void processMouseEvent(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.processMouseEvent(java.awt.event.MouseEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processMouseEvent(java.awt.event.MouseEvent e) { }
   @JavaProtected
-  void processMouseMotionEvent(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.processMouseMotionEvent(java.awt.event.MouseEvent)"); }
-  public boolean requestFocusInWindow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.requestFocusInWindow()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processMouseMotionEvent(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean requestFocusInWindow() { return false; }
   @JavaProtected
-  boolean requestFocusInWindow(boolean temporary) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.requestFocusInWindow(boolean)"); }
-  public boolean isDoubleBuffered() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.isDoubleBuffered()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean requestFocusInWindow(boolean temporary) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDoubleBuffered() { return false; }
   @JavaProtected
-  void fireVetoableChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) throws java.beans.PropertyVetoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.fireVetoableChange(java.lang.String, java.lang.Object, java.lang.Object)"); }
-  public synchronized void addVetoableChangeListener(java.beans.VetoableChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.addVetoableChangeListener(java.beans.VetoableChangeListener)"); }
-  public synchronized void removeVetoableChangeListener(java.beans.VetoableChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.removeVetoableChangeListener(java.beans.VetoableChangeListener)"); }
-  public synchronized java.beans.VetoableChangeListener[] getVetoableChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getVetoableChangeListeners()"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.updateUI()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  void fireVetoableChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addVetoableChangeListener(java.beans.VetoableChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeVetoableChangeListener(java.beans.VetoableChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.beans.VetoableChangeListener[] getVetoableChangeListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
   @JavaProtected
-  void paintBorder(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.paintBorder(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintBorder(java.awt.Graphics g) { }
   @JavaProtected
-  void setUI(javax.swing.plaf.ComponentUI newUI) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setUI(javax.swing.plaf.ComponentUI)"); }
-  public javax.swing.plaf.ComponentUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getUI()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setUI(javax.swing.plaf.ComponentUI newUI) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.ComponentUI getUI() { return null; }
   @JavaProtected
-  boolean processKeyBinding(javax.swing.KeyStroke ks, java.awt.event.KeyEvent e, int condition, boolean pressed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.processKeyBinding(javax.swing.KeyStroke, java.awt.event.KeyEvent, int, boolean)"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getUIClassID()"); }
-  public boolean getInheritsPopupMenu() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getInheritsPopupMenu()"); }
-  public javax.swing.JPopupMenu getComponentPopupMenu() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getComponentPopupMenu()"); }
-  public boolean isManagingFocus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.isManagingFocus()"); }
-  public static java.util.Locale getDefaultLocale() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getDefaultLocale()"); }
-  public final void putClientProperty(java.lang.Object key, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.putClientProperty(java.lang.Object, java.lang.Object)"); }
-  public boolean isOptimizedDrawingEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.isOptimizedDrawingEnabled()"); }
-  public static boolean isLightweightComponent(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.isLightweightComponent(java.awt.Component)"); }
-  public javax.swing.border.Border getBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getBorder()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean processKeyBinding(javax.swing.KeyStroke ks, java.awt.event.KeyEvent e, int condition, boolean pressed) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getInheritsPopupMenu() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JPopupMenu getComponentPopupMenu() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isManagingFocus() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Locale getDefaultLocale() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void putClientProperty(java.lang.Object key, java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isOptimizedDrawingEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLightweightComponent(java.awt.Component c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.border.Border getBorder() { return null; }
   @JavaProtected
-  java.awt.Graphics getComponentGraphics(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getComponentGraphics(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Graphics getComponentGraphics(java.awt.Graphics g) { return null; }
   @JavaProtected
-  void paintComponent(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.paintComponent(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintComponent(java.awt.Graphics g) { }
   @JavaProtected
-  void printComponent(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.printComponent(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void printComponent(java.awt.Graphics g) { }
   @JavaProtected
-  void printBorder(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.printBorder(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void printBorder(java.awt.Graphics g) { }
   @JavaProtected
-  void paintChildren(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.paintChildren(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintChildren(java.awt.Graphics g) { }
   @JavaProtected
-  void printChildren(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.printChildren(java.awt.Graphics)"); }
-  public java.awt.Component getNextFocusableComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getNextFocusableComponent()"); }
-  public void setNextFocusableComponent(java.awt.Component aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setNextFocusableComponent(java.awt.Component)"); }
-  public final java.lang.Object getClientProperty(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getClientProperty(java.lang.Object)"); }
-  public final javax.swing.InputMap getInputMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getInputMap()"); }
-  public final javax.swing.InputMap getInputMap(int condition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getInputMap(int)"); }
-  public final javax.swing.ActionMap getActionMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getActionMap()"); }
-  public void registerKeyboardAction(java.awt.event.ActionListener anAction, javax.swing.KeyStroke aKeyStroke, int aCondition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.registerKeyboardAction(java.awt.event.ActionListener, javax.swing.KeyStroke, int)"); }
-  public void registerKeyboardAction(java.awt.event.ActionListener anAction, java.lang.String aCommand, javax.swing.KeyStroke aKeyStroke, int aCondition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.registerKeyboardAction(java.awt.event.ActionListener, java.lang.String, javax.swing.KeyStroke, int)"); }
-  public final void setInputMap(int condition, javax.swing.InputMap map) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setInputMap(int, javax.swing.InputMap)"); }
-  public final void setActionMap(javax.swing.ActionMap am) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setActionMap(javax.swing.ActionMap)"); }
-  public static void setDefaultLocale(java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setDefaultLocale(java.util.Locale)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void printChildren(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getNextFocusableComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNextFocusableComponent(java.awt.Component aComponent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Object getClientProperty(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.swing.InputMap getInputMap() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.swing.InputMap getInputMap(int condition) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.swing.ActionMap getActionMap() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void registerKeyboardAction(java.awt.event.ActionListener anAction, javax.swing.KeyStroke aKeyStroke, int aCondition) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void registerKeyboardAction(java.awt.event.ActionListener anAction, java.lang.String aCommand, javax.swing.KeyStroke aKeyStroke, int aCondition) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setInputMap(int condition, javax.swing.InputMap map) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setActionMap(javax.swing.ActionMap am) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setDefaultLocale(java.util.Locale l) { }
   @JavaProtected
-  void processComponentKeyEvent(java.awt.event.KeyEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.processComponentKeyEvent(java.awt.event.KeyEvent)"); }
-  public java.lang.String getToolTipText() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getToolTipText()"); }
-  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getToolTipText(java.awt.event.MouseEvent)"); }
-  public void scrollRectToVisible(java.awt.Rectangle aRect) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.scrollRectToVisible(java.awt.Rectangle)"); }
-  public void setAutoscrolls(boolean autoscrolls) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setAutoscrolls(boolean)"); }
-  public void computeVisibleRect(java.awt.Rectangle visibleRect) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.computeVisibleRect(java.awt.Rectangle)"); }
-  public void addAncestorListener(javax.swing.event.AncestorListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.addAncestorListener(javax.swing.event.AncestorListener)"); }
-  public void removeAncestorListener(javax.swing.event.AncestorListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.removeAncestorListener(javax.swing.event.AncestorListener)"); }
-  public javax.swing.event.AncestorListener[] getAncestorListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getAncestorListeners()"); }
-  public void paintImmediately(int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.paintImmediately(int, int, int, int)"); }
-  public void paintImmediately(java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.paintImmediately(java.awt.Rectangle)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processComponentKeyEvent(java.awt.event.KeyEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getToolTipText() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void scrollRectToVisible(java.awt.Rectangle aRect) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAutoscrolls(boolean autoscrolls) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void computeVisibleRect(java.awt.Rectangle visibleRect) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addAncestorListener(javax.swing.event.AncestorListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAncestorListener(javax.swing.event.AncestorListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.AncestorListener[] getAncestorListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintImmediately(int x, int y, int w, int h) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintImmediately(java.awt.Rectangle r) { }
   @JavaProtected
-  boolean isPaintingOrigin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.isPaintingOrigin()"); }
-  public void setInheritsPopupMenu(boolean value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setInheritsPopupMenu(boolean)"); }
-  public void setComponentPopupMenu(javax.swing.JPopupMenu popup) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setComponentPopupMenu(javax.swing.JPopupMenu)"); }
-  public void reshape(int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.reshape(int, int, int, int)"); }
-  public javax.swing.JRootPane getRootPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getRootPane()"); }
-  public int getWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getWidth()"); }
-  public void setPreferredSize(java.awt.Dimension preferredSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setPreferredSize(java.awt.Dimension)"); }
-  public void setMinimumSize(java.awt.Dimension minimumSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setMinimumSize(java.awt.Dimension)"); }
-  public void setMaximumSize(java.awt.Dimension maximumSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setMaximumSize(java.awt.Dimension)"); }
-  public int getBaseline(int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getBaseline(int, int)"); }
-  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getBaselineResizeBehavior()"); }
-  public void revalidate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.revalidate()"); }
-  public java.awt.FontMetrics getFontMetrics(java.awt.Font font) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getFontMetrics(java.awt.Font)"); }
-  public void printAll(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.printAll(java.awt.Graphics)"); }
-  public boolean isValidateRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.isValidateRoot()"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.addNotify()"); }
-  public java.awt.Insets getInsets() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getInsets()"); }
-  public java.awt.Insets getInsets(java.awt.Insets insets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getInsets(java.awt.Insets)"); }
-  public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.removeNotify()"); }
-  public void setFont(java.awt.Font font) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.setFont(java.awt.Font)"); }
-  public java.awt.Dimension getMaximumSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getMaximumSize()"); }
-  public float getAlignmentX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getAlignmentX()"); }
-  public float getAlignmentY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getAlignmentY()"); }
-  public void paint(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.paint(java.awt.Graphics)"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JComponent.getListeners(java.lang.Class<T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isPaintingOrigin() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInheritsPopupMenu(boolean value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setComponentPopupMenu(javax.swing.JPopupMenu popup) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reshape(int x, int y, int w, int h) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JRootPane getRootPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getWidth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPreferredSize(java.awt.Dimension preferredSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinimumSize(java.awt.Dimension minimumSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximumSize(java.awt.Dimension maximumSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBaseline(int width, int height) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void revalidate() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.FontMetrics getFontMetrics(java.awt.Font font) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printAll(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isValidateRoot() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getInsets() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getInsets(java.awt.Insets insets) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFont(java.awt.Font font) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getAlignmentX() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getAlignmentY() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   < ---- END java signatures ---- >
 }

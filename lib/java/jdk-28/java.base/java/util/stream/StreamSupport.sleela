@@ -58,16 +58,26 @@ class StreamSupport {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static <T> java.util.stream.Stream<T> stream(java.util.function.Supplier<? extends java.util.Spliterator<T>> supplier, int characteristics, boolean parallel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.StreamSupport.stream(java.util.function.Supplier<? extends java.util.Spliterator<T>>, int, boolean)"); }
-  public static <T> java.util.stream.Stream<T> stream(java.util.Spliterator<T> spliterator, boolean parallel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.StreamSupport.stream(java.util.Spliterator<T>, boolean)"); }
-  public static java.util.stream.IntStream intStream(java.util.function.Supplier<? extends java.util.Spliterator.OfInt> supplier, int characteristics, boolean parallel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.StreamSupport.intStream(java.util.function.Supplier<? extends java.util.Spliterator.OfInt>, int, boolean)"); }
-  public static java.util.stream.IntStream intStream(java.util.Spliterator.OfInt spliterator, boolean parallel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.StreamSupport.intStream(java.util.Spliterator.OfInt, boolean)"); }
-  public static java.util.stream.LongStream longStream(java.util.function.Supplier<? extends java.util.Spliterator.OfLong> supplier, int characteristics, boolean parallel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.StreamSupport.longStream(java.util.function.Supplier<? extends java.util.Spliterator.OfLong>, int, boolean)"); }
-  public static java.util.stream.LongStream longStream(java.util.Spliterator.OfLong spliterator, boolean parallel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.StreamSupport.longStream(java.util.Spliterator.OfLong, boolean)"); }
-  public static java.util.stream.DoubleStream doubleStream(java.util.Spliterator.OfDouble spliterator, boolean parallel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.StreamSupport.doubleStream(java.util.Spliterator.OfDouble, boolean)"); }
-  public static java.util.stream.DoubleStream doubleStream(java.util.function.Supplier<? extends java.util.Spliterator.OfDouble> supplier, int characteristics, boolean parallel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.StreamSupport.doubleStream(java.util.function.Supplier<? extends java.util.Spliterator.OfDouble>, int, boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.stream.Stream<T> stream(java.util.function.Supplier<? extends java.util.Spliterator<T>> supplier, int characteristics, boolean parallel) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.stream.Stream<T> stream(java.util.Spliterator<T> spliterator, boolean parallel) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.IntStream intStream(java.util.function.Supplier<? extends java.util.Spliterator.OfInt> supplier, int characteristics, boolean parallel) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.IntStream intStream(java.util.Spliterator.OfInt spliterator, boolean parallel) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.LongStream longStream(java.util.function.Supplier<? extends java.util.Spliterator.OfLong> supplier, int characteristics, boolean parallel) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.LongStream longStream(java.util.Spliterator.OfLong spliterator, boolean parallel) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.DoubleStream doubleStream(java.util.Spliterator.OfDouble spliterator, boolean parallel) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.DoubleStream doubleStream(java.util.function.Supplier<? extends java.util.Spliterator.OfDouble> supplier, int characteristics, boolean parallel) { return null; }
   < ---- END java signatures ---- >
 }

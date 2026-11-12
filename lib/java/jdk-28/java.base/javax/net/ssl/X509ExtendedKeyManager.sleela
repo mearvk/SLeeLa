@@ -59,14 +59,19 @@ class X509ExtendedKeyManager {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  X509ExtendedKeyManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.X509ExtendedKeyManager.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  X509ExtendedKeyManager() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String chooseEngineClientAlias(java.lang.String[] keyType, java.security.Principal[] issuers, javax.net.ssl.SSLEngine engine) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.X509ExtendedKeyManager.chooseEngineClientAlias(java.lang.String[], java.security.Principal[], javax.net.ssl.SSLEngine)"); }
-  public java.lang.String chooseEngineServerAlias(java.lang.String keyType, java.security.Principal[] issuers, javax.net.ssl.SSLEngine engine) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.X509ExtendedKeyManager.chooseEngineServerAlias(java.lang.String, java.security.Principal[], javax.net.ssl.SSLEngine)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String chooseEngineClientAlias(java.lang.String[] keyType, java.security.Principal[] issuers, javax.net.ssl.SSLEngine engine) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String chooseEngineServerAlias(java.lang.String keyType, java.security.Principal[] issuers, javax.net.ssl.SSLEngine engine) { return null; }
   < ---- END java signatures ---- >
 }

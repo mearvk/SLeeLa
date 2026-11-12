@@ -58,15 +58,21 @@ class ImageCapabilities {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ImageCapabilities(boolean accelerated) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ImageCapabilities.<init>(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ImageCapabilities(boolean accelerated) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ImageCapabilities.clone()"); }
-  public boolean isAccelerated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ImageCapabilities.isAccelerated()"); }
-  public boolean isTrueVolatile() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ImageCapabilities.isTrueVolatile()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAccelerated() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isTrueVolatile() { return false; }
   < ---- END java signatures ---- >
 }

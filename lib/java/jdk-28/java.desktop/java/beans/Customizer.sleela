@@ -58,11 +58,16 @@ class Customizer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new AbstractMethodError("java.beans.Customizer.addPropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public abstract void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new AbstractMethodError("java.beans.Customizer.removePropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public abstract void setObject(java.lang.Object bean) { throw new AbstractMethodError("java.beans.Customizer.setObject(java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setObject(java.lang.Object bean) { }
   < ---- END java signatures ---- >
 }

@@ -58,19 +58,28 @@ class TextMeasurer {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TextMeasurer(java.text.AttributedCharacterIterator text, java.awt.font.FontRenderContext frc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextMeasurer.<init>(java.text.AttributedCharacterIterator, java.awt.font.FontRenderContext)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TextMeasurer(java.text.AttributedCharacterIterator text, java.awt.font.FontRenderContext frc) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextMeasurer.clone()"); }
-  public java.awt.font.TextLayout getLayout(int start, int limit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextMeasurer.getLayout(int, int)"); }
-  public int getLineBreakIndex(int start, float maxAdvance) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextMeasurer.getLineBreakIndex(int, float)"); }
-  public void insertChar(java.text.AttributedCharacterIterator newParagraph, int insertPos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextMeasurer.insertChar(java.text.AttributedCharacterIterator, int)"); }
-  public void deleteChar(java.text.AttributedCharacterIterator newParagraph, int deletePos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextMeasurer.deleteChar(java.text.AttributedCharacterIterator, int)"); }
-  public float getAdvanceBetween(int start, int limit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextMeasurer.getAdvanceBetween(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.TextLayout getLayout(int start, int limit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLineBreakIndex(int start, float maxAdvance) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertChar(java.text.AttributedCharacterIterator newParagraph, int insertPos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void deleteChar(java.text.AttributedCharacterIterator newParagraph, int deletePos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getAdvanceBetween(int start, int limit) { return 0.0; }
   < ---- END java signatures ---- >
 }

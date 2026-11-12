@@ -58,19 +58,28 @@ class TableRowSorter<M extends javax.swing.table.TableModel> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TableRowSorter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.TableRowSorter.<init>()"); }
-  public TableRowSorter(M model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.TableRowSorter.<init>(M)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TableRowSorter() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TableRowSorter(M model) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.Comparator<?> getComparator(int column) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.TableRowSorter.getComparator(int)"); }
-  public void setStringConverter(javax.swing.table.TableStringConverter stringConverter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.TableRowSorter.setStringConverter(javax.swing.table.TableStringConverter)"); }
-  public javax.swing.table.TableStringConverter getStringConverter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.TableRowSorter.getStringConverter()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Comparator<?> getComparator(int column) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setStringConverter(javax.swing.table.TableStringConverter stringConverter) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.table.TableStringConverter getStringConverter() { return null; }
   @JavaProtected
-  boolean useToString(int column) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.TableRowSorter.useToString(int)"); }
-  public void setModel(M model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.TableRowSorter.setModel(M)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean useToString(int column) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setModel(M model) { }
   < ---- END java signatures ---- >
 }

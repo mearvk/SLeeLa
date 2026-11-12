@@ -59,6 +59,7 @@ class MouseInputAdapter {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  MouseInputAdapter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.MouseInputAdapter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  MouseInputAdapter() { }
   < ---- END java constructors ---- >
 }

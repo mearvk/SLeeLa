@@ -59,6 +59,7 @@ class ExecutionControlException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ExecutionControlException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.spi.ExecutionControl.ExecutionControlException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ExecutionControlException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

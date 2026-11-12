@@ -58,23 +58,37 @@ class StringWriter {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StringWriter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StringWriter.<init>()"); }
-  public StringWriter(int initialSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StringWriter.<init>(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringWriter() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringWriter(int initialSize) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StringWriter.toString()"); }
-  public java.io.StringWriter append(java.lang.CharSequence csq, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StringWriter.append(java.lang.CharSequence, int, int)"); }
-  public java.io.StringWriter append(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StringWriter.append(char)"); }
-  public java.io.StringWriter append(java.lang.CharSequence csq) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StringWriter.append(java.lang.CharSequence)"); }
-  public void flush() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StringWriter.flush()"); }
-  public void write(char[] cbuf, int off, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StringWriter.write(char[], int, int)"); }
-  public void write(java.lang.String str, int off, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StringWriter.write(java.lang.String, int, int)"); }
-  public void write(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StringWriter.write(java.lang.String)"); }
-  public void write(int c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StringWriter.write(int)"); }
-  public java.lang.StringBuffer getBuffer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StringWriter.getBuffer()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.StringWriter append(java.lang.CharSequence csq, int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.StringWriter append(char c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.StringWriter append(java.lang.CharSequence csq) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void flush() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void write(char[] cbuf, int off, int len) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void write(java.lang.String str, int off, int len) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void write(java.lang.String str) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void write(int c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuffer getBuffer() { return null; }
   < ---- END java signatures ---- >
 }

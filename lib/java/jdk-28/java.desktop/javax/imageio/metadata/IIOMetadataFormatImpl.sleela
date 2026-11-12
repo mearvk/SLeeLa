@@ -62,74 +62,122 @@ class IIOMetadataFormatImpl {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IIOMetadataFormatImpl(java.lang.String rootName, int childPolicy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.<init>(java.lang.String, int)"); }
-  public IIOMetadataFormatImpl(java.lang.String rootName, int minChildren, int maxChildren) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.<init>(java.lang.String, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IIOMetadataFormatImpl(java.lang.String rootName, int childPolicy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IIOMetadataFormatImpl(java.lang.String rootName, int minChildren, int maxChildren) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void addAttribute(java.lang.String elementName, java.lang.String attrName, int dataType, boolean required, java.lang.String defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.addAttribute(java.lang.String, java.lang.String, int, boolean, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addAttribute(java.lang.String elementName, java.lang.String attrName, int dataType, boolean required, java.lang.String defaultValue) { }
   @JavaProtected
-  void addAttribute(java.lang.String elementName, java.lang.String attrName, int dataType, boolean required, java.lang.String defaultValue, java.util.List<java.lang.String> enumeratedValues) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.addAttribute(java.lang.String, java.lang.String, int, boolean, java.lang.String, java.util.List<java.lang.String>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addAttribute(java.lang.String elementName, java.lang.String attrName, int dataType, boolean required, java.lang.String defaultValue, java.util.List<java.lang.String> enumeratedValues) { }
   @JavaProtected
-  void addAttribute(java.lang.String elementName, java.lang.String attrName, int dataType, boolean required, java.lang.String defaultValue, java.lang.String minValue, java.lang.String maxValue, boolean minInclusive, boolean maxInclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.addAttribute(java.lang.String, java.lang.String, int, boolean, java.lang.String, java.lang.String, java.lang.String, boolean, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addAttribute(java.lang.String elementName, java.lang.String attrName, int dataType, boolean required, java.lang.String defaultValue, java.lang.String minValue, java.lang.String maxValue, boolean minInclusive, boolean maxInclusive) { }
   @JavaProtected
-  void addAttribute(java.lang.String elementName, java.lang.String attrName, int dataType, boolean required, int listMinLength, int listMaxLength) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.addAttribute(java.lang.String, java.lang.String, int, boolean, int, int)"); }
-  public java.lang.String getRootName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getRootName()"); }
-  public java.lang.String[] getAttributeNames(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getAttributeNames(java.lang.String)"); }
-  public static javax.imageio.metadata.IIOMetadataFormat getStandardFormatInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getStandardFormatInstance()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addAttribute(java.lang.String elementName, java.lang.String attrName, int dataType, boolean required, int listMinLength, int listMaxLength) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getRootName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getAttributeNames(java.lang.String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.imageio.metadata.IIOMetadataFormat getStandardFormatInstance() { return null; }
   @JavaProtected
-  void removeAttribute(java.lang.String elementName, java.lang.String attrName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.removeAttribute(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void removeAttribute(java.lang.String elementName, java.lang.String attrName) { }
   @JavaProtected
-  void addElement(java.lang.String elementName, java.lang.String parentName, int childPolicy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.addElement(java.lang.String, java.lang.String, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addElement(java.lang.String elementName, java.lang.String parentName, int childPolicy) { }
   @JavaProtected
-  void addElement(java.lang.String elementName, java.lang.String parentName, int minChildren, int maxChildren) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.addElement(java.lang.String, java.lang.String, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addElement(java.lang.String elementName, java.lang.String parentName, int minChildren, int maxChildren) { }
   @JavaProtected
-  void removeElement(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.removeElement(java.lang.String)"); }
-  public abstract boolean canNodeAppear(java.lang.String elementName, javax.imageio.ImageTypeSpecifier imageType) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormatImpl.canNodeAppear(java.lang.String, javax.imageio.ImageTypeSpecifier)"); }
-  public int getElementMinChildren(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getElementMinChildren(java.lang.String)"); }
-  public int getElementMaxChildren(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getElementMaxChildren(java.lang.String)"); }
-  public java.lang.String getElementDescription(java.lang.String elementName, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getElementDescription(java.lang.String, java.util.Locale)"); }
-  public int getChildPolicy(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getChildPolicy(java.lang.String)"); }
-  public java.lang.String[] getChildNames(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getChildNames(java.lang.String)"); }
-  public int getAttributeValueType(java.lang.String elementName, java.lang.String attrName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getAttributeValueType(java.lang.String, java.lang.String)"); }
-  public int getAttributeDataType(java.lang.String elementName, java.lang.String attrName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getAttributeDataType(java.lang.String, java.lang.String)"); }
-  public boolean isAttributeRequired(java.lang.String elementName, java.lang.String attrName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.isAttributeRequired(java.lang.String, java.lang.String)"); }
-  public java.lang.String getAttributeDefaultValue(java.lang.String elementName, java.lang.String attrName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getAttributeDefaultValue(java.lang.String, java.lang.String)"); }
-  public java.lang.String[] getAttributeEnumerations(java.lang.String elementName, java.lang.String attrName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getAttributeEnumerations(java.lang.String, java.lang.String)"); }
-  public java.lang.String getAttributeMinValue(java.lang.String elementName, java.lang.String attrName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getAttributeMinValue(java.lang.String, java.lang.String)"); }
-  public java.lang.String getAttributeMaxValue(java.lang.String elementName, java.lang.String attrName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getAttributeMaxValue(java.lang.String, java.lang.String)"); }
-  public int getAttributeListMinLength(java.lang.String elementName, java.lang.String attrName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getAttributeListMinLength(java.lang.String, java.lang.String)"); }
-  public int getAttributeListMaxLength(java.lang.String elementName, java.lang.String attrName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getAttributeListMaxLength(java.lang.String, java.lang.String)"); }
-  public java.lang.String getAttributeDescription(java.lang.String elementName, java.lang.String attrName, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getAttributeDescription(java.lang.String, java.lang.String, java.util.Locale)"); }
-  public int getObjectValueType(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getObjectValueType(java.lang.String)"); }
-  public java.lang.Class<?> getObjectClass(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getObjectClass(java.lang.String)"); }
-  public java.lang.Object getObjectDefaultValue(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getObjectDefaultValue(java.lang.String)"); }
-  public java.lang.Object[] getObjectEnumerations(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getObjectEnumerations(java.lang.String)"); }
-  public java.lang.Comparable<?> getObjectMinValue(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getObjectMinValue(java.lang.String)"); }
-  public java.lang.Comparable<?> getObjectMaxValue(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getObjectMaxValue(java.lang.String)"); }
-  public int getObjectArrayMinLength(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getObjectArrayMinLength(java.lang.String)"); }
-  public int getObjectArrayMaxLength(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getObjectArrayMaxLength(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void removeElement(java.lang.String elementName) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canNodeAppear(java.lang.String elementName, javax.imageio.ImageTypeSpecifier imageType) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getElementMinChildren(java.lang.String elementName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getElementMaxChildren(java.lang.String elementName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getElementDescription(java.lang.String elementName, java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getChildPolicy(java.lang.String elementName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getChildNames(java.lang.String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAttributeValueType(java.lang.String elementName, java.lang.String attrName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAttributeDataType(java.lang.String elementName, java.lang.String attrName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAttributeRequired(java.lang.String elementName, java.lang.String attrName) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAttributeDefaultValue(java.lang.String elementName, java.lang.String attrName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getAttributeEnumerations(java.lang.String elementName, java.lang.String attrName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAttributeMinValue(java.lang.String elementName, java.lang.String attrName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAttributeMaxValue(java.lang.String elementName, java.lang.String attrName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAttributeListMinLength(java.lang.String elementName, java.lang.String attrName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAttributeListMaxLength(java.lang.String elementName, java.lang.String attrName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAttributeDescription(java.lang.String elementName, java.lang.String attrName, java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getObjectValueType(java.lang.String elementName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getObjectClass(java.lang.String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getObjectDefaultValue(java.lang.String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] getObjectEnumerations(java.lang.String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Comparable<?> getObjectMinValue(java.lang.String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Comparable<?> getObjectMaxValue(java.lang.String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getObjectArrayMinLength(java.lang.String elementName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getObjectArrayMaxLength(java.lang.String elementName) { return 0; }
   @JavaProtected
-  void setResourceBaseName(java.lang.String resourceBaseName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.setResourceBaseName(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setResourceBaseName(java.lang.String resourceBaseName) { }
   @JavaProtected
-  java.lang.String getResourceBaseName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.getResourceBaseName()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String getResourceBaseName() { return null; }
   @JavaProtected
-  void addChildElement(java.lang.String elementName, java.lang.String parentName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.addChildElement(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addChildElement(java.lang.String elementName, java.lang.String parentName) { }
   @JavaProtected
-  void addBooleanAttribute(java.lang.String elementName, java.lang.String attrName, boolean hasDefaultValue, boolean defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.addBooleanAttribute(java.lang.String, java.lang.String, boolean, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addBooleanAttribute(java.lang.String elementName, java.lang.String attrName, boolean hasDefaultValue, boolean defaultValue) { }
   @JavaProtected
-  void addObjectValue(java.lang.String elementName, java.lang.Class<?> classType, int arrayMinLength, int arrayMaxLength) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.addObjectValue(java.lang.String, java.lang.Class<?>, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addObjectValue(java.lang.String elementName, java.lang.Class<?> classType, int arrayMinLength, int arrayMaxLength) { }
   @JavaProtected
-  <T extends java.lang.Object & java.lang.Comparable<? super T>> void addObjectValue(java.lang.String elementName, java.lang.Class<T> classType, T defaultValue, java.lang.Comparable<? super T> minValue, java.lang.Comparable<? super T> maxValue, boolean minInclusive, boolean maxInclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.addObjectValue(java.lang.String, java.lang.Class<T>, T, java.lang.Comparable<? super T>, java.lang.Comparable<? super T>, boolean, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  <T extends java.lang.Object & java.lang.Comparable<? super T>> void addObjectValue(java.lang.String elementName, java.lang.Class<T> classType, T defaultValue, java.lang.Comparable<? super T> minValue, java.lang.Comparable<? super T> maxValue, boolean minInclusive, boolean maxInclusive) { }
   @JavaProtected
-  <T> void addObjectValue(java.lang.String elementName, java.lang.Class<T> classType, boolean required, T defaultValue, java.util.List<? extends T> enumeratedValues) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.addObjectValue(java.lang.String, java.lang.Class<T>, boolean, T, java.util.List<? extends T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  <T> void addObjectValue(java.lang.String elementName, java.lang.Class<T> classType, boolean required, T defaultValue, java.util.List<? extends T> enumeratedValues) { }
   @JavaProtected
-  <T> void addObjectValue(java.lang.String elementName, java.lang.Class<T> classType, boolean required, T defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.addObjectValue(java.lang.String, java.lang.Class<T>, boolean, T)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  <T> void addObjectValue(java.lang.String elementName, java.lang.Class<T> classType, boolean required, T defaultValue) { }
   @JavaProtected
-  void removeObjectValue(java.lang.String elementName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadataFormatImpl.removeObjectValue(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void removeObjectValue(java.lang.String elementName) { }
   < ---- END java signatures ---- >
 }

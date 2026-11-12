@@ -58,22 +58,35 @@ class UnresolvedPermission {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnresolvedPermission(java.lang.String type, java.lang.String name, java.lang.String actions, java.security.cert.Certificate[] certs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnresolvedPermission.<init>(java.lang.String, java.lang.String, java.lang.String, java.security.cert.Certificate[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnresolvedPermission(java.lang.String type, java.lang.String name, java.lang.String actions, java.security.cert.Certificate[] certs) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnresolvedPermission.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnresolvedPermission.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnresolvedPermission.hashCode()"); }
-  public boolean implies(java.security.Permission p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnresolvedPermission.implies(java.security.Permission)"); }
-  public java.security.PermissionCollection newPermissionCollection() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnresolvedPermission.newPermissionCollection()"); }
-  public java.lang.String getActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnresolvedPermission.getActions()"); }
-  public java.lang.String getUnresolvedType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnresolvedPermission.getUnresolvedType()"); }
-  public java.lang.String getUnresolvedName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnresolvedPermission.getUnresolvedName()"); }
-  public java.lang.String getUnresolvedActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnresolvedPermission.getUnresolvedActions()"); }
-  public java.security.cert.Certificate[] getUnresolvedCerts() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnresolvedPermission.getUnresolvedCerts()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean implies(java.security.Permission p) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.PermissionCollection newPermissionCollection() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getActions() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUnresolvedType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUnresolvedName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUnresolvedActions() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.cert.Certificate[] getUnresolvedCerts() { return null; }
   < ---- END java signatures ---- >
 }

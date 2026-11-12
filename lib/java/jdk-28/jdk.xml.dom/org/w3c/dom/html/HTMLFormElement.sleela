@@ -58,24 +58,42 @@ class HTMLFormElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.getName()"); }
-  public abstract void reset() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.reset()"); }
-  public abstract int getLength() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.getLength()"); }
-  public abstract java.lang.String getMethod() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.getMethod()"); }
-  public abstract void setName(java.lang.String name) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.setName(java.lang.String)"); }
-  public abstract java.lang.String getTarget() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.getTarget()"); }
-  public abstract void setTarget(java.lang.String target) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.setTarget(java.lang.String)"); }
-  public abstract void submit() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.submit()"); }
-  public abstract void setMethod(java.lang.String method) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.setMethod(java.lang.String)"); }
-  public abstract java.lang.String getAction() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.getAction()"); }
-  public abstract void setAction(java.lang.String action) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.setAction(java.lang.String)"); }
-  public abstract org.w3c.dom.html.HTMLCollection getElements() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.getElements()"); }
-  public abstract java.lang.String getAcceptCharset() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.getAcceptCharset()"); }
-  public abstract void setAcceptCharset(java.lang.String acceptCharset) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.setAcceptCharset(java.lang.String)"); }
-  public abstract java.lang.String getEnctype() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.getEnctype()"); }
-  public abstract void setEnctype(java.lang.String enctype) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFormElement.setEnctype(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void reset() { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getMethod() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setName(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getTarget() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTarget(java.lang.String target) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void submit() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMethod(java.lang.String method) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAction() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAction(java.lang.String action) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLCollection getElements() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAcceptCharset() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAcceptCharset(java.lang.String acceptCharset) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getEnctype() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setEnctype(java.lang.String enctype) { }
   < ---- END java signatures ---- >
 }

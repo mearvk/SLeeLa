@@ -58,16 +58,26 @@ class ProcessingEnvironment {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.Locale getLocale() { throw new AbstractMethodError("javax.annotation.processing.ProcessingEnvironment.getLocale()"); }
-  public default boolean isPreviewEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.ProcessingEnvironment.isPreviewEnabled()"); }
-  public abstract javax.lang.model.SourceVersion getSourceVersion() { throw new AbstractMethodError("javax.annotation.processing.ProcessingEnvironment.getSourceVersion()"); }
-  public abstract javax.lang.model.util.Types getTypeUtils() { throw new AbstractMethodError("javax.annotation.processing.ProcessingEnvironment.getTypeUtils()"); }
-  public abstract javax.lang.model.util.Elements getElementUtils() { throw new AbstractMethodError("javax.annotation.processing.ProcessingEnvironment.getElementUtils()"); }
-  public abstract javax.annotation.processing.Filer getFiler() { throw new AbstractMethodError("javax.annotation.processing.ProcessingEnvironment.getFiler()"); }
-  public abstract javax.annotation.processing.Messager getMessager() { throw new AbstractMethodError("javax.annotation.processing.ProcessingEnvironment.getMessager()"); }
-  public abstract java.util.Map<java.lang.String, java.lang.String> getOptions() { throw new AbstractMethodError("javax.annotation.processing.ProcessingEnvironment.getOptions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Locale getLocale() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isPreviewEnabled() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.SourceVersion getSourceVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.util.Types getTypeUtils() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.util.Elements getElementUtils() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.annotation.processing.Filer getFiler() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.annotation.processing.Messager getMessager() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Map<java.lang.String, java.lang.String> getOptions() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,40 +58,74 @@ class MethodType {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Class<?> returnType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.returnType()"); }
-  public boolean equals(java.lang.Object x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.hashCode()"); }
-  public java.lang.invoke.MethodType wrap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.wrap()"); }
-  public java.util.Optional<java.lang.constant.MethodTypeDesc> describeConstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.describeConstable()"); }
-  public java.lang.String descriptorString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.descriptorString()"); }
-  public java.lang.Class<?> parameterType(int num) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.parameterType(int)"); }
-  public java.lang.invoke.MethodType insertParameterTypes(int num, java.lang.Class<?>... ptypesToInsert) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.insertParameterTypes(int, java.lang.Class<?>...)"); }
-  public java.lang.invoke.MethodType insertParameterTypes(int num, java.util.List<java.lang.Class<?>> ptypesToInsert) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.insertParameterTypes(int, java.util.List<java.lang.Class<?>>)"); }
-  public java.lang.invoke.MethodType changeReturnType(java.lang.Class<?> nrtype) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.changeReturnType(java.lang.Class<?>)"); }
-  public static java.lang.invoke.MethodType methodType(java.lang.Class<?> rtype, java.util.List<java.lang.Class<?>> ptypes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.methodType(java.lang.Class<?>, java.util.List<java.lang.Class<?>>)"); }
-  public static java.lang.invoke.MethodType methodType(java.lang.Class<?> rtype) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.methodType(java.lang.Class<?>)"); }
-  public static java.lang.invoke.MethodType methodType(java.lang.Class<?> rtype, java.lang.Class<?> ptype0, java.lang.Class<?>... ptypes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.methodType(java.lang.Class<?>, java.lang.Class<?>, java.lang.Class<?>...)"); }
-  public static java.lang.invoke.MethodType methodType(java.lang.Class<?> rtype, java.lang.Class<?>[] ptypes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.methodType(java.lang.Class<?>, java.lang.Class<?>[])"); }
-  public java.lang.invoke.MethodType dropParameterTypes(int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.dropParameterTypes(int, int)"); }
-  public java.lang.invoke.MethodType appendParameterTypes(java.lang.Class<?>... ptypesToInsert) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.appendParameterTypes(java.lang.Class<?>...)"); }
-  public java.lang.invoke.MethodType appendParameterTypes(java.util.List<java.lang.Class<?>> ptypesToInsert) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.appendParameterTypes(java.util.List<java.lang.Class<?>>)"); }
-  public int parameterCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.parameterCount()"); }
-  public static java.lang.invoke.MethodType genericMethodType(int objectArgCount, boolean finalArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.genericMethodType(int, boolean)"); }
-  public static java.lang.invoke.MethodType genericMethodType(int objectArgCount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.genericMethodType(int)"); }
-  public java.lang.Class<?> lastParameterType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.lastParameterType()"); }
-  public java.util.List<java.lang.Class<?>> parameterList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.parameterList()"); }
-  public java.lang.invoke.MethodType erase() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.erase()"); }
-  public java.lang.String toMethodDescriptorString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.toMethodDescriptorString()"); }
-  public java.lang.invoke.MethodType changeParameterType(int num, java.lang.Class<?> nptype) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.changeParameterType(int, java.lang.Class<?>)"); }
-  public boolean hasPrimitives() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.hasPrimitives()"); }
-  public java.lang.invoke.MethodType unwrap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.unwrap()"); }
-  public java.lang.Class<?>[] parameterArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.parameterArray()"); }
-  public boolean hasWrappers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.hasWrappers()"); }
-  public java.lang.invoke.MethodType generic() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.generic()"); }
-  public static java.lang.invoke.MethodType fromMethodDescriptorString(java.lang.String descriptor, java.lang.ClassLoader loader) throws java.lang.IllegalArgumentException, java.lang.TypeNotPresentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MethodType.fromMethodDescriptorString(java.lang.String, java.lang.ClassLoader)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> returnType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object x) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodType wrap() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<java.lang.constant.MethodTypeDesc> describeConstable() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String descriptorString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> parameterType(int num) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodType insertParameterTypes(int num, java.lang.Class<?>... ptypesToInsert) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodType insertParameterTypes(int num, java.util.List<java.lang.Class<?>> ptypesToInsert) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodType changeReturnType(java.lang.Class<?> nrtype) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.invoke.MethodType methodType(java.lang.Class<?> rtype, java.util.List<java.lang.Class<?>> ptypes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.invoke.MethodType methodType(java.lang.Class<?> rtype) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.invoke.MethodType methodType(java.lang.Class<?> rtype, java.lang.Class<?> ptype0, java.lang.Class<?>... ptypes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.invoke.MethodType methodType(java.lang.Class<?> rtype, java.lang.Class<?>[] ptypes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodType dropParameterTypes(int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodType appendParameterTypes(java.lang.Class<?>... ptypesToInsert) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodType appendParameterTypes(java.util.List<java.lang.Class<?>> ptypesToInsert) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int parameterCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.invoke.MethodType genericMethodType(int objectArgCount, boolean finalArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.invoke.MethodType genericMethodType(int objectArgCount) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> lastParameterType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.lang.Class<?>> parameterList() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodType erase() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toMethodDescriptorString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodType changeParameterType(int num, java.lang.Class<?> nptype) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasPrimitives() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodType unwrap() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?>[] parameterArray() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasWrappers() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodType generic() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.TypeNotPresentException")
+  public static java.lang.invoke.MethodType fromMethodDescriptorString(java.lang.String descriptor, java.lang.ClassLoader loader) { return null; }
   < ---- END java signatures ---- >
 }

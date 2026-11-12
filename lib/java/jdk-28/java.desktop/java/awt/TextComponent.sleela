@@ -62,38 +62,67 @@ class TextComponent {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.paramString()"); }
-  public synchronized java.lang.String getText() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.getText()"); }
-  public synchronized void select(int selectionStart, int selectionEnd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.select(int, int)"); }
-  public synchronized void setText(java.lang.String t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.setText(java.lang.String)"); }
-  public java.awt.Color getBackground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.getBackground()"); }
-  public void setBackground(java.awt.Color c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.setBackground(java.awt.Color)"); }
-  public void enableInputMethods(boolean enable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.enableInputMethods(boolean)"); }
-  public synchronized java.lang.String getSelectedText() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.getSelectedText()"); }
-  public synchronized int getSelectionStart() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.getSelectionStart()"); }
-  public synchronized int getSelectionEnd() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.getSelectionEnd()"); }
-  public synchronized void setEditable(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.setEditable(boolean)"); }
-  public synchronized void setCaretPosition(int position) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.setCaretPosition(int)"); }
-  public synchronized int getCaretPosition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.getCaretPosition()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String getText() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void select(int selectionStart, int selectionEnd) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setText(java.lang.String t) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getBackground() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBackground(java.awt.Color c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void enableInputMethods(boolean enable) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String getSelectedText() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int getSelectionStart() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int getSelectionEnd() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setEditable(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setCaretPosition(int position) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int getCaretPosition() { return 0; }
   @JavaProtected
-  void processTextEvent(java.awt.event.TextEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.processTextEvent(java.awt.event.TextEvent)"); }
-  public synchronized void addTextListener(java.awt.event.TextListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.addTextListener(java.awt.event.TextListener)"); }
-  public boolean isEditable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.isEditable()"); }
-  public synchronized void setSelectionStart(int selectionStart) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.setSelectionStart(int)"); }
-  public synchronized void setSelectionEnd(int selectionEnd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.setSelectionEnd(int)"); }
-  public synchronized void selectAll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.selectAll()"); }
-  public synchronized void removeTextListener(java.awt.event.TextListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.removeTextListener(java.awt.event.TextListener)"); }
-  public synchronized java.awt.event.TextListener[] getTextListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.getTextListeners()"); }
-  public java.awt.im.InputMethodRequests getInputMethodRequests() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.getInputMethodRequests()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.getAccessibleContext()"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.addNotify()"); }
-  public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.removeNotify()"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.getListeners(java.lang.Class<T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processTextEvent(java.awt.event.TextEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addTextListener(java.awt.event.TextListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEditable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setSelectionStart(int selectionStart) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setSelectionEnd(int selectionEnd) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void selectAll() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeTextListener(java.awt.event.TextListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.event.TextListener[] getTextListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.im.InputMethodRequests getInputMethodRequests() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   @JavaProtected
-  void processEvent(java.awt.AWTEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextComponent.processEvent(java.awt.AWTEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processEvent(java.awt.AWTEvent e) { }
   < ---- END java signatures ---- >
 }

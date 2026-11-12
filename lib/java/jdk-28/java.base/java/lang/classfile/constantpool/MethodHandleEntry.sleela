@@ -58,12 +58,18 @@ class MethodHandleEntry {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int kind() { throw new AbstractMethodError("java.lang.classfile.constantpool.MethodHandleEntry.kind()"); }
-  public abstract java.lang.classfile.constantpool.MemberRefEntry reference() { throw new AbstractMethodError("java.lang.classfile.constantpool.MethodHandleEntry.reference()"); }
-  public abstract java.lang.constant.DirectMethodHandleDesc asSymbol() { throw new AbstractMethodError("java.lang.classfile.constantpool.MethodHandleEntry.asSymbol()"); }
-  public default java.lang.constant.ConstantDesc constantValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.constantpool.MethodHandleEntry.constantValue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int kind() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.MemberRefEntry reference() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.constant.DirectMethodHandleDesc asSymbol() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.constant.ConstantDesc constantValue() { return null; }
   < ---- END java signatures ---- >
 }

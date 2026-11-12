@@ -80,26 +80,42 @@ class ShortMessage {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ShortMessage(byte[] data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.<init>(byte[])"); }
-  public ShortMessage(int command, int channel, int data1, int data2) throws javax.sound.midi.InvalidMidiDataException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.<init>(int, int, int, int)"); }
-  public ShortMessage(int status, int data1, int data2) throws javax.sound.midi.InvalidMidiDataException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.<init>(int, int, int)"); }
-  public ShortMessage(int status) throws javax.sound.midi.InvalidMidiDataException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.<init>(int)"); }
-  public ShortMessage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ShortMessage(byte[] data) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.InvalidMidiDataException")
+  public ShortMessage(int command, int channel, int data1, int data2) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.InvalidMidiDataException")
+  public ShortMessage(int status, int data1, int data2) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.InvalidMidiDataException")
+  public ShortMessage(int status) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ShortMessage() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.clone()"); }
-  public int getChannel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.getChannel()"); }
-  public void setMessage(int command, int channel, int data1, int data2) throws javax.sound.midi.InvalidMidiDataException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.setMessage(int, int, int, int)"); }
-  public void setMessage(int status, int data1, int data2) throws javax.sound.midi.InvalidMidiDataException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.setMessage(int, int, int)"); }
-  public void setMessage(int status) throws javax.sound.midi.InvalidMidiDataException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.setMessage(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getChannel() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.InvalidMidiDataException")
+  public void setMessage(int command, int channel, int data1, int data2) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.InvalidMidiDataException")
+  public void setMessage(int status, int data1, int data2) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.InvalidMidiDataException")
+  public void setMessage(int status) { }
   @JavaProtected
-  final int getDataLength(int status) throws javax.sound.midi.InvalidMidiDataException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.getDataLength(int)"); }
-  public int getCommand() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.getCommand()"); }
-  public int getData1() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.getData1()"); }
-  public int getData2() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.ShortMessage.getData2()"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.InvalidMidiDataException")
+  final int getDataLength(int status) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getCommand() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getData1() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getData2() { return 0; }
   < ---- END java signatures ---- >
 }

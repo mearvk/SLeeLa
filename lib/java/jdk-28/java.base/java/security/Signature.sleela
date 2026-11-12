@@ -67,34 +67,59 @@ class Signature {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Signature(java.lang.String algorithm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Signature(java.lang.String algorithm) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.toString()"); }
-  public java.lang.Object clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.clone()"); }
-  public final void update(byte[] data) throws java.security.SignatureException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.update(byte[])"); }
-  public final void update(byte[] data, int off, int len) throws java.security.SignatureException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.update(byte[], int, int)"); }
-  public final void update(byte b) throws java.security.SignatureException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.update(byte)"); }
-  public final void update(java.nio.ByteBuffer data) throws java.security.SignatureException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.update(java.nio.ByteBuffer)"); }
-  public static java.security.Signature getInstance(java.lang.String algorithm) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.getInstance(java.lang.String)"); }
-  public static java.security.Signature getInstance(java.lang.String algorithm, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.getInstance(java.lang.String, java.lang.String)"); }
-  public static java.security.Signature getInstance(java.lang.String algorithm, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.getInstance(java.lang.String, java.security.Provider)"); }
-  public final java.security.AlgorithmParameters getParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.getParameters()"); }
-  public final int sign(byte[] outbuf, int offset, int len) throws java.security.SignatureException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.sign(byte[], int, int)"); }
-  public final byte[] sign() throws java.security.SignatureException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.sign()"); }
-  public final boolean verify(byte[] signature) throws java.security.SignatureException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.verify(byte[])"); }
-  public final boolean verify(byte[] signature, int offset, int length) throws java.security.SignatureException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.verify(byte[], int, int)"); }
-  public final java.security.Provider getProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.getProvider()"); }
-  public final java.lang.String getAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.getAlgorithm()"); }
-  public final java.lang.Object getParameter(java.lang.String param) throws java.security.InvalidParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.getParameter(java.lang.String)"); }
-  public final void initVerify(java.security.cert.Certificate certificate) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.initVerify(java.security.cert.Certificate)"); }
-  public final void initSign(java.security.PrivateKey privateKey, java.security.SecureRandom random) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.initSign(java.security.PrivateKey, java.security.SecureRandom)"); }
-  public final void initSign(java.security.PrivateKey privateKey) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.initSign(java.security.PrivateKey)"); }
-  public final void setParameter(java.lang.String param, java.lang.Object value) throws java.security.InvalidParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.setParameter(java.lang.String, java.lang.Object)"); }
-  public final void setParameter(java.security.spec.AlgorithmParameterSpec params) throws java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Signature.setParameter(java.security.spec.AlgorithmParameterSpec)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.SignatureException")
+  public final void update(byte[] data) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.SignatureException")
+  public final void update(byte[] data, int off, int len) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.SignatureException")
+  public final void update(byte b) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.SignatureException")
+  public final void update(java.nio.ByteBuffer data) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static java.security.Signature getInstance(java.lang.String algorithm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException")
+  public static java.security.Signature getInstance(java.lang.String algorithm, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static java.security.Signature getInstance(java.lang.String algorithm, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.AlgorithmParameters getParameters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.SignatureException")
+  public final int sign(byte[] outbuf, int offset, int len) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.SignatureException")
+  public final byte[] sign() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.SignatureException")
+  public final boolean verify(byte[] signature) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.SignatureException")
+  public final boolean verify(byte[] signature, int offset, int length) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.Provider getProvider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidParameterException")
+  public final java.lang.Object getParameter(java.lang.String param) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException")
+  public final void initVerify(java.security.cert.Certificate certificate) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException")
+  public final void initSign(java.security.PrivateKey privateKey, java.security.SecureRandom random) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException")
+  public final void initSign(java.security.PrivateKey privateKey) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidParameterException")
+  public final void setParameter(java.lang.String param, java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidAlgorithmParameterException")
+  public final void setParameter(java.security.spec.AlgorithmParameterSpec params) { }
   < ---- END java signatures ---- >
 }

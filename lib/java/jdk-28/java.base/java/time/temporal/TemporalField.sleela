@@ -58,20 +58,34 @@ class TemporalField {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String toString() { throw new AbstractMethodError("java.time.temporal.TemporalField.toString()"); }
-  public default java.time.temporal.TemporalAccessor resolve(java.util.Map<java.time.temporal.TemporalField, java.lang.Long> fieldValues, java.time.temporal.TemporalAccessor partialTemporal, java.time.format.ResolverStyle resolverStyle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.temporal.TemporalField.resolve(java.util.Map<java.time.temporal.TemporalField, java.lang.Long>, java.time.temporal.TemporalAccessor, java.time.format.ResolverStyle)"); }
-  public abstract java.time.temporal.ValueRange range() { throw new AbstractMethodError("java.time.temporal.TemporalField.range()"); }
-  public default java.lang.String getDisplayName(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.temporal.TemporalField.getDisplayName(java.util.Locale)"); }
-  public abstract boolean isSupportedBy(java.time.temporal.TemporalAccessor temporal) { throw new AbstractMethodError("java.time.temporal.TemporalField.isSupportedBy(java.time.temporal.TemporalAccessor)"); }
-  public abstract boolean isTimeBased() { throw new AbstractMethodError("java.time.temporal.TemporalField.isTimeBased()"); }
-  public abstract long getFrom(java.time.temporal.TemporalAccessor temporal) { throw new AbstractMethodError("java.time.temporal.TemporalField.getFrom(java.time.temporal.TemporalAccessor)"); }
-  public abstract <R extends java.time.temporal.Temporal> R adjustInto(R temporal, long newValue) { throw new AbstractMethodError("java.time.temporal.TemporalField.adjustInto(R, long)"); }
-  public abstract java.time.temporal.ValueRange rangeRefinedBy(java.time.temporal.TemporalAccessor temporal) { throw new AbstractMethodError("java.time.temporal.TemporalField.rangeRefinedBy(java.time.temporal.TemporalAccessor)"); }
-  public abstract boolean isDateBased() { throw new AbstractMethodError("java.time.temporal.TemporalField.isDateBased()"); }
-  public abstract java.time.temporal.TemporalUnit getBaseUnit() { throw new AbstractMethodError("java.time.temporal.TemporalField.getBaseUnit()"); }
-  public abstract java.time.temporal.TemporalUnit getRangeUnit() { throw new AbstractMethodError("java.time.temporal.TemporalField.getRangeUnit()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.temporal.TemporalAccessor resolve(java.util.Map<java.time.temporal.TemporalField, java.lang.Long> fieldValues, java.time.temporal.TemporalAccessor partialTemporal, java.time.format.ResolverStyle resolverStyle) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.temporal.ValueRange range() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.String getDisplayName(java.util.Locale locale) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSupportedBy(java.time.temporal.TemporalAccessor temporal) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isTimeBased() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getFrom(java.time.temporal.TemporalAccessor temporal) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public <R extends java.time.temporal.Temporal> R adjustInto(R temporal, long newValue) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.temporal.ValueRange rangeRefinedBy(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDateBased() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.temporal.TemporalUnit getBaseUnit() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.temporal.TemporalUnit getRangeUnit() { return null; }
   < ---- END java signatures ---- >
 }

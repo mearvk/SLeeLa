@@ -58,6 +58,7 @@ class AlreadyConnectedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AlreadyConnectedException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.AlreadyConnectedException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AlreadyConnectedException() { }
   < ---- END java constructors ---- >
 }

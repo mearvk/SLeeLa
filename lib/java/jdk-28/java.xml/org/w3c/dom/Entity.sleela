@@ -58,14 +58,22 @@ class Entity {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getNotationName() { throw new AbstractMethodError("org.w3c.dom.Entity.getNotationName()"); }
-  public abstract java.lang.String getInputEncoding() { throw new AbstractMethodError("org.w3c.dom.Entity.getInputEncoding()"); }
-  public abstract java.lang.String getXmlEncoding() { throw new AbstractMethodError("org.w3c.dom.Entity.getXmlEncoding()"); }
-  public abstract java.lang.String getXmlVersion() { throw new AbstractMethodError("org.w3c.dom.Entity.getXmlVersion()"); }
-  public abstract java.lang.String getPublicId() { throw new AbstractMethodError("org.w3c.dom.Entity.getPublicId()"); }
-  public abstract java.lang.String getSystemId() { throw new AbstractMethodError("org.w3c.dom.Entity.getSystemId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getNotationName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getInputEncoding() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getXmlEncoding() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getXmlVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getPublicId() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSystemId() { return null; }
   < ---- END java signatures ---- >
 }

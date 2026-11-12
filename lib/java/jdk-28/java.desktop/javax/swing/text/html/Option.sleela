@@ -58,20 +58,30 @@ class Option {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Option(javax.swing.text.AttributeSet attr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.Option.<init>(javax.swing.text.AttributeSet)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Option(javax.swing.text.AttributeSet attr) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.Option.toString()"); }
-  public java.lang.String getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.Option.getValue()"); }
-  public javax.swing.text.AttributeSet getAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.Option.getAttributes()"); }
-  public java.lang.String getLabel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.Option.getLabel()"); }
-  public boolean isSelected() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.Option.isSelected()"); }
-  public void setLabel(java.lang.String label) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.Option.setLabel(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.AttributeSet getAttributes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLabel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSelected() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLabel(java.lang.String label) { }
   @JavaProtected
-  void setSelection(boolean state) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.Option.setSelection(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setSelection(boolean state) { }
   < ---- END java signatures ---- >
 }

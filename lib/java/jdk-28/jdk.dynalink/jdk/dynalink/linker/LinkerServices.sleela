@@ -58,16 +58,26 @@ class LinkerServices {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.invoke.MethodHandle asType(java.lang.invoke.MethodHandle handle, java.lang.invoke.MethodType fromType) { throw new AbstractMethodError("jdk.dynalink.linker.LinkerServices.asType(java.lang.invoke.MethodHandle, java.lang.invoke.MethodType)"); }
-  public abstract boolean canConvert(java.lang.Class<?> from, java.lang.Class<?> to) { throw new AbstractMethodError("jdk.dynalink.linker.LinkerServices.canConvert(java.lang.Class<?>, java.lang.Class<?>)"); }
-  public abstract jdk.dynalink.linker.GuardedInvocation getGuardedInvocation(jdk.dynalink.linker.LinkRequest linkRequest) throws java.lang.Exception { throw new AbstractMethodError("jdk.dynalink.linker.LinkerServices.getGuardedInvocation(jdk.dynalink.linker.LinkRequest)"); }
-  public default java.lang.invoke.MethodHandle asTypeLosslessReturn(java.lang.invoke.MethodHandle handle, java.lang.invoke.MethodType fromType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.LinkerServices.asTypeLosslessReturn(java.lang.invoke.MethodHandle, java.lang.invoke.MethodType)"); }
-  public abstract java.lang.invoke.MethodHandle getTypeConverter(java.lang.Class<?> sourceType, java.lang.Class<?> targetType) { throw new AbstractMethodError("jdk.dynalink.linker.LinkerServices.getTypeConverter(java.lang.Class<?>, java.lang.Class<?>)"); }
-  public abstract jdk.dynalink.linker.ConversionComparator.Comparison compareConversion(java.lang.Class<?> sourceType, java.lang.Class<?> targetType1, java.lang.Class<?> targetType2) { throw new AbstractMethodError("jdk.dynalink.linker.LinkerServices.compareConversion(java.lang.Class<?>, java.lang.Class<?>, java.lang.Class<?>)"); }
-  public abstract java.lang.invoke.MethodHandle filterInternalObjects(java.lang.invoke.MethodHandle target) { throw new AbstractMethodError("jdk.dynalink.linker.LinkerServices.filterInternalObjects(java.lang.invoke.MethodHandle)"); }
-  public abstract <T> T getWithLookup(java.util.function.Supplier<T> operation, jdk.dynalink.SecureLookupSupplier lookupSupplier) { throw new AbstractMethodError("jdk.dynalink.linker.LinkerServices.getWithLookup(java.util.function.Supplier<T>, jdk.dynalink.SecureLookupSupplier)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.invoke.MethodHandle asType(java.lang.invoke.MethodHandle handle, java.lang.invoke.MethodType fromType) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canConvert(java.lang.Class<?> from, java.lang.Class<?> to) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.Exception")
+  public jdk.dynalink.linker.GuardedInvocation getGuardedInvocation(jdk.dynalink.linker.LinkRequest linkRequest) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.invoke.MethodHandle asTypeLosslessReturn(java.lang.invoke.MethodHandle handle, java.lang.invoke.MethodType fromType) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.invoke.MethodHandle getTypeConverter(java.lang.Class<?> sourceType, java.lang.Class<?> targetType) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.dynalink.linker.ConversionComparator.Comparison compareConversion(java.lang.Class<?> sourceType, java.lang.Class<?> targetType1, java.lang.Class<?> targetType2) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.invoke.MethodHandle filterInternalObjects(java.lang.invoke.MethodHandle target) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <T> T getWithLookup(java.util.function.Supplier<T> operation, jdk.dynalink.SecureLookupSupplier lookupSupplier) { return null; }
   < ---- END java signatures ---- >
 }

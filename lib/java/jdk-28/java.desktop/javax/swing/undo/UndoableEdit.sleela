@@ -58,19 +58,32 @@ class UndoableEdit {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void undo() throws javax.swing.undo.CannotUndoException { throw new AbstractMethodError("javax.swing.undo.UndoableEdit.undo()"); }
-  public abstract boolean canUndo() { throw new AbstractMethodError("javax.swing.undo.UndoableEdit.canUndo()"); }
-  public abstract void redo() throws javax.swing.undo.CannotRedoException { throw new AbstractMethodError("javax.swing.undo.UndoableEdit.redo()"); }
-  public abstract boolean canRedo() { throw new AbstractMethodError("javax.swing.undo.UndoableEdit.canRedo()"); }
-  public abstract void die() { throw new AbstractMethodError("javax.swing.undo.UndoableEdit.die()"); }
-  public abstract boolean addEdit(javax.swing.undo.UndoableEdit anEdit) { throw new AbstractMethodError("javax.swing.undo.UndoableEdit.addEdit(javax.swing.undo.UndoableEdit)"); }
-  public abstract boolean replaceEdit(javax.swing.undo.UndoableEdit anEdit) { throw new AbstractMethodError("javax.swing.undo.UndoableEdit.replaceEdit(javax.swing.undo.UndoableEdit)"); }
-  public abstract boolean isSignificant() { throw new AbstractMethodError("javax.swing.undo.UndoableEdit.isSignificant()"); }
-  public abstract java.lang.String getPresentationName() { throw new AbstractMethodError("javax.swing.undo.UndoableEdit.getPresentationName()"); }
-  public abstract java.lang.String getUndoPresentationName() { throw new AbstractMethodError("javax.swing.undo.UndoableEdit.getUndoPresentationName()"); }
-  public abstract java.lang.String getRedoPresentationName() { throw new AbstractMethodError("javax.swing.undo.UndoableEdit.getRedoPresentationName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.swing.undo.CannotUndoException")
+  public void undo() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canUndo() { return false; }
+  @throwable("java.lang.AbstractMethodError, javax.swing.undo.CannotRedoException")
+  public void redo() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canRedo() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void die() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean addEdit(javax.swing.undo.UndoableEdit anEdit) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean replaceEdit(javax.swing.undo.UndoableEdit anEdit) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSignificant() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getPresentationName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getUndoPresentationName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getRedoPresentationName() { return null; }
   < ---- END java signatures ---- >
 }

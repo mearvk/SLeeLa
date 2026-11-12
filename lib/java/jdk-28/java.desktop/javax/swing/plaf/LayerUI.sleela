@@ -58,52 +58,85 @@ class LayerUI<V extends java.awt.Component> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LayerUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LayerUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object)"); }
-  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.addPropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public void addPropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.addPropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)"); }
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.getPreferredSize(javax.swing.JComponent)"); }
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.getMinimumSize(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addPropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void processKeyEvent(java.awt.event.KeyEvent e, javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.processKeyEvent(java.awt.event.KeyEvent, javax.swing.JLayer<? extends V>)"); }
-  public java.beans.PropertyChangeListener[] getPropertyChangeListeners(java.lang.String propertyName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.getPropertyChangeListeners(java.lang.String)"); }
-  public java.beans.PropertyChangeListener[] getPropertyChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.getPropertyChangeListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processKeyEvent(java.awt.event.KeyEvent e, javax.swing.JLayer<? extends V> l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.PropertyChangeListener[] getPropertyChangeListeners(java.lang.String propertyName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.PropertyChangeListener[] getPropertyChangeListeners() { return null; }
   @JavaProtected
-  void processFocusEvent(java.awt.event.FocusEvent e, javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.processFocusEvent(java.awt.event.FocusEvent, javax.swing.JLayer<? extends V>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processFocusEvent(java.awt.event.FocusEvent e, javax.swing.JLayer<? extends V> l) { }
   @JavaProtected
-  void processMouseEvent(java.awt.event.MouseEvent e, javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.processMouseEvent(java.awt.event.MouseEvent, javax.swing.JLayer<? extends V>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processMouseEvent(java.awt.event.MouseEvent e, javax.swing.JLayer<? extends V> l) { }
   @JavaProtected
-  void processMouseMotionEvent(java.awt.event.MouseEvent e, javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.processMouseMotionEvent(java.awt.event.MouseEvent, javax.swing.JLayer<? extends V>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processMouseMotionEvent(java.awt.event.MouseEvent e, javax.swing.JLayer<? extends V> l) { }
   @JavaProtected
-  void processMouseWheelEvent(java.awt.event.MouseWheelEvent e, javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.processMouseWheelEvent(java.awt.event.MouseWheelEvent, javax.swing.JLayer<? extends V>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processMouseWheelEvent(java.awt.event.MouseWheelEvent e, javax.swing.JLayer<? extends V> l) { }
   @JavaProtected
-  void processComponentEvent(java.awt.event.ComponentEvent e, javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.processComponentEvent(java.awt.event.ComponentEvent, javax.swing.JLayer<? extends V>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processComponentEvent(java.awt.event.ComponentEvent e, javax.swing.JLayer<? extends V> l) { }
   @JavaProtected
-  void processInputMethodEvent(java.awt.event.InputMethodEvent e, javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.processInputMethodEvent(java.awt.event.InputMethodEvent, javax.swing.JLayer<? extends V>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processInputMethodEvent(java.awt.event.InputMethodEvent e, javax.swing.JLayer<? extends V> l) { }
   @JavaProtected
-  void processHierarchyEvent(java.awt.event.HierarchyEvent e, javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.processHierarchyEvent(java.awt.event.HierarchyEvent, javax.swing.JLayer<? extends V>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processHierarchyEvent(java.awt.event.HierarchyEvent e, javax.swing.JLayer<? extends V> l) { }
   @JavaProtected
-  void processHierarchyBoundsEvent(java.awt.event.HierarchyEvent e, javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.processHierarchyBoundsEvent(java.awt.event.HierarchyEvent, javax.swing.JLayer<? extends V>)"); }
-  public void removePropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.removePropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)"); }
-  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.removePropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public void updateUI(javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.updateUI(javax.swing.JLayer<? extends V>)"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.installUI(javax.swing.JComponent)"); }
-  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.uninstallUI(javax.swing.JComponent)"); }
-  public void paintImmediately(int x, int y, int width, int height, javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.paintImmediately(int, int, int, int, javax.swing.JLayer<? extends V>)"); }
-  public void eventDispatched(java.awt.AWTEvent e, javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.eventDispatched(java.awt.AWTEvent, javax.swing.JLayer<? extends V>)"); }
-  public void applyPropertyChange(java.beans.PropertyChangeEvent evt, javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.applyPropertyChange(java.beans.PropertyChangeEvent, javax.swing.JLayer<? extends V>)"); }
-  public int getBaseline(javax.swing.JComponent c, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.getBaseline(javax.swing.JComponent, int, int)"); }
-  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.getBaselineResizeBehavior(javax.swing.JComponent)"); }
-  public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int w, int h, javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.imageUpdate(java.awt.Image, int, int, int, int, int, javax.swing.JLayer<? extends V>)"); }
-  public void doLayout(javax.swing.JLayer<? extends V> l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.doLayout(javax.swing.JLayer<? extends V>)"); }
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.getMaximumSize(javax.swing.JComponent)"); }
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LayerUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processHierarchyBoundsEvent(java.awt.event.HierarchyEvent e, javax.swing.JLayer<? extends V> l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removePropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI(javax.swing.JLayer<? extends V> l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintImmediately(int x, int y, int width, int height, javax.swing.JLayer<? extends V> l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void eventDispatched(java.awt.AWTEvent e, javax.swing.JLayer<? extends V> l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void applyPropertyChange(java.beans.PropertyChangeEvent evt, javax.swing.JLayer<? extends V> l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBaseline(javax.swing.JComponent c, int width, int height) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int w, int h, javax.swing.JLayer<? extends V> l) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void doLayout(javax.swing.JLayer<? extends V> l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
   < ---- END java signatures ---- >
 }

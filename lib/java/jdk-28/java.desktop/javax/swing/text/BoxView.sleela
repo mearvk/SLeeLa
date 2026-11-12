@@ -58,65 +58,103 @@ class BoxView {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BoxView(javax.swing.text.Element elem, int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.<init>(javax.swing.text.Element, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BoxView(javax.swing.text.Element elem, int axis) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void replace(int index, int length, javax.swing.text.View[] elems) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.replace(int, int, javax.swing.text.View[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void replace(int index, int length, javax.swing.text.View[] elems) { }
   @JavaProtected
-  int getOffset(int axis, int childIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.getOffset(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getOffset(int axis, int childIndex) { return 0; }
   @JavaProtected
-  boolean isAfter(int x, int y, java.awt.Rectangle innerAlloc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.isAfter(int, int, java.awt.Rectangle)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isAfter(int x, int y, java.awt.Rectangle innerAlloc) { return false; }
   @JavaProtected
-  boolean isBefore(int x, int y, java.awt.Rectangle innerAlloc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.isBefore(int, int, java.awt.Rectangle)"); }
-  public void setSize(float width, float height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.setSize(float, float)"); }
-  public float getAlignment(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.getAlignment(int)"); }
-  public int getHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.getHeight()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isBefore(int x, int y, java.awt.Rectangle innerAlloc) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSize(float width, float height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getAlignment(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHeight() { return 0; }
   @JavaProtected
-  void baselineLayout(int targetSpan, int axis, int[] offsets, int[] spans) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.baselineLayout(int, int, int[], int[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void baselineLayout(int targetSpan, int axis, int[] offsets, int[] spans) { }
   @JavaProtected
-  void layout(int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.layout(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void layout(int width, int height) { }
   @JavaProtected
-  javax.swing.SizeRequirements calculateMinorAxisRequirements(int axis, javax.swing.SizeRequirements r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.calculateMinorAxisRequirements(int, javax.swing.SizeRequirements)"); }
-  public float getPreferredSpan(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.getPreferredSpan(int)"); }
-  public java.awt.Shape getChildAllocation(int index, java.awt.Shape a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.getChildAllocation(int, java.awt.Shape)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.SizeRequirements calculateMinorAxisRequirements(int axis, javax.swing.SizeRequirements r) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getPreferredSpan(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Shape getChildAllocation(int index, java.awt.Shape a) { return null; }
   @JavaProtected
-  int getSpan(int axis, int childIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.getSpan(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getSpan(int axis, int childIndex) { return 0; }
   @JavaProtected
-  void paintChild(java.awt.Graphics g, java.awt.Rectangle alloc, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.paintChild(java.awt.Graphics, java.awt.Rectangle, int)"); }
-  public float getMinimumSpan(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.getMinimumSpan(int)"); }
-  public float getMaximumSpan(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.getMaximumSpan(int)"); }
-  public void layoutChanged(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.layoutChanged(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintChild(java.awt.Graphics g, java.awt.Rectangle alloc, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMinimumSpan(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMaximumSpan(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void layoutChanged(int axis) { }
   @JavaProtected
-  boolean flipEastAndWestAtEnds(int position, javax.swing.text.Position.Bias bias) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.flipEastAndWestAtEnds(int, javax.swing.text.Position.Bias)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean flipEastAndWestAtEnds(int position, javax.swing.text.Position.Bias bias) { return false; }
   @JavaProtected
-  boolean isLayoutValid(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.isLayoutValid(int)"); }
-  public void preferenceChanged(javax.swing.text.View child, boolean width, boolean height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.preferenceChanged(javax.swing.text.View, boolean, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isLayoutValid(int axis) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void preferenceChanged(javax.swing.text.View child, boolean width, boolean height) { }
   @JavaProtected
-  void forwardUpdate(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.forwardUpdate(javax.swing.event.DocumentEvent.ElementChange, javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void forwardUpdate(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
   @JavaProtected
-  void layoutMajorAxis(int targetSpan, int axis, int[] offsets, int[] spans) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.layoutMajorAxis(int, int, int[], int[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void layoutMajorAxis(int targetSpan, int axis, int[] offsets, int[] spans) { }
   @JavaProtected
-  void layoutMinorAxis(int targetSpan, int axis, int[] offsets, int[] spans) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.layoutMinorAxis(int, int, int[], int[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void layoutMinorAxis(int targetSpan, int axis, int[] offsets, int[] spans) { }
   @JavaProtected
-  boolean isAllocationValid() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.isAllocationValid()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isAllocationValid() { return false; }
   @JavaProtected
-  void childAllocation(int index, java.awt.Rectangle alloc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.childAllocation(int, java.awt.Rectangle)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void childAllocation(int index, java.awt.Rectangle alloc) { }
   @JavaProtected
-  javax.swing.SizeRequirements calculateMajorAxisRequirements(int axis, javax.swing.SizeRequirements r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.calculateMajorAxisRequirements(int, javax.swing.SizeRequirements)"); }
-  public int getResizeWeight(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.getResizeWeight(int)"); }
-  public void setAxis(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.setAxis(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.SizeRequirements calculateMajorAxisRequirements(int axis, javax.swing.SizeRequirements r) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getResizeWeight(int axis) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAxis(int axis) { }
   @JavaProtected
-  javax.swing.text.View getViewAtPoint(int x, int y, java.awt.Rectangle alloc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.getViewAtPoint(int, int, java.awt.Rectangle)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.View getViewAtPoint(int x, int y, java.awt.Rectangle alloc) { return null; }
   @JavaProtected
-  javax.swing.SizeRequirements baselineRequirements(int axis, javax.swing.SizeRequirements r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.baselineRequirements(int, javax.swing.SizeRequirements)"); }
-  public int getWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.getWidth()"); }
-  public int viewToModel(float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] bias) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.viewToModel(float, float, java.awt.Shape, javax.swing.text.Position.Bias[])"); }
-  public java.awt.Shape modelToView(int pos, java.awt.Shape a, javax.swing.text.Position.Bias b) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.modelToView(int, java.awt.Shape, javax.swing.text.Position.Bias)"); }
-  public int getAxis() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.getAxis()"); }
-  public void paint(java.awt.Graphics g, java.awt.Shape allocation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.BoxView.paint(java.awt.Graphics, java.awt.Shape)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.SizeRequirements baselineRequirements(int axis, javax.swing.SizeRequirements r) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getWidth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int viewToModel(float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] bias) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public java.awt.Shape modelToView(int pos, java.awt.Shape a, javax.swing.text.Position.Bias b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAxis() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, java.awt.Shape allocation) { }
   < ---- END java signatures ---- >
 }

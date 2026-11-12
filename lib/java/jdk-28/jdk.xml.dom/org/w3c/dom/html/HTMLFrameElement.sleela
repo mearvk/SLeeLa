@@ -58,25 +58,44 @@ class HTMLFrameElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.getName()"); }
-  public abstract void setName(java.lang.String name) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.setName(java.lang.String)"); }
-  public abstract java.lang.String getFrameBorder() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.getFrameBorder()"); }
-  public abstract void setFrameBorder(java.lang.String frameBorder) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.setFrameBorder(java.lang.String)"); }
-  public abstract java.lang.String getLongDesc() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.getLongDesc()"); }
-  public abstract void setLongDesc(java.lang.String longDesc) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.setLongDesc(java.lang.String)"); }
-  public abstract java.lang.String getMarginHeight() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.getMarginHeight()"); }
-  public abstract void setMarginHeight(java.lang.String marginHeight) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.setMarginHeight(java.lang.String)"); }
-  public abstract java.lang.String getMarginWidth() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.getMarginWidth()"); }
-  public abstract void setMarginWidth(java.lang.String marginWidth) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.setMarginWidth(java.lang.String)"); }
-  public abstract boolean getNoResize() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.getNoResize()"); }
-  public abstract void setNoResize(boolean noResize) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.setNoResize(boolean)"); }
-  public abstract java.lang.String getScrolling() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.getScrolling()"); }
-  public abstract void setScrolling(java.lang.String scrolling) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.setScrolling(java.lang.String)"); }
-  public abstract java.lang.String getSrc() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.getSrc()"); }
-  public abstract void setSrc(java.lang.String src) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.setSrc(java.lang.String)"); }
-  public abstract org.w3c.dom.Document getContentDocument() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFrameElement.getContentDocument()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setName(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getFrameBorder() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setFrameBorder(java.lang.String frameBorder) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getLongDesc() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setLongDesc(java.lang.String longDesc) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getMarginHeight() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMarginHeight(java.lang.String marginHeight) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getMarginWidth() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMarginWidth(java.lang.String marginWidth) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getNoResize() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setNoResize(boolean noResize) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getScrolling() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setScrolling(java.lang.String scrolling) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSrc() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSrc(java.lang.String src) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Document getContentDocument() { return null; }
   < ---- END java signatures ---- >
 }

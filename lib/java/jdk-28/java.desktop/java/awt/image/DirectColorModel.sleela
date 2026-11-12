@@ -58,37 +58,65 @@ class DirectColorModel {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DirectColorModel(java.awt.color.ColorSpace space, int bits, int rmask, int gmask, int bmask, int amask, boolean isAlphaPremultiplied, int transferType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.<init>(java.awt.color.ColorSpace, int, int, int, int, int, boolean, int)"); }
-  public DirectColorModel(int bits, int rmask, int gmask, int bmask, int amask) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.<init>(int, int, int, int, int)"); }
-  public DirectColorModel(int bits, int rmask, int gmask, int bmask) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.<init>(int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DirectColorModel(java.awt.color.ColorSpace space, int bits, int rmask, int gmask, int bmask, int amask, boolean isAlphaPremultiplied, int transferType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DirectColorModel(int bits, int rmask, int gmask, int bmask, int amask) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DirectColorModel(int bits, int rmask, int gmask, int bmask) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.toString()"); }
-  public final int[] getComponents(java.lang.Object pixel, int[] components, int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getComponents(java.lang.Object, int[], int)"); }
-  public final int[] getComponents(int pixel, int[] components, int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getComponents(int, int[], int)"); }
-  public int getAlpha(java.lang.Object inData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getAlpha(java.lang.Object)"); }
-  public final int getAlpha(int pixel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getAlpha(int)"); }
-  public final int getRed(int pixel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getRed(int)"); }
-  public int getRed(java.lang.Object inData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getRed(java.lang.Object)"); }
-  public int getGreen(java.lang.Object inData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getGreen(java.lang.Object)"); }
-  public final int getGreen(int pixel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getGreen(int)"); }
-  public int getBlue(java.lang.Object inData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getBlue(java.lang.Object)"); }
-  public final int getBlue(int pixel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getBlue(int)"); }
-  public int getDataElement(int[] components, int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getDataElement(int[], int)"); }
-  public java.lang.Object getDataElements(int rgb, java.lang.Object pixel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getDataElements(int, java.lang.Object)"); }
-  public java.lang.Object getDataElements(int[] components, int offset, java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getDataElements(int[], int, java.lang.Object)"); }
-  public int getRGB(java.lang.Object inData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getRGB(java.lang.Object)"); }
-  public final int getRGB(int pixel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getRGB(int)"); }
-  public final java.awt.image.ColorModel coerceData(java.awt.image.WritableRaster raster, boolean isAlphaPremultiplied) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.coerceData(java.awt.image.WritableRaster, boolean)"); }
-  public boolean isCompatibleRaster(java.awt.image.Raster raster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.isCompatibleRaster(java.awt.image.Raster)"); }
-  public final java.awt.image.WritableRaster createCompatibleWritableRaster(int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.createCompatibleWritableRaster(int, int)"); }
-  public final int getAlphaMask() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getAlphaMask()"); }
-  public final int getRedMask() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getRedMask()"); }
-  public final int getGreenMask() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getGreenMask()"); }
-  public final int getBlueMask() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DirectColorModel.getBlueMask()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int[] getComponents(java.lang.Object pixel, int[] components, int offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int[] getComponents(int pixel, int[] components, int offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAlpha(java.lang.Object inData) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getAlpha(int pixel) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getRed(int pixel) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRed(java.lang.Object inData) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getGreen(java.lang.Object inData) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getGreen(int pixel) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBlue(java.lang.Object inData) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getBlue(int pixel) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDataElement(int[] components, int offset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getDataElements(int rgb, java.lang.Object pixel) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getDataElements(int[] components, int offset, java.lang.Object obj) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRGB(java.lang.Object inData) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getRGB(int pixel) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.image.ColorModel coerceData(java.awt.image.WritableRaster raster, boolean isAlphaPremultiplied) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCompatibleRaster(java.awt.image.Raster raster) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.image.WritableRaster createCompatibleWritableRaster(int w, int h) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getAlphaMask() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getRedMask() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getGreenMask() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getBlueMask() { return 0; }
   < ---- END java signatures ---- >
 }

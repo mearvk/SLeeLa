@@ -58,16 +58,26 @@ class BeanProperty {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean bound() { throw new AbstractMethodError("java.beans.BeanProperty.bound()"); }
-  public abstract java.lang.String description() { throw new AbstractMethodError("java.beans.BeanProperty.description()"); }
-  public abstract boolean preferred() { throw new AbstractMethodError("java.beans.BeanProperty.preferred()"); }
-  public abstract boolean required() { throw new AbstractMethodError("java.beans.BeanProperty.required()"); }
-  public abstract boolean hidden() { throw new AbstractMethodError("java.beans.BeanProperty.hidden()"); }
-  public abstract java.lang.String[] enumerationValues() { throw new AbstractMethodError("java.beans.BeanProperty.enumerationValues()"); }
-  public abstract boolean visualUpdate() { throw new AbstractMethodError("java.beans.BeanProperty.visualUpdate()"); }
-  public abstract boolean expert() { throw new AbstractMethodError("java.beans.BeanProperty.expert()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean bound() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String description() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean preferred() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean required() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hidden() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] enumerationValues() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean visualUpdate() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean expert() { return false; }
   < ---- END java signatures ---- >
 }

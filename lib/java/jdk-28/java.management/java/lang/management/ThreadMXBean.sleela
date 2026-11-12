@@ -58,37 +58,68 @@ class ThreadMXBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getThreadCount() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadCount()"); }
-  public abstract int getPeakThreadCount() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getPeakThreadCount()"); }
-  public abstract long getTotalStartedThreadCount() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getTotalStartedThreadCount()"); }
-  public abstract int getDaemonThreadCount() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getDaemonThreadCount()"); }
-  public abstract long[] getAllThreadIds() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getAllThreadIds()"); }
-  public abstract java.lang.management.ThreadInfo[] getThreadInfo(long[] ids, boolean lockedMonitors, boolean lockedSynchronizers) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadInfo(long[], boolean, boolean)"); }
-  public default java.lang.management.ThreadInfo[] getThreadInfo(long[] ids, boolean lockedMonitors, boolean lockedSynchronizers, int maxDepth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ThreadMXBean.getThreadInfo(long[], boolean, boolean, int)"); }
-  public abstract java.lang.management.ThreadInfo[] getThreadInfo(long[] ids, int maxDepth) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadInfo(long[], int)"); }
-  public abstract java.lang.management.ThreadInfo[] getThreadInfo(long[] ids) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadInfo(long[])"); }
-  public abstract java.lang.management.ThreadInfo getThreadInfo(long id) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadInfo(long)"); }
-  public abstract java.lang.management.ThreadInfo getThreadInfo(long id, int maxDepth) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadInfo(long, int)"); }
-  public abstract boolean isThreadContentionMonitoringSupported() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isThreadContentionMonitoringSupported()"); }
-  public abstract boolean isThreadContentionMonitoringEnabled() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isThreadContentionMonitoringEnabled()"); }
-  public abstract void setThreadContentionMonitoringEnabled(boolean enable) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.setThreadContentionMonitoringEnabled(boolean)"); }
-  public abstract long getCurrentThreadCpuTime() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getCurrentThreadCpuTime()"); }
-  public abstract long getCurrentThreadUserTime() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getCurrentThreadUserTime()"); }
-  public abstract long getThreadCpuTime(long id) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadCpuTime(long)"); }
-  public abstract long getThreadUserTime(long id) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadUserTime(long)"); }
-  public abstract boolean isThreadCpuTimeSupported() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isThreadCpuTimeSupported()"); }
-  public abstract boolean isCurrentThreadCpuTimeSupported() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isCurrentThreadCpuTimeSupported()"); }
-  public abstract boolean isThreadCpuTimeEnabled() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isThreadCpuTimeEnabled()"); }
-  public abstract void setThreadCpuTimeEnabled(boolean enable) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.setThreadCpuTimeEnabled(boolean)"); }
-  public abstract long[] findMonitorDeadlockedThreads() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.findMonitorDeadlockedThreads()"); }
-  public abstract void resetPeakThreadCount() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.resetPeakThreadCount()"); }
-  public abstract long[] findDeadlockedThreads() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.findDeadlockedThreads()"); }
-  public abstract boolean isObjectMonitorUsageSupported() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isObjectMonitorUsageSupported()"); }
-  public abstract boolean isSynchronizerUsageSupported() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isSynchronizerUsageSupported()"); }
-  public abstract java.lang.management.ThreadInfo[] dumpAllThreads(boolean lockedMonitors, boolean lockedSynchronizers) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.dumpAllThreads(boolean, boolean)"); }
-  public default java.lang.management.ThreadInfo[] dumpAllThreads(boolean lockedMonitors, boolean lockedSynchronizers, int maxDepth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ThreadMXBean.dumpAllThreads(boolean, boolean, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getThreadCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getPeakThreadCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getTotalStartedThreadCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getDaemonThreadCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long[] getAllThreadIds() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.management.ThreadInfo[] getThreadInfo(long[] ids, boolean lockedMonitors, boolean lockedSynchronizers) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.management.ThreadInfo[] getThreadInfo(long[] ids, boolean lockedMonitors, boolean lockedSynchronizers, int maxDepth) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.management.ThreadInfo[] getThreadInfo(long[] ids, int maxDepth) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.management.ThreadInfo[] getThreadInfo(long[] ids) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.management.ThreadInfo getThreadInfo(long id) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.management.ThreadInfo getThreadInfo(long id, int maxDepth) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isThreadContentionMonitoringSupported() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isThreadContentionMonitoringEnabled() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setThreadContentionMonitoringEnabled(boolean enable) { }
+  @throwable("java.lang.AbstractMethodError")
+  public long getCurrentThreadCpuTime() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getCurrentThreadUserTime() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getThreadCpuTime(long id) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getThreadUserTime(long id) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isThreadCpuTimeSupported() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isCurrentThreadCpuTimeSupported() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isThreadCpuTimeEnabled() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setThreadCpuTimeEnabled(boolean enable) { }
+  @throwable("java.lang.AbstractMethodError")
+  public long[] findMonitorDeadlockedThreads() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void resetPeakThreadCount() { }
+  @throwable("java.lang.AbstractMethodError")
+  public long[] findDeadlockedThreads() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isObjectMonitorUsageSupported() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSynchronizerUsageSupported() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.management.ThreadInfo[] dumpAllThreads(boolean lockedMonitors, boolean lockedSynchronizers) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.management.ThreadInfo[] dumpAllThreads(boolean lockedMonitors, boolean lockedSynchronizers, int maxDepth) { return null; }
   < ---- END java signatures ---- >
 }

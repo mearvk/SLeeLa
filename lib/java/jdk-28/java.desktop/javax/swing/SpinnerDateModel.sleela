@@ -58,23 +58,37 @@ class SpinnerDateModel {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SpinnerDateModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerDateModel.<init>()"); }
-  public SpinnerDateModel(java.util.Date value, java.lang.Comparable<java.util.Date> start, java.lang.Comparable<java.util.Date> end, int calendarField) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerDateModel.<init>(java.util.Date, java.lang.Comparable<java.util.Date>, java.lang.Comparable<java.util.Date>, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SpinnerDateModel() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SpinnerDateModel(java.util.Date value, java.lang.Comparable<java.util.Date> start, java.lang.Comparable<java.util.Date> end, int calendarField) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerDateModel.getValue()"); }
-  public void setValue(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerDateModel.setValue(java.lang.Object)"); }
-  public int getCalendarField() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerDateModel.getCalendarField()"); }
-  public void setStart(java.lang.Comparable<java.util.Date> start) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerDateModel.setStart(java.lang.Comparable<java.util.Date>)"); }
-  public java.lang.Comparable<java.util.Date> getStart() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerDateModel.getStart()"); }
-  public java.lang.Comparable<java.util.Date> getEnd() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerDateModel.getEnd()"); }
-  public void setEnd(java.lang.Comparable<java.util.Date> end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerDateModel.setEnd(java.lang.Comparable<java.util.Date>)"); }
-  public void setCalendarField(int calendarField) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerDateModel.setCalendarField(int)"); }
-  public java.lang.Object getNextValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerDateModel.getNextValue()"); }
-  public java.lang.Object getPreviousValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerDateModel.getPreviousValue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValue(java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getCalendarField() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setStart(java.lang.Comparable<java.util.Date> start) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Comparable<java.util.Date> getStart() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Comparable<java.util.Date> getEnd() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEnd(java.lang.Comparable<java.util.Date> end) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCalendarField(int calendarField) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getNextValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getPreviousValue() { return null; }
   < ---- END java signatures ---- >
 }

@@ -65,61 +65,90 @@ class MetalTabbedPaneUI {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MetalTabbedPaneUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MetalTabbedPaneUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void update(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.update(java.awt.Graphics, javax.swing.JComponent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void update(java.awt.Graphics g, javax.swing.JComponent c) { }
   @JavaProtected
-  void paintLeftTabBorder(int tabIndex, java.awt.Graphics g, int x, int y, int w, int h, int btm, int rght, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.paintLeftTabBorder(int, java.awt.Graphics, int, int, int, int, int, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintLeftTabBorder(int tabIndex, java.awt.Graphics g, int x, int y, int w, int h, int btm, int rght, boolean isSelected) { }
   @JavaProtected
-  void paintBottomTabBorder(int tabIndex, java.awt.Graphics g, int x, int y, int w, int h, int btm, int rght, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.paintBottomTabBorder(int, java.awt.Graphics, int, int, int, int, int, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintBottomTabBorder(int tabIndex, java.awt.Graphics g, int x, int y, int w, int h, int btm, int rght, boolean isSelected) { }
   @JavaProtected
-  void paintRightTabBorder(int tabIndex, java.awt.Graphics g, int x, int y, int w, int h, int btm, int rght, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.paintRightTabBorder(int, java.awt.Graphics, int, int, int, int, int, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintRightTabBorder(int tabIndex, java.awt.Graphics g, int x, int y, int w, int h, int btm, int rght, boolean isSelected) { }
   @JavaProtected
-  void paintTopTabBorder(int tabIndex, java.awt.Graphics g, int x, int y, int w, int h, int btm, int rght, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.paintTopTabBorder(int, java.awt.Graphics, int, int, int, int, int, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintTopTabBorder(int tabIndex, java.awt.Graphics g, int x, int y, int w, int h, int btm, int rght, boolean isSelected) { }
   @JavaProtected
-  boolean shouldFillGap(int currentRun, int tabIndex, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.shouldFillGap(int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean shouldFillGap(int currentRun, int tabIndex, int x, int y) { return false; }
   @JavaProtected
-  java.awt.Color getColorForGap(int currentRun, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.getColorForGap(int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Color getColorForGap(int currentRun, int x, int y) { return null; }
   @JavaProtected
-  void paintHighlightBelowTab() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.paintHighlightBelowTab()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintHighlightBelowTab() { }
   @JavaProtected
-  int getBaselineOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.getBaselineOffset()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getBaselineOffset() { return 0; }
   @JavaProtected
-  int calculateMaxTabHeight(int tabPlacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.calculateMaxTabHeight(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int calculateMaxTabHeight(int tabPlacement) { return 0; }
   @JavaProtected
-  void paintTabBackground(java.awt.Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.paintTabBackground(java.awt.Graphics, int, int, int, int, int, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintTabBackground(java.awt.Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) { }
   @JavaProtected
-  void paintTabBorder(java.awt.Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.paintTabBorder(java.awt.Graphics, int, int, int, int, int, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintTabBorder(java.awt.Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) { }
   @JavaProtected
-  void paintFocusIndicator(java.awt.Graphics g, int tabPlacement, java.awt.Rectangle[] rects, int tabIndex, java.awt.Rectangle iconRect, java.awt.Rectangle textRect, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.paintFocusIndicator(java.awt.Graphics, int, java.awt.Rectangle[], int, java.awt.Rectangle, java.awt.Rectangle, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintFocusIndicator(java.awt.Graphics g, int tabPlacement, java.awt.Rectangle[] rects, int tabIndex, java.awt.Rectangle iconRect, java.awt.Rectangle textRect, boolean isSelected) { }
   @JavaProtected
-  int getTabLabelShiftX(int tabPlacement, int tabIndex, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.getTabLabelShiftX(int, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getTabLabelShiftX(int tabPlacement, int tabIndex, boolean isSelected) { return 0; }
   @JavaProtected
-  int getTabLabelShiftY(int tabPlacement, int tabIndex, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.getTabLabelShiftY(int, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getTabLabelShiftY(int tabPlacement, int tabIndex, boolean isSelected) { return 0; }
   @JavaProtected
-  void paintContentBorderTopEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.paintContentBorderTopEdge(java.awt.Graphics, int, int, int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintContentBorderTopEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
   @JavaProtected
-  void paintContentBorderLeftEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.paintContentBorderLeftEdge(java.awt.Graphics, int, int, int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintContentBorderLeftEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
   @JavaProtected
-  void paintContentBorderBottomEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.paintContentBorderBottomEdge(java.awt.Graphics, int, int, int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintContentBorderBottomEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
   @JavaProtected
-  void paintContentBorderRightEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.paintContentBorderRightEdge(java.awt.Graphics, int, int, int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintContentBorderRightEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
   @JavaProtected
-  int getTabRunOverlay(int tabPlacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.getTabRunOverlay(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getTabRunOverlay(int tabPlacement) { return 0; }
   @JavaProtected
-  boolean shouldPadTabRun(int tabPlacement, int run) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.shouldPadTabRun(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean shouldPadTabRun(int tabPlacement, int run) { return false; }
   @JavaProtected
-  boolean shouldRotateTabRuns(int tabPlacement, int selectedRun) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.shouldRotateTabRuns(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean shouldRotateTabRuns(int tabPlacement, int selectedRun) { return false; }
   @JavaProtected
-  java.awt.LayoutManager createLayoutManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.createLayoutManager()"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.LayoutManager createLayoutManager() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { return null; }
   @JavaProtected
-  void installDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.installDefaults()"); }
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTabbedPaneUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
   < ---- END java signatures ---- >
 }

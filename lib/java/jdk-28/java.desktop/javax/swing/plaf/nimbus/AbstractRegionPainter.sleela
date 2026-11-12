@@ -59,39 +59,56 @@ class AbstractRegionPainter {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractRegionPainter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.AbstractRegionPainter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractRegionPainter() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.Object[] getExtendedCacheKeys(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.AbstractRegionPainter.getExtendedCacheKeys(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.Object[] getExtendedCacheKeys(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  abstract javax.swing.plaf.nimbus.AbstractRegionPainter.PaintContext getPaintContext() { throw new AbstractMethodError("javax.swing.plaf.nimbus.AbstractRegionPainter.getPaintContext()"); }
+  @throwable("java.lang.AbstractMethodError")
+  javax.swing.plaf.nimbus.AbstractRegionPainter.PaintContext getPaintContext() { return null; }
   @JavaProtected
-  final float decodeX(float x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.AbstractRegionPainter.decodeX(float)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final float decodeX(float x) { return 0.0; }
   @JavaProtected
-  final float decodeY(float y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.AbstractRegionPainter.decodeY(float)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final float decodeY(float y) { return 0.0; }
   @JavaProtected
-  void configureGraphics(java.awt.Graphics2D g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.AbstractRegionPainter.configureGraphics(java.awt.Graphics2D)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void configureGraphics(java.awt.Graphics2D g) { }
   @JavaProtected
-  abstract void doPaint(java.awt.Graphics2D g, javax.swing.JComponent c, int width, int height, java.lang.Object[] extendedCacheKeys) { throw new AbstractMethodError("javax.swing.plaf.nimbus.AbstractRegionPainter.doPaint(java.awt.Graphics2D, javax.swing.JComponent, int, int, java.lang.Object[])"); }
+  @throwable("java.lang.AbstractMethodError")
+  void doPaint(java.awt.Graphics2D g, javax.swing.JComponent c, int width, int height, java.lang.Object[] extendedCacheKeys) { }
   @JavaProtected
-  final float decodeAnchorX(float x, float dx) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.AbstractRegionPainter.decodeAnchorX(float, float)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final float decodeAnchorX(float x, float dx) { return 0.0; }
   @JavaProtected
-  final float decodeAnchorY(float y, float dy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.AbstractRegionPainter.decodeAnchorY(float, float)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final float decodeAnchorY(float y, float dy) { return 0.0; }
   @JavaProtected
-  final java.awt.Color decodeColor(java.lang.String key, float hOffset, float sOffset, float bOffset, int aOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.AbstractRegionPainter.decodeColor(java.lang.String, float, float, float, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final java.awt.Color decodeColor(java.lang.String key, float hOffset, float sOffset, float bOffset, int aOffset) { return null; }
   @JavaProtected
-  final java.awt.Color decodeColor(java.awt.Color color1, java.awt.Color color2, float midPoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.AbstractRegionPainter.decodeColor(java.awt.Color, java.awt.Color, float)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final java.awt.Color decodeColor(java.awt.Color color1, java.awt.Color color2, float midPoint) { return null; }
   @JavaProtected
-  final java.awt.LinearGradientPaint decodeGradient(float x1, float y1, float x2, float y2, float[] midpoints, java.awt.Color[] colors) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.AbstractRegionPainter.decodeGradient(float, float, float, float, float[], java.awt.Color[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final java.awt.LinearGradientPaint decodeGradient(float x1, float y1, float x2, float y2, float[] midpoints, java.awt.Color[] colors) { return null; }
   @JavaProtected
-  final java.awt.RadialGradientPaint decodeRadialGradient(float x, float y, float r, float[] midpoints, java.awt.Color[] colors) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.AbstractRegionPainter.decodeRadialGradient(float, float, float, float[], java.awt.Color[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final java.awt.RadialGradientPaint decodeRadialGradient(float x, float y, float r, float[] midpoints, java.awt.Color[] colors) { return null; }
   @JavaProtected
-  final java.awt.Color getComponentColor(javax.swing.JComponent c, java.lang.String property, java.awt.Color defaultColor, float saturationOffset, float brightnessOffset, int alphaOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.AbstractRegionPainter.getComponentColor(javax.swing.JComponent, java.lang.String, java.awt.Color, float, float, int)"); }
-  public final void paint(java.awt.Graphics2D g, javax.swing.JComponent c, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.AbstractRegionPainter.paint(java.awt.Graphics2D, javax.swing.JComponent, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final java.awt.Color getComponentColor(javax.swing.JComponent c, java.lang.String property, java.awt.Color defaultColor, float saturationOffset, float brightnessOffset, int alphaOffset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void paint(java.awt.Graphics2D g, javax.swing.JComponent c, int w, int h) { }
   < ---- END java signatures ---- >
 }

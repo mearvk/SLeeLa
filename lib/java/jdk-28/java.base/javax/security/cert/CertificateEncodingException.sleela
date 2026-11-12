@@ -58,7 +58,9 @@ class CertificateEncodingException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CertificateEncodingException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.cert.CertificateEncodingException.<init>()"); }
-  public CertificateEncodingException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.cert.CertificateEncodingException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CertificateEncodingException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CertificateEncodingException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

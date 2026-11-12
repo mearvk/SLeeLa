@@ -58,7 +58,9 @@ class MidiUnavailableException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MidiUnavailableException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiUnavailableException.<init>()"); }
-  public MidiUnavailableException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiUnavailableException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MidiUnavailableException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MidiUnavailableException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

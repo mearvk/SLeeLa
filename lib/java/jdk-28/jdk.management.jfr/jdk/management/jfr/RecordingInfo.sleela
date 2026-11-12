@@ -58,23 +58,40 @@ class RecordingInfo {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.getName()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.toString()"); }
-  public static jdk.management.jfr.RecordingInfo from(javax.management.openmbean.CompositeData cd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.from(javax.management.openmbean.CompositeData)"); }
-  public long getId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.getId()"); }
-  public java.lang.String getState() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.getState()"); }
-  public long getSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.getSize()"); }
-  public long getDuration() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.getDuration()"); }
-  public long getMaxAge() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.getMaxAge()"); }
-  public boolean isToDisk() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.isToDisk()"); }
-  public long getStopTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.getStopTime()"); }
-  public long getMaxSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.getMaxSize()"); }
-  public boolean getDumpOnExit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.getDumpOnExit()"); }
-  public java.lang.String getDestination() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.getDestination()"); }
-  public long getStartTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.getStartTime()"); }
-  public java.util.Map<java.lang.String, java.lang.String> getSettings() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.management.jfr.RecordingInfo.getSettings()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static jdk.management.jfr.RecordingInfo from(javax.management.openmbean.CompositeData cd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getId() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getState() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getDuration() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getMaxAge() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isToDisk() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getStopTime() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getMaxSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getDumpOnExit() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDestination() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getStartTime() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Map<java.lang.String, java.lang.String> getSettings() { return null; }
   < ---- END java signatures ---- >
 }

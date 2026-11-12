@@ -58,36 +58,66 @@ class SQLInput {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default <T> T readObject(java.lang.Class<T> type) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLInput.readObject(java.lang.Class<T>)"); }
-  public abstract java.lang.Object readObject() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readObject()"); }
-  public abstract int readInt() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readInt()"); }
-  public abstract long readLong() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readLong()"); }
-  public abstract byte readByte() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readByte()"); }
-  public abstract short readShort() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readShort()"); }
-  public abstract byte[] readBytes() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readBytes()"); }
-  public abstract float readFloat() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readFloat()"); }
-  public abstract double readDouble() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readDouble()"); }
-  public abstract boolean readBoolean() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readBoolean()"); }
-  public abstract java.lang.String readString() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readString()"); }
-  public abstract java.sql.Array readArray() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readArray()"); }
-  public abstract boolean wasNull() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.wasNull()"); }
-  public abstract java.math.BigDecimal readBigDecimal() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readBigDecimal()"); }
-  public abstract java.sql.Date readDate() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readDate()"); }
-  public abstract java.sql.Time readTime() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readTime()"); }
-  public abstract java.sql.Timestamp readTimestamp() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readTimestamp()"); }
-  public abstract java.io.Reader readCharacterStream() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readCharacterStream()"); }
-  public abstract java.io.InputStream readAsciiStream() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readAsciiStream()"); }
-  public abstract java.io.InputStream readBinaryStream() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readBinaryStream()"); }
-  public abstract java.sql.Ref readRef() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readRef()"); }
-  public abstract java.sql.Blob readBlob() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readBlob()"); }
-  public abstract java.sql.Clob readClob() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readClob()"); }
-  public abstract java.net.URL readURL() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readURL()"); }
-  public abstract java.sql.NClob readNClob() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readNClob()"); }
-  public abstract java.lang.String readNString() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readNString()"); }
-  public abstract java.sql.SQLXML readSQLXML() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readSQLXML()"); }
-  public abstract java.sql.RowId readRowId() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLInput.readRowId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public default <T> T readObject(java.lang.Class<T> type) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.Object readObject() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int readInt() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public long readLong() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public byte readByte() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public short readShort() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public byte[] readBytes() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public float readFloat() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public double readDouble() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean readBoolean() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String readString() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.Array readArray() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean wasNull() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.math.BigDecimal readBigDecimal() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.Date readDate() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.Time readTime() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.Timestamp readTimestamp() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.Reader readCharacterStream() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.InputStream readAsciiStream() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.InputStream readBinaryStream() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.Ref readRef() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.Blob readBlob() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.Clob readClob() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.net.URL readURL() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.NClob readNClob() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String readNString() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.SQLXML readSQLXML() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.RowId readRowId() { return null; }
   < ---- END java signatures ---- >
 }

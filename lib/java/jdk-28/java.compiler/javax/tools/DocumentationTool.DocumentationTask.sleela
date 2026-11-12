@@ -59,11 +59,16 @@ class DocumentationTask {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void addModules(java.lang.Iterable<java.lang.String> moduleNames) { throw new AbstractMethodError("javax.tools.DocumentationTool.DocumentationTask.addModules(java.lang.Iterable<java.lang.String>)"); }
-  public abstract java.lang.Boolean call() { throw new AbstractMethodError("javax.tools.DocumentationTool.DocumentationTask.call()"); }
-  public abstract void setLocale(java.util.Locale locale) { throw new AbstractMethodError("javax.tools.DocumentationTool.DocumentationTask.setLocale(java.util.Locale)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void addModules(java.lang.Iterable<java.lang.String> moduleNames) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Boolean call() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setLocale(java.util.Locale locale) { }
   < ---- END java signatures ---- >
 }

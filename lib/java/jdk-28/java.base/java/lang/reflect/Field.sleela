@@ -58,43 +58,80 @@ class Field {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getName()"); }
-  public java.lang.Object get(java.lang.Object obj) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.get(java.lang.Object)"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.hashCode()"); }
-  public boolean getBoolean(java.lang.Object obj) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getBoolean(java.lang.Object)"); }
-  public byte getByte(java.lang.Object obj) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getByte(java.lang.Object)"); }
-  public short getShort(java.lang.Object obj) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getShort(java.lang.Object)"); }
-  public char getChar(java.lang.Object obj) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getChar(java.lang.Object)"); }
-  public int getInt(java.lang.Object obj) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getInt(java.lang.Object)"); }
-  public long getLong(java.lang.Object obj) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getLong(java.lang.Object)"); }
-  public float getFloat(java.lang.Object obj) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getFloat(java.lang.Object)"); }
-  public double getDouble(java.lang.Object obj) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getDouble(java.lang.Object)"); }
-  public int getModifiers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getModifiers()"); }
-  public void setAccessible(boolean flag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.setAccessible(boolean)"); }
-  public java.lang.String toGenericString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.toGenericString()"); }
-  public boolean isSynthetic() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.isSynthetic()"); }
-  public java.util.Set<java.lang.reflect.AccessFlag> accessFlags() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.accessFlags()"); }
-  public java.lang.Class<?> getDeclaringClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getDeclaringClass()"); }
-  public <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getAnnotation(java.lang.Class<T>)"); }
-  public <T extends java.lang.annotation.Annotation> T[] getAnnotationsByType(java.lang.Class<T> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getAnnotationsByType(java.lang.Class<T>)"); }
-  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getDeclaredAnnotations()"); }
-  public void set(java.lang.Object obj, java.lang.Object value) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.set(java.lang.Object, java.lang.Object)"); }
-  public java.lang.reflect.Type getGenericType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getGenericType()"); }
-  public java.lang.Class<?> getType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getType()"); }
-  public void setBoolean(java.lang.Object obj, boolean z) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.setBoolean(java.lang.Object, boolean)"); }
-  public void setByte(java.lang.Object obj, byte b) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.setByte(java.lang.Object, byte)"); }
-  public void setChar(java.lang.Object obj, char c) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.setChar(java.lang.Object, char)"); }
-  public void setShort(java.lang.Object obj, short s) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.setShort(java.lang.Object, short)"); }
-  public void setInt(java.lang.Object obj, int i) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.setInt(java.lang.Object, int)"); }
-  public void setLong(java.lang.Object obj, long l) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.setLong(java.lang.Object, long)"); }
-  public void setFloat(java.lang.Object obj, float f) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.setFloat(java.lang.Object, float)"); }
-  public void setDouble(java.lang.Object obj, double d) throws java.lang.IllegalArgumentException, java.lang.IllegalAccessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.setDouble(java.lang.Object, double)"); }
-  public boolean isEnumConstant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.isEnumConstant()"); }
-  public java.lang.reflect.AnnotatedType getAnnotatedType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Field.getAnnotatedType()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public java.lang.Object get(java.lang.Object obj) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public boolean getBoolean(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public byte getByte(java.lang.Object obj) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public short getShort(java.lang.Object obj) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public char getChar(java.lang.Object obj) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public int getInt(java.lang.Object obj) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public long getLong(java.lang.Object obj) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public float getFloat(java.lang.Object obj) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public double getDouble(java.lang.Object obj) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getModifiers() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAccessible(boolean flag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toGenericString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSynthetic() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.reflect.AccessFlag> accessFlags() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getDeclaringClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.lang.annotation.Annotation> T[] getAnnotationsByType(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public void set(java.lang.Object obj, java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.Type getGenericType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public void setBoolean(java.lang.Object obj, boolean z) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public void setByte(java.lang.Object obj, byte b) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public void setChar(java.lang.Object obj, char c) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public void setShort(java.lang.Object obj, short s) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public void setInt(java.lang.Object obj, int i) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public void setLong(java.lang.Object obj, long l) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public void setFloat(java.lang.Object obj, float f) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
+  public void setDouble(java.lang.Object obj, double d) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEnumConstant() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.AnnotatedType getAnnotatedType() { return null; }
   < ---- END java signatures ---- >
 }

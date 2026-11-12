@@ -58,12 +58,18 @@ class CatalogManager {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.xml.catalog.Catalog catalog(javax.xml.catalog.CatalogFeatures features, java.net.URI... uris) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.catalog.CatalogManager.catalog(javax.xml.catalog.CatalogFeatures, java.net.URI...)"); }
-  public static javax.xml.catalog.CatalogResolver catalogResolver(javax.xml.catalog.Catalog catalog, javax.xml.catalog.CatalogResolver.NotFoundAction action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.catalog.CatalogManager.catalogResolver(javax.xml.catalog.Catalog, javax.xml.catalog.CatalogResolver.NotFoundAction)"); }
-  public static javax.xml.catalog.CatalogResolver catalogResolver(javax.xml.catalog.CatalogFeatures features, java.net.URI... uris) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.catalog.CatalogManager.catalogResolver(javax.xml.catalog.CatalogFeatures, java.net.URI...)"); }
-  public static javax.xml.catalog.CatalogResolver catalogResolver(javax.xml.catalog.Catalog catalog) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.catalog.CatalogManager.catalogResolver(javax.xml.catalog.Catalog)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.catalog.Catalog catalog(javax.xml.catalog.CatalogFeatures features, java.net.URI... uris) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.catalog.CatalogResolver catalogResolver(javax.xml.catalog.Catalog catalog, javax.xml.catalog.CatalogResolver.NotFoundAction action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.catalog.CatalogResolver catalogResolver(javax.xml.catalog.CatalogFeatures features, java.net.URI... uris) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.catalog.CatalogResolver catalogResolver(javax.xml.catalog.Catalog catalog) { return null; }
   < ---- END java signatures ---- >
 }

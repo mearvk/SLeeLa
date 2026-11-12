@@ -59,14 +59,19 @@ class MouseMotionAdapter {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  MouseMotionAdapter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseMotionAdapter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  MouseMotionAdapter() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void mouseMoved(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseMotionAdapter.mouseMoved(java.awt.event.MouseEvent)"); }
-  public void mouseDragged(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseMotionAdapter.mouseDragged(java.awt.event.MouseEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseMoved(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseDragged(java.awt.event.MouseEvent e) { }
   < ---- END java signatures ---- >
 }

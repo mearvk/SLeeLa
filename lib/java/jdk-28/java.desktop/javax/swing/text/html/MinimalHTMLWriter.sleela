@@ -58,52 +58,76 @@ class MinimalHTMLWriter {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MinimalHTMLWriter(java.io.Writer w, javax.swing.text.StyledDocument doc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.<init>(java.io.Writer, javax.swing.text.StyledDocument)"); }
-  public MinimalHTMLWriter(java.io.Writer w, javax.swing.text.StyledDocument doc, int pos, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.<init>(java.io.Writer, javax.swing.text.StyledDocument, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MinimalHTMLWriter(java.io.Writer w, javax.swing.text.StyledDocument doc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MinimalHTMLWriter(java.io.Writer w, javax.swing.text.StyledDocument doc, int pos, int len) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void write() throws java.io.IOException, javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.write()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.swing.text.BadLocationException")
+  public void write() { }
   @JavaProtected
-  void text(javax.swing.text.Element elem) throws java.io.IOException, javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.text(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.swing.text.BadLocationException")
+  void text(javax.swing.text.Element elem) { }
   @JavaProtected
-  void writeBody() throws java.io.IOException, javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeBody()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.swing.text.BadLocationException")
+  void writeBody() { }
   @JavaProtected
-  void writeAttributes(javax.swing.text.AttributeSet attr) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeAttributes(javax.swing.text.AttributeSet)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeAttributes(javax.swing.text.AttributeSet attr) { }
   @JavaProtected
-  boolean isText(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.isText(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isText(javax.swing.text.Element elem) { return false; }
   @JavaProtected
-  void writeStyles() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeStyles()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeStyles() { }
   @JavaProtected
-  void writeStartTag(java.lang.String tag) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeStartTag(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeStartTag(java.lang.String tag) { }
   @JavaProtected
-  void writeEndTag(java.lang.String endTag) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeEndTag(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeEndTag(java.lang.String endTag) { }
   @JavaProtected
-  void writeEndParagraph() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeEndParagraph()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeEndParagraph() { }
   @JavaProtected
-  void writeStartParagraph(javax.swing.text.Element elem) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeStartParagraph(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeStartParagraph(javax.swing.text.Element elem) { }
   @JavaProtected
-  void writeContent(javax.swing.text.Element elem, boolean needsIndenting) throws java.io.IOException, javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeContent(javax.swing.text.Element, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.swing.text.BadLocationException")
+  void writeContent(javax.swing.text.Element elem, boolean needsIndenting) { }
   @JavaProtected
-  void writeLeaf(javax.swing.text.Element elem) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeLeaf(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeLeaf(javax.swing.text.Element elem) { }
   @JavaProtected
-  boolean inFontTag() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.inFontTag()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean inFontTag() { return false; }
   @JavaProtected
-  void writeImage(javax.swing.text.Element elem) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeImage(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeImage(javax.swing.text.Element elem) { }
   @JavaProtected
-  void writeComponent(javax.swing.text.Element elem) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeComponent(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeComponent(javax.swing.text.Element elem) { }
   @JavaProtected
-  void writeNonHTMLAttributes(javax.swing.text.AttributeSet attr) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeNonHTMLAttributes(javax.swing.text.AttributeSet)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeNonHTMLAttributes(javax.swing.text.AttributeSet attr) { }
   @JavaProtected
-  void writeHTMLTags(javax.swing.text.AttributeSet attr) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeHTMLTags(javax.swing.text.AttributeSet)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeHTMLTags(javax.swing.text.AttributeSet attr) { }
   @JavaProtected
-  void endFontTag() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.endFontTag()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void endFontTag() { }
   @JavaProtected
-  void startFontTag(java.lang.String style) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.startFontTag(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void startFontTag(java.lang.String style) { }
   @JavaProtected
-  void writeHeader() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.MinimalHTMLWriter.writeHeader()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeHeader() { }
   < ---- END java signatures ---- >
 }

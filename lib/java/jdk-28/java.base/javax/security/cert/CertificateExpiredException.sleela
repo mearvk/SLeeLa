@@ -58,7 +58,9 @@ class CertificateExpiredException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CertificateExpiredException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.cert.CertificateExpiredException.<init>()"); }
-  public CertificateExpiredException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.cert.CertificateExpiredException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CertificateExpiredException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CertificateExpiredException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

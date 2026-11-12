@@ -63,60 +63,114 @@ class OffsetTime {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int get(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.get(java.time.temporal.TemporalField)"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.hashCode()"); }
-  public int compareTo(java.time.OffsetTime other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.compareTo(java.time.OffsetTime)"); }
-  public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.getLong(java.time.temporal.TemporalField)"); }
-  public static java.time.OffsetTime of(java.time.LocalTime time, java.time.ZoneOffset offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.of(java.time.LocalTime, java.time.ZoneOffset)"); }
-  public static java.time.OffsetTime of(int hour, int minute, int second, int nanoOfSecond, java.time.ZoneOffset offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.of(int, int, int, int, java.time.ZoneOffset)"); }
-  public java.lang.String format(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.format(java.time.format.DateTimeFormatter)"); }
-  public static java.time.OffsetTime from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.from(java.time.temporal.TemporalAccessor)"); }
-  public boolean isSupported(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.isSupported(java.time.temporal.TemporalUnit)"); }
-  public static java.time.OffsetTime parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.parse(java.lang.CharSequence)"); }
-  public static java.time.OffsetTime parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.parse(java.lang.CharSequence, java.time.format.DateTimeFormatter)"); }
-  public java.time.OffsetTime with(java.time.temporal.TemporalField field, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.with(java.time.temporal.TemporalField, long)"); }
-  public java.time.OffsetTime with(java.time.temporal.TemporalAdjuster adjuster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.with(java.time.temporal.TemporalAdjuster)"); }
-  public <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.query(java.time.temporal.TemporalQuery<R>)"); }
-  public java.time.ZoneOffset getOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.getOffset()"); }
-  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.range(java.time.temporal.TemporalField)"); }
-  public static java.time.OffsetTime now() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.now()"); }
-  public static java.time.OffsetTime now(java.time.Clock clock) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.now(java.time.Clock)"); }
-  public boolean isEqual(java.time.OffsetTime other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.isEqual(java.time.OffsetTime)"); }
-  public int getNano() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.getNano()"); }
-  public int getHour() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.getHour()"); }
-  public int getMinute() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.getMinute()"); }
-  public int getSecond() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.getSecond()"); }
-  public java.time.OffsetTime minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.minus(long, java.time.temporal.TemporalUnit)"); }
-  public java.time.OffsetTime minus(java.time.temporal.TemporalAmount amountToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.minus(java.time.temporal.TemporalAmount)"); }
-  public java.time.OffsetTime plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.plus(long, java.time.temporal.TemporalUnit)"); }
-  public java.time.OffsetTime plus(java.time.temporal.TemporalAmount amountToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.plus(java.time.temporal.TemporalAmount)"); }
-  public long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.until(java.time.temporal.Temporal, java.time.temporal.TemporalUnit)"); }
-  public java.time.OffsetTime plusNanos(long nanos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.plusNanos(long)"); }
-  public java.time.OffsetTime plusSeconds(long seconds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.plusSeconds(long)"); }
-  public java.time.OffsetTime plusHours(long hours) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.plusHours(long)"); }
-  public java.time.OffsetTime plusMinutes(long minutes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.plusMinutes(long)"); }
-  public java.time.OffsetTime minusHours(long hours) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.minusHours(long)"); }
-  public java.time.OffsetTime minusMinutes(long minutes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.minusMinutes(long)"); }
-  public java.time.OffsetTime minusSeconds(long seconds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.minusSeconds(long)"); }
-  public java.time.OffsetTime minusNanos(long nanos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.minusNanos(long)"); }
-  public java.time.OffsetTime truncatedTo(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.truncatedTo(java.time.temporal.TemporalUnit)"); }
-  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.adjustInto(java.time.temporal.Temporal)"); }
-  public static java.time.OffsetTime ofInstant(java.time.Instant instant, java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.ofInstant(java.time.Instant, java.time.ZoneId)"); }
-  public boolean isAfter(java.time.OffsetTime other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.isAfter(java.time.OffsetTime)"); }
-  public boolean isBefore(java.time.OffsetTime other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.isBefore(java.time.OffsetTime)"); }
-  public java.time.LocalTime toLocalTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.toLocalTime()"); }
-  public long toEpochSecond(java.time.LocalDate date) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.toEpochSecond(java.time.LocalDate)"); }
-  public java.time.OffsetTime withHour(int hour) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.withHour(int)"); }
-  public java.time.OffsetTime withMinute(int minute) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.withMinute(int)"); }
-  public java.time.OffsetTime withSecond(int second) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.withSecond(int)"); }
-  public java.time.OffsetTime withNano(int nanoOfSecond) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.withNano(int)"); }
-  public java.time.OffsetDateTime atDate(java.time.LocalDate date) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.atDate(java.time.LocalDate)"); }
-  public java.time.OffsetTime withOffsetSameInstant(java.time.ZoneOffset offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.withOffsetSameInstant(java.time.ZoneOffset)"); }
-  public java.time.OffsetTime withOffsetSameLocal(java.time.ZoneOffset offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.OffsetTime.withOffsetSameLocal(java.time.ZoneOffset)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int get(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.time.OffsetTime other) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getLong(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.OffsetTime of(java.time.LocalTime time, java.time.ZoneOffset offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.OffsetTime of(int hour, int minute, int second, int nanoOfSecond, java.time.ZoneOffset offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String format(java.time.format.DateTimeFormatter formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.OffsetTime from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSupported(java.time.temporal.TemporalUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.OffsetTime parse(java.lang.CharSequence text) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.OffsetTime parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime with(java.time.temporal.TemporalField field, long newValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime with(java.time.temporal.TemporalAdjuster adjuster) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <R> R query(java.time.temporal.TemporalQuery<R> query) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.ZoneOffset getOffset() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.OffsetTime now() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.OffsetTime now(java.time.Clock clock) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEqual(java.time.OffsetTime other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNano() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHour() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinute() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSecond() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime minus(java.time.temporal.TemporalAmount amountToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime plus(java.time.temporal.TemporalAmount amountToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime plusNanos(long nanos) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime plusSeconds(long seconds) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime plusHours(long hours) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime plusMinutes(long minutes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime minusHours(long hours) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime minusMinutes(long minutes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime minusSeconds(long seconds) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime minusNanos(long nanos) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime truncatedTo(java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.OffsetTime ofInstant(java.time.Instant instant, java.time.ZoneId zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAfter(java.time.OffsetTime other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBefore(java.time.OffsetTime other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalTime toLocalTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toEpochSecond(java.time.LocalDate date) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime withHour(int hour) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime withMinute(int minute) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime withSecond(int second) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime withNano(int nanoOfSecond) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetDateTime atDate(java.time.LocalDate date) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime withOffsetSameInstant(java.time.ZoneOffset offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.OffsetTime withOffsetSameLocal(java.time.ZoneOffset offset) { return null; }
   < ---- END java signatures ---- >
 }

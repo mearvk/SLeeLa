@@ -58,6 +58,7 @@ class AlreadyBoundException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AlreadyBoundException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.AlreadyBoundException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AlreadyBoundException() { }
   < ---- END java constructors ---- >
 }

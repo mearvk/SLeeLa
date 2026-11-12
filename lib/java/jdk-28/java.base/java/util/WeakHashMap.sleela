@@ -58,30 +58,51 @@ class WeakHashMap<K, V> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public WeakHashMap(java.util.Map<? extends K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.<init>(java.util.Map<? extends K, ? extends V>)"); }
-  public WeakHashMap(int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.<init>(int)"); }
-  public WeakHashMap(int initialCapacity, float loadFactor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.<init>(int, float)"); }
-  public WeakHashMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public WeakHashMap(java.util.Map<? extends K, ? extends V> m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public WeakHashMap(int initialCapacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public WeakHashMap(int initialCapacity, float loadFactor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public WeakHashMap() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public V remove(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.remove(java.lang.Object)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.size()"); }
-  public V get(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.get(java.lang.Object)"); }
-  public V put(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.put(K, V)"); }
-  public java.util.Collection<V> values() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.values()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.clear()"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.isEmpty()"); }
-  public void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
-  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.entrySet()"); }
-  public void putAll(java.util.Map<? extends K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.putAll(java.util.Map<? extends K, ? extends V>)"); }
-  public void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.forEach(java.util.function.BiConsumer<? super K, ? super V>)"); }
-  public java.util.Set<K> keySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.keySet()"); }
-  public boolean containsValue(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.containsValue(java.lang.Object)"); }
-  public boolean containsKey(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.containsKey(java.lang.Object)"); }
-  public static <K, V> java.util.WeakHashMap<K, V> newWeakHashMap(int numMappings) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.WeakHashMap.newWeakHashMap(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public V remove(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V get(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V put(K key, V value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Collection<V> values() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void putAll(java.util.Map<? extends K, ? extends V> m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<K> keySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsValue(java.lang.Object value) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsKey(java.lang.Object key) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.WeakHashMap<K, V> newWeakHashMap(int numMappings) { return null; }
   < ---- END java signatures ---- >
 }

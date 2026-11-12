@@ -58,32 +58,53 @@ class RowSorter<M> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RowSorter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RowSorter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RowSorter() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void fireSortOrderChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RowSorter.fireSortOrderChanged()"); }
-  public abstract java.util.List<? extends javax.swing.RowSorter.SortKey> getSortKeys() { throw new AbstractMethodError("javax.swing.RowSorter.getSortKeys()"); }
-  public abstract void setSortKeys(java.util.List<? extends javax.swing.RowSorter.SortKey> keys) { throw new AbstractMethodError("javax.swing.RowSorter.setSortKeys(java.util.List<? extends javax.swing.RowSorter.SortKey>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireSortOrderChanged() { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends javax.swing.RowSorter.SortKey> getSortKeys() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSortKeys(java.util.List<? extends javax.swing.RowSorter.SortKey> keys) { }
   @JavaProtected
-  void fireRowSorterChanged(int[] lastRowIndexToModel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RowSorter.fireRowSorterChanged(int[])"); }
-  public abstract void toggleSortOrder(int column) { throw new AbstractMethodError("javax.swing.RowSorter.toggleSortOrder(int)"); }
-  public abstract int getModelRowCount() { throw new AbstractMethodError("javax.swing.RowSorter.getModelRowCount()"); }
-  public void addRowSorterListener(javax.swing.event.RowSorterListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RowSorter.addRowSorterListener(javax.swing.event.RowSorterListener)"); }
-  public void removeRowSorterListener(javax.swing.event.RowSorterListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RowSorter.removeRowSorterListener(javax.swing.event.RowSorterListener)"); }
-  public abstract int convertRowIndexToView(int index) { throw new AbstractMethodError("javax.swing.RowSorter.convertRowIndexToView(int)"); }
-  public abstract int convertRowIndexToModel(int index) { throw new AbstractMethodError("javax.swing.RowSorter.convertRowIndexToModel(int)"); }
-  public abstract int getViewRowCount() { throw new AbstractMethodError("javax.swing.RowSorter.getViewRowCount()"); }
-  public abstract void allRowsChanged() { throw new AbstractMethodError("javax.swing.RowSorter.allRowsChanged()"); }
-  public abstract void rowsUpdated(int firstRow, int endRow) { throw new AbstractMethodError("javax.swing.RowSorter.rowsUpdated(int, int)"); }
-  public abstract void rowsUpdated(int firstRow, int endRow, int column) { throw new AbstractMethodError("javax.swing.RowSorter.rowsUpdated(int, int, int)"); }
-  public abstract void rowsInserted(int firstRow, int endRow) { throw new AbstractMethodError("javax.swing.RowSorter.rowsInserted(int, int)"); }
-  public abstract void rowsDeleted(int firstRow, int endRow) { throw new AbstractMethodError("javax.swing.RowSorter.rowsDeleted(int, int)"); }
-  public abstract void modelStructureChanged() { throw new AbstractMethodError("javax.swing.RowSorter.modelStructureChanged()"); }
-  public abstract M getModel() { throw new AbstractMethodError("javax.swing.RowSorter.getModel()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireRowSorterChanged(int[] lastRowIndexToModel) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void toggleSortOrder(int column) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getModelRowCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addRowSorterListener(javax.swing.event.RowSorterListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeRowSorterListener(javax.swing.event.RowSorterListener l) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int convertRowIndexToView(int index) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int convertRowIndexToModel(int index) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getViewRowCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void allRowsChanged() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void rowsUpdated(int firstRow, int endRow) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void rowsUpdated(int firstRow, int endRow, int column) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void rowsInserted(int firstRow, int endRow) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void rowsDeleted(int firstRow, int endRow) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void modelStructureChanged() { }
+  @throwable("java.lang.AbstractMethodError")
+  public M getModel() { return null; }
   < ---- END java signatures ---- >
 }

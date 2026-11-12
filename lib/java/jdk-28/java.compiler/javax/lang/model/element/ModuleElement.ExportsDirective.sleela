@@ -59,10 +59,14 @@ class ExportsDirective {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.lang.model.element.PackageElement getPackage() { throw new AbstractMethodError("javax.lang.model.element.ModuleElement.ExportsDirective.getPackage()"); }
-  public abstract java.util.List<? extends javax.lang.model.element.ModuleElement> getTargetModules() { throw new AbstractMethodError("javax.lang.model.element.ModuleElement.ExportsDirective.getTargetModules()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.PackageElement getPackage() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends javax.lang.model.element.ModuleElement> getTargetModules() { return null; }
   < ---- END java signatures ---- >
 }

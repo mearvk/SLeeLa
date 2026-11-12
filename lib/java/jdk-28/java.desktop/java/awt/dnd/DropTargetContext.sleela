@@ -58,33 +58,49 @@ class DropTargetContext {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Component getComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.getComponent()"); }
-  public java.awt.dnd.DropTarget getDropTarget() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.getDropTarget()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.dnd.DropTarget getDropTarget() { return null; }
   @JavaProtected
-  int getTargetActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.getTargetActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getTargetActions() { return 0; }
   @JavaProtected
-  java.awt.datatransfer.Transferable getTransferable() throws java.awt.dnd.InvalidDnDOperationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.getTransferable()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.dnd.InvalidDnDOperationException")
+  java.awt.datatransfer.Transferable getTransferable() { return null; }
   @JavaProtected
-  java.awt.datatransfer.DataFlavor[] getCurrentDataFlavors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.getCurrentDataFlavors()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.datatransfer.DataFlavor[] getCurrentDataFlavors() { return null; }
   @JavaProtected
-  java.util.List<java.awt.datatransfer.DataFlavor> getCurrentDataFlavorsAsList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.getCurrentDataFlavorsAsList()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.util.List<java.awt.datatransfer.DataFlavor> getCurrentDataFlavorsAsList() { return null; }
   @JavaProtected
-  void acceptDrop(int dropOperation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.acceptDrop(int)"); }
-  public void dropComplete(boolean success) throws java.awt.dnd.InvalidDnDOperationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.dropComplete(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void acceptDrop(int dropOperation) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.dnd.InvalidDnDOperationException")
+  public void dropComplete(boolean success) { }
   @JavaProtected
-  void acceptDrag(int dragOperation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.acceptDrag(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void acceptDrag(int dragOperation) { }
   @JavaProtected
-  void rejectDrag() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.rejectDrag()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void rejectDrag() { }
   @JavaProtected
-  java.awt.datatransfer.Transferable createTransferableProxy(java.awt.datatransfer.Transferable t, boolean local) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.createTransferableProxy(java.awt.datatransfer.Transferable, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.datatransfer.Transferable createTransferableProxy(java.awt.datatransfer.Transferable t, boolean local) { return null; }
   @JavaProtected
-  void setTargetActions(int actions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.setTargetActions(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setTargetActions(int actions) { }
   @JavaProtected
-  void rejectDrop() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.rejectDrop()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void rejectDrop() { }
   @JavaProtected
-  boolean isDataFlavorSupported(java.awt.datatransfer.DataFlavor df) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetContext.isDataFlavorSupported(java.awt.datatransfer.DataFlavor)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isDataFlavorSupported(java.awt.datatransfer.DataFlavor df) { return false; }
   < ---- END java signatures ---- >
 }

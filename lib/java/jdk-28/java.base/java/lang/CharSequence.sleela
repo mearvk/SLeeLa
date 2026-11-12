@@ -58,17 +58,28 @@ class CharSequence {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int length() { throw new AbstractMethodError("java.lang.CharSequence.length()"); }
-  public abstract java.lang.String toString() { throw new AbstractMethodError("java.lang.CharSequence.toString()"); }
-  public default void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.CharSequence.getChars(int, int, char[], int)"); }
-  public static int compare(java.lang.CharSequence cs1, java.lang.CharSequence cs2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.CharSequence.compare(java.lang.CharSequence, java.lang.CharSequence)"); }
-  public abstract char charAt(int index) { throw new AbstractMethodError("java.lang.CharSequence.charAt(int)"); }
-  public default boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.CharSequence.isEmpty()"); }
-  public default java.util.stream.IntStream codePoints() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.CharSequence.codePoints()"); }
-  public abstract java.lang.CharSequence subSequence(int start, int end) { throw new AbstractMethodError("java.lang.CharSequence.subSequence(int, int)"); }
-  public default java.util.stream.IntStream chars() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.CharSequence.chars()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int length() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int compare(java.lang.CharSequence cs1, java.lang.CharSequence cs2) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public char charAt(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.IntStream codePoints() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.CharSequence subSequence(int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.IntStream chars() { return null; }
   < ---- END java signatures ---- >
 }

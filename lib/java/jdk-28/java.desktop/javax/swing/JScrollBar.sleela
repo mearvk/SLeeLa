@@ -65,52 +65,93 @@ class JScrollBar {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JScrollBar(int orientation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.<init>(int)"); }
-  public JScrollBar(int orientation, int value, int extent, int min, int max) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.<init>(int, int, int, int, int)"); }
-  public JScrollBar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JScrollBar(int orientation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JScrollBar(int orientation, int value, int extent, int min, int max) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JScrollBar() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getValue()"); }
-  public void setValue(int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setValue(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValue(int value) { }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.paramString()"); }
-  public int getMaximum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getMaximum()"); }
-  public int getMinimum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getMinimum()"); }
-  public java.awt.Dimension getMinimumSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getMinimumSize()"); }
-  public void setEnabled(boolean x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setEnabled(boolean)"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.updateUI()"); }
-  public void setUI(javax.swing.plaf.ScrollBarUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setUI(javax.swing.plaf.ScrollBarUI)"); }
-  public javax.swing.plaf.ScrollBarUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getUI()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getUIClassID()"); }
-  public int getOrientation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getOrientation()"); }
-  public void setMinimum(int minimum) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setMinimum(int)"); }
-  public void setMaximum(int maximum) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setMaximum(int)"); }
-  public void setUnitIncrement(int unitIncrement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setUnitIncrement(int)"); }
-  public int getUnitIncrement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getUnitIncrement()"); }
-  public int getUnitIncrement(int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getUnitIncrement(int)"); }
-  public void setBlockIncrement(int blockIncrement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setBlockIncrement(int)"); }
-  public int getBlockIncrement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getBlockIncrement()"); }
-  public int getBlockIncrement(int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getBlockIncrement(int)"); }
-  public void setVisibleAmount(int extent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setVisibleAmount(int)"); }
-  public int getVisibleAmount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getVisibleAmount()"); }
-  public void addAdjustmentListener(java.awt.event.AdjustmentListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.addAdjustmentListener(java.awt.event.AdjustmentListener)"); }
-  public void removeAdjustmentListener(java.awt.event.AdjustmentListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.removeAdjustmentListener(java.awt.event.AdjustmentListener)"); }
-  public void setValueIsAdjusting(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setValueIsAdjusting(boolean)"); }
-  public java.awt.event.AdjustmentListener[] getAdjustmentListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getAdjustmentListeners()"); }
-  public void setValues(int newValue, int newExtent, int newMin, int newMax) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setValues(int, int, int, int)"); }
-  public void setOrientation(int orientation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setOrientation(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaximum() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinimum() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEnabled(boolean x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.ScrollBarUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.ScrollBarUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getOrientation() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinimum(int minimum) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximum(int maximum) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUnitIncrement(int unitIncrement) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getUnitIncrement() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getUnitIncrement(int direction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBlockIncrement(int blockIncrement) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBlockIncrement() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBlockIncrement(int direction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVisibleAmount(int extent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVisibleAmount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addAdjustmentListener(java.awt.event.AdjustmentListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAdjustmentListener(java.awt.event.AdjustmentListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValueIsAdjusting(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.event.AdjustmentListener[] getAdjustmentListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValues(int newValue, int newExtent, int newMin, int newMax) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOrientation(int orientation) { }
   @JavaProtected
-  void fireAdjustmentValueChanged(int id, int type, int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.fireAdjustmentValueChanged(int, int, int)"); }
-  public void setMinimumSize(java.awt.Dimension minimumSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setMinimumSize(java.awt.Dimension)"); }
-  public void setMaximumSize(java.awt.Dimension maximumSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setMaximumSize(java.awt.Dimension)"); }
-  public boolean getValueIsAdjusting() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getValueIsAdjusting()"); }
-  public javax.swing.BoundedRangeModel getModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getModel()"); }
-  public void setModel(javax.swing.BoundedRangeModel newModel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.setModel(javax.swing.BoundedRangeModel)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getAccessibleContext()"); }
-  public java.awt.Dimension getMaximumSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollBar.getMaximumSize()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireAdjustmentValueChanged(int id, int type, int value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinimumSize(java.awt.Dimension minimumSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximumSize(java.awt.Dimension maximumSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getValueIsAdjusting() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.BoundedRangeModel getModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setModel(javax.swing.BoundedRangeModel newModel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,12 +58,18 @@ class MenuDragMouseListener {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void menuDragMouseEntered(javax.swing.event.MenuDragMouseEvent e) { throw new AbstractMethodError("javax.swing.event.MenuDragMouseListener.menuDragMouseEntered(javax.swing.event.MenuDragMouseEvent)"); }
-  public abstract void menuDragMouseExited(javax.swing.event.MenuDragMouseEvent e) { throw new AbstractMethodError("javax.swing.event.MenuDragMouseListener.menuDragMouseExited(javax.swing.event.MenuDragMouseEvent)"); }
-  public abstract void menuDragMouseDragged(javax.swing.event.MenuDragMouseEvent e) { throw new AbstractMethodError("javax.swing.event.MenuDragMouseListener.menuDragMouseDragged(javax.swing.event.MenuDragMouseEvent)"); }
-  public abstract void menuDragMouseReleased(javax.swing.event.MenuDragMouseEvent e) { throw new AbstractMethodError("javax.swing.event.MenuDragMouseListener.menuDragMouseReleased(javax.swing.event.MenuDragMouseEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void menuDragMouseEntered(javax.swing.event.MenuDragMouseEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void menuDragMouseExited(javax.swing.event.MenuDragMouseEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void menuDragMouseDragged(javax.swing.event.MenuDragMouseEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void menuDragMouseReleased(javax.swing.event.MenuDragMouseEvent e) { }
   < ---- END java signatures ---- >
 }

@@ -59,6 +59,7 @@ class DefaultTextUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  DefaultTextUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultTextUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  DefaultTextUI() { }
   < ---- END java constructors ---- >
 }

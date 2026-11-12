@@ -58,9 +58,13 @@ class IndexOutOfBoundsException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IndexOutOfBoundsException(long index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.IndexOutOfBoundsException.<init>(long)"); }
-  public IndexOutOfBoundsException(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.IndexOutOfBoundsException.<init>(int)"); }
-  public IndexOutOfBoundsException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.IndexOutOfBoundsException.<init>(java.lang.String)"); }
-  public IndexOutOfBoundsException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.IndexOutOfBoundsException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IndexOutOfBoundsException(long index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IndexOutOfBoundsException(int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IndexOutOfBoundsException(java.lang.String s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IndexOutOfBoundsException() { }
   < ---- END java constructors ---- >
 }

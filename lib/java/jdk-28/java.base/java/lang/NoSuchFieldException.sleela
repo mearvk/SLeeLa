@@ -58,7 +58,9 @@ class NoSuchFieldException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NoSuchFieldException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.NoSuchFieldException.<init>()"); }
-  public NoSuchFieldException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.NoSuchFieldException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoSuchFieldException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoSuchFieldException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

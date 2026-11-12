@@ -58,41 +58,69 @@ class MenuItem {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MenuItem(java.lang.String label, java.awt.MenuShortcut s) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.<init>(java.lang.String, java.awt.MenuShortcut)"); }
-  public MenuItem(java.lang.String label) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.<init>(java.lang.String)"); }
-  public MenuItem() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public MenuItem(java.lang.String label, java.awt.MenuShortcut s) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public MenuItem(java.lang.String label) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public MenuItem() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean isEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.isEnabled()"); }
-  public java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.paramString()"); }
-  public synchronized void enable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.enable()"); }
-  public void enable(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.enable(boolean)"); }
-  public java.lang.String getLabel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.getLabel()"); }
-  public synchronized void disable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.disable()"); }
-  public synchronized void setEnabled(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.setEnabled(boolean)"); }
-  public synchronized void setLabel(java.lang.String label) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.setLabel(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void enable() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void enable(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLabel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void disable() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setEnabled(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setLabel(java.lang.String label) { }
   @JavaProtected
-  void processActionEvent(java.awt.event.ActionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.processActionEvent(java.awt.event.ActionEvent)"); }
-  public synchronized void addActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.addActionListener(java.awt.event.ActionListener)"); }
-  public void setActionCommand(java.lang.String command) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.setActionCommand(java.lang.String)"); }
-  public synchronized void removeActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.removeActionListener(java.awt.event.ActionListener)"); }
-  public synchronized java.awt.event.ActionListener[] getActionListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.getActionListeners()"); }
-  public java.awt.MenuShortcut getShortcut() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.getShortcut()"); }
-  public void setShortcut(java.awt.MenuShortcut s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.setShortcut(java.awt.MenuShortcut)"); }
-  public void deleteShortcut() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.deleteShortcut()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processActionEvent(java.awt.event.ActionEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setActionCommand(java.lang.String command) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.event.ActionListener[] getActionListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.MenuShortcut getShortcut() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setShortcut(java.awt.MenuShortcut s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void deleteShortcut() { }
   @JavaProtected
-  final void disableEvents(long eventsToDisable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.disableEvents(long)"); }
-  public java.lang.String getActionCommand() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.getActionCommand()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.getAccessibleContext()"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.addNotify()"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.getListeners(java.lang.Class<T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void disableEvents(long eventsToDisable) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getActionCommand() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   @JavaProtected
-  void processEvent(java.awt.AWTEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.processEvent(java.awt.AWTEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processEvent(java.awt.AWTEvent e) { }
   @JavaProtected
-  final void enableEvents(long eventsToEnable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuItem.enableEvents(long)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void enableEvents(long eventsToEnable) { }
   < ---- END java signatures ---- >
 }

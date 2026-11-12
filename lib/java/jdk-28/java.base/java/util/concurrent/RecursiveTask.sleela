@@ -58,19 +58,26 @@ class RecursiveTask<V> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RecursiveTask() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.RecursiveTask.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RecursiveTask() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  abstract V compute() { throw new AbstractMethodError("java.util.concurrent.RecursiveTask.compute()"); }
+  @throwable("java.lang.AbstractMethodError")
+  V compute() { return null; }
   @JavaProtected
-  final boolean exec() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.RecursiveTask.exec()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final boolean exec() { return false; }
   @JavaProtected
-  final void setRawResult(V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.RecursiveTask.setRawResult(V)"); }
-  public final V getRawResult() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.RecursiveTask.getRawResult()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void setRawResult(V value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final V getRawResult() { return null; }
   < ---- END java signatures ---- >
 }

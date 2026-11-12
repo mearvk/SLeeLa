@@ -59,6 +59,7 @@ class ViewportUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ViewportUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.ViewportUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ViewportUI() { }
   < ---- END java constructors ---- >
 }

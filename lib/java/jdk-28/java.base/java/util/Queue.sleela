@@ -58,14 +58,22 @@ class Queue<E> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract E remove() { throw new AbstractMethodError("java.util.Queue.remove()"); }
-  public abstract boolean add(E e) { throw new AbstractMethodError("java.util.Queue.add(E)"); }
-  public abstract E peek() { throw new AbstractMethodError("java.util.Queue.peek()"); }
-  public abstract E element() { throw new AbstractMethodError("java.util.Queue.element()"); }
-  public abstract E poll() { throw new AbstractMethodError("java.util.Queue.poll()"); }
-  public abstract boolean offer(E e) { throw new AbstractMethodError("java.util.Queue.offer(E)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public E remove() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean add(E e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public E peek() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E element() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E poll() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean offer(E e) { return false; }
   < ---- END java signatures ---- >
 }

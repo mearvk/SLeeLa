@@ -58,17 +58,25 @@ class URISyntaxException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public URISyntaxException(java.lang.String input, java.lang.String reason, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URISyntaxException.<init>(java.lang.String, java.lang.String, int)"); }
-  public URISyntaxException(java.lang.String input, java.lang.String reason) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URISyntaxException.<init>(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public URISyntaxException(java.lang.String input, java.lang.String reason, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public URISyntaxException(java.lang.String input, java.lang.String reason) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getMessage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URISyntaxException.getMessage()"); }
-  public int getIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URISyntaxException.getIndex()"); }
-  public java.lang.String getReason() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URISyntaxException.getReason()"); }
-  public java.lang.String getInput() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URISyntaxException.getInput()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getMessage() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getReason() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getInput() { return null; }
   < ---- END java signatures ---- >
 }

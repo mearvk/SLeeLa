@@ -66,39 +66,69 @@ class Timer {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Timer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Timer() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.isEmpty()"); }
-  public synchronized void start() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.start()"); }
-  public synchronized void stop() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.stop()"); }
-  public boolean isActive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.isActive()"); }
-  public void postRegister(java.lang.Boolean registrationDone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.postRegister(java.lang.Boolean)"); }
-  public void preDeregister() throws java.lang.Exception { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.preDeregister()"); }
-  public void postDeregister() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.postDeregister()"); }
-  public synchronized javax.management.MBeanNotificationInfo[] getNotificationInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.getNotificationInfo()"); }
-  public synchronized java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period, long nbOccurences) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.addNotification(java.lang.String, java.lang.String, java.lang.Object, java.util.Date, long, long)"); }
-  public synchronized java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period, long nbOccurences, boolean fixedRate) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.addNotification(java.lang.String, java.lang.String, java.lang.Object, java.util.Date, long, long, boolean)"); }
-  public synchronized java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.addNotification(java.lang.String, java.lang.String, java.lang.Object, java.util.Date, long)"); }
-  public synchronized java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.addNotification(java.lang.String, java.lang.String, java.lang.Object, java.util.Date)"); }
-  public synchronized java.util.Vector<java.lang.Integer> getNotificationIDs(java.lang.String type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.getNotificationIDs(java.lang.String)"); }
-  public synchronized void removeNotification(java.lang.Integer id) throws javax.management.InstanceNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.removeNotification(java.lang.Integer)"); }
-  public synchronized void removeNotifications(java.lang.String type) throws javax.management.InstanceNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.removeNotifications(java.lang.String)"); }
-  public synchronized void removeAllNotifications() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.removeAllNotifications()"); }
-  public synchronized int getNbNotifications() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.getNbNotifications()"); }
-  public synchronized java.util.Vector<java.lang.Integer> getAllNotificationIDs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.getAllNotificationIDs()"); }
-  public synchronized java.lang.String getNotificationType(java.lang.Integer id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.getNotificationType(java.lang.Integer)"); }
-  public synchronized java.lang.String getNotificationMessage(java.lang.Integer id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.getNotificationMessage(java.lang.Integer)"); }
-  public synchronized java.lang.Object getNotificationUserData(java.lang.Integer id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.getNotificationUserData(java.lang.Integer)"); }
-  public synchronized java.lang.Long getPeriod(java.lang.Integer id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.getPeriod(java.lang.Integer)"); }
-  public synchronized java.lang.Long getNbOccurences(java.lang.Integer id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.getNbOccurences(java.lang.Integer)"); }
-  public synchronized java.lang.Boolean getFixedRate(java.lang.Integer id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.getFixedRate(java.lang.Integer)"); }
-  public boolean getSendPastNotifications() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.getSendPastNotifications()"); }
-  public void setSendPastNotifications(boolean value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.setSendPastNotifications(boolean)"); }
-  public javax.management.ObjectName preRegister(javax.management.MBeanServer server, javax.management.ObjectName name) throws java.lang.Exception { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.timer.Timer.preRegister(javax.management.MBeanServer, javax.management.ObjectName)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void start() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void stop() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isActive() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void postRegister(java.lang.Boolean registrationDone) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
+  public void preDeregister() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void postDeregister() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized javax.management.MBeanNotificationInfo[] getNotificationInfo() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public synchronized java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period, long nbOccurences) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public synchronized java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period, long nbOccurences, boolean fixedRate) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public synchronized java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public synchronized java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.util.Vector<java.lang.Integer> getNotificationIDs(java.lang.String type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.InstanceNotFoundException")
+  public synchronized void removeNotification(java.lang.Integer id) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.InstanceNotFoundException")
+  public synchronized void removeNotifications(java.lang.String type) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeAllNotifications() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int getNbNotifications() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.util.Vector<java.lang.Integer> getAllNotificationIDs() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String getNotificationType(java.lang.Integer id) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String getNotificationMessage(java.lang.Integer id) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Object getNotificationUserData(java.lang.Integer id) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Long getPeriod(java.lang.Integer id) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Long getNbOccurences(java.lang.Integer id) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Boolean getFixedRate(java.lang.Integer id) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getSendPastNotifications() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSendPastNotifications(boolean value) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
+  public javax.management.ObjectName preRegister(javax.management.MBeanServer server, javax.management.ObjectName name) { return null; }
   < ---- END java signatures ---- >
 }

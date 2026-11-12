@@ -65,26 +65,43 @@ class GraphicsDevice {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  GraphicsDevice() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.GraphicsDevice.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  GraphicsDevice() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getType() { throw new AbstractMethodError("java.awt.GraphicsDevice.getType()"); }
-  public abstract java.awt.GraphicsConfiguration getDefaultConfiguration() { throw new AbstractMethodError("java.awt.GraphicsDevice.getDefaultConfiguration()"); }
-  public java.awt.Window getFullScreenWindow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.GraphicsDevice.getFullScreenWindow()"); }
-  public boolean isWindowTranslucencySupported(java.awt.GraphicsDevice.WindowTranslucency translucencyKind) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.GraphicsDevice.isWindowTranslucencySupported(java.awt.GraphicsDevice.WindowTranslucency)"); }
-  public java.awt.GraphicsConfiguration getBestConfiguration(java.awt.GraphicsConfigTemplate gct) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.GraphicsDevice.getBestConfiguration(java.awt.GraphicsConfigTemplate)"); }
-  public abstract java.awt.GraphicsConfiguration[] getConfigurations() { throw new AbstractMethodError("java.awt.GraphicsDevice.getConfigurations()"); }
-  public void setFullScreenWindow(java.awt.Window w) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.GraphicsDevice.setFullScreenWindow(java.awt.Window)"); }
-  public java.awt.DisplayMode getDisplayMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.GraphicsDevice.getDisplayMode()"); }
-  public boolean isFullScreenSupported() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.GraphicsDevice.isFullScreenSupported()"); }
-  public boolean isDisplayChangeSupported() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.GraphicsDevice.isDisplayChangeSupported()"); }
-  public void setDisplayMode(java.awt.DisplayMode dm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.GraphicsDevice.setDisplayMode(java.awt.DisplayMode)"); }
-  public java.awt.DisplayMode[] getDisplayModes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.GraphicsDevice.getDisplayModes()"); }
-  public int getAvailableAcceleratedMemory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.GraphicsDevice.getAvailableAcceleratedMemory()"); }
-  public abstract java.lang.String getIDstring() { throw new AbstractMethodError("java.awt.GraphicsDevice.getIDstring()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getType() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.GraphicsConfiguration getDefaultConfiguration() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Window getFullScreenWindow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isWindowTranslucencySupported(java.awt.GraphicsDevice.WindowTranslucency translucencyKind) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.GraphicsConfiguration getBestConfiguration(java.awt.GraphicsConfigTemplate gct) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.GraphicsConfiguration[] getConfigurations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFullScreenWindow(java.awt.Window w) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.DisplayMode getDisplayMode() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFullScreenSupported() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDisplayChangeSupported() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDisplayMode(java.awt.DisplayMode dm) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.DisplayMode[] getDisplayModes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAvailableAcceleratedMemory() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getIDstring() { return null; }
   < ---- END java signatures ---- >
 }

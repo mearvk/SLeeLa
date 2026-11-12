@@ -58,23 +58,37 @@ class VetoableChangeSupport {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public VetoableChangeSupport(java.lang.Object sourceBean) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.VetoableChangeSupport.<init>(java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public VetoableChangeSupport(java.lang.Object sourceBean) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void fireVetoableChange(java.lang.String propertyName, boolean oldValue, boolean newValue) throws java.beans.PropertyVetoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.VetoableChangeSupport.fireVetoableChange(java.lang.String, boolean, boolean)"); }
-  public void fireVetoableChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) throws java.beans.PropertyVetoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.VetoableChangeSupport.fireVetoableChange(java.lang.String, java.lang.Object, java.lang.Object)"); }
-  public void fireVetoableChange(java.beans.PropertyChangeEvent event) throws java.beans.PropertyVetoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.VetoableChangeSupport.fireVetoableChange(java.beans.PropertyChangeEvent)"); }
-  public void fireVetoableChange(java.lang.String propertyName, int oldValue, int newValue) throws java.beans.PropertyVetoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.VetoableChangeSupport.fireVetoableChange(java.lang.String, int, int)"); }
-  public void addVetoableChangeListener(java.lang.String propertyName, java.beans.VetoableChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.VetoableChangeSupport.addVetoableChangeListener(java.lang.String, java.beans.VetoableChangeListener)"); }
-  public void addVetoableChangeListener(java.beans.VetoableChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.VetoableChangeSupport.addVetoableChangeListener(java.beans.VetoableChangeListener)"); }
-  public void removeVetoableChangeListener(java.beans.VetoableChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.VetoableChangeSupport.removeVetoableChangeListener(java.beans.VetoableChangeListener)"); }
-  public void removeVetoableChangeListener(java.lang.String propertyName, java.beans.VetoableChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.VetoableChangeSupport.removeVetoableChangeListener(java.lang.String, java.beans.VetoableChangeListener)"); }
-  public java.beans.VetoableChangeListener[] getVetoableChangeListeners(java.lang.String propertyName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.VetoableChangeSupport.getVetoableChangeListeners(java.lang.String)"); }
-  public java.beans.VetoableChangeListener[] getVetoableChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.VetoableChangeSupport.getVetoableChangeListeners()"); }
-  public boolean hasListeners(java.lang.String propertyName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.VetoableChangeSupport.hasListeners(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  public void fireVetoableChange(java.lang.String propertyName, boolean oldValue, boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  public void fireVetoableChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  public void fireVetoableChange(java.beans.PropertyChangeEvent event) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  public void fireVetoableChange(java.lang.String propertyName, int oldValue, int newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addVetoableChangeListener(java.lang.String propertyName, java.beans.VetoableChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addVetoableChangeListener(java.beans.VetoableChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeVetoableChangeListener(java.beans.VetoableChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeVetoableChangeListener(java.lang.String propertyName, java.beans.VetoableChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.VetoableChangeListener[] getVetoableChangeListeners(java.lang.String propertyName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.VetoableChangeListener[] getVetoableChangeListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasListeners(java.lang.String propertyName) { return false; }
   < ---- END java signatures ---- >
 }

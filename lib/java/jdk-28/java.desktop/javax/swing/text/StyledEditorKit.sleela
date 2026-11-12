@@ -58,22 +58,34 @@ class StyledEditorKit {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StyledEditorKit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StyledEditorKit() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.clone()"); }
-  public void install(javax.swing.JEditorPane c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.install(javax.swing.JEditorPane)"); }
-  public javax.swing.text.MutableAttributeSet getInputAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.getInputAttributes()"); }
-  public javax.swing.text.ViewFactory getViewFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.getViewFactory()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void install(javax.swing.JEditorPane c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.MutableAttributeSet getInputAttributes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.ViewFactory getViewFactory() { return null; }
   @JavaProtected
-  void createInputAttributes(javax.swing.text.Element element, javax.swing.text.MutableAttributeSet set) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.createInputAttributes(javax.swing.text.Element, javax.swing.text.MutableAttributeSet)"); }
-  public javax.swing.text.Element getCharacterAttributeRun() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.getCharacterAttributeRun()"); }
-  public void deinstall(javax.swing.JEditorPane c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.deinstall(javax.swing.JEditorPane)"); }
-  public javax.swing.text.Document createDefaultDocument() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.createDefaultDocument()"); }
-  public javax.swing.Action[] getActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.getActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void createInputAttributes(javax.swing.text.Element element, javax.swing.text.MutableAttributeSet set) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Element getCharacterAttributeRun() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void deinstall(javax.swing.JEditorPane c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Document createDefaultDocument() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Action[] getActions() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,12 +58,18 @@ class Scope {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.lang.model.element.TypeElement getEnclosingClass() { throw new AbstractMethodError("com.sun.source.tree.Scope.getEnclosingClass()"); }
-  public abstract javax.lang.model.element.ExecutableElement getEnclosingMethod() { throw new AbstractMethodError("com.sun.source.tree.Scope.getEnclosingMethod()"); }
-  public abstract com.sun.source.tree.Scope getEnclosingScope() { throw new AbstractMethodError("com.sun.source.tree.Scope.getEnclosingScope()"); }
-  public abstract java.lang.Iterable<? extends javax.lang.model.element.Element> getLocalElements() { throw new AbstractMethodError("com.sun.source.tree.Scope.getLocalElements()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.TypeElement getEnclosingClass() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.ExecutableElement getEnclosingMethod() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.Scope getEnclosingScope() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Iterable<? extends javax.lang.model.element.Element> getLocalElements() { return null; }
   < ---- END java signatures ---- >
 }

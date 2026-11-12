@@ -66,25 +66,41 @@ class Double {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Double() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.<init>()"); }
-  public Double(double x, double y, double w, double h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.<init>(double, double, double, double)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Double() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Double(double x, double y, double w, double h) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.toString()"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.isEmpty()"); }
-  public double getX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.getX()"); }
-  public double getY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.getY()"); }
-  public double getHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.getHeight()"); }
-  public void setRect(double x, double y, double w, double h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.setRect(double, double, double, double)"); }
-  public void setRect(java.awt.geom.Rectangle2D r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.setRect(java.awt.geom.Rectangle2D)"); }
-  public int outcode(double x, double y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.outcode(double, double)"); }
-  public java.awt.geom.Rectangle2D createIntersection(java.awt.geom.Rectangle2D r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.createIntersection(java.awt.geom.Rectangle2D)"); }
-  public java.awt.geom.Rectangle2D createUnion(java.awt.geom.Rectangle2D r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.createUnion(java.awt.geom.Rectangle2D)"); }
-  public java.awt.geom.Rectangle2D getBounds2D() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.getBounds2D()"); }
-  public double getWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Rectangle2D.Double.getWidth()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getX() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getY() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getHeight() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRect(double x, double y, double w, double h) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRect(java.awt.geom.Rectangle2D r) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int outcode(double x, double y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D createIntersection(java.awt.geom.Rectangle2D r) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D createUnion(java.awt.geom.Rectangle2D r) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getBounds2D() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getWidth() { return 0.0; }
   < ---- END java signatures ---- >
 }

@@ -85,78 +85,126 @@ class BasicSplitPaneUI {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicSplitPaneUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicSplitPaneUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void installListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.installListeners()"); }
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent jc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.getPreferredSize(javax.swing.JComponent)"); }
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent jc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.getMinimumSize(javax.swing.JComponent)"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.installUI(javax.swing.JComponent)"); }
-  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.uninstallUI(javax.swing.JComponent)"); }
-  public int getOrientation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.getOrientation()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListeners() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent jc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent jc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getOrientation() { return 0; }
   @JavaProtected
-  void startDragging() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.startDragging()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void startDragging() { }
   @JavaProtected
-  void dragDividerTo(int location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.dragDividerTo(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void dragDividerTo(int location) { }
   @JavaProtected
-  void finishDraggingTo(int location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.finishDraggingTo(int)"); }
-  public void setLastDragLocation(int l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.setLastDragLocation(int)"); }
-  public javax.swing.plaf.basic.BasicSplitPaneDivider createDefaultDivider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.createDefaultDivider()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void finishDraggingTo(int location) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLastDragLocation(int l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.basic.BasicSplitPaneDivider createDefaultDivider() { return null; }
   @JavaProtected
-  void resetLayoutManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.resetLayoutManager()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void resetLayoutManager() { }
   @JavaProtected
-  java.awt.Component createDefaultNonContinuousLayoutDivider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.createDefaultNonContinuousLayoutDivider()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Component createDefaultNonContinuousLayoutDivider() { return null; }
   @JavaProtected
-  void setNonContinuousLayoutDivider(java.awt.Component newDivider, boolean rememberSizes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.setNonContinuousLayoutDivider(java.awt.Component, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setNonContinuousLayoutDivider(java.awt.Component newDivider, boolean rememberSizes) { }
   @JavaProtected
-  void setNonContinuousLayoutDivider(java.awt.Component newDivider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.setNonContinuousLayoutDivider(java.awt.Component)"); }
-  public int getLastDragLocation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.getLastDragLocation()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setNonContinuousLayoutDivider(java.awt.Component newDivider) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLastDragLocation() { return 0; }
   @JavaProtected
-  java.awt.event.ActionListener createKeyboardUpLeftListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.createKeyboardUpLeftListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.ActionListener createKeyboardUpLeftListener() { return null; }
   @JavaProtected
-  java.awt.event.ActionListener createKeyboardDownRightListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.createKeyboardDownRightListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.ActionListener createKeyboardDownRightListener() { return null; }
   @JavaProtected
-  java.awt.event.ActionListener createKeyboardHomeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.createKeyboardHomeListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.ActionListener createKeyboardHomeListener() { return null; }
   @JavaProtected
-  java.awt.event.ActionListener createKeyboardEndListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.createKeyboardEndListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.ActionListener createKeyboardEndListener() { return null; }
   @JavaProtected
-  java.awt.event.ActionListener createKeyboardResizeToggleListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.createKeyboardResizeToggleListener()"); }
-  public java.awt.Component getNonContinuousLayoutDivider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.getNonContinuousLayoutDivider()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.ActionListener createKeyboardResizeToggleListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getNonContinuousLayoutDivider() { return null; }
   @JavaProtected
-  int getDividerBorderSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.getDividerBorderSize()"); }
-  public void setOrientation(int orientation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.setOrientation(int)"); }
-  public javax.swing.plaf.basic.BasicSplitPaneDivider getDivider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.getDivider()"); }
-  public void resetToPreferredSizes(javax.swing.JSplitPane jc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.resetToPreferredSizes(javax.swing.JSplitPane)"); }
-  public void setDividerLocation(javax.swing.JSplitPane jc, int location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.setDividerLocation(javax.swing.JSplitPane, int)"); }
-  public int getMinimumDividerLocation(javax.swing.JSplitPane jc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.getMinimumDividerLocation(javax.swing.JSplitPane)"); }
-  public int getMaximumDividerLocation(javax.swing.JSplitPane jc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.getMaximumDividerLocation(javax.swing.JSplitPane)"); }
-  public void finishedPaintingChildren(javax.swing.JSplitPane sp, java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.finishedPaintingChildren(javax.swing.JSplitPane, java.awt.Graphics)"); }
-  public void setContinuousLayout(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.setContinuousLayout(boolean)"); }
-  public boolean isContinuousLayout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.isContinuousLayout()"); }
-  public int getDividerLocation(javax.swing.JSplitPane jc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.getDividerLocation(javax.swing.JSplitPane)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.createUI(javax.swing.JComponent)"); }
-  public javax.swing.JSplitPane getSplitPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.getSplitPane()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getDividerBorderSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOrientation(int orientation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.basic.BasicSplitPaneDivider getDivider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void resetToPreferredSizes(javax.swing.JSplitPane jc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDividerLocation(javax.swing.JSplitPane jc, int location) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinimumDividerLocation(javax.swing.JSplitPane jc) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaximumDividerLocation(javax.swing.JSplitPane jc) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void finishedPaintingChildren(javax.swing.JSplitPane sp, java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setContinuousLayout(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isContinuousLayout() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDividerLocation(javax.swing.JSplitPane jc) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JSplitPane getSplitPane() { return null; }
   @JavaProtected
-  void installKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.installKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installKeyboardActions() { }
   @JavaProtected
-  void uninstallKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.uninstallKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallKeyboardActions() { }
   @JavaProtected
-  void installDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.installDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults() { }
   @JavaProtected
-  void uninstallListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.uninstallListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallListeners() { }
   @JavaProtected
-  void uninstallDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.uninstallDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults() { }
   @JavaProtected
-  java.beans.PropertyChangeListener createPropertyChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.createPropertyChangeListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
   @JavaProtected
-  java.awt.event.FocusListener createFocusListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.createFocusListener()"); }
-  public java.awt.Insets getInsets(javax.swing.JComponent jc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.getInsets(javax.swing.JComponent)"); }
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent jc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.getMaximumSize(javax.swing.JComponent)"); }
-  public void paint(java.awt.Graphics g, javax.swing.JComponent jc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicSplitPaneUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.FocusListener createFocusListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getInsets(javax.swing.JComponent jc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize(javax.swing.JComponent jc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, javax.swing.JComponent jc) { }
   < ---- END java signatures ---- >
 }

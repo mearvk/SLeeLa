@@ -58,15 +58,24 @@ class Soundbank {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("javax.sound.midi.Soundbank.getName()"); }
-  public abstract javax.sound.midi.SoundbankResource[] getResources() { throw new AbstractMethodError("javax.sound.midi.Soundbank.getResources()"); }
-  public abstract java.lang.String getVersion() { throw new AbstractMethodError("javax.sound.midi.Soundbank.getVersion()"); }
-  public abstract java.lang.String getDescription() { throw new AbstractMethodError("javax.sound.midi.Soundbank.getDescription()"); }
-  public abstract java.lang.String getVendor() { throw new AbstractMethodError("javax.sound.midi.Soundbank.getVendor()"); }
-  public abstract javax.sound.midi.Instrument[] getInstruments() { throw new AbstractMethodError("javax.sound.midi.Soundbank.getInstruments()"); }
-  public abstract javax.sound.midi.Instrument getInstrument(javax.sound.midi.Patch patch) { throw new AbstractMethodError("javax.sound.midi.Soundbank.getInstrument(javax.sound.midi.Patch)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.midi.SoundbankResource[] getResources() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDescription() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getVendor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.midi.Instrument[] getInstruments() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.midi.Instrument getInstrument(javax.sound.midi.Patch patch) { return null; }
   < ---- END java signatures ---- >
 }

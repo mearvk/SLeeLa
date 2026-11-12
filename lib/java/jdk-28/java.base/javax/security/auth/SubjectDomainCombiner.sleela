@@ -58,14 +58,19 @@ class SubjectDomainCombiner {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SubjectDomainCombiner(javax.security.auth.Subject subject) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.SubjectDomainCombiner.<init>(javax.security.auth.Subject)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SubjectDomainCombiner(javax.security.auth.Subject subject) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.security.ProtectionDomain[] combine(java.security.ProtectionDomain[] currentDomains, java.security.ProtectionDomain[] assignedDomains) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.SubjectDomainCombiner.combine(java.security.ProtectionDomain[], java.security.ProtectionDomain[])"); }
-  public javax.security.auth.Subject getSubject() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.SubjectDomainCombiner.getSubject()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.ProtectionDomain[] combine(java.security.ProtectionDomain[] currentDomains, java.security.ProtectionDomain[] assignedDomains) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.security.auth.Subject getSubject() { return null; }
   < ---- END java signatures ---- >
 }

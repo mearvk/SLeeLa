@@ -58,35 +58,61 @@ class TrayIcon {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TrayIcon(java.awt.Image image, java.lang.String tooltip, java.awt.PopupMenu popup) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.<init>(java.awt.Image, java.lang.String, java.awt.PopupMenu)"); }
-  public TrayIcon(java.awt.Image image, java.lang.String tooltip) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.<init>(java.awt.Image, java.lang.String)"); }
-  public TrayIcon(java.awt.Image image) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.<init>(java.awt.Image)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TrayIcon(java.awt.Image image, java.lang.String tooltip, java.awt.PopupMenu popup) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TrayIcon(java.awt.Image image, java.lang.String tooltip) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TrayIcon(java.awt.Image image) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Dimension getSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.getSize()"); }
-  public synchronized void addMouseListener(java.awt.event.MouseListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.addMouseListener(java.awt.event.MouseListener)"); }
-  public synchronized void addMouseMotionListener(java.awt.event.MouseMotionListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.addMouseMotionListener(java.awt.event.MouseMotionListener)"); }
-  public synchronized void addActionListener(java.awt.event.ActionListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.addActionListener(java.awt.event.ActionListener)"); }
-  public void setActionCommand(java.lang.String command) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.setActionCommand(java.lang.String)"); }
-  public synchronized void removeActionListener(java.awt.event.ActionListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.removeActionListener(java.awt.event.ActionListener)"); }
-  public synchronized java.awt.event.ActionListener[] getActionListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.getActionListeners()"); }
-  public void setImage(java.awt.Image image) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.setImage(java.awt.Image)"); }
-  public void setToolTip(java.lang.String tooltip) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.setToolTip(java.lang.String)"); }
-  public void setPopupMenu(java.awt.PopupMenu popup) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.setPopupMenu(java.awt.PopupMenu)"); }
-  public void displayMessage(java.lang.String caption, java.lang.String text, java.awt.TrayIcon.MessageType messageType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.displayMessage(java.lang.String, java.lang.String, java.awt.TrayIcon.MessageType)"); }
-  public java.awt.PopupMenu getPopupMenu() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.getPopupMenu()"); }
-  public java.lang.String getToolTip() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.getToolTip()"); }
-  public void setImageAutoSize(boolean autosize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.setImageAutoSize(boolean)"); }
-  public boolean isImageAutoSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.isImageAutoSize()"); }
-  public synchronized void removeMouseListener(java.awt.event.MouseListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.removeMouseListener(java.awt.event.MouseListener)"); }
-  public synchronized java.awt.event.MouseListener[] getMouseListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.getMouseListeners()"); }
-  public synchronized void removeMouseMotionListener(java.awt.event.MouseMotionListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.removeMouseMotionListener(java.awt.event.MouseMotionListener)"); }
-  public synchronized java.awt.event.MouseMotionListener[] getMouseMotionListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.getMouseMotionListeners()"); }
-  public java.lang.String getActionCommand() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.getActionCommand()"); }
-  public java.awt.Image getImage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TrayIcon.getImage()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addMouseListener(java.awt.event.MouseListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addMouseMotionListener(java.awt.event.MouseMotionListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addActionListener(java.awt.event.ActionListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setActionCommand(java.lang.String command) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeActionListener(java.awt.event.ActionListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.event.ActionListener[] getActionListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setImage(java.awt.Image image) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToolTip(java.lang.String tooltip) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPopupMenu(java.awt.PopupMenu popup) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void displayMessage(java.lang.String caption, java.lang.String text, java.awt.TrayIcon.MessageType messageType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.PopupMenu getPopupMenu() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getToolTip() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setImageAutoSize(boolean autosize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isImageAutoSize() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeMouseListener(java.awt.event.MouseListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.event.MouseListener[] getMouseListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeMouseMotionListener(java.awt.event.MouseMotionListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.event.MouseMotionListener[] getMouseMotionListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getActionCommand() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Image getImage() { return null; }
   < ---- END java signatures ---- >
 }

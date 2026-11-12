@@ -59,29 +59,49 @@ class DOMCryptoContext {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  DOMCryptoContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  DOMCryptoContext() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object get(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.get(java.lang.Object)"); }
-  public java.lang.Object put(java.lang.Object key, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.put(java.lang.Object, java.lang.Object)"); }
-  public java.lang.Object getProperty(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.getProperty(java.lang.String)"); }
-  public java.util.Iterator<java.util.Map.Entry<java.lang.String, org.w3c.dom.Element>> iterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.iterator()"); }
-  public java.lang.Object setProperty(java.lang.String name, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.setProperty(java.lang.String, java.lang.Object)"); }
-  public java.lang.String getNamespacePrefix(java.lang.String namespaceURI, java.lang.String defaultPrefix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.getNamespacePrefix(java.lang.String, java.lang.String)"); }
-  public java.lang.String getBaseURI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.getBaseURI()"); }
-  public void setIdAttributeNS(org.w3c.dom.Element element, java.lang.String namespaceURI, java.lang.String localName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.setIdAttributeNS(org.w3c.dom.Element, java.lang.String, java.lang.String)"); }
-  public org.w3c.dom.Element getElementById(java.lang.String idValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.getElementById(java.lang.String)"); }
-  public void setBaseURI(java.lang.String baseURI) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.setBaseURI(java.lang.String)"); }
-  public javax.xml.crypto.KeySelector getKeySelector() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.getKeySelector()"); }
-  public void setKeySelector(javax.xml.crypto.KeySelector ks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.setKeySelector(javax.xml.crypto.KeySelector)"); }
-  public javax.xml.crypto.URIDereferencer getURIDereferencer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.getURIDereferencer()"); }
-  public void setURIDereferencer(javax.xml.crypto.URIDereferencer dereferencer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.setURIDereferencer(javax.xml.crypto.URIDereferencer)"); }
-  public java.lang.String putNamespacePrefix(java.lang.String namespaceURI, java.lang.String prefix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.putNamespacePrefix(java.lang.String, java.lang.String)"); }
-  public java.lang.String getDefaultNamespacePrefix() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.getDefaultNamespacePrefix()"); }
-  public void setDefaultNamespacePrefix(java.lang.String defaultPrefix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dom.DOMCryptoContext.setDefaultNamespacePrefix(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object get(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object put(java.lang.Object key, java.lang.Object value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getProperty(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Iterator<java.util.Map.Entry<java.lang.String, org.w3c.dom.Element>> iterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object setProperty(java.lang.String name, java.lang.Object value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getNamespacePrefix(java.lang.String namespaceURI, java.lang.String defaultPrefix) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getBaseURI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIdAttributeNS(org.w3c.dom.Element element, java.lang.String namespaceURI, java.lang.String localName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public org.w3c.dom.Element getElementById(java.lang.String idValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBaseURI(java.lang.String baseURI) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.crypto.KeySelector getKeySelector() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setKeySelector(javax.xml.crypto.KeySelector ks) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.crypto.URIDereferencer getURIDereferencer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setURIDereferencer(javax.xml.crypto.URIDereferencer dereferencer) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String putNamespacePrefix(java.lang.String namespaceURI, java.lang.String prefix) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDefaultNamespacePrefix() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultNamespacePrefix(java.lang.String defaultPrefix) { }
   < ---- END java signatures ---- >
 }

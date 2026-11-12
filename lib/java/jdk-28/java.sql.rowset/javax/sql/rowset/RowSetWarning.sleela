@@ -58,17 +58,25 @@ class RowSetWarning {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RowSetWarning(java.lang.String reason, java.lang.String SQLState, int vendorCode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetWarning.<init>(java.lang.String, java.lang.String, int)"); }
-  public RowSetWarning(java.lang.String reason, java.lang.String SQLState) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetWarning.<init>(java.lang.String, java.lang.String)"); }
-  public RowSetWarning() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetWarning.<init>()"); }
-  public RowSetWarning(java.lang.String reason) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetWarning.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RowSetWarning(java.lang.String reason, java.lang.String SQLState, int vendorCode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RowSetWarning(java.lang.String reason, java.lang.String SQLState) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RowSetWarning() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RowSetWarning(java.lang.String reason) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.sql.rowset.RowSetWarning getNextWarning() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetWarning.getNextWarning()"); }
-  public void setNextWarning(javax.sql.rowset.RowSetWarning warning) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.RowSetWarning.setNextWarning(javax.sql.rowset.RowSetWarning)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.sql.rowset.RowSetWarning getNextWarning() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNextWarning(javax.sql.rowset.RowSetWarning warning) { }
   < ---- END java signatures ---- >
 }

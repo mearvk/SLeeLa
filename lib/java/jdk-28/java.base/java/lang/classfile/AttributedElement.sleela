@@ -58,11 +58,16 @@ class AttributedElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.List<java.lang.classfile.Attribute<?>> attributes() { throw new AbstractMethodError("java.lang.classfile.AttributedElement.attributes()"); }
-  public default <T extends java.lang.classfile.Attribute<T>> java.util.Optional<T> findAttribute(java.lang.classfile.AttributeMapper<T> attr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AttributedElement.findAttribute(java.lang.classfile.AttributeMapper<T>)"); }
-  public default <T extends java.lang.classfile.Attribute<T>> java.util.List<T> findAttributes(java.lang.classfile.AttributeMapper<T> attr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AttributedElement.findAttributes(java.lang.classfile.AttributeMapper<T>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.classfile.Attribute<?>> attributes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default <T extends java.lang.classfile.Attribute<T>> java.util.Optional<T> findAttribute(java.lang.classfile.AttributeMapper<T> attr) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default <T extends java.lang.classfile.Attribute<T>> java.util.List<T> findAttributes(java.lang.classfile.AttributeMapper<T> attr) { return null; }
   < ---- END java signatures ---- >
 }

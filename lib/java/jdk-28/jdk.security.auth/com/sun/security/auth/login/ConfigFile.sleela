@@ -58,15 +58,21 @@ class ConfigFile {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ConfigFile() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.security.auth.login.ConfigFile.<init>()"); }
-  public ConfigFile(java.net.URI uri) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.security.auth.login.ConfigFile.<init>(java.net.URI)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ConfigFile() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ConfigFile(java.net.URI uri) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.security.auth.login.AppConfigurationEntry[] getAppConfigurationEntry(java.lang.String applicationName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.security.auth.login.ConfigFile.getAppConfigurationEntry(java.lang.String)"); }
-  public void refresh() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.security.auth.login.ConfigFile.refresh()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.security.auth.login.AppConfigurationEntry[] getAppConfigurationEntry(java.lang.String applicationName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void refresh() { }
   < ---- END java signatures ---- >
 }

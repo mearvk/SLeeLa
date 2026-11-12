@@ -58,13 +58,20 @@ class ConnectionBuilder {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.sql.Connection build() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.ConnectionBuilder.build()"); }
-  public abstract java.sql.ConnectionBuilder user(java.lang.String username) { throw new AbstractMethodError("java.sql.ConnectionBuilder.user(java.lang.String)"); }
-  public abstract java.sql.ConnectionBuilder password(java.lang.String password) { throw new AbstractMethodError("java.sql.ConnectionBuilder.password(java.lang.String)"); }
-  public abstract java.sql.ConnectionBuilder shardingKey(java.sql.ShardingKey shardingKey) { throw new AbstractMethodError("java.sql.ConnectionBuilder.shardingKey(java.sql.ShardingKey)"); }
-  public abstract java.sql.ConnectionBuilder superShardingKey(java.sql.ShardingKey superShardingKey) { throw new AbstractMethodError("java.sql.ConnectionBuilder.superShardingKey(java.sql.ShardingKey)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.Connection build() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.sql.ConnectionBuilder user(java.lang.String username) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.sql.ConnectionBuilder password(java.lang.String password) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.sql.ConnectionBuilder shardingKey(java.sql.ShardingKey shardingKey) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.sql.ConnectionBuilder superShardingKey(java.sql.ShardingKey superShardingKey) { return null; }
   < ---- END java signatures ---- >
 }

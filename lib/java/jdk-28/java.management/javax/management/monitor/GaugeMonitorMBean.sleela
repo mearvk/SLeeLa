@@ -58,21 +58,36 @@ class GaugeMonitorMBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Number getHighThreshold() { throw new AbstractMethodError("javax.management.monitor.GaugeMonitorMBean.getHighThreshold()"); }
-  public abstract java.lang.Number getLowThreshold() { throw new AbstractMethodError("javax.management.monitor.GaugeMonitorMBean.getLowThreshold()"); }
-  public abstract void setThresholds(java.lang.Number highValue, java.lang.Number lowValue) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.management.monitor.GaugeMonitorMBean.setThresholds(java.lang.Number, java.lang.Number)"); }
-  public abstract boolean getNotifyHigh() { throw new AbstractMethodError("javax.management.monitor.GaugeMonitorMBean.getNotifyHigh()"); }
-  public abstract void setNotifyHigh(boolean value) { throw new AbstractMethodError("javax.management.monitor.GaugeMonitorMBean.setNotifyHigh(boolean)"); }
-  public abstract boolean getNotifyLow() { throw new AbstractMethodError("javax.management.monitor.GaugeMonitorMBean.getNotifyLow()"); }
-  public abstract void setNotifyLow(boolean value) { throw new AbstractMethodError("javax.management.monitor.GaugeMonitorMBean.setNotifyLow(boolean)"); }
-  public abstract java.lang.Number getDerivedGauge() { throw new AbstractMethodError("javax.management.monitor.GaugeMonitorMBean.getDerivedGauge()"); }
-  public abstract java.lang.Number getDerivedGauge(javax.management.ObjectName object) { throw new AbstractMethodError("javax.management.monitor.GaugeMonitorMBean.getDerivedGauge(javax.management.ObjectName)"); }
-  public abstract long getDerivedGaugeTimeStamp() { throw new AbstractMethodError("javax.management.monitor.GaugeMonitorMBean.getDerivedGaugeTimeStamp()"); }
-  public abstract long getDerivedGaugeTimeStamp(javax.management.ObjectName object) { throw new AbstractMethodError("javax.management.monitor.GaugeMonitorMBean.getDerivedGaugeTimeStamp(javax.management.ObjectName)"); }
-  public abstract boolean getDifferenceMode() { throw new AbstractMethodError("javax.management.monitor.GaugeMonitorMBean.getDifferenceMode()"); }
-  public abstract void setDifferenceMode(boolean value) { throw new AbstractMethodError("javax.management.monitor.GaugeMonitorMBean.setDifferenceMode(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Number getHighThreshold() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Number getLowThreshold() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public void setThresholds(java.lang.Number highValue, java.lang.Number lowValue) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getNotifyHigh() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setNotifyHigh(boolean value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getNotifyLow() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setNotifyLow(boolean value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Number getDerivedGauge() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Number getDerivedGauge(javax.management.ObjectName object) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getDerivedGaugeTimeStamp() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getDerivedGaugeTimeStamp(javax.management.ObjectName object) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getDifferenceMode() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDifferenceMode(boolean value) { }
   < ---- END java signatures ---- >
 }

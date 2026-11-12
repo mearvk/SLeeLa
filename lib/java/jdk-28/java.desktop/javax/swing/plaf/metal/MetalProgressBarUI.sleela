@@ -58,15 +58,21 @@ class MetalProgressBarUI {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MetalProgressBarUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalProgressBarUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MetalProgressBarUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void paintIndeterminate(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalProgressBarUI.paintIndeterminate(java.awt.Graphics, javax.swing.JComponent)"); }
-  public void paintDeterminate(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalProgressBarUI.paintDeterminate(java.awt.Graphics, javax.swing.JComponent)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalProgressBarUI.createUI(javax.swing.JComponent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintIndeterminate(java.awt.Graphics g, javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintDeterminate(java.awt.Graphics g, javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
   < ---- END java signatures ---- >
 }

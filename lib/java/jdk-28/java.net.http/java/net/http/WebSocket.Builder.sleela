@@ -59,12 +59,18 @@ class Builder {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.net.http.WebSocket.Builder header(java.lang.String name, java.lang.String value) { throw new AbstractMethodError("java.net.http.WebSocket.Builder.header(java.lang.String, java.lang.String)"); }
-  public abstract java.net.http.WebSocket.Builder connectTimeout(java.time.Duration timeout) { throw new AbstractMethodError("java.net.http.WebSocket.Builder.connectTimeout(java.time.Duration)"); }
-  public abstract java.net.http.WebSocket.Builder subprotocols(java.lang.String mostPreferred, java.lang.String... lesserPreferred) { throw new AbstractMethodError("java.net.http.WebSocket.Builder.subprotocols(java.lang.String, java.lang.String...)"); }
-  public abstract java.util.concurrent.CompletableFuture<java.net.http.WebSocket> buildAsync(java.net.URI uri, java.net.http.WebSocket.Listener listener) { throw new AbstractMethodError("java.net.http.WebSocket.Builder.buildAsync(java.net.URI, java.net.http.WebSocket.Listener)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.WebSocket.Builder header(java.lang.String name, java.lang.String value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.WebSocket.Builder connectTimeout(java.time.Duration timeout) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.WebSocket.Builder subprotocols(java.lang.String mostPreferred, java.lang.String... lesserPreferred) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.CompletableFuture<java.net.http.WebSocket> buildAsync(java.net.URI uri, java.net.http.WebSocket.Listener listener) { return null; }
   < ---- END java signatures ---- >
 }

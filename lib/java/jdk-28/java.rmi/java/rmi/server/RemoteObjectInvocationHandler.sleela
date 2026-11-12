@@ -58,6 +58,7 @@ class RemoteObjectInvocationHandler {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RemoteObjectInvocationHandler(java.rmi.server.RemoteRef ref) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.RemoteObjectInvocationHandler.<init>(java.rmi.server.RemoteRef)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RemoteObjectInvocationHandler(java.rmi.server.RemoteRef ref) { }
   < ---- END java constructors ---- >
 }

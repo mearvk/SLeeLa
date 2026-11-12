@@ -58,27 +58,43 @@ class EventQueue {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public EventQueue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EventQueue() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void push(java.awt.EventQueue newEventQueue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.push(java.awt.EventQueue)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void push(java.awt.EventQueue newEventQueue) { }
   @JavaProtected
-  void pop() throws java.util.EmptyStackException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.pop()"); }
-  public java.awt.SecondaryLoop createSecondaryLoop() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.createSecondaryLoop()"); }
-  public java.awt.AWTEvent getNextEvent() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.getNextEvent()"); }
-  public java.awt.AWTEvent peekEvent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.peekEvent()"); }
-  public java.awt.AWTEvent peekEvent(int id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.peekEvent(int)"); }
-  public static java.awt.AWTEvent getCurrentEvent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.getCurrentEvent()"); }
-  public static void invokeAndWait(java.lang.Runnable runnable) throws java.lang.InterruptedException, java.lang.reflect.InvocationTargetException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.invokeAndWait(java.lang.Runnable)"); }
-  public static long getMostRecentEventTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.getMostRecentEventTime()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.util.EmptyStackException")
+  void pop() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.SecondaryLoop createSecondaryLoop() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public java.awt.AWTEvent getNextEvent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.AWTEvent peekEvent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.AWTEvent peekEvent(int id) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.AWTEvent getCurrentEvent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.lang.reflect.InvocationTargetException")
+  public static void invokeAndWait(java.lang.Runnable runnable) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long getMostRecentEventTime() { return 0; }
   @JavaProtected
-  void dispatchEvent(java.awt.AWTEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.dispatchEvent(java.awt.AWTEvent)"); }
-  public void postEvent(java.awt.AWTEvent theEvent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.postEvent(java.awt.AWTEvent)"); }
-  public static boolean isDispatchThread() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.isDispatchThread()"); }
-  public static void invokeLater(java.lang.Runnable runnable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.EventQueue.invokeLater(java.lang.Runnable)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void dispatchEvent(java.awt.AWTEvent event) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void postEvent(java.awt.AWTEvent theEvent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDispatchThread() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void invokeLater(java.lang.Runnable runnable) { }
   < ---- END java signatures ---- >
 }

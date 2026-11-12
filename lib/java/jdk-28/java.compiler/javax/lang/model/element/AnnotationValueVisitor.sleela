@@ -58,24 +58,42 @@ class AnnotationValueVisitor<R, P> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract R visit(javax.lang.model.element.AnnotationValue av, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visit(javax.lang.model.element.AnnotationValue, P)"); }
-  public default R visit(javax.lang.model.element.AnnotationValue av) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.AnnotationValueVisitor.visit(javax.lang.model.element.AnnotationValue)"); }
-  public abstract R visitType(javax.lang.model.type.TypeMirror t, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitType(javax.lang.model.type.TypeMirror, P)"); }
-  public abstract R visitArray(java.util.List<? extends javax.lang.model.element.AnnotationValue> vals, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitArray(java.util.List<? extends javax.lang.model.element.AnnotationValue>, P)"); }
-  public abstract R visitAnnotation(javax.lang.model.element.AnnotationMirror a, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitAnnotation(javax.lang.model.element.AnnotationMirror, P)"); }
-  public abstract R visitUnknown(javax.lang.model.element.AnnotationValue av, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitUnknown(javax.lang.model.element.AnnotationValue, P)"); }
-  public abstract R visitString(java.lang.String s, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitString(java.lang.String, P)"); }
-  public abstract R visitBoolean(boolean b, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitBoolean(boolean, P)"); }
-  public abstract R visitChar(char c, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitChar(char, P)"); }
-  public abstract R visitByte(byte b, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitByte(byte, P)"); }
-  public abstract R visitShort(short s, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitShort(short, P)"); }
-  public abstract R visitInt(int i, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitInt(int, P)"); }
-  public abstract R visitLong(long i, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitLong(long, P)"); }
-  public abstract R visitFloat(float f, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitFloat(float, P)"); }
-  public abstract R visitDouble(double d, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitDouble(double, P)"); }
-  public abstract R visitEnumConstant(javax.lang.model.element.VariableElement c, P p) { throw new AbstractMethodError("javax.lang.model.element.AnnotationValueVisitor.visitEnumConstant(javax.lang.model.element.VariableElement, P)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public R visit(javax.lang.model.element.AnnotationValue av, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default R visit(javax.lang.model.element.AnnotationValue av) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitType(javax.lang.model.type.TypeMirror t, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitArray(java.util.List<? extends javax.lang.model.element.AnnotationValue> vals, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitAnnotation(javax.lang.model.element.AnnotationMirror a, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitUnknown(javax.lang.model.element.AnnotationValue av, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitString(java.lang.String s, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitBoolean(boolean b, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitChar(char c, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitByte(byte b, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitShort(short s, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitInt(int i, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitLong(long i, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitFloat(float f, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitDouble(double d, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitEnumConstant(javax.lang.model.element.VariableElement c, P p) { return null; }
   < ---- END java signatures ---- >
 }

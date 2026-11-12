@@ -58,35 +58,61 @@ class AWTEventMonitor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AWTEventMonitor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AWTEventMonitor() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static void addContainerListener(java.awt.event.ContainerListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.addContainerListener(java.awt.event.ContainerListener)"); }
-  public static void removeContainerListener(java.awt.event.ContainerListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.removeContainerListener(java.awt.event.ContainerListener)"); }
-  public static void addComponentListener(java.awt.event.ComponentListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.addComponentListener(java.awt.event.ComponentListener)"); }
-  public static void addFocusListener(java.awt.event.FocusListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.addFocusListener(java.awt.event.FocusListener)"); }
-  public static void addKeyListener(java.awt.event.KeyListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener(java.awt.event.KeyListener)"); }
-  public static void addMouseListener(java.awt.event.MouseListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener(java.awt.event.MouseListener)"); }
-  public static void addMouseMotionListener(java.awt.event.MouseMotionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener(java.awt.event.MouseMotionListener)"); }
-  public static void addActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.addActionListener(java.awt.event.ActionListener)"); }
-  public static void removeActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.removeActionListener(java.awt.event.ActionListener)"); }
-  public static void addItemListener(java.awt.event.ItemListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.addItemListener(java.awt.event.ItemListener)"); }
-  public static void removeItemListener(java.awt.event.ItemListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.removeItemListener(java.awt.event.ItemListener)"); }
-  public static void addWindowListener(java.awt.event.WindowListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener(java.awt.event.WindowListener)"); }
-  public static void removeWindowListener(java.awt.event.WindowListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.removeWindowListener(java.awt.event.WindowListener)"); }
-  public static void addAdjustmentListener(java.awt.event.AdjustmentListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.addAdjustmentListener(java.awt.event.AdjustmentListener)"); }
-  public static void removeAdjustmentListener(java.awt.event.AdjustmentListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.removeAdjustmentListener(java.awt.event.AdjustmentListener)"); }
-  public static void addTextListener(java.awt.event.TextListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.addTextListener(java.awt.event.TextListener)"); }
-  public static void removeTextListener(java.awt.event.TextListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.removeTextListener(java.awt.event.TextListener)"); }
-  public static void removeComponentListener(java.awt.event.ComponentListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.removeComponentListener(java.awt.event.ComponentListener)"); }
-  public static void removeFocusListener(java.awt.event.FocusListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.removeFocusListener(java.awt.event.FocusListener)"); }
-  public static void removeKeyListener(java.awt.event.KeyListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.removeKeyListener(java.awt.event.KeyListener)"); }
-  public static void removeMouseListener(java.awt.event.MouseListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.removeMouseListener(java.awt.event.MouseListener)"); }
-  public static void removeMouseMotionListener(java.awt.event.MouseMotionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.removeMouseMotionListener(java.awt.event.MouseMotionListener)"); }
-  public static java.awt.Component getComponentWithFocus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.AWTEventMonitor.getComponentWithFocus()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addContainerListener(java.awt.event.ContainerListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removeContainerListener(java.awt.event.ContainerListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addComponentListener(java.awt.event.ComponentListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addFocusListener(java.awt.event.FocusListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addKeyListener(java.awt.event.KeyListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addMouseListener(java.awt.event.MouseListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addMouseMotionListener(java.awt.event.MouseMotionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removeActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addItemListener(java.awt.event.ItemListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removeItemListener(java.awt.event.ItemListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addWindowListener(java.awt.event.WindowListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removeWindowListener(java.awt.event.WindowListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addAdjustmentListener(java.awt.event.AdjustmentListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removeAdjustmentListener(java.awt.event.AdjustmentListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addTextListener(java.awt.event.TextListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removeTextListener(java.awt.event.TextListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removeComponentListener(java.awt.event.ComponentListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removeFocusListener(java.awt.event.FocusListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removeKeyListener(java.awt.event.KeyListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removeMouseListener(java.awt.event.MouseListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removeMouseMotionListener(java.awt.event.MouseMotionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Component getComponentWithFocus() { return null; }
   < ---- END java signatures ---- >
 }

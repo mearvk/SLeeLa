@@ -59,30 +59,51 @@ class X509CRL {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  X509CRL() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRL.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  X509CRL() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRL.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRL.hashCode()"); }
-  public abstract byte[] getSignature() { throw new AbstractMethodError("java.security.cert.X509CRL.getSignature()"); }
-  public abstract byte[] getEncoded() throws java.security.cert.CRLException { throw new AbstractMethodError("java.security.cert.X509CRL.getEncoded()"); }
-  public void verify(java.security.PublicKey key, java.security.Provider sigProvider) throws java.security.cert.CRLException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException, java.security.SignatureException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRL.verify(java.security.PublicKey, java.security.Provider)"); }
-  public abstract void verify(java.security.PublicKey key, java.lang.String sigProvider) throws java.security.cert.CRLException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException, java.security.NoSuchProviderException, java.security.SignatureException { throw new AbstractMethodError("java.security.cert.X509CRL.verify(java.security.PublicKey, java.lang.String)"); }
-  public abstract void verify(java.security.PublicKey key) throws java.security.cert.CRLException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException, java.security.NoSuchProviderException, java.security.SignatureException { throw new AbstractMethodError("java.security.cert.X509CRL.verify(java.security.PublicKey)"); }
-  public abstract int getVersion() { throw new AbstractMethodError("java.security.cert.X509CRL.getVersion()"); }
-  public abstract java.lang.String getSigAlgName() { throw new AbstractMethodError("java.security.cert.X509CRL.getSigAlgName()"); }
-  public abstract byte[] getSigAlgParams() { throw new AbstractMethodError("java.security.cert.X509CRL.getSigAlgParams()"); }
-  public abstract java.security.Principal getIssuerDN() { throw new AbstractMethodError("java.security.cert.X509CRL.getIssuerDN()"); }
-  public abstract java.lang.String getSigAlgOID() { throw new AbstractMethodError("java.security.cert.X509CRL.getSigAlgOID()"); }
-  public abstract byte[] getTBSCertList() throws java.security.cert.CRLException { throw new AbstractMethodError("java.security.cert.X509CRL.getTBSCertList()"); }
-  public abstract java.security.cert.X509CRLEntry getRevokedCertificate(java.math.BigInteger serialNumber) { throw new AbstractMethodError("java.security.cert.X509CRL.getRevokedCertificate(java.math.BigInteger)"); }
-  public abstract java.util.Date getThisUpdate() { throw new AbstractMethodError("java.security.cert.X509CRL.getThisUpdate()"); }
-  public abstract java.util.Date getNextUpdate() { throw new AbstractMethodError("java.security.cert.X509CRL.getNextUpdate()"); }
-  public abstract java.util.Set<? extends java.security.cert.X509CRLEntry> getRevokedCertificates() { throw new AbstractMethodError("java.security.cert.X509CRL.getRevokedCertificates()"); }
-  public javax.security.auth.x500.X500Principal getIssuerX500Principal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRL.getIssuerX500Principal()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] getSignature() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CRLException")
+  public byte[] getEncoded() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.cert.CRLException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException, java.security.SignatureException")
+  public void verify(java.security.PublicKey key, java.security.Provider sigProvider) { }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CRLException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException, java.security.NoSuchProviderException, java.security.SignatureException")
+  public void verify(java.security.PublicKey key, java.lang.String sigProvider) { }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CRLException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException, java.security.NoSuchProviderException, java.security.SignatureException")
+  public void verify(java.security.PublicKey key) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getVersion() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSigAlgName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] getSigAlgParams() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.Principal getIssuerDN() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSigAlgOID() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CRLException")
+  public byte[] getTBSCertList() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.cert.X509CRLEntry getRevokedCertificate(java.math.BigInteger serialNumber) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Date getThisUpdate() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Date getNextUpdate() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<? extends java.security.cert.X509CRLEntry> getRevokedCertificates() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.security.auth.x500.X500Principal getIssuerX500Principal() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,13 +58,20 @@ class MenuElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.awt.Component getComponent() { throw new AbstractMethodError("javax.swing.MenuElement.getComponent()"); }
-  public abstract void processKeyEvent(java.awt.event.KeyEvent event, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { throw new AbstractMethodError("javax.swing.MenuElement.processKeyEvent(java.awt.event.KeyEvent, javax.swing.MenuElement[], javax.swing.MenuSelectionManager)"); }
-  public abstract void processMouseEvent(java.awt.event.MouseEvent event, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { throw new AbstractMethodError("javax.swing.MenuElement.processMouseEvent(java.awt.event.MouseEvent, javax.swing.MenuElement[], javax.swing.MenuSelectionManager)"); }
-  public abstract javax.swing.MenuElement[] getSubElements() { throw new AbstractMethodError("javax.swing.MenuElement.getSubElements()"); }
-  public abstract void menuSelectionChanged(boolean isIncluded) { throw new AbstractMethodError("javax.swing.MenuElement.menuSelectionChanged(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Component getComponent() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void processKeyEvent(java.awt.event.KeyEvent event, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void processMouseEvent(java.awt.event.MouseEvent event, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.MenuElement[] getSubElements() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void menuSelectionChanged(boolean isIncluded) { }
   < ---- END java signatures ---- >
 }

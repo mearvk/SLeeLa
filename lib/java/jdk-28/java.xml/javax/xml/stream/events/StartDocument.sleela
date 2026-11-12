@@ -58,14 +58,22 @@ class StartDocument {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean isStandalone() { throw new AbstractMethodError("javax.xml.stream.events.StartDocument.isStandalone()"); }
-  public abstract java.lang.String getVersion() { throw new AbstractMethodError("javax.xml.stream.events.StartDocument.getVersion()"); }
-  public abstract boolean standaloneSet() { throw new AbstractMethodError("javax.xml.stream.events.StartDocument.standaloneSet()"); }
-  public abstract java.lang.String getCharacterEncodingScheme() { throw new AbstractMethodError("javax.xml.stream.events.StartDocument.getCharacterEncodingScheme()"); }
-  public abstract boolean encodingSet() { throw new AbstractMethodError("javax.xml.stream.events.StartDocument.encodingSet()"); }
-  public abstract java.lang.String getSystemId() { throw new AbstractMethodError("javax.xml.stream.events.StartDocument.getSystemId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isStandalone() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean standaloneSet() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCharacterEncodingScheme() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean encodingSet() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSystemId() { return null; }
   < ---- END java signatures ---- >
 }

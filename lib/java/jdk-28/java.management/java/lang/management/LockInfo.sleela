@@ -58,16 +58,23 @@ class LockInfo {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LockInfo(java.lang.String className, int identityHashCode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.LockInfo.<init>(java.lang.String, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LockInfo(java.lang.String className, int identityHashCode) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.LockInfo.toString()"); }
-  public static java.lang.management.LockInfo from(javax.management.openmbean.CompositeData cd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.LockInfo.from(javax.management.openmbean.CompositeData)"); }
-  public java.lang.String getClassName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.LockInfo.getClassName()"); }
-  public int getIdentityHashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.LockInfo.getIdentityHashCode()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.management.LockInfo from(javax.management.openmbean.CompositeData cd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getClassName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getIdentityHashCode() { return 0; }
   < ---- END java signatures ---- >
 }

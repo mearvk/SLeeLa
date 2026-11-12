@@ -58,9 +58,13 @@ class BootstrapMethodError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BootstrapMethodError(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.BootstrapMethodError.<init>(java.lang.Throwable)"); }
-  public BootstrapMethodError(java.lang.String s, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.BootstrapMethodError.<init>(java.lang.String, java.lang.Throwable)"); }
-  public BootstrapMethodError(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.BootstrapMethodError.<init>(java.lang.String)"); }
-  public BootstrapMethodError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.BootstrapMethodError.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BootstrapMethodError(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BootstrapMethodError(java.lang.String s, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BootstrapMethodError(java.lang.String s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BootstrapMethodError() { }
   < ---- END java constructors ---- >
 }

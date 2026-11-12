@@ -62,44 +62,82 @@ class Period {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public long get(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.get(java.time.temporal.TemporalUnit)"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.hashCode()"); }
-  public static java.time.Period of(int years, int months, int days) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.of(int, int, int)"); }
-  public static java.time.Period from(java.time.temporal.TemporalAmount amount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.from(java.time.temporal.TemporalAmount)"); }
-  public static java.time.Period parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.parse(java.lang.CharSequence)"); }
-  public static java.time.Period between(java.time.LocalDate startDateInclusive, java.time.LocalDate endDateExclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.between(java.time.LocalDate, java.time.LocalDate)"); }
-  public java.time.Period normalized() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.normalized()"); }
-  public boolean isZero() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.isZero()"); }
-  public int getMonths() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.getMonths()"); }
-  public boolean isNegative() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.isNegative()"); }
-  public java.time.Period minus(java.time.temporal.TemporalAmount amountToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.minus(java.time.temporal.TemporalAmount)"); }
-  public java.time.Period plus(java.time.temporal.TemporalAmount amountToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.plus(java.time.temporal.TemporalAmount)"); }
-  public java.util.List<java.time.temporal.TemporalUnit> getUnits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.getUnits()"); }
-  public java.time.Period negated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.negated()"); }
-  public java.time.Period multipliedBy(int scalar) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.multipliedBy(int)"); }
-  public java.time.Period plusDays(long daysToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.plusDays(long)"); }
-  public static java.time.Period ofDays(int days) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.ofDays(int)"); }
-  public java.time.Period minusDays(long daysToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.minusDays(long)"); }
-  public java.time.temporal.Temporal addTo(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.addTo(java.time.temporal.Temporal)"); }
-  public java.time.temporal.Temporal subtractFrom(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.subtractFrom(java.time.temporal.Temporal)"); }
-  public java.time.Period plusMonths(long monthsToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.plusMonths(long)"); }
-  public long toTotalMonths() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.toTotalMonths()"); }
-  public int getDays() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.getDays()"); }
-  public java.time.Period plusYears(long yearsToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.plusYears(long)"); }
-  public java.time.Period minusMonths(long monthsToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.minusMonths(long)"); }
-  public java.time.chrono.IsoChronology getChronology() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.getChronology()"); }
-  public java.time.Period minusYears(long yearsToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.minusYears(long)"); }
-  public int getYears() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.getYears()"); }
-  public static java.time.Period ofYears(int years) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.ofYears(int)"); }
-  public static java.time.Period ofMonths(int months) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.ofMonths(int)"); }
-  public static java.time.Period ofWeeks(int weeks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.ofWeeks(int)"); }
-  public java.time.Period withYears(int years) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.withYears(int)"); }
-  public java.time.Period withMonths(int months) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.withMonths(int)"); }
-  public java.time.Period withDays(int days) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Period.withDays(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public long get(java.time.temporal.TemporalUnit unit) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Period of(int years, int months, int days) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Period from(java.time.temporal.TemporalAmount amount) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Period parse(java.lang.CharSequence text) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Period between(java.time.LocalDate startDateInclusive, java.time.LocalDate endDateExclusive) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period normalized() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isZero() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMonths() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isNegative() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period minus(java.time.temporal.TemporalAmount amountToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period plus(java.time.temporal.TemporalAmount amountToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.time.temporal.TemporalUnit> getUnits() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period negated() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period multipliedBy(int scalar) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period plusDays(long daysToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Period ofDays(int days) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period minusDays(long daysToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.Temporal addTo(java.time.temporal.Temporal temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.Temporal subtractFrom(java.time.temporal.Temporal temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period plusMonths(long monthsToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toTotalMonths() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDays() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period plusYears(long yearsToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period minusMonths(long monthsToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.IsoChronology getChronology() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period minusYears(long yearsToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getYears() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Period ofYears(int years) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Period ofMonths(int months) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.Period ofWeeks(int weeks) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period withYears(int years) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period withMonths(int months) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period withDays(int days) { return null; }
   < ---- END java signatures ---- >
 }

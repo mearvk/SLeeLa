@@ -59,12 +59,18 @@ class QualifiedNames {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.List<java.lang.String> getNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.SourceCodeAnalysis.QualifiedNames.getNames()"); }
-  public int getSimpleNameLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.SourceCodeAnalysis.QualifiedNames.getSimpleNameLength()"); }
-  public boolean isUpToDate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.SourceCodeAnalysis.QualifiedNames.isUpToDate()"); }
-  public boolean isResolvable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.SourceCodeAnalysis.QualifiedNames.isResolvable()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.lang.String> getNames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSimpleNameLength() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isUpToDate() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isResolvable() { return false; }
   < ---- END java signatures ---- >
 }

@@ -58,12 +58,18 @@ class AsynchronousByteChannel {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.concurrent.Future<java.lang.Integer> write(java.nio.ByteBuffer src) { throw new AbstractMethodError("java.nio.channels.AsynchronousByteChannel.write(java.nio.ByteBuffer)"); }
-  public abstract <A> void write(java.nio.ByteBuffer src, A attachment, java.nio.channels.CompletionHandler<java.lang.Integer, ? super A> handler) { throw new AbstractMethodError("java.nio.channels.AsynchronousByteChannel.write(java.nio.ByteBuffer, A, java.nio.channels.CompletionHandler<java.lang.Integer, ? super A>)"); }
-  public abstract java.util.concurrent.Future<java.lang.Integer> read(java.nio.ByteBuffer dst) { throw new AbstractMethodError("java.nio.channels.AsynchronousByteChannel.read(java.nio.ByteBuffer)"); }
-  public abstract <A> void read(java.nio.ByteBuffer dst, A attachment, java.nio.channels.CompletionHandler<java.lang.Integer, ? super A> handler) { throw new AbstractMethodError("java.nio.channels.AsynchronousByteChannel.read(java.nio.ByteBuffer, A, java.nio.channels.CompletionHandler<java.lang.Integer, ? super A>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.Future<java.lang.Integer> write(java.nio.ByteBuffer src) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <A> void write(java.nio.ByteBuffer src, A attachment, java.nio.channels.CompletionHandler<java.lang.Integer, ? super A> handler) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.Future<java.lang.Integer> read(java.nio.ByteBuffer dst) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <A> void read(java.nio.ByteBuffer dst, A attachment, java.nio.channels.CompletionHandler<java.lang.Integer, ? super A> handler) { }
   < ---- END java signatures ---- >
 }

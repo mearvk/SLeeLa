@@ -58,26 +58,46 @@ class HTMLLinkElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getType() { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.getType()"); }
-  public abstract java.lang.String getTarget() { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.getTarget()"); }
-  public abstract void setTarget(java.lang.String target) { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.setTarget(java.lang.String)"); }
-  public abstract void setType(java.lang.String type) { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.setType(java.lang.String)"); }
-  public abstract void setMedia(java.lang.String media) { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.setMedia(java.lang.String)"); }
-  public abstract java.lang.String getMedia() { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.getMedia()"); }
-  public abstract java.lang.String getHref() { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.getHref()"); }
-  public abstract boolean getDisabled() { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.getDisabled()"); }
-  public abstract void setDisabled(boolean disabled) { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.setDisabled(boolean)"); }
-  public abstract java.lang.String getCharset() { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.getCharset()"); }
-  public abstract void setCharset(java.lang.String charset) { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.setCharset(java.lang.String)"); }
-  public abstract void setHref(java.lang.String href) { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.setHref(java.lang.String)"); }
-  public abstract java.lang.String getHreflang() { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.getHreflang()"); }
-  public abstract void setHreflang(java.lang.String hreflang) { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.setHreflang(java.lang.String)"); }
-  public abstract java.lang.String getRel() { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.getRel()"); }
-  public abstract void setRel(java.lang.String rel) { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.setRel(java.lang.String)"); }
-  public abstract java.lang.String getRev() { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.getRev()"); }
-  public abstract void setRev(java.lang.String rev) { throw new AbstractMethodError("org.w3c.dom.html.HTMLLinkElement.setRev(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getTarget() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTarget(java.lang.String target) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setType(java.lang.String type) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMedia(java.lang.String media) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getMedia() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getHref() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getDisabled() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDisabled(boolean disabled) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCharset() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCharset(java.lang.String charset) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHref(java.lang.String href) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getHreflang() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHreflang(java.lang.String hreflang) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getRel() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setRel(java.lang.String rel) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getRev() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setRev(java.lang.String rev) { }
   < ---- END java signatures ---- >
 }

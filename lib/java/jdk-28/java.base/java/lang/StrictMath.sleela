@@ -64,114 +64,222 @@ class StrictMath {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static float abs(float a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.abs(float)"); }
-  public static long abs(long a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.abs(long)"); }
-  public static int abs(int a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.abs(int)"); }
-  public static double abs(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.abs(double)"); }
-  public static double sin(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.sin(double)"); }
-  public static double cos(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.cos(double)"); }
-  public static double tan(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.tan(double)"); }
-  public static double atan2(double y, double x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.atan2(double, double)"); }
-  public static double sqrt(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.sqrt(double)"); }
-  public static double log(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.log(double)"); }
-  public static double log10(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.log10(double)"); }
-  public static double pow(double a, double b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.pow(double, double)"); }
-  public static double exp(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.exp(double)"); }
-  public static double min(double a, double b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.min(double, double)"); }
-  public static float min(float a, float b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.min(float, float)"); }
-  public static int min(int a, int b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.min(int, int)"); }
-  public static long min(long a, long b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.min(long, long)"); }
-  public static float max(float a, float b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.max(float, float)"); }
-  public static long max(long a, long b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.max(long, long)"); }
-  public static int max(int a, int b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.max(int, int)"); }
-  public static double max(double a, double b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.max(double, double)"); }
-  public static double floor(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.floor(double)"); }
-  public static double ceil(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.ceil(double)"); }
-  public static double rint(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.rint(double)"); }
-  public static long round(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.round(double)"); }
-  public static int round(float a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.round(float)"); }
-  public static double tanh(double x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.tanh(double)"); }
-  public static double cbrt(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.cbrt(double)"); }
-  public static int addExact(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.addExact(int, int)"); }
-  public static long addExact(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.addExact(long, long)"); }
-  public static long decrementExact(long a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.decrementExact(long)"); }
-  public static int decrementExact(int a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.decrementExact(int)"); }
-  public static int incrementExact(int a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.incrementExact(int)"); }
-  public static long incrementExact(long a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.incrementExact(long)"); }
-  public static int multiplyExact(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.multiplyExact(int, int)"); }
-  public static long multiplyExact(long x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.multiplyExact(long, int)"); }
-  public static long multiplyExact(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.multiplyExact(long, long)"); }
-  public static long multiplyHigh(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.multiplyHigh(long, long)"); }
-  public static long unsignedMultiplyHigh(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.unsignedMultiplyHigh(long, long)"); }
-  public static long negateExact(long a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.negateExact(long)"); }
-  public static int negateExact(int a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.negateExact(int)"); }
-  public static long subtractExact(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.subtractExact(long, long)"); }
-  public static int subtractExact(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.subtractExact(int, int)"); }
-  public static double fma(double a, double b, double c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.fma(double, double, double)"); }
-  public static float fma(float a, float b, float c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.fma(float, float, float)"); }
-  public static double copySign(double magnitude, double sign) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.copySign(double, double)"); }
-  public static float copySign(float magnitude, float sign) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.copySign(float, float)"); }
-  public static double signum(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.signum(double)"); }
-  public static float signum(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.signum(float)"); }
-  public static double clamp(double value, double min, double max) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.clamp(double, double, double)"); }
-  public static long clamp(long value, long min, long max) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.clamp(long, long, long)"); }
-  public static float clamp(float value, float min, float max) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.clamp(float, float, float)"); }
-  public static int clamp(long value, int min, int max) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.clamp(long, int, int)"); }
-  public static double scalb(double d, int scaleFactor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.scalb(double, int)"); }
-  public static float scalb(float f, int scaleFactor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.scalb(float, int)"); }
-  public static int getExponent(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.getExponent(float)"); }
-  public static int getExponent(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.getExponent(double)"); }
-  public static int floorMod(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.floorMod(int, int)"); }
-  public static long floorMod(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.floorMod(long, long)"); }
-  public static int floorMod(long x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.floorMod(long, int)"); }
-  public static double asin(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.asin(double)"); }
-  public static double acos(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.acos(double)"); }
-  public static double atan(double a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.atan(double)"); }
-  public static double IEEEremainder(double f1, double f2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.IEEEremainder(double, double)"); }
-  public static long floorDiv(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.floorDiv(long, long)"); }
-  public static long floorDiv(long x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.floorDiv(long, int)"); }
-  public static int floorDiv(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.floorDiv(int, int)"); }
-  public static long ceilDiv(long x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.ceilDiv(long, int)"); }
-  public static long ceilDiv(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.ceilDiv(long, long)"); }
-  public static int ceilDiv(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.ceilDiv(int, int)"); }
-  public static int ceilMod(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.ceilMod(int, int)"); }
-  public static int ceilMod(long x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.ceilMod(long, int)"); }
-  public static long ceilMod(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.ceilMod(long, long)"); }
-  public static double sinh(double x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.sinh(double)"); }
-  public static double cosh(double x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.cosh(double)"); }
-  public static double hypot(double x, double y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.hypot(double, double)"); }
-  public static double expm1(double x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.expm1(double)"); }
-  public static double log1p(double x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.log1p(double)"); }
-  public static int unsignedMultiplyExact(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.unsignedMultiplyExact(int, int)"); }
-  public static long unsignedMultiplyExact(long x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.unsignedMultiplyExact(long, int)"); }
-  public static long unsignedMultiplyExact(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.unsignedMultiplyExact(long, long)"); }
-  public static double toRadians(double angdeg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.toRadians(double)"); }
-  public static double toDegrees(double angrad) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.toDegrees(double)"); }
-  public static double random() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.random()"); }
-  public static int divideExact(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.divideExact(int, int)"); }
-  public static long divideExact(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.divideExact(long, long)"); }
-  public static int floorDivExact(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.floorDivExact(int, int)"); }
-  public static long floorDivExact(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.floorDivExact(long, long)"); }
-  public static long ceilDivExact(long x, long y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.ceilDivExact(long, long)"); }
-  public static int ceilDivExact(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.ceilDivExact(int, int)"); }
-  public static int toIntExact(long value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.toIntExact(long)"); }
-  public static long multiplyFull(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.multiplyFull(int, int)"); }
-  public static long absExact(long a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.absExact(long)"); }
-  public static int absExact(int a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.absExact(int)"); }
-  public static double ulp(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.ulp(double)"); }
-  public static float ulp(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.ulp(float)"); }
-  public static float nextAfter(float start, double direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.nextAfter(float, double)"); }
-  public static double nextAfter(double start, double direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.nextAfter(double, double)"); }
-  public static float nextUp(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.nextUp(float)"); }
-  public static double nextUp(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.nextUp(double)"); }
-  public static double nextDown(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.nextDown(double)"); }
-  public static float nextDown(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.nextDown(float)"); }
-  public static long powExact(long x, int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.powExact(long, int)"); }
-  public static int powExact(int x, int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.powExact(int, int)"); }
-  public static long unsignedPowExact(long x, int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.unsignedPowExact(long, int)"); }
-  public static int unsignedPowExact(int x, int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StrictMath.unsignedPowExact(int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static float abs(float a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long abs(long a) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int abs(int a) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double abs(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double sin(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double cos(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double tan(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double atan2(double y, double x) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double sqrt(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double log(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double log10(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double pow(double a, double b) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double exp(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double min(double a, double b) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static float min(float a, float b) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int min(int a, int b) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long min(long a, long b) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static float max(float a, float b) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long max(long a, long b) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int max(int a, int b) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double max(double a, double b) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double floor(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double ceil(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double rint(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long round(double a) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int round(float a) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double tanh(double x) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double cbrt(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int addExact(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long addExact(long x, long y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long decrementExact(long a) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int decrementExact(int a) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int incrementExact(int a) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long incrementExact(long a) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int multiplyExact(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long multiplyExact(long x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long multiplyExact(long x, long y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long multiplyHigh(long x, long y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long unsignedMultiplyHigh(long x, long y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long negateExact(long a) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int negateExact(int a) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long subtractExact(long x, long y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int subtractExact(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double fma(double a, double b, double c) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static float fma(float a, float b, float c) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double copySign(double magnitude, double sign) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static float copySign(float magnitude, float sign) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double signum(double d) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static float signum(float f) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double clamp(double value, double min, double max) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long clamp(long value, long min, long max) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static float clamp(float value, float min, float max) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int clamp(long value, int min, int max) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double scalb(double d, int scaleFactor) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static float scalb(float f, int scaleFactor) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getExponent(float f) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getExponent(double d) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int floorMod(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long floorMod(long x, long y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int floorMod(long x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double asin(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double acos(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double atan(double a) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double IEEEremainder(double f1, double f2) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long floorDiv(long x, long y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long floorDiv(long x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int floorDiv(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long ceilDiv(long x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long ceilDiv(long x, long y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int ceilDiv(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int ceilMod(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int ceilMod(long x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long ceilMod(long x, long y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double sinh(double x) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double cosh(double x) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double hypot(double x, double y) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double expm1(double x) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double log1p(double x) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int unsignedMultiplyExact(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long unsignedMultiplyExact(long x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long unsignedMultiplyExact(long x, long y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double toRadians(double angdeg) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double toDegrees(double angrad) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double random() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int divideExact(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long divideExact(long x, long y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int floorDivExact(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long floorDivExact(long x, long y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long ceilDivExact(long x, long y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int ceilDivExact(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int toIntExact(long value) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long multiplyFull(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long absExact(long a) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int absExact(int a) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double ulp(double d) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static float ulp(float f) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static float nextAfter(float start, double direction) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double nextAfter(double start, double direction) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static float nextUp(float f) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double nextUp(double d) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double nextDown(double d) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static float nextDown(float f) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long powExact(long x, int n) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int powExact(int x, int n) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long unsignedPowExact(long x, int n) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int unsignedPowExact(int x, int n) { return 0; }
   < ---- END java signatures ---- >
 }

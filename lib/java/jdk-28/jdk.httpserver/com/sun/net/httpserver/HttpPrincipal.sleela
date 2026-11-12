@@ -58,18 +58,27 @@ class HttpPrincipal {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public HttpPrincipal(java.lang.String username, java.lang.String realm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpPrincipal.<init>(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HttpPrincipal(java.lang.String username, java.lang.String realm) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpPrincipal.getName()"); }
-  public boolean equals(java.lang.Object another) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpPrincipal.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpPrincipal.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpPrincipal.hashCode()"); }
-  public java.lang.String getRealm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpPrincipal.getRealm()"); }
-  public java.lang.String getUsername() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpPrincipal.getUsername()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object another) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getRealm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUsername() { return null; }
   < ---- END java signatures ---- >
 }

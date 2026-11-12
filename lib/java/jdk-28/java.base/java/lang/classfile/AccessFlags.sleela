@@ -58,12 +58,18 @@ class AccessFlags {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.Set<java.lang.reflect.AccessFlag> flags() { throw new AbstractMethodError("java.lang.classfile.AccessFlags.flags()"); }
-  public abstract java.lang.reflect.AccessFlag.Location location() { throw new AbstractMethodError("java.lang.classfile.AccessFlags.location()"); }
-  public abstract int flagsMask() { throw new AbstractMethodError("java.lang.classfile.AccessFlags.flagsMask()"); }
-  public abstract boolean has(java.lang.reflect.AccessFlag flag) { throw new AbstractMethodError("java.lang.classfile.AccessFlags.has(java.lang.reflect.AccessFlag)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<java.lang.reflect.AccessFlag> flags() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.reflect.AccessFlag.Location location() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int flagsMask() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean has(java.lang.reflect.AccessFlag flag) { return false; }
   < ---- END java signatures ---- >
 }

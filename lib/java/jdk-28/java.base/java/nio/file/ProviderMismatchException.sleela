@@ -58,7 +58,9 @@ class ProviderMismatchException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ProviderMismatchException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.ProviderMismatchException.<init>()"); }
-  public ProviderMismatchException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.ProviderMismatchException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ProviderMismatchException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ProviderMismatchException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

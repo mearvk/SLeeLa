@@ -58,28 +58,50 @@ class ThaiBuddhistDate {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.hashCode()"); }
-  public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.getLong(java.time.temporal.TemporalField)"); }
-  public static java.time.chrono.ThaiBuddhistDate of(int prolepticYear, int month, int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.of(int, int, int)"); }
-  public static java.time.chrono.ThaiBuddhistDate from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.from(java.time.temporal.TemporalAccessor)"); }
-  public java.time.chrono.ThaiBuddhistDate with(java.time.temporal.TemporalField field, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.with(java.time.temporal.TemporalField, long)"); }
-  public java.time.chrono.ThaiBuddhistDate with(java.time.temporal.TemporalAdjuster adjuster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.with(java.time.temporal.TemporalAdjuster)"); }
-  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.range(java.time.temporal.TemporalField)"); }
-  public static java.time.chrono.ThaiBuddhistDate now() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.now()"); }
-  public static java.time.chrono.ThaiBuddhistDate now(java.time.Clock clock) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.now(java.time.Clock)"); }
-  public java.time.chrono.ThaiBuddhistDate minus(java.time.temporal.TemporalAmount amount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.minus(java.time.temporal.TemporalAmount)"); }
-  public java.time.chrono.ThaiBuddhistDate minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.minus(long, java.time.temporal.TemporalUnit)"); }
-  public java.time.chrono.ThaiBuddhistDate plus(java.time.temporal.TemporalAmount amount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.plus(java.time.temporal.TemporalAmount)"); }
-  public java.time.chrono.ThaiBuddhistDate plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.plus(long, java.time.temporal.TemporalUnit)"); }
-  public java.time.chrono.ChronoPeriod until(java.time.chrono.ChronoLocalDate endDate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.until(java.time.chrono.ChronoLocalDate)"); }
-  public int lengthOfMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.lengthOfMonth()"); }
-  public long toEpochDay() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.toEpochDay()"); }
-  public final java.time.chrono.ChronoLocalDateTime<java.time.chrono.ThaiBuddhistDate> atTime(java.time.LocalTime localTime) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.atTime(java.time.LocalTime)"); }
-  public java.time.chrono.ThaiBuddhistEra getEra() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.getEra()"); }
-  public java.time.chrono.ThaiBuddhistChronology getChronology() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ThaiBuddhistDate.getChronology()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getLong(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.chrono.ThaiBuddhistDate of(int prolepticYear, int month, int dayOfMonth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.chrono.ThaiBuddhistDate from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.ThaiBuddhistDate with(java.time.temporal.TemporalField field, long newValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.ThaiBuddhistDate with(java.time.temporal.TemporalAdjuster adjuster) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.chrono.ThaiBuddhistDate now() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.chrono.ThaiBuddhistDate now(java.time.Clock clock) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.ThaiBuddhistDate minus(java.time.temporal.TemporalAmount amount) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.ThaiBuddhistDate minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.ThaiBuddhistDate plus(java.time.temporal.TemporalAmount amount) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.ThaiBuddhistDate plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.ChronoPeriod until(java.time.chrono.ChronoLocalDate endDate) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lengthOfMonth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toEpochDay() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.time.chrono.ChronoLocalDateTime<java.time.chrono.ThaiBuddhistDate> atTime(java.time.LocalTime localTime) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.ThaiBuddhistEra getEra() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.ThaiBuddhistChronology getChronology() { return null; }
   < ---- END java signatures ---- >
 }

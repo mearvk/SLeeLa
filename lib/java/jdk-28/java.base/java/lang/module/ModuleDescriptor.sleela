@@ -58,33 +58,60 @@ class ModuleDescriptor {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.Set<java.lang.module.ModuleDescriptor.Modifier> modifiers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.modifiers()"); }
-  public java.lang.String name() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.name()"); }
-  public boolean equals(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.toString()"); }
-  public java.util.Optional<java.lang.module.ModuleDescriptor.Version> version() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.version()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.hashCode()"); }
-  public int compareTo(java.lang.module.ModuleDescriptor that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.compareTo(java.lang.module.ModuleDescriptor)"); }
-  public java.util.Set<java.lang.String> packages() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.packages()"); }
-  public boolean isOpen() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.isOpen()"); }
-  public java.util.Set<java.lang.reflect.AccessFlag> accessFlags() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.accessFlags()"); }
-  public boolean isAutomatic() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.isAutomatic()"); }
-  public java.util.Set<java.lang.module.ModuleDescriptor.Exports> exports() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.exports()"); }
-  public java.util.Set<java.lang.String> uses() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.uses()"); }
-  public java.util.Set<java.lang.module.ModuleDescriptor.Opens> opens() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.opens()"); }
-  public java.util.Set<java.lang.module.ModuleDescriptor.Provides> provides() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.provides()"); }
-  public static java.lang.module.ModuleDescriptor read(java.io.InputStream in, java.util.function.Supplier<java.util.Set<java.lang.String>> packageFinder) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.read(java.io.InputStream, java.util.function.Supplier<java.util.Set<java.lang.String>>)"); }
-  public static java.lang.module.ModuleDescriptor read(java.io.InputStream in) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.read(java.io.InputStream)"); }
-  public java.util.Set<java.lang.module.ModuleDescriptor.Requires> requires() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.requires()"); }
-  public java.util.Optional<java.lang.String> mainClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.mainClass()"); }
-  public java.lang.String toNameAndVersion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.toNameAndVersion()"); }
-  public java.util.Optional<java.lang.String> rawVersion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.rawVersion()"); }
-  public static java.lang.module.ModuleDescriptor.Builder newModule(java.lang.String name, java.util.Set<java.lang.module.ModuleDescriptor.Modifier> ms) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.newModule(java.lang.String, java.util.Set<java.lang.module.ModuleDescriptor.Modifier>)"); }
-  public static java.lang.module.ModuleDescriptor.Builder newModule(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.newModule(java.lang.String)"); }
-  public static java.lang.module.ModuleDescriptor.Builder newOpenModule(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.newOpenModule(java.lang.String)"); }
-  public static java.lang.module.ModuleDescriptor.Builder newAutomaticModule(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.newAutomaticModule(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.module.ModuleDescriptor.Modifier> modifiers() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String name() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object ob) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<java.lang.module.ModuleDescriptor.Version> version() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.lang.module.ModuleDescriptor that) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.String> packages() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isOpen() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.reflect.AccessFlag> accessFlags() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAutomatic() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.module.ModuleDescriptor.Exports> exports() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.String> uses() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.module.ModuleDescriptor.Opens> opens() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.module.ModuleDescriptor.Provides> provides() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static java.lang.module.ModuleDescriptor read(java.io.InputStream in, java.util.function.Supplier<java.util.Set<java.lang.String>> packageFinder) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static java.lang.module.ModuleDescriptor read(java.io.InputStream in) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.module.ModuleDescriptor.Requires> requires() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<java.lang.String> mainClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toNameAndVersion() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<java.lang.String> rawVersion() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.module.ModuleDescriptor.Builder newModule(java.lang.String name, java.util.Set<java.lang.module.ModuleDescriptor.Modifier> ms) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.module.ModuleDescriptor.Builder newModule(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.module.ModuleDescriptor.Builder newOpenModule(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.module.ModuleDescriptor.Builder newAutomaticModule(java.lang.String name) { return null; }
   < ---- END java signatures ---- >
 }

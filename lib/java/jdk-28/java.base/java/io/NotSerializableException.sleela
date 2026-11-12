@@ -58,7 +58,9 @@ class NotSerializableException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NotSerializableException(java.lang.String classname) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.NotSerializableException.<init>(java.lang.String)"); }
-  public NotSerializableException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.NotSerializableException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotSerializableException(java.lang.String classname) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotSerializableException() { }
   < ---- END java constructors ---- >
 }

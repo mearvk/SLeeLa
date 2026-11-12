@@ -58,6 +58,7 @@ class NotDirectoryException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NotDirectoryException(java.lang.String file) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.NotDirectoryException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotDirectoryException(java.lang.String file) { }
   < ---- END java constructors ---- >
 }

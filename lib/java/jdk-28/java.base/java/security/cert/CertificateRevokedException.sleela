@@ -58,18 +58,27 @@ class CertificateRevokedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CertificateRevokedException(java.util.Date revocationDate, java.security.cert.CRLReason reason, javax.security.auth.x500.X500Principal authority, java.util.Map<java.lang.String, java.security.cert.Extension> extensions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateRevokedException.<init>(java.util.Date, java.security.cert.CRLReason, javax.security.auth.x500.X500Principal, java.util.Map<java.lang.String, java.security.cert.Extension>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CertificateRevokedException(java.util.Date revocationDate, java.security.cert.CRLReason reason, javax.security.auth.x500.X500Principal authority, java.util.Map<java.lang.String, java.security.cert.Extension> extensions) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getMessage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateRevokedException.getMessage()"); }
-  public java.util.Map<java.lang.String, java.security.cert.Extension> getExtensions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateRevokedException.getExtensions()"); }
-  public java.util.Date getRevocationDate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateRevokedException.getRevocationDate()"); }
-  public java.security.cert.CRLReason getRevocationReason() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateRevokedException.getRevocationReason()"); }
-  public javax.security.auth.x500.X500Principal getAuthorityName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateRevokedException.getAuthorityName()"); }
-  public java.util.Date getInvalidityDate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateRevokedException.getInvalidityDate()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getMessage() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Map<java.lang.String, java.security.cert.Extension> getExtensions() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Date getRevocationDate() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.cert.CRLReason getRevocationReason() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.security.auth.x500.X500Principal getAuthorityName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Date getInvalidityDate() { return null; }
   < ---- END java signatures ---- >
 }

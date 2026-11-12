@@ -58,6 +58,7 @@ class ParameterDescriptor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ParameterDescriptor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.ParameterDescriptor.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ParameterDescriptor() { }
   < ---- END java constructors ---- >
 }

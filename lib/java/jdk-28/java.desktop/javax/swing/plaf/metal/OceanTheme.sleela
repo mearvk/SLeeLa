@@ -58,32 +58,48 @@ class OceanTheme {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public OceanTheme() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OceanTheme() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
   @JavaProtected
-  javax.swing.plaf.ColorUIResource getPrimary1() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getPrimary1()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.ColorUIResource getPrimary1() { return null; }
   @JavaProtected
-  javax.swing.plaf.ColorUIResource getPrimary2() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getPrimary2()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.ColorUIResource getPrimary2() { return null; }
   @JavaProtected
-  javax.swing.plaf.ColorUIResource getPrimary3() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getPrimary3()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.ColorUIResource getPrimary3() { return null; }
   @JavaProtected
-  javax.swing.plaf.ColorUIResource getSecondary1() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getSecondary1()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.ColorUIResource getSecondary1() { return null; }
   @JavaProtected
-  javax.swing.plaf.ColorUIResource getSecondary2() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getSecondary2()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.ColorUIResource getSecondary2() { return null; }
   @JavaProtected
-  javax.swing.plaf.ColorUIResource getSecondary3() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getSecondary3()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.ColorUIResource getSecondary3() { return null; }
   @JavaProtected
-  javax.swing.plaf.ColorUIResource getBlack() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getBlack()"); }
-  public javax.swing.plaf.ColorUIResource getControlTextColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getControlTextColor()"); }
-  public javax.swing.plaf.ColorUIResource getDesktopColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getDesktopColor()"); }
-  public javax.swing.plaf.ColorUIResource getInactiveControlTextColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getInactiveControlTextColor()"); }
-  public javax.swing.plaf.ColorUIResource getMenuDisabledForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.getMenuDisabledForeground()"); }
-  public void addCustomEntriesToTable(javax.swing.UIDefaults table) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.OceanTheme.addCustomEntriesToTable(javax.swing.UIDefaults)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.ColorUIResource getBlack() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.ColorUIResource getControlTextColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.ColorUIResource getDesktopColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.ColorUIResource getInactiveControlTextColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.ColorUIResource getMenuDisabledForeground() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addCustomEntriesToTable(javax.swing.UIDefaults table) { }
   < ---- END java signatures ---- >
 }

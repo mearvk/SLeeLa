@@ -58,6 +58,7 @@ class FlavorEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FlavorEvent(java.awt.datatransfer.Clipboard source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.FlavorEvent.<init>(java.awt.datatransfer.Clipboard)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FlavorEvent(java.awt.datatransfer.Clipboard source) { }
   < ---- END java constructors ---- >
 }

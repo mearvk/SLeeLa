@@ -58,27 +58,45 @@ class TIFFDirectory {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TIFFDirectory(javax.imageio.plugins.tiff.TIFFTagSet[] tagSets, javax.imageio.plugins.tiff.TIFFTag parentTag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.<init>(javax.imageio.plugins.tiff.TIFFTagSet[], javax.imageio.plugins.tiff.TIFFTag)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TIFFDirectory(javax.imageio.plugins.tiff.TIFFTagSet[] tagSets, javax.imageio.plugins.tiff.TIFFTag parentTag) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.imageio.plugins.tiff.TIFFDirectory clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.clone()"); }
-  public javax.imageio.plugins.tiff.TIFFTag getParentTag() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.getParentTag()"); }
-  public javax.imageio.plugins.tiff.TIFFField[] getTIFFFields() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.getTIFFFields()"); }
-  public void addTIFFField(javax.imageio.plugins.tiff.TIFFField f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.addTIFFField(javax.imageio.plugins.tiff.TIFFField)"); }
-  public static javax.imageio.plugins.tiff.TIFFDirectory createFromMetadata(javax.imageio.metadata.IIOMetadata tiffImageMetadata) throws javax.imageio.metadata.IIOInvalidTreeException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.createFromMetadata(javax.imageio.metadata.IIOMetadata)"); }
-  public javax.imageio.plugins.tiff.TIFFTagSet[] getTagSets() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.getTagSets()"); }
-  public void addTagSet(javax.imageio.plugins.tiff.TIFFTagSet tagSet) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.addTagSet(javax.imageio.plugins.tiff.TIFFTagSet)"); }
-  public void removeTagSet(javax.imageio.plugins.tiff.TIFFTagSet tagSet) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.removeTagSet(javax.imageio.plugins.tiff.TIFFTagSet)"); }
-  public int getNumTIFFFields() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.getNumTIFFFields()"); }
-  public boolean containsTIFFField(int tagNumber) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.containsTIFFField(int)"); }
-  public javax.imageio.plugins.tiff.TIFFField getTIFFField(int tagNumber) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.getTIFFField(int)"); }
-  public void removeTIFFField(int tagNumber) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.removeTIFFField(int)"); }
-  public void removeTIFFFields() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.removeTIFFFields()"); }
-  public javax.imageio.metadata.IIOMetadata getAsMetadata() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.getAsMetadata()"); }
-  public javax.imageio.plugins.tiff.TIFFTag getTag(int tagNumber) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFDirectory.getTag(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
+  public javax.imageio.plugins.tiff.TIFFDirectory clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.plugins.tiff.TIFFTag getParentTag() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.plugins.tiff.TIFFField[] getTIFFFields() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addTIFFField(javax.imageio.plugins.tiff.TIFFField f) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.imageio.metadata.IIOInvalidTreeException")
+  public static javax.imageio.plugins.tiff.TIFFDirectory createFromMetadata(javax.imageio.metadata.IIOMetadata tiffImageMetadata) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.plugins.tiff.TIFFTagSet[] getTagSets() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addTagSet(javax.imageio.plugins.tiff.TIFFTagSet tagSet) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeTagSet(javax.imageio.plugins.tiff.TIFFTagSet tagSet) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNumTIFFFields() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsTIFFField(int tagNumber) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.plugins.tiff.TIFFField getTIFFField(int tagNumber) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeTIFFField(int tagNumber) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeTIFFFields() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.metadata.IIOMetadata getAsMetadata() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.plugins.tiff.TIFFTag getTag(int tagNumber) { return null; }
   < ---- END java signatures ---- >
 }

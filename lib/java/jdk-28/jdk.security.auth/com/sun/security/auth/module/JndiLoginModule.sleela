@@ -63,17 +63,25 @@ class JndiLoginModule {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JndiLoginModule() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.security.auth.module.JndiLoginModule.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JndiLoginModule() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean commit() throws javax.security.auth.login.LoginException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.security.auth.module.JndiLoginModule.commit()"); }
-  public void initialize(javax.security.auth.Subject subject, javax.security.auth.callback.CallbackHandler callbackHandler, java.util.Map<java.lang.String, ?> sharedState, java.util.Map<java.lang.String, ?> options) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.security.auth.module.JndiLoginModule.initialize(javax.security.auth.Subject, javax.security.auth.callback.CallbackHandler, java.util.Map<java.lang.String, ?>, java.util.Map<java.lang.String, ?>)"); }
-  public boolean abort() throws javax.security.auth.login.LoginException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.security.auth.module.JndiLoginModule.abort()"); }
-  public boolean login() throws javax.security.auth.login.LoginException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.security.auth.module.JndiLoginModule.login()"); }
-  public boolean logout() throws javax.security.auth.login.LoginException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.security.auth.module.JndiLoginModule.logout()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, javax.security.auth.login.LoginException")
+  public boolean commit() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void initialize(javax.security.auth.Subject subject, javax.security.auth.callback.CallbackHandler callbackHandler, java.util.Map<java.lang.String, ?> sharedState, java.util.Map<java.lang.String, ?> options) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.security.auth.login.LoginException")
+  public boolean abort() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.security.auth.login.LoginException")
+  public boolean login() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.security.auth.login.LoginException")
+  public boolean logout() { return false; }
   < ---- END java signatures ---- >
 }

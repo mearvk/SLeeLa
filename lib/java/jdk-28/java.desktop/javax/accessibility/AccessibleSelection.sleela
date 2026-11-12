@@ -58,15 +58,24 @@ class AccessibleSelection {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.accessibility.Accessible getAccessibleSelection(int i) { throw new AbstractMethodError("javax.accessibility.AccessibleSelection.getAccessibleSelection(int)"); }
-  public abstract boolean isAccessibleChildSelected(int i) { throw new AbstractMethodError("javax.accessibility.AccessibleSelection.isAccessibleChildSelected(int)"); }
-  public abstract int getAccessibleSelectionCount() { throw new AbstractMethodError("javax.accessibility.AccessibleSelection.getAccessibleSelectionCount()"); }
-  public abstract void addAccessibleSelection(int i) { throw new AbstractMethodError("javax.accessibility.AccessibleSelection.addAccessibleSelection(int)"); }
-  public abstract void removeAccessibleSelection(int i) { throw new AbstractMethodError("javax.accessibility.AccessibleSelection.removeAccessibleSelection(int)"); }
-  public abstract void clearAccessibleSelection() { throw new AbstractMethodError("javax.accessibility.AccessibleSelection.clearAccessibleSelection()"); }
-  public abstract void selectAllAccessibleSelection() { throw new AbstractMethodError("javax.accessibility.AccessibleSelection.selectAllAccessibleSelection()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.accessibility.Accessible getAccessibleSelection(int i) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isAccessibleChildSelected(int i) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getAccessibleSelectionCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void addAccessibleSelection(int i) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeAccessibleSelection(int i) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void clearAccessibleSelection() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void selectAllAccessibleSelection() { }
   < ---- END java signatures ---- >
 }

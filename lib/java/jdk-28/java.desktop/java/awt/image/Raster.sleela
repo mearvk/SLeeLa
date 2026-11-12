@@ -73,62 +73,113 @@ class Raster {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Raster(java.awt.image.SampleModel sampleModel, java.awt.image.DataBuffer dataBuffer, java.awt.Rectangle aRegion, java.awt.Point sampleModelTranslate, java.awt.image.Raster parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.<init>(java.awt.image.SampleModel, java.awt.image.DataBuffer, java.awt.Rectangle, java.awt.Point, java.awt.image.Raster)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Raster(java.awt.image.SampleModel sampleModel, java.awt.image.DataBuffer dataBuffer, java.awt.Rectangle aRegion, java.awt.Point sampleModelTranslate, java.awt.image.Raster parent) { }
   @JavaProtected
-  Raster(java.awt.image.SampleModel sampleModel, java.awt.image.DataBuffer dataBuffer, java.awt.Point origin) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.<init>(java.awt.image.SampleModel, java.awt.image.DataBuffer, java.awt.Point)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Raster(java.awt.image.SampleModel sampleModel, java.awt.image.DataBuffer dataBuffer, java.awt.Point origin) { }
   @JavaProtected
-  Raster(java.awt.image.SampleModel sampleModel, java.awt.Point origin) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.<init>(java.awt.image.SampleModel, java.awt.Point)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Raster(java.awt.image.SampleModel sampleModel, java.awt.Point origin) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Rectangle getBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getBounds()"); }
-  public java.awt.image.Raster getParent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getParent()"); }
-  public final int getHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getHeight()"); }
-  public final int getMinX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getMinX()"); }
-  public final int getMinY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getMinY()"); }
-  public static java.awt.image.WritableRaster createInterleavedRaster(int dataType, int w, int h, int scanlineStride, int pixelStride, int[] bandOffsets, java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createInterleavedRaster(int, int, int, int, int, int[], java.awt.Point)"); }
-  public static java.awt.image.WritableRaster createInterleavedRaster(int dataType, int w, int h, int bands, java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createInterleavedRaster(int, int, int, int, java.awt.Point)"); }
-  public static java.awt.image.WritableRaster createInterleavedRaster(java.awt.image.DataBuffer dataBuffer, int w, int h, int scanlineStride, int pixelStride, int[] bandOffsets, java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createInterleavedRaster(java.awt.image.DataBuffer, int, int, int, int, int[], java.awt.Point)"); }
-  public static java.awt.image.WritableRaster createBandedRaster(int dataType, int w, int h, int bands, java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createBandedRaster(int, int, int, int, java.awt.Point)"); }
-  public static java.awt.image.WritableRaster createBandedRaster(java.awt.image.DataBuffer dataBuffer, int w, int h, int scanlineStride, int[] bankIndices, int[] bandOffsets, java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createBandedRaster(java.awt.image.DataBuffer, int, int, int, int[], int[], java.awt.Point)"); }
-  public static java.awt.image.WritableRaster createBandedRaster(int dataType, int w, int h, int scanlineStride, int[] bankIndices, int[] bandOffsets, java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createBandedRaster(int, int, int, int, int[], int[], java.awt.Point)"); }
-  public static java.awt.image.WritableRaster createPackedRaster(java.awt.image.DataBuffer dataBuffer, int w, int h, int bitsPerPixel, java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createPackedRaster(java.awt.image.DataBuffer, int, int, int, java.awt.Point)"); }
-  public static java.awt.image.WritableRaster createPackedRaster(java.awt.image.DataBuffer dataBuffer, int w, int h, int scanlineStride, int[] bandMasks, java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createPackedRaster(java.awt.image.DataBuffer, int, int, int, int[], java.awt.Point)"); }
-  public static java.awt.image.WritableRaster createPackedRaster(int dataType, int w, int h, int[] bandMasks, java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createPackedRaster(int, int, int, int[], java.awt.Point)"); }
-  public static java.awt.image.WritableRaster createPackedRaster(int dataType, int w, int h, int bands, int bitsPerBand, java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createPackedRaster(int, int, int, int, int, java.awt.Point)"); }
-  public static java.awt.image.WritableRaster createWritableRaster(java.awt.image.SampleModel sm, java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createWritableRaster(java.awt.image.SampleModel, java.awt.Point)"); }
-  public static java.awt.image.WritableRaster createWritableRaster(java.awt.image.SampleModel sm, java.awt.image.DataBuffer db, java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createWritableRaster(java.awt.image.SampleModel, java.awt.image.DataBuffer, java.awt.Point)"); }
-  public final int getNumBands() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getNumBands()"); }
-  public final int getNumDataElements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getNumDataElements()"); }
-  public java.awt.image.Raster createChild(int parentX, int parentY, int width, int height, int childMinX, int childMinY, int[] bandList) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createChild(int, int, int, int, int, int, int[])"); }
-  public java.awt.image.DataBuffer getDataBuffer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getDataBuffer()"); }
-  public float[] getPixel(int x, int y, float[] fArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getPixel(int, int, float[])"); }
-  public double[] getPixel(int x, int y, double[] dArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getPixel(int, int, double[])"); }
-  public int[] getPixel(int x, int y, int[] iArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getPixel(int, int, int[])"); }
-  public float[] getPixels(int x, int y, int w, int h, float[] fArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getPixels(int, int, int, int, float[])"); }
-  public double[] getPixels(int x, int y, int w, int h, double[] dArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getPixels(int, int, int, int, double[])"); }
-  public int[] getPixels(int x, int y, int w, int h, int[] iArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getPixels(int, int, int, int, int[])"); }
-  public int getSample(int x, int y, int b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getSample(int, int, int)"); }
-  public float getSampleFloat(int x, int y, int b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getSampleFloat(int, int, int)"); }
-  public double getSampleDouble(int x, int y, int b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getSampleDouble(int, int, int)"); }
-  public int[] getSamples(int x, int y, int w, int h, int b, int[] iArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getSamples(int, int, int, int, int, int[])"); }
-  public double[] getSamples(int x, int y, int w, int h, int b, double[] dArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getSamples(int, int, int, int, int, double[])"); }
-  public float[] getSamples(int x, int y, int w, int h, int b, float[] fArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getSamples(int, int, int, int, int, float[])"); }
-  public static java.awt.image.Raster createRaster(java.awt.image.SampleModel sm, java.awt.image.DataBuffer db, java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createRaster(java.awt.image.SampleModel, java.awt.image.DataBuffer, java.awt.Point)"); }
-  public final int getSampleModelTranslateX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getSampleModelTranslateX()"); }
-  public final int getSampleModelTranslateY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getSampleModelTranslateY()"); }
-  public java.awt.image.Raster createTranslatedChild(int childMinX, int childMinY) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createTranslatedChild(int, int)"); }
-  public java.awt.image.SampleModel getSampleModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getSampleModel()"); }
-  public java.lang.Object getDataElements(int x, int y, java.lang.Object outData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getDataElements(int, int, java.lang.Object)"); }
-  public java.lang.Object getDataElements(int x, int y, int w, int h, java.lang.Object outData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getDataElements(int, int, int, int, java.lang.Object)"); }
-  public final int getTransferType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getTransferType()"); }
-  public java.awt.image.WritableRaster createCompatibleWritableRaster(int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createCompatibleWritableRaster(int, int, int, int)"); }
-  public java.awt.image.WritableRaster createCompatibleWritableRaster(java.awt.Rectangle rect) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createCompatibleWritableRaster(java.awt.Rectangle)"); }
-  public java.awt.image.WritableRaster createCompatibleWritableRaster(int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createCompatibleWritableRaster(int, int)"); }
-  public java.awt.image.WritableRaster createCompatibleWritableRaster() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.createCompatibleWritableRaster()"); }
-  public final int getWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.Raster.getWidth()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getBounds() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.Raster getParent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getHeight() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getMinX() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getMinY() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.image.WritableRaster createInterleavedRaster(int dataType, int w, int h, int scanlineStride, int pixelStride, int[] bandOffsets, java.awt.Point location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.image.WritableRaster createInterleavedRaster(int dataType, int w, int h, int bands, java.awt.Point location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.image.WritableRaster createInterleavedRaster(java.awt.image.DataBuffer dataBuffer, int w, int h, int scanlineStride, int pixelStride, int[] bandOffsets, java.awt.Point location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.image.WritableRaster createBandedRaster(int dataType, int w, int h, int bands, java.awt.Point location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.image.WritableRaster createBandedRaster(java.awt.image.DataBuffer dataBuffer, int w, int h, int scanlineStride, int[] bankIndices, int[] bandOffsets, java.awt.Point location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.image.WritableRaster createBandedRaster(int dataType, int w, int h, int scanlineStride, int[] bankIndices, int[] bandOffsets, java.awt.Point location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.image.WritableRaster createPackedRaster(java.awt.image.DataBuffer dataBuffer, int w, int h, int bitsPerPixel, java.awt.Point location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.image.WritableRaster createPackedRaster(java.awt.image.DataBuffer dataBuffer, int w, int h, int scanlineStride, int[] bandMasks, java.awt.Point location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.image.WritableRaster createPackedRaster(int dataType, int w, int h, int[] bandMasks, java.awt.Point location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.image.WritableRaster createPackedRaster(int dataType, int w, int h, int bands, int bitsPerBand, java.awt.Point location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.image.WritableRaster createWritableRaster(java.awt.image.SampleModel sm, java.awt.Point location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.image.WritableRaster createWritableRaster(java.awt.image.SampleModel sm, java.awt.image.DataBuffer db, java.awt.Point location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getNumBands() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getNumDataElements() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.Raster createChild(int parentX, int parentY, int width, int height, int childMinX, int childMinY, int[] bandList) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.DataBuffer getDataBuffer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getPixel(int x, int y, float[] fArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double[] getPixel(int x, int y, double[] dArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getPixel(int x, int y, int[] iArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getPixels(int x, int y, int w, int h, float[] fArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double[] getPixels(int x, int y, int w, int h, double[] dArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getPixels(int x, int y, int w, int h, int[] iArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSample(int x, int y, int b) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getSampleFloat(int x, int y, int b) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getSampleDouble(int x, int y, int b) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getSamples(int x, int y, int w, int h, int b, int[] iArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double[] getSamples(int x, int y, int w, int h, int b, double[] dArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getSamples(int x, int y, int w, int h, int b, float[] fArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.image.Raster createRaster(java.awt.image.SampleModel sm, java.awt.image.DataBuffer db, java.awt.Point location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getSampleModelTranslateX() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getSampleModelTranslateY() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.Raster createTranslatedChild(int childMinX, int childMinY) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.SampleModel getSampleModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getDataElements(int x, int y, java.lang.Object outData) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getDataElements(int x, int y, int w, int h, java.lang.Object outData) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getTransferType() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.WritableRaster createCompatibleWritableRaster(int x, int y, int w, int h) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.WritableRaster createCompatibleWritableRaster(java.awt.Rectangle rect) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.WritableRaster createCompatibleWritableRaster(int w, int h) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.WritableRaster createCompatibleWritableRaster() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getWidth() { return 0; }
   < ---- END java signatures ---- >
 }

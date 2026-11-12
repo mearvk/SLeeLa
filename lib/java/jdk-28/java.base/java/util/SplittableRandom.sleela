@@ -58,34 +58,59 @@ class SplittableRandom {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SplittableRandom(long seed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.<init>(long)"); }
-  public SplittableRandom() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SplittableRandom(long seed) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SplittableRandom() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.SplittableRandom split() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.split()"); }
-  public java.util.SplittableRandom split(java.util.random.RandomGenerator.SplittableGenerator source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.split(java.util.random.RandomGenerator.SplittableGenerator)"); }
-  public int nextInt() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.nextInt()"); }
-  public java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits(long streamSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.splits(long)"); }
-  public java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.splits()"); }
-  public java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits(java.util.random.RandomGenerator.SplittableGenerator source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.splits(java.util.random.RandomGenerator.SplittableGenerator)"); }
-  public java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits(long streamSize, java.util.random.RandomGenerator.SplittableGenerator source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.splits(long, java.util.random.RandomGenerator.SplittableGenerator)"); }
-  public void nextBytes(byte[] bytes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.nextBytes(byte[])"); }
-  public java.util.stream.LongStream longs(long streamSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.longs(long)"); }
-  public java.util.stream.LongStream longs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.longs()"); }
-  public java.util.stream.LongStream longs(long streamSize, long randomNumberOrigin, long randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.longs(long, long, long)"); }
-  public java.util.stream.LongStream longs(long randomNumberOrigin, long randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.longs(long, long)"); }
-  public java.util.stream.IntStream ints(int randomNumberOrigin, int randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.ints(int, int)"); }
-  public java.util.stream.IntStream ints(long streamSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.ints(long)"); }
-  public java.util.stream.IntStream ints() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.ints()"); }
-  public java.util.stream.IntStream ints(long streamSize, int randomNumberOrigin, int randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.ints(long, int, int)"); }
-  public java.util.stream.DoubleStream doubles() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.doubles()"); }
-  public java.util.stream.DoubleStream doubles(long streamSize, double randomNumberOrigin, double randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.doubles(long, double, double)"); }
-  public java.util.stream.DoubleStream doubles(double randomNumberOrigin, double randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.doubles(double, double)"); }
-  public java.util.stream.DoubleStream doubles(long streamSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.doubles(long)"); }
-  public long nextLong() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SplittableRandom.nextLong()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.SplittableRandom split() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.SplittableRandom split(java.util.random.RandomGenerator.SplittableGenerator source) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int nextInt() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits(long streamSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits(java.util.random.RandomGenerator.SplittableGenerator source) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits(long streamSize, java.util.random.RandomGenerator.SplittableGenerator source) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void nextBytes(byte[] bytes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.LongStream longs(long streamSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.LongStream longs() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.LongStream longs(long streamSize, long randomNumberOrigin, long randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.LongStream longs(long randomNumberOrigin, long randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.IntStream ints(int randomNumberOrigin, int randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.IntStream ints(long streamSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.IntStream ints() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.IntStream ints(long streamSize, int randomNumberOrigin, int randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.DoubleStream doubles() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.DoubleStream doubles(long streamSize, double randomNumberOrigin, double randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.DoubleStream doubles(double randomNumberOrigin, double randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.DoubleStream doubles(long streamSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long nextLong() { return 0; }
   < ---- END java signatures ---- >
 }

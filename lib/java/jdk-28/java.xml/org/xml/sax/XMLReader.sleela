@@ -58,22 +58,38 @@ class XMLReader {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object getProperty(java.lang.String name) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new AbstractMethodError("org.xml.sax.XMLReader.getProperty(java.lang.String)"); }
-  public abstract void setProperty(java.lang.String name, java.lang.Object value) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new AbstractMethodError("org.xml.sax.XMLReader.setProperty(java.lang.String, java.lang.Object)"); }
-  public abstract void parse(java.lang.String systemId) throws java.io.IOException, org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.XMLReader.parse(java.lang.String)"); }
-  public abstract void parse(org.xml.sax.InputSource input) throws java.io.IOException, org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.XMLReader.parse(org.xml.sax.InputSource)"); }
-  public abstract void setDTDHandler(org.xml.sax.DTDHandler handler) { throw new AbstractMethodError("org.xml.sax.XMLReader.setDTDHandler(org.xml.sax.DTDHandler)"); }
-  public abstract void setContentHandler(org.xml.sax.ContentHandler handler) { throw new AbstractMethodError("org.xml.sax.XMLReader.setContentHandler(org.xml.sax.ContentHandler)"); }
-  public abstract org.xml.sax.EntityResolver getEntityResolver() { throw new AbstractMethodError("org.xml.sax.XMLReader.getEntityResolver()"); }
-  public abstract org.xml.sax.DTDHandler getDTDHandler() { throw new AbstractMethodError("org.xml.sax.XMLReader.getDTDHandler()"); }
-  public abstract org.xml.sax.ErrorHandler getErrorHandler() { throw new AbstractMethodError("org.xml.sax.XMLReader.getErrorHandler()"); }
-  public abstract void setEntityResolver(org.xml.sax.EntityResolver resolver) { throw new AbstractMethodError("org.xml.sax.XMLReader.setEntityResolver(org.xml.sax.EntityResolver)"); }
-  public abstract void setErrorHandler(org.xml.sax.ErrorHandler handler) { throw new AbstractMethodError("org.xml.sax.XMLReader.setErrorHandler(org.xml.sax.ErrorHandler)"); }
-  public abstract boolean getFeature(java.lang.String name) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new AbstractMethodError("org.xml.sax.XMLReader.getFeature(java.lang.String)"); }
-  public abstract void setFeature(java.lang.String name, boolean value) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new AbstractMethodError("org.xml.sax.XMLReader.setFeature(java.lang.String, boolean)"); }
-  public abstract org.xml.sax.ContentHandler getContentHandler() { throw new AbstractMethodError("org.xml.sax.XMLReader.getContentHandler()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public java.lang.Object getProperty(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public void setProperty(java.lang.String name, java.lang.Object value) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException, org.xml.sax.SAXException")
+  public void parse(java.lang.String systemId) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException, org.xml.sax.SAXException")
+  public void parse(org.xml.sax.InputSource input) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDTDHandler(org.xml.sax.DTDHandler handler) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setContentHandler(org.xml.sax.ContentHandler handler) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.xml.sax.EntityResolver getEntityResolver() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.xml.sax.DTDHandler getDTDHandler() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.xml.sax.ErrorHandler getErrorHandler() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setEntityResolver(org.xml.sax.EntityResolver resolver) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setErrorHandler(org.xml.sax.ErrorHandler handler) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public boolean getFeature(java.lang.String name) { return false; }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public void setFeature(java.lang.String name, boolean value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.xml.sax.ContentHandler getContentHandler() { return null; }
   < ---- END java signatures ---- >
 }

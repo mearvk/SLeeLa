@@ -63,14 +63,19 @@ class TableColumnModelEvent {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TableColumnModelEvent(javax.swing.table.TableColumnModel source, int from, int to) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TableColumnModelEvent.<init>(javax.swing.table.TableColumnModel, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TableColumnModelEvent(javax.swing.table.TableColumnModel source, int from, int to) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int getFromIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TableColumnModelEvent.getFromIndex()"); }
-  public int getToIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TableColumnModelEvent.getToIndex()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getFromIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getToIndex() { return 0; }
   < ---- END java signatures ---- >
 }

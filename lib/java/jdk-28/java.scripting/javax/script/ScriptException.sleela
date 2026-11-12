@@ -58,19 +58,29 @@ class ScriptException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ScriptException(java.lang.String message, java.lang.String fileName, int lineNumber, int columnNumber) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptException.<init>(java.lang.String, java.lang.String, int, int)"); }
-  public ScriptException(java.lang.String message, java.lang.String fileName, int lineNumber) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptException.<init>(java.lang.String, java.lang.String, int)"); }
-  public ScriptException(java.lang.Exception e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptException.<init>(java.lang.Exception)"); }
-  public ScriptException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ScriptException(java.lang.String message, java.lang.String fileName, int lineNumber, int columnNumber) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ScriptException(java.lang.String message, java.lang.String fileName, int lineNumber) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ScriptException(java.lang.Exception e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ScriptException(java.lang.String s) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getMessage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptException.getMessage()"); }
-  public java.lang.String getFileName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptException.getFileName()"); }
-  public int getLineNumber() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptException.getLineNumber()"); }
-  public int getColumnNumber() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptException.getColumnNumber()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getMessage() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getFileName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLineNumber() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getColumnNumber() { return 0; }
   < ---- END java signatures ---- >
 }

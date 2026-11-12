@@ -58,25 +58,44 @@ class RowSetMetaData {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void setCurrency(int columnIndex, boolean property) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setCurrency(int, boolean)"); }
-  public abstract void setCaseSensitive(int columnIndex, boolean property) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setCaseSensitive(int, boolean)"); }
-  public abstract void setScale(int columnIndex, int scale) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setScale(int, int)"); }
-  public abstract void setColumnCount(int columnCount) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setColumnCount(int)"); }
-  public abstract void setPrecision(int columnIndex, int precision) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setPrecision(int, int)"); }
-  public abstract void setAutoIncrement(int columnIndex, boolean property) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setAutoIncrement(int, boolean)"); }
-  public abstract void setSearchable(int columnIndex, boolean property) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setSearchable(int, boolean)"); }
-  public abstract void setNullable(int columnIndex, int property) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setNullable(int, int)"); }
-  public abstract void setSigned(int columnIndex, boolean property) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setSigned(int, boolean)"); }
-  public abstract void setColumnDisplaySize(int columnIndex, int size) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setColumnDisplaySize(int, int)"); }
-  public abstract void setColumnLabel(int columnIndex, java.lang.String label) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setColumnLabel(int, java.lang.String)"); }
-  public abstract void setColumnName(int columnIndex, java.lang.String columnName) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setColumnName(int, java.lang.String)"); }
-  public abstract void setSchemaName(int columnIndex, java.lang.String schemaName) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setSchemaName(int, java.lang.String)"); }
-  public abstract void setTableName(int columnIndex, java.lang.String tableName) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setTableName(int, java.lang.String)"); }
-  public abstract void setCatalogName(int columnIndex, java.lang.String catalogName) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setCatalogName(int, java.lang.String)"); }
-  public abstract void setColumnType(int columnIndex, int SQLType) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setColumnType(int, int)"); }
-  public abstract void setColumnTypeName(int columnIndex, java.lang.String typeName) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetMetaData.setColumnTypeName(int, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setCurrency(int columnIndex, boolean property) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setCaseSensitive(int columnIndex, boolean property) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setScale(int columnIndex, int scale) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setColumnCount(int columnCount) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setPrecision(int columnIndex, int precision) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setAutoIncrement(int columnIndex, boolean property) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setSearchable(int columnIndex, boolean property) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setNullable(int columnIndex, int property) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setSigned(int columnIndex, boolean property) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setColumnDisplaySize(int columnIndex, int size) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setColumnLabel(int columnIndex, java.lang.String label) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setColumnName(int columnIndex, java.lang.String columnName) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setSchemaName(int columnIndex, java.lang.String schemaName) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setTableName(int columnIndex, java.lang.String tableName) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setCatalogName(int columnIndex, java.lang.String catalogName) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setColumnType(int columnIndex, int SQLType) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setColumnTypeName(int columnIndex, java.lang.String typeName) { }
   < ---- END java signatures ---- >
 }

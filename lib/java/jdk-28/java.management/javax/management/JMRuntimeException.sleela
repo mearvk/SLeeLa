@@ -58,7 +58,9 @@ class JMRuntimeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JMRuntimeException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.JMRuntimeException.<init>()"); }
-  public JMRuntimeException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.JMRuntimeException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JMRuntimeException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JMRuntimeException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

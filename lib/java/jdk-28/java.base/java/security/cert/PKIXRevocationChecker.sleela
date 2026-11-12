@@ -59,24 +59,39 @@ class PKIXRevocationChecker {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  PKIXRevocationChecker() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXRevocationChecker.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  PKIXRevocationChecker() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.security.cert.PKIXRevocationChecker clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXRevocationChecker.clone()"); }
-  public void setOptions(java.util.Set<java.security.cert.PKIXRevocationChecker.Option> options) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXRevocationChecker.setOptions(java.util.Set<java.security.cert.PKIXRevocationChecker.Option>)"); }
-  public void setOcspResponder(java.net.URI uri) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXRevocationChecker.setOcspResponder(java.net.URI)"); }
-  public java.net.URI getOcspResponder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXRevocationChecker.getOcspResponder()"); }
-  public void setOcspResponderCert(java.security.cert.X509Certificate cert) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXRevocationChecker.setOcspResponderCert(java.security.cert.X509Certificate)"); }
-  public java.security.cert.X509Certificate getOcspResponderCert() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXRevocationChecker.getOcspResponderCert()"); }
-  public void setOcspExtensions(java.util.List<java.security.cert.Extension> extensions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXRevocationChecker.setOcspExtensions(java.util.List<java.security.cert.Extension>)"); }
-  public java.util.List<java.security.cert.Extension> getOcspExtensions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXRevocationChecker.getOcspExtensions()"); }
-  public void setOcspResponses(java.util.Map<java.security.cert.X509Certificate, byte[]> responses) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXRevocationChecker.setOcspResponses(java.util.Map<java.security.cert.X509Certificate, byte[]>)"); }
-  public java.util.Map<java.security.cert.X509Certificate, byte[]> getOcspResponses() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXRevocationChecker.getOcspResponses()"); }
-  public abstract java.util.List<java.security.cert.CertPathValidatorException> getSoftFailExceptions() { throw new AbstractMethodError("java.security.cert.PKIXRevocationChecker.getSoftFailExceptions()"); }
-  public java.util.Set<java.security.cert.PKIXRevocationChecker.Option> getOptions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXRevocationChecker.getOptions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.cert.PKIXRevocationChecker clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOptions(java.util.Set<java.security.cert.PKIXRevocationChecker.Option> options) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOcspResponder(java.net.URI uri) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.URI getOcspResponder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOcspResponderCert(java.security.cert.X509Certificate cert) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.cert.X509Certificate getOcspResponderCert() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOcspExtensions(java.util.List<java.security.cert.Extension> extensions) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.security.cert.Extension> getOcspExtensions() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOcspResponses(java.util.Map<java.security.cert.X509Certificate, byte[]> responses) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Map<java.security.cert.X509Certificate, byte[]> getOcspResponses() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.security.cert.CertPathValidatorException> getSoftFailExceptions() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.security.cert.PKIXRevocationChecker.Option> getOptions() { return null; }
   < ---- END java signatures ---- >
 }

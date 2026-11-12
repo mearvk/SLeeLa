@@ -58,44 +58,82 @@ class HTMLObjectElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getName()"); }
-  public abstract void setName(java.lang.String name) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setName(java.lang.String)"); }
-  public abstract java.lang.String getType() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getType()"); }
-  public abstract void setArchive(java.lang.String archive) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setArchive(java.lang.String)"); }
-  public abstract java.lang.String getData() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getData()"); }
-  public abstract void setType(java.lang.String type) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setType(java.lang.String)"); }
-  public abstract void setData(java.lang.String data) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setData(java.lang.String)"); }
-  public abstract void setBorder(java.lang.String border) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setBorder(java.lang.String)"); }
-  public abstract void setWidth(java.lang.String width) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setWidth(java.lang.String)"); }
-  public abstract java.lang.String getCodeBase() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getCodeBase()"); }
-  public abstract java.lang.String getHeight() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getHeight()"); }
-  public abstract void setHeight(java.lang.String height) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setHeight(java.lang.String)"); }
-  public abstract java.lang.String getBorder() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getBorder()"); }
-  public abstract int getTabIndex() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getTabIndex()"); }
-  public abstract java.lang.String getWidth() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getWidth()"); }
-  public abstract void setTabIndex(int tabIndex) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setTabIndex(int)"); }
-  public abstract java.lang.String getAlign() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getAlign()"); }
-  public abstract void setAlign(java.lang.String align) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setAlign(java.lang.String)"); }
-  public abstract java.lang.String getArchive() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getArchive()"); }
-  public abstract void setCode(java.lang.String code) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setCode(java.lang.String)"); }
-  public abstract void setCodeBase(java.lang.String codeBase) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setCodeBase(java.lang.String)"); }
-  public abstract java.lang.String getHspace() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getHspace()"); }
-  public abstract void setHspace(java.lang.String hspace) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setHspace(java.lang.String)"); }
-  public abstract java.lang.String getVspace() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getVspace()"); }
-  public abstract void setVspace(java.lang.String vspace) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setVspace(java.lang.String)"); }
-  public abstract org.w3c.dom.html.HTMLFormElement getForm() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getForm()"); }
-  public abstract org.w3c.dom.Document getContentDocument() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getContentDocument()"); }
-  public abstract java.lang.String getUseMap() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getUseMap()"); }
-  public abstract void setUseMap(java.lang.String useMap) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setUseMap(java.lang.String)"); }
-  public abstract java.lang.String getCodeType() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getCodeType()"); }
-  public abstract void setCodeType(java.lang.String codeType) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setCodeType(java.lang.String)"); }
-  public abstract boolean getDeclare() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getDeclare()"); }
-  public abstract void setDeclare(boolean declare) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setDeclare(boolean)"); }
-  public abstract java.lang.String getStandby() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getStandby()"); }
-  public abstract void setStandby(java.lang.String standby) { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.setStandby(java.lang.String)"); }
-  public abstract java.lang.String getCode() { throw new AbstractMethodError("org.w3c.dom.html.HTMLObjectElement.getCode()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setName(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setArchive(java.lang.String archive) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getData() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setType(java.lang.String type) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setData(java.lang.String data) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBorder(java.lang.String border) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setWidth(java.lang.String width) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCodeBase() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getHeight() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHeight(java.lang.String height) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getBorder() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getTabIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getWidth() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTabIndex(int tabIndex) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAlign() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAlign(java.lang.String align) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getArchive() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCode(java.lang.String code) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCodeBase(java.lang.String codeBase) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getHspace() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHspace(java.lang.String hspace) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getVspace() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setVspace(java.lang.String vspace) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLFormElement getForm() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Document getContentDocument() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getUseMap() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setUseMap(java.lang.String useMap) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCodeType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCodeType(java.lang.String codeType) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getDeclare() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDeclare(boolean declare) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getStandby() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setStandby(java.lang.String standby) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCode() { return null; }
   < ---- END java signatures ---- >
 }

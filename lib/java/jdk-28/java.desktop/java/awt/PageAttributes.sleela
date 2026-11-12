@@ -58,36 +58,63 @@ class PageAttributes {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PageAttributes(java.awt.PageAttributes.ColorType color, java.awt.PageAttributes.MediaType media, java.awt.PageAttributes.OrientationRequestedType orientationRequested, java.awt.PageAttributes.OriginType origin, java.awt.PageAttributes.PrintQualityType printQuality, int[] printerResolution) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.<init>(java.awt.PageAttributes.ColorType, java.awt.PageAttributes.MediaType, java.awt.PageAttributes.OrientationRequestedType, java.awt.PageAttributes.OriginType, java.awt.PageAttributes.PrintQualityType, int[])"); }
-  public PageAttributes(java.awt.PageAttributes obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.<init>(java.awt.PageAttributes)"); }
-  public PageAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PageAttributes(java.awt.PageAttributes.ColorType color, java.awt.PageAttributes.MediaType media, java.awt.PageAttributes.OrientationRequestedType orientationRequested, java.awt.PageAttributes.OriginType origin, java.awt.PageAttributes.PrintQualityType printQuality, int[] printerResolution) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PageAttributes(java.awt.PageAttributes obj) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PageAttributes() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.clone()"); }
-  public void set(java.awt.PageAttributes obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.set(java.awt.PageAttributes)"); }
-  public void setColor(java.awt.PageAttributes.ColorType color) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.setColor(java.awt.PageAttributes.ColorType)"); }
-  public void setMediaToDefault() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.setMediaToDefault()"); }
-  public void setOrientationRequestedToDefault() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.setOrientationRequestedToDefault()"); }
-  public void setPrintQualityToDefault() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.setPrintQualityToDefault()"); }
-  public void setPrinterResolutionToDefault() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.setPrinterResolutionToDefault()"); }
-  public void setMedia(java.awt.PageAttributes.MediaType media) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.setMedia(java.awt.PageAttributes.MediaType)"); }
-  public void setOrientationRequested(int orientationRequested) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.setOrientationRequested(int)"); }
-  public void setOrientationRequested(java.awt.PageAttributes.OrientationRequestedType orientationRequested) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.setOrientationRequested(java.awt.PageAttributes.OrientationRequestedType)"); }
-  public void setPrintQuality(int printQuality) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.setPrintQuality(int)"); }
-  public void setPrintQuality(java.awt.PageAttributes.PrintQualityType printQuality) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.setPrintQuality(java.awt.PageAttributes.PrintQualityType)"); }
-  public void setPrinterResolution(int printerResolution) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.setPrinterResolution(int)"); }
-  public void setPrinterResolution(int[] printerResolution) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.setPrinterResolution(int[])"); }
-  public java.awt.PageAttributes.OrientationRequestedType getOrientationRequested() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.getOrientationRequested()"); }
-  public java.awt.PageAttributes.PrintQualityType getPrintQuality() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.getPrintQuality()"); }
-  public int[] getPrinterResolution() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.getPrinterResolution()"); }
-  public java.awt.PageAttributes.ColorType getColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.getColor()"); }
-  public java.awt.PageAttributes.MediaType getMedia() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PageAttributes.getMedia()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void set(java.awt.PageAttributes obj) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColor(java.awt.PageAttributes.ColorType color) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMediaToDefault() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOrientationRequestedToDefault() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPrintQualityToDefault() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPrinterResolutionToDefault() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMedia(java.awt.PageAttributes.MediaType media) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOrientationRequested(int orientationRequested) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOrientationRequested(java.awt.PageAttributes.OrientationRequestedType orientationRequested) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPrintQuality(int printQuality) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPrintQuality(java.awt.PageAttributes.PrintQualityType printQuality) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPrinterResolution(int printerResolution) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPrinterResolution(int[] printerResolution) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.PageAttributes.OrientationRequestedType getOrientationRequested() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.PageAttributes.PrintQualityType getPrintQuality() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getPrinterResolution() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.PageAttributes.ColorType getColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.PageAttributes.MediaType getMedia() { return null; }
   < ---- END java signatures ---- >
 }

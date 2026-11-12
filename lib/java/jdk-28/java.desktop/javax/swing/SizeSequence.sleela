@@ -58,23 +58,37 @@ class SizeSequence {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SizeSequence(int[] sizes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SizeSequence.<init>(int[])"); }
-  public SizeSequence(int numEntries, int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SizeSequence.<init>(int, int)"); }
-  public SizeSequence(int numEntries) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SizeSequence.<init>(int)"); }
-  public SizeSequence() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SizeSequence.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SizeSequence(int[] sizes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SizeSequence(int numEntries, int value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SizeSequence(int numEntries) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SizeSequence() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int getSize(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SizeSequence.getSize(int)"); }
-  public int getIndex(int position) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SizeSequence.getIndex(int)"); }
-  public void setSize(int index, int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SizeSequence.setSize(int, int)"); }
-  public int getPosition(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SizeSequence.getPosition(int)"); }
-  public void setSizes(int[] sizes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SizeSequence.setSizes(int[])"); }
-  public int[] getSizes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SizeSequence.getSizes()"); }
-  public void insertEntries(int start, int length, int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SizeSequence.insertEntries(int, int, int)"); }
-  public void removeEntries(int start, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SizeSequence.removeEntries(int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSize(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getIndex(int position) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSize(int index, int size) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getPosition(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSizes(int[] sizes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getSizes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertEntries(int start, int length, int value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeEntries(int start, int length) { }
   < ---- END java signatures ---- >
 }

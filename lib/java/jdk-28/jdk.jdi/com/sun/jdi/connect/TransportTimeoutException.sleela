@@ -58,7 +58,9 @@ class TransportTimeoutException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TransportTimeoutException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.connect.TransportTimeoutException.<init>()"); }
-  public TransportTimeoutException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.connect.TransportTimeoutException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TransportTimeoutException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TransportTimeoutException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

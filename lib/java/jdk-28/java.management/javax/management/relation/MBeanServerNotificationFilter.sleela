@@ -58,19 +58,29 @@ class MBeanServerNotificationFilter {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MBeanServerNotificationFilter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.MBeanServerNotificationFilter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MBeanServerNotificationFilter() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized boolean isNotificationEnabled(javax.management.Notification notif) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.MBeanServerNotificationFilter.isNotificationEnabled(javax.management.Notification)"); }
-  public synchronized void disableAllObjectNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.MBeanServerNotificationFilter.disableAllObjectNames()"); }
-  public synchronized void disableObjectName(javax.management.ObjectName objectName) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.MBeanServerNotificationFilter.disableObjectName(javax.management.ObjectName)"); }
-  public synchronized void enableAllObjectNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.MBeanServerNotificationFilter.enableAllObjectNames()"); }
-  public synchronized void enableObjectName(javax.management.ObjectName objectName) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.MBeanServerNotificationFilter.enableObjectName(javax.management.ObjectName)"); }
-  public synchronized java.util.Vector<javax.management.ObjectName> getEnabledObjectNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.MBeanServerNotificationFilter.getEnabledObjectNames()"); }
-  public synchronized java.util.Vector<javax.management.ObjectName> getDisabledObjectNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.MBeanServerNotificationFilter.getDisabledObjectNames()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public synchronized boolean isNotificationEnabled(javax.management.Notification notif) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void disableAllObjectNames() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public synchronized void disableObjectName(javax.management.ObjectName objectName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void enableAllObjectNames() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public synchronized void enableObjectName(javax.management.ObjectName objectName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.util.Vector<javax.management.ObjectName> getEnabledObjectNames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.util.Vector<javax.management.ObjectName> getDisabledObjectNames() { return null; }
   < ---- END java signatures ---- >
 }

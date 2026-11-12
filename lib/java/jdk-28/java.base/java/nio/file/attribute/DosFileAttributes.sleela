@@ -58,12 +58,18 @@ class DosFileAttributes {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean isHidden() { throw new AbstractMethodError("java.nio.file.attribute.DosFileAttributes.isHidden()"); }
-  public abstract boolean isReadOnly() { throw new AbstractMethodError("java.nio.file.attribute.DosFileAttributes.isReadOnly()"); }
-  public abstract boolean isArchive() { throw new AbstractMethodError("java.nio.file.attribute.DosFileAttributes.isArchive()"); }
-  public abstract boolean isSystem() { throw new AbstractMethodError("java.nio.file.attribute.DosFileAttributes.isSystem()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isHidden() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isReadOnly() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isArchive() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSystem() { return false; }
   < ---- END java signatures ---- >
 }

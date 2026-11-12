@@ -58,44 +58,79 @@ class Date {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Date(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.<init>(java.lang.String)"); }
-  public Date(int year, int month, int date, int hrs, int min, int sec) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.<init>(int, int, int, int, int, int)"); }
-  public Date(int year, int month, int date, int hrs, int min) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.<init>(int, int, int, int, int)"); }
-  public Date() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.<init>()"); }
-  public Date(long date) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.<init>(long)"); }
-  public Date(int year, int month, int date) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.<init>(int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Date(java.lang.String s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Date(int year, int month, int date, int hrs, int min, int sec) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Date(int year, int month, int date, int hrs, int min) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Date() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Date(long date) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Date(int year, int month, int date) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.clone()"); }
-  public int compareTo(java.util.Date anotherDate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.compareTo(java.util.Date)"); }
-  public static java.util.Date from(java.time.Instant instant) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.from(java.time.Instant)"); }
-  public static long parse(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.parse(java.lang.String)"); }
-  public boolean before(java.util.Date when) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.before(java.util.Date)"); }
-  public boolean after(java.util.Date when) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.after(java.util.Date)"); }
-  public java.time.Instant toInstant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.toInstant()"); }
-  public static long UTC(int year, int month, int date, int hrs, int min, int sec) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.UTC(int, int, int, int, int, int)"); }
-  public int getYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getYear()"); }
-  public long getTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getTime()"); }
-  public void setTime(long time) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.setTime(long)"); }
-  public int getSeconds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getSeconds()"); }
-  public int getMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getMonth()"); }
-  public void setMonth(int month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.setMonth(int)"); }
-  public int getHours() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getHours()"); }
-  public void setHours(int hours) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.setHours(int)"); }
-  public int getMinutes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getMinutes()"); }
-  public void setMinutes(int minutes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.setMinutes(int)"); }
-  public void setSeconds(int seconds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.setSeconds(int)"); }
-  public void setYear(int year) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.setYear(int)"); }
-  public int getDay() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getDay()"); }
-  public java.lang.String toLocaleString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.toLocaleString()"); }
-  public java.lang.String toGMTString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.toGMTString()"); }
-  public int getTimezoneOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.getTimezoneOffset()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.util.Date anotherDate) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Date from(java.time.Instant instant) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long parse(java.lang.String s) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean before(java.util.Date when) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean after(java.util.Date when) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Instant toInstant() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long UTC(int year, int month, int date, int hrs, int min, int sec) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getYear() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getTime() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTime(long time) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSeconds() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMonth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMonth(int month) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHours() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHours(int hours) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinutes() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinutes(int minutes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSeconds(int seconds) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setYear(int year) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDay() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toLocaleString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toGMTString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTimezoneOffset() { return 0; }
   < ---- END java signatures ---- >
 }

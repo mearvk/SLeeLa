@@ -58,13 +58,20 @@ class Doclet {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("jdk.javadoc.doclet.Doclet.getName()"); }
-  public abstract boolean run(jdk.javadoc.doclet.DocletEnvironment environment) { throw new AbstractMethodError("jdk.javadoc.doclet.Doclet.run(jdk.javadoc.doclet.DocletEnvironment)"); }
-  public abstract void init(java.util.Locale locale, jdk.javadoc.doclet.Reporter reporter) { throw new AbstractMethodError("jdk.javadoc.doclet.Doclet.init(java.util.Locale, jdk.javadoc.doclet.Reporter)"); }
-  public abstract javax.lang.model.SourceVersion getSupportedSourceVersion() { throw new AbstractMethodError("jdk.javadoc.doclet.Doclet.getSupportedSourceVersion()"); }
-  public abstract java.util.Set<? extends jdk.javadoc.doclet.Doclet.Option> getSupportedOptions() { throw new AbstractMethodError("jdk.javadoc.doclet.Doclet.getSupportedOptions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean run(jdk.javadoc.doclet.DocletEnvironment environment) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void init(java.util.Locale locale, jdk.javadoc.doclet.Reporter reporter) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.SourceVersion getSupportedSourceVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<? extends jdk.javadoc.doclet.Doclet.Option> getSupportedOptions() { return null; }
   < ---- END java signatures ---- >
 }

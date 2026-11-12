@@ -58,17 +58,28 @@ class AclEntry {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.nio.file.attribute.AclEntryType type() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.attribute.AclEntry.type()"); }
-  public boolean equals(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.attribute.AclEntry.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.attribute.AclEntry.toString()"); }
-  public java.util.Set<java.nio.file.attribute.AclEntryFlag> flags() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.attribute.AclEntry.flags()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.attribute.AclEntry.hashCode()"); }
-  public java.util.Set<java.nio.file.attribute.AclEntryPermission> permissions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.attribute.AclEntry.permissions()"); }
-  public static java.nio.file.attribute.AclEntry.Builder newBuilder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.attribute.AclEntry.newBuilder()"); }
-  public static java.nio.file.attribute.AclEntry.Builder newBuilder(java.nio.file.attribute.AclEntry entry) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.attribute.AclEntry.newBuilder(java.nio.file.attribute.AclEntry)"); }
-  public java.nio.file.attribute.UserPrincipal principal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.attribute.AclEntry.principal()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.file.attribute.AclEntryType type() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object ob) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.nio.file.attribute.AclEntryFlag> flags() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.nio.file.attribute.AclEntryPermission> permissions() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.file.attribute.AclEntry.Builder newBuilder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.file.attribute.AclEntry.Builder newBuilder(java.nio.file.attribute.AclEntry entry) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.file.attribute.UserPrincipal principal() { return null; }
   < ---- END java signatures ---- >
 }

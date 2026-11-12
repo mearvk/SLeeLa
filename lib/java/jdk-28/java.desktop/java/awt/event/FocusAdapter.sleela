@@ -59,14 +59,19 @@ class FocusAdapter {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  FocusAdapter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.FocusAdapter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  FocusAdapter() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void focusGained(java.awt.event.FocusEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.FocusAdapter.focusGained(java.awt.event.FocusEvent)"); }
-  public void focusLost(java.awt.event.FocusEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.FocusAdapter.focusLost(java.awt.event.FocusEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void focusGained(java.awt.event.FocusEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void focusLost(java.awt.event.FocusEvent e) { }
   < ---- END java signatures ---- >
 }

@@ -59,21 +59,33 @@ class TransformService {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  TransformService() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformService.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TransformService() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.xml.crypto.dsig.TransformService getInstance(java.lang.String algorithm, java.lang.String mechanismType, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformService.getInstance(java.lang.String, java.lang.String, java.lang.String)"); }
-  public static javax.xml.crypto.dsig.TransformService getInstance(java.lang.String algorithm, java.lang.String mechanismType, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformService.getInstance(java.lang.String, java.lang.String, java.security.Provider)"); }
-  public static javax.xml.crypto.dsig.TransformService getInstance(java.lang.String algorithm, java.lang.String mechanismType) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformService.getInstance(java.lang.String, java.lang.String)"); }
-  public abstract void init(javax.xml.crypto.dsig.spec.TransformParameterSpec params) throws java.security.InvalidAlgorithmParameterException { throw new AbstractMethodError("javax.xml.crypto.dsig.TransformService.init(javax.xml.crypto.dsig.spec.TransformParameterSpec)"); }
-  public abstract void init(javax.xml.crypto.XMLStructure parent, javax.xml.crypto.XMLCryptoContext context) throws java.security.InvalidAlgorithmParameterException { throw new AbstractMethodError("javax.xml.crypto.dsig.TransformService.init(javax.xml.crypto.XMLStructure, javax.xml.crypto.XMLCryptoContext)"); }
-  public final java.security.Provider getProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformService.getProvider()"); }
-  public final java.lang.String getAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformService.getAlgorithm()"); }
-  public final java.lang.String getMechanismType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformService.getMechanismType()"); }
-  public abstract void marshalParams(javax.xml.crypto.XMLStructure parent, javax.xml.crypto.XMLCryptoContext context) throws javax.xml.crypto.MarshalException { throw new AbstractMethodError("javax.xml.crypto.dsig.TransformService.marshalParams(javax.xml.crypto.XMLStructure, javax.xml.crypto.XMLCryptoContext)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException")
+  public static javax.xml.crypto.dsig.TransformService getInstance(java.lang.String algorithm, java.lang.String mechanismType, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static javax.xml.crypto.dsig.TransformService getInstance(java.lang.String algorithm, java.lang.String mechanismType, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static javax.xml.crypto.dsig.TransformService getInstance(java.lang.String algorithm, java.lang.String mechanismType) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidAlgorithmParameterException")
+  public void init(javax.xml.crypto.dsig.spec.TransformParameterSpec params) { }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidAlgorithmParameterException")
+  public void init(javax.xml.crypto.XMLStructure parent, javax.xml.crypto.XMLCryptoContext context) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.Provider getProvider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getMechanismType() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.crypto.MarshalException")
+  public void marshalParams(javax.xml.crypto.XMLStructure parent, javax.xml.crypto.XMLCryptoContext context) { }
   < ---- END java signatures ---- >
 }

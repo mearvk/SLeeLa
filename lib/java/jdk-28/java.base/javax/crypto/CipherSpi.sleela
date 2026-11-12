@@ -58,50 +58,72 @@ class CipherSpi {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CipherSpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.CipherSpi.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CipherSpi() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  abstract java.security.AlgorithmParameters engineGetParameters() { throw new AbstractMethodError("javax.crypto.CipherSpi.engineGetParameters()"); }
+  @throwable("java.lang.AbstractMethodError")
+  java.security.AlgorithmParameters engineGetParameters() { return null; }
   @JavaProtected
-  int engineUpdate(java.nio.ByteBuffer input, java.nio.ByteBuffer output) throws javax.crypto.ShortBufferException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.CipherSpi.engineUpdate(java.nio.ByteBuffer, java.nio.ByteBuffer)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException")
+  int engineUpdate(java.nio.ByteBuffer input, java.nio.ByteBuffer output) { return 0; }
   @JavaProtected
-  abstract byte[] engineUpdate(byte[] input, int inputOffset, int inputLen) { throw new AbstractMethodError("javax.crypto.CipherSpi.engineUpdate(byte[], int, int)"); }
+  @throwable("java.lang.AbstractMethodError")
+  byte[] engineUpdate(byte[] input, int inputOffset, int inputLen) { return null; }
   @JavaProtected
-  abstract int engineUpdate(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset) throws javax.crypto.ShortBufferException { throw new AbstractMethodError("javax.crypto.CipherSpi.engineUpdate(byte[], int, int, byte[], int)"); }
+  @throwable("java.lang.AbstractMethodError, javax.crypto.ShortBufferException")
+  int engineUpdate(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset) { return 0; }
   @JavaProtected
-  abstract int engineGetBlockSize() { throw new AbstractMethodError("javax.crypto.CipherSpi.engineGetBlockSize()"); }
+  @throwable("java.lang.AbstractMethodError")
+  int engineGetBlockSize() { return 0; }
   @JavaProtected
-  abstract int engineGetOutputSize(int inputLen) { throw new AbstractMethodError("javax.crypto.CipherSpi.engineGetOutputSize(int)"); }
+  @throwable("java.lang.AbstractMethodError")
+  int engineGetOutputSize(int inputLen) { return 0; }
   @JavaProtected
-  abstract byte[] engineGetIV() { throw new AbstractMethodError("javax.crypto.CipherSpi.engineGetIV()"); }
+  @throwable("java.lang.AbstractMethodError")
+  byte[] engineGetIV() { return null; }
   @JavaProtected
-  int engineGetKeySize(java.security.Key key) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.CipherSpi.engineGetKeySize(java.security.Key)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException")
+  int engineGetKeySize(java.security.Key key) { return 0; }
   @JavaProtected
-  abstract byte[] engineDoFinal(byte[] input, int inputOffset, int inputLen) throws javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException { throw new AbstractMethodError("javax.crypto.CipherSpi.engineDoFinal(byte[], int, int)"); }
+  @throwable("java.lang.AbstractMethodError, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
+  byte[] engineDoFinal(byte[] input, int inputOffset, int inputLen) { return null; }
   @JavaProtected
-  abstract int engineDoFinal(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset) throws javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException { throw new AbstractMethodError("javax.crypto.CipherSpi.engineDoFinal(byte[], int, int, byte[], int)"); }
+  @throwable("java.lang.AbstractMethodError, javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
+  int engineDoFinal(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset) { return 0; }
   @JavaProtected
-  int engineDoFinal(java.nio.ByteBuffer input, java.nio.ByteBuffer output) throws javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.CipherSpi.engineDoFinal(java.nio.ByteBuffer, java.nio.ByteBuffer)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
+  int engineDoFinal(java.nio.ByteBuffer input, java.nio.ByteBuffer output) { return 0; }
   @JavaProtected
-  byte[] engineWrap(java.security.Key key) throws javax.crypto.IllegalBlockSizeException, java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.CipherSpi.engineWrap(java.security.Key)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.IllegalBlockSizeException, java.security.InvalidKeyException")
+  byte[] engineWrap(java.security.Key key) { return null; }
   @JavaProtected
-  java.security.Key engineUnwrap(byte[] wrappedKey, java.lang.String wrappedKeyAlgorithm, int wrappedKeyType) throws java.security.InvalidKeyException, java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.CipherSpi.engineUnwrap(byte[], java.lang.String, int)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException, java.security.NoSuchAlgorithmException")
+  java.security.Key engineUnwrap(byte[] wrappedKey, java.lang.String wrappedKeyAlgorithm, int wrappedKeyType) { return null; }
   @JavaProtected
-  void engineUpdateAAD(byte[] src, int offset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.CipherSpi.engineUpdateAAD(byte[], int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void engineUpdateAAD(byte[] src, int offset, int len) { }
   @JavaProtected
-  void engineUpdateAAD(java.nio.ByteBuffer src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.CipherSpi.engineUpdateAAD(java.nio.ByteBuffer)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void engineUpdateAAD(java.nio.ByteBuffer src) { }
   @JavaProtected
-  abstract void engineSetMode(java.lang.String mode) throws java.security.NoSuchAlgorithmException { throw new AbstractMethodError("javax.crypto.CipherSpi.engineSetMode(java.lang.String)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.NoSuchAlgorithmException")
+  void engineSetMode(java.lang.String mode) { }
   @JavaProtected
-  abstract void engineSetPadding(java.lang.String padding) throws javax.crypto.NoSuchPaddingException { throw new AbstractMethodError("javax.crypto.CipherSpi.engineSetPadding(java.lang.String)"); }
+  @throwable("java.lang.AbstractMethodError, javax.crypto.NoSuchPaddingException")
+  void engineSetPadding(java.lang.String padding) { }
   @JavaProtected
-  abstract void engineInit(int opmode, java.security.Key key, java.security.SecureRandom random) throws java.security.InvalidKeyException { throw new AbstractMethodError("javax.crypto.CipherSpi.engineInit(int, java.security.Key, java.security.SecureRandom)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidKeyException")
+  void engineInit(int opmode, java.security.Key key, java.security.SecureRandom random) { }
   @JavaProtected
-  abstract void engineInit(int opmode, java.security.Key key, java.security.AlgorithmParameters params, java.security.SecureRandom random) throws java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException { throw new AbstractMethodError("javax.crypto.CipherSpi.engineInit(int, java.security.Key, java.security.AlgorithmParameters, java.security.SecureRandom)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException")
+  void engineInit(int opmode, java.security.Key key, java.security.AlgorithmParameters params, java.security.SecureRandom random) { }
   < ---- END java signatures ---- >
 }

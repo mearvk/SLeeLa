@@ -58,76 +58,134 @@ class JPopupMenu {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JPopupMenu(java.lang.String label) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.<init>(java.lang.String)"); }
-  public JPopupMenu() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JPopupMenu(java.lang.String label) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JPopupMenu() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove(int pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.remove(int)"); }
-  public void insert(java.awt.Component component, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.insert(java.awt.Component, int)"); }
-  public javax.swing.JMenuItem add(javax.swing.JMenuItem menuItem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.add(javax.swing.JMenuItem)"); }
-  public javax.swing.JMenuItem add(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.add(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(int pos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insert(java.awt.Component component, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JMenuItem add(javax.swing.JMenuItem menuItem) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JMenuItem add(java.lang.String s) { return null; }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.paramString()"); }
-  public java.lang.String getLabel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getLabel()"); }
-  public java.awt.Component getComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getComponent()"); }
-  public void setVisible(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.setVisible(boolean)"); }
-  public void pack() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.pack()"); }
-  public void show(java.awt.Component invoker, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.show(java.awt.Component, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLabel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVisible(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void pack() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void show(java.awt.Component invoker, int x, int y) { }
   @JavaProtected
-  void processKeyEvent(java.awt.event.KeyEvent evt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.processKeyEvent(java.awt.event.KeyEvent)"); }
-  public void processKeyEvent(java.awt.event.KeyEvent e, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.processKeyEvent(java.awt.event.KeyEvent, javax.swing.MenuElement[], javax.swing.MenuSelectionManager)"); }
-  public boolean isPopupTrigger(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.isPopupTrigger(java.awt.event.MouseEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processKeyEvent(java.awt.event.KeyEvent evt) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void processKeyEvent(java.awt.event.KeyEvent e, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPopupTrigger(java.awt.event.MouseEvent e) { return false; }
   @JavaProtected
-  void processFocusEvent(java.awt.event.FocusEvent evt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.processFocusEvent(java.awt.event.FocusEvent)"); }
-  public void processMouseEvent(java.awt.event.MouseEvent event, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.processMouseEvent(java.awt.event.MouseEvent, javax.swing.MenuElement[], javax.swing.MenuSelectionManager)"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.updateUI()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processFocusEvent(java.awt.event.FocusEvent evt) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void processMouseEvent(java.awt.event.MouseEvent event, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
   @JavaProtected
-  void paintBorder(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.paintBorder(java.awt.Graphics)"); }
-  public void setSelectionModel(javax.swing.SingleSelectionModel model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.setSelectionModel(javax.swing.SingleSelectionModel)"); }
-  public void setUI(javax.swing.plaf.PopupMenuUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.setUI(javax.swing.plaf.PopupMenuUI)"); }
-  public javax.swing.plaf.PopupMenuUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getUI()"); }
-  public java.awt.Component getComponentAtIndex(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getComponentAtIndex(int)"); }
-  public javax.swing.SingleSelectionModel getSelectionModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getSelectionModel()"); }
-  public boolean isBorderPainted() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.isBorderPainted()"); }
-  public javax.swing.MenuElement[] getSubElements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getSubElements()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getUIClassID()"); }
-  public void setSelected(java.awt.Component sel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.setSelected(java.awt.Component)"); }
-  public void setBorderPainted(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.setBorderPainted(boolean)"); }
-  public java.awt.Insets getMargin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getMargin()"); }
-  public void menuSelectionChanged(boolean isIncluded) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.menuSelectionChanged(boolean)"); }
-  public void addMenuKeyListener(javax.swing.event.MenuKeyListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.addMenuKeyListener(javax.swing.event.MenuKeyListener)"); }
-  public void removeMenuKeyListener(javax.swing.event.MenuKeyListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.removeMenuKeyListener(javax.swing.event.MenuKeyListener)"); }
-  public javax.swing.event.MenuKeyListener[] getMenuKeyListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getMenuKeyListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintBorder(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionModel(javax.swing.SingleSelectionModel model) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.PopupMenuUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.PopupMenuUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponentAtIndex(int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.SingleSelectionModel getSelectionModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBorderPainted() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.MenuElement[] getSubElements() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelected(java.awt.Component sel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBorderPainted(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getMargin() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void menuSelectionChanged(boolean isIncluded) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addMenuKeyListener(javax.swing.event.MenuKeyListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeMenuKeyListener(javax.swing.event.MenuKeyListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.MenuKeyListener[] getMenuKeyListeners() { return null; }
   @JavaProtected
-  javax.swing.JMenuItem createActionComponent(javax.swing.Action a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.createActionComponent(javax.swing.Action)"); }
-  public java.awt.Component getInvoker() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getInvoker()"); }
-  public void setInvoker(java.awt.Component invoker) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.setInvoker(java.awt.Component)"); }
-  public void setPopupSize(int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.setPopupSize(int, int)"); }
-  public void setPopupSize(java.awt.Dimension d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.setPopupSize(java.awt.Dimension)"); }
-  public static void setDefaultLightWeightPopupEnabled(boolean aFlag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.setDefaultLightWeightPopupEnabled(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JMenuItem createActionComponent(javax.swing.Action a) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getInvoker() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInvoker(java.awt.Component invoker) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPopupSize(int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPopupSize(java.awt.Dimension d) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setDefaultLightWeightPopupEnabled(boolean aFlag) { }
   @JavaProtected
-  java.beans.PropertyChangeListener createActionChangeListener(javax.swing.JMenuItem b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.createActionChangeListener(javax.swing.JMenuItem)"); }
-  public void setLabel(java.lang.String label) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.setLabel(java.lang.String)"); }
-  public void addSeparator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.addSeparator()"); }
-  public int getComponentIndex(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getComponentIndex(java.awt.Component)"); }
-  public static boolean getDefaultLightWeightPopupEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getDefaultLightWeightPopupEnabled()"); }
-  public void setLightWeightPopupEnabled(boolean aFlag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.setLightWeightPopupEnabled(boolean)"); }
-  public boolean isLightWeightPopupEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.isLightWeightPopupEnabled()"); }
-  public void addPopupMenuListener(javax.swing.event.PopupMenuListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.addPopupMenuListener(javax.swing.event.PopupMenuListener)"); }
-  public void removePopupMenuListener(javax.swing.event.PopupMenuListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.removePopupMenuListener(javax.swing.event.PopupMenuListener)"); }
-  public javax.swing.event.PopupMenuListener[] getPopupMenuListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getPopupMenuListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.beans.PropertyChangeListener createActionChangeListener(javax.swing.JMenuItem b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLabel(java.lang.String label) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addSeparator() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getComponentIndex(java.awt.Component c) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean getDefaultLightWeightPopupEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLightWeightPopupEnabled(boolean aFlag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLightWeightPopupEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addPopupMenuListener(javax.swing.event.PopupMenuListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removePopupMenuListener(javax.swing.event.PopupMenuListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.PopupMenuListener[] getPopupMenuListeners() { return null; }
   @JavaProtected
-  void firePopupMenuWillBecomeVisible() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.firePopupMenuWillBecomeVisible()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void firePopupMenuWillBecomeVisible() { }
   @JavaProtected
-  void firePopupMenuWillBecomeInvisible() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.firePopupMenuWillBecomeInvisible()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void firePopupMenuWillBecomeInvisible() { }
   @JavaProtected
-  void firePopupMenuCanceled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.firePopupMenuCanceled()"); }
-  public void setLocation(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.setLocation(int, int)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.getAccessibleContext()"); }
-  public boolean isVisible() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JPopupMenu.isVisible()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void firePopupMenuCanceled() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLocation(int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isVisible() { return false; }
   < ---- END java signatures ---- >
 }

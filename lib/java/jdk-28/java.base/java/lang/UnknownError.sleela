@@ -58,7 +58,9 @@ class UnknownError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnknownError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.UnknownError.<init>()"); }
-  public UnknownError(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.UnknownError.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnknownError() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnknownError(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

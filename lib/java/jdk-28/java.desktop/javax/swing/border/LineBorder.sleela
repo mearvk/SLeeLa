@@ -64,22 +64,35 @@ class LineBorder {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LineBorder(java.awt.Color color, int thickness) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.LineBorder.<init>(java.awt.Color, int)"); }
-  public LineBorder(java.awt.Color color, int thickness, boolean roundedCorners) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.LineBorder.<init>(java.awt.Color, int, boolean)"); }
-  public LineBorder(java.awt.Color color) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.LineBorder.<init>(java.awt.Color)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LineBorder(java.awt.Color color, int thickness) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LineBorder(java.awt.Color color, int thickness, boolean roundedCorners) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LineBorder(java.awt.Color color) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.swing.border.Border createBlackLineBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.LineBorder.createBlackLineBorder()"); }
-  public static javax.swing.border.Border createGrayLineBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.LineBorder.createGrayLineBorder()"); }
-  public java.awt.Color getLineColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.LineBorder.getLineColor()"); }
-  public int getThickness() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.LineBorder.getThickness()"); }
-  public boolean getRoundedCorners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.LineBorder.getRoundedCorners()"); }
-  public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.LineBorder.paintBorder(java.awt.Component, java.awt.Graphics, int, int, int, int)"); }
-  public java.awt.Insets getBorderInsets(java.awt.Component c, java.awt.Insets insets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.LineBorder.getBorderInsets(java.awt.Component, java.awt.Insets)"); }
-  public boolean isBorderOpaque() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.LineBorder.isBorderOpaque()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border createBlackLineBorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border createGrayLineBorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getLineColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getThickness() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getRoundedCorners() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getBorderInsets(java.awt.Component c, java.awt.Insets insets) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBorderOpaque() { return false; }
   < ---- END java signatures ---- >
 }

@@ -67,20 +67,31 @@ class GraphicAttribute {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  GraphicAttribute(int alignment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.GraphicAttribute.<init>(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  GraphicAttribute(int alignment) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.geom.Rectangle2D getBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.GraphicAttribute.getBounds()"); }
-  public final int getAlignment() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.GraphicAttribute.getAlignment()"); }
-  public java.awt.font.GlyphJustificationInfo getJustificationInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.GraphicAttribute.getJustificationInfo()"); }
-  public abstract float getAscent() { throw new AbstractMethodError("java.awt.font.GraphicAttribute.getAscent()"); }
-  public abstract float getAdvance() { throw new AbstractMethodError("java.awt.font.GraphicAttribute.getAdvance()"); }
-  public abstract float getDescent() { throw new AbstractMethodError("java.awt.font.GraphicAttribute.getDescent()"); }
-  public java.awt.Shape getOutline(java.awt.geom.AffineTransform tx) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.GraphicAttribute.getOutline(java.awt.geom.AffineTransform)"); }
-  public abstract void draw(java.awt.Graphics2D graphics, float x, float y) { throw new AbstractMethodError("java.awt.font.GraphicAttribute.draw(java.awt.Graphics2D, float, float)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getBounds() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getAlignment() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.GlyphJustificationInfo getJustificationInfo() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getAscent() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getAdvance() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getDescent() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Shape getOutline(java.awt.geom.AffineTransform tx) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void draw(java.awt.Graphics2D graphics, float x, float y) { }
   < ---- END java signatures ---- >
 }

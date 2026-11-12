@@ -58,6 +58,7 @@ class BufferUnderflowException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BufferUnderflowException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.BufferUnderflowException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BufferUnderflowException() { }
   < ---- END java constructors ---- >
 }

@@ -58,7 +58,9 @@ class StructureViolationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StructureViolationException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.StructureViolationException.<init>()"); }
-  public StructureViolationException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.StructureViolationException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StructureViolationException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StructureViolationException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

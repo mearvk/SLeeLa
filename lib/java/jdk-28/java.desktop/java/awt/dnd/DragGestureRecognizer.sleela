@@ -67,35 +67,54 @@ class DragGestureRecognizer {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  DragGestureRecognizer(java.awt.dnd.DragSource ds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.<init>(java.awt.dnd.DragSource)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  DragGestureRecognizer(java.awt.dnd.DragSource ds) { }
   @JavaProtected
-  DragGestureRecognizer(java.awt.dnd.DragSource ds, java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.<init>(java.awt.dnd.DragSource, java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  DragGestureRecognizer(java.awt.dnd.DragSource ds, java.awt.Component c) { }
   @JavaProtected
-  DragGestureRecognizer(java.awt.dnd.DragSource ds, java.awt.Component c, int sa) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.<init>(java.awt.dnd.DragSource, java.awt.Component, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  DragGestureRecognizer(java.awt.dnd.DragSource ds, java.awt.Component c, int sa) { }
   @JavaProtected
-  DragGestureRecognizer(java.awt.dnd.DragSource ds, java.awt.Component c, int sa, java.awt.dnd.DragGestureListener dgl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.<init>(java.awt.dnd.DragSource, java.awt.Component, int, java.awt.dnd.DragGestureListener)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  DragGestureRecognizer(java.awt.dnd.DragSource ds, java.awt.Component c, int sa, java.awt.dnd.DragGestureListener dgl) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized java.awt.Component getComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.getComponent()"); }
-  public synchronized void setComponent(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.setComponent(java.awt.Component)"); }
-  public synchronized void addDragGestureListener(java.awt.dnd.DragGestureListener dgl) throws java.util.TooManyListenersException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.addDragGestureListener(java.awt.dnd.DragGestureListener)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.Component getComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setComponent(java.awt.Component c) { }
+  @throwable("java.lang.UnsupportedOperationException, java.util.TooManyListenersException")
+  public synchronized void addDragGestureListener(java.awt.dnd.DragGestureListener dgl) { }
   @JavaProtected
-  abstract void unregisterListeners() { throw new AbstractMethodError("java.awt.dnd.DragGestureRecognizer.unregisterListeners()"); }
+  @throwable("java.lang.AbstractMethodError")
+  void unregisterListeners() { }
   @JavaProtected
-  abstract void registerListeners() { throw new AbstractMethodError("java.awt.dnd.DragGestureRecognizer.registerListeners()"); }
-  public java.awt.dnd.DragSource getDragSource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.getDragSource()"); }
-  public synchronized int getSourceActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.getSourceActions()"); }
-  public synchronized void setSourceActions(int actions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.setSourceActions(int)"); }
-  public java.awt.event.InputEvent getTriggerEvent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.getTriggerEvent()"); }
-  public void resetRecognizer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.resetRecognizer()"); }
-  public synchronized void removeDragGestureListener(java.awt.dnd.DragGestureListener dgl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.removeDragGestureListener(java.awt.dnd.DragGestureListener)"); }
+  @throwable("java.lang.AbstractMethodError")
+  void registerListeners() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.dnd.DragSource getDragSource() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int getSourceActions() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setSourceActions(int actions) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.event.InputEvent getTriggerEvent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void resetRecognizer() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeDragGestureListener(java.awt.dnd.DragGestureListener dgl) { }
   @JavaProtected
-  synchronized void fireDragGestureRecognized(int dragAction, java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.fireDragGestureRecognized(int, java.awt.Point)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  synchronized void fireDragGestureRecognized(int dragAction, java.awt.Point p) { }
   @JavaProtected
-  synchronized void appendEvent(java.awt.event.InputEvent awtie) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureRecognizer.appendEvent(java.awt.event.InputEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  synchronized void appendEvent(java.awt.event.InputEvent awtie) { }
   < ---- END java signatures ---- >
 }

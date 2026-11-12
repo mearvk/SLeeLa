@@ -58,35 +58,61 @@ class LdapName {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LdapName(java.util.List<javax.naming.ldap.Rdn> rdns) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.<init>(java.util.List<javax.naming.ldap.Rdn>)"); }
-  public LdapName(java.lang.String name) throws javax.naming.InvalidNameException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LdapName(java.util.List<javax.naming.ldap.Rdn> rdns) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.InvalidNameException")
+  public LdapName(java.lang.String name) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object remove(int posn) throws javax.naming.InvalidNameException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.remove(int)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.size()"); }
-  public java.lang.String get(int posn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.get(int)"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.clone()"); }
-  public int compareTo(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.compareTo(java.lang.Object)"); }
-  public boolean startsWith(java.util.List<javax.naming.ldap.Rdn> rdns) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.startsWith(java.util.List<javax.naming.ldap.Rdn>)"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.isEmpty()"); }
-  public javax.naming.Name add(javax.naming.ldap.Rdn comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.add(javax.naming.ldap.Rdn)"); }
-  public javax.naming.Name add(int posn, java.lang.String comp) throws javax.naming.InvalidNameException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.add(int, java.lang.String)"); }
-  public javax.naming.Name add(int posn, javax.naming.ldap.Rdn comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.add(int, javax.naming.ldap.Rdn)"); }
-  public javax.naming.Name add(java.lang.String comp) throws javax.naming.InvalidNameException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.add(java.lang.String)"); }
-  public boolean endsWith(java.util.List<javax.naming.ldap.Rdn> rdns) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.endsWith(java.util.List<javax.naming.ldap.Rdn>)"); }
-  public javax.naming.Name addAll(javax.naming.Name suffix) throws javax.naming.InvalidNameException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.addAll(javax.naming.Name)"); }
-  public javax.naming.Name addAll(int posn, javax.naming.Name suffix) throws javax.naming.InvalidNameException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.addAll(int, javax.naming.Name)"); }
-  public java.util.Enumeration<java.lang.String> getAll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.getAll()"); }
-  public javax.naming.Name getPrefix(int posn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.getPrefix(int)"); }
-  public javax.naming.ldap.Rdn getRdn(int posn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.getRdn(int)"); }
-  public java.util.List<javax.naming.ldap.Rdn> getRdns() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.getRdns()"); }
-  public javax.naming.Name getSuffix(int posn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapName.getSuffix(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.InvalidNameException")
+  public java.lang.Object remove(int posn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String get(int posn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.lang.Object obj) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean startsWith(java.util.List<javax.naming.ldap.Rdn> rdns) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.naming.Name add(javax.naming.ldap.Rdn comp) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.InvalidNameException")
+  public javax.naming.Name add(int posn, java.lang.String comp) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.naming.Name add(int posn, javax.naming.ldap.Rdn comp) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.InvalidNameException")
+  public javax.naming.Name add(java.lang.String comp) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean endsWith(java.util.List<javax.naming.ldap.Rdn> rdns) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.InvalidNameException")
+  public javax.naming.Name addAll(javax.naming.Name suffix) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.InvalidNameException")
+  public javax.naming.Name addAll(int posn, javax.naming.Name suffix) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Enumeration<java.lang.String> getAll() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.naming.Name getPrefix(int posn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.naming.ldap.Rdn getRdn(int posn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<javax.naming.ldap.Rdn> getRdns() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.naming.Name getSuffix(int posn) { return null; }
   < ---- END java signatures ---- >
 }

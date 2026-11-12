@@ -58,19 +58,32 @@ class OperatingSystemMXBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract long getFreeMemorySize() { throw new AbstractMethodError("com.sun.management.OperatingSystemMXBean.getFreeMemorySize()"); }
-  public abstract long getTotalMemorySize() { throw new AbstractMethodError("com.sun.management.OperatingSystemMXBean.getTotalMemorySize()"); }
-  public abstract double getCpuLoad() { throw new AbstractMethodError("com.sun.management.OperatingSystemMXBean.getCpuLoad()"); }
-  public abstract long getCommittedVirtualMemorySize() { throw new AbstractMethodError("com.sun.management.OperatingSystemMXBean.getCommittedVirtualMemorySize()"); }
-  public abstract long getTotalSwapSpaceSize() { throw new AbstractMethodError("com.sun.management.OperatingSystemMXBean.getTotalSwapSpaceSize()"); }
-  public abstract long getFreeSwapSpaceSize() { throw new AbstractMethodError("com.sun.management.OperatingSystemMXBean.getFreeSwapSpaceSize()"); }
-  public abstract long getProcessCpuTime() { throw new AbstractMethodError("com.sun.management.OperatingSystemMXBean.getProcessCpuTime()"); }
-  public default long getFreePhysicalMemorySize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.management.OperatingSystemMXBean.getFreePhysicalMemorySize()"); }
-  public default long getTotalPhysicalMemorySize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.management.OperatingSystemMXBean.getTotalPhysicalMemorySize()"); }
-  public default double getSystemCpuLoad() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.management.OperatingSystemMXBean.getSystemCpuLoad()"); }
-  public abstract double getProcessCpuLoad() { throw new AbstractMethodError("com.sun.management.OperatingSystemMXBean.getProcessCpuLoad()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public long getFreeMemorySize() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getTotalMemorySize() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public double getCpuLoad() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getCommittedVirtualMemorySize() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getTotalSwapSpaceSize() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getFreeSwapSpaceSize() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getProcessCpuTime() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default long getFreePhysicalMemorySize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default long getTotalPhysicalMemorySize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default double getSystemCpuLoad() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public double getProcessCpuLoad() { return 0.0; }
   < ---- END java signatures ---- >
 }

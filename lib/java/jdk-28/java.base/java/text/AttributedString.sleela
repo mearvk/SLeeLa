@@ -58,22 +58,35 @@ class AttributedString {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AttributedString(java.text.AttributedCharacterIterator text, int beginIndex, int endIndex, java.text.AttributedCharacterIterator.Attribute[] attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.AttributedString.<init>(java.text.AttributedCharacterIterator, int, int, java.text.AttributedCharacterIterator.Attribute[])"); }
-  public AttributedString(java.text.AttributedCharacterIterator text, int beginIndex, int endIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.AttributedString.<init>(java.text.AttributedCharacterIterator, int, int)"); }
-  public AttributedString(java.text.AttributedCharacterIterator text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.AttributedString.<init>(java.text.AttributedCharacterIterator)"); }
-  public AttributedString(java.lang.String text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.AttributedString.<init>(java.lang.String)"); }
-  public AttributedString(java.lang.String text, java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?> attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.AttributedString.<init>(java.lang.String, java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttributedString(java.text.AttributedCharacterIterator text, int beginIndex, int endIndex, java.text.AttributedCharacterIterator.Attribute[] attributes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttributedString(java.text.AttributedCharacterIterator text, int beginIndex, int endIndex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttributedString(java.text.AttributedCharacterIterator text) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttributedString(java.lang.String text) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttributedString(java.lang.String text, java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?> attributes) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.text.AttributedCharacterIterator getIterator(java.text.AttributedCharacterIterator.Attribute[] attributes, int beginIndex, int endIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.AttributedString.getIterator(java.text.AttributedCharacterIterator.Attribute[], int, int)"); }
-  public java.text.AttributedCharacterIterator getIterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.AttributedString.getIterator()"); }
-  public java.text.AttributedCharacterIterator getIterator(java.text.AttributedCharacterIterator.Attribute[] attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.AttributedString.getIterator(java.text.AttributedCharacterIterator.Attribute[])"); }
-  public void addAttribute(java.text.AttributedCharacterIterator.Attribute attribute, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.AttributedString.addAttribute(java.text.AttributedCharacterIterator.Attribute, java.lang.Object)"); }
-  public void addAttribute(java.text.AttributedCharacterIterator.Attribute attribute, java.lang.Object value, int beginIndex, int endIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.AttributedString.addAttribute(java.text.AttributedCharacterIterator.Attribute, java.lang.Object, int, int)"); }
-  public void addAttributes(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?> attributes, int beginIndex, int endIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.AttributedString.addAttributes(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?>, int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.AttributedCharacterIterator getIterator(java.text.AttributedCharacterIterator.Attribute[] attributes, int beginIndex, int endIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.AttributedCharacterIterator getIterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.AttributedCharacterIterator getIterator(java.text.AttributedCharacterIterator.Attribute[] attributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addAttribute(java.text.AttributedCharacterIterator.Attribute attribute, java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addAttribute(java.text.AttributedCharacterIterator.Attribute attribute, java.lang.Object value, int beginIndex, int endIndex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addAttributes(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?> attributes, int beginIndex, int endIndex) { }
   < ---- END java signatures ---- >
 }

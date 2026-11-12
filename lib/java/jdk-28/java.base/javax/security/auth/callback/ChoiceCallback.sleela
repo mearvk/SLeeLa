@@ -58,19 +58,29 @@ class ChoiceCallback {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ChoiceCallback(java.lang.String prompt, java.lang.String[] choices, int defaultChoice, boolean multipleSelectionsAllowed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.callback.ChoiceCallback.<init>(java.lang.String, java.lang.String[], int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ChoiceCallback(java.lang.String prompt, java.lang.String[] choices, int defaultChoice, boolean multipleSelectionsAllowed) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getPrompt() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.callback.ChoiceCallback.getPrompt()"); }
-  public java.lang.String[] getChoices() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.callback.ChoiceCallback.getChoices()"); }
-  public int getDefaultChoice() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.callback.ChoiceCallback.getDefaultChoice()"); }
-  public boolean allowMultipleSelections() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.callback.ChoiceCallback.allowMultipleSelections()"); }
-  public void setSelectedIndex(int selection) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.callback.ChoiceCallback.setSelectedIndex(int)"); }
-  public void setSelectedIndexes(int[] selections) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.callback.ChoiceCallback.setSelectedIndexes(int[])"); }
-  public int[] getSelectedIndexes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.callback.ChoiceCallback.getSelectedIndexes()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPrompt() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getChoices() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDefaultChoice() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean allowMultipleSelections() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectedIndex(int selection) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectedIndexes(int[] selections) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getSelectedIndexes() { return null; }
   < ---- END java signatures ---- >
 }

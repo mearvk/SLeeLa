@@ -58,34 +58,58 @@ class LinkedHashMap<K, V> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LinkedHashMap(java.util.Map<? extends K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.<init>(java.util.Map<? extends K, ? extends V>)"); }
-  public LinkedHashMap(int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.<init>(int)"); }
-  public LinkedHashMap(int initialCapacity, float loadFactor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.<init>(int, float)"); }
-  public LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.<init>(int, float, boolean)"); }
-  public LinkedHashMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkedHashMap(java.util.Map<? extends K, ? extends V> m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkedHashMap(int initialCapacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkedHashMap(int initialCapacity, float loadFactor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkedHashMap() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public V get(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.get(java.lang.Object)"); }
-  public java.util.Collection<V> values() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.values()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.clear()"); }
-  public void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
-  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.entrySet()"); }
-  public static <K, V> java.util.LinkedHashMap<K, V> newLinkedHashMap(int numMappings) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.newLinkedHashMap(int)"); }
-  public void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.forEach(java.util.function.BiConsumer<? super K, ? super V>)"); }
-  public java.util.Set<K> keySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.keySet()"); }
-  public boolean containsValue(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.containsValue(java.lang.Object)"); }
-  public V getOrDefault(java.lang.Object key, V defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.getOrDefault(java.lang.Object, V)"); }
-  public java.util.SequencedMap<K, V> reversed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.reversed()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public V get(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Collection<V> values() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.LinkedHashMap<K, V> newLinkedHashMap(int numMappings) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<K> keySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsValue(java.lang.Object value) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V getOrDefault(java.lang.Object key, V defaultValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.SequencedMap<K, V> reversed() { return null; }
   @JavaProtected
-  boolean removeEldestEntry(java.util.Map.Entry<K, V> eldest) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.removeEldestEntry(java.util.Map.Entry<K, V>)"); }
-  public java.util.SequencedSet<K> sequencedKeySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.sequencedKeySet()"); }
-  public java.util.SequencedCollection<V> sequencedValues() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.sequencedValues()"); }
-  public java.util.SequencedSet<java.util.Map.Entry<K, V>> sequencedEntrySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.sequencedEntrySet()"); }
-  public V putFirst(K k, V v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.putFirst(K, V)"); }
-  public V putLast(K k, V v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.LinkedHashMap.putLast(K, V)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean removeEldestEntry(java.util.Map.Entry<K, V> eldest) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.SequencedSet<K> sequencedKeySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.SequencedCollection<V> sequencedValues() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.SequencedSet<java.util.Map.Entry<K, V>> sequencedEntrySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V putFirst(K k, V v) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V putLast(K k, V v) { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,26 +58,43 @@ class HandlerBase {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public HandlerBase() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HandlerBase() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void error(org.xml.sax.SAXParseException e) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.error(org.xml.sax.SAXParseException)"); }
-  public void warning(org.xml.sax.SAXParseException e) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.warning(org.xml.sax.SAXParseException)"); }
-  public void fatalError(org.xml.sax.SAXParseException e) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.fatalError(org.xml.sax.SAXParseException)"); }
-  public org.xml.sax.InputSource resolveEntity(java.lang.String publicId, java.lang.String systemId) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.resolveEntity(java.lang.String, java.lang.String)"); }
-  public void notationDecl(java.lang.String name, java.lang.String publicId, java.lang.String systemId) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.notationDecl(java.lang.String, java.lang.String, java.lang.String)"); }
-  public void unparsedEntityDecl(java.lang.String name, java.lang.String publicId, java.lang.String systemId, java.lang.String notationName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.unparsedEntityDecl(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public void setDocumentLocator(org.xml.sax.Locator locator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.setDocumentLocator(org.xml.sax.Locator)"); }
-  public void startDocument() throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.startDocument()"); }
-  public void endDocument() throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.endDocument()"); }
-  public void startElement(java.lang.String name, org.xml.sax.AttributeList attributes) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.startElement(java.lang.String, org.xml.sax.AttributeList)"); }
-  public void endElement(java.lang.String name) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.endElement(java.lang.String)"); }
-  public void characters(char[] ch, int start, int length) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.characters(char[], int, int)"); }
-  public void ignorableWhitespace(char[] ch, int start, int length) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.ignorableWhitespace(char[], int, int)"); }
-  public void processingInstruction(java.lang.String target, java.lang.String data) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.HandlerBase.processingInstruction(java.lang.String, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void error(org.xml.sax.SAXParseException e) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void warning(org.xml.sax.SAXParseException e) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void fatalError(org.xml.sax.SAXParseException e) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public org.xml.sax.InputSource resolveEntity(java.lang.String publicId, java.lang.String systemId) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void notationDecl(java.lang.String name, java.lang.String publicId, java.lang.String systemId) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void unparsedEntityDecl(java.lang.String name, java.lang.String publicId, java.lang.String systemId, java.lang.String notationName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDocumentLocator(org.xml.sax.Locator locator) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void startDocument() { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void endDocument() { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void startElement(java.lang.String name, org.xml.sax.AttributeList attributes) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void endElement(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void characters(char[] ch, int start, int length) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void ignorableWhitespace(char[] ch, int start, int length) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void processingInstruction(java.lang.String target, java.lang.String data) { }
   < ---- END java signatures ---- >
 }

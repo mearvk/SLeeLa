@@ -62,19 +62,32 @@ class CollationElementIterator {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.CollationElementIterator.reset()"); }
-  public int next() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.CollationElementIterator.next()"); }
-  public int previous() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.CollationElementIterator.previous()"); }
-  public int getOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.CollationElementIterator.getOffset()"); }
-  public void setOffset(int newOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.CollationElementIterator.setOffset(int)"); }
-  public void setText(java.lang.String source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.CollationElementIterator.setText(java.lang.String)"); }
-  public void setText(java.text.CharacterIterator source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.CollationElementIterator.setText(java.text.CharacterIterator)"); }
-  public int getMaxExpansion(int order) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.CollationElementIterator.getMaxExpansion(int)"); }
-  public static final int primaryOrder(int order) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.CollationElementIterator.primaryOrder(int)"); }
-  public static final short secondaryOrder(int order) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.CollationElementIterator.secondaryOrder(int)"); }
-  public static final short tertiaryOrder(int order) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.CollationElementIterator.tertiaryOrder(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reset() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int next() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int previous() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOffset(int newOffset) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setText(java.lang.String source) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setText(java.text.CharacterIterator source) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaxExpansion(int order) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final int primaryOrder(int order) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final short secondaryOrder(int order) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final short tertiaryOrder(int order) { return 0; }
   < ---- END java signatures ---- >
 }

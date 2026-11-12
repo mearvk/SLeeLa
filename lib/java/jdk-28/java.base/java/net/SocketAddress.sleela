@@ -58,6 +58,7 @@ class SocketAddress {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SocketAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.SocketAddress.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SocketAddress() { }
   < ---- END java constructors ---- >
 }

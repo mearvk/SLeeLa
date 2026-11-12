@@ -91,6 +91,7 @@ class AccessibleState {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AccessibleState(java.lang.String key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleState.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AccessibleState(java.lang.String key) { }
   < ---- END java constructors ---- >
 }

@@ -58,20 +58,30 @@ class MenuShortcut {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MenuShortcut(int key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuShortcut.<init>(int)"); }
-  public MenuShortcut(int key, boolean useShiftModifier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuShortcut.<init>(int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MenuShortcut(int key) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MenuShortcut(int key, boolean useShiftModifier) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.awt.MenuShortcut s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuShortcut.equals(java.awt.MenuShortcut)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuShortcut.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuShortcut.hashCode()"); }
-  public int getKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuShortcut.getKey()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.awt.MenuShortcut s) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getKey() { return 0; }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuShortcut.paramString()"); }
-  public boolean usesShiftModifier() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuShortcut.usesShiftModifier()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean usesShiftModifier() { return false; }
   < ---- END java signatures ---- >
 }

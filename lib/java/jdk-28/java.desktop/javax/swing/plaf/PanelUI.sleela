@@ -59,6 +59,7 @@ class PanelUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  PanelUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.PanelUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  PanelUI() { }
   < ---- END java constructors ---- >
 }

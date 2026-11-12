@@ -58,30 +58,50 @@ class SynthLookAndFeel {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SynthLookAndFeel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SynthLookAndFeel() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.getName()"); }
-  public void load(java.io.InputStream input, java.lang.Class<?> resourceBase) throws java.text.ParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.load(java.io.InputStream, java.lang.Class<?>)"); }
-  public void initialize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.initialize()"); }
-  public java.lang.String getID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.getID()"); }
-  public static javax.swing.plaf.synth.Region getRegion(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.getRegion(javax.swing.JComponent)"); }
-  public java.lang.String getDescription() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.getDescription()"); }
-  public static javax.swing.plaf.synth.SynthStyle getStyle(javax.swing.JComponent c, javax.swing.plaf.synth.Region region) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.getStyle(javax.swing.JComponent, javax.swing.plaf.synth.Region)"); }
-  public static void setStyleFactory(javax.swing.plaf.synth.SynthStyleFactory cache) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.setStyleFactory(javax.swing.plaf.synth.SynthStyleFactory)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
+  public void load(java.io.InputStream input, java.lang.Class<?> resourceBase) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void initialize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.synth.Region getRegion(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDescription() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.synth.SynthStyle getStyle(javax.swing.JComponent c, javax.swing.plaf.synth.Region region) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setStyleFactory(javax.swing.plaf.synth.SynthStyleFactory cache) { }
   @JavaProtected
-  boolean shouldUpdateStyleOnEvent(java.beans.PropertyChangeEvent ev) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.shouldUpdateStyleOnEvent(java.beans.PropertyChangeEvent)"); }
-  public boolean shouldUpdateStyleOnAncestorChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.shouldUpdateStyleOnAncestorChanged()"); }
-  public static javax.swing.plaf.synth.SynthStyleFactory getStyleFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.getStyleFactory()"); }
-  public static void updateStyles(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.updateStyles(java.awt.Component)"); }
-  public boolean isNativeLookAndFeel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.isNativeLookAndFeel()"); }
-  public boolean isSupportedLookAndFeel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.isSupportedLookAndFeel()"); }
-  public void uninitialize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.uninitialize()"); }
-  public javax.swing.UIDefaults getDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.getDefaults()"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLookAndFeel.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean shouldUpdateStyleOnEvent(java.beans.PropertyChangeEvent ev) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean shouldUpdateStyleOnAncestorChanged() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.synth.SynthStyleFactory getStyleFactory() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void updateStyles(java.awt.Component c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isNativeLookAndFeel() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSupportedLookAndFeel() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninitialize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.UIDefaults getDefaults() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
   < ---- END java signatures ---- >
 }

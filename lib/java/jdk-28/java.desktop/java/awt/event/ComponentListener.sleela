@@ -58,12 +58,18 @@ class ComponentListener {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void componentResized(java.awt.event.ComponentEvent e) { throw new AbstractMethodError("java.awt.event.ComponentListener.componentResized(java.awt.event.ComponentEvent)"); }
-  public abstract void componentMoved(java.awt.event.ComponentEvent e) { throw new AbstractMethodError("java.awt.event.ComponentListener.componentMoved(java.awt.event.ComponentEvent)"); }
-  public abstract void componentShown(java.awt.event.ComponentEvent e) { throw new AbstractMethodError("java.awt.event.ComponentListener.componentShown(java.awt.event.ComponentEvent)"); }
-  public abstract void componentHidden(java.awt.event.ComponentEvent e) { throw new AbstractMethodError("java.awt.event.ComponentListener.componentHidden(java.awt.event.ComponentEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void componentResized(java.awt.event.ComponentEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void componentMoved(java.awt.event.ComponentEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void componentShown(java.awt.event.ComponentEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void componentHidden(java.awt.event.ComponentEvent e) { }
   < ---- END java signatures ---- >
 }

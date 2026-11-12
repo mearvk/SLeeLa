@@ -59,6 +59,7 @@ class LabelUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  LabelUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.LabelUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  LabelUI() { }
   < ---- END java constructors ---- >
 }

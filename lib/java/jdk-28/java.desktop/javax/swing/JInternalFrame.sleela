@@ -86,99 +86,181 @@ class JInternalFrame {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JInternalFrame(java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.<init>(java.lang.String)"); }
-  public JInternalFrame(java.lang.String title, boolean resizable, boolean closable, boolean maximizable, boolean iconifiable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.<init>(java.lang.String, boolean, boolean, boolean, boolean)"); }
-  public JInternalFrame(java.lang.String title, boolean resizable, boolean closable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.<init>(java.lang.String, boolean, boolean)"); }
-  public JInternalFrame(java.lang.String title, boolean resizable, boolean closable, boolean maximizable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.<init>(java.lang.String, boolean, boolean, boolean)"); }
-  public JInternalFrame(java.lang.String title, boolean resizable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.<init>(java.lang.String, boolean)"); }
-  public JInternalFrame() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JInternalFrame(java.lang.String title) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JInternalFrame(java.lang.String title, boolean resizable, boolean closable, boolean maximizable, boolean iconifiable) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JInternalFrame(java.lang.String title, boolean resizable, boolean closable) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JInternalFrame(java.lang.String title, boolean resizable, boolean closable, boolean maximizable) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JInternalFrame(java.lang.String title, boolean resizable) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JInternalFrame() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove(java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.remove(java.awt.Component)"); }
-  public int getLayer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getLayer()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(java.awt.Component comp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLayer() { return 0; }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.paramString()"); }
-  public void dispose() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.dispose()"); }
-  public void moveToFront() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.moveToFront()"); }
-  public void pack() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.pack()"); }
-  public java.lang.String getTitle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getTitle()"); }
-  public void setTitle(java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setTitle(java.lang.String)"); }
-  public void setResizable(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setResizable(boolean)"); }
-  public boolean isResizable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.isResizable()"); }
-  public void setMenuBar(javax.swing.JMenuBar m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setMenuBar(javax.swing.JMenuBar)"); }
-  public javax.swing.JMenuBar getMenuBar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getMenuBar()"); }
-  public final void setFocusCycleRoot(boolean focusCycleRoot) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setFocusCycleRoot(boolean)"); }
-  public void show() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.show()"); }
-  public void hide() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.hide()"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.updateUI()"); }
-  public void setUI(javax.swing.plaf.InternalFrameUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setUI(javax.swing.plaf.InternalFrameUI)"); }
-  public javax.swing.plaf.InternalFrameUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getUI()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getUIClassID()"); }
-  public void setSelected(boolean selected) throws java.beans.PropertyVetoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setSelected(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void dispose() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void moveToFront() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void pack() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getTitle() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTitle(java.lang.String title) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setResizable(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isResizable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMenuBar(javax.swing.JMenuBar m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JMenuBar getMenuBar() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setFocusCycleRoot(boolean focusCycleRoot) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void show() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void hide() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.InternalFrameUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.InternalFrameUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  public void setSelected(boolean selected) { }
   @JavaProtected
-  void paintComponent(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.paintComponent(java.awt.Graphics)"); }
-  public void reshape(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.reshape(int, int, int, int)"); }
-  public void toFront() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.toFront()"); }
-  public void toBack() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.toBack()"); }
-  public javax.swing.JRootPane getRootPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getRootPane()"); }
-  public javax.swing.JLayeredPane getLayeredPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getLayeredPane()"); }
-  public java.awt.Container getContentPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getContentPane()"); }
-  public final java.lang.String getWarningString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getWarningString()"); }
-  public void setMaximum(boolean b) throws java.beans.PropertyVetoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setMaximum(boolean)"); }
-  public void setCursor(java.awt.Cursor cursor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setCursor(java.awt.Cursor)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintComponent(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reshape(int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void toFront() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void toBack() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JRootPane getRootPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JLayeredPane getLayeredPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Container getContentPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getWarningString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  public void setMaximum(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCursor(java.awt.Cursor cursor) { }
   @JavaProtected
-  javax.swing.JRootPane createRootPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.createRootPane()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JRootPane createRootPane() { return null; }
   @JavaProtected
-  void setRootPane(javax.swing.JRootPane root) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setRootPane(javax.swing.JRootPane)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setRootPane(javax.swing.JRootPane root) { }
   @JavaProtected
-  void setRootPaneCheckingEnabled(boolean enabled) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setRootPaneCheckingEnabled(boolean)"); }
-  public void setJMenuBar(javax.swing.JMenuBar m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setJMenuBar(javax.swing.JMenuBar)"); }
-  public javax.swing.JMenuBar getJMenuBar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getJMenuBar()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setRootPaneCheckingEnabled(boolean enabled) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setJMenuBar(javax.swing.JMenuBar m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JMenuBar getJMenuBar() { return null; }
   @JavaProtected
-  boolean isRootPaneCheckingEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.isRootPaneCheckingEnabled()"); }
-  public void setContentPane(java.awt.Container c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setContentPane(java.awt.Container)"); }
-  public void setLayeredPane(javax.swing.JLayeredPane layered) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setLayeredPane(javax.swing.JLayeredPane)"); }
-  public java.awt.Component getGlassPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getGlassPane()"); }
-  public void setGlassPane(java.awt.Component glass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setGlassPane(java.awt.Component)"); }
-  public void setDefaultCloseOperation(int operation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setDefaultCloseOperation(int)"); }
-  public int getDefaultCloseOperation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getDefaultCloseOperation()"); }
-  public void setIcon(boolean b) throws java.beans.PropertyVetoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setIcon(boolean)"); }
-  public boolean isClosable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.isClosable()"); }
-  public javax.swing.JInternalFrame.JDesktopIcon getDesktopIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getDesktopIcon()"); }
-  public javax.swing.JDesktopPane getDesktopPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getDesktopPane()"); }
-  public java.awt.Rectangle getNormalBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getNormalBounds()"); }
-  public void setNormalBounds(java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setNormalBounds(java.awt.Rectangle)"); }
-  public void restoreSubcomponentFocus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.restoreSubcomponentFocus()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isRootPaneCheckingEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setContentPane(java.awt.Container c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayeredPane(javax.swing.JLayeredPane layered) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getGlassPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setGlassPane(java.awt.Component glass) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultCloseOperation(int operation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDefaultCloseOperation() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  public void setIcon(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isClosable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JInternalFrame.JDesktopIcon getDesktopIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JDesktopPane getDesktopPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getNormalBounds() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNormalBounds(java.awt.Rectangle r) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void restoreSubcomponentFocus() { }
   @JavaProtected
-  void fireInternalFrameEvent(int id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.fireInternalFrameEvent(int)"); }
-  public void moveToBack() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.moveToBack()"); }
-  public void setLayer(java.lang.Integer layer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setLayer(java.lang.Integer)"); }
-  public void setLayer(int layer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setLayer(int)"); }
-  public void setClosable(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setClosable(boolean)"); }
-  public void setClosed(boolean b) throws java.beans.PropertyVetoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setClosed(boolean)"); }
-  public void setIconifiable(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setIconifiable(boolean)"); }
-  public boolean isIconifiable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.isIconifiable()"); }
-  public void setMaximizable(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setMaximizable(boolean)"); }
-  public boolean isMaximizable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.isMaximizable()"); }
-  public void setFrameIcon(javax.swing.Icon icon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setFrameIcon(javax.swing.Icon)"); }
-  public javax.swing.Icon getFrameIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getFrameIcon()"); }
-  public java.awt.Cursor getLastCursor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getLastCursor()"); }
-  public void setDesktopIcon(javax.swing.JInternalFrame.JDesktopIcon d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setDesktopIcon(javax.swing.JInternalFrame.JDesktopIcon)"); }
-  public void addInternalFrameListener(javax.swing.event.InternalFrameListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.addInternalFrameListener(javax.swing.event.InternalFrameListener)"); }
-  public void removeInternalFrameListener(javax.swing.event.InternalFrameListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.removeInternalFrameListener(javax.swing.event.InternalFrameListener)"); }
-  public javax.swing.event.InternalFrameListener[] getInternalFrameListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getInternalFrameListeners()"); }
-  public void doDefaultCloseAction() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.doDefaultCloseAction()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getAccessibleContext()"); }
-  public void setLayout(java.awt.LayoutManager manager) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.setLayout(java.awt.LayoutManager)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireInternalFrameEvent(int id) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void moveToBack() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayer(java.lang.Integer layer) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayer(int layer) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setClosable(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  public void setClosed(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIconifiable(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isIconifiable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximizable(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMaximizable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFrameIcon(javax.swing.Icon icon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getFrameIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Cursor getLastCursor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDesktopIcon(javax.swing.JInternalFrame.JDesktopIcon d) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addInternalFrameListener(javax.swing.event.InternalFrameListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeInternalFrameListener(javax.swing.event.InternalFrameListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.InternalFrameListener[] getInternalFrameListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void doDefaultCloseAction() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayout(java.awt.LayoutManager manager) { }
   @JavaProtected
-  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.addImpl(java.awt.Component, java.lang.Object, int)"); }
-  public final boolean isFocusCycleRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.isFocusCycleRoot()"); }
-  public java.awt.Component getFocusOwner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getFocusOwner()"); }
-  public java.awt.Component getMostRecentFocusOwner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getMostRecentFocusOwner()"); }
-  public final java.awt.Container getFocusCycleRootAncestor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JInternalFrame.getFocusCycleRootAncestor()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isFocusCycleRoot() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getFocusOwner() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getMostRecentFocusOwner() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.Container getFocusCycleRootAncestor() { return null; }
   < ---- END java signatures ---- >
 }

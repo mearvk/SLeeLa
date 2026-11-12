@@ -59,27 +59,45 @@ class TransformerFactory {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  TransformerFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.TransformerFactory.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TransformerFactory() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.xml.transform.TransformerFactory newInstance(java.lang.String factoryClassName, java.lang.ClassLoader classLoader) throws javax.xml.transform.TransformerFactoryConfigurationError { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.TransformerFactory.newInstance(java.lang.String, java.lang.ClassLoader)"); }
-  public static javax.xml.transform.TransformerFactory newInstance() throws javax.xml.transform.TransformerFactoryConfigurationError { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.TransformerFactory.newInstance()"); }
-  public abstract void setAttribute(java.lang.String name, java.lang.Object value) { throw new AbstractMethodError("javax.xml.transform.TransformerFactory.setAttribute(java.lang.String, java.lang.Object)"); }
-  public abstract java.lang.Object getAttribute(java.lang.String name) { throw new AbstractMethodError("javax.xml.transform.TransformerFactory.getAttribute(java.lang.String)"); }
-  public abstract void setURIResolver(javax.xml.transform.URIResolver resolver) { throw new AbstractMethodError("javax.xml.transform.TransformerFactory.setURIResolver(javax.xml.transform.URIResolver)"); }
-  public abstract javax.xml.transform.URIResolver getURIResolver() { throw new AbstractMethodError("javax.xml.transform.TransformerFactory.getURIResolver()"); }
-  public abstract void setErrorListener(javax.xml.transform.ErrorListener listener) { throw new AbstractMethodError("javax.xml.transform.TransformerFactory.setErrorListener(javax.xml.transform.ErrorListener)"); }
-  public abstract javax.xml.transform.ErrorListener getErrorListener() { throw new AbstractMethodError("javax.xml.transform.TransformerFactory.getErrorListener()"); }
-  public abstract javax.xml.transform.Templates newTemplates(javax.xml.transform.Source source) throws javax.xml.transform.TransformerConfigurationException { throw new AbstractMethodError("javax.xml.transform.TransformerFactory.newTemplates(javax.xml.transform.Source)"); }
-  public abstract javax.xml.transform.Source getAssociatedStylesheet(javax.xml.transform.Source source, java.lang.String media, java.lang.String title, java.lang.String charset) throws javax.xml.transform.TransformerConfigurationException { throw new AbstractMethodError("javax.xml.transform.TransformerFactory.getAssociatedStylesheet(javax.xml.transform.Source, java.lang.String, java.lang.String, java.lang.String)"); }
-  public static javax.xml.transform.TransformerFactory newDefaultInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.TransformerFactory.newDefaultInstance()"); }
-  public abstract javax.xml.transform.Transformer newTransformer() throws javax.xml.transform.TransformerConfigurationException { throw new AbstractMethodError("javax.xml.transform.TransformerFactory.newTransformer()"); }
-  public abstract javax.xml.transform.Transformer newTransformer(javax.xml.transform.Source source) throws javax.xml.transform.TransformerConfigurationException { throw new AbstractMethodError("javax.xml.transform.TransformerFactory.newTransformer(javax.xml.transform.Source)"); }
-  public abstract boolean getFeature(java.lang.String name) { throw new AbstractMethodError("javax.xml.transform.TransformerFactory.getFeature(java.lang.String)"); }
-  public abstract void setFeature(java.lang.String name, boolean value) throws javax.xml.transform.TransformerConfigurationException { throw new AbstractMethodError("javax.xml.transform.TransformerFactory.setFeature(java.lang.String, boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, javax.xml.transform.TransformerFactoryConfigurationError")
+  public static javax.xml.transform.TransformerFactory newInstance(java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.xml.transform.TransformerFactoryConfigurationError")
+  public static javax.xml.transform.TransformerFactory newInstance() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAttribute(java.lang.String name, java.lang.Object value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getAttribute(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setURIResolver(javax.xml.transform.URIResolver resolver) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.transform.URIResolver getURIResolver() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setErrorListener(javax.xml.transform.ErrorListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.transform.ErrorListener getErrorListener() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.transform.TransformerConfigurationException")
+  public javax.xml.transform.Templates newTemplates(javax.xml.transform.Source source) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.transform.TransformerConfigurationException")
+  public javax.xml.transform.Source getAssociatedStylesheet(javax.xml.transform.Source source, java.lang.String media, java.lang.String title, java.lang.String charset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.transform.TransformerFactory newDefaultInstance() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.transform.TransformerConfigurationException")
+  public javax.xml.transform.Transformer newTransformer() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.transform.TransformerConfigurationException")
+  public javax.xml.transform.Transformer newTransformer(javax.xml.transform.Source source) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getFeature(java.lang.String name) { return false; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.transform.TransformerConfigurationException")
+  public void setFeature(java.lang.String name, boolean value) { }
   < ---- END java signatures ---- >
 }

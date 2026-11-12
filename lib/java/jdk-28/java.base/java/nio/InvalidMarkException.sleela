@@ -58,6 +58,7 @@ class InvalidMarkException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidMarkException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.InvalidMarkException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidMarkException() { }
   < ---- END java constructors ---- >
 }

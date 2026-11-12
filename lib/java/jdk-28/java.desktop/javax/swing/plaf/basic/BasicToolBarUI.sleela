@@ -77,86 +77,133 @@ class BasicToolBarUI {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicToolBarUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicToolBarUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean isFloating() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.isFloating()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFloating() { return false; }
   @JavaProtected
-  void installListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.installListeners()"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.installUI(javax.swing.JComponent)"); }
-  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.uninstallUI(javax.swing.JComponent)"); }
-  public void setOrientation(int orientation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.setOrientation(int)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.createUI(javax.swing.JComponent)"); }
-  public void setFloating(boolean b, java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.setFloating(boolean, java.awt.Point)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListeners() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOrientation(int orientation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFloating(boolean b, java.awt.Point p) { }
   @JavaProtected
-  javax.swing.border.Border createRolloverBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.createRolloverBorder()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.border.Border createRolloverBorder() { return null; }
   @JavaProtected
-  javax.swing.border.Border createNonRolloverBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.createNonRolloverBorder()"); }
-  public boolean isRolloverBorders() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.isRolloverBorders()"); }
-  public void setRolloverBorders(boolean rollover) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.setRolloverBorders(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.border.Border createNonRolloverBorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRolloverBorders() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRolloverBorders(boolean rollover) { }
   @JavaProtected
-  void installNormalBorders(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.installNormalBorders(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installNormalBorders(javax.swing.JComponent c) { }
   @JavaProtected
-  javax.swing.event.MouseInputListener createDockingListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.createDockingListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.event.MouseInputListener createDockingListener() { return null; }
   @JavaProtected
-  java.beans.PropertyChangeListener createPropertyListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.createPropertyListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.beans.PropertyChangeListener createPropertyListener() { return null; }
   @JavaProtected
-  java.awt.event.ContainerListener createToolBarContListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.createToolBarContListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.ContainerListener createToolBarContListener() { return null; }
   @JavaProtected
-  java.awt.event.FocusListener createToolBarFocusListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.createToolBarFocusListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.FocusListener createToolBarFocusListener() { return null; }
   @JavaProtected
-  java.awt.event.WindowListener createFrameListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.createFrameListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.WindowListener createFrameListener() { return null; }
   @JavaProtected
-  javax.swing.RootPaneContainer createFloatingWindow(javax.swing.JToolBar toolbar) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.createFloatingWindow(javax.swing.JToolBar)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.RootPaneContainer createFloatingWindow(javax.swing.JToolBar toolbar) { return null; }
   @JavaProtected
-  void installRolloverBorders(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.installRolloverBorders(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installRolloverBorders(javax.swing.JComponent c) { }
   @JavaProtected
-  void installNonRolloverBorders(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.installNonRolloverBorders(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installNonRolloverBorders(javax.swing.JComponent c) { }
   @JavaProtected
-  void setBorderToRollover(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.setBorderToRollover(java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setBorderToRollover(java.awt.Component c) { }
   @JavaProtected
-  void setBorderToNonRollover(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.setBorderToNonRollover(java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setBorderToNonRollover(java.awt.Component c) { }
   @JavaProtected
-  void setBorderToNormal(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.setBorderToNormal(java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setBorderToNormal(java.awt.Component c) { }
   @JavaProtected
-  javax.swing.border.Border getRolloverBorder(javax.swing.AbstractButton b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.getRolloverBorder(javax.swing.AbstractButton)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.border.Border getRolloverBorder(javax.swing.AbstractButton b) { return null; }
   @JavaProtected
-  javax.swing.border.Border getNonRolloverBorder(javax.swing.AbstractButton b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.getNonRolloverBorder(javax.swing.AbstractButton)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.border.Border getNonRolloverBorder(javax.swing.AbstractButton b) { return null; }
   @JavaProtected
-  javax.swing.plaf.basic.BasicToolBarUI.DragWindow createDragWindow(javax.swing.JToolBar toolbar) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.createDragWindow(javax.swing.JToolBar)"); }
-  public boolean canDock(java.awt.Component c, java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.canDock(java.awt.Component, java.awt.Point)"); }
-  public java.awt.Color getDockingColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.getDockingColor()"); }
-  public java.awt.Color getFloatingColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.getFloatingColor()"); }
-  public void setFloatingLocation(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.setFloatingLocation(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.basic.BasicToolBarUI.DragWindow createDragWindow(javax.swing.JToolBar toolbar) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean canDock(java.awt.Component c, java.awt.Point p) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getDockingColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getFloatingColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFloatingLocation(int x, int y) { }
   @JavaProtected
-  void navigateFocusedComp(int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.navigateFocusedComp(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void navigateFocusedComp(int direction) { }
   @JavaProtected
-  javax.swing.JFrame createFloatingFrame(javax.swing.JToolBar toolbar) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.createFloatingFrame(javax.swing.JToolBar)"); }
-  public void setDockingColor(java.awt.Color c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.setDockingColor(java.awt.Color)"); }
-  public void setFloatingColor(java.awt.Color c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.setFloatingColor(java.awt.Color)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JFrame createFloatingFrame(javax.swing.JToolBar toolbar) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDockingColor(java.awt.Color c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFloatingColor(java.awt.Color c) { }
   @JavaProtected
-  void dragTo(java.awt.Point position, java.awt.Point origin) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.dragTo(java.awt.Point, java.awt.Point)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void dragTo(java.awt.Point position, java.awt.Point origin) { }
   @JavaProtected
-  void floatAt(java.awt.Point position, java.awt.Point origin) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.floatAt(java.awt.Point, java.awt.Point)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void floatAt(java.awt.Point position, java.awt.Point origin) { }
   @JavaProtected
-  void paintDragWindow(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.paintDragWindow(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintDragWindow(java.awt.Graphics g) { }
   @JavaProtected
-  void installKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.installKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installKeyboardActions() { }
   @JavaProtected
-  void uninstallKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.uninstallKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallKeyboardActions() { }
   @JavaProtected
-  void installDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.installDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults() { }
   @JavaProtected
-  void uninstallListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.uninstallListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallListeners() { }
   @JavaProtected
-  void uninstallDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.uninstallDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults() { }
   @JavaProtected
-  void installComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.installComponents()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installComponents() { }
   @JavaProtected
-  void uninstallComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicToolBarUI.uninstallComponents()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallComponents() { }
   < ---- END java signatures ---- >
 }

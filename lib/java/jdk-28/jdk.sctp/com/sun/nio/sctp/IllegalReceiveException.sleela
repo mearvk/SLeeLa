@@ -58,7 +58,9 @@ class IllegalReceiveException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IllegalReceiveException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.IllegalReceiveException.<init>()"); }
-  public IllegalReceiveException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.IllegalReceiveException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalReceiveException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalReceiveException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

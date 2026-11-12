@@ -58,59 +58,94 @@ class MetalFileChooserUI {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MetalFileChooserUI(javax.swing.JFileChooser filechooser) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.<init>(javax.swing.JFileChooser)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MetalFileChooserUI(javax.swing.JFileChooser filechooser) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getFileName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.getFileName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getFileName() { return null; }
   @JavaProtected
-  void installListeners(javax.swing.JFileChooser fc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.installListeners(javax.swing.JFileChooser)"); }
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.getPreferredSize(javax.swing.JComponent)"); }
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.getMinimumSize(javax.swing.JComponent)"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.installUI(javax.swing.JComponent)"); }
-  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.uninstallUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListeners(javax.swing.JFileChooser fc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(javax.swing.JComponent c) { }
   @JavaProtected
-  javax.swing.ActionMap getActionMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.getActionMap()"); }
-  public javax.swing.event.ListSelectionListener createListSelectionListener(javax.swing.JFileChooser fc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.createListSelectionListener(javax.swing.JFileChooser)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.ActionMap getActionMap() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.ListSelectionListener createListSelectionListener(javax.swing.JFileChooser fc) { return null; }
   @JavaProtected
-  javax.swing.ActionMap createActionMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.createActionMap()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.ActionMap createActionMap() { return null; }
   @JavaProtected
-  void installStrings(javax.swing.JFileChooser fc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.installStrings(javax.swing.JFileChooser)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installStrings(javax.swing.JFileChooser fc) { }
   @JavaProtected
-  javax.swing.JButton getApproveButton(javax.swing.JFileChooser fc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.getApproveButton(javax.swing.JFileChooser)"); }
-  public java.lang.String getDirectoryName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.getDirectoryName()"); }
-  public void setDirectoryName(java.lang.String dirname) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.setDirectoryName(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JButton getApproveButton(javax.swing.JFileChooser fc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDirectoryName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDirectoryName(java.lang.String dirname) { }
   @JavaProtected
-  void setDirectorySelected(boolean directorySelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.setDirectorySelected(boolean)"); }
-  public void ensureFileIsVisible(javax.swing.JFileChooser fc, java.io.File f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.ensureFileIsVisible(javax.swing.JFileChooser, java.io.File)"); }
-  public void rescanCurrentDirectory(javax.swing.JFileChooser fc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.rescanCurrentDirectory(javax.swing.JFileChooser)"); }
-  public void valueChanged(javax.swing.event.ListSelectionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.valueChanged(javax.swing.event.ListSelectionEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setDirectorySelected(boolean directorySelected) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ensureFileIsVisible(javax.swing.JFileChooser fc, java.io.File f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void rescanCurrentDirectory(javax.swing.JFileChooser fc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void valueChanged(javax.swing.event.ListSelectionEvent e) { }
   @JavaProtected
-  javax.swing.JPanel createList(javax.swing.JFileChooser fc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.createList(javax.swing.JFileChooser)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JPanel createList(javax.swing.JFileChooser fc) { return null; }
   @JavaProtected
-  javax.swing.plaf.metal.MetalFileChooserUI.DirectoryComboBoxModel createDirectoryComboBoxModel(javax.swing.JFileChooser fc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.createDirectoryComboBoxModel(javax.swing.JFileChooser)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.metal.MetalFileChooserUI.DirectoryComboBoxModel createDirectoryComboBoxModel(javax.swing.JFileChooser fc) { return null; }
   @JavaProtected
-  javax.swing.JPanel getBottomPanel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.getBottomPanel()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JPanel getBottomPanel() { return null; }
   @JavaProtected
-  javax.swing.plaf.metal.MetalFileChooserUI.FilterComboBoxModel createFilterComboBoxModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.createFilterComboBoxModel()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.metal.MetalFileChooserUI.FilterComboBoxModel createFilterComboBoxModel() { return null; }
   @JavaProtected
-  javax.swing.plaf.metal.MetalFileChooserUI.FilterComboBoxRenderer createFilterComboBoxRenderer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.createFilterComboBoxRenderer()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.metal.MetalFileChooserUI.FilterComboBoxRenderer createFilterComboBoxRenderer() { return null; }
   @JavaProtected
-  javax.swing.JPanel getButtonPanel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.getButtonPanel()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JPanel getButtonPanel() { return null; }
   @JavaProtected
-  void addControlButtons() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.addControlButtons()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addControlButtons() { }
   @JavaProtected
-  javax.swing.JPanel createDetailsView(javax.swing.JFileChooser fc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.createDetailsView(javax.swing.JFileChooser)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JPanel createDetailsView(javax.swing.JFileChooser fc) { return null; }
   @JavaProtected
-  void removeControlButtons() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.removeControlButtons()"); }
-  public void setFileName(java.lang.String filename) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.setFileName(java.lang.String)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.createUI(javax.swing.JComponent)"); }
-  public void installComponents(javax.swing.JFileChooser fc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.installComponents(javax.swing.JFileChooser)"); }
-  public java.beans.PropertyChangeListener createPropertyChangeListener(javax.swing.JFileChooser fc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.createPropertyChangeListener(javax.swing.JFileChooser)"); }
-  public void uninstallComponents(javax.swing.JFileChooser fc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.uninstallComponents(javax.swing.JFileChooser)"); }
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalFileChooserUI.getMaximumSize(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void removeControlButtons() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFileName(java.lang.String filename) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installComponents(javax.swing.JFileChooser fc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.PropertyChangeListener createPropertyChangeListener(javax.swing.JFileChooser fc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallComponents(javax.swing.JFileChooser fc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
   < ---- END java signatures ---- >
 }

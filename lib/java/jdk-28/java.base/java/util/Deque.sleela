@@ -58,37 +58,68 @@ class Deque<E> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean remove(java.lang.Object o) { throw new AbstractMethodError("java.util.Deque.remove(java.lang.Object)"); }
-  public abstract E remove() { throw new AbstractMethodError("java.util.Deque.remove()"); }
-  public abstract int size() { throw new AbstractMethodError("java.util.Deque.size()"); }
-  public abstract boolean add(E e) { throw new AbstractMethodError("java.util.Deque.add(E)"); }
-  public abstract java.util.Iterator<E> iterator() { throw new AbstractMethodError("java.util.Deque.iterator()"); }
-  public abstract boolean contains(java.lang.Object o) { throw new AbstractMethodError("java.util.Deque.contains(java.lang.Object)"); }
-  public abstract boolean addAll(java.util.Collection<? extends E> c) { throw new AbstractMethodError("java.util.Deque.addAll(java.util.Collection<? extends E>)"); }
-  public abstract E peek() { throw new AbstractMethodError("java.util.Deque.peek()"); }
-  public abstract E getFirst() { throw new AbstractMethodError("java.util.Deque.getFirst()"); }
-  public abstract E getLast() { throw new AbstractMethodError("java.util.Deque.getLast()"); }
-  public abstract E element() { throw new AbstractMethodError("java.util.Deque.element()"); }
-  public abstract void addFirst(E e) { throw new AbstractMethodError("java.util.Deque.addFirst(E)"); }
-  public abstract void addLast(E e) { throw new AbstractMethodError("java.util.Deque.addLast(E)"); }
-  public abstract E removeFirst() { throw new AbstractMethodError("java.util.Deque.removeFirst()"); }
-  public abstract E removeLast() { throw new AbstractMethodError("java.util.Deque.removeLast()"); }
-  public default java.util.Deque<E> reversed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Deque.reversed()"); }
-  public abstract E poll() { throw new AbstractMethodError("java.util.Deque.poll()"); }
-  public abstract boolean offer(E e) { throw new AbstractMethodError("java.util.Deque.offer(E)"); }
-  public abstract void push(E e) { throw new AbstractMethodError("java.util.Deque.push(E)"); }
-  public abstract E pop() { throw new AbstractMethodError("java.util.Deque.pop()"); }
-  public abstract E pollFirst() { throw new AbstractMethodError("java.util.Deque.pollFirst()"); }
-  public abstract E pollLast() { throw new AbstractMethodError("java.util.Deque.pollLast()"); }
-  public abstract boolean offerLast(E e) { throw new AbstractMethodError("java.util.Deque.offerLast(E)"); }
-  public abstract E peekFirst() { throw new AbstractMethodError("java.util.Deque.peekFirst()"); }
-  public abstract boolean removeFirstOccurrence(java.lang.Object o) { throw new AbstractMethodError("java.util.Deque.removeFirstOccurrence(java.lang.Object)"); }
-  public abstract boolean offerFirst(E e) { throw new AbstractMethodError("java.util.Deque.offerFirst(E)"); }
-  public abstract E peekLast() { throw new AbstractMethodError("java.util.Deque.peekLast()"); }
-  public abstract boolean removeLastOccurrence(java.lang.Object o) { throw new AbstractMethodError("java.util.Deque.removeLastOccurrence(java.lang.Object)"); }
-  public abstract java.util.Iterator<E> descendingIterator() { throw new AbstractMethodError("java.util.Deque.descendingIterator()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean remove(java.lang.Object o) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public E remove() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int size() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean add(E e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Iterator<E> iterator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean contains(java.lang.Object o) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean addAll(java.util.Collection<? extends E> c) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public E peek() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E getFirst() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E getLast() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E element() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void addFirst(E e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addLast(E e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public E removeFirst() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E removeLast() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Deque<E> reversed() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E poll() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean offer(E e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void push(E e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public E pop() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E pollFirst() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E pollLast() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean offerLast(E e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public E peekFirst() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean removeFirstOccurrence(java.lang.Object o) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean offerFirst(E e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public E peekLast() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean removeLastOccurrence(java.lang.Object o) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Iterator<E> descendingIterator() { return null; }
   < ---- END java signatures ---- >
 }

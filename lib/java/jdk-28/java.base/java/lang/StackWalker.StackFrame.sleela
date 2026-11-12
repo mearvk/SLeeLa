@@ -59,18 +59,30 @@ class StackFrame {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default java.lang.String getDescriptor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackWalker.StackFrame.getDescriptor()"); }
-  public abstract java.lang.Class<?> getDeclaringClass() { throw new AbstractMethodError("java.lang.StackWalker.StackFrame.getDeclaringClass()"); }
-  public abstract java.lang.StackTraceElement toStackTraceElement() { throw new AbstractMethodError("java.lang.StackWalker.StackFrame.toStackTraceElement()"); }
-  public default java.lang.invoke.MethodType getMethodType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackWalker.StackFrame.getMethodType()"); }
-  public abstract java.lang.String getClassName() { throw new AbstractMethodError("java.lang.StackWalker.StackFrame.getClassName()"); }
-  public abstract boolean isNativeMethod() { throw new AbstractMethodError("java.lang.StackWalker.StackFrame.isNativeMethod()"); }
-  public abstract java.lang.String getFileName() { throw new AbstractMethodError("java.lang.StackWalker.StackFrame.getFileName()"); }
-  public abstract int getLineNumber() { throw new AbstractMethodError("java.lang.StackWalker.StackFrame.getLineNumber()"); }
-  public abstract java.lang.String getMethodName() { throw new AbstractMethodError("java.lang.StackWalker.StackFrame.getMethodName()"); }
-  public abstract int getByteCodeIndex() { throw new AbstractMethodError("java.lang.StackWalker.StackFrame.getByteCodeIndex()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.String getDescriptor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Class<?> getDeclaringClass() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.StackTraceElement toStackTraceElement() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.invoke.MethodType getMethodType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getClassName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isNativeMethod() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getFileName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getLineNumber() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getMethodName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getByteCodeIndex() { return 0; }
   < ---- END java signatures ---- >
 }

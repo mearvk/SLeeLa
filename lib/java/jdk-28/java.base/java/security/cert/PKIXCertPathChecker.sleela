@@ -59,18 +59,27 @@ class PKIXCertPathChecker {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  PKIXCertPathChecker() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXCertPathChecker.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  PKIXCertPathChecker() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXCertPathChecker.clone()"); }
-  public abstract void init(boolean forward) throws java.security.cert.CertPathValidatorException { throw new AbstractMethodError("java.security.cert.PKIXCertPathChecker.init(boolean)"); }
-  public abstract void check(java.security.cert.Certificate cert, java.util.Collection<java.lang.String> unresolvedCritExts) throws java.security.cert.CertPathValidatorException { throw new AbstractMethodError("java.security.cert.PKIXCertPathChecker.check(java.security.cert.Certificate, java.util.Collection<java.lang.String>)"); }
-  public void check(java.security.cert.Certificate cert) throws java.security.cert.CertPathValidatorException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXCertPathChecker.check(java.security.cert.Certificate)"); }
-  public abstract boolean isForwardCheckingSupported() { throw new AbstractMethodError("java.security.cert.PKIXCertPathChecker.isForwardCheckingSupported()"); }
-  public abstract java.util.Set<java.lang.String> getSupportedExtensions() { throw new AbstractMethodError("java.security.cert.PKIXCertPathChecker.getSupportedExtensions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertPathValidatorException")
+  public void init(boolean forward) { }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertPathValidatorException")
+  public void check(java.security.cert.Certificate cert, java.util.Collection<java.lang.String> unresolvedCritExts) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.cert.CertPathValidatorException")
+  public void check(java.security.cert.Certificate cert) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isForwardCheckingSupported() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<java.lang.String> getSupportedExtensions() { return null; }
   < ---- END java signatures ---- >
 }

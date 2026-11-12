@@ -58,23 +58,40 @@ class Synthesizer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getMaxPolyphony() { throw new AbstractMethodError("javax.sound.midi.Synthesizer.getMaxPolyphony()"); }
-  public abstract long getLatency() { throw new AbstractMethodError("javax.sound.midi.Synthesizer.getLatency()"); }
-  public abstract javax.sound.midi.MidiChannel[] getChannels() { throw new AbstractMethodError("javax.sound.midi.Synthesizer.getChannels()"); }
-  public abstract javax.sound.midi.VoiceStatus[] getVoiceStatus() { throw new AbstractMethodError("javax.sound.midi.Synthesizer.getVoiceStatus()"); }
-  public abstract boolean isSoundbankSupported(javax.sound.midi.Soundbank soundbank) { throw new AbstractMethodError("javax.sound.midi.Synthesizer.isSoundbankSupported(javax.sound.midi.Soundbank)"); }
-  public abstract boolean loadInstrument(javax.sound.midi.Instrument instrument) { throw new AbstractMethodError("javax.sound.midi.Synthesizer.loadInstrument(javax.sound.midi.Instrument)"); }
-  public abstract void unloadInstrument(javax.sound.midi.Instrument instrument) { throw new AbstractMethodError("javax.sound.midi.Synthesizer.unloadInstrument(javax.sound.midi.Instrument)"); }
-  public abstract boolean remapInstrument(javax.sound.midi.Instrument from, javax.sound.midi.Instrument to) { throw new AbstractMethodError("javax.sound.midi.Synthesizer.remapInstrument(javax.sound.midi.Instrument, javax.sound.midi.Instrument)"); }
-  public abstract javax.sound.midi.Soundbank getDefaultSoundbank() { throw new AbstractMethodError("javax.sound.midi.Synthesizer.getDefaultSoundbank()"); }
-  public abstract javax.sound.midi.Instrument[] getAvailableInstruments() { throw new AbstractMethodError("javax.sound.midi.Synthesizer.getAvailableInstruments()"); }
-  public abstract javax.sound.midi.Instrument[] getLoadedInstruments() { throw new AbstractMethodError("javax.sound.midi.Synthesizer.getLoadedInstruments()"); }
-  public abstract boolean loadAllInstruments(javax.sound.midi.Soundbank soundbank) { throw new AbstractMethodError("javax.sound.midi.Synthesizer.loadAllInstruments(javax.sound.midi.Soundbank)"); }
-  public abstract void unloadAllInstruments(javax.sound.midi.Soundbank soundbank) { throw new AbstractMethodError("javax.sound.midi.Synthesizer.unloadAllInstruments(javax.sound.midi.Soundbank)"); }
-  public abstract boolean loadInstruments(javax.sound.midi.Soundbank soundbank, javax.sound.midi.Patch[] patchList) { throw new AbstractMethodError("javax.sound.midi.Synthesizer.loadInstruments(javax.sound.midi.Soundbank, javax.sound.midi.Patch[])"); }
-  public abstract void unloadInstruments(javax.sound.midi.Soundbank soundbank, javax.sound.midi.Patch[] patchList) { throw new AbstractMethodError("javax.sound.midi.Synthesizer.unloadInstruments(javax.sound.midi.Soundbank, javax.sound.midi.Patch[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getMaxPolyphony() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getLatency() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.midi.MidiChannel[] getChannels() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.midi.VoiceStatus[] getVoiceStatus() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSoundbankSupported(javax.sound.midi.Soundbank soundbank) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean loadInstrument(javax.sound.midi.Instrument instrument) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void unloadInstrument(javax.sound.midi.Instrument instrument) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean remapInstrument(javax.sound.midi.Instrument from, javax.sound.midi.Instrument to) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.midi.Soundbank getDefaultSoundbank() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.midi.Instrument[] getAvailableInstruments() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.midi.Instrument[] getLoadedInstruments() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean loadAllInstruments(javax.sound.midi.Soundbank soundbank) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void unloadAllInstruments(javax.sound.midi.Soundbank soundbank) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean loadInstruments(javax.sound.midi.Soundbank soundbank, javax.sound.midi.Patch[] patchList) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void unloadInstruments(javax.sound.midi.Soundbank soundbank, javax.sound.midi.Patch[] patchList) { }
   < ---- END java signatures ---- >
 }

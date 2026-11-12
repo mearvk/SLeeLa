@@ -58,6 +58,7 @@ class NotYetBoundException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NotYetBoundException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.NotYetBoundException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotYetBoundException() { }
   < ---- END java constructors ---- >
 }

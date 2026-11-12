@@ -58,29 +58,49 @@ class Robot {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Robot() throws java.awt.AWTException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.<init>()"); }
-  public Robot(java.awt.GraphicsDevice screen) throws java.awt.AWTException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.<init>(java.awt.GraphicsDevice)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.AWTException")
+  public Robot() { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.AWTException")
+  public Robot(java.awt.GraphicsDevice screen) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.toString()"); }
-  public void delay(int ms) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.delay(int)"); }
-  public synchronized void mouseMove(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.mouseMove(int, int)"); }
-  public synchronized boolean isAutoWaitForIdle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.isAutoWaitForIdle()"); }
-  public synchronized void mousePress(int buttons) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.mousePress(int)"); }
-  public synchronized void mouseRelease(int buttons) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.mouseRelease(int)"); }
-  public synchronized void mouseWheel(int wheelAmt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.mouseWheel(int)"); }
-  public synchronized void keyPress(int keycode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.keyPress(int)"); }
-  public synchronized void keyRelease(int keycode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.keyRelease(int)"); }
-  public synchronized void waitForIdle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.waitForIdle()"); }
-  public synchronized int getAutoDelay() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.getAutoDelay()"); }
-  public synchronized java.awt.Color getPixelColor(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.getPixelColor(int, int)"); }
-  public synchronized java.awt.image.BufferedImage createScreenCapture(java.awt.Rectangle screenRect) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.createScreenCapture(java.awt.Rectangle)"); }
-  public synchronized java.awt.image.MultiResolutionImage createMultiResolutionScreenCapture(java.awt.Rectangle screenRect) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.createMultiResolutionScreenCapture(java.awt.Rectangle)"); }
-  public synchronized void setAutoWaitForIdle(boolean isOn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.setAutoWaitForIdle(boolean)"); }
-  public synchronized void setAutoDelay(int ms) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Robot.setAutoDelay(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void delay(int ms) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void mouseMove(int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean isAutoWaitForIdle() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void mousePress(int buttons) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void mouseRelease(int buttons) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void mouseWheel(int wheelAmt) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void keyPress(int keycode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void keyRelease(int keycode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void waitForIdle() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int getAutoDelay() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.Color getPixelColor(int x, int y) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.image.BufferedImage createScreenCapture(java.awt.Rectangle screenRect) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.image.MultiResolutionImage createMultiResolutionScreenCapture(java.awt.Rectangle screenRect) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setAutoWaitForIdle(boolean isOn) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setAutoDelay(int ms) { }
   < ---- END java signatures ---- >
 }

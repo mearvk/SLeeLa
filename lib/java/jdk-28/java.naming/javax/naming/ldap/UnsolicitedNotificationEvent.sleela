@@ -58,14 +58,19 @@ class UnsolicitedNotificationEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnsolicitedNotificationEvent(java.lang.Object src, javax.naming.ldap.UnsolicitedNotification notice) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.UnsolicitedNotificationEvent.<init>(java.lang.Object, javax.naming.ldap.UnsolicitedNotification)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsolicitedNotificationEvent(java.lang.Object src, javax.naming.ldap.UnsolicitedNotification notice) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void dispatch(javax.naming.ldap.UnsolicitedNotificationListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.UnsolicitedNotificationEvent.dispatch(javax.naming.ldap.UnsolicitedNotificationListener)"); }
-  public javax.naming.ldap.UnsolicitedNotification getNotification() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.UnsolicitedNotificationEvent.getNotification()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void dispatch(javax.naming.ldap.UnsolicitedNotificationListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.naming.ldap.UnsolicitedNotification getNotification() { return null; }
   < ---- END java signatures ---- >
 }

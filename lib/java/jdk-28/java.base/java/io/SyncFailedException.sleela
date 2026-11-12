@@ -58,6 +58,7 @@ class SyncFailedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SyncFailedException(java.lang.String desc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.SyncFailedException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SyncFailedException(java.lang.String desc) { }
   < ---- END java constructors ---- >
 }

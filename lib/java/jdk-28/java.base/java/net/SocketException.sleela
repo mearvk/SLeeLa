@@ -58,9 +58,13 @@ class SocketException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SocketException(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.SocketException.<init>(java.lang.Throwable)"); }
-  public SocketException(java.lang.String msg, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.SocketException.<init>(java.lang.String, java.lang.Throwable)"); }
-  public SocketException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.SocketException.<init>()"); }
-  public SocketException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.SocketException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SocketException(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SocketException(java.lang.String msg, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SocketException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SocketException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

@@ -58,9 +58,13 @@ class IllegalArgumentException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IllegalArgumentException(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.IllegalArgumentException.<init>(java.lang.Throwable)"); }
-  public IllegalArgumentException(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.IllegalArgumentException.<init>(java.lang.String, java.lang.Throwable)"); }
-  public IllegalArgumentException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.IllegalArgumentException.<init>(java.lang.String)"); }
-  public IllegalArgumentException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.IllegalArgumentException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalArgumentException(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalArgumentException(java.lang.String message, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalArgumentException(java.lang.String s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalArgumentException() { }
   < ---- END java constructors ---- >
 }

@@ -60,16 +60,23 @@ class FilterBypass {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  FilterBypass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DocumentFilter.FilterBypass.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  FilterBypass() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void remove(int offset, int length) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.text.DocumentFilter.FilterBypass.remove(int, int)"); }
-  public abstract void replace(int offset, int length, java.lang.String string, javax.swing.text.AttributeSet attrs) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.text.DocumentFilter.FilterBypass.replace(int, int, java.lang.String, javax.swing.text.AttributeSet)"); }
-  public abstract void insertString(int offset, java.lang.String string, javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.text.DocumentFilter.FilterBypass.insertString(int, java.lang.String, javax.swing.text.AttributeSet)"); }
-  public abstract javax.swing.text.Document getDocument() { throw new AbstractMethodError("javax.swing.text.DocumentFilter.FilterBypass.getDocument()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public void remove(int offset, int length) { }
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public void replace(int offset, int length, java.lang.String string, javax.swing.text.AttributeSet attrs) { }
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public void insertString(int offset, java.lang.String string, javax.swing.text.AttributeSet attr) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.Document getDocument() { return null; }
   < ---- END java signatures ---- >
 }

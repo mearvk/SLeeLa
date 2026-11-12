@@ -58,23 +58,40 @@ class DataInput {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String readLine() throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readLine()"); }
-  public abstract int readInt() throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readInt()"); }
-  public abstract java.lang.String readUTF() throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readUTF()"); }
-  public abstract long readLong() throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readLong()"); }
-  public abstract byte readByte() throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readByte()"); }
-  public abstract short readShort() throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readShort()"); }
-  public abstract int readUnsignedShort() throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readUnsignedShort()"); }
-  public abstract char readChar() throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readChar()"); }
-  public abstract float readFloat() throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readFloat()"); }
-  public abstract double readDouble() throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readDouble()"); }
-  public abstract void readFully(byte[] b) throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readFully(byte[])"); }
-  public abstract void readFully(byte[] b, int off, int len) throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readFully(byte[], int, int)"); }
-  public abstract int skipBytes(int n) throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.skipBytes(int)"); }
-  public abstract boolean readBoolean() throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readBoolean()"); }
-  public abstract int readUnsignedByte() throws java.io.IOException { throw new AbstractMethodError("java.io.DataInput.readUnsignedByte()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.lang.String readLine() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public int readInt() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.lang.String readUTF() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public long readLong() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public byte readByte() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public short readShort() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public int readUnsignedShort() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public char readChar() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public float readFloat() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public double readDouble() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void readFully(byte[] b) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void readFully(byte[] b, int off, int len) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public int skipBytes(int n) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public boolean readBoolean() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public int readUnsignedByte() { return 0; }
   < ---- END java signatures ---- >
 }

@@ -64,54 +64,99 @@ class NumberFormat {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  NumberFormat() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  NumberFormat() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.clone()"); }
-  public abstract java.lang.StringBuffer format(double number, java.lang.StringBuffer toAppendTo, java.text.FieldPosition pos) { throw new AbstractMethodError("java.text.NumberFormat.format(double, java.lang.StringBuffer, java.text.FieldPosition)"); }
-  public abstract java.lang.StringBuffer format(long number, java.lang.StringBuffer toAppendTo, java.text.FieldPosition pos) { throw new AbstractMethodError("java.text.NumberFormat.format(long, java.lang.StringBuffer, java.text.FieldPosition)"); }
-  public java.lang.StringBuffer format(java.lang.Object number, java.lang.StringBuffer toAppendTo, java.text.FieldPosition pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.format(java.lang.Object, java.lang.StringBuffer, java.text.FieldPosition)"); }
-  public final java.lang.String format(double number) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.format(double)"); }
-  public final java.lang.String format(long number) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.format(long)"); }
-  public static java.text.NumberFormat getInstance(java.util.Locale inLocale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getInstance(java.util.Locale)"); }
-  public static final java.text.NumberFormat getInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getInstance()"); }
-  public java.lang.Number parse(java.lang.String source) throws java.text.ParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.parse(java.lang.String)"); }
-  public abstract java.lang.Number parse(java.lang.String source, java.text.ParsePosition parsePosition) { throw new AbstractMethodError("java.text.NumberFormat.parse(java.lang.String, java.text.ParsePosition)"); }
-  public boolean isStrict() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.isStrict()"); }
-  public static java.util.Locale[] getAvailableLocales() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getAvailableLocales()"); }
-  public final java.lang.Object parseObject(java.lang.String source, java.text.ParsePosition pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.parseObject(java.lang.String, java.text.ParsePosition)"); }
-  public int getMaximumIntegerDigits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getMaximumIntegerDigits()"); }
-  public int getMinimumIntegerDigits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getMinimumIntegerDigits()"); }
-  public int getMaximumFractionDigits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getMaximumFractionDigits()"); }
-  public int getMinimumFractionDigits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getMinimumFractionDigits()"); }
-  public boolean isGroupingUsed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.isGroupingUsed()"); }
-  public boolean isParseIntegerOnly() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.isParseIntegerOnly()"); }
-  public void setGroupingUsed(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.setGroupingUsed(boolean)"); }
-  public void setMinimumIntegerDigits(int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.setMinimumIntegerDigits(int)"); }
-  public void setMaximumIntegerDigits(int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.setMaximumIntegerDigits(int)"); }
-  public void setMaximumFractionDigits(int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.setMaximumFractionDigits(int)"); }
-  public void setMinimumFractionDigits(int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.setMinimumFractionDigits(int)"); }
-  public java.util.Currency getCurrency() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getCurrency()"); }
-  public void setCurrency(java.util.Currency currency) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.setCurrency(java.util.Currency)"); }
-  public void setRoundingMode(java.math.RoundingMode roundingMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.setRoundingMode(java.math.RoundingMode)"); }
-  public java.math.RoundingMode getRoundingMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getRoundingMode()"); }
-  public void setStrict(boolean strict) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.setStrict(boolean)"); }
-  public static java.text.NumberFormat getCurrencyInstance(java.util.Locale inLocale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getCurrencyInstance(java.util.Locale)"); }
-  public static final java.text.NumberFormat getCurrencyInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getCurrencyInstance()"); }
-  public static final java.text.NumberFormat getPercentInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getPercentInstance()"); }
-  public static java.text.NumberFormat getPercentInstance(java.util.Locale inLocale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getPercentInstance(java.util.Locale)"); }
-  public static java.text.NumberFormat getIntegerInstance(java.util.Locale inLocale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getIntegerInstance(java.util.Locale)"); }
-  public static final java.text.NumberFormat getIntegerInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getIntegerInstance()"); }
-  public static java.text.NumberFormat getCompactNumberInstance(java.util.Locale locale, java.text.NumberFormat.Style formatStyle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getCompactNumberInstance(java.util.Locale, java.text.NumberFormat.Style)"); }
-  public static java.text.NumberFormat getCompactNumberInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getCompactNumberInstance()"); }
-  public static final java.text.NumberFormat getNumberInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getNumberInstance()"); }
-  public static java.text.NumberFormat getNumberInstance(java.util.Locale inLocale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.getNumberInstance(java.util.Locale)"); }
-  public void setParseIntegerOnly(boolean value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.NumberFormat.setParseIntegerOnly(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.StringBuffer format(double number, java.lang.StringBuffer toAppendTo, java.text.FieldPosition pos) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.StringBuffer format(long number, java.lang.StringBuffer toAppendTo, java.text.FieldPosition pos) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuffer format(java.lang.Object number, java.lang.StringBuffer toAppendTo, java.text.FieldPosition pos) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String format(double number) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String format(long number) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.NumberFormat getInstance(java.util.Locale inLocale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final java.text.NumberFormat getInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
+  public java.lang.Number parse(java.lang.String source) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Number parse(java.lang.String source, java.text.ParsePosition parsePosition) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isStrict() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Locale[] getAvailableLocales() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Object parseObject(java.lang.String source, java.text.ParsePosition pos) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaximumIntegerDigits() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinimumIntegerDigits() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaximumFractionDigits() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinimumFractionDigits() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isGroupingUsed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isParseIntegerOnly() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setGroupingUsed(boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinimumIntegerDigits(int newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximumIntegerDigits(int newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximumFractionDigits(int newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinimumFractionDigits(int newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Currency getCurrency() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCurrency(java.util.Currency currency) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRoundingMode(java.math.RoundingMode roundingMode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.RoundingMode getRoundingMode() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setStrict(boolean strict) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.NumberFormat getCurrencyInstance(java.util.Locale inLocale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final java.text.NumberFormat getCurrencyInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final java.text.NumberFormat getPercentInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.NumberFormat getPercentInstance(java.util.Locale inLocale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.NumberFormat getIntegerInstance(java.util.Locale inLocale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final java.text.NumberFormat getIntegerInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.NumberFormat getCompactNumberInstance(java.util.Locale locale, java.text.NumberFormat.Style formatStyle) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.NumberFormat getCompactNumberInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final java.text.NumberFormat getNumberInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.NumberFormat getNumberInstance(java.util.Locale inLocale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setParseIntegerOnly(boolean value) { }
   < ---- END java signatures ---- >
 }

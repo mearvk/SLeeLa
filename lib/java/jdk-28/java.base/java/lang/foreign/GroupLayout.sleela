@@ -58,12 +58,18 @@ class GroupLayout {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.foreign.GroupLayout withByteAlignment(long byteAlignment) { throw new AbstractMethodError("java.lang.foreign.GroupLayout.withByteAlignment(long)"); }
-  public abstract java.lang.foreign.GroupLayout withName(java.lang.String name) { throw new AbstractMethodError("java.lang.foreign.GroupLayout.withName(java.lang.String)"); }
-  public abstract java.lang.foreign.GroupLayout withoutName() { throw new AbstractMethodError("java.lang.foreign.GroupLayout.withoutName()"); }
-  public abstract java.util.List<java.lang.foreign.MemoryLayout> memberLayouts() { throw new AbstractMethodError("java.lang.foreign.GroupLayout.memberLayouts()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.foreign.GroupLayout withByteAlignment(long byteAlignment) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.foreign.GroupLayout withName(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.foreign.GroupLayout withoutName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.foreign.MemoryLayout> memberLayouts() { return null; }
   < ---- END java signatures ---- >
 }

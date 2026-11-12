@@ -58,13 +58,20 @@ class FieldModel {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.Optional<java.lang.classfile.ClassModel> parent() { throw new AbstractMethodError("java.lang.classfile.FieldModel.parent()"); }
-  public abstract java.lang.classfile.AccessFlags flags() { throw new AbstractMethodError("java.lang.classfile.FieldModel.flags()"); }
-  public abstract java.lang.classfile.constantpool.Utf8Entry fieldType() { throw new AbstractMethodError("java.lang.classfile.FieldModel.fieldType()"); }
-  public abstract java.lang.classfile.constantpool.Utf8Entry fieldName() { throw new AbstractMethodError("java.lang.classfile.FieldModel.fieldName()"); }
-  public default java.lang.constant.ClassDesc fieldTypeSymbol() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.FieldModel.fieldTypeSymbol()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Optional<java.lang.classfile.ClassModel> parent() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.AccessFlags flags() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.Utf8Entry fieldType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.Utf8Entry fieldName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.constant.ClassDesc fieldTypeSymbol() { return null; }
   < ---- END java signatures ---- >
 }

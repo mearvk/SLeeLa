@@ -58,20 +58,31 @@ class HyperlinkEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public HyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL u, java.lang.String desc, javax.swing.text.Element sourceElement, java.awt.event.InputEvent inputEvent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.HyperlinkEvent.<init>(java.lang.Object, javax.swing.event.HyperlinkEvent.EventType, java.net.URL, java.lang.String, javax.swing.text.Element, java.awt.event.InputEvent)"); }
-  public HyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL u, java.lang.String desc, javax.swing.text.Element sourceElement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.HyperlinkEvent.<init>(java.lang.Object, javax.swing.event.HyperlinkEvent.EventType, java.net.URL, java.lang.String, javax.swing.text.Element)"); }
-  public HyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL u, java.lang.String desc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.HyperlinkEvent.<init>(java.lang.Object, javax.swing.event.HyperlinkEvent.EventType, java.net.URL, java.lang.String)"); }
-  public HyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL u) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.HyperlinkEvent.<init>(java.lang.Object, javax.swing.event.HyperlinkEvent.EventType, java.net.URL)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL u, java.lang.String desc, javax.swing.text.Element sourceElement, java.awt.event.InputEvent inputEvent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL u, java.lang.String desc, javax.swing.text.Element sourceElement) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL u, java.lang.String desc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL u) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.net.URL getURL() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.HyperlinkEvent.getURL()"); }
-  public java.lang.String getDescription() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.HyperlinkEvent.getDescription()"); }
-  public javax.swing.event.HyperlinkEvent.EventType getEventType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.HyperlinkEvent.getEventType()"); }
-  public javax.swing.text.Element getSourceElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.HyperlinkEvent.getSourceElement()"); }
-  public java.awt.event.InputEvent getInputEvent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.HyperlinkEvent.getInputEvent()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.URL getURL() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDescription() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.HyperlinkEvent.EventType getEventType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Element getSourceElement() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.event.InputEvent getInputEvent() { return null; }
   < ---- END java signatures ---- >
 }

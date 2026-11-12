@@ -58,24 +58,42 @@ class BufWriter {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int size() { throw new AbstractMethodError("java.lang.classfile.BufWriter.size()"); }
-  public abstract void writeInt(int x) { throw new AbstractMethodError("java.lang.classfile.BufWriter.writeInt(int)"); }
-  public abstract void writeLong(long x) { throw new AbstractMethodError("java.lang.classfile.BufWriter.writeLong(long)"); }
-  public abstract void writeBytes(byte[] arr) { throw new AbstractMethodError("java.lang.classfile.BufWriter.writeBytes(byte[])"); }
-  public abstract void writeBytes(byte[] arr, int start, int length) { throw new AbstractMethodError("java.lang.classfile.BufWriter.writeBytes(byte[], int, int)"); }
-  public abstract void writeFloat(float x) { throw new AbstractMethodError("java.lang.classfile.BufWriter.writeFloat(float)"); }
-  public abstract boolean canWriteDirect(java.lang.classfile.constantpool.ConstantPool other) { throw new AbstractMethodError("java.lang.classfile.BufWriter.canWriteDirect(java.lang.classfile.constantpool.ConstantPool)"); }
-  public abstract java.lang.classfile.constantpool.ConstantPoolBuilder constantPool() { throw new AbstractMethodError("java.lang.classfile.BufWriter.constantPool()"); }
-  public abstract void writeIndex(java.lang.classfile.constantpool.PoolEntry entry) { throw new AbstractMethodError("java.lang.classfile.BufWriter.writeIndex(java.lang.classfile.constantpool.PoolEntry)"); }
-  public abstract void patchInt(int offset, int size, int value) { throw new AbstractMethodError("java.lang.classfile.BufWriter.patchInt(int, int, int)"); }
-  public abstract void writeU2(int x) { throw new AbstractMethodError("java.lang.classfile.BufWriter.writeU2(int)"); }
-  public abstract void writeIndexOrZero(java.lang.classfile.constantpool.PoolEntry entry) { throw new AbstractMethodError("java.lang.classfile.BufWriter.writeIndexOrZero(java.lang.classfile.constantpool.PoolEntry)"); }
-  public abstract void writeU1(int x) { throw new AbstractMethodError("java.lang.classfile.BufWriter.writeU1(int)"); }
-  public abstract void reserveSpace(int freeBytes) { throw new AbstractMethodError("java.lang.classfile.BufWriter.reserveSpace(int)"); }
-  public abstract void writeIntBytes(int intSize, long intValue) { throw new AbstractMethodError("java.lang.classfile.BufWriter.writeIntBytes(int, long)"); }
-  public abstract void writeDouble(double x) { throw new AbstractMethodError("java.lang.classfile.BufWriter.writeDouble(double)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int size() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void writeInt(int x) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void writeLong(long x) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void writeBytes(byte[] arr) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void writeBytes(byte[] arr, int start, int length) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void writeFloat(float x) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canWriteDirect(java.lang.classfile.constantpool.ConstantPool other) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.ConstantPoolBuilder constantPool() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void writeIndex(java.lang.classfile.constantpool.PoolEntry entry) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void patchInt(int offset, int size, int value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void writeU2(int x) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void writeIndexOrZero(java.lang.classfile.constantpool.PoolEntry entry) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void writeU1(int x) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void reserveSpace(int freeBytes) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void writeIntBytes(int intSize, long intValue) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void writeDouble(double x) { }
   < ---- END java signatures ---- >
 }

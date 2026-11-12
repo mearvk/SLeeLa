@@ -62,31 +62,56 @@ class AudioSystem {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static int write(javax.sound.sampled.AudioInputStream stream, javax.sound.sampled.AudioFileFormat.Type fileType, java.io.OutputStream out) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.write(javax.sound.sampled.AudioInputStream, javax.sound.sampled.AudioFileFormat.Type, java.io.OutputStream)"); }
-  public static javax.sound.sampled.Line getLine(javax.sound.sampled.Line.Info info) throws javax.sound.sampled.LineUnavailableException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getLine(javax.sound.sampled.Line.Info)"); }
-  public static javax.sound.sampled.Clip getClip() throws javax.sound.sampled.LineUnavailableException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getClip()"); }
-  public static javax.sound.sampled.Clip getClip(javax.sound.sampled.Mixer.Info mixerInfo) throws javax.sound.sampled.LineUnavailableException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getClip(javax.sound.sampled.Mixer.Info)"); }
-  public static boolean isFileTypeSupported(javax.sound.sampled.AudioFileFormat.Type fileType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.isFileTypeSupported(javax.sound.sampled.AudioFileFormat.Type)"); }
-  public static boolean isFileTypeSupported(javax.sound.sampled.AudioFileFormat.Type fileType, javax.sound.sampled.AudioInputStream stream) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.isFileTypeSupported(javax.sound.sampled.AudioFileFormat.Type, javax.sound.sampled.AudioInputStream)"); }
-  public static javax.sound.sampled.Mixer getMixer(javax.sound.sampled.Mixer.Info info) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getMixer(javax.sound.sampled.Mixer.Info)"); }
-  public static javax.sound.sampled.Mixer.Info[] getMixerInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getMixerInfo()"); }
-  public static javax.sound.sampled.Line.Info[] getSourceLineInfo(javax.sound.sampled.Line.Info info) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getSourceLineInfo(javax.sound.sampled.Line.Info)"); }
-  public static javax.sound.sampled.Line.Info[] getTargetLineInfo(javax.sound.sampled.Line.Info info) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getTargetLineInfo(javax.sound.sampled.Line.Info)"); }
-  public static boolean isLineSupported(javax.sound.sampled.Line.Info info) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.isLineSupported(javax.sound.sampled.Line.Info)"); }
-  public static javax.sound.sampled.AudioFormat.Encoding[] getTargetEncodings(javax.sound.sampled.AudioFormat.Encoding sourceEncoding) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getTargetEncodings(javax.sound.sampled.AudioFormat.Encoding)"); }
-  public static boolean isConversionSupported(javax.sound.sampled.AudioFormat targetFormat, javax.sound.sampled.AudioFormat sourceFormat) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.isConversionSupported(javax.sound.sampled.AudioFormat, javax.sound.sampled.AudioFormat)"); }
-  public static javax.sound.sampled.AudioInputStream getAudioInputStream(java.io.File file) throws javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getAudioInputStream(java.io.File)"); }
-  public static javax.sound.sampled.AudioInputStream getAudioInputStream(javax.sound.sampled.AudioFormat targetFormat, javax.sound.sampled.AudioInputStream sourceStream) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getAudioInputStream(javax.sound.sampled.AudioFormat, javax.sound.sampled.AudioInputStream)"); }
-  public static javax.sound.sampled.AudioFormat[] getTargetFormats(javax.sound.sampled.AudioFormat.Encoding targetEncoding, javax.sound.sampled.AudioFormat sourceFormat) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getTargetFormats(javax.sound.sampled.AudioFormat.Encoding, javax.sound.sampled.AudioFormat)"); }
-  public static javax.sound.sampled.AudioFileFormat getAudioFileFormat(java.io.File file) throws javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getAudioFileFormat(java.io.File)"); }
-  public static javax.sound.sampled.AudioFileFormat.Type[] getAudioFileTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getAudioFileTypes()"); }
-  public static javax.sound.sampled.AudioFileFormat.Type[] getAudioFileTypes(javax.sound.sampled.AudioInputStream stream) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getAudioFileTypes(javax.sound.sampled.AudioInputStream)"); }
-  public static javax.sound.sampled.SourceDataLine getSourceDataLine(javax.sound.sampled.AudioFormat format, javax.sound.sampled.Mixer.Info mixerinfo) throws javax.sound.sampled.LineUnavailableException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getSourceDataLine(javax.sound.sampled.AudioFormat, javax.sound.sampled.Mixer.Info)"); }
-  public static javax.sound.sampled.SourceDataLine getSourceDataLine(javax.sound.sampled.AudioFormat format) throws javax.sound.sampled.LineUnavailableException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getSourceDataLine(javax.sound.sampled.AudioFormat)"); }
-  public static javax.sound.sampled.TargetDataLine getTargetDataLine(javax.sound.sampled.AudioFormat format, javax.sound.sampled.Mixer.Info mixerinfo) throws javax.sound.sampled.LineUnavailableException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getTargetDataLine(javax.sound.sampled.AudioFormat, javax.sound.sampled.Mixer.Info)"); }
-  public static javax.sound.sampled.TargetDataLine getTargetDataLine(javax.sound.sampled.AudioFormat format) throws javax.sound.sampled.LineUnavailableException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioSystem.getTargetDataLine(javax.sound.sampled.AudioFormat)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static int write(javax.sound.sampled.AudioInputStream stream, javax.sound.sampled.AudioFileFormat.Type fileType, java.io.OutputStream out) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
+  public static javax.sound.sampled.Line getLine(javax.sound.sampled.Line.Info info) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
+  public static javax.sound.sampled.Clip getClip() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
+  public static javax.sound.sampled.Clip getClip(javax.sound.sampled.Mixer.Info mixerInfo) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isFileTypeSupported(javax.sound.sampled.AudioFileFormat.Type fileType) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isFileTypeSupported(javax.sound.sampled.AudioFileFormat.Type fileType, javax.sound.sampled.AudioInputStream stream) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.sound.sampled.Mixer getMixer(javax.sound.sampled.Mixer.Info info) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.sound.sampled.Mixer.Info[] getMixerInfo() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.sound.sampled.Line.Info[] getSourceLineInfo(javax.sound.sampled.Line.Info info) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.sound.sampled.Line.Info[] getTargetLineInfo(javax.sound.sampled.Line.Info info) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLineSupported(javax.sound.sampled.Line.Info info) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.sound.sampled.AudioFormat.Encoding[] getTargetEncodings(javax.sound.sampled.AudioFormat.Encoding sourceEncoding) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isConversionSupported(javax.sound.sampled.AudioFormat targetFormat, javax.sound.sampled.AudioFormat sourceFormat) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException")
+  public static javax.sound.sampled.AudioInputStream getAudioInputStream(java.io.File file) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.sound.sampled.AudioInputStream getAudioInputStream(javax.sound.sampled.AudioFormat targetFormat, javax.sound.sampled.AudioInputStream sourceStream) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.sound.sampled.AudioFormat[] getTargetFormats(javax.sound.sampled.AudioFormat.Encoding targetEncoding, javax.sound.sampled.AudioFormat sourceFormat) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException")
+  public static javax.sound.sampled.AudioFileFormat getAudioFileFormat(java.io.File file) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.sound.sampled.AudioFileFormat.Type[] getAudioFileTypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.sound.sampled.AudioFileFormat.Type[] getAudioFileTypes(javax.sound.sampled.AudioInputStream stream) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
+  public static javax.sound.sampled.SourceDataLine getSourceDataLine(javax.sound.sampled.AudioFormat format, javax.sound.sampled.Mixer.Info mixerinfo) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
+  public static javax.sound.sampled.SourceDataLine getSourceDataLine(javax.sound.sampled.AudioFormat format) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
+  public static javax.sound.sampled.TargetDataLine getTargetDataLine(javax.sound.sampled.AudioFormat format, javax.sound.sampled.Mixer.Info mixerinfo) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
+  public static javax.sound.sampled.TargetDataLine getTargetDataLine(javax.sound.sampled.AudioFormat format) { return null; }
   < ---- END java signatures ---- >
 }

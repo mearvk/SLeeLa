@@ -58,21 +58,36 @@ class BoundedRangeModel {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getValue() { throw new AbstractMethodError("javax.swing.BoundedRangeModel.getValue()"); }
-  public abstract void setValue(int newValue) { throw new AbstractMethodError("javax.swing.BoundedRangeModel.setValue(int)"); }
-  public abstract int getMaximum() { throw new AbstractMethodError("javax.swing.BoundedRangeModel.getMaximum()"); }
-  public abstract int getMinimum() { throw new AbstractMethodError("javax.swing.BoundedRangeModel.getMinimum()"); }
-  public abstract void setMinimum(int newMinimum) { throw new AbstractMethodError("javax.swing.BoundedRangeModel.setMinimum(int)"); }
-  public abstract void setMaximum(int newMaximum) { throw new AbstractMethodError("javax.swing.BoundedRangeModel.setMaximum(int)"); }
-  public abstract void setValueIsAdjusting(boolean b) { throw new AbstractMethodError("javax.swing.BoundedRangeModel.setValueIsAdjusting(boolean)"); }
-  public abstract boolean getValueIsAdjusting() { throw new AbstractMethodError("javax.swing.BoundedRangeModel.getValueIsAdjusting()"); }
-  public abstract void removeChangeListener(javax.swing.event.ChangeListener x) { throw new AbstractMethodError("javax.swing.BoundedRangeModel.removeChangeListener(javax.swing.event.ChangeListener)"); }
-  public abstract void addChangeListener(javax.swing.event.ChangeListener x) { throw new AbstractMethodError("javax.swing.BoundedRangeModel.addChangeListener(javax.swing.event.ChangeListener)"); }
-  public abstract int getExtent() { throw new AbstractMethodError("javax.swing.BoundedRangeModel.getExtent()"); }
-  public abstract void setExtent(int newExtent) { throw new AbstractMethodError("javax.swing.BoundedRangeModel.setExtent(int)"); }
-  public abstract void setRangeProperties(int value, int extent, int min, int max, boolean adjusting) { throw new AbstractMethodError("javax.swing.BoundedRangeModel.setRangeProperties(int, int, int, int, boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getValue() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setValue(int newValue) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMaximum() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMinimum() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMinimum(int newMinimum) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMaximum(int newMaximum) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setValueIsAdjusting(boolean b) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getValueIsAdjusting() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeChangeListener(javax.swing.event.ChangeListener x) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addChangeListener(javax.swing.event.ChangeListener x) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getExtent() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setExtent(int newExtent) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setRangeProperties(int value, int extent, int min, int max, boolean adjusting) { }
   < ---- END java signatures ---- >
 }

@@ -58,14 +58,22 @@ class Arena {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.foreign.MemorySegment.Scope scope() { throw new AbstractMethodError("java.lang.foreign.Arena.scope()"); }
-  public abstract java.lang.foreign.MemorySegment allocate(long byteSize, long byteAlignment) { throw new AbstractMethodError("java.lang.foreign.Arena.allocate(long, long)"); }
-  public static java.lang.foreign.Arena global() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.Arena.global()"); }
-  public static java.lang.foreign.Arena ofAuto() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.Arena.ofAuto()"); }
-  public static java.lang.foreign.Arena ofConfined() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.Arena.ofConfined()"); }
-  public static java.lang.foreign.Arena ofShared() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.Arena.ofShared()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.foreign.MemorySegment.Scope scope() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.foreign.MemorySegment allocate(long byteSize, long byteAlignment) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.foreign.Arena global() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.foreign.Arena ofAuto() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.foreign.Arena ofConfined() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.foreign.Arena ofShared() { return null; }
   < ---- END java signatures ---- >
 }

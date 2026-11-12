@@ -58,7 +58,9 @@ class WrongMethodTypeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public WrongMethodTypeException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.WrongMethodTypeException.<init>(java.lang.String)"); }
-  public WrongMethodTypeException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.WrongMethodTypeException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public WrongMethodTypeException(java.lang.String s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public WrongMethodTypeException() { }
   < ---- END java constructors ---- >
 }

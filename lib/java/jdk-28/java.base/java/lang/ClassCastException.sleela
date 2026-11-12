@@ -58,7 +58,9 @@ class ClassCastException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ClassCastException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassCastException.<init>()"); }
-  public ClassCastException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassCastException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ClassCastException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ClassCastException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

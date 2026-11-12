@@ -59,28 +59,47 @@ class SSLContext {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SSLContext(javax.net.ssl.SSLContextSpi contextSpi, java.security.Provider provider, java.lang.String protocol) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.<init>(javax.net.ssl.SSLContextSpi, java.security.Provider, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SSLContext(javax.net.ssl.SSLContextSpi contextSpi, java.security.Provider provider, java.lang.String protocol) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.net.ssl.SSLContext getDefault() throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.getDefault()"); }
-  public static javax.net.ssl.SSLContext getInstance(java.lang.String protocol, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.getInstance(java.lang.String, java.security.Provider)"); }
-  public static javax.net.ssl.SSLContext getInstance(java.lang.String protocol, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.getInstance(java.lang.String, java.lang.String)"); }
-  public static javax.net.ssl.SSLContext getInstance(java.lang.String protocol) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.getInstance(java.lang.String)"); }
-  public final void init(javax.net.ssl.KeyManager[] km, javax.net.ssl.TrustManager[] tm, java.security.SecureRandom random) throws java.security.KeyManagementException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.init(javax.net.ssl.KeyManager[], javax.net.ssl.TrustManager[], java.security.SecureRandom)"); }
-  public final java.lang.String getProtocol() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.getProtocol()"); }
-  public final java.security.Provider getProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.getProvider()"); }
-  public static void setDefault(javax.net.ssl.SSLContext context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.setDefault(javax.net.ssl.SSLContext)"); }
-  public final javax.net.ssl.SSLServerSocketFactory getServerSocketFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.getServerSocketFactory()"); }
-  public final javax.net.ssl.SSLSocketFactory getSocketFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.getSocketFactory()"); }
-  public final javax.net.ssl.SSLEngine createSSLEngine() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.createSSLEngine()"); }
-  public final javax.net.ssl.SSLEngine createSSLEngine(java.lang.String peerHost, int peerPort) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.createSSLEngine(java.lang.String, int)"); }
-  public final javax.net.ssl.SSLSessionContext getServerSessionContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.getServerSessionContext()"); }
-  public final javax.net.ssl.SSLSessionContext getClientSessionContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.getClientSessionContext()"); }
-  public final javax.net.ssl.SSLParameters getDefaultSSLParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.getDefaultSSLParameters()"); }
-  public final javax.net.ssl.SSLParameters getSupportedSSLParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLContext.getSupportedSSLParameters()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static javax.net.ssl.SSLContext getDefault() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static javax.net.ssl.SSLContext getInstance(java.lang.String protocol, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException")
+  public static javax.net.ssl.SSLContext getInstance(java.lang.String protocol, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static javax.net.ssl.SSLContext getInstance(java.lang.String protocol) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.KeyManagementException")
+  public final void init(javax.net.ssl.KeyManager[] km, javax.net.ssl.TrustManager[] tm, java.security.SecureRandom random) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getProtocol() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.Provider getProvider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setDefault(javax.net.ssl.SSLContext context) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.net.ssl.SSLServerSocketFactory getServerSocketFactory() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.net.ssl.SSLSocketFactory getSocketFactory() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.net.ssl.SSLEngine createSSLEngine() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.net.ssl.SSLEngine createSSLEngine(java.lang.String peerHost, int peerPort) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.net.ssl.SSLSessionContext getServerSessionContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.net.ssl.SSLSessionContext getClientSessionContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.net.ssl.SSLParameters getDefaultSSLParameters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.net.ssl.SSLParameters getSupportedSSLParameters() { return null; }
   < ---- END java signatures ---- >
 }

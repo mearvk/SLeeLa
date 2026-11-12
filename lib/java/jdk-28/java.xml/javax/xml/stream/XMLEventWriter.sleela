@@ -58,15 +58,24 @@ class XMLEventWriter {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void flush() throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLEventWriter.flush()"); }
-  public abstract void add(javax.xml.stream.XMLEventReader reader) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLEventWriter.add(javax.xml.stream.XMLEventReader)"); }
-  public abstract java.lang.String getPrefix(java.lang.String uri) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLEventWriter.getPrefix(java.lang.String)"); }
-  public abstract javax.xml.namespace.NamespaceContext getNamespaceContext() { throw new AbstractMethodError("javax.xml.stream.XMLEventWriter.getNamespaceContext()"); }
-  public abstract void setDefaultNamespace(java.lang.String uri) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLEventWriter.setDefaultNamespace(java.lang.String)"); }
-  public abstract void setNamespaceContext(javax.xml.namespace.NamespaceContext context) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLEventWriter.setNamespaceContext(javax.xml.namespace.NamespaceContext)"); }
-  public abstract void setPrefix(java.lang.String prefix, java.lang.String uri) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLEventWriter.setPrefix(java.lang.String, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void flush() { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void add(javax.xml.stream.XMLEventReader reader) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public java.lang.String getPrefix(java.lang.String uri) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.namespace.NamespaceContext getNamespaceContext() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void setDefaultNamespace(java.lang.String uri) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void setNamespaceContext(javax.xml.namespace.NamespaceContext context) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void setPrefix(java.lang.String prefix, java.lang.String uri) { }
   < ---- END java signatures ---- >
 }

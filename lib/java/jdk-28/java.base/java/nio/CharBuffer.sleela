@@ -58,61 +58,116 @@ class CharBuffer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.nio.CharBuffer reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.reset()"); }
-  public java.nio.CharBuffer get(int index, char[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.get(int, char[], int, int)"); }
-  public java.nio.CharBuffer get(int index, char[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.get(int, char[])"); }
-  public abstract char get() { throw new AbstractMethodError("java.nio.CharBuffer.get()"); }
-  public java.nio.CharBuffer get(char[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.get(char[])"); }
-  public java.nio.CharBuffer get(char[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.get(char[], int, int)"); }
-  public abstract char get(int index) { throw new AbstractMethodError("java.nio.CharBuffer.get(int)"); }
-  public abstract java.nio.CharBuffer put(int index, char c) { throw new AbstractMethodError("java.nio.CharBuffer.put(int, char)"); }
-  public java.nio.CharBuffer put(char[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.put(char[], int, int)"); }
-  public java.nio.CharBuffer put(int index, java.nio.CharBuffer src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.put(int, java.nio.CharBuffer, int, int)"); }
-  public java.nio.CharBuffer put(java.nio.CharBuffer src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.put(java.nio.CharBuffer)"); }
-  public final java.nio.CharBuffer put(char[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.put(char[])"); }
-  public final java.nio.CharBuffer put(java.lang.String src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.put(java.lang.String)"); }
-  public java.nio.CharBuffer put(java.lang.String src, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.put(java.lang.String, int, int)"); }
-  public abstract java.nio.CharBuffer put(char c) { throw new AbstractMethodError("java.nio.CharBuffer.put(char)"); }
-  public java.nio.CharBuffer put(int index, char[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.put(int, char[], int, int)"); }
-  public java.nio.CharBuffer put(int index, char[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.put(int, char[])"); }
-  public boolean equals(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.equals(java.lang.Object)"); }
-  public final int length() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.length()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.toString()"); }
-  public java.nio.CharBuffer append(java.lang.CharSequence csq) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.append(java.lang.CharSequence)"); }
-  public java.nio.CharBuffer append(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.append(char)"); }
-  public java.nio.CharBuffer append(java.lang.CharSequence csq, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.append(java.lang.CharSequence, int, int)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.hashCode()"); }
-  public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.getChars(int, int, char[], int)"); }
-  public int compareTo(java.nio.CharBuffer that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.compareTo(java.nio.CharBuffer)"); }
-  public final java.nio.CharBuffer clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.clear()"); }
-  public static java.nio.CharBuffer wrap(java.lang.CharSequence csq, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.wrap(java.lang.CharSequence, int, int)"); }
-  public static java.nio.CharBuffer wrap(char[] array) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.wrap(char[])"); }
-  public static java.nio.CharBuffer wrap(java.lang.CharSequence csq) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.wrap(java.lang.CharSequence)"); }
-  public static java.nio.CharBuffer wrap(char[] array, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.wrap(char[], int, int)"); }
-  public final java.nio.CharBuffer position(int newPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.position(int)"); }
-  public final char charAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.charAt(int)"); }
-  public int mismatch(java.nio.CharBuffer that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.mismatch(java.nio.CharBuffer)"); }
-  public final boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.isEmpty()"); }
-  public abstract java.nio.CharBuffer subSequence(int start, int end) { throw new AbstractMethodError("java.nio.CharBuffer.subSequence(int, int)"); }
-  public final java.nio.CharBuffer limit(int newLimit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.limit(int)"); }
-  public java.util.stream.IntStream chars() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.chars()"); }
-  public abstract boolean isDirect() { throw new AbstractMethodError("java.nio.CharBuffer.isDirect()"); }
-  public final boolean hasArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.hasArray()"); }
-  public final char[] array() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.array()"); }
-  public final int arrayOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.arrayOffset()"); }
-  public final java.nio.CharBuffer mark() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.mark()"); }
-  public int read(java.nio.CharBuffer target) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.read(java.nio.CharBuffer)"); }
-  public final java.nio.CharBuffer flip() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.flip()"); }
-  public final java.nio.CharBuffer rewind() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.rewind()"); }
-  public abstract java.nio.CharBuffer slice() { throw new AbstractMethodError("java.nio.CharBuffer.slice()"); }
-  public abstract java.nio.CharBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.CharBuffer.slice(int, int)"); }
-  public abstract java.nio.CharBuffer duplicate() { throw new AbstractMethodError("java.nio.CharBuffer.duplicate()"); }
-  public static java.nio.CharBuffer allocate(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.CharBuffer.allocate(int)"); }
-  public abstract java.nio.CharBuffer asReadOnlyBuffer() { throw new AbstractMethodError("java.nio.CharBuffer.asReadOnlyBuffer()"); }
-  public abstract java.nio.CharBuffer compact() { throw new AbstractMethodError("java.nio.CharBuffer.compact()"); }
-  public abstract java.nio.ByteOrder order() { throw new AbstractMethodError("java.nio.CharBuffer.order()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.CharBuffer reset() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.CharBuffer get(int index, char[] dst, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.CharBuffer get(int index, char[] dst) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public char get() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.CharBuffer get(char[] dst) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.CharBuffer get(char[] dst, int offset, int length) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public char get(int index) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.CharBuffer put(int index, char c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.CharBuffer put(char[] src, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.CharBuffer put(int index, java.nio.CharBuffer src, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.CharBuffer put(java.nio.CharBuffer src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.CharBuffer put(char[] src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.CharBuffer put(java.lang.String src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.CharBuffer put(java.lang.String src, int start, int end) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.CharBuffer put(char c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.CharBuffer put(int index, char[] src, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.CharBuffer put(int index, char[] src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object ob) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int length() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.CharBuffer append(java.lang.CharSequence csq) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.CharBuffer append(char c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.CharBuffer append(java.lang.CharSequence csq, int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.nio.CharBuffer that) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.CharBuffer clear() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.CharBuffer wrap(java.lang.CharSequence csq, int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.CharBuffer wrap(char[] array) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.CharBuffer wrap(java.lang.CharSequence csq) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.CharBuffer wrap(char[] array, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.CharBuffer position(int newPosition) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final char charAt(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int mismatch(java.nio.CharBuffer that) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isEmpty() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.CharBuffer subSequence(int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.CharBuffer limit(int newLimit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.IntStream chars() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDirect() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean hasArray() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final char[] array() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int arrayOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.CharBuffer mark() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public int read(java.nio.CharBuffer target) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.CharBuffer flip() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.CharBuffer rewind() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.CharBuffer slice() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.CharBuffer slice(int index, int length) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.CharBuffer duplicate() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.CharBuffer allocate(int capacity) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.CharBuffer asReadOnlyBuffer() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.CharBuffer compact() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.ByteOrder order() { return null; }
   < ---- END java signatures ---- >
 }

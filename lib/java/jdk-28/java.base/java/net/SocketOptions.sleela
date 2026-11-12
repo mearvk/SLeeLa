@@ -76,10 +76,14 @@ class SocketOptions {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void setOption(int optID, java.lang.Object value) throws java.net.SocketException { throw new AbstractMethodError("java.net.SocketOptions.setOption(int, java.lang.Object)"); }
-  public abstract java.lang.Object getOption(int optID) throws java.net.SocketException { throw new AbstractMethodError("java.net.SocketOptions.getOption(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.net.SocketException")
+  public void setOption(int optID, java.lang.Object value) { }
+  @throwable("java.lang.AbstractMethodError, java.net.SocketException")
+  public java.lang.Object getOption(int optID) { return null; }
   < ---- END java signatures ---- >
 }

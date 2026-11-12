@@ -58,6 +58,7 @@ class SystemSleepEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SystemSleepEvent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.desktop.SystemSleepEvent.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SystemSleepEvent() { }
   < ---- END java constructors ---- >
 }

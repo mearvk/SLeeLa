@@ -58,17 +58,25 @@ class ComponentInputMap {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ComponentInputMap(javax.swing.JComponent component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ComponentInputMap.<init>(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ComponentInputMap(javax.swing.JComponent component) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove(javax.swing.KeyStroke key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ComponentInputMap.remove(javax.swing.KeyStroke)"); }
-  public void put(javax.swing.KeyStroke keyStroke, java.lang.Object actionMapKey) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ComponentInputMap.put(javax.swing.KeyStroke, java.lang.Object)"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ComponentInputMap.clear()"); }
-  public javax.swing.JComponent getComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ComponentInputMap.getComponent()"); }
-  public void setParent(javax.swing.InputMap map) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ComponentInputMap.setParent(javax.swing.InputMap)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(javax.swing.KeyStroke key) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void put(javax.swing.KeyStroke keyStroke, java.lang.Object actionMapKey) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JComponent getComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setParent(javax.swing.InputMap map) { }
   < ---- END java signatures ---- >
 }

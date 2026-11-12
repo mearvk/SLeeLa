@@ -58,13 +58,20 @@ class TableColumnModelListener {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void columnAdded(javax.swing.event.TableColumnModelEvent e) { throw new AbstractMethodError("javax.swing.event.TableColumnModelListener.columnAdded(javax.swing.event.TableColumnModelEvent)"); }
-  public abstract void columnRemoved(javax.swing.event.TableColumnModelEvent e) { throw new AbstractMethodError("javax.swing.event.TableColumnModelListener.columnRemoved(javax.swing.event.TableColumnModelEvent)"); }
-  public abstract void columnMoved(javax.swing.event.TableColumnModelEvent e) { throw new AbstractMethodError("javax.swing.event.TableColumnModelListener.columnMoved(javax.swing.event.TableColumnModelEvent)"); }
-  public abstract void columnMarginChanged(javax.swing.event.ChangeEvent e) { throw new AbstractMethodError("javax.swing.event.TableColumnModelListener.columnMarginChanged(javax.swing.event.ChangeEvent)"); }
-  public abstract void columnSelectionChanged(javax.swing.event.ListSelectionEvent e) { throw new AbstractMethodError("javax.swing.event.TableColumnModelListener.columnSelectionChanged(javax.swing.event.ListSelectionEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void columnAdded(javax.swing.event.TableColumnModelEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void columnRemoved(javax.swing.event.TableColumnModelEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void columnMoved(javax.swing.event.TableColumnModelEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void columnMarginChanged(javax.swing.event.ChangeEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void columnSelectionChanged(javax.swing.event.ListSelectionEvent e) { }
   < ---- END java signatures ---- >
 }

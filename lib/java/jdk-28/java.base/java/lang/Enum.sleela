@@ -59,25 +59,39 @@ class Enum<E extends java.lang.Enum<E>> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Enum(java.lang.String name, int ordinal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Enum.<init>(java.lang.String, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Enum(java.lang.String name, int ordinal) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.lang.String name() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Enum.name()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String name() { return null; }
   @JavaProtected
-  final void finalize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Enum.finalize()"); }
-  public final boolean equals(java.lang.Object other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Enum.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Enum.toString()"); }
-  public final int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Enum.hashCode()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void finalize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean equals(java.lang.Object other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int hashCode() { return 0; }
   @JavaProtected
-  final java.lang.Object clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Enum.clone()"); }
-  public final int compareTo(E o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Enum.compareTo(E)"); }
-  public static <T extends java.lang.Enum<T>> T valueOf(java.lang.Class<T> enumClass, java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Enum.valueOf(java.lang.Class<T>, java.lang.String)"); }
-  public final java.util.Optional<java.lang.Enum.EnumDesc<E>> describeConstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Enum.describeConstable()"); }
-  public final java.lang.Class<E> getDeclaringClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Enum.getDeclaringClass()"); }
-  public final int ordinal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Enum.ordinal()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
+  final java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int compareTo(E o) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T extends java.lang.Enum<T>> T valueOf(java.lang.Class<T> enumClass, java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.Optional<java.lang.Enum.EnumDesc<E>> describeConstable() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Class<E> getDeclaringClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int ordinal() { return 0; }
   < ---- END java signatures ---- >
 }

@@ -59,6 +59,7 @@ class StoppedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StoppedException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.spi.ExecutionControl.StoppedException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StoppedException() { }
   < ---- END java constructors ---- >
 }

@@ -59,17 +59,25 @@ class CardTerminals {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  CardTerminals() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CardTerminals.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  CardTerminals() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.List<javax.smartcardio.CardTerminal> list(javax.smartcardio.CardTerminals.State state) throws javax.smartcardio.CardException { throw new AbstractMethodError("javax.smartcardio.CardTerminals.list(javax.smartcardio.CardTerminals.State)"); }
-  public java.util.List<javax.smartcardio.CardTerminal> list() throws javax.smartcardio.CardException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CardTerminals.list()"); }
-  public void waitForChange() throws javax.smartcardio.CardException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CardTerminals.waitForChange()"); }
-  public abstract boolean waitForChange(long timeout) throws javax.smartcardio.CardException { throw new AbstractMethodError("javax.smartcardio.CardTerminals.waitForChange(long)"); }
-  public javax.smartcardio.CardTerminal getTerminal(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CardTerminals.getTerminal(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.smartcardio.CardException")
+  public java.util.List<javax.smartcardio.CardTerminal> list(javax.smartcardio.CardTerminals.State state) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.smartcardio.CardException")
+  public java.util.List<javax.smartcardio.CardTerminal> list() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.smartcardio.CardException")
+  public void waitForChange() { }
+  @throwable("java.lang.AbstractMethodError, javax.smartcardio.CardException")
+  public boolean waitForChange(long timeout) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.smartcardio.CardTerminal getTerminal(java.lang.String name) { return null; }
   < ---- END java signatures ---- >
 }

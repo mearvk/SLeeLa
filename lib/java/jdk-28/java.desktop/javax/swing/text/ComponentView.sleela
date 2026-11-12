@@ -58,23 +58,36 @@ class ComponentView {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ComponentView(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ComponentView.<init>(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ComponentView(javax.swing.text.Element elem) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.awt.Component getComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ComponentView.getComponent()"); }
-  public void setParent(javax.swing.text.View p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ComponentView.setParent(javax.swing.text.View)"); }
-  public float getAlignment(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ComponentView.getAlignment(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.Component getComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setParent(javax.swing.text.View p) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getAlignment(int axis) { return 0.0; }
   @JavaProtected
-  java.awt.Component createComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ComponentView.createComponent()"); }
-  public float getPreferredSpan(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ComponentView.getPreferredSpan(int)"); }
-  public float getMinimumSpan(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ComponentView.getMinimumSpan(int)"); }
-  public float getMaximumSpan(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ComponentView.getMaximumSpan(int)"); }
-  public int viewToModel(float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] bias) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ComponentView.viewToModel(float, float, java.awt.Shape, javax.swing.text.Position.Bias[])"); }
-  public java.awt.Shape modelToView(int pos, java.awt.Shape a, javax.swing.text.Position.Bias b) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ComponentView.modelToView(int, java.awt.Shape, javax.swing.text.Position.Bias)"); }
-  public void paint(java.awt.Graphics g, java.awt.Shape a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ComponentView.paint(java.awt.Graphics, java.awt.Shape)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Component createComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getPreferredSpan(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMinimumSpan(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMaximumSpan(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int viewToModel(float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] bias) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public java.awt.Shape modelToView(int pos, java.awt.Shape a, javax.swing.text.Position.Bias b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, java.awt.Shape a) { }
   < ---- END java signatures ---- >
 }

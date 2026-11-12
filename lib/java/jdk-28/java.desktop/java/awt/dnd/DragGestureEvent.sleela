@@ -58,24 +58,39 @@ class DragGestureEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DragGestureEvent(java.awt.dnd.DragGestureRecognizer dgr, int act, java.awt.Point ori, java.util.List<? extends java.awt.event.InputEvent> evs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureEvent.<init>(java.awt.dnd.DragGestureRecognizer, int, java.awt.Point, java.util.List<? extends java.awt.event.InputEvent>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DragGestureEvent(java.awt.dnd.DragGestureRecognizer dgr, int act, java.awt.Point ori, java.util.List<? extends java.awt.event.InputEvent> evs) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object[] toArray(java.lang.Object[] array) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureEvent.toArray(java.lang.Object[])"); }
-  public java.lang.Object[] toArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureEvent.toArray()"); }
-  public java.util.Iterator<java.awt.event.InputEvent> iterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureEvent.iterator()"); }
-  public java.awt.Component getComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureEvent.getComponent()"); }
-  public java.awt.dnd.DragSource getDragSource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureEvent.getDragSource()"); }
-  public java.awt.event.InputEvent getTriggerEvent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureEvent.getTriggerEvent()"); }
-  public java.awt.dnd.DragGestureRecognizer getSourceAsDragGestureRecognizer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureEvent.getSourceAsDragGestureRecognizer()"); }
-  public java.awt.Point getDragOrigin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureEvent.getDragOrigin()"); }
-  public int getDragAction() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureEvent.getDragAction()"); }
-  public void startDrag(java.awt.Cursor dragCursor, java.awt.Image dragImage, java.awt.Point imageOffset, java.awt.datatransfer.Transferable transferable, java.awt.dnd.DragSourceListener dsl) throws java.awt.dnd.InvalidDnDOperationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureEvent.startDrag(java.awt.Cursor, java.awt.Image, java.awt.Point, java.awt.datatransfer.Transferable, java.awt.dnd.DragSourceListener)"); }
-  public void startDrag(java.awt.Cursor dragCursor, java.awt.datatransfer.Transferable transferable) throws java.awt.dnd.InvalidDnDOperationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureEvent.startDrag(java.awt.Cursor, java.awt.datatransfer.Transferable)"); }
-  public void startDrag(java.awt.Cursor dragCursor, java.awt.datatransfer.Transferable transferable, java.awt.dnd.DragSourceListener dsl) throws java.awt.dnd.InvalidDnDOperationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragGestureEvent.startDrag(java.awt.Cursor, java.awt.datatransfer.Transferable, java.awt.dnd.DragSourceListener)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] toArray(java.lang.Object[] array) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] toArray() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Iterator<java.awt.event.InputEvent> iterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.dnd.DragSource getDragSource() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.event.InputEvent getTriggerEvent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.dnd.DragGestureRecognizer getSourceAsDragGestureRecognizer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Point getDragOrigin() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDragAction() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.dnd.InvalidDnDOperationException")
+  public void startDrag(java.awt.Cursor dragCursor, java.awt.Image dragImage, java.awt.Point imageOffset, java.awt.datatransfer.Transferable transferable, java.awt.dnd.DragSourceListener dsl) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.dnd.InvalidDnDOperationException")
+  public void startDrag(java.awt.Cursor dragCursor, java.awt.datatransfer.Transferable transferable) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.dnd.InvalidDnDOperationException")
+  public void startDrag(java.awt.Cursor dragCursor, java.awt.datatransfer.Transferable transferable, java.awt.dnd.DragSourceListener dsl) { }
   < ---- END java signatures ---- >
 }

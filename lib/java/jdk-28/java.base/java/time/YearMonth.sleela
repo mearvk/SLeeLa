@@ -58,50 +58,94 @@ class YearMonth {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int get(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.get(java.time.temporal.TemporalField)"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.hashCode()"); }
-  public int compareTo(java.time.YearMonth other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.compareTo(java.time.YearMonth)"); }
-  public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.getLong(java.time.temporal.TemporalField)"); }
-  public static java.time.YearMonth of(int year, java.time.Month month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.of(int, java.time.Month)"); }
-  public static java.time.YearMonth of(int year, int month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.of(int, int)"); }
-  public java.lang.String format(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.format(java.time.format.DateTimeFormatter)"); }
-  public static java.time.YearMonth from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.from(java.time.temporal.TemporalAccessor)"); }
-  public boolean isSupported(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.isSupported(java.time.temporal.TemporalUnit)"); }
-  public static java.time.YearMonth parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.parse(java.lang.CharSequence)"); }
-  public static java.time.YearMonth parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.parse(java.lang.CharSequence, java.time.format.DateTimeFormatter)"); }
-  public java.time.YearMonth with(java.time.temporal.TemporalField field, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.with(java.time.temporal.TemporalField, long)"); }
-  public java.time.YearMonth with(java.time.temporal.TemporalAdjuster adjuster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.with(java.time.temporal.TemporalAdjuster)"); }
-  public <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.query(java.time.temporal.TemporalQuery<R>)"); }
-  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.range(java.time.temporal.TemporalField)"); }
-  public static java.time.YearMonth now() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.now()"); }
-  public static java.time.YearMonth now(java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.now(java.time.ZoneId)"); }
-  public int getYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.getYear()"); }
-  public int getMonthValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.getMonthValue()"); }
-  public java.time.YearMonth minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.minus(long, java.time.temporal.TemporalUnit)"); }
-  public java.time.YearMonth minus(java.time.temporal.TemporalAmount amountToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.minus(java.time.temporal.TemporalAmount)"); }
-  public java.time.YearMonth plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.plus(long, java.time.temporal.TemporalUnit)"); }
-  public java.time.YearMonth plus(java.time.temporal.TemporalAmount amountToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.plus(java.time.temporal.TemporalAmount)"); }
-  public long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.until(java.time.temporal.Temporal, java.time.temporal.TemporalUnit)"); }
-  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.adjustInto(java.time.temporal.Temporal)"); }
-  public boolean isAfter(java.time.YearMonth other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.isAfter(java.time.YearMonth)"); }
-  public boolean isBefore(java.time.YearMonth other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.isBefore(java.time.YearMonth)"); }
-  public boolean isLeapYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.isLeapYear()"); }
-  public int lengthOfMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.lengthOfMonth()"); }
-  public int lengthOfYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.lengthOfYear()"); }
-  public java.time.Month getMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.getMonth()"); }
-  public java.time.YearMonth withMonth(int month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.withMonth(int)"); }
-  public java.time.YearMonth plusMonths(long monthsToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.plusMonths(long)"); }
-  public java.time.YearMonth withYear(int year) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.withYear(int)"); }
-  public java.time.YearMonth plusYears(long yearsToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.plusYears(long)"); }
-  public java.time.YearMonth minusMonths(long monthsToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.minusMonths(long)"); }
-  public java.time.YearMonth minusYears(long yearsToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.minusYears(long)"); }
-  public java.time.LocalDate atDay(int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.atDay(int)"); }
-  public boolean isValidDay(int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.isValidDay(int)"); }
-  public java.time.LocalDate atEndOfMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.atEndOfMonth()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int get(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.time.YearMonth other) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getLong(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.YearMonth of(int year, java.time.Month month) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.YearMonth of(int year, int month) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String format(java.time.format.DateTimeFormatter formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.YearMonth from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSupported(java.time.temporal.TemporalUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.YearMonth parse(java.lang.CharSequence text) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.YearMonth parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.YearMonth with(java.time.temporal.TemporalField field, long newValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.YearMonth with(java.time.temporal.TemporalAdjuster adjuster) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <R> R query(java.time.temporal.TemporalQuery<R> query) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.YearMonth now() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.YearMonth now(java.time.ZoneId zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getYear() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMonthValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.YearMonth minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.YearMonth minus(java.time.temporal.TemporalAmount amountToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.YearMonth plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.YearMonth plus(java.time.temporal.TemporalAmount amountToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAfter(java.time.YearMonth other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBefore(java.time.YearMonth other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLeapYear() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lengthOfMonth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lengthOfYear() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Month getMonth() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.YearMonth withMonth(int month) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.YearMonth plusMonths(long monthsToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.YearMonth withYear(int year) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.YearMonth plusYears(long yearsToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.YearMonth minusMonths(long monthsToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.YearMonth minusYears(long yearsToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate atDay(int dayOfMonth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isValidDay(int dayOfMonth) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate atEndOfMonth() { return null; }
   < ---- END java signatures ---- >
 }

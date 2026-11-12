@@ -58,47 +58,88 @@ class Matcher {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String group(int group) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.group(int)"); }
-  public java.lang.String group() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.group()"); }
-  public java.lang.String group(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.group(java.lang.String)"); }
-  public java.util.regex.Matcher reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.reset()"); }
-  public java.util.regex.Matcher reset(java.lang.CharSequence input) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.reset(java.lang.CharSequence)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.toString()"); }
-  public boolean matches() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.matches()"); }
-  public java.lang.String replaceFirst(java.util.function.Function<java.util.regex.MatchResult, java.lang.String> replacer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.replaceFirst(java.util.function.Function<java.util.regex.MatchResult, java.lang.String>)"); }
-  public java.lang.String replaceFirst(java.lang.String replacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.replaceFirst(java.lang.String)"); }
-  public java.lang.String replaceAll(java.lang.String replacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.replaceAll(java.lang.String)"); }
-  public java.lang.String replaceAll(java.util.function.Function<java.util.regex.MatchResult, java.lang.String> replacer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.replaceAll(java.util.function.Function<java.util.regex.MatchResult, java.lang.String>)"); }
-  public java.util.regex.Pattern pattern() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.pattern()"); }
-  public int end() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.end()"); }
-  public int end(int group) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.end(int)"); }
-  public int end(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.end(java.lang.String)"); }
-  public boolean find() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.find()"); }
-  public boolean find(int start) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.find(int)"); }
-  public int start() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.start()"); }
-  public int start(int group) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.start(int)"); }
-  public int start(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.start(java.lang.String)"); }
-  public java.util.stream.Stream<java.util.regex.MatchResult> results() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.results()"); }
-  public java.util.regex.Matcher region(int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.region(int, int)"); }
-  public java.util.Map<java.lang.String, java.lang.Integer> namedGroups() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.namedGroups()"); }
-  public int groupCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.groupCount()"); }
-  public boolean hasMatch() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.hasMatch()"); }
-  public java.util.regex.Matcher appendReplacement(java.lang.StringBuffer sb, java.lang.String replacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.appendReplacement(java.lang.StringBuffer, java.lang.String)"); }
-  public java.lang.StringBuffer appendTail(java.lang.StringBuffer sb) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.appendTail(java.lang.StringBuffer)"); }
-  public int regionStart() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.regionStart()"); }
-  public int regionEnd() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.regionEnd()"); }
-  public boolean hitEnd() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.hitEnd()"); }
-  public boolean requireEnd() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.requireEnd()"); }
-  public java.util.regex.MatchResult toMatchResult() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.toMatchResult()"); }
-  public java.util.regex.Matcher usePattern(java.util.regex.Pattern newPattern) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.usePattern(java.util.regex.Pattern)"); }
-  public boolean lookingAt() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.lookingAt()"); }
-  public static java.lang.String quoteReplacement(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.quoteReplacement(java.lang.String)"); }
-  public boolean hasTransparentBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.hasTransparentBounds()"); }
-  public java.util.regex.Matcher useTransparentBounds(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.useTransparentBounds(boolean)"); }
-  public boolean hasAnchoringBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.hasAnchoringBounds()"); }
-  public java.util.regex.Matcher useAnchoringBounds(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.Matcher.useAnchoringBounds(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String group(int group) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String group() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String group(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.regex.Matcher reset() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.regex.Matcher reset(java.lang.CharSequence input) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean matches() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String replaceFirst(java.util.function.Function<java.util.regex.MatchResult, java.lang.String> replacer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String replaceFirst(java.lang.String replacement) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String replaceAll(java.lang.String replacement) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String replaceAll(java.util.function.Function<java.util.regex.MatchResult, java.lang.String> replacer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.regex.Pattern pattern() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int end() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int end(int group) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int end(java.lang.String name) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean find() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean find(int start) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int start() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int start(int group) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int start(java.lang.String name) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.Stream<java.util.regex.MatchResult> results() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.regex.Matcher region(int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Map<java.lang.String, java.lang.Integer> namedGroups() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int groupCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasMatch() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.regex.Matcher appendReplacement(java.lang.StringBuffer sb, java.lang.String replacement) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuffer appendTail(java.lang.StringBuffer sb) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int regionStart() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int regionEnd() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hitEnd() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean requireEnd() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.regex.MatchResult toMatchResult() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.regex.Matcher usePattern(java.util.regex.Pattern newPattern) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean lookingAt() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String quoteReplacement(java.lang.String s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasTransparentBounds() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.regex.Matcher useTransparentBounds(boolean b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasAnchoringBounds() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.regex.Matcher useAnchoringBounds(boolean b) { return null; }
   < ---- END java signatures ---- >
 }

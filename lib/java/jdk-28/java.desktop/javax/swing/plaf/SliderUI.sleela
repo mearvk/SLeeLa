@@ -59,6 +59,7 @@ class SliderUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SliderUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.SliderUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SliderUI() { }
   < ---- END java constructors ---- >
 }

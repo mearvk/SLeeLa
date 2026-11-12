@@ -58,29 +58,49 @@ class Subject {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Subject() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.<init>()"); }
-  public Subject(boolean readOnly, java.util.Set<? extends java.security.Principal> principals, java.util.Set<?> pubCredentials, java.util.Set<?> privCredentials) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.<init>(boolean, java.util.Set<? extends java.security.Principal>, java.util.Set<?>, java.util.Set<?>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Subject() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Subject(boolean readOnly, java.util.Set<? extends java.security.Principal> principals, java.util.Set<?> pubCredentials, java.util.Set<?> privCredentials) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.hashCode()"); }
-  public static javax.security.auth.Subject current() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.current()"); }
-  public void setReadOnly() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.setReadOnly()"); }
-  public <T extends java.security.Principal> java.util.Set<T> getPrincipals(java.lang.Class<T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.getPrincipals(java.lang.Class<T>)"); }
-  public java.util.Set<java.security.Principal> getPrincipals() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.getPrincipals()"); }
-  public boolean isReadOnly() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.isReadOnly()"); }
-  public static <T> T callAs(javax.security.auth.Subject subject, java.util.concurrent.Callable<T> action) throws java.util.concurrent.CompletionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.callAs(javax.security.auth.Subject, java.util.concurrent.Callable<T>)"); }
-  public static javax.security.auth.Subject getSubject(java.security.AccessControlContext acc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.getSubject(java.security.AccessControlContext)"); }
-  public static <T> T doAs(javax.security.auth.Subject subject, java.security.PrivilegedExceptionAction<T> action) throws java.security.PrivilegedActionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.doAs(javax.security.auth.Subject, java.security.PrivilegedExceptionAction<T>)"); }
-  public static <T> T doAsPrivileged(javax.security.auth.Subject subject, java.security.PrivilegedExceptionAction<T> action, java.security.AccessControlContext acc) throws java.security.PrivilegedActionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.doAsPrivileged(javax.security.auth.Subject, java.security.PrivilegedExceptionAction<T>, java.security.AccessControlContext)"); }
-  public <T> java.util.Set<T> getPublicCredentials(java.lang.Class<T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.getPublicCredentials(java.lang.Class<T>)"); }
-  public java.util.Set<java.lang.Object> getPublicCredentials() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.getPublicCredentials()"); }
-  public <T> java.util.Set<T> getPrivateCredentials(java.lang.Class<T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.getPrivateCredentials(java.lang.Class<T>)"); }
-  public java.util.Set<java.lang.Object> getPrivateCredentials() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.Subject.getPrivateCredentials()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.security.auth.Subject current() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setReadOnly() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.security.Principal> java.util.Set<T> getPrincipals(java.lang.Class<T> c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.security.Principal> getPrincipals() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isReadOnly() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.util.concurrent.CompletionException")
+  public static <T> T callAs(javax.security.auth.Subject subject, java.util.concurrent.Callable<T> action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.security.auth.Subject getSubject(java.security.AccessControlContext acc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.PrivilegedActionException")
+  public static <T> T doAs(javax.security.auth.Subject subject, java.security.PrivilegedExceptionAction<T> action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.PrivilegedActionException")
+  public static <T> T doAsPrivileged(javax.security.auth.Subject subject, java.security.PrivilegedExceptionAction<T> action, java.security.AccessControlContext acc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> java.util.Set<T> getPublicCredentials(java.lang.Class<T> c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.Object> getPublicCredentials() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> java.util.Set<T> getPrivateCredentials(java.lang.Class<T> c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.Object> getPrivateCredentials() { return null; }
   < ---- END java signatures ---- >
 }

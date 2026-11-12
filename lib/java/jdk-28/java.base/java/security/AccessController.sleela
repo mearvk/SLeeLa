@@ -58,15 +58,24 @@ class AccessController {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static void checkPermission(java.security.Permission perm) throws java.security.AccessControlException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.AccessController.checkPermission(java.security.Permission)"); }
-  public static <T> T doPrivileged(java.security.PrivilegedExceptionAction<T> action, java.security.AccessControlContext context, java.security.Permission... perms) throws java.security.PrivilegedActionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.AccessController.doPrivileged(java.security.PrivilegedExceptionAction<T>, java.security.AccessControlContext, java.security.Permission...)"); }
-  public static <T> T doPrivileged(java.security.PrivilegedAction<T> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.AccessController.doPrivileged(java.security.PrivilegedAction<T>)"); }
-  public static <T> T doPrivileged(java.security.PrivilegedExceptionAction<T> action, java.security.AccessControlContext context) throws java.security.PrivilegedActionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.AccessController.doPrivileged(java.security.PrivilegedExceptionAction<T>, java.security.AccessControlContext)"); }
-  public static <T> T doPrivilegedWithCombiner(java.security.PrivilegedExceptionAction<T> action, java.security.AccessControlContext context, java.security.Permission... perms) throws java.security.PrivilegedActionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.AccessController.doPrivilegedWithCombiner(java.security.PrivilegedExceptionAction<T>, java.security.AccessControlContext, java.security.Permission...)"); }
-  public static <T> T doPrivilegedWithCombiner(java.security.PrivilegedExceptionAction<T> action) throws java.security.PrivilegedActionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.AccessController.doPrivilegedWithCombiner(java.security.PrivilegedExceptionAction<T>)"); }
-  public static java.security.AccessControlContext getContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.AccessController.getContext()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.security.AccessControlException")
+  public static void checkPermission(java.security.Permission perm) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.PrivilegedActionException")
+  public static <T> T doPrivileged(java.security.PrivilegedExceptionAction<T> action, java.security.AccessControlContext context, java.security.Permission... perms) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> T doPrivileged(java.security.PrivilegedAction<T> action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.PrivilegedActionException")
+  public static <T> T doPrivileged(java.security.PrivilegedExceptionAction<T> action, java.security.AccessControlContext context) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.PrivilegedActionException")
+  public static <T> T doPrivilegedWithCombiner(java.security.PrivilegedExceptionAction<T> action, java.security.AccessControlContext context, java.security.Permission... perms) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.PrivilegedActionException")
+  public static <T> T doPrivilegedWithCombiner(java.security.PrivilegedExceptionAction<T> action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.security.AccessControlContext getContext() { return null; }
   < ---- END java signatures ---- >
 }

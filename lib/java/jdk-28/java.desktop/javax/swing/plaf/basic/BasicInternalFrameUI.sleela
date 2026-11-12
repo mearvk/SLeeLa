@@ -73,97 +73,150 @@ class BasicInternalFrameUI {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicInternalFrameUI(javax.swing.JInternalFrame b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.<init>(javax.swing.JInternalFrame)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicInternalFrameUI(javax.swing.JInternalFrame b) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void installListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.installListeners()"); }
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.getPreferredSize(javax.swing.JComponent)"); }
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.getMinimumSize(javax.swing.JComponent)"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.installUI(javax.swing.JComponent)"); }
-  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.uninstallUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListeners() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent x) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent x) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(javax.swing.JComponent c) { }
   @JavaProtected
-  void createInternalFrameListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.createInternalFrameListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void createInternalFrameListener() { }
   @JavaProtected
-  javax.swing.JComponent createNorthPane(javax.swing.JInternalFrame w) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.createNorthPane(javax.swing.JInternalFrame)"); }
-  public void setNorthPane(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.setNorthPane(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JComponent createNorthPane(javax.swing.JInternalFrame w) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNorthPane(javax.swing.JComponent c) { }
   @JavaProtected
-  javax.swing.JComponent createSouthPane(javax.swing.JInternalFrame w) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.createSouthPane(javax.swing.JInternalFrame)"); }
-  public void setSouthPane(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.setSouthPane(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JComponent createSouthPane(javax.swing.JInternalFrame w) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSouthPane(javax.swing.JComponent c) { }
   @JavaProtected
-  javax.swing.JComponent createEastPane(javax.swing.JInternalFrame w) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.createEastPane(javax.swing.JInternalFrame)"); }
-  public void setEastPane(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.setEastPane(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JComponent createEastPane(javax.swing.JInternalFrame w) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEastPane(javax.swing.JComponent c) { }
   @JavaProtected
-  javax.swing.JComponent createWestPane(javax.swing.JInternalFrame w) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.createWestPane(javax.swing.JInternalFrame)"); }
-  public void setWestPane(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.setWestPane(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JComponent createWestPane(javax.swing.JInternalFrame w) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setWestPane(javax.swing.JComponent c) { }
   @JavaProtected
-  javax.swing.event.MouseInputAdapter createBorderListener(javax.swing.JInternalFrame w) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.createBorderListener(javax.swing.JInternalFrame)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.event.MouseInputAdapter createBorderListener(javax.swing.JInternalFrame w) { return null; }
   @JavaProtected
-  void installMouseHandlers(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.installMouseHandlers(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installMouseHandlers(javax.swing.JComponent c) { }
   @JavaProtected
-  javax.swing.event.MouseInputListener createGlassPaneDispatcher() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.createGlassPaneDispatcher()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.event.MouseInputListener createGlassPaneDispatcher() { return null; }
   @JavaProtected
-  java.awt.event.ComponentListener createComponentListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.createComponentListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.ComponentListener createComponentListener() { return null; }
   @JavaProtected
-  void deinstallMouseHandlers(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.deinstallMouseHandlers(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void deinstallMouseHandlers(javax.swing.JComponent c) { }
   @JavaProtected
-  void replacePane(javax.swing.JComponent currentPane, javax.swing.JComponent newPane) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.replacePane(javax.swing.JComponent, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void replacePane(javax.swing.JComponent currentPane, javax.swing.JComponent newPane) { }
   @JavaProtected
-  javax.swing.DesktopManager createDesktopManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.createDesktopManager()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.DesktopManager createDesktopManager() { return null; }
   @JavaProtected
-  final boolean isKeyBindingRegistered() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.isKeyBindingRegistered()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final boolean isKeyBindingRegistered() { return false; }
   @JavaProtected
-  final void setKeyBindingRegistered(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.setKeyBindingRegistered(boolean)"); }
-  public final boolean isKeyBindingActive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.isKeyBindingActive()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void setKeyBindingRegistered(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isKeyBindingActive() { return false; }
   @JavaProtected
-  final void setKeyBindingActive(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.setKeyBindingActive(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void setKeyBindingActive(boolean b) { }
   @JavaProtected
-  void setupMenuOpenKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.setupMenuOpenKey()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setupMenuOpenKey() { }
   @JavaProtected
-  void setupMenuCloseKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.setupMenuCloseKey()"); }
-  public javax.swing.JComponent getNorthPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.getNorthPane()"); }
-  public javax.swing.JComponent getSouthPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.getSouthPane()"); }
-  public javax.swing.JComponent getWestPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.getWestPane()"); }
-  public javax.swing.JComponent getEastPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.getEastPane()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setupMenuCloseKey() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JComponent getNorthPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JComponent getSouthPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JComponent getWestPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JComponent getEastPane() { return null; }
   @JavaProtected
-  java.awt.LayoutManager createLayoutManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.createLayoutManager()"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.LayoutManager createLayoutManager() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent b) { return null; }
   @JavaProtected
-  void installKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.installKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installKeyboardActions() { }
   @JavaProtected
-  void uninstallKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.uninstallKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallKeyboardActions() { }
   @JavaProtected
-  void installDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.installDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults() { }
   @JavaProtected
-  void uninstallListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.uninstallListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallListeners() { }
   @JavaProtected
-  void uninstallDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.uninstallDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults() { }
   @JavaProtected
-  void installComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.installComponents()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installComponents() { }
   @JavaProtected
-  java.beans.PropertyChangeListener createPropertyChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.createPropertyChangeListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
   @JavaProtected
-  void uninstallComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.uninstallComponents()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallComponents() { }
   @JavaProtected
-  void iconifyFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.iconifyFrame(javax.swing.JInternalFrame)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void iconifyFrame(javax.swing.JInternalFrame f) { }
   @JavaProtected
-  void closeFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.closeFrame(javax.swing.JInternalFrame)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void closeFrame(javax.swing.JInternalFrame f) { }
   @JavaProtected
-  void maximizeFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.maximizeFrame(javax.swing.JInternalFrame)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void maximizeFrame(javax.swing.JInternalFrame f) { }
   @JavaProtected
-  void minimizeFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.minimizeFrame(javax.swing.JInternalFrame)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void minimizeFrame(javax.swing.JInternalFrame f) { }
   @JavaProtected
-  void deiconifyFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.deiconifyFrame(javax.swing.JInternalFrame)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void deiconifyFrame(javax.swing.JInternalFrame f) { }
   @JavaProtected
-  void activateFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.activateFrame(javax.swing.JInternalFrame)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void activateFrame(javax.swing.JInternalFrame f) { }
   @JavaProtected
-  void deactivateFrame(javax.swing.JInternalFrame f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.deactivateFrame(javax.swing.JInternalFrame)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void deactivateFrame(javax.swing.JInternalFrame f) { }
   @JavaProtected
-  javax.swing.DesktopManager getDesktopManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.getDesktopManager()"); }
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicInternalFrameUI.getMaximumSize(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.DesktopManager getDesktopManager() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize(javax.swing.JComponent x) { return null; }
   < ---- END java signatures ---- >
 }

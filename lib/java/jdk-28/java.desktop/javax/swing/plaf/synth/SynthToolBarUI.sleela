@@ -58,42 +58,63 @@ class SynthToolBarUI {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SynthToolBarUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SynthToolBarUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void update(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.update(java.awt.Graphics, javax.swing.JComponent)"); }
-  public javax.swing.plaf.synth.SynthContext getContext(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.getContext(javax.swing.JComponent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void update(java.awt.Graphics g, javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.synth.SynthContext getContext(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void installListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.installListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListeners() { }
   @JavaProtected
-  void paintContent(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, java.awt.Rectangle bounds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.paintContent(javax.swing.plaf.synth.SynthContext, java.awt.Graphics, java.awt.Rectangle)"); }
-  public void paintBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.paintBorder(javax.swing.plaf.synth.SynthContext, java.awt.Graphics, int, int, int, int)"); }
-  public void propertyChange(java.beans.PropertyChangeEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.propertyChange(java.beans.PropertyChangeEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintContent(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, java.awt.Rectangle bounds) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void propertyChange(java.beans.PropertyChangeEvent e) { }
   @JavaProtected
-  java.awt.LayoutManager createLayout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.createLayout()"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.LayoutManager createLayout() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void setBorderToRollover(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.setBorderToRollover(java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setBorderToRollover(java.awt.Component c) { }
   @JavaProtected
-  void setBorderToNonRollover(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.setBorderToNonRollover(java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setBorderToNonRollover(java.awt.Component c) { }
   @JavaProtected
-  void setBorderToNormal(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.setBorderToNormal(java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setBorderToNormal(java.awt.Component c) { }
   @JavaProtected
-  void paintDragWindow(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.paintDragWindow(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintDragWindow(java.awt.Graphics g) { }
   @JavaProtected
-  void installDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.installDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults() { }
   @JavaProtected
-  void uninstallListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.uninstallListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallListeners() { }
   @JavaProtected
-  void uninstallDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.uninstallDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults() { }
   @JavaProtected
-  void installComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.installComponents()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installComponents() { }
   @JavaProtected
-  void uninstallComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.uninstallComponents()"); }
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthToolBarUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallComponents() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
   < ---- END java signatures ---- >
 }

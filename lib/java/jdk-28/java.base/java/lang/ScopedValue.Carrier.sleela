@@ -59,12 +59,18 @@ class Carrier {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void run(java.lang.Runnable op) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ScopedValue.Carrier.run(java.lang.Runnable)"); }
-  public <T> T get(java.lang.ScopedValue<T> key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ScopedValue.Carrier.get(java.lang.ScopedValue<T>)"); }
-  public <R, X extends java.lang.Throwable> R call(java.lang.ScopedValue.CallableOp<? extends R, X> op) throws X { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ScopedValue.Carrier.call(java.lang.ScopedValue.CallableOp<? extends R, X>)"); }
-  public <T> java.lang.ScopedValue.Carrier where(java.lang.ScopedValue<T> key, T value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ScopedValue.Carrier.where(java.lang.ScopedValue<T>, T)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void run(java.lang.Runnable op) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> T get(java.lang.ScopedValue<T> key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, X")
+  public <R, X extends java.lang.Throwable> R call(java.lang.ScopedValue.CallableOp<? extends R, X> op) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> java.lang.ScopedValue.Carrier where(java.lang.ScopedValue<T> key, T value) { return null; }
   < ---- END java signatures ---- >
 }

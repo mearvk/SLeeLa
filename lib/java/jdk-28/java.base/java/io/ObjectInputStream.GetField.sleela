@@ -59,23 +59,37 @@ class GetField {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public GetField() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectInputStream.GetField.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public GetField() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract long get(java.lang.String name, long val) throws java.io.IOException { throw new AbstractMethodError("java.io.ObjectInputStream.GetField.get(java.lang.String, long)"); }
-  public abstract int get(java.lang.String name, int val) throws java.io.IOException { throw new AbstractMethodError("java.io.ObjectInputStream.GetField.get(java.lang.String, int)"); }
-  public abstract short get(java.lang.String name, short val) throws java.io.IOException { throw new AbstractMethodError("java.io.ObjectInputStream.GetField.get(java.lang.String, short)"); }
-  public abstract float get(java.lang.String name, float val) throws java.io.IOException { throw new AbstractMethodError("java.io.ObjectInputStream.GetField.get(java.lang.String, float)"); }
-  public abstract double get(java.lang.String name, double val) throws java.io.IOException { throw new AbstractMethodError("java.io.ObjectInputStream.GetField.get(java.lang.String, double)"); }
-  public abstract java.lang.Object get(java.lang.String name, java.lang.Object val) throws java.io.IOException, java.lang.ClassNotFoundException { throw new AbstractMethodError("java.io.ObjectInputStream.GetField.get(java.lang.String, java.lang.Object)"); }
-  public abstract boolean get(java.lang.String name, boolean val) throws java.io.IOException { throw new AbstractMethodError("java.io.ObjectInputStream.GetField.get(java.lang.String, boolean)"); }
-  public abstract byte get(java.lang.String name, byte val) throws java.io.IOException { throw new AbstractMethodError("java.io.ObjectInputStream.GetField.get(java.lang.String, byte)"); }
-  public abstract char get(java.lang.String name, char val) throws java.io.IOException { throw new AbstractMethodError("java.io.ObjectInputStream.GetField.get(java.lang.String, char)"); }
-  public abstract boolean defaulted(java.lang.String name) throws java.io.IOException { throw new AbstractMethodError("java.io.ObjectInputStream.GetField.defaulted(java.lang.String)"); }
-  public abstract java.io.ObjectStreamClass getObjectStreamClass() { throw new AbstractMethodError("java.io.ObjectInputStream.GetField.getObjectStreamClass()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public long get(java.lang.String name, long val) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public int get(java.lang.String name, int val) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public short get(java.lang.String name, short val) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public float get(java.lang.String name, float val) { return 0.0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public double get(java.lang.String name, double val) { return 0.0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException, java.lang.ClassNotFoundException")
+  public java.lang.Object get(java.lang.String name, java.lang.Object val) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public boolean get(java.lang.String name, boolean val) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public byte get(java.lang.String name, byte val) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public char get(java.lang.String name, char val) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public boolean defaulted(java.lang.String name) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.ObjectStreamClass getObjectStreamClass() { return null; }
   < ---- END java signatures ---- >
 }

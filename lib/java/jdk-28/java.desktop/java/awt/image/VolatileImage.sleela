@@ -67,22 +67,35 @@ class VolatileImage {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  VolatileImage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.VolatileImage.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  VolatileImage() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int validate(java.awt.GraphicsConfiguration gc_) { throw new AbstractMethodError("java.awt.image.VolatileImage.validate(java.awt.GraphicsConfiguration)"); }
-  public abstract int getHeight() { throw new AbstractMethodError("java.awt.image.VolatileImage.getHeight()"); }
-  public java.awt.Graphics getGraphics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.VolatileImage.getGraphics()"); }
-  public abstract java.awt.image.BufferedImage getSnapshot() { throw new AbstractMethodError("java.awt.image.VolatileImage.getSnapshot()"); }
-  public abstract java.awt.Graphics2D createGraphics() { throw new AbstractMethodError("java.awt.image.VolatileImage.createGraphics()"); }
-  public abstract boolean contentsLost() { throw new AbstractMethodError("java.awt.image.VolatileImage.contentsLost()"); }
-  public int getTransparency() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.VolatileImage.getTransparency()"); }
-  public abstract int getWidth() { throw new AbstractMethodError("java.awt.image.VolatileImage.getWidth()"); }
-  public abstract java.awt.ImageCapabilities getCapabilities() { throw new AbstractMethodError("java.awt.image.VolatileImage.getCapabilities()"); }
-  public java.awt.image.ImageProducer getSource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.VolatileImage.getSource()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int validate(java.awt.GraphicsConfiguration gc_) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getHeight() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Graphics getGraphics() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.image.BufferedImage getSnapshot() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Graphics2D createGraphics() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean contentsLost() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTransparency() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getWidth() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.ImageCapabilities getCapabilities() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.ImageProducer getSource() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,11 +58,16 @@ class Tool {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default java.lang.String name() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.tools.Tool.name()"); }
-  public abstract int run(java.io.InputStream in, java.io.OutputStream out, java.io.OutputStream err, java.lang.String... arguments) { throw new AbstractMethodError("javax.tools.Tool.run(java.io.InputStream, java.io.OutputStream, java.io.OutputStream, java.lang.String...)"); }
-  public abstract java.util.Set<javax.lang.model.SourceVersion> getSourceVersions() { throw new AbstractMethodError("javax.tools.Tool.getSourceVersions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.String name() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int run(java.io.InputStream in, java.io.OutputStream out, java.io.OutputStream err, java.lang.String... arguments) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<javax.lang.model.SourceVersion> getSourceVersions() { return null; }
   < ---- END java signatures ---- >
 }

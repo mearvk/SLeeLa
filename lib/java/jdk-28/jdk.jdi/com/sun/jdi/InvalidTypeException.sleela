@@ -58,7 +58,9 @@ class InvalidTypeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidTypeException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InvalidTypeException.<init>()"); }
-  public InvalidTypeException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InvalidTypeException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidTypeException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidTypeException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

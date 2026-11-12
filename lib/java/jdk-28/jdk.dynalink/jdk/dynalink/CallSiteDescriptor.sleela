@@ -58,23 +58,35 @@ class CallSiteDescriptor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CallSiteDescriptor(java.lang.invoke.MethodHandles.Lookup lookup, jdk.dynalink.Operation operation, java.lang.invoke.MethodType methodType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.CallSiteDescriptor.<init>(java.lang.invoke.MethodHandles.Lookup, jdk.dynalink.Operation, java.lang.invoke.MethodType)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CallSiteDescriptor(java.lang.invoke.MethodHandles.Lookup lookup, jdk.dynalink.Operation operation, java.lang.invoke.MethodType methodType) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.CallSiteDescriptor.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.CallSiteDescriptor.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.CallSiteDescriptor.hashCode()"); }
-  public final java.lang.invoke.MethodType getMethodType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.CallSiteDescriptor.getMethodType()"); }
-  public final jdk.dynalink.Operation getOperation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.CallSiteDescriptor.getOperation()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.invoke.MethodType getMethodType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final jdk.dynalink.Operation getOperation() { return null; }
   @JavaProtected
-  jdk.dynalink.CallSiteDescriptor changeMethodTypeInternal(java.lang.invoke.MethodType newMethodType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.CallSiteDescriptor.changeMethodTypeInternal(java.lang.invoke.MethodType)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  jdk.dynalink.CallSiteDescriptor changeMethodTypeInternal(java.lang.invoke.MethodType newMethodType) { return null; }
   @JavaProtected
-  jdk.dynalink.CallSiteDescriptor changeOperationInternal(jdk.dynalink.Operation newOperation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.CallSiteDescriptor.changeOperationInternal(jdk.dynalink.Operation)"); }
-  public final jdk.dynalink.CallSiteDescriptor changeMethodType(java.lang.invoke.MethodType newMethodType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.CallSiteDescriptor.changeMethodType(java.lang.invoke.MethodType)"); }
-  public final jdk.dynalink.CallSiteDescriptor changeOperation(jdk.dynalink.Operation newOperation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.CallSiteDescriptor.changeOperation(jdk.dynalink.Operation)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  jdk.dynalink.CallSiteDescriptor changeOperationInternal(jdk.dynalink.Operation newOperation) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final jdk.dynalink.CallSiteDescriptor changeMethodType(java.lang.invoke.MethodType newMethodType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final jdk.dynalink.CallSiteDescriptor changeOperation(jdk.dynalink.Operation newOperation) { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,39 +58,72 @@ class XMLStreamWriter {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object getProperty(java.lang.String name) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.getProperty(java.lang.String)"); }
-  public abstract void flush() throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.flush()"); }
-  public abstract void writeAttribute(java.lang.String prefix, java.lang.String namespaceURI, java.lang.String localName, java.lang.String value) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeAttribute(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract void writeAttribute(java.lang.String localName, java.lang.String value) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeAttribute(java.lang.String, java.lang.String)"); }
-  public abstract void writeAttribute(java.lang.String namespaceURI, java.lang.String localName, java.lang.String value) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeAttribute(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.lang.String getPrefix(java.lang.String uri) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.getPrefix(java.lang.String)"); }
-  public abstract void writeStartElement(java.lang.String localName) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeStartElement(java.lang.String)"); }
-  public abstract void writeStartElement(java.lang.String namespaceURI, java.lang.String localName) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeStartElement(java.lang.String, java.lang.String)"); }
-  public abstract void writeStartElement(java.lang.String prefix, java.lang.String localName, java.lang.String namespaceURI) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeStartElement(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract void writeEmptyElement(java.lang.String prefix, java.lang.String localName, java.lang.String namespaceURI) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeEmptyElement(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract void writeEmptyElement(java.lang.String namespaceURI, java.lang.String localName) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeEmptyElement(java.lang.String, java.lang.String)"); }
-  public abstract void writeEmptyElement(java.lang.String localName) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeEmptyElement(java.lang.String)"); }
-  public abstract void writeEndElement() throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeEndElement()"); }
-  public abstract void writeEndDocument() throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeEndDocument()"); }
-  public abstract void writeNamespace(java.lang.String prefix, java.lang.String namespaceURI) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeNamespace(java.lang.String, java.lang.String)"); }
-  public abstract void writeDefaultNamespace(java.lang.String namespaceURI) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeDefaultNamespace(java.lang.String)"); }
-  public abstract void writeProcessingInstruction(java.lang.String target) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeProcessingInstruction(java.lang.String)"); }
-  public abstract void writeProcessingInstruction(java.lang.String target, java.lang.String data) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeProcessingInstruction(java.lang.String, java.lang.String)"); }
-  public abstract void writeCData(java.lang.String data) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeCData(java.lang.String)"); }
-  public abstract void writeDTD(java.lang.String dtd) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeDTD(java.lang.String)"); }
-  public abstract void writeEntityRef(java.lang.String name) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeEntityRef(java.lang.String)"); }
-  public abstract void writeStartDocument() throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeStartDocument()"); }
-  public abstract void writeStartDocument(java.lang.String encoding, java.lang.String version) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeStartDocument(java.lang.String, java.lang.String)"); }
-  public abstract void writeStartDocument(java.lang.String version) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeStartDocument(java.lang.String)"); }
-  public abstract void writeCharacters(char[] text, int start, int len) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeCharacters(char[], int, int)"); }
-  public abstract void writeCharacters(java.lang.String text) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeCharacters(java.lang.String)"); }
-  public abstract javax.xml.namespace.NamespaceContext getNamespaceContext() { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.getNamespaceContext()"); }
-  public abstract void setDefaultNamespace(java.lang.String uri) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.setDefaultNamespace(java.lang.String)"); }
-  public abstract void setNamespaceContext(javax.xml.namespace.NamespaceContext context) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.setNamespaceContext(javax.xml.namespace.NamespaceContext)"); }
-  public abstract void writeComment(java.lang.String data) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.writeComment(java.lang.String)"); }
-  public abstract void setPrefix(java.lang.String prefix, java.lang.String uri) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLStreamWriter.setPrefix(java.lang.String, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public java.lang.Object getProperty(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void flush() { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeAttribute(java.lang.String prefix, java.lang.String namespaceURI, java.lang.String localName, java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeAttribute(java.lang.String localName, java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeAttribute(java.lang.String namespaceURI, java.lang.String localName, java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public java.lang.String getPrefix(java.lang.String uri) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeStartElement(java.lang.String localName) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeStartElement(java.lang.String namespaceURI, java.lang.String localName) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeStartElement(java.lang.String prefix, java.lang.String localName, java.lang.String namespaceURI) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeEmptyElement(java.lang.String prefix, java.lang.String localName, java.lang.String namespaceURI) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeEmptyElement(java.lang.String namespaceURI, java.lang.String localName) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeEmptyElement(java.lang.String localName) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeEndElement() { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeEndDocument() { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeNamespace(java.lang.String prefix, java.lang.String namespaceURI) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeDefaultNamespace(java.lang.String namespaceURI) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeProcessingInstruction(java.lang.String target) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeProcessingInstruction(java.lang.String target, java.lang.String data) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeCData(java.lang.String data) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeDTD(java.lang.String dtd) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeEntityRef(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeStartDocument() { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeStartDocument(java.lang.String encoding, java.lang.String version) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeStartDocument(java.lang.String version) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeCharacters(char[] text, int start, int len) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeCharacters(java.lang.String text) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.namespace.NamespaceContext getNamespaceContext() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void setDefaultNamespace(java.lang.String uri) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void setNamespaceContext(javax.xml.namespace.NamespaceContext context) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeComment(java.lang.String data) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void setPrefix(java.lang.String prefix, java.lang.String uri) { }
   < ---- END java signatures ---- >
 }

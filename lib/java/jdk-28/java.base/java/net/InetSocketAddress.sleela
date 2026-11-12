@@ -58,23 +58,37 @@ class InetSocketAddress {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InetSocketAddress(java.lang.String hostname, int port) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.InetSocketAddress.<init>(java.lang.String, int)"); }
-  public InetSocketAddress(int port) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.InetSocketAddress.<init>(int)"); }
-  public InetSocketAddress(java.net.InetAddress addr, int port) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.InetSocketAddress.<init>(java.net.InetAddress, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InetSocketAddress(java.lang.String hostname, int port) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InetSocketAddress(int port) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InetSocketAddress(java.net.InetAddress addr, int port) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.InetSocketAddress.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.InetSocketAddress.toString()"); }
-  public final int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.InetSocketAddress.hashCode()"); }
-  public final java.net.InetAddress getAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.InetSocketAddress.getAddress()"); }
-  public final int getPort() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.InetSocketAddress.getPort()"); }
-  public final java.lang.String getHostName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.InetSocketAddress.getHostName()"); }
-  public final boolean isUnresolved() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.InetSocketAddress.isUnresolved()"); }
-  public final java.lang.String getHostString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.InetSocketAddress.getHostString()"); }
-  public static java.net.InetSocketAddress createUnresolved(java.lang.String host, int port) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.InetSocketAddress.createUnresolved(java.lang.String, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.net.InetAddress getAddress() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getPort() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getHostName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isUnresolved() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getHostString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.InetSocketAddress createUnresolved(java.lang.String host, int port) { return null; }
   < ---- END java signatures ---- >
 }

@@ -68,82 +68,152 @@ class JTabbedPane {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JTabbedPane(int tabPlacement, int tabLayoutPolicy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.<init>(int, int)"); }
-  public JTabbedPane(int tabPlacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.<init>(int)"); }
-  public JTabbedPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTabbedPane(int tabPlacement, int tabLayoutPolicy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTabbedPane(int tabPlacement) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTabbedPane() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove(java.awt.Component component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.remove(java.awt.Component)"); }
-  public void remove(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.remove(int)"); }
-  public void add(java.awt.Component component, java.lang.Object constraints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.add(java.awt.Component, java.lang.Object)"); }
-  public java.awt.Component add(java.lang.String title, java.awt.Component component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.add(java.lang.String, java.awt.Component)"); }
-  public java.awt.Component add(java.awt.Component component, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.add(java.awt.Component, int)"); }
-  public void add(java.awt.Component component, java.lang.Object constraints, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.add(java.awt.Component, java.lang.Object, int)"); }
-  public java.awt.Component add(java.awt.Component component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.add(java.awt.Component)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(java.awt.Component component) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void add(java.awt.Component component, java.lang.Object constraints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component add(java.lang.String title, java.awt.Component component) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component add(java.awt.Component component, int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void add(java.awt.Component component, java.lang.Object constraints, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component add(java.awt.Component component) { return null; }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.paramString()"); }
-  public void removeAll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.removeAll()"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.updateUI()"); }
-  public void setUI(javax.swing.plaf.TabbedPaneUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setUI(javax.swing.plaf.TabbedPaneUI)"); }
-  public javax.swing.plaf.TabbedPaneUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getUI()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getUIClassID()"); }
-  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getToolTipText(java.awt.event.MouseEvent)"); }
-  public int indexOfComponent(java.awt.Component component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.indexOfComponent(java.awt.Component)"); }
-  public void removeTabAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.removeTabAt(int)"); }
-  public void insertTab(java.lang.String title, javax.swing.Icon icon, java.awt.Component component, java.lang.String tip, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.insertTab(java.lang.String, javax.swing.Icon, java.awt.Component, java.lang.String, int)"); }
-  public void setTabComponentAt(int index, java.awt.Component component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setTabComponentAt(int, java.awt.Component)"); }
-  public java.awt.Component getSelectedComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getSelectedComponent()"); }
-  public int getTabRunCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getTabRunCount()"); }
-  public boolean isEnabledAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.isEnabledAt(int)"); }
-  public java.awt.Rectangle getBoundsAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getBoundsAt(int)"); }
-  public java.awt.Component getTabComponentAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getTabComponentAt(int)"); }
-  public int indexOfTabComponent(java.awt.Component tabComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.indexOfTabComponent(java.awt.Component)"); }
-  public int getTabPlacement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getTabPlacement()"); }
-  public int getTabLayoutPolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getTabLayoutPolicy()"); }
-  public void setSelectedComponent(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setSelectedComponent(java.awt.Component)"); }
-  public javax.swing.Icon getDisabledIconAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getDisabledIconAt(int)"); }
-  public java.lang.String getToolTipTextAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getToolTipTextAt(int)"); }
-  public java.awt.Color getBackgroundAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getBackgroundAt(int)"); }
-  public java.awt.Color getForegroundAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getForegroundAt(int)"); }
-  public int getMnemonicAt(int tabIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getMnemonicAt(int)"); }
-  public int getDisplayedMnemonicIndexAt(int tabIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getDisplayedMnemonicIndexAt(int)"); }
-  public void setTitleAt(int index, java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setTitleAt(int, java.lang.String)"); }
-  public void setIconAt(int index, javax.swing.Icon icon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setIconAt(int, javax.swing.Icon)"); }
-  public void setToolTipTextAt(int index, java.lang.String toolTipText) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setToolTipTextAt(int, java.lang.String)"); }
-  public void setBackgroundAt(int index, java.awt.Color background) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setBackgroundAt(int, java.awt.Color)"); }
-  public void setForegroundAt(int index, java.awt.Color foreground) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setForegroundAt(int, java.awt.Color)"); }
-  public void setEnabledAt(int index, boolean enabled) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setEnabledAt(int, boolean)"); }
-  public void setComponentAt(int index, java.awt.Component component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setComponentAt(int, java.awt.Component)"); }
-  public void setDisplayedMnemonicIndexAt(int tabIndex, int mnemonicIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setDisplayedMnemonicIndexAt(int, int)"); }
-  public void setMnemonicAt(int tabIndex, int mnemonic) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setMnemonicAt(int, int)"); }
-  public int indexOfTab(javax.swing.Icon icon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.indexOfTab(javax.swing.Icon)"); }
-  public int indexOfTab(java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.indexOfTab(java.lang.String)"); }
-  public int indexAtLocation(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.indexAtLocation(int, int)"); }
-  public void setSelectedIndex(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setSelectedIndex(int)"); }
-  public int getSelectedIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getSelectedIndex()"); }
-  public void setTabPlacement(int tabPlacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setTabPlacement(int)"); }
-  public void setTabLayoutPolicy(int tabLayoutPolicy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setTabLayoutPolicy(int)"); }
-  public void setDisabledIconAt(int index, javax.swing.Icon disabledIcon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setDisabledIconAt(int, javax.swing.Icon)"); }
-  public javax.swing.SingleSelectionModel getModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getModel()"); }
-  public void removeChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.removeChangeListener(javax.swing.event.ChangeListener)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAll() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.TabbedPaneUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.TabbedPaneUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int indexOfComponent(java.awt.Component component) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeTabAt(int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertTab(java.lang.String title, javax.swing.Icon icon, java.awt.Component component, java.lang.String tip, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTabComponentAt(int index, java.awt.Component component) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getSelectedComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTabRunCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEnabledAt(int index) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getBoundsAt(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getTabComponentAt(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int indexOfTabComponent(java.awt.Component tabComponent) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTabPlacement() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTabLayoutPolicy() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectedComponent(java.awt.Component c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getDisabledIconAt(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getToolTipTextAt(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getBackgroundAt(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getForegroundAt(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMnemonicAt(int tabIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDisplayedMnemonicIndexAt(int tabIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTitleAt(int index, java.lang.String title) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIconAt(int index, javax.swing.Icon icon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToolTipTextAt(int index, java.lang.String toolTipText) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBackgroundAt(int index, java.awt.Color background) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setForegroundAt(int index, java.awt.Color foreground) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEnabledAt(int index, boolean enabled) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setComponentAt(int index, java.awt.Component component) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDisplayedMnemonicIndexAt(int tabIndex, int mnemonicIndex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMnemonicAt(int tabIndex, int mnemonic) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int indexOfTab(javax.swing.Icon icon) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int indexOfTab(java.lang.String title) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int indexAtLocation(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectedIndex(int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSelectedIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTabPlacement(int tabPlacement) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTabLayoutPolicy(int tabLayoutPolicy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDisabledIconAt(int index, javax.swing.Icon disabledIcon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.SingleSelectionModel getModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeChangeListener(javax.swing.event.ChangeListener l) { }
   @JavaProtected
-  javax.swing.event.ChangeListener createChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.createChangeListener()"); }
-  public void addChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.addChangeListener(javax.swing.event.ChangeListener)"); }
-  public void setModel(javax.swing.SingleSelectionModel model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.setModel(javax.swing.SingleSelectionModel)"); }
-  public javax.swing.event.ChangeListener[] getChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getChangeListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.event.ChangeListener createChangeListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addChangeListener(javax.swing.event.ChangeListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setModel(javax.swing.SingleSelectionModel model) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.ChangeListener[] getChangeListeners() { return null; }
   @JavaProtected
-  void fireStateChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.fireStateChanged()"); }
-  public int getTabCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getTabCount()"); }
-  public void addTab(java.lang.String title, java.awt.Component component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.addTab(java.lang.String, java.awt.Component)"); }
-  public void addTab(java.lang.String title, javax.swing.Icon icon, java.awt.Component component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.addTab(java.lang.String, javax.swing.Icon, java.awt.Component)"); }
-  public void addTab(java.lang.String title, javax.swing.Icon icon, java.awt.Component component, java.lang.String tip) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.addTab(java.lang.String, javax.swing.Icon, java.awt.Component, java.lang.String)"); }
-  public java.lang.String getTitleAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getTitleAt(int)"); }
-  public javax.swing.Icon getIconAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getIconAt(int)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getAccessibleContext()"); }
-  public java.awt.Component getComponentAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTabbedPane.getComponentAt(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireStateChanged() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTabCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addTab(java.lang.String title, java.awt.Component component) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addTab(java.lang.String title, javax.swing.Icon icon, java.awt.Component component) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addTab(java.lang.String title, javax.swing.Icon icon, java.awt.Component component, java.lang.String tip) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getTitleAt(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getIconAt(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponentAt(int index) { return null; }
   < ---- END java signatures ---- >
 }

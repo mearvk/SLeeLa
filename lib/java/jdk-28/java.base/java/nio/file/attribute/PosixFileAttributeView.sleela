@@ -58,12 +58,18 @@ class PosixFileAttributeView {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String name() { throw new AbstractMethodError("java.nio.file.attribute.PosixFileAttributeView.name()"); }
-  public abstract java.nio.file.attribute.PosixFileAttributes readAttributes() throws java.io.IOException { throw new AbstractMethodError("java.nio.file.attribute.PosixFileAttributeView.readAttributes()"); }
-  public abstract void setPermissions(java.util.Set<java.nio.file.attribute.PosixFilePermission> perms) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.attribute.PosixFileAttributeView.setPermissions(java.util.Set<java.nio.file.attribute.PosixFilePermission>)"); }
-  public abstract void setGroup(java.nio.file.attribute.GroupPrincipal group) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.attribute.PosixFileAttributeView.setGroup(java.nio.file.attribute.GroupPrincipal)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String name() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.file.attribute.PosixFileAttributes readAttributes() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void setPermissions(java.util.Set<java.nio.file.attribute.PosixFilePermission> perms) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void setGroup(java.nio.file.attribute.GroupPrincipal group) { }
   < ---- END java signatures ---- >
 }

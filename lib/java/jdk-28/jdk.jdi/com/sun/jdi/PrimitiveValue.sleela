@@ -58,16 +58,26 @@ class PrimitiveValue {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean booleanValue() { throw new AbstractMethodError("com.sun.jdi.PrimitiveValue.booleanValue()"); }
-  public abstract byte byteValue() { throw new AbstractMethodError("com.sun.jdi.PrimitiveValue.byteValue()"); }
-  public abstract char charValue() { throw new AbstractMethodError("com.sun.jdi.PrimitiveValue.charValue()"); }
-  public abstract short shortValue() { throw new AbstractMethodError("com.sun.jdi.PrimitiveValue.shortValue()"); }
-  public abstract int intValue() { throw new AbstractMethodError("com.sun.jdi.PrimitiveValue.intValue()"); }
-  public abstract long longValue() { throw new AbstractMethodError("com.sun.jdi.PrimitiveValue.longValue()"); }
-  public abstract float floatValue() { throw new AbstractMethodError("com.sun.jdi.PrimitiveValue.floatValue()"); }
-  public abstract double doubleValue() { throw new AbstractMethodError("com.sun.jdi.PrimitiveValue.doubleValue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean booleanValue() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte byteValue() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public char charValue() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public short shortValue() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int intValue() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long longValue() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float floatValue() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public double doubleValue() { return 0.0; }
   < ---- END java signatures ---- >
 }

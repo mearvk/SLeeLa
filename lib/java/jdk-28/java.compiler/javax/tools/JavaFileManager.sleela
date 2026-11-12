@@ -58,27 +58,48 @@ class JavaFileManager {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void flush() throws java.io.IOException { throw new AbstractMethodError("javax.tools.JavaFileManager.flush()"); }
-  public default boolean contains(javax.tools.JavaFileManager.Location location, javax.tools.FileObject fo) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.tools.JavaFileManager.contains(javax.tools.JavaFileManager.Location, javax.tools.FileObject)"); }
-  public abstract java.lang.Iterable<javax.tools.JavaFileObject> list(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.util.Set<javax.tools.JavaFileObject.Kind> kinds, boolean recurse) throws java.io.IOException { throw new AbstractMethodError("javax.tools.JavaFileManager.list(javax.tools.JavaFileManager.Location, java.lang.String, java.util.Set<javax.tools.JavaFileObject.Kind>, boolean)"); }
-  public abstract java.lang.ClassLoader getClassLoader(javax.tools.JavaFileManager.Location location) { throw new AbstractMethodError("javax.tools.JavaFileManager.getClassLoader(javax.tools.JavaFileManager.Location)"); }
-  public abstract boolean isSameFile(javax.tools.FileObject a, javax.tools.FileObject b) { throw new AbstractMethodError("javax.tools.JavaFileManager.isSameFile(javax.tools.FileObject, javax.tools.FileObject)"); }
-  public default <S> java.util.ServiceLoader<S> getServiceLoader(javax.tools.JavaFileManager.Location location, java.lang.Class<S> service) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.tools.JavaFileManager.getServiceLoader(javax.tools.JavaFileManager.Location, java.lang.Class<S>)"); }
-  public abstract boolean handleOption(java.lang.String current, java.util.Iterator<java.lang.String> remaining) { throw new AbstractMethodError("javax.tools.JavaFileManager.handleOption(java.lang.String, java.util.Iterator<java.lang.String>)"); }
-  public abstract javax.tools.JavaFileObject getJavaFileForOutput(javax.tools.JavaFileManager.Location location, java.lang.String className, javax.tools.JavaFileObject.Kind kind, javax.tools.FileObject sibling) throws java.io.IOException { throw new AbstractMethodError("javax.tools.JavaFileManager.getJavaFileForOutput(javax.tools.JavaFileManager.Location, java.lang.String, javax.tools.JavaFileObject.Kind, javax.tools.FileObject)"); }
-  public abstract javax.tools.FileObject getFileForOutput(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.lang.String relativeName, javax.tools.FileObject sibling) throws java.io.IOException { throw new AbstractMethodError("javax.tools.JavaFileManager.getFileForOutput(javax.tools.JavaFileManager.Location, java.lang.String, java.lang.String, javax.tools.FileObject)"); }
-  public abstract java.lang.String inferBinaryName(javax.tools.JavaFileManager.Location location, javax.tools.JavaFileObject file) { throw new AbstractMethodError("javax.tools.JavaFileManager.inferBinaryName(javax.tools.JavaFileManager.Location, javax.tools.JavaFileObject)"); }
-  public abstract boolean hasLocation(javax.tools.JavaFileManager.Location location) { throw new AbstractMethodError("javax.tools.JavaFileManager.hasLocation(javax.tools.JavaFileManager.Location)"); }
-  public abstract javax.tools.JavaFileObject getJavaFileForInput(javax.tools.JavaFileManager.Location location, java.lang.String className, javax.tools.JavaFileObject.Kind kind) throws java.io.IOException { throw new AbstractMethodError("javax.tools.JavaFileManager.getJavaFileForInput(javax.tools.JavaFileManager.Location, java.lang.String, javax.tools.JavaFileObject.Kind)"); }
-  public default javax.tools.JavaFileObject getJavaFileForOutputForOriginatingFiles(javax.tools.JavaFileManager.Location location, java.lang.String className, javax.tools.JavaFileObject.Kind kind, javax.tools.FileObject... originatingFiles) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.tools.JavaFileManager.getJavaFileForOutputForOriginatingFiles(javax.tools.JavaFileManager.Location, java.lang.String, javax.tools.JavaFileObject.Kind, javax.tools.FileObject...)"); }
-  public abstract javax.tools.FileObject getFileForInput(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.lang.String relativeName) throws java.io.IOException { throw new AbstractMethodError("javax.tools.JavaFileManager.getFileForInput(javax.tools.JavaFileManager.Location, java.lang.String, java.lang.String)"); }
-  public default javax.tools.FileObject getFileForOutputForOriginatingFiles(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.lang.String relativeName, javax.tools.FileObject... originatingFiles) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.tools.JavaFileManager.getFileForOutputForOriginatingFiles(javax.tools.JavaFileManager.Location, java.lang.String, java.lang.String, javax.tools.FileObject...)"); }
-  public default javax.tools.JavaFileManager.Location getLocationForModule(javax.tools.JavaFileManager.Location location, javax.tools.JavaFileObject fo) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.tools.JavaFileManager.getLocationForModule(javax.tools.JavaFileManager.Location, javax.tools.JavaFileObject)"); }
-  public default javax.tools.JavaFileManager.Location getLocationForModule(javax.tools.JavaFileManager.Location location, java.lang.String moduleName) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.tools.JavaFileManager.getLocationForModule(javax.tools.JavaFileManager.Location, java.lang.String)"); }
-  public default java.lang.String inferModuleName(javax.tools.JavaFileManager.Location location) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.tools.JavaFileManager.inferModuleName(javax.tools.JavaFileManager.Location)"); }
-  public default java.lang.Iterable<java.util.Set<javax.tools.JavaFileManager.Location>> listLocationsForModules(javax.tools.JavaFileManager.Location location) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.tools.JavaFileManager.listLocationsForModules(javax.tools.JavaFileManager.Location)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void flush() { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public default boolean contains(javax.tools.JavaFileManager.Location location, javax.tools.FileObject fo) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.lang.Iterable<javax.tools.JavaFileObject> list(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.util.Set<javax.tools.JavaFileObject.Kind> kinds, boolean recurse) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.ClassLoader getClassLoader(javax.tools.JavaFileManager.Location location) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSameFile(javax.tools.FileObject a, javax.tools.FileObject b) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public default <S> java.util.ServiceLoader<S> getServiceLoader(javax.tools.JavaFileManager.Location location, java.lang.Class<S> service) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean handleOption(java.lang.String current, java.util.Iterator<java.lang.String> remaining) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public javax.tools.JavaFileObject getJavaFileForOutput(javax.tools.JavaFileManager.Location location, java.lang.String className, javax.tools.JavaFileObject.Kind kind, javax.tools.FileObject sibling) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public javax.tools.FileObject getFileForOutput(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.lang.String relativeName, javax.tools.FileObject sibling) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String inferBinaryName(javax.tools.JavaFileManager.Location location, javax.tools.JavaFileObject file) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasLocation(javax.tools.JavaFileManager.Location location) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public javax.tools.JavaFileObject getJavaFileForInput(javax.tools.JavaFileManager.Location location, java.lang.String className, javax.tools.JavaFileObject.Kind kind) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public default javax.tools.JavaFileObject getJavaFileForOutputForOriginatingFiles(javax.tools.JavaFileManager.Location location, java.lang.String className, javax.tools.JavaFileObject.Kind kind, javax.tools.FileObject... originatingFiles) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public javax.tools.FileObject getFileForInput(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.lang.String relativeName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public default javax.tools.FileObject getFileForOutputForOriginatingFiles(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.lang.String relativeName, javax.tools.FileObject... originatingFiles) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public default javax.tools.JavaFileManager.Location getLocationForModule(javax.tools.JavaFileManager.Location location, javax.tools.JavaFileObject fo) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public default javax.tools.JavaFileManager.Location getLocationForModule(javax.tools.JavaFileManager.Location location, java.lang.String moduleName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public default java.lang.String inferModuleName(javax.tools.JavaFileManager.Location location) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public default java.lang.Iterable<java.util.Set<javax.tools.JavaFileManager.Location>> listLocationsForModules(javax.tools.JavaFileManager.Location location) { return null; }
   < ---- END java signatures ---- >
 }

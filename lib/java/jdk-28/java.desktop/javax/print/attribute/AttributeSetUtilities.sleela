@@ -58,13 +58,20 @@ class AttributeSetUtilities {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.print.attribute.PrintRequestAttributeSet unmodifiableView(javax.print.attribute.PrintRequestAttributeSet attributeSet) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.AttributeSetUtilities.unmodifiableView(javax.print.attribute.PrintRequestAttributeSet)"); }
-  public static javax.print.attribute.PrintJobAttributeSet synchronizedView(javax.print.attribute.PrintJobAttributeSet attributeSet) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.AttributeSetUtilities.synchronizedView(javax.print.attribute.PrintJobAttributeSet)"); }
-  public static java.lang.Class<?> verifyAttributeCategory(java.lang.Object object, java.lang.Class<?> interfaceName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.AttributeSetUtilities.verifyAttributeCategory(java.lang.Object, java.lang.Class<?>)"); }
-  public static javax.print.attribute.Attribute verifyAttributeValue(java.lang.Object object, java.lang.Class<?> interfaceName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.AttributeSetUtilities.verifyAttributeValue(java.lang.Object, java.lang.Class<?>)"); }
-  public static void verifyCategoryForValue(java.lang.Class<?> category, javax.print.attribute.Attribute attribute) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.AttributeSetUtilities.verifyCategoryForValue(java.lang.Class<?>, javax.print.attribute.Attribute)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.print.attribute.PrintRequestAttributeSet unmodifiableView(javax.print.attribute.PrintRequestAttributeSet attributeSet) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.print.attribute.PrintJobAttributeSet synchronizedView(javax.print.attribute.PrintJobAttributeSet attributeSet) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Class<?> verifyAttributeCategory(java.lang.Object object, java.lang.Class<?> interfaceName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.print.attribute.Attribute verifyAttributeValue(java.lang.Object object, java.lang.Class<?> interfaceName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void verifyCategoryForValue(java.lang.Class<?> category, javax.print.attribute.Attribute attribute) { }
   < ---- END java signatures ---- >
 }

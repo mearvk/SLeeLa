@@ -58,7 +58,9 @@ class DateTimeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DateTimeException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DateTimeException.<init>(java.lang.String)"); }
-  public DateTimeException(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DateTimeException.<init>(java.lang.String, java.lang.Throwable)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DateTimeException(java.lang.String message) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DateTimeException(java.lang.String message, java.lang.Throwable cause) { }
   < ---- END java constructors ---- >
 }

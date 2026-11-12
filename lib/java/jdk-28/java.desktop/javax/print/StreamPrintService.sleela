@@ -59,16 +59,23 @@ class StreamPrintService {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  StreamPrintService(java.io.OutputStream out) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.StreamPrintService.<init>(java.io.OutputStream)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  StreamPrintService(java.io.OutputStream out) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void dispose() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.StreamPrintService.dispose()"); }
-  public java.io.OutputStream getOutputStream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.StreamPrintService.getOutputStream()"); }
-  public boolean isDisposed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.StreamPrintService.isDisposed()"); }
-  public abstract java.lang.String getOutputFormat() { throw new AbstractMethodError("javax.print.StreamPrintService.getOutputFormat()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void dispose() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.OutputStream getOutputStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDisposed() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getOutputFormat() { return null; }
   < ---- END java signatures ---- >
 }

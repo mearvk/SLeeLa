@@ -58,15 +58,21 @@ class NamingExceptionEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NamingExceptionEvent(javax.naming.event.EventContext source, javax.naming.NamingException exc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.event.NamingExceptionEvent.<init>(javax.naming.event.EventContext, javax.naming.NamingException)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NamingExceptionEvent(javax.naming.event.EventContext source, javax.naming.NamingException exc) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void dispatch(javax.naming.event.NamingListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.event.NamingExceptionEvent.dispatch(javax.naming.event.NamingListener)"); }
-  public javax.naming.NamingException getException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.event.NamingExceptionEvent.getException()"); }
-  public javax.naming.event.EventContext getEventContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.event.NamingExceptionEvent.getEventContext()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void dispatch(javax.naming.event.NamingListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.naming.NamingException getException() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.naming.event.EventContext getEventContext() { return null; }
   < ---- END java signatures ---- >
 }

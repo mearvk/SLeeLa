@@ -58,15 +58,24 @@ class NodeIterator {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract org.w3c.dom.Node getRoot() { throw new AbstractMethodError("org.w3c.dom.traversal.NodeIterator.getRoot()"); }
-  public abstract org.w3c.dom.Node nextNode() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.traversal.NodeIterator.nextNode()"); }
-  public abstract org.w3c.dom.traversal.NodeFilter getFilter() { throw new AbstractMethodError("org.w3c.dom.traversal.NodeIterator.getFilter()"); }
-  public abstract void detach() { throw new AbstractMethodError("org.w3c.dom.traversal.NodeIterator.detach()"); }
-  public abstract int getWhatToShow() { throw new AbstractMethodError("org.w3c.dom.traversal.NodeIterator.getWhatToShow()"); }
-  public abstract boolean getExpandEntityReferences() { throw new AbstractMethodError("org.w3c.dom.traversal.NodeIterator.getExpandEntityReferences()"); }
-  public abstract org.w3c.dom.Node previousNode() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.traversal.NodeIterator.previousNode()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Node getRoot() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Node nextNode() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.traversal.NodeFilter getFilter() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void detach() { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getWhatToShow() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getExpandEntityReferences() { return false; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Node previousNode() { return null; }
   < ---- END java signatures ---- >
 }

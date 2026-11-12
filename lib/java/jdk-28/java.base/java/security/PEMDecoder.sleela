@@ -58,15 +58,24 @@ class PEMDecoder {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static java.security.PEMDecoder of() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PEMDecoder.of()"); }
-  public <S extends java.security.DEREncodable> S decode(java.io.InputStream is, java.lang.Class<S> tClass) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PEMDecoder.decode(java.io.InputStream, java.lang.Class<S>)"); }
-  public <S extends java.security.DEREncodable> S decode(java.lang.String str, java.lang.Class<S> tClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PEMDecoder.decode(java.lang.String, java.lang.Class<S>)"); }
-  public java.security.DEREncodable decode(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PEMDecoder.decode(java.lang.String)"); }
-  public java.security.DEREncodable decode(java.io.InputStream is) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PEMDecoder.decode(java.io.InputStream)"); }
-  public java.security.PEMDecoder withFactory(java.security.Provider provider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PEMDecoder.withFactory(java.security.Provider)"); }
-  public java.security.PEMDecoder withDecryption(char[] password) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PEMDecoder.withDecryption(char[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.security.PEMDecoder of() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public <S extends java.security.DEREncodable> S decode(java.io.InputStream is, java.lang.Class<S> tClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <S extends java.security.DEREncodable> S decode(java.lang.String str, java.lang.Class<S> tClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.DEREncodable decode(java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.security.DEREncodable decode(java.io.InputStream is) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.PEMDecoder withFactory(java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.PEMDecoder withDecryption(char[] password) { return null; }
   < ---- END java signatures ---- >
 }

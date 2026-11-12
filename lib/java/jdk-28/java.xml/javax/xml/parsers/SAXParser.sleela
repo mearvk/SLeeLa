@@ -59,24 +59,39 @@ class SAXParser {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SAXParser() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParser.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SAXParser() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParser.reset()"); }
-  public abstract java.lang.Object getProperty(java.lang.String name) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new AbstractMethodError("javax.xml.parsers.SAXParser.getProperty(java.lang.String)"); }
-  public abstract void setProperty(java.lang.String name, java.lang.Object value) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new AbstractMethodError("javax.xml.parsers.SAXParser.setProperty(java.lang.String, java.lang.Object)"); }
-  public void parse(java.io.File f, org.xml.sax.HandlerBase hb) throws org.xml.sax.SAXException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParser.parse(java.io.File, org.xml.sax.HandlerBase)"); }
-  public void parse(java.io.InputStream is, org.xml.sax.HandlerBase hb, java.lang.String systemId) throws org.xml.sax.SAXException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParser.parse(java.io.InputStream, org.xml.sax.HandlerBase, java.lang.String)"); }
-  public void parse(java.lang.String uri, org.xml.sax.helpers.DefaultHandler dh) throws org.xml.sax.SAXException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParser.parse(java.lang.String, org.xml.sax.helpers.DefaultHandler)"); }
-  public javax.xml.validation.Schema getSchema() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParser.getSchema()"); }
-  public abstract org.xml.sax.Parser getParser() throws org.xml.sax.SAXException { throw new AbstractMethodError("javax.xml.parsers.SAXParser.getParser()"); }
-  public abstract org.xml.sax.XMLReader getXMLReader() throws org.xml.sax.SAXException { throw new AbstractMethodError("javax.xml.parsers.SAXParser.getXMLReader()"); }
-  public abstract boolean isNamespaceAware() { throw new AbstractMethodError("javax.xml.parsers.SAXParser.isNamespaceAware()"); }
-  public abstract boolean isValidating() { throw new AbstractMethodError("javax.xml.parsers.SAXParser.isValidating()"); }
-  public boolean isXIncludeAware() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParser.isXIncludeAware()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reset() { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public java.lang.Object getProperty(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public void setProperty(java.lang.String name, java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException, java.io.IOException")
+  public void parse(java.io.File f, org.xml.sax.HandlerBase hb) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException, java.io.IOException")
+  public void parse(java.io.InputStream is, org.xml.sax.HandlerBase hb, java.lang.String systemId) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException, java.io.IOException")
+  public void parse(java.lang.String uri, org.xml.sax.helpers.DefaultHandler dh) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.validation.Schema getSchema() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public org.xml.sax.Parser getParser() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public org.xml.sax.XMLReader getXMLReader() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isNamespaceAware() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isValidating() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isXIncludeAware() { return false; }
   < ---- END java signatures ---- >
 }

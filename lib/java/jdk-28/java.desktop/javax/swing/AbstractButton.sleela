@@ -87,116 +87,208 @@ class AbstractButton {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractButton() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractButton() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void init(java.lang.String text, javax.swing.Icon icon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.init(java.lang.String, javax.swing.Icon)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void init(java.lang.String text, javax.swing.Icon icon) { }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.paramString()"); }
-  public java.lang.String getLabel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getLabel()"); }
-  public java.lang.String getText() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getText()"); }
-  public void setText(java.lang.String text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setText(java.lang.String)"); }
-  public void setEnabled(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setEnabled(boolean)"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.updateUI()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLabel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getText() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setText(java.lang.String text) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEnabled(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
   @JavaProtected
-  void paintBorder(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.paintBorder(java.awt.Graphics)"); }
-  public void setUI(javax.swing.plaf.ButtonUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setUI(javax.swing.plaf.ButtonUI)"); }
-  public javax.swing.plaf.ButtonUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getUI()"); }
-  public boolean isSelected() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.isSelected()"); }
-  public boolean isBorderPainted() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.isBorderPainted()"); }
-  public void setSelected(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setSelected(boolean)"); }
-  public void setBorderPainted(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setBorderPainted(boolean)"); }
-  public void setMargin(java.awt.Insets m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setMargin(java.awt.Insets)"); }
-  public java.awt.Insets getMargin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getMargin()"); }
-  public void setLabel(java.lang.String label) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setLabel(java.lang.String)"); }
-  public void addActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.addActionListener(java.awt.event.ActionListener)"); }
-  public void setActionCommand(java.lang.String actionCommand) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setActionCommand(java.lang.String)"); }
-  public void removeActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.removeActionListener(java.awt.event.ActionListener)"); }
-  public java.awt.event.ActionListener[] getActionListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getActionListeners()"); }
-  public void addItemListener(java.awt.event.ItemListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.addItemListener(java.awt.event.ItemListener)"); }
-  public java.lang.Object[] getSelectedObjects() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getSelectedObjects()"); }
-  public void removeItemListener(java.awt.event.ItemListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.removeItemListener(java.awt.event.ItemListener)"); }
-  public java.awt.event.ItemListener[] getItemListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getItemListeners()"); }
-  public javax.swing.Icon getIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getIcon()"); }
-  public javax.swing.Action getAction() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getAction()"); }
-  public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.imageUpdate(java.awt.Image, int, int, int, int, int)"); }
-  public java.lang.String getActionCommand() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getActionCommand()"); }
-  public int getMnemonic() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getMnemonic()"); }
-  public void doClick() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.doClick()"); }
-  public void doClick(int pressTime) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.doClick(int)"); }
-  public javax.swing.ButtonModel getModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getModel()"); }
-  public void setRolloverEnabled(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setRolloverEnabled(boolean)"); }
-  public javax.swing.Icon getDisabledIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getDisabledIcon()"); }
-  public javax.swing.Icon getSelectedIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getSelectedIcon()"); }
-  public javax.swing.Icon getDisabledSelectedIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getDisabledSelectedIcon()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintBorder(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.ButtonUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.ButtonUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSelected() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBorderPainted() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelected(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBorderPainted(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMargin(java.awt.Insets m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getMargin() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLabel(java.lang.String label) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setActionCommand(java.lang.String actionCommand) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.event.ActionListener[] getActionListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addItemListener(java.awt.event.ItemListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] getSelectedObjects() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeItemListener(java.awt.event.ItemListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.event.ItemListener[] getItemListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Action getAction() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int w, int h) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getActionCommand() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMnemonic() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void doClick() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void doClick(int pressTime) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.ButtonModel getModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRolloverEnabled(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getDisabledIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getSelectedIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getDisabledSelectedIcon() { return null; }
   @JavaProtected
-  int checkVerticalKey(int key, java.lang.String exception) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.checkVerticalKey(int, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int checkVerticalKey(int key, java.lang.String exception) { return 0; }
   @JavaProtected
-  int checkHorizontalKey(int key, java.lang.String exception) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.checkHorizontalKey(int, java.lang.String)"); }
-  public boolean isRolloverEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.isRolloverEnabled()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int checkHorizontalKey(int key, java.lang.String exception) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRolloverEnabled() { return false; }
   @JavaProtected
-  void configurePropertiesFromAction(javax.swing.Action a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.configurePropertiesFromAction(javax.swing.Action)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void configurePropertiesFromAction(javax.swing.Action a) { }
   @JavaProtected
-  java.beans.PropertyChangeListener createActionPropertyChangeListener(javax.swing.Action a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.createActionPropertyChangeListener(javax.swing.Action)"); }
-  public boolean getHideActionText() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getHideActionText()"); }
-  public void setHideActionText(boolean hideActionText) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setHideActionText(boolean)"); }
-  public void setDisplayedMnemonicIndex(int index) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setDisplayedMnemonicIndex(int)"); }
-  public void setMnemonic(char mnemonic) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setMnemonic(char)"); }
-  public void setMnemonic(int mnemonic) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setMnemonic(int)"); }
-  public void setIcon(javax.swing.Icon defaultIcon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setIcon(javax.swing.Icon)"); }
-  public void removeChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.removeChangeListener(javax.swing.event.ChangeListener)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.beans.PropertyChangeListener createActionPropertyChangeListener(javax.swing.Action a) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getHideActionText() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHideActionText(boolean hideActionText) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public void setDisplayedMnemonicIndex(int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMnemonic(char mnemonic) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMnemonic(int mnemonic) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIcon(javax.swing.Icon defaultIcon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeChangeListener(javax.swing.event.ChangeListener l) { }
   @JavaProtected
-  javax.swing.event.ChangeListener createChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.createChangeListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.event.ChangeListener createChangeListener() { return null; }
   @JavaProtected
-  java.awt.event.ActionListener createActionListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.createActionListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.ActionListener createActionListener() { return null; }
   @JavaProtected
-  java.awt.event.ItemListener createItemListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.createItemListener()"); }
-  public void addChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.addChangeListener(javax.swing.event.ChangeListener)"); }
-  public void setDisabledIcon(javax.swing.Icon disabledIcon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setDisabledIcon(javax.swing.Icon)"); }
-  public void setDisabledSelectedIcon(javax.swing.Icon disabledSelectedIcon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setDisabledSelectedIcon(javax.swing.Icon)"); }
-  public void setAction(javax.swing.Action a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setAction(javax.swing.Action)"); }
-  public javax.swing.Icon getPressedIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getPressedIcon()"); }
-  public javax.swing.Icon getRolloverSelectedIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getRolloverSelectedIcon()"); }
-  public javax.swing.Icon getRolloverIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getRolloverIcon()"); }
-  public void setIconTextGap(int iconTextGap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setIconTextGap(int)"); }
-  public void setContentAreaFilled(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setContentAreaFilled(boolean)"); }
-  public void setPressedIcon(javax.swing.Icon pressedIcon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setPressedIcon(javax.swing.Icon)"); }
-  public void setSelectedIcon(javax.swing.Icon selectedIcon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setSelectedIcon(javax.swing.Icon)"); }
-  public void setRolloverIcon(javax.swing.Icon rolloverIcon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setRolloverIcon(javax.swing.Icon)"); }
-  public void setRolloverSelectedIcon(javax.swing.Icon rolloverSelectedIcon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setRolloverSelectedIcon(javax.swing.Icon)"); }
-  public int getVerticalAlignment() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getVerticalAlignment()"); }
-  public void setVerticalAlignment(int alignment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setVerticalAlignment(int)"); }
-  public int getHorizontalAlignment() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getHorizontalAlignment()"); }
-  public void setHorizontalAlignment(int alignment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setHorizontalAlignment(int)"); }
-  public int getVerticalTextPosition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getVerticalTextPosition()"); }
-  public void setVerticalTextPosition(int textPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setVerticalTextPosition(int)"); }
-  public int getHorizontalTextPosition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getHorizontalTextPosition()"); }
-  public void setHorizontalTextPosition(int textPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setHorizontalTextPosition(int)"); }
-  public int getIconTextGap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getIconTextGap()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.ItemListener createItemListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addChangeListener(javax.swing.event.ChangeListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDisabledIcon(javax.swing.Icon disabledIcon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDisabledSelectedIcon(javax.swing.Icon disabledSelectedIcon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAction(javax.swing.Action a) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getPressedIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getRolloverSelectedIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getRolloverIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIconTextGap(int iconTextGap) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setContentAreaFilled(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPressedIcon(javax.swing.Icon pressedIcon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectedIcon(javax.swing.Icon selectedIcon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRolloverIcon(javax.swing.Icon rolloverIcon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRolloverSelectedIcon(javax.swing.Icon rolloverSelectedIcon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVerticalAlignment() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVerticalAlignment(int alignment) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHorizontalAlignment() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHorizontalAlignment(int alignment) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVerticalTextPosition() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVerticalTextPosition(int textPosition) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHorizontalTextPosition() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHorizontalTextPosition(int textPosition) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getIconTextGap() { return 0; }
   @JavaProtected
-  void actionPropertyChanged(javax.swing.Action action, java.lang.String propertyName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.actionPropertyChanged(javax.swing.Action, java.lang.String)"); }
-  public boolean isFocusPainted() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.isFocusPainted()"); }
-  public void setFocusPainted(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setFocusPainted(boolean)"); }
-  public boolean isContentAreaFilled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.isContentAreaFilled()"); }
-  public int getDisplayedMnemonicIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getDisplayedMnemonicIndex()"); }
-  public void setMultiClickThreshhold(long threshold) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setMultiClickThreshhold(long)"); }
-  public long getMultiClickThreshhold() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getMultiClickThreshhold()"); }
-  public void setModel(javax.swing.ButtonModel newModel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setModel(javax.swing.ButtonModel)"); }
-  public javax.swing.event.ChangeListener[] getChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.getChangeListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void actionPropertyChanged(javax.swing.Action action, java.lang.String propertyName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFocusPainted() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFocusPainted(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isContentAreaFilled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDisplayedMnemonicIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMultiClickThreshhold(long threshold) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getMultiClickThreshhold() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setModel(javax.swing.ButtonModel newModel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.ChangeListener[] getChangeListeners() { return null; }
   @JavaProtected
-  void fireStateChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.fireStateChanged()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireStateChanged() { }
   @JavaProtected
-  void fireActionPerformed(java.awt.event.ActionEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.fireActionPerformed(java.awt.event.ActionEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireActionPerformed(java.awt.event.ActionEvent event) { }
   @JavaProtected
-  void fireItemStateChanged(java.awt.event.ItemEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.fireItemStateChanged(java.awt.event.ItemEvent)"); }
-  public void setLayout(java.awt.LayoutManager mgr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.setLayout(java.awt.LayoutManager)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireItemStateChanged(java.awt.event.ItemEvent event) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayout(java.awt.LayoutManager mgr) { }
   @JavaProtected
-  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.addImpl(java.awt.Component, java.lang.Object, int)"); }
-  public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractButton.removeNotify()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeNotify() { }
   < ---- END java signatures ---- >
 }

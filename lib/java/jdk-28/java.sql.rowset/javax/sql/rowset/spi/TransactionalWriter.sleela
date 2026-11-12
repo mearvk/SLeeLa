@@ -58,11 +58,16 @@ class TransactionalWriter {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void commit() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.spi.TransactionalWriter.commit()"); }
-  public abstract void rollback() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.spi.TransactionalWriter.rollback()"); }
-  public abstract void rollback(java.sql.Savepoint s) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.spi.TransactionalWriter.rollback(java.sql.Savepoint)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void commit() { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void rollback() { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void rollback(java.sql.Savepoint s) { }
   < ---- END java signatures ---- >
 }

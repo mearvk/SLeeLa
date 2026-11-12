@@ -62,38 +62,67 @@ class ObjectName {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ObjectName(java.lang.String domain, java.lang.String key, java.lang.String value) throws javax.management.MalformedObjectNameException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.<init>(java.lang.String, java.lang.String, java.lang.String)"); }
-  public ObjectName(java.lang.String name) throws javax.management.MalformedObjectNameException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.<init>(java.lang.String)"); }
-  public ObjectName(java.lang.String domain, java.util.Hashtable<java.lang.String, java.lang.String> table) throws javax.management.MalformedObjectNameException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.<init>(java.lang.String, java.util.Hashtable<java.lang.String, java.lang.String>)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MalformedObjectNameException")
+  public ObjectName(java.lang.String domain, java.lang.String key, java.lang.String value) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MalformedObjectNameException")
+  public ObjectName(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MalformedObjectNameException")
+  public ObjectName(java.lang.String domain, java.util.Hashtable<java.lang.String, java.lang.String> table) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object object) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.hashCode()"); }
-  public int compareTo(javax.management.ObjectName name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.compareTo(javax.management.ObjectName)"); }
-  public boolean apply(javax.management.ObjectName name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.apply(javax.management.ObjectName)"); }
-  public java.lang.String getCanonicalName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.getCanonicalName()"); }
-  public static javax.management.ObjectName getInstance(javax.management.ObjectName name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.getInstance(javax.management.ObjectName)"); }
-  public static javax.management.ObjectName getInstance(java.lang.String domain, java.util.Hashtable<java.lang.String, java.lang.String> table) throws javax.management.MalformedObjectNameException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.getInstance(java.lang.String, java.util.Hashtable<java.lang.String, java.lang.String>)"); }
-  public static javax.management.ObjectName getInstance(java.lang.String domain, java.lang.String key, java.lang.String value) throws javax.management.MalformedObjectNameException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.getInstance(java.lang.String, java.lang.String, java.lang.String)"); }
-  public static javax.management.ObjectName getInstance(java.lang.String name) throws javax.management.MalformedObjectNameException, java.lang.NullPointerException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.getInstance(java.lang.String)"); }
-  public static java.lang.String quote(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.quote(java.lang.String)"); }
-  public java.util.Hashtable<java.lang.String, java.lang.String> getKeyPropertyList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.getKeyPropertyList()"); }
-  public java.lang.String getKeyPropertyListString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.getKeyPropertyListString()"); }
-  public void setMBeanServer(javax.management.MBeanServer mbs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.setMBeanServer(javax.management.MBeanServer)"); }
-  public java.lang.String getDomain() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.getDomain()"); }
-  public java.lang.String getKeyProperty(java.lang.String property) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.getKeyProperty(java.lang.String)"); }
-  public boolean isPropertyListPattern() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.isPropertyListPattern()"); }
-  public boolean isPattern() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.isPattern()"); }
-  public boolean isDomainPattern() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.isDomainPattern()"); }
-  public boolean isPropertyValuePattern(java.lang.String property) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.isPropertyValuePattern(java.lang.String)"); }
-  public boolean isPropertyValuePattern() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.isPropertyValuePattern()"); }
-  public boolean isPropertyPattern() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.isPropertyPattern()"); }
-  public java.lang.String getCanonicalKeyPropertyListString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.getCanonicalKeyPropertyListString()"); }
-  public static java.lang.String unquote(java.lang.String q) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ObjectName.unquote(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object object) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(javax.management.ObjectName name) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean apply(javax.management.ObjectName name) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getCanonicalName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.ObjectName getInstance(javax.management.ObjectName name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MalformedObjectNameException")
+  public static javax.management.ObjectName getInstance(java.lang.String domain, java.util.Hashtable<java.lang.String, java.lang.String> table) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MalformedObjectNameException")
+  public static javax.management.ObjectName getInstance(java.lang.String domain, java.lang.String key, java.lang.String value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MalformedObjectNameException, java.lang.NullPointerException")
+  public static javax.management.ObjectName getInstance(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String quote(java.lang.String s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Hashtable<java.lang.String, java.lang.String> getKeyPropertyList() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getKeyPropertyListString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMBeanServer(javax.management.MBeanServer mbs) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDomain() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getKeyProperty(java.lang.String property) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPropertyListPattern() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPattern() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDomainPattern() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPropertyValuePattern(java.lang.String property) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPropertyValuePattern() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPropertyPattern() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getCanonicalKeyPropertyListString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String unquote(java.lang.String q) { return null; }
   < ---- END java signatures ---- >
 }

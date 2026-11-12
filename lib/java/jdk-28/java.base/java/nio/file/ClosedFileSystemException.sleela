@@ -58,6 +58,7 @@ class ClosedFileSystemException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ClosedFileSystemException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.ClosedFileSystemException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ClosedFileSystemException() { }
   < ---- END java constructors ---- >
 }

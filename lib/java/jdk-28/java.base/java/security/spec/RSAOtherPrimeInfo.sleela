@@ -58,15 +58,21 @@ class RSAOtherPrimeInfo {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RSAOtherPrimeInfo(java.math.BigInteger prime, java.math.BigInteger primeExponent, java.math.BigInteger crtCoefficient) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.RSAOtherPrimeInfo.<init>(java.math.BigInteger, java.math.BigInteger, java.math.BigInteger)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RSAOtherPrimeInfo(java.math.BigInteger prime, java.math.BigInteger primeExponent, java.math.BigInteger crtCoefficient) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.math.BigInteger getExponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.RSAOtherPrimeInfo.getExponent()"); }
-  public final java.math.BigInteger getCrtCoefficient() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.RSAOtherPrimeInfo.getCrtCoefficient()"); }
-  public final java.math.BigInteger getPrime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.RSAOtherPrimeInfo.getPrime()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.math.BigInteger getExponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.math.BigInteger getCrtCoefficient() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.math.BigInteger getPrime() { return null; }
   < ---- END java signatures ---- >
 }

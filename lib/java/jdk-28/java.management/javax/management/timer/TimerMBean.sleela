@@ -58,30 +58,54 @@ class TimerMBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean isEmpty() { throw new AbstractMethodError("javax.management.timer.TimerMBean.isEmpty()"); }
-  public abstract void start() { throw new AbstractMethodError("javax.management.timer.TimerMBean.start()"); }
-  public abstract void stop() { throw new AbstractMethodError("javax.management.timer.TimerMBean.stop()"); }
-  public abstract boolean isActive() { throw new AbstractMethodError("javax.management.timer.TimerMBean.isActive()"); }
-  public abstract java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period, long nbOccurences, boolean fixedRate) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.management.timer.TimerMBean.addNotification(java.lang.String, java.lang.String, java.lang.Object, java.util.Date, long, long, boolean)"); }
-  public abstract java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.management.timer.TimerMBean.addNotification(java.lang.String, java.lang.String, java.lang.Object, java.util.Date, long)"); }
-  public abstract java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period, long nbOccurences) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.management.timer.TimerMBean.addNotification(java.lang.String, java.lang.String, java.lang.Object, java.util.Date, long, long)"); }
-  public abstract java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.management.timer.TimerMBean.addNotification(java.lang.String, java.lang.String, java.lang.Object, java.util.Date)"); }
-  public abstract java.util.Vector<java.lang.Integer> getNotificationIDs(java.lang.String type) { throw new AbstractMethodError("javax.management.timer.TimerMBean.getNotificationIDs(java.lang.String)"); }
-  public abstract void removeNotification(java.lang.Integer id) throws javax.management.InstanceNotFoundException { throw new AbstractMethodError("javax.management.timer.TimerMBean.removeNotification(java.lang.Integer)"); }
-  public abstract void removeNotifications(java.lang.String type) throws javax.management.InstanceNotFoundException { throw new AbstractMethodError("javax.management.timer.TimerMBean.removeNotifications(java.lang.String)"); }
-  public abstract void removeAllNotifications() { throw new AbstractMethodError("javax.management.timer.TimerMBean.removeAllNotifications()"); }
-  public abstract int getNbNotifications() { throw new AbstractMethodError("javax.management.timer.TimerMBean.getNbNotifications()"); }
-  public abstract java.util.Vector<java.lang.Integer> getAllNotificationIDs() { throw new AbstractMethodError("javax.management.timer.TimerMBean.getAllNotificationIDs()"); }
-  public abstract java.lang.String getNotificationType(java.lang.Integer id) { throw new AbstractMethodError("javax.management.timer.TimerMBean.getNotificationType(java.lang.Integer)"); }
-  public abstract java.lang.String getNotificationMessage(java.lang.Integer id) { throw new AbstractMethodError("javax.management.timer.TimerMBean.getNotificationMessage(java.lang.Integer)"); }
-  public abstract java.lang.Object getNotificationUserData(java.lang.Integer id) { throw new AbstractMethodError("javax.management.timer.TimerMBean.getNotificationUserData(java.lang.Integer)"); }
-  public abstract java.lang.Long getPeriod(java.lang.Integer id) { throw new AbstractMethodError("javax.management.timer.TimerMBean.getPeriod(java.lang.Integer)"); }
-  public abstract java.lang.Long getNbOccurences(java.lang.Integer id) { throw new AbstractMethodError("javax.management.timer.TimerMBean.getNbOccurences(java.lang.Integer)"); }
-  public abstract java.lang.Boolean getFixedRate(java.lang.Integer id) { throw new AbstractMethodError("javax.management.timer.TimerMBean.getFixedRate(java.lang.Integer)"); }
-  public abstract boolean getSendPastNotifications() { throw new AbstractMethodError("javax.management.timer.TimerMBean.getSendPastNotifications()"); }
-  public abstract void setSendPastNotifications(boolean value) { throw new AbstractMethodError("javax.management.timer.TimerMBean.setSendPastNotifications(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void start() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void stop() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isActive() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period, long nbOccurences, boolean fixedRate) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period, long nbOccurences) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Vector<java.lang.Integer> getNotificationIDs(java.lang.String type) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException")
+  public void removeNotification(java.lang.Integer id) { }
+  @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException")
+  public void removeNotifications(java.lang.String type) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeAllNotifications() { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getNbNotifications() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Vector<java.lang.Integer> getAllNotificationIDs() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getNotificationType(java.lang.Integer id) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getNotificationMessage(java.lang.Integer id) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getNotificationUserData(java.lang.Integer id) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Long getPeriod(java.lang.Integer id) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Long getNbOccurences(java.lang.Integer id) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Boolean getFixedRate(java.lang.Integer id) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getSendPastNotifications() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSendPastNotifications(boolean value) { }
   < ---- END java signatures ---- >
 }

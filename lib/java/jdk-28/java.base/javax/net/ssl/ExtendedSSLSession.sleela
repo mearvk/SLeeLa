@@ -58,18 +58,27 @@ class ExtendedSSLSession {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ExtendedSSLSession() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.ExtendedSSLSession.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ExtendedSSLSession() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String[] getLocalSupportedSignatureAlgorithms() { throw new AbstractMethodError("javax.net.ssl.ExtendedSSLSession.getLocalSupportedSignatureAlgorithms()"); }
-  public abstract java.lang.String[] getPeerSupportedSignatureAlgorithms() { throw new AbstractMethodError("javax.net.ssl.ExtendedSSLSession.getPeerSupportedSignatureAlgorithms()"); }
-  public java.util.List<javax.net.ssl.SNIServerName> getRequestedServerNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.ExtendedSSLSession.getRequestedServerNames()"); }
-  public java.util.List<byte[]> getStatusResponses() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.ExtendedSSLSession.getStatusResponses()"); }
-  public javax.crypto.SecretKey exportKeyingMaterialKey(java.lang.String keyAlg, java.lang.String label, byte[] context, int length) throws javax.net.ssl.SSLKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.ExtendedSSLSession.exportKeyingMaterialKey(java.lang.String, java.lang.String, byte[], int)"); }
-  public byte[] exportKeyingMaterialData(java.lang.String label, byte[] context, int length) throws javax.net.ssl.SSLKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.ExtendedSSLSession.exportKeyingMaterialData(java.lang.String, byte[], int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getLocalSupportedSignatureAlgorithms() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getPeerSupportedSignatureAlgorithms() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<javax.net.ssl.SNIServerName> getRequestedServerNames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<byte[]> getStatusResponses() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.net.ssl.SSLKeyException")
+  public javax.crypto.SecretKey exportKeyingMaterialKey(java.lang.String keyAlg, java.lang.String label, byte[] context, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.net.ssl.SSLKeyException")
+  public byte[] exportKeyingMaterialData(java.lang.String label, byte[] context, int length) { return null; }
   < ---- END java signatures ---- >
 }

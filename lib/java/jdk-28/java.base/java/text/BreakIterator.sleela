@@ -63,34 +63,59 @@ class BreakIterator {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  BreakIterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  BreakIterator() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.clone()"); }
-  public abstract int next() { throw new AbstractMethodError("java.text.BreakIterator.next()"); }
-  public abstract int next(int n) { throw new AbstractMethodError("java.text.BreakIterator.next(int)"); }
-  public abstract int last() { throw new AbstractMethodError("java.text.BreakIterator.last()"); }
-  public abstract int first() { throw new AbstractMethodError("java.text.BreakIterator.first()"); }
-  public abstract int current() { throw new AbstractMethodError("java.text.BreakIterator.current()"); }
-  public abstract int previous() { throw new AbstractMethodError("java.text.BreakIterator.previous()"); }
-  public static synchronized java.util.Locale[] getAvailableLocales() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.getAvailableLocales()"); }
-  public static java.text.BreakIterator getWordInstance(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.getWordInstance(java.util.Locale)"); }
-  public static java.text.BreakIterator getWordInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.getWordInstance()"); }
-  public static java.text.BreakIterator getLineInstance(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.getLineInstance(java.util.Locale)"); }
-  public static java.text.BreakIterator getLineInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.getLineInstance()"); }
-  public static java.text.BreakIterator getCharacterInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.getCharacterInstance()"); }
-  public static java.text.BreakIterator getCharacterInstance(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.getCharacterInstance(java.util.Locale)"); }
-  public static java.text.BreakIterator getSentenceInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.getSentenceInstance()"); }
-  public static java.text.BreakIterator getSentenceInstance(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.getSentenceInstance(java.util.Locale)"); }
-  public abstract java.text.CharacterIterator getText() { throw new AbstractMethodError("java.text.BreakIterator.getText()"); }
-  public abstract void setText(java.text.CharacterIterator newText) { throw new AbstractMethodError("java.text.BreakIterator.setText(java.text.CharacterIterator)"); }
-  public void setText(java.lang.String newText) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.setText(java.lang.String)"); }
-  public abstract int following(int offset) { throw new AbstractMethodError("java.text.BreakIterator.following(int)"); }
-  public int preceding(int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.preceding(int)"); }
-  public boolean isBoundary(int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.BreakIterator.isBoundary(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int next() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int next(int n) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int last() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int first() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int current() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int previous() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static synchronized java.util.Locale[] getAvailableLocales() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.BreakIterator getWordInstance(java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.BreakIterator getWordInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.BreakIterator getLineInstance(java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.BreakIterator getLineInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.BreakIterator getCharacterInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.BreakIterator getCharacterInstance(java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.BreakIterator getSentenceInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.BreakIterator getSentenceInstance(java.util.Locale locale) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.text.CharacterIterator getText() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setText(java.text.CharacterIterator newText) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setText(java.lang.String newText) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int following(int offset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int preceding(int offset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBoundary(int offset) { return false; }
   < ---- END java signatures ---- >
 }

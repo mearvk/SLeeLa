@@ -58,25 +58,41 @@ class DefaultFormatterFactory {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultFormatterFactory(javax.swing.JFormattedTextField.AbstractFormatter defaultFormat, javax.swing.JFormattedTextField.AbstractFormatter displayFormat, javax.swing.JFormattedTextField.AbstractFormatter editFormat, javax.swing.JFormattedTextField.AbstractFormatter nullFormat) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.<init>(javax.swing.JFormattedTextField.AbstractFormatter, javax.swing.JFormattedTextField.AbstractFormatter, javax.swing.JFormattedTextField.AbstractFormatter, javax.swing.JFormattedTextField.AbstractFormatter)"); }
-  public DefaultFormatterFactory(javax.swing.JFormattedTextField.AbstractFormatter defaultFormat, javax.swing.JFormattedTextField.AbstractFormatter displayFormat, javax.swing.JFormattedTextField.AbstractFormatter editFormat) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.<init>(javax.swing.JFormattedTextField.AbstractFormatter, javax.swing.JFormattedTextField.AbstractFormatter, javax.swing.JFormattedTextField.AbstractFormatter)"); }
-  public DefaultFormatterFactory(javax.swing.JFormattedTextField.AbstractFormatter defaultFormat, javax.swing.JFormattedTextField.AbstractFormatter displayFormat) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.<init>(javax.swing.JFormattedTextField.AbstractFormatter, javax.swing.JFormattedTextField.AbstractFormatter)"); }
-  public DefaultFormatterFactory(javax.swing.JFormattedTextField.AbstractFormatter defaultFormat) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.<init>(javax.swing.JFormattedTextField.AbstractFormatter)"); }
-  public DefaultFormatterFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultFormatterFactory(javax.swing.JFormattedTextField.AbstractFormatter defaultFormat, javax.swing.JFormattedTextField.AbstractFormatter displayFormat, javax.swing.JFormattedTextField.AbstractFormatter editFormat, javax.swing.JFormattedTextField.AbstractFormatter nullFormat) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultFormatterFactory(javax.swing.JFormattedTextField.AbstractFormatter defaultFormat, javax.swing.JFormattedTextField.AbstractFormatter displayFormat, javax.swing.JFormattedTextField.AbstractFormatter editFormat) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultFormatterFactory(javax.swing.JFormattedTextField.AbstractFormatter defaultFormat, javax.swing.JFormattedTextField.AbstractFormatter displayFormat) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultFormatterFactory(javax.swing.JFormattedTextField.AbstractFormatter defaultFormat) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultFormatterFactory() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.swing.JFormattedTextField.AbstractFormatter getFormatter(javax.swing.JFormattedTextField source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.getFormatter(javax.swing.JFormattedTextField)"); }
-  public javax.swing.JFormattedTextField.AbstractFormatter getNullFormatter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.getNullFormatter()"); }
-  public javax.swing.JFormattedTextField.AbstractFormatter getEditFormatter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.getEditFormatter()"); }
-  public javax.swing.JFormattedTextField.AbstractFormatter getDisplayFormatter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.getDisplayFormatter()"); }
-  public javax.swing.JFormattedTextField.AbstractFormatter getDefaultFormatter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.getDefaultFormatter()"); }
-  public void setDefaultFormatter(javax.swing.JFormattedTextField.AbstractFormatter atf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.setDefaultFormatter(javax.swing.JFormattedTextField.AbstractFormatter)"); }
-  public void setDisplayFormatter(javax.swing.JFormattedTextField.AbstractFormatter atf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.setDisplayFormatter(javax.swing.JFormattedTextField.AbstractFormatter)"); }
-  public void setEditFormatter(javax.swing.JFormattedTextField.AbstractFormatter atf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.setEditFormatter(javax.swing.JFormattedTextField.AbstractFormatter)"); }
-  public void setNullFormatter(javax.swing.JFormattedTextField.AbstractFormatter atf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatterFactory.setNullFormatter(javax.swing.JFormattedTextField.AbstractFormatter)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JFormattedTextField.AbstractFormatter getFormatter(javax.swing.JFormattedTextField source) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JFormattedTextField.AbstractFormatter getNullFormatter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JFormattedTextField.AbstractFormatter getEditFormatter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JFormattedTextField.AbstractFormatter getDisplayFormatter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JFormattedTextField.AbstractFormatter getDefaultFormatter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultFormatter(javax.swing.JFormattedTextField.AbstractFormatter atf) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDisplayFormatter(javax.swing.JFormattedTextField.AbstractFormatter atf) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEditFormatter(javax.swing.JFormattedTextField.AbstractFormatter atf) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNullFormatter(javax.swing.JFormattedTextField.AbstractFormatter atf) { }
   < ---- END java signatures ---- >
 }

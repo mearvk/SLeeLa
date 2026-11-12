@@ -58,6 +58,7 @@ class UnresolvedAddressException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnresolvedAddressException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.UnresolvedAddressException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnresolvedAddressException() { }
   < ---- END java constructors ---- >
 }

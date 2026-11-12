@@ -58,17 +58,28 @@ class SettingDescriptor {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.SettingDescriptor.getName()"); }
-  public java.lang.String getTypeName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.SettingDescriptor.getTypeName()"); }
-  public <A extends java.lang.annotation.Annotation> A getAnnotation(java.lang.Class<A> annotationType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.SettingDescriptor.getAnnotation(java.lang.Class<A>)"); }
-  public java.lang.String getDefaultValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.SettingDescriptor.getDefaultValue()"); }
-  public java.lang.String getLabel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.SettingDescriptor.getLabel()"); }
-  public java.util.List<jdk.jfr.AnnotationElement> getAnnotationElements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.SettingDescriptor.getAnnotationElements()"); }
-  public java.lang.String getDescription() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.SettingDescriptor.getDescription()"); }
-  public java.lang.String getContentType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.SettingDescriptor.getContentType()"); }
-  public long getTypeId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.SettingDescriptor.getTypeId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getTypeName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <A extends java.lang.annotation.Annotation> A getAnnotation(java.lang.Class<A> annotationType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDefaultValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLabel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<jdk.jfr.AnnotationElement> getAnnotationElements() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDescription() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getContentType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getTypeId() { return 0; }
   < ---- END java signatures ---- >
 }

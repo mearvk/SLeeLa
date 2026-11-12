@@ -58,7 +58,9 @@ class InaccessibleObjectException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InaccessibleObjectException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.InaccessibleObjectException.<init>()"); }
-  public InaccessibleObjectException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.InaccessibleObjectException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InaccessibleObjectException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InaccessibleObjectException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

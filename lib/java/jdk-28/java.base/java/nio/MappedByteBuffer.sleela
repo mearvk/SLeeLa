@@ -58,23 +58,40 @@ class MappedByteBuffer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.nio.MappedByteBuffer reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.reset()"); }
-  public final java.nio.MappedByteBuffer load() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.load()"); }
-  public final java.nio.MappedByteBuffer clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.clear()"); }
-  public final java.nio.MappedByteBuffer position(int newPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.position(int)"); }
-  public final java.nio.MappedByteBuffer limit(int newLimit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.limit(int)"); }
-  public final java.nio.MappedByteBuffer mark() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.mark()"); }
-  public final java.nio.MappedByteBuffer flip() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.flip()"); }
-  public final java.nio.MappedByteBuffer rewind() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.rewind()"); }
-  public abstract java.nio.MappedByteBuffer slice() { throw new AbstractMethodError("java.nio.MappedByteBuffer.slice()"); }
-  public abstract java.nio.MappedByteBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.MappedByteBuffer.slice(int, int)"); }
-  public abstract java.nio.MappedByteBuffer duplicate() { throw new AbstractMethodError("java.nio.MappedByteBuffer.duplicate()"); }
-  public abstract java.nio.MappedByteBuffer compact() { throw new AbstractMethodError("java.nio.MappedByteBuffer.compact()"); }
-  public final boolean isLoaded() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.isLoaded()"); }
-  public final java.nio.MappedByteBuffer force() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.force()"); }
-  public final java.nio.MappedByteBuffer force(int index, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.MappedByteBuffer.force(int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.MappedByteBuffer reset() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.MappedByteBuffer load() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.MappedByteBuffer clear() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.MappedByteBuffer position(int newPosition) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.MappedByteBuffer limit(int newLimit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.MappedByteBuffer mark() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.MappedByteBuffer flip() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.MappedByteBuffer rewind() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.MappedByteBuffer slice() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.MappedByteBuffer slice(int index, int length) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.MappedByteBuffer duplicate() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.MappedByteBuffer compact() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isLoaded() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.MappedByteBuffer force() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.MappedByteBuffer force(int index, int length) { return null; }
   < ---- END java signatures ---- >
 }

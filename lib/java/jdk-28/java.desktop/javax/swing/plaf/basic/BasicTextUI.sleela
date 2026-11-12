@@ -58,69 +58,111 @@ class BasicTextUI {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicTextUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicTextUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void update(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.update(java.awt.Graphics, javax.swing.JComponent)"); }
-  public javax.swing.text.View create(javax.swing.text.Element elem, int p0, int p1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.create(javax.swing.text.Element, int, int)"); }
-  public javax.swing.text.View create(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.create(javax.swing.text.Element)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void update(java.awt.Graphics g, javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.View create(javax.swing.text.Element elem, int p0, int p1) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.View create(javax.swing.text.Element elem) { return null; }
   @JavaProtected
-  final javax.swing.text.JTextComponent getComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.getComponent()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final javax.swing.text.JTextComponent getComponent() { return null; }
   @JavaProtected
-  void installListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.installListeners()"); }
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.getPreferredSize(javax.swing.JComponent)"); }
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.getMinimumSize(javax.swing.JComponent)"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.installUI(javax.swing.JComponent)"); }
-  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.uninstallUI(javax.swing.JComponent)"); }
-  public java.lang.String getToolTipText(javax.swing.text.JTextComponent t, java.awt.Point pt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.getToolTipText(javax.swing.text.JTextComponent, java.awt.Point)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListeners() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getToolTipText(javax.swing.text.JTextComponent t, java.awt.Point pt) { return null; }
   @JavaProtected
-  void modelChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.modelChanged()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void modelChanged() { }
   @JavaProtected
-  java.lang.String getKeymapName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.getKeymapName()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String getKeymapName() { return null; }
   @JavaProtected
-  javax.swing.text.Highlighter createHighlighter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.createHighlighter()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.Highlighter createHighlighter() { return null; }
   @JavaProtected
-  javax.swing.text.Keymap createKeymap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.createKeymap()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.Keymap createKeymap() { return null; }
   @JavaProtected
-  java.awt.Rectangle getVisibleEditorRect() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.getVisibleEditorRect()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Rectangle getVisibleEditorRect() { return null; }
   @JavaProtected
-  void paintSafely(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.paintSafely(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintSafely(java.awt.Graphics g) { }
   @JavaProtected
-  javax.swing.text.Caret createCaret() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.createCaret()"); }
-  public javax.swing.text.View getRootView(javax.swing.text.JTextComponent tc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.getRootView(javax.swing.text.JTextComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.Caret createCaret() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.View getRootView(javax.swing.text.JTextComponent tc) { return null; }
   @JavaProtected
-  void propertyChange(java.beans.PropertyChangeEvent evt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.propertyChange(java.beans.PropertyChangeEvent)"); }
-  public int getNextVisualPositionFrom(javax.swing.text.JTextComponent t, int pos, javax.swing.text.Position.Bias b, int direction, javax.swing.text.Position.Bias[] biasRet) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.getNextVisualPositionFrom(javax.swing.text.JTextComponent, int, javax.swing.text.Position.Bias, int, javax.swing.text.Position.Bias[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void propertyChange(java.beans.PropertyChangeEvent evt) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public int getNextVisualPositionFrom(javax.swing.text.JTextComponent t, int pos, javax.swing.text.Position.Bias b, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
   @JavaProtected
-  final void setView(javax.swing.text.View v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.setView(javax.swing.text.View)"); }
-  public javax.swing.text.EditorKit getEditorKit(javax.swing.text.JTextComponent tc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.getEditorKit(javax.swing.text.JTextComponent)"); }
-  public java.awt.geom.Rectangle2D modelToView2D(javax.swing.text.JTextComponent tc, int pos, javax.swing.text.Position.Bias bias) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.modelToView2D(javax.swing.text.JTextComponent, int, javax.swing.text.Position.Bias)"); }
-  public int viewToModel2D(javax.swing.text.JTextComponent tc, java.awt.geom.Point2D pt, javax.swing.text.Position.Bias[] biasReturn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.viewToModel2D(javax.swing.text.JTextComponent, java.awt.geom.Point2D, javax.swing.text.Position.Bias[])"); }
-  public int viewToModel(javax.swing.text.JTextComponent tc, java.awt.Point pt, javax.swing.text.Position.Bias[] biasReturn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.viewToModel(javax.swing.text.JTextComponent, java.awt.Point, javax.swing.text.Position.Bias[])"); }
-  public int viewToModel(javax.swing.text.JTextComponent tc, java.awt.Point pt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.viewToModel(javax.swing.text.JTextComponent, java.awt.Point)"); }
-  public java.awt.Rectangle modelToView(javax.swing.text.JTextComponent tc, int pos) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.modelToView(javax.swing.text.JTextComponent, int)"); }
-  public java.awt.Rectangle modelToView(javax.swing.text.JTextComponent tc, int pos, javax.swing.text.Position.Bias bias) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.modelToView(javax.swing.text.JTextComponent, int, javax.swing.text.Position.Bias)"); }
-  public void damageRange(javax.swing.text.JTextComponent t, int p0, int p1, javax.swing.text.Position.Bias p0Bias, javax.swing.text.Position.Bias p1Bias) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.damageRange(javax.swing.text.JTextComponent, int, int, javax.swing.text.Position.Bias, javax.swing.text.Position.Bias)"); }
-  public void damageRange(javax.swing.text.JTextComponent tc, int p0, int p1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.damageRange(javax.swing.text.JTextComponent, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void setView(javax.swing.text.View v) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.EditorKit getEditorKit(javax.swing.text.JTextComponent tc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public java.awt.geom.Rectangle2D modelToView2D(javax.swing.text.JTextComponent tc, int pos, javax.swing.text.Position.Bias bias) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int viewToModel2D(javax.swing.text.JTextComponent tc, java.awt.geom.Point2D pt, javax.swing.text.Position.Bias[] biasReturn) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int viewToModel(javax.swing.text.JTextComponent tc, java.awt.Point pt, javax.swing.text.Position.Bias[] biasReturn) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int viewToModel(javax.swing.text.JTextComponent tc, java.awt.Point pt) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public java.awt.Rectangle modelToView(javax.swing.text.JTextComponent tc, int pos) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public java.awt.Rectangle modelToView(javax.swing.text.JTextComponent tc, int pos, javax.swing.text.Position.Bias bias) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void damageRange(javax.swing.text.JTextComponent t, int p0, int p1, javax.swing.text.Position.Bias p0Bias, javax.swing.text.Position.Bias p1Bias) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void damageRange(javax.swing.text.JTextComponent tc, int p0, int p1) { }
   @JavaProtected
-  abstract java.lang.String getPropertyPrefix() { throw new AbstractMethodError("javax.swing.plaf.basic.BasicTextUI.getPropertyPrefix()"); }
+  @throwable("java.lang.AbstractMethodError")
+  java.lang.String getPropertyPrefix() { return null; }
   @JavaProtected
-  void installKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.installKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installKeyboardActions() { }
   @JavaProtected
-  void uninstallKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.uninstallKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallKeyboardActions() { }
   @JavaProtected
-  void installDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.installDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults() { }
   @JavaProtected
-  void uninstallListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.uninstallListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallListeners() { }
   @JavaProtected
-  void uninstallDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.uninstallDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults() { }
   @JavaProtected
-  void paintBackground(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.paintBackground(java.awt.Graphics)"); }
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.getMaximumSize(javax.swing.JComponent)"); }
-  public final void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTextUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintBackground(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
   < ---- END java signatures ---- >
 }

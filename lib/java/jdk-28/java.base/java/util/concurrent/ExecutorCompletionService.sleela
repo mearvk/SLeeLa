@@ -58,18 +58,27 @@ class ExecutorCompletionService<V> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ExecutorCompletionService(java.util.concurrent.Executor executor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ExecutorCompletionService.<init>(java.util.concurrent.Executor)"); }
-  public ExecutorCompletionService(java.util.concurrent.Executor executor, java.util.concurrent.BlockingQueue<java.util.concurrent.Future<V>> completionQueue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ExecutorCompletionService.<init>(java.util.concurrent.Executor, java.util.concurrent.BlockingQueue<java.util.concurrent.Future<V>>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ExecutorCompletionService(java.util.concurrent.Executor executor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ExecutorCompletionService(java.util.concurrent.Executor executor, java.util.concurrent.BlockingQueue<java.util.concurrent.Future<V>> completionQueue) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.concurrent.Future<V> poll(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ExecutorCompletionService.poll(long, java.util.concurrent.TimeUnit)"); }
-  public java.util.concurrent.Future<V> poll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ExecutorCompletionService.poll()"); }
-  public java.util.concurrent.Future<V> submit(java.util.concurrent.Callable<V> task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ExecutorCompletionService.submit(java.util.concurrent.Callable<V>)"); }
-  public java.util.concurrent.Future<V> submit(java.lang.Runnable task, V result) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ExecutorCompletionService.submit(java.lang.Runnable, V)"); }
-  public java.util.concurrent.Future<V> take() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ExecutorCompletionService.take()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public java.util.concurrent.Future<V> poll(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.Future<V> poll() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.Future<V> submit(java.util.concurrent.Callable<V> task) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.Future<V> submit(java.lang.Runnable task, V result) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public java.util.concurrent.Future<V> take() { return null; }
   < ---- END java signatures ---- >
 }

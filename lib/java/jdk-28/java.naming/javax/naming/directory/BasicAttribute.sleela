@@ -64,34 +64,59 @@ class BasicAttribute {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicAttribute(java.lang.String id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.<init>(java.lang.String)"); }
-  public BasicAttribute(java.lang.String id, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.<init>(java.lang.String, java.lang.Object)"); }
-  public BasicAttribute(java.lang.String id, java.lang.Object value, boolean ordered) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.<init>(java.lang.String, java.lang.Object, boolean)"); }
-  public BasicAttribute(java.lang.String id, boolean ordered) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.<init>(java.lang.String, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicAttribute(java.lang.String id) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicAttribute(java.lang.String id, java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicAttribute(java.lang.String id, java.lang.Object value, boolean ordered) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicAttribute(java.lang.String id, boolean ordered) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean remove(java.lang.Object attrval) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.remove(java.lang.Object)"); }
-  public java.lang.Object remove(int ix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.remove(int)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.size()"); }
-  public java.lang.Object get() throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.get()"); }
-  public java.lang.Object get(int ix) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.get(int)"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.clone()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.clear()"); }
-  public boolean add(java.lang.Object attrVal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.add(java.lang.Object)"); }
-  public void add(int ix, java.lang.Object attrVal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.add(int, java.lang.Object)"); }
-  public boolean contains(java.lang.Object attrVal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.contains(java.lang.Object)"); }
-  public java.lang.Object set(int ix, java.lang.Object attrVal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.set(int, java.lang.Object)"); }
-  public boolean isOrdered() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.isOrdered()"); }
-  public javax.naming.NamingEnumeration<?> getAll() throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.getAll()"); }
-  public java.lang.String getID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.getID()"); }
-  public javax.naming.directory.DirContext getAttributeSyntaxDefinition() throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.getAttributeSyntaxDefinition()"); }
-  public javax.naming.directory.DirContext getAttributeDefinition() throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.BasicAttribute.getAttributeDefinition()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Object attrval) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object remove(int ix) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public java.lang.Object get() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public java.lang.Object get(int ix) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean add(java.lang.Object attrVal) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void add(int ix, java.lang.Object attrVal) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.lang.Object attrVal) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object set(int ix, java.lang.Object attrVal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isOrdered() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NamingEnumeration<?> getAll() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.directory.DirContext getAttributeSyntaxDefinition() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.directory.DirContext getAttributeDefinition() { return null; }
   < ---- END java signatures ---- >
 }

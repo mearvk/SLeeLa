@@ -59,15 +59,24 @@ class Argument {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String name() { throw new AbstractMethodError("com.sun.jdi.connect.Connector.Argument.name()"); }
-  public abstract java.lang.String value() { throw new AbstractMethodError("com.sun.jdi.connect.Connector.Argument.value()"); }
-  public abstract void setValue(java.lang.String value) { throw new AbstractMethodError("com.sun.jdi.connect.Connector.Argument.setValue(java.lang.String)"); }
-  public abstract java.lang.String label() { throw new AbstractMethodError("com.sun.jdi.connect.Connector.Argument.label()"); }
-  public abstract boolean isValid(java.lang.String value) { throw new AbstractMethodError("com.sun.jdi.connect.Connector.Argument.isValid(java.lang.String)"); }
-  public abstract java.lang.String description() { throw new AbstractMethodError("com.sun.jdi.connect.Connector.Argument.description()"); }
-  public abstract boolean mustSpecify() { throw new AbstractMethodError("com.sun.jdi.connect.Connector.Argument.mustSpecify()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String name() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String value() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setValue(java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String label() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isValid(java.lang.String value) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String description() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean mustSpecify() { return false; }
   < ---- END java signatures ---- >
 }

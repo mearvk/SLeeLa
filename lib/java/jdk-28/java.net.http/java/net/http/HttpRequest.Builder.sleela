@@ -59,23 +59,40 @@ class Builder {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.net.http.HttpRequest.Builder method(java.lang.String method, java.net.http.HttpRequest.BodyPublisher bodyPublisher) { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.method(java.lang.String, java.net.http.HttpRequest.BodyPublisher)"); }
-  public abstract java.net.http.HttpRequest.Builder version(java.net.http.HttpClient.Version version) { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.version(java.net.http.HttpClient.Version)"); }
-  public abstract java.net.http.HttpRequest.Builder copy() { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.copy()"); }
-  public abstract java.net.http.HttpRequest.Builder timeout(java.time.Duration duration) { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.timeout(java.time.Duration)"); }
-  public abstract java.net.http.HttpRequest.Builder uri(java.net.URI uri) { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.uri(java.net.URI)"); }
-  public abstract java.net.http.HttpRequest.Builder GET() { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.GET()"); }
-  public abstract java.net.http.HttpRequest build() { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.build()"); }
-  public default java.net.http.HttpRequest.Builder HEAD() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpRequest.Builder.HEAD()"); }
-  public abstract java.net.http.HttpRequest.Builder header(java.lang.String name, java.lang.String value) { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.header(java.lang.String, java.lang.String)"); }
-  public abstract java.net.http.HttpRequest.Builder POST(java.net.http.HttpRequest.BodyPublisher bodyPublisher) { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.POST(java.net.http.HttpRequest.BodyPublisher)"); }
-  public abstract java.net.http.HttpRequest.Builder PUT(java.net.http.HttpRequest.BodyPublisher bodyPublisher) { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.PUT(java.net.http.HttpRequest.BodyPublisher)"); }
-  public abstract java.net.http.HttpRequest.Builder headers(java.lang.String... headers) { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.headers(java.lang.String...)"); }
-  public abstract java.net.http.HttpRequest.Builder DELETE() { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.DELETE()"); }
-  public abstract java.net.http.HttpRequest.Builder expectContinue(boolean enable) { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.expectContinue(boolean)"); }
-  public abstract java.net.http.HttpRequest.Builder setHeader(java.lang.String name, java.lang.String value) { throw new AbstractMethodError("java.net.http.HttpRequest.Builder.setHeader(java.lang.String, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest.Builder method(java.lang.String method, java.net.http.HttpRequest.BodyPublisher bodyPublisher) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest.Builder version(java.net.http.HttpClient.Version version) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest.Builder copy() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest.Builder timeout(java.time.Duration duration) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest.Builder uri(java.net.URI uri) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest.Builder GET() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest build() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.net.http.HttpRequest.Builder HEAD() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest.Builder header(java.lang.String name, java.lang.String value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest.Builder POST(java.net.http.HttpRequest.BodyPublisher bodyPublisher) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest.Builder PUT(java.net.http.HttpRequest.BodyPublisher bodyPublisher) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest.Builder headers(java.lang.String... headers) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest.Builder DELETE() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest.Builder expectContinue(boolean enable) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest.Builder setHeader(java.lang.String name, java.lang.String value) { return null; }
   < ---- END java signatures ---- >
 }

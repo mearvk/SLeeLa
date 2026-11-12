@@ -59,32 +59,55 @@ class KeyInfoFactory {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  KeyInfoFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  KeyInfoFactory() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.xml.crypto.dsig.keyinfo.KeyInfoFactory getInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.getInstance()"); }
-  public static javax.xml.crypto.dsig.keyinfo.KeyInfoFactory getInstance(java.lang.String mechanismType, java.lang.String provider) throws java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.getInstance(java.lang.String, java.lang.String)"); }
-  public static javax.xml.crypto.dsig.keyinfo.KeyInfoFactory getInstance(java.lang.String mechanismType, java.security.Provider provider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.getInstance(java.lang.String, java.security.Provider)"); }
-  public static javax.xml.crypto.dsig.keyinfo.KeyInfoFactory getInstance(java.lang.String mechanismType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.getInstance(java.lang.String)"); }
-  public final java.security.Provider getProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.getProvider()"); }
-  public abstract boolean isFeatureSupported(java.lang.String feature) { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.isFeatureSupported(java.lang.String)"); }
-  public abstract javax.xml.crypto.URIDereferencer getURIDereferencer() { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.getURIDereferencer()"); }
-  public final java.lang.String getMechanismType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.getMechanismType()"); }
-  public abstract javax.xml.crypto.dsig.keyinfo.KeyInfo newKeyInfo(java.util.List<? extends javax.xml.crypto.XMLStructure> content, java.lang.String id) { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.newKeyInfo(java.util.List<? extends javax.xml.crypto.XMLStructure>, java.lang.String)"); }
-  public abstract javax.xml.crypto.dsig.keyinfo.KeyInfo newKeyInfo(java.util.List<? extends javax.xml.crypto.XMLStructure> content) { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.newKeyInfo(java.util.List<? extends javax.xml.crypto.XMLStructure>)"); }
-  public abstract javax.xml.crypto.dsig.keyinfo.KeyName newKeyName(java.lang.String name) { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.newKeyName(java.lang.String)"); }
-  public abstract javax.xml.crypto.dsig.keyinfo.KeyValue newKeyValue(java.security.PublicKey key) throws java.security.KeyException { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.newKeyValue(java.security.PublicKey)"); }
-  public abstract javax.xml.crypto.dsig.keyinfo.PGPData newPGPData(byte[] keyId) { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.newPGPData(byte[])"); }
-  public abstract javax.xml.crypto.dsig.keyinfo.PGPData newPGPData(byte[] keyId, byte[] keyPacket, java.util.List<? extends javax.xml.crypto.XMLStructure> other) { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.newPGPData(byte[], byte[], java.util.List<? extends javax.xml.crypto.XMLStructure>)"); }
-  public abstract javax.xml.crypto.dsig.keyinfo.PGPData newPGPData(byte[] keyPacket, java.util.List<? extends javax.xml.crypto.XMLStructure> other) { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.newPGPData(byte[], java.util.List<? extends javax.xml.crypto.XMLStructure>)"); }
-  public abstract javax.xml.crypto.dsig.keyinfo.RetrievalMethod newRetrievalMethod(java.lang.String uri, java.lang.String type, java.util.List<? extends javax.xml.crypto.dsig.Transform> transforms) { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.newRetrievalMethod(java.lang.String, java.lang.String, java.util.List<? extends javax.xml.crypto.dsig.Transform>)"); }
-  public abstract javax.xml.crypto.dsig.keyinfo.RetrievalMethod newRetrievalMethod(java.lang.String uri) { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.newRetrievalMethod(java.lang.String)"); }
-  public abstract javax.xml.crypto.dsig.keyinfo.X509Data newX509Data(java.util.List<?> content) { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.newX509Data(java.util.List<?>)"); }
-  public abstract javax.xml.crypto.dsig.keyinfo.X509IssuerSerial newX509IssuerSerial(java.lang.String issuerName, java.math.BigInteger serialNumber) { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.newX509IssuerSerial(java.lang.String, java.math.BigInteger)"); }
-  public abstract javax.xml.crypto.dsig.keyinfo.KeyInfo unmarshalKeyInfo(javax.xml.crypto.XMLStructure xmlStructure) throws javax.xml.crypto.MarshalException { throw new AbstractMethodError("javax.xml.crypto.dsig.keyinfo.KeyInfoFactory.unmarshalKeyInfo(javax.xml.crypto.XMLStructure)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.crypto.dsig.keyinfo.KeyInfoFactory getInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchProviderException")
+  public static javax.xml.crypto.dsig.keyinfo.KeyInfoFactory getInstance(java.lang.String mechanismType, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.crypto.dsig.keyinfo.KeyInfoFactory getInstance(java.lang.String mechanismType, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.crypto.dsig.keyinfo.KeyInfoFactory getInstance(java.lang.String mechanismType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.Provider getProvider() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isFeatureSupported(java.lang.String feature) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.URIDereferencer getURIDereferencer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getMechanismType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.keyinfo.KeyInfo newKeyInfo(java.util.List<? extends javax.xml.crypto.XMLStructure> content, java.lang.String id) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.keyinfo.KeyInfo newKeyInfo(java.util.List<? extends javax.xml.crypto.XMLStructure> content) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.keyinfo.KeyName newKeyName(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.KeyException")
+  public javax.xml.crypto.dsig.keyinfo.KeyValue newKeyValue(java.security.PublicKey key) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.keyinfo.PGPData newPGPData(byte[] keyId) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.keyinfo.PGPData newPGPData(byte[] keyId, byte[] keyPacket, java.util.List<? extends javax.xml.crypto.XMLStructure> other) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.keyinfo.PGPData newPGPData(byte[] keyPacket, java.util.List<? extends javax.xml.crypto.XMLStructure> other) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.keyinfo.RetrievalMethod newRetrievalMethod(java.lang.String uri, java.lang.String type, java.util.List<? extends javax.xml.crypto.dsig.Transform> transforms) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.keyinfo.RetrievalMethod newRetrievalMethod(java.lang.String uri) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.keyinfo.X509Data newX509Data(java.util.List<?> content) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.keyinfo.X509IssuerSerial newX509IssuerSerial(java.lang.String issuerName, java.math.BigInteger serialNumber) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.crypto.MarshalException")
+  public javax.xml.crypto.dsig.keyinfo.KeyInfo unmarshalKeyInfo(javax.xml.crypto.XMLStructure xmlStructure) { return null; }
   < ---- END java signatures ---- >
 }

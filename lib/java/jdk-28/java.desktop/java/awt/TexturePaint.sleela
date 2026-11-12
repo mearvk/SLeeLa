@@ -58,16 +58,23 @@ class TexturePaint {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TexturePaint(java.awt.image.BufferedImage txtr, java.awt.geom.Rectangle2D anchor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TexturePaint.<init>(java.awt.image.BufferedImage, java.awt.geom.Rectangle2D)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TexturePaint(java.awt.image.BufferedImage txtr, java.awt.geom.Rectangle2D anchor) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.PaintContext createContext(java.awt.image.ColorModel cm, java.awt.Rectangle deviceBounds, java.awt.geom.Rectangle2D userBounds, java.awt.geom.AffineTransform xform, java.awt.RenderingHints hints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TexturePaint.createContext(java.awt.image.ColorModel, java.awt.Rectangle, java.awt.geom.Rectangle2D, java.awt.geom.AffineTransform, java.awt.RenderingHints)"); }
-  public int getTransparency() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TexturePaint.getTransparency()"); }
-  public java.awt.geom.Rectangle2D getAnchorRect() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TexturePaint.getAnchorRect()"); }
-  public java.awt.image.BufferedImage getImage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TexturePaint.getImage()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.PaintContext createContext(java.awt.image.ColorModel cm, java.awt.Rectangle deviceBounds, java.awt.geom.Rectangle2D userBounds, java.awt.geom.AffineTransform xform, java.awt.RenderingHints hints) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTransparency() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getAnchorRect() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.BufferedImage getImage() { return null; }
   < ---- END java signatures ---- >
 }

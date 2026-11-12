@@ -58,13 +58,20 @@ class DropTargetListener {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void drop(java.awt.dnd.DropTargetDropEvent dtde) { throw new AbstractMethodError("java.awt.dnd.DropTargetListener.drop(java.awt.dnd.DropTargetDropEvent)"); }
-  public abstract void dragEnter(java.awt.dnd.DropTargetDragEvent dtde) { throw new AbstractMethodError("java.awt.dnd.DropTargetListener.dragEnter(java.awt.dnd.DropTargetDragEvent)"); }
-  public abstract void dragOver(java.awt.dnd.DropTargetDragEvent dtde) { throw new AbstractMethodError("java.awt.dnd.DropTargetListener.dragOver(java.awt.dnd.DropTargetDragEvent)"); }
-  public abstract void dropActionChanged(java.awt.dnd.DropTargetDragEvent dtde) { throw new AbstractMethodError("java.awt.dnd.DropTargetListener.dropActionChanged(java.awt.dnd.DropTargetDragEvent)"); }
-  public abstract void dragExit(java.awt.dnd.DropTargetEvent dte) { throw new AbstractMethodError("java.awt.dnd.DropTargetListener.dragExit(java.awt.dnd.DropTargetEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void drop(java.awt.dnd.DropTargetDropEvent dtde) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void dragEnter(java.awt.dnd.DropTargetDragEvent dtde) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void dragOver(java.awt.dnd.DropTargetDragEvent dtde) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void dropActionChanged(java.awt.dnd.DropTargetDragEvent dtde) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void dragExit(java.awt.dnd.DropTargetEvent dte) { }
   < ---- END java signatures ---- >
 }

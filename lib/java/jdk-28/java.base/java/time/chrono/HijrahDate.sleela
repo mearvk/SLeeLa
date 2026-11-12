@@ -58,31 +58,56 @@ class HijrahDate {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.hashCode()"); }
-  public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.getLong(java.time.temporal.TemporalField)"); }
-  public static java.time.chrono.HijrahDate of(int prolepticYear, int month, int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.of(int, int, int)"); }
-  public static java.time.chrono.HijrahDate from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.from(java.time.temporal.TemporalAccessor)"); }
-  public java.time.chrono.HijrahDate with(java.time.temporal.TemporalAdjuster adjuster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.with(java.time.temporal.TemporalAdjuster)"); }
-  public java.time.chrono.HijrahDate with(java.time.temporal.TemporalField field, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.with(java.time.temporal.TemporalField, long)"); }
-  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.range(java.time.temporal.TemporalField)"); }
-  public static java.time.chrono.HijrahDate now(java.time.Clock clock) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.now(java.time.Clock)"); }
-  public static java.time.chrono.HijrahDate now() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.now()"); }
-  public java.time.chrono.HijrahDate minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.minus(long, java.time.temporal.TemporalUnit)"); }
-  public java.time.chrono.HijrahDate minus(java.time.temporal.TemporalAmount amount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.minus(java.time.temporal.TemporalAmount)"); }
-  public java.time.chrono.HijrahDate plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.plus(long, java.time.temporal.TemporalUnit)"); }
-  public java.time.chrono.HijrahDate plus(java.time.temporal.TemporalAmount amount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.plus(java.time.temporal.TemporalAmount)"); }
-  public java.time.chrono.ChronoPeriod until(java.time.chrono.ChronoLocalDate endDate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.until(java.time.chrono.ChronoLocalDate)"); }
-  public boolean isLeapYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.isLeapYear()"); }
-  public int lengthOfMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.lengthOfMonth()"); }
-  public int lengthOfYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.lengthOfYear()"); }
-  public long toEpochDay() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.toEpochDay()"); }
-  public final java.time.chrono.ChronoLocalDateTime<java.time.chrono.HijrahDate> atTime(java.time.LocalTime localTime) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.atTime(java.time.LocalTime)"); }
-  public java.time.chrono.HijrahEra getEra() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.getEra()"); }
-  public java.time.chrono.HijrahChronology getChronology() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.getChronology()"); }
-  public java.time.chrono.HijrahDate withVariant(java.time.chrono.HijrahChronology chronology) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.HijrahDate.withVariant(java.time.chrono.HijrahChronology)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getLong(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.chrono.HijrahDate of(int prolepticYear, int month, int dayOfMonth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.chrono.HijrahDate from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.HijrahDate with(java.time.temporal.TemporalAdjuster adjuster) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.HijrahDate with(java.time.temporal.TemporalField field, long newValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.chrono.HijrahDate now(java.time.Clock clock) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.chrono.HijrahDate now() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.HijrahDate minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.HijrahDate minus(java.time.temporal.TemporalAmount amount) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.HijrahDate plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.HijrahDate plus(java.time.temporal.TemporalAmount amount) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.ChronoPeriod until(java.time.chrono.ChronoLocalDate endDate) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLeapYear() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lengthOfMonth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lengthOfYear() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toEpochDay() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.time.chrono.ChronoLocalDateTime<java.time.chrono.HijrahDate> atTime(java.time.LocalTime localTime) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.HijrahEra getEra() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.HijrahChronology getChronology() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.HijrahDate withVariant(java.time.chrono.HijrahChronology chronology) { return null; }
   < ---- END java signatures ---- >
 }

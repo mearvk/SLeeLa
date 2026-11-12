@@ -58,22 +58,30 @@ class ExemptionMechanismSpi {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ExemptionMechanismSpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.ExemptionMechanismSpi.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ExemptionMechanismSpi() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  abstract int engineGetOutputSize(int inputLen) { throw new AbstractMethodError("javax.crypto.ExemptionMechanismSpi.engineGetOutputSize(int)"); }
+  @throwable("java.lang.AbstractMethodError")
+  int engineGetOutputSize(int inputLen) { return 0; }
   @JavaProtected
-  abstract int engineGenExemptionBlob(byte[] output, int outputOffset) throws javax.crypto.ShortBufferException, javax.crypto.ExemptionMechanismException { throw new AbstractMethodError("javax.crypto.ExemptionMechanismSpi.engineGenExemptionBlob(byte[], int)"); }
+  @throwable("java.lang.AbstractMethodError, javax.crypto.ShortBufferException, javax.crypto.ExemptionMechanismException")
+  int engineGenExemptionBlob(byte[] output, int outputOffset) { return 0; }
   @JavaProtected
-  abstract byte[] engineGenExemptionBlob() throws javax.crypto.ExemptionMechanismException { throw new AbstractMethodError("javax.crypto.ExemptionMechanismSpi.engineGenExemptionBlob()"); }
+  @throwable("java.lang.AbstractMethodError, javax.crypto.ExemptionMechanismException")
+  byte[] engineGenExemptionBlob() { return null; }
   @JavaProtected
-  abstract void engineInit(java.security.Key key, java.security.AlgorithmParameters params) throws java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException, javax.crypto.ExemptionMechanismException { throw new AbstractMethodError("javax.crypto.ExemptionMechanismSpi.engineInit(java.security.Key, java.security.AlgorithmParameters)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException, javax.crypto.ExemptionMechanismException")
+  void engineInit(java.security.Key key, java.security.AlgorithmParameters params) { }
   @JavaProtected
-  abstract void engineInit(java.security.Key key) throws java.security.InvalidKeyException, javax.crypto.ExemptionMechanismException { throw new AbstractMethodError("javax.crypto.ExemptionMechanismSpi.engineInit(java.security.Key)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidKeyException, javax.crypto.ExemptionMechanismException")
+  void engineInit(java.security.Key key) { }
   < ---- END java signatures ---- >
 }

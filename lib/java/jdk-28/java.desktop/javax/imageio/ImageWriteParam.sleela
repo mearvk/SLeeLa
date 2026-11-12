@@ -84,38 +84,67 @@ class ImageWriteParam {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ImageWriteParam() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.<init>()"); }
-  public ImageWriteParam(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.<init>(java.util.Locale)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ImageWriteParam() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ImageWriteParam(java.util.Locale locale) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.Locale getLocale() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getLocale()"); }
-  public int getTileWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getTileWidth()"); }
-  public int getTileHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getTileHeight()"); }
-  public int getTileGridXOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getTileGridXOffset()"); }
-  public int getTileGridYOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getTileGridYOffset()"); }
-  public void unsetTiling() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.unsetTiling()"); }
-  public int getTilingMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getTilingMode()"); }
-  public void unsetCompression() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.unsetCompression()"); }
-  public int getCompressionMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getCompressionMode()"); }
-  public java.lang.String[] getCompressionTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getCompressionTypes()"); }
-  public java.lang.String getCompressionType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getCompressionType()"); }
-  public void setTilingMode(int mode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.setTilingMode(int)"); }
-  public java.awt.Dimension[] getPreferredTileSizes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getPreferredTileSizes()"); }
-  public void setTiling(int tileWidth, int tileHeight, int tileGridXOffset, int tileGridYOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.setTiling(int, int, int, int)"); }
-  public void setProgressiveMode(int mode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.setProgressiveMode(int)"); }
-  public int getProgressiveMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getProgressiveMode()"); }
-  public void setCompressionMode(int mode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.setCompressionMode(int)"); }
-  public void setCompressionType(java.lang.String compressionType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.setCompressionType(java.lang.String)"); }
-  public java.lang.String getLocalizedCompressionTypeName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getLocalizedCompressionTypeName()"); }
-  public boolean isCompressionLossless() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.isCompressionLossless()"); }
-  public void setCompressionQuality(float quality) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.setCompressionQuality(float)"); }
-  public float getCompressionQuality() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getCompressionQuality()"); }
-  public float getBitRate(float quality) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getBitRate(float)"); }
-  public java.lang.String[] getCompressionQualityDescriptions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getCompressionQualityDescriptions()"); }
-  public float[] getCompressionQualityValues() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriteParam.getCompressionQualityValues()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale getLocale() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTileWidth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTileHeight() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTileGridXOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTileGridYOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void unsetTiling() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTilingMode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void unsetCompression() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getCompressionMode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getCompressionTypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getCompressionType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTilingMode(int mode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension[] getPreferredTileSizes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTiling(int tileWidth, int tileHeight, int tileGridXOffset, int tileGridYOffset) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setProgressiveMode(int mode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getProgressiveMode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCompressionMode(int mode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCompressionType(java.lang.String compressionType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLocalizedCompressionTypeName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCompressionLossless() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCompressionQuality(float quality) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getCompressionQuality() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getBitRate(float quality) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getCompressionQualityDescriptions() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getCompressionQualityValues() { return null; }
   < ---- END java signatures ---- >
 }

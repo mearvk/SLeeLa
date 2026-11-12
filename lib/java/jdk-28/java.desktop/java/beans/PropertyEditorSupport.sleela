@@ -58,28 +58,47 @@ class PropertyEditorSupport {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PropertyEditorSupport() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.<init>()"); }
-  public PropertyEditorSupport(java.lang.Object source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.<init>(java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PropertyEditorSupport() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PropertyEditorSupport(java.lang.Object source) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.getValue()"); }
-  public void setValue(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.setValue(java.lang.Object)"); }
-  public void firePropertyChange() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.firePropertyChange()"); }
-  public synchronized void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.addPropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public synchronized void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.removePropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public void setSource(java.lang.Object source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.setSource(java.lang.Object)"); }
-  public java.lang.Object getSource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.getSource()"); }
-  public boolean isPaintable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.isPaintable()"); }
-  public void paintValue(java.awt.Graphics gfx, java.awt.Rectangle box) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.paintValue(java.awt.Graphics, java.awt.Rectangle)"); }
-  public java.lang.String getJavaInitializationString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.getJavaInitializationString()"); }
-  public java.lang.String getAsText() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.getAsText()"); }
-  public void setAsText(java.lang.String text) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.setAsText(java.lang.String)"); }
-  public java.lang.String[] getTags() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.getTags()"); }
-  public java.awt.Component getCustomEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.getCustomEditor()"); }
-  public boolean supportsCustomEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorSupport.supportsCustomEditor()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValue(java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void firePropertyChange() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSource(java.lang.Object source) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getSource() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPaintable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintValue(java.awt.Graphics gfx, java.awt.Rectangle box) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getJavaInitializationString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAsText() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public void setAsText(java.lang.String text) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getTags() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getCustomEditor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean supportsCustomEditor() { return false; }
   < ---- END java signatures ---- >
 }

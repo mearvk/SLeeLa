@@ -58,18 +58,30 @@ class ElementVisitor<R, P> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract R visit(javax.lang.model.element.Element e, P p) { throw new AbstractMethodError("javax.lang.model.element.ElementVisitor.visit(javax.lang.model.element.Element, P)"); }
-  public default R visit(javax.lang.model.element.Element e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.ElementVisitor.visit(javax.lang.model.element.Element)"); }
-  public abstract R visitType(javax.lang.model.element.TypeElement e, P p) { throw new AbstractMethodError("javax.lang.model.element.ElementVisitor.visitType(javax.lang.model.element.TypeElement, P)"); }
-  public abstract R visitExecutable(javax.lang.model.element.ExecutableElement e, P p) { throw new AbstractMethodError("javax.lang.model.element.ElementVisitor.visitExecutable(javax.lang.model.element.ExecutableElement, P)"); }
-  public abstract R visitVariable(javax.lang.model.element.VariableElement e, P p) { throw new AbstractMethodError("javax.lang.model.element.ElementVisitor.visitVariable(javax.lang.model.element.VariableElement, P)"); }
-  public abstract R visitPackage(javax.lang.model.element.PackageElement e, P p) { throw new AbstractMethodError("javax.lang.model.element.ElementVisitor.visitPackage(javax.lang.model.element.PackageElement, P)"); }
-  public default R visitModule(javax.lang.model.element.ModuleElement e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.ElementVisitor.visitModule(javax.lang.model.element.ModuleElement, P)"); }
-  public abstract R visitTypeParameter(javax.lang.model.element.TypeParameterElement e, P p) { throw new AbstractMethodError("javax.lang.model.element.ElementVisitor.visitTypeParameter(javax.lang.model.element.TypeParameterElement, P)"); }
-  public abstract R visitUnknown(javax.lang.model.element.Element e, P p) { throw new AbstractMethodError("javax.lang.model.element.ElementVisitor.visitUnknown(javax.lang.model.element.Element, P)"); }
-  public default R visitRecordComponent(javax.lang.model.element.RecordComponentElement e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.ElementVisitor.visitRecordComponent(javax.lang.model.element.RecordComponentElement, P)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public R visit(javax.lang.model.element.Element e, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default R visit(javax.lang.model.element.Element e) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitType(javax.lang.model.element.TypeElement e, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitExecutable(javax.lang.model.element.ExecutableElement e, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitVariable(javax.lang.model.element.VariableElement e, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitPackage(javax.lang.model.element.PackageElement e, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default R visitModule(javax.lang.model.element.ModuleElement e, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitTypeParameter(javax.lang.model.element.TypeParameterElement e, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitUnknown(javax.lang.model.element.Element e, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default R visitRecordComponent(javax.lang.model.element.RecordComponentElement e, P p) { return null; }
   < ---- END java signatures ---- >
 }

@@ -65,16 +65,26 @@ class BeanInfo {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.beans.BeanDescriptor getBeanDescriptor() { throw new AbstractMethodError("java.beans.BeanInfo.getBeanDescriptor()"); }
-  public abstract java.beans.EventSetDescriptor[] getEventSetDescriptors() { throw new AbstractMethodError("java.beans.BeanInfo.getEventSetDescriptors()"); }
-  public abstract int getDefaultEventIndex() { throw new AbstractMethodError("java.beans.BeanInfo.getDefaultEventIndex()"); }
-  public abstract java.beans.PropertyDescriptor[] getPropertyDescriptors() { throw new AbstractMethodError("java.beans.BeanInfo.getPropertyDescriptors()"); }
-  public abstract int getDefaultPropertyIndex() { throw new AbstractMethodError("java.beans.BeanInfo.getDefaultPropertyIndex()"); }
-  public abstract java.beans.MethodDescriptor[] getMethodDescriptors() { throw new AbstractMethodError("java.beans.BeanInfo.getMethodDescriptors()"); }
-  public abstract java.beans.BeanInfo[] getAdditionalBeanInfo() { throw new AbstractMethodError("java.beans.BeanInfo.getAdditionalBeanInfo()"); }
-  public abstract java.awt.Image getIcon(int iconKind) { throw new AbstractMethodError("java.beans.BeanInfo.getIcon(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.beans.BeanDescriptor getBeanDescriptor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.beans.EventSetDescriptor[] getEventSetDescriptors() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getDefaultEventIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.beans.PropertyDescriptor[] getPropertyDescriptors() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getDefaultPropertyIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.beans.MethodDescriptor[] getMethodDescriptors() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.beans.BeanInfo[] getAdditionalBeanInfo() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Image getIcon(int iconKind) { return null; }
   < ---- END java signatures ---- >
 }

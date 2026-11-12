@@ -58,7 +58,9 @@ class NegativeArraySizeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NegativeArraySizeException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.NegativeArraySizeException.<init>()"); }
-  public NegativeArraySizeException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.NegativeArraySizeException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NegativeArraySizeException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NegativeArraySizeException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

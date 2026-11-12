@@ -58,24 +58,42 @@ class Inet4Address {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.hashCode()"); }
-  public byte[] getAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.getAddress()"); }
-  public java.lang.String getHostAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.getHostAddress()"); }
-  public boolean isLinkLocalAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.isLinkLocalAddress()"); }
-  public static java.net.Inet4Address ofLiteral(java.lang.String ipv4AddressLiteral) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.ofLiteral(java.lang.String)"); }
-  public static java.net.Inet4Address ofPosixLiteral(java.lang.String posixIPAddressLiteral) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.ofPosixLiteral(java.lang.String)"); }
-  public boolean isMulticastAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.isMulticastAddress()"); }
-  public boolean isAnyLocalAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.isAnyLocalAddress()"); }
-  public boolean isLoopbackAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.isLoopbackAddress()"); }
-  public boolean isSiteLocalAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.isSiteLocalAddress()"); }
-  public boolean isMCGlobal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.isMCGlobal()"); }
-  public boolean isMCNodeLocal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.isMCNodeLocal()"); }
-  public boolean isMCLinkLocal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.isMCLinkLocal()"); }
-  public boolean isMCSiteLocal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.isMCSiteLocal()"); }
-  public boolean isMCOrgLocal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet4Address.isMCOrgLocal()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getAddress() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getHostAddress() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLinkLocalAddress() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.Inet4Address ofLiteral(java.lang.String ipv4AddressLiteral) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.Inet4Address ofPosixLiteral(java.lang.String posixIPAddressLiteral) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMulticastAddress() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAnyLocalAddress() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLoopbackAddress() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSiteLocalAddress() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMCGlobal() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMCNodeLocal() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMCLinkLocal() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMCSiteLocal() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMCOrgLocal() { return false; }
   < ---- END java signatures ---- >
 }

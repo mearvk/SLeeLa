@@ -59,17 +59,25 @@ class Dimension2D {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Dimension2D() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Dimension2D.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Dimension2D() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Dimension2D.clone()"); }
-  public abstract void setSize(double width, double height) { throw new AbstractMethodError("java.awt.geom.Dimension2D.setSize(double, double)"); }
-  public void setSize(java.awt.geom.Dimension2D d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Dimension2D.setSize(java.awt.geom.Dimension2D)"); }
-  public abstract double getHeight() { throw new AbstractMethodError("java.awt.geom.Dimension2D.getHeight()"); }
-  public abstract double getWidth() { throw new AbstractMethodError("java.awt.geom.Dimension2D.getWidth()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSize(double width, double height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSize(java.awt.geom.Dimension2D d) { }
+  @throwable("java.lang.AbstractMethodError")
+  public double getHeight() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public double getWidth() { return 0.0; }
   < ---- END java signatures ---- >
 }

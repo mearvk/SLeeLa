@@ -58,19 +58,29 @@ class BorderUIResource {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BorderUIResource(javax.swing.border.Border delegate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.<init>(javax.swing.border.Border)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BorderUIResource(javax.swing.border.Border delegate) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.paintBorder(java.awt.Component, java.awt.Graphics, int, int, int, int)"); }
-  public java.awt.Insets getBorderInsets(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.getBorderInsets(java.awt.Component)"); }
-  public static javax.swing.border.Border getEtchedBorderUIResource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.getEtchedBorderUIResource()"); }
-  public static javax.swing.border.Border getLoweredBevelBorderUIResource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.getLoweredBevelBorderUIResource()"); }
-  public static javax.swing.border.Border getRaisedBevelBorderUIResource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.getRaisedBevelBorderUIResource()"); }
-  public static javax.swing.border.Border getBlackLineBorderUIResource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.getBlackLineBorderUIResource()"); }
-  public boolean isBorderOpaque() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.isBorderOpaque()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getBorderInsets(java.awt.Component c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border getEtchedBorderUIResource() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border getLoweredBevelBorderUIResource() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border getRaisedBevelBorderUIResource() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border getBlackLineBorderUIResource() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBorderOpaque() { return false; }
   < ---- END java signatures ---- >
 }

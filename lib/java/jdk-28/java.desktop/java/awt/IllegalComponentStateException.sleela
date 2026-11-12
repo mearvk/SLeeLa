@@ -58,7 +58,9 @@ class IllegalComponentStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IllegalComponentStateException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.IllegalComponentStateException.<init>()"); }
-  public IllegalComponentStateException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.IllegalComponentStateException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalComponentStateException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalComponentStateException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

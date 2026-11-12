@@ -58,20 +58,34 @@ class SortedMap<K, V> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.Collection<V> values() { throw new AbstractMethodError("java.util.SortedMap.values()"); }
-  public abstract java.util.Set<java.util.Map.Entry<K, V>> entrySet() { throw new AbstractMethodError("java.util.SortedMap.entrySet()"); }
-  public abstract java.util.Set<K> keySet() { throw new AbstractMethodError("java.util.SortedMap.keySet()"); }
-  public default java.util.SortedMap<K, V> reversed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SortedMap.reversed()"); }
-  public abstract java.util.Comparator<? super K> comparator() { throw new AbstractMethodError("java.util.SortedMap.comparator()"); }
-  public abstract K firstKey() { throw new AbstractMethodError("java.util.SortedMap.firstKey()"); }
-  public default V putFirst(K k, V v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SortedMap.putFirst(K, V)"); }
-  public default V putLast(K k, V v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SortedMap.putLast(K, V)"); }
-  public abstract java.util.SortedMap<K, V> subMap(K fromKey, K toKey) { throw new AbstractMethodError("java.util.SortedMap.subMap(K, K)"); }
-  public abstract java.util.SortedMap<K, V> headMap(K toKey) { throw new AbstractMethodError("java.util.SortedMap.headMap(K)"); }
-  public abstract java.util.SortedMap<K, V> tailMap(K fromKey) { throw new AbstractMethodError("java.util.SortedMap.tailMap(K)"); }
-  public abstract K lastKey() { throw new AbstractMethodError("java.util.SortedMap.lastKey()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Collection<V> values() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<K> keySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.SortedMap<K, V> reversed() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Comparator<? super K> comparator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public K firstKey() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V putFirst(K k, V v) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V putLast(K k, V v) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.SortedMap<K, V> subMap(K fromKey, K toKey) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.SortedMap<K, V> headMap(K toKey) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.SortedMap<K, V> tailMap(K fromKey) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public K lastKey() { return null; }
   < ---- END java signatures ---- >
 }

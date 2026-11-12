@@ -59,16 +59,22 @@ class Filler {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Filler(java.awt.Dimension min, java.awt.Dimension pref, java.awt.Dimension max) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.Filler.<init>(java.awt.Dimension, java.awt.Dimension, java.awt.Dimension)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Filler(java.awt.Dimension min, java.awt.Dimension pref, java.awt.Dimension max) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void paintComponent(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.Filler.paintComponent(java.awt.Graphics)"); }
-  public void changeShape(java.awt.Dimension min, java.awt.Dimension pref, java.awt.Dimension max) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.Filler.changeShape(java.awt.Dimension, java.awt.Dimension, java.awt.Dimension)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.Filler.getAccessibleContext()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintComponent(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void changeShape(java.awt.Dimension min, java.awt.Dimension pref, java.awt.Dimension max) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

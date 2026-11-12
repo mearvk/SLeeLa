@@ -58,15 +58,24 @@ class InputMethodRequests {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.awt.Rectangle getTextLocation(java.awt.font.TextHitInfo offset) { throw new AbstractMethodError("java.awt.im.InputMethodRequests.getTextLocation(java.awt.font.TextHitInfo)"); }
-  public abstract java.awt.font.TextHitInfo getLocationOffset(int x, int y) { throw new AbstractMethodError("java.awt.im.InputMethodRequests.getLocationOffset(int, int)"); }
-  public abstract int getInsertPositionOffset() { throw new AbstractMethodError("java.awt.im.InputMethodRequests.getInsertPositionOffset()"); }
-  public abstract java.text.AttributedCharacterIterator getCommittedText(int beginIndex, int endIndex, java.text.AttributedCharacterIterator.Attribute[] attributes) { throw new AbstractMethodError("java.awt.im.InputMethodRequests.getCommittedText(int, int, java.text.AttributedCharacterIterator.Attribute[])"); }
-  public abstract int getCommittedTextLength() { throw new AbstractMethodError("java.awt.im.InputMethodRequests.getCommittedTextLength()"); }
-  public abstract java.text.AttributedCharacterIterator cancelLatestCommittedText(java.text.AttributedCharacterIterator.Attribute[] attributes) { throw new AbstractMethodError("java.awt.im.InputMethodRequests.cancelLatestCommittedText(java.text.AttributedCharacterIterator.Attribute[])"); }
-  public abstract java.text.AttributedCharacterIterator getSelectedText(java.text.AttributedCharacterIterator.Attribute[] attributes) { throw new AbstractMethodError("java.awt.im.InputMethodRequests.getSelectedText(java.text.AttributedCharacterIterator.Attribute[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Rectangle getTextLocation(java.awt.font.TextHitInfo offset) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.font.TextHitInfo getLocationOffset(int x, int y) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getInsertPositionOffset() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.text.AttributedCharacterIterator getCommittedText(int beginIndex, int endIndex, java.text.AttributedCharacterIterator.Attribute[] attributes) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getCommittedTextLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.text.AttributedCharacterIterator cancelLatestCommittedText(java.text.AttributedCharacterIterator.Attribute[] attributes) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.text.AttributedCharacterIterator getSelectedText(java.text.AttributedCharacterIterator.Attribute[] attributes) { return null; }
   < ---- END java signatures ---- >
 }

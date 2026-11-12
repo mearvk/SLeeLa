@@ -58,14 +58,22 @@ class MediaList {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getLength() { throw new AbstractMethodError("org.w3c.dom.stylesheets.MediaList.getLength()"); }
-  public abstract java.lang.String item(int index) { throw new AbstractMethodError("org.w3c.dom.stylesheets.MediaList.item(int)"); }
-  public abstract java.lang.String getMediaText() { throw new AbstractMethodError("org.w3c.dom.stylesheets.MediaList.getMediaText()"); }
-  public abstract void setMediaText(java.lang.String mediaText) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.stylesheets.MediaList.setMediaText(java.lang.String)"); }
-  public abstract void deleteMedium(java.lang.String oldMedium) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.stylesheets.MediaList.deleteMedium(java.lang.String)"); }
-  public abstract void appendMedium(java.lang.String newMedium) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.stylesheets.MediaList.appendMedium(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String item(int index) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getMediaText() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setMediaText(java.lang.String mediaText) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void deleteMedium(java.lang.String oldMedium) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void appendMedium(java.lang.String newMedium) { }
   < ---- END java signatures ---- >
 }

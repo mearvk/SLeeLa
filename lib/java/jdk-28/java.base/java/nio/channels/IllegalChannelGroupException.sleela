@@ -58,6 +58,7 @@ class IllegalChannelGroupException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IllegalChannelGroupException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.IllegalChannelGroupException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalChannelGroupException() { }
   < ---- END java constructors ---- >
 }

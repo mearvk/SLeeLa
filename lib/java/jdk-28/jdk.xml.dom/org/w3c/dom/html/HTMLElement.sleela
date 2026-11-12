@@ -58,18 +58,30 @@ class HTMLElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getId() { throw new AbstractMethodError("org.w3c.dom.html.HTMLElement.getId()"); }
-  public abstract java.lang.String getClassName() { throw new AbstractMethodError("org.w3c.dom.html.HTMLElement.getClassName()"); }
-  public abstract java.lang.String getTitle() { throw new AbstractMethodError("org.w3c.dom.html.HTMLElement.getTitle()"); }
-  public abstract void setTitle(java.lang.String title) { throw new AbstractMethodError("org.w3c.dom.html.HTMLElement.setTitle(java.lang.String)"); }
-  public abstract void setClassName(java.lang.String className) { throw new AbstractMethodError("org.w3c.dom.html.HTMLElement.setClassName(java.lang.String)"); }
-  public abstract void setId(java.lang.String id) { throw new AbstractMethodError("org.w3c.dom.html.HTMLElement.setId(java.lang.String)"); }
-  public abstract java.lang.String getLang() { throw new AbstractMethodError("org.w3c.dom.html.HTMLElement.getLang()"); }
-  public abstract void setLang(java.lang.String lang) { throw new AbstractMethodError("org.w3c.dom.html.HTMLElement.setLang(java.lang.String)"); }
-  public abstract java.lang.String getDir() { throw new AbstractMethodError("org.w3c.dom.html.HTMLElement.getDir()"); }
-  public abstract void setDir(java.lang.String dir) { throw new AbstractMethodError("org.w3c.dom.html.HTMLElement.setDir(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getId() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getClassName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getTitle() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTitle(java.lang.String title) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setClassName(java.lang.String className) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setId(java.lang.String id) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getLang() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setLang(java.lang.String lang) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDir() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDir(java.lang.String dir) { }
   < ---- END java signatures ---- >
 }

@@ -65,6 +65,7 @@ class Type {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Type(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.BooleanControl.Type.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Type(java.lang.String name) { }
   < ---- END java constructors ---- >
 }

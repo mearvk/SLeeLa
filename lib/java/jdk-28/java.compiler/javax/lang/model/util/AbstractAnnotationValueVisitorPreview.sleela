@@ -59,6 +59,7 @@ class AbstractAnnotationValueVisitorPreview<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractAnnotationValueVisitorPreview() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.AbstractAnnotationValueVisitorPreview.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractAnnotationValueVisitorPreview() { }
   < ---- END java constructors ---- >
 }

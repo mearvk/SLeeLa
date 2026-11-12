@@ -58,20 +58,34 @@ class TextHitInfo {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextHitInfo.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextHitInfo.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextHitInfo.hashCode()"); }
-  public boolean isLeadingEdge() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextHitInfo.isLeadingEdge()"); }
-  public static java.awt.font.TextHitInfo trailing(int charIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextHitInfo.trailing(int)"); }
-  public int getCharIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextHitInfo.getCharIndex()"); }
-  public int getInsertionIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextHitInfo.getInsertionIndex()"); }
-  public static java.awt.font.TextHitInfo beforeOffset(int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextHitInfo.beforeOffset(int)"); }
-  public static java.awt.font.TextHitInfo afterOffset(int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextHitInfo.afterOffset(int)"); }
-  public java.awt.font.TextHitInfo getOtherHit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextHitInfo.getOtherHit()"); }
-  public java.awt.font.TextHitInfo getOffsetHit(int delta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextHitInfo.getOffsetHit(int)"); }
-  public static java.awt.font.TextHitInfo leading(int charIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextHitInfo.leading(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLeadingEdge() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.font.TextHitInfo trailing(int charIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getCharIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getInsertionIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.font.TextHitInfo beforeOffset(int offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.font.TextHitInfo afterOffset(int offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.TextHitInfo getOtherHit() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.TextHitInfo getOffsetHit(int delta) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.font.TextHitInfo leading(int charIndex) { return null; }
   < ---- END java signatures ---- >
 }

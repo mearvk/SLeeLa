@@ -58,17 +58,28 @@ class HttpResponse<T> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.net.http.HttpClient.Version version() { throw new AbstractMethodError("java.net.http.HttpResponse.version()"); }
-  public abstract java.net.URI uri() { throw new AbstractMethodError("java.net.http.HttpResponse.uri()"); }
-  public abstract T body() { throw new AbstractMethodError("java.net.http.HttpResponse.body()"); }
-  public abstract java.net.http.HttpRequest request() { throw new AbstractMethodError("java.net.http.HttpResponse.request()"); }
-  public abstract java.net.http.HttpHeaders headers() { throw new AbstractMethodError("java.net.http.HttpResponse.headers()"); }
-  public abstract int statusCode() { throw new AbstractMethodError("java.net.http.HttpResponse.statusCode()"); }
-  public default java.util.Optional<java.lang.String> connectionLabel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.connectionLabel()"); }
-  public abstract java.util.Optional<java.net.http.HttpResponse<T>> previousResponse() { throw new AbstractMethodError("java.net.http.HttpResponse.previousResponse()"); }
-  public abstract java.util.Optional<javax.net.ssl.SSLSession> sslSession() { throw new AbstractMethodError("java.net.http.HttpResponse.sslSession()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpClient.Version version() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.URI uri() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public T body() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpRequest request() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.http.HttpHeaders headers() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int statusCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Optional<java.lang.String> connectionLabel() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Optional<java.net.http.HttpResponse<T>> previousResponse() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Optional<javax.net.ssl.SSLSession> sslSession() { return null; }
   < ---- END java signatures ---- >
 }

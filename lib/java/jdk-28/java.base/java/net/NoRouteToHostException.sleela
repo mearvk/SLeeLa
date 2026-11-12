@@ -58,7 +58,9 @@ class NoRouteToHostException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NoRouteToHostException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.NoRouteToHostException.<init>(java.lang.String)"); }
-  public NoRouteToHostException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.NoRouteToHostException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoRouteToHostException(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoRouteToHostException() { }
   < ---- END java constructors ---- >
 }

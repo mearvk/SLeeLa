@@ -58,7 +58,9 @@ class LoginException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LoginException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.LoginException.<init>()"); }
-  public LoginException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.LoginException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LoginException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LoginException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

@@ -58,30 +58,54 @@ class Executable {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("java.lang.reflect.Executable.getName()"); }
-  public abstract int getModifiers() { throw new AbstractMethodError("java.lang.reflect.Executable.getModifiers()"); }
-  public abstract java.lang.reflect.TypeVariable<?>[] getTypeParameters() { throw new AbstractMethodError("java.lang.reflect.Executable.getTypeParameters()"); }
-  public abstract java.lang.Class<?>[] getParameterTypes() { throw new AbstractMethodError("java.lang.reflect.Executable.getParameterTypes()"); }
-  public abstract java.lang.String toGenericString() { throw new AbstractMethodError("java.lang.reflect.Executable.toGenericString()"); }
-  public boolean isSynthetic() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Executable.isSynthetic()"); }
-  public java.util.Set<java.lang.reflect.AccessFlag> accessFlags() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Executable.accessFlags()"); }
-  public abstract java.lang.Class<?> getDeclaringClass() { throw new AbstractMethodError("java.lang.reflect.Executable.getDeclaringClass()"); }
-  public <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Executable.getAnnotation(java.lang.Class<T>)"); }
-  public <T extends java.lang.annotation.Annotation> T[] getAnnotationsByType(java.lang.Class<T> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Executable.getAnnotationsByType(java.lang.Class<T>)"); }
-  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Executable.getDeclaredAnnotations()"); }
-  public boolean isVarArgs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Executable.isVarArgs()"); }
-  public java.lang.reflect.AnnotatedType[] getAnnotatedParameterTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Executable.getAnnotatedParameterTypes()"); }
-  public abstract int getParameterCount() { throw new AbstractMethodError("java.lang.reflect.Executable.getParameterCount()"); }
-  public abstract java.lang.annotation.Annotation[][] getParameterAnnotations() { throw new AbstractMethodError("java.lang.reflect.Executable.getParameterAnnotations()"); }
-  public java.lang.reflect.Type[] getGenericParameterTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Executable.getGenericParameterTypes()"); }
-  public java.lang.reflect.Type[] getGenericExceptionTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Executable.getGenericExceptionTypes()"); }
-  public abstract java.lang.Class<?>[] getExceptionTypes() { throw new AbstractMethodError("java.lang.reflect.Executable.getExceptionTypes()"); }
-  public abstract java.lang.reflect.AnnotatedType getAnnotatedReturnType() { throw new AbstractMethodError("java.lang.reflect.Executable.getAnnotatedReturnType()"); }
-  public java.lang.reflect.Parameter[] getParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Executable.getParameters()"); }
-  public java.lang.reflect.AnnotatedType getAnnotatedReceiverType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Executable.getAnnotatedReceiverType()"); }
-  public java.lang.reflect.AnnotatedType[] getAnnotatedExceptionTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Executable.getAnnotatedExceptionTypes()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getModifiers() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.reflect.TypeVariable<?>[] getTypeParameters() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Class<?>[] getParameterTypes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toGenericString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSynthetic() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.reflect.AccessFlag> accessFlags() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Class<?> getDeclaringClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.lang.annotation.Annotation> T[] getAnnotationsByType(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isVarArgs() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.AnnotatedType[] getAnnotatedParameterTypes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getParameterCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.annotation.Annotation[][] getParameterAnnotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.Type[] getGenericParameterTypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.Type[] getGenericExceptionTypes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Class<?>[] getExceptionTypes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.reflect.AnnotatedType getAnnotatedReturnType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.Parameter[] getParameters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.AnnotatedType getAnnotatedReceiverType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.AnnotatedType[] getAnnotatedExceptionTypes() { return null; }
   < ---- END java signatures ---- >
 }

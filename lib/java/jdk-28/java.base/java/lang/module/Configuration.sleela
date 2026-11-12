@@ -58,17 +58,28 @@ class Configuration {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.Configuration.toString()"); }
-  public static java.lang.module.Configuration empty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.Configuration.empty()"); }
-  public java.lang.module.Configuration resolve(java.lang.module.ModuleFinder before, java.lang.module.ModuleFinder after, java.util.Collection<java.lang.String> roots) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.Configuration.resolve(java.lang.module.ModuleFinder, java.lang.module.ModuleFinder, java.util.Collection<java.lang.String>)"); }
-  public static java.lang.module.Configuration resolve(java.lang.module.ModuleFinder before, java.util.List<java.lang.module.Configuration> parents, java.lang.module.ModuleFinder after, java.util.Collection<java.lang.String> roots) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.Configuration.resolve(java.lang.module.ModuleFinder, java.util.List<java.lang.module.Configuration>, java.lang.module.ModuleFinder, java.util.Collection<java.lang.String>)"); }
-  public java.util.Set<java.lang.module.ResolvedModule> modules() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.Configuration.modules()"); }
-  public java.util.List<java.lang.module.Configuration> parents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.Configuration.parents()"); }
-  public java.util.Optional<java.lang.module.ResolvedModule> findModule(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.Configuration.findModule(java.lang.String)"); }
-  public static java.lang.module.Configuration resolveAndBind(java.lang.module.ModuleFinder before, java.util.List<java.lang.module.Configuration> parents, java.lang.module.ModuleFinder after, java.util.Collection<java.lang.String> roots) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.Configuration.resolveAndBind(java.lang.module.ModuleFinder, java.util.List<java.lang.module.Configuration>, java.lang.module.ModuleFinder, java.util.Collection<java.lang.String>)"); }
-  public java.lang.module.Configuration resolveAndBind(java.lang.module.ModuleFinder before, java.lang.module.ModuleFinder after, java.util.Collection<java.lang.String> roots) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.Configuration.resolveAndBind(java.lang.module.ModuleFinder, java.lang.module.ModuleFinder, java.util.Collection<java.lang.String>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.module.Configuration empty() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.module.Configuration resolve(java.lang.module.ModuleFinder before, java.lang.module.ModuleFinder after, java.util.Collection<java.lang.String> roots) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.module.Configuration resolve(java.lang.module.ModuleFinder before, java.util.List<java.lang.module.Configuration> parents, java.lang.module.ModuleFinder after, java.util.Collection<java.lang.String> roots) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.module.ResolvedModule> modules() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.lang.module.Configuration> parents() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<java.lang.module.ResolvedModule> findModule(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.module.Configuration resolveAndBind(java.lang.module.ModuleFinder before, java.util.List<java.lang.module.Configuration> parents, java.lang.module.ModuleFinder after, java.util.Collection<java.lang.String> roots) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.module.Configuration resolveAndBind(java.lang.module.ModuleFinder before, java.lang.module.ModuleFinder after, java.util.Collection<java.lang.String> roots) { return null; }
   < ---- END java signatures ---- >
 }

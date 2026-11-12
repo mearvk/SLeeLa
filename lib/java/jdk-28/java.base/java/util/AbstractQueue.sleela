@@ -59,17 +59,25 @@ class AbstractQueue<E> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractQueue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractQueue.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractQueue() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public E remove() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractQueue.remove()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractQueue.clear()"); }
-  public boolean add(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractQueue.add(E)"); }
-  public boolean addAll(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractQueue.addAll(java.util.Collection<? extends E>)"); }
-  public E element() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractQueue.element()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public E remove() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean add(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean addAll(java.util.Collection<? extends E> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E element() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,19 +58,29 @@ class AtomicStampedReference<V> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AtomicStampedReference(V initialRef, int initialStamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicStampedReference.<init>(V, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AtomicStampedReference(V initialRef, int initialStamp) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public V get(int[] stampHolder) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicStampedReference.get(int[])"); }
-  public V getReference() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicStampedReference.getReference()"); }
-  public void set(V newReference, int newStamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicStampedReference.set(V, int)"); }
-  public boolean compareAndSet(V expectedReference, V newReference, int expectedStamp, int newStamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicStampedReference.compareAndSet(V, V, int, int)"); }
-  public boolean weakCompareAndSet(V expectedReference, V newReference, int expectedStamp, int newStamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicStampedReference.weakCompareAndSet(V, V, int, int)"); }
-  public int getStamp() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicStampedReference.getStamp()"); }
-  public boolean attemptStamp(V expectedReference, int newStamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicStampedReference.attemptStamp(V, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public V get(int[] stampHolder) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V getReference() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void set(V newReference, int newStamp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean compareAndSet(V expectedReference, V newReference, int expectedStamp, int newStamp) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean weakCompareAndSet(V expectedReference, V newReference, int expectedStamp, int newStamp) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getStamp() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean attemptStamp(V expectedReference, int newStamp) { return false; }
   < ---- END java signatures ---- >
 }

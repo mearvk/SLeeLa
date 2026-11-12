@@ -58,17 +58,28 @@ class StackFrame {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract com.sun.jdi.Value getValue(com.sun.jdi.LocalVariable variable) { throw new AbstractMethodError("com.sun.jdi.StackFrame.getValue(com.sun.jdi.LocalVariable)"); }
-  public abstract com.sun.jdi.Location location() { throw new AbstractMethodError("com.sun.jdi.StackFrame.location()"); }
-  public abstract com.sun.jdi.ThreadReference thread() { throw new AbstractMethodError("com.sun.jdi.StackFrame.thread()"); }
-  public abstract void setValue(com.sun.jdi.LocalVariable variable, com.sun.jdi.Value value) throws com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException { throw new AbstractMethodError("com.sun.jdi.StackFrame.setValue(com.sun.jdi.LocalVariable, com.sun.jdi.Value)"); }
-  public abstract java.util.Map<com.sun.jdi.LocalVariable, com.sun.jdi.Value> getValues(java.util.List<? extends com.sun.jdi.LocalVariable> variables) { throw new AbstractMethodError("com.sun.jdi.StackFrame.getValues(java.util.List<? extends com.sun.jdi.LocalVariable>)"); }
-  public abstract com.sun.jdi.ObjectReference thisObject() { throw new AbstractMethodError("com.sun.jdi.StackFrame.thisObject()"); }
-  public abstract java.util.List<com.sun.jdi.LocalVariable> visibleVariables() throws com.sun.jdi.AbsentInformationException { throw new AbstractMethodError("com.sun.jdi.StackFrame.visibleVariables()"); }
-  public abstract com.sun.jdi.LocalVariable visibleVariableByName(java.lang.String name) throws com.sun.jdi.AbsentInformationException { throw new AbstractMethodError("com.sun.jdi.StackFrame.visibleVariableByName(java.lang.String)"); }
-  public abstract java.util.List<com.sun.jdi.Value> getArgumentValues() { throw new AbstractMethodError("com.sun.jdi.StackFrame.getArgumentValues()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.Value getValue(com.sun.jdi.LocalVariable variable) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.Location location() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.ThreadReference thread() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException")
+  public void setValue(com.sun.jdi.LocalVariable variable, com.sun.jdi.Value value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Map<com.sun.jdi.LocalVariable, com.sun.jdi.Value> getValues(java.util.List<? extends com.sun.jdi.LocalVariable> variables) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.ObjectReference thisObject() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.AbsentInformationException")
+  public java.util.List<com.sun.jdi.LocalVariable> visibleVariables() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.AbsentInformationException")
+  public com.sun.jdi.LocalVariable visibleVariableByName(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.Value> getArgumentValues() { return null; }
   < ---- END java signatures ---- >
 }

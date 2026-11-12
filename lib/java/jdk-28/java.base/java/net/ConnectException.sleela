@@ -58,7 +58,9 @@ class ConnectException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ConnectException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.ConnectException.<init>(java.lang.String)"); }
-  public ConnectException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.ConnectException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ConnectException(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ConnectException() { }
   < ---- END java constructors ---- >
 }

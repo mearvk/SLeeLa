@@ -58,21 +58,33 @@ class Paper {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Paper() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Paper.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Paper() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Paper.clone()"); }
-  public void setSize(double width, double height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Paper.setSize(double, double)"); }
-  public double getHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Paper.getHeight()"); }
-  public double getWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Paper.getWidth()"); }
-  public double getImageableY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Paper.getImageableY()"); }
-  public double getImageableHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Paper.getImageableHeight()"); }
-  public double getImageableX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Paper.getImageableX()"); }
-  public double getImageableWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Paper.getImageableWidth()"); }
-  public void setImageableArea(double x, double y, double width, double height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Paper.setImageableArea(double, double, double, double)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSize(double width, double height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getHeight() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getWidth() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getImageableY() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getImageableHeight() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getImageableX() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getImageableWidth() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setImageableArea(double x, double y, double width, double height) { }
   < ---- END java signatures ---- >
 }

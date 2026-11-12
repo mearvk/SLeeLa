@@ -59,14 +59,22 @@ class AttributeContext {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.swing.text.AttributeSet addAttribute(javax.swing.text.AttributeSet old, java.lang.Object name, java.lang.Object value) { throw new AbstractMethodError("javax.swing.text.AbstractDocument.AttributeContext.addAttribute(javax.swing.text.AttributeSet, java.lang.Object, java.lang.Object)"); }
-  public abstract javax.swing.text.AttributeSet addAttributes(javax.swing.text.AttributeSet old, javax.swing.text.AttributeSet attr) { throw new AbstractMethodError("javax.swing.text.AbstractDocument.AttributeContext.addAttributes(javax.swing.text.AttributeSet, javax.swing.text.AttributeSet)"); }
-  public abstract void reclaim(javax.swing.text.AttributeSet a) { throw new AbstractMethodError("javax.swing.text.AbstractDocument.AttributeContext.reclaim(javax.swing.text.AttributeSet)"); }
-  public abstract javax.swing.text.AttributeSet getEmptySet() { throw new AbstractMethodError("javax.swing.text.AbstractDocument.AttributeContext.getEmptySet()"); }
-  public abstract javax.swing.text.AttributeSet removeAttribute(javax.swing.text.AttributeSet old, java.lang.Object name) { throw new AbstractMethodError("javax.swing.text.AbstractDocument.AttributeContext.removeAttribute(javax.swing.text.AttributeSet, java.lang.Object)"); }
-  public abstract javax.swing.text.AttributeSet removeAttributes(javax.swing.text.AttributeSet old, javax.swing.text.AttributeSet attrs) { throw new AbstractMethodError("javax.swing.text.AbstractDocument.AttributeContext.removeAttributes(javax.swing.text.AttributeSet, javax.swing.text.AttributeSet)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.AttributeSet addAttribute(javax.swing.text.AttributeSet old, java.lang.Object name, java.lang.Object value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.AttributeSet addAttributes(javax.swing.text.AttributeSet old, javax.swing.text.AttributeSet attr) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void reclaim(javax.swing.text.AttributeSet a) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.AttributeSet getEmptySet() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.AttributeSet removeAttribute(javax.swing.text.AttributeSet old, java.lang.Object name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.AttributeSet removeAttributes(javax.swing.text.AttributeSet old, javax.swing.text.AttributeSet attrs) { return null; }
   < ---- END java signatures ---- >
 }

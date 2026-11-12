@@ -58,6 +58,7 @@ class UnsupportedFlavorException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnsupportedFlavorException(java.awt.datatransfer.DataFlavor flavor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.UnsupportedFlavorException.<init>(java.awt.datatransfer.DataFlavor)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsupportedFlavorException(java.awt.datatransfer.DataFlavor flavor) { }
   < ---- END java constructors ---- >
 }

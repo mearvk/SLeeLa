@@ -59,25 +59,41 @@ class Transformer {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Transformer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.Transformer.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Transformer() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.Transformer.reset()"); }
-  public abstract void transform(javax.xml.transform.Source xmlSource, javax.xml.transform.Result outputTarget) throws javax.xml.transform.TransformerException { throw new AbstractMethodError("javax.xml.transform.Transformer.transform(javax.xml.transform.Source, javax.xml.transform.Result)"); }
-  public abstract java.lang.Object getParameter(java.lang.String name) { throw new AbstractMethodError("javax.xml.transform.Transformer.getParameter(java.lang.String)"); }
-  public abstract java.util.Properties getOutputProperties() { throw new AbstractMethodError("javax.xml.transform.Transformer.getOutputProperties()"); }
-  public abstract void setURIResolver(javax.xml.transform.URIResolver resolver) { throw new AbstractMethodError("javax.xml.transform.Transformer.setURIResolver(javax.xml.transform.URIResolver)"); }
-  public abstract javax.xml.transform.URIResolver getURIResolver() { throw new AbstractMethodError("javax.xml.transform.Transformer.getURIResolver()"); }
-  public abstract void setOutputProperties(java.util.Properties oformat) { throw new AbstractMethodError("javax.xml.transform.Transformer.setOutputProperties(java.util.Properties)"); }
-  public abstract java.lang.String getOutputProperty(java.lang.String name) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.xml.transform.Transformer.getOutputProperty(java.lang.String)"); }
-  public abstract void setErrorListener(javax.xml.transform.ErrorListener listener) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.xml.transform.Transformer.setErrorListener(javax.xml.transform.ErrorListener)"); }
-  public abstract javax.xml.transform.ErrorListener getErrorListener() { throw new AbstractMethodError("javax.xml.transform.Transformer.getErrorListener()"); }
-  public abstract void setOutputProperty(java.lang.String name, java.lang.String value) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.xml.transform.Transformer.setOutputProperty(java.lang.String, java.lang.String)"); }
-  public abstract void setParameter(java.lang.String name, java.lang.Object value) { throw new AbstractMethodError("javax.xml.transform.Transformer.setParameter(java.lang.String, java.lang.Object)"); }
-  public abstract void clearParameters() { throw new AbstractMethodError("javax.xml.transform.Transformer.clearParameters()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reset() { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.transform.TransformerException")
+  public void transform(javax.xml.transform.Source xmlSource, javax.xml.transform.Result outputTarget) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getParameter(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Properties getOutputProperties() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setURIResolver(javax.xml.transform.URIResolver resolver) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.transform.URIResolver getURIResolver() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setOutputProperties(java.util.Properties oformat) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public java.lang.String getOutputProperty(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public void setErrorListener(javax.xml.transform.ErrorListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.transform.ErrorListener getErrorListener() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public void setOutputProperty(java.lang.String name, java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setParameter(java.lang.String name, java.lang.Object value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void clearParameters() { }
   < ---- END java signatures ---- >
 }

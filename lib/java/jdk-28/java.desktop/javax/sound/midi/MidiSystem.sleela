@@ -58,23 +58,40 @@ class MidiSystem {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static int write(javax.sound.midi.Sequence in, int fileType, java.io.OutputStream out) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.write(javax.sound.midi.Sequence, int, java.io.OutputStream)"); }
-  public static javax.sound.midi.Soundbank getSoundbank(java.io.InputStream stream) throws javax.sound.midi.InvalidMidiDataException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.getSoundbank(java.io.InputStream)"); }
-  public static javax.sound.midi.Receiver getReceiver() throws javax.sound.midi.MidiUnavailableException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.getReceiver()"); }
-  public static javax.sound.midi.Transmitter getTransmitter() throws javax.sound.midi.MidiUnavailableException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.getTransmitter()"); }
-  public static javax.sound.midi.MidiDevice getMidiDevice(javax.sound.midi.MidiDevice.Info info) throws javax.sound.midi.MidiUnavailableException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.getMidiDevice(javax.sound.midi.MidiDevice.Info)"); }
-  public static javax.sound.midi.Sequencer getSequencer(boolean connected) throws javax.sound.midi.MidiUnavailableException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.getSequencer(boolean)"); }
-  public static javax.sound.midi.Sequencer getSequencer() throws javax.sound.midi.MidiUnavailableException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.getSequencer()"); }
-  public static javax.sound.midi.Synthesizer getSynthesizer() throws javax.sound.midi.MidiUnavailableException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.getSynthesizer()"); }
-  public static javax.sound.midi.MidiFileFormat getMidiFileFormat(java.io.File file) throws javax.sound.midi.InvalidMidiDataException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.getMidiFileFormat(java.io.File)"); }
-  public static int[] getMidiFileTypes(javax.sound.midi.Sequence sequence) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.getMidiFileTypes(javax.sound.midi.Sequence)"); }
-  public static int[] getMidiFileTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.getMidiFileTypes()"); }
-  public static boolean isFileTypeSupported(int fileType, javax.sound.midi.Sequence sequence) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.isFileTypeSupported(int, javax.sound.midi.Sequence)"); }
-  public static boolean isFileTypeSupported(int fileType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.isFileTypeSupported(int)"); }
-  public static javax.sound.midi.MidiDevice.Info[] getMidiDeviceInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.getMidiDeviceInfo()"); }
-  public static javax.sound.midi.Sequence getSequence(java.io.InputStream stream) throws javax.sound.midi.InvalidMidiDataException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiSystem.getSequence(java.io.InputStream)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static int write(javax.sound.midi.Sequence in, int fileType, java.io.OutputStream out) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.InvalidMidiDataException, java.io.IOException")
+  public static javax.sound.midi.Soundbank getSoundbank(java.io.InputStream stream) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.MidiUnavailableException")
+  public static javax.sound.midi.Receiver getReceiver() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.MidiUnavailableException")
+  public static javax.sound.midi.Transmitter getTransmitter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.MidiUnavailableException")
+  public static javax.sound.midi.MidiDevice getMidiDevice(javax.sound.midi.MidiDevice.Info info) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.MidiUnavailableException")
+  public static javax.sound.midi.Sequencer getSequencer(boolean connected) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.MidiUnavailableException")
+  public static javax.sound.midi.Sequencer getSequencer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.MidiUnavailableException")
+  public static javax.sound.midi.Synthesizer getSynthesizer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.InvalidMidiDataException, java.io.IOException")
+  public static javax.sound.midi.MidiFileFormat getMidiFileFormat(java.io.File file) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int[] getMidiFileTypes(javax.sound.midi.Sequence sequence) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int[] getMidiFileTypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isFileTypeSupported(int fileType, javax.sound.midi.Sequence sequence) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isFileTypeSupported(int fileType) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.sound.midi.MidiDevice.Info[] getMidiDeviceInfo() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.InvalidMidiDataException, java.io.IOException")
+  public static javax.sound.midi.Sequence getSequence(java.io.InputStream stream) { return null; }
   < ---- END java signatures ---- >
 }

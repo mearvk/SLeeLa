@@ -59,14 +59,18 @@ class TerminalFactorySpi {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  TerminalFactorySpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.TerminalFactorySpi.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TerminalFactorySpi() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  abstract javax.smartcardio.CardTerminals engineTerminals() { throw new AbstractMethodError("javax.smartcardio.TerminalFactorySpi.engineTerminals()"); }
+  @throwable("java.lang.AbstractMethodError")
+  javax.smartcardio.CardTerminals engineTerminals() { return null; }
   < ---- END java signatures ---- >
 }

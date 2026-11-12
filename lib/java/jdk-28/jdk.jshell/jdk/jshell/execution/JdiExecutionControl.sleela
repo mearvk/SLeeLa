@@ -59,17 +59,23 @@ class JdiExecutionControl {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  JdiExecutionControl(java.io.ObjectOutput out, java.io.ObjectInput in) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.execution.JdiExecutionControl.<init>(java.io.ObjectOutput, java.io.ObjectInput)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  JdiExecutionControl(java.io.ObjectOutput out, java.io.ObjectInput in) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  abstract com.sun.jdi.VirtualMachine vm() throws jdk.jshell.spi.ExecutionControl.EngineTerminationException { throw new AbstractMethodError("jdk.jshell.execution.JdiExecutionControl.vm()"); }
+  @throwable("java.lang.AbstractMethodError, jdk.jshell.spi.ExecutionControl.EngineTerminationException")
+  com.sun.jdi.VirtualMachine vm() { return null; }
   @JavaProtected
-  com.sun.jdi.ReferenceType referenceType(com.sun.jdi.VirtualMachine vm, java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.execution.JdiExecutionControl.referenceType(com.sun.jdi.VirtualMachine, java.lang.String)"); }
-  public void redefine(jdk.jshell.spi.ExecutionControl.ClassBytecodes[] cbcs) throws jdk.jshell.spi.ExecutionControl.ClassInstallException, jdk.jshell.spi.ExecutionControl.EngineTerminationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.execution.JdiExecutionControl.redefine(jdk.jshell.spi.ExecutionControl.ClassBytecodes[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  com.sun.jdi.ReferenceType referenceType(com.sun.jdi.VirtualMachine vm, java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, jdk.jshell.spi.ExecutionControl.ClassInstallException, jdk.jshell.spi.ExecutionControl.EngineTerminationException")
+  public void redefine(jdk.jshell.spi.ExecutionControl.ClassBytecodes[] cbcs) { }
   < ---- END java signatures ---- >
 }

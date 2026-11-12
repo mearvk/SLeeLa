@@ -58,7 +58,9 @@ class MalformedURLException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MalformedURLException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.MalformedURLException.<init>()"); }
-  public MalformedURLException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.MalformedURLException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MalformedURLException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MalformedURLException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

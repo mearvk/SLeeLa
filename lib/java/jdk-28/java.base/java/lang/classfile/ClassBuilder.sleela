@@ -58,26 +58,46 @@ class ClassBuilder {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default java.lang.classfile.ClassBuilder withFlags(int flags) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withFlags(int)"); }
-  public default java.lang.classfile.ClassBuilder withFlags(java.lang.reflect.AccessFlag... flags) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withFlags(java.lang.reflect.AccessFlag...)"); }
-  public abstract java.lang.classfile.ClassBuilder withMethod(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, int methodFlags, java.util.function.Consumer<? super java.lang.classfile.MethodBuilder> handler) { throw new AbstractMethodError("java.lang.classfile.ClassBuilder.withMethod(java.lang.classfile.constantpool.Utf8Entry, java.lang.classfile.constantpool.Utf8Entry, int, java.util.function.Consumer<? super java.lang.classfile.MethodBuilder>)"); }
-  public default java.lang.classfile.ClassBuilder withMethod(java.lang.String name, java.lang.constant.MethodTypeDesc descriptor, int methodFlags, java.util.function.Consumer<? super java.lang.classfile.MethodBuilder> handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withMethod(java.lang.String, java.lang.constant.MethodTypeDesc, int, java.util.function.Consumer<? super java.lang.classfile.MethodBuilder>)"); }
-  public default java.lang.classfile.ClassBuilder withMethodBody(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, int methodFlags, java.util.function.Consumer<? super java.lang.classfile.CodeBuilder> handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withMethodBody(java.lang.classfile.constantpool.Utf8Entry, java.lang.classfile.constantpool.Utf8Entry, int, java.util.function.Consumer<? super java.lang.classfile.CodeBuilder>)"); }
-  public default java.lang.classfile.ClassBuilder withMethodBody(java.lang.String name, java.lang.constant.MethodTypeDesc descriptor, int methodFlags, java.util.function.Consumer<? super java.lang.classfile.CodeBuilder> handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withMethodBody(java.lang.String, java.lang.constant.MethodTypeDesc, int, java.util.function.Consumer<? super java.lang.classfile.CodeBuilder>)"); }
-  public default java.lang.classfile.ClassBuilder withSuperclass(java.lang.classfile.constantpool.ClassEntry superclassEntry) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withSuperclass(java.lang.classfile.constantpool.ClassEntry)"); }
-  public default java.lang.classfile.ClassBuilder withField(java.lang.String name, java.lang.constant.ClassDesc descriptor, java.util.function.Consumer<? super java.lang.classfile.FieldBuilder> handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withField(java.lang.String, java.lang.constant.ClassDesc, java.util.function.Consumer<? super java.lang.classfile.FieldBuilder>)"); }
-  public default java.lang.classfile.ClassBuilder withField(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, int flags) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withField(java.lang.classfile.constantpool.Utf8Entry, java.lang.classfile.constantpool.Utf8Entry, int)"); }
-  public default java.lang.classfile.ClassBuilder withField(java.lang.String name, java.lang.constant.ClassDesc descriptor, int flags) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withField(java.lang.String, java.lang.constant.ClassDesc, int)"); }
-  public abstract java.lang.classfile.ClassBuilder withField(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, java.util.function.Consumer<? super java.lang.classfile.FieldBuilder> handler) { throw new AbstractMethodError("java.lang.classfile.ClassBuilder.withField(java.lang.classfile.constantpool.Utf8Entry, java.lang.classfile.constantpool.Utf8Entry, java.util.function.Consumer<? super java.lang.classfile.FieldBuilder>)"); }
-  public abstract java.lang.classfile.ClassBuilder transformField(java.lang.classfile.FieldModel field, java.lang.classfile.FieldTransform transform) { throw new AbstractMethodError("java.lang.classfile.ClassBuilder.transformField(java.lang.classfile.FieldModel, java.lang.classfile.FieldTransform)"); }
-  public abstract java.lang.classfile.ClassBuilder transformMethod(java.lang.classfile.MethodModel method, java.lang.classfile.MethodTransform transform) { throw new AbstractMethodError("java.lang.classfile.ClassBuilder.transformMethod(java.lang.classfile.MethodModel, java.lang.classfile.MethodTransform)"); }
-  public default java.lang.classfile.ClassBuilder withInterfaces(java.util.List<java.lang.classfile.constantpool.ClassEntry> interfaces) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withInterfaces(java.util.List<java.lang.classfile.constantpool.ClassEntry>)"); }
-  public default java.lang.classfile.ClassBuilder withInterfaces(java.lang.classfile.constantpool.ClassEntry... interfaces) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withInterfaces(java.lang.classfile.constantpool.ClassEntry...)"); }
-  public default java.lang.classfile.ClassBuilder withInterfaceSymbols(java.util.List<java.lang.constant.ClassDesc> interfaces) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withInterfaceSymbols(java.util.List<java.lang.constant.ClassDesc>)"); }
-  public default java.lang.classfile.ClassBuilder withInterfaceSymbols(java.lang.constant.ClassDesc... interfaces) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withInterfaceSymbols(java.lang.constant.ClassDesc...)"); }
-  public default java.lang.classfile.ClassBuilder withVersion(int major, int minor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassBuilder.withVersion(int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withFlags(int flags) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withFlags(java.lang.reflect.AccessFlag... flags) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.ClassBuilder withMethod(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, int methodFlags, java.util.function.Consumer<? super java.lang.classfile.MethodBuilder> handler) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withMethod(java.lang.String name, java.lang.constant.MethodTypeDesc descriptor, int methodFlags, java.util.function.Consumer<? super java.lang.classfile.MethodBuilder> handler) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withMethodBody(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, int methodFlags, java.util.function.Consumer<? super java.lang.classfile.CodeBuilder> handler) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withMethodBody(java.lang.String name, java.lang.constant.MethodTypeDesc descriptor, int methodFlags, java.util.function.Consumer<? super java.lang.classfile.CodeBuilder> handler) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withSuperclass(java.lang.classfile.constantpool.ClassEntry superclassEntry) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withField(java.lang.String name, java.lang.constant.ClassDesc descriptor, java.util.function.Consumer<? super java.lang.classfile.FieldBuilder> handler) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withField(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, int flags) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withField(java.lang.String name, java.lang.constant.ClassDesc descriptor, int flags) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.ClassBuilder withField(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, java.util.function.Consumer<? super java.lang.classfile.FieldBuilder> handler) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.ClassBuilder transformField(java.lang.classfile.FieldModel field, java.lang.classfile.FieldTransform transform) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.ClassBuilder transformMethod(java.lang.classfile.MethodModel method, java.lang.classfile.MethodTransform transform) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withInterfaces(java.util.List<java.lang.classfile.constantpool.ClassEntry> interfaces) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withInterfaces(java.lang.classfile.constantpool.ClassEntry... interfaces) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withInterfaceSymbols(java.util.List<java.lang.constant.ClassDesc> interfaces) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withInterfaceSymbols(java.lang.constant.ClassDesc... interfaces) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassBuilder withVersion(int major, int minor) { return null; }
   < ---- END java signatures ---- >
 }

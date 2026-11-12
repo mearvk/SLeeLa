@@ -62,32 +62,55 @@ class SimpleAttributeSet {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SimpleAttributeSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.<init>()"); }
-  public SimpleAttributeSet(javax.swing.text.AttributeSet source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.<init>(javax.swing.text.AttributeSet)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SimpleAttributeSet() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SimpleAttributeSet(javax.swing.text.AttributeSet source) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.clone()"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.isEmpty()"); }
-  public boolean isDefined(java.lang.Object attrName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.isDefined(java.lang.Object)"); }
-  public boolean isEqual(javax.swing.text.AttributeSet attr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.isEqual(javax.swing.text.AttributeSet)"); }
-  public java.lang.Object getAttribute(java.lang.Object name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.getAttribute(java.lang.Object)"); }
-  public void addAttribute(java.lang.Object name, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.addAttribute(java.lang.Object, java.lang.Object)"); }
-  public void addAttributes(javax.swing.text.AttributeSet attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.addAttributes(javax.swing.text.AttributeSet)"); }
-  public int getAttributeCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.getAttributeCount()"); }
-  public java.util.Enumeration<?> getAttributeNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.getAttributeNames()"); }
-  public boolean containsAttribute(java.lang.Object name, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.containsAttribute(java.lang.Object, java.lang.Object)"); }
-  public boolean containsAttributes(javax.swing.text.AttributeSet attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.containsAttributes(javax.swing.text.AttributeSet)"); }
-  public javax.swing.text.AttributeSet getResolveParent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.getResolveParent()"); }
-  public void removeAttribute(java.lang.Object name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.removeAttribute(java.lang.Object)"); }
-  public void removeAttributes(java.util.Enumeration<?> names) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.removeAttributes(java.util.Enumeration<?>)"); }
-  public void setResolveParent(javax.swing.text.AttributeSet parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.setResolveParent(javax.swing.text.AttributeSet)"); }
-  public javax.swing.text.AttributeSet copyAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.SimpleAttributeSet.copyAttributes()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDefined(java.lang.Object attrName) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEqual(javax.swing.text.AttributeSet attr) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getAttribute(java.lang.Object name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addAttribute(java.lang.Object name, java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addAttributes(javax.swing.text.AttributeSet attributes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAttributeCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Enumeration<?> getAttributeNames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsAttribute(java.lang.Object name, java.lang.Object value) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsAttributes(javax.swing.text.AttributeSet attributes) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.AttributeSet getResolveParent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAttribute(java.lang.Object name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAttributes(java.util.Enumeration<?> names) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setResolveParent(javax.swing.text.AttributeSet parent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.AttributeSet copyAttributes() { return null; }
   < ---- END java signatures ---- >
 }

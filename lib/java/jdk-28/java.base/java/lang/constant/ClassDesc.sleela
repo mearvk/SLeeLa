@@ -58,25 +58,44 @@ class ClassDesc {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean equals(java.lang.Object o) { throw new AbstractMethodError("java.lang.constant.ClassDesc.equals(java.lang.Object)"); }
-  public default java.lang.constant.ClassDesc componentType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.ClassDesc.componentType()"); }
-  public static java.lang.constant.ClassDesc of(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.ClassDesc.of(java.lang.String)"); }
-  public static java.lang.constant.ClassDesc of(java.lang.String packageName, java.lang.String className) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.ClassDesc.of(java.lang.String, java.lang.String)"); }
-  public abstract java.lang.Class<?> resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup lookup) throws java.lang.ReflectiveOperationException { throw new AbstractMethodError("java.lang.constant.ClassDesc.resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup)"); }
-  public default boolean isPrimitive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.ClassDesc.isPrimitive()"); }
-  public default boolean isArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.ClassDesc.isArray()"); }
-  public default java.lang.String packageName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.ClassDesc.packageName()"); }
-  public abstract java.lang.constant.ClassDesc arrayType() { throw new AbstractMethodError("java.lang.constant.ClassDesc.arrayType()"); }
-  public abstract java.lang.constant.ClassDesc arrayType(int rank) { throw new AbstractMethodError("java.lang.constant.ClassDesc.arrayType(int)"); }
-  public abstract java.lang.String descriptorString() { throw new AbstractMethodError("java.lang.constant.ClassDesc.descriptorString()"); }
-  public abstract java.lang.String displayName() { throw new AbstractMethodError("java.lang.constant.ClassDesc.displayName()"); }
-  public default java.lang.constant.ClassDesc nested(java.lang.String nestedName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.ClassDesc.nested(java.lang.String)"); }
-  public default java.lang.constant.ClassDesc nested(java.lang.String firstNestedName, java.lang.String... moreNestedNames) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.ClassDesc.nested(java.lang.String, java.lang.String...)"); }
-  public default boolean isClassOrInterface() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.ClassDesc.isClassOrInterface()"); }
-  public static java.lang.constant.ClassDesc ofInternalName(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.ClassDesc.ofInternalName(java.lang.String)"); }
-  public static java.lang.constant.ClassDesc ofDescriptor(java.lang.String descriptor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.ClassDesc.ofDescriptor(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.constant.ClassDesc componentType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.constant.ClassDesc of(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.constant.ClassDesc of(java.lang.String packageName, java.lang.String className) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.ReflectiveOperationException")
+  public java.lang.Class<?> resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup lookup) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isPrimitive() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isArray() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.String packageName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.constant.ClassDesc arrayType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.constant.ClassDesc arrayType(int rank) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String descriptorString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String displayName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.constant.ClassDesc nested(java.lang.String nestedName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.constant.ClassDesc nested(java.lang.String firstNestedName, java.lang.String... moreNestedNames) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isClassOrInterface() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.constant.ClassDesc ofInternalName(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.constant.ClassDesc ofDescriptor(java.lang.String descriptor) { return null; }
   < ---- END java signatures ---- >
 }

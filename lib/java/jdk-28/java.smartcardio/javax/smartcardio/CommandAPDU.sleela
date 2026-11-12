@@ -58,31 +58,53 @@ class CommandAPDU {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CommandAPDU(int cla, int ins, int p1, int p2, int ne) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.<init>(int, int, int, int, int)"); }
-  public CommandAPDU(int cla, int ins, int p1, int p2, byte[] data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.<init>(int, int, int, int, byte[])"); }
-  public CommandAPDU(int cla, int ins, int p1, int p2, byte[] data, int dataOffset, int dataLength) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.<init>(int, int, int, int, byte[], int, int)"); }
-  public CommandAPDU(int cla, int ins, int p1, int p2, byte[] data, int ne) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.<init>(int, int, int, int, byte[], int)"); }
-  public CommandAPDU(int cla, int ins, int p1, int p2, byte[] data, int dataOffset, int dataLength, int ne) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.<init>(int, int, int, int, byte[], int, int, int)"); }
-  public CommandAPDU(byte[] apdu, int apduOffset, int apduLength) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.<init>(byte[], int, int)"); }
-  public CommandAPDU(byte[] apdu) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.<init>(byte[])"); }
-  public CommandAPDU(java.nio.ByteBuffer apdu) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.<init>(java.nio.ByteBuffer)"); }
-  public CommandAPDU(int cla, int ins, int p1, int p2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.<init>(int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CommandAPDU(int cla, int ins, int p1, int p2, int ne) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CommandAPDU(int cla, int ins, int p1, int p2, byte[] data) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CommandAPDU(int cla, int ins, int p1, int p2, byte[] data, int dataOffset, int dataLength) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CommandAPDU(int cla, int ins, int p1, int p2, byte[] data, int ne) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CommandAPDU(int cla, int ins, int p1, int p2, byte[] data, int dataOffset, int dataLength, int ne) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CommandAPDU(byte[] apdu, int apduOffset, int apduLength) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CommandAPDU(byte[] apdu) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CommandAPDU(java.nio.ByteBuffer apdu) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CommandAPDU(int cla, int ins, int p1, int p2) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.hashCode()"); }
-  public byte[] getBytes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.getBytes()"); }
-  public byte[] getData() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.getData()"); }
-  public int getP1() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.getP1()"); }
-  public int getP2() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.getP2()"); }
-  public int getCLA() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.getCLA()"); }
-  public int getINS() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.getINS()"); }
-  public int getNc() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.getNc()"); }
-  public int getNe() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.CommandAPDU.getNe()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getBytes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getData() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getP1() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getP2() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getCLA() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getINS() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNc() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNe() { return 0; }
   < ---- END java signatures ---- >
 }

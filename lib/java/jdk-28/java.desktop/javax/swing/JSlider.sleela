@@ -68,67 +68,121 @@ class JSlider {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JSlider(int orientation, int min, int max, int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.<init>(int, int, int, int)"); }
-  public JSlider(int min, int max, int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.<init>(int, int, int)"); }
-  public JSlider(int min, int max) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.<init>(int, int)"); }
-  public JSlider(javax.swing.BoundedRangeModel brm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.<init>(javax.swing.BoundedRangeModel)"); }
-  public JSlider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.<init>()"); }
-  public JSlider(int orientation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.<init>(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JSlider(int orientation, int min, int max, int value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JSlider(int min, int max, int value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JSlider(int min, int max) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JSlider(javax.swing.BoundedRangeModel brm) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JSlider() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JSlider(int orientation) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getValue()"); }
-  public void setValue(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setValue(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValue(int n) { }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.paramString()"); }
-  public int getMaximum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getMaximum()"); }
-  public int getMinimum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getMinimum()"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.updateUI()"); }
-  public void setUI(javax.swing.plaf.SliderUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setUI(javax.swing.plaf.SliderUI)"); }
-  public javax.swing.plaf.SliderUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getUI()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getUIClassID()"); }
-  public int getOrientation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getOrientation()"); }
-  public void setMinimum(int minimum) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setMinimum(int)"); }
-  public void setMaximum(int maximum) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setMaximum(int)"); }
-  public void setValueIsAdjusting(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setValueIsAdjusting(boolean)"); }
-  public void setOrientation(int orientation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setOrientation(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaximum() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinimum() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.SliderUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.SliderUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getOrientation() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinimum(int minimum) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximum(int maximum) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValueIsAdjusting(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOrientation(int orientation) { }
   @JavaProtected
-  void updateLabelUIs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.updateLabelUIs()"); }
-  public java.util.Dictionary getLabelTable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getLabelTable()"); }
-  public java.util.Hashtable<java.lang.Integer, javax.swing.JComponent> createStandardLabels(int increment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.createStandardLabels(int)"); }
-  public java.util.Hashtable<java.lang.Integer, javax.swing.JComponent> createStandardLabels(int increment, int start) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.createStandardLabels(int, int)"); }
-  public int getMajorTickSpacing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getMajorTickSpacing()"); }
-  public boolean getPaintLabels() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getPaintLabels()"); }
-  public void setLabelTable(java.util.Dictionary labels) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setLabelTable(java.util.Dictionary)"); }
-  public boolean getPaintTicks() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getPaintTicks()"); }
-  public boolean getInverted() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getInverted()"); }
-  public void setInverted(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setInverted(boolean)"); }
-  public void setMajorTickSpacing(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setMajorTickSpacing(int)"); }
-  public int getMinorTickSpacing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getMinorTickSpacing()"); }
-  public void setMinorTickSpacing(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setMinorTickSpacing(int)"); }
-  public boolean getSnapToTicks() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getSnapToTicks()"); }
-  public void setSnapToTicks(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setSnapToTicks(boolean)"); }
-  public void setPaintTicks(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setPaintTicks(boolean)"); }
-  public boolean getPaintTrack() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getPaintTrack()"); }
-  public void setPaintTrack(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setPaintTrack(boolean)"); }
-  public void setPaintLabels(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setPaintLabels(boolean)"); }
-  public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.imageUpdate(java.awt.Image, int, int, int, int, int)"); }
-  public boolean getValueIsAdjusting() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getValueIsAdjusting()"); }
-  public javax.swing.BoundedRangeModel getModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getModel()"); }
-  public void removeChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.removeChangeListener(javax.swing.event.ChangeListener)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void updateLabelUIs() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Dictionary getLabelTable() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Hashtable<java.lang.Integer, javax.swing.JComponent> createStandardLabels(int increment) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Hashtable<java.lang.Integer, javax.swing.JComponent> createStandardLabels(int increment, int start) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMajorTickSpacing() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getPaintLabels() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLabelTable(java.util.Dictionary labels) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getPaintTicks() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getInverted() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInverted(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMajorTickSpacing(int n) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinorTickSpacing() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinorTickSpacing(int n) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getSnapToTicks() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSnapToTicks(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPaintTicks(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getPaintTrack() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPaintTrack(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPaintLabels(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int w, int h) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getValueIsAdjusting() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.BoundedRangeModel getModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeChangeListener(javax.swing.event.ChangeListener l) { }
   @JavaProtected
-  javax.swing.event.ChangeListener createChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.createChangeListener()"); }
-  public void addChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.addChangeListener(javax.swing.event.ChangeListener)"); }
-  public void setModel(javax.swing.BoundedRangeModel newModel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setModel(javax.swing.BoundedRangeModel)"); }
-  public javax.swing.event.ChangeListener[] getChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getChangeListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.event.ChangeListener createChangeListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addChangeListener(javax.swing.event.ChangeListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setModel(javax.swing.BoundedRangeModel newModel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.ChangeListener[] getChangeListeners() { return null; }
   @JavaProtected
-  void fireStateChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.fireStateChanged()"); }
-  public int getExtent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getExtent()"); }
-  public void setExtent(int extent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setExtent(int)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.getAccessibleContext()"); }
-  public void setFont(java.awt.Font font) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSlider.setFont(java.awt.Font)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireStateChanged() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getExtent() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setExtent(int extent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFont(java.awt.Font font) { }
   < ---- END java signatures ---- >
 }

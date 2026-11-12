@@ -68,13 +68,20 @@ class PathIterator {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void next() { throw new AbstractMethodError("java.awt.geom.PathIterator.next()"); }
-  public abstract boolean isDone() { throw new AbstractMethodError("java.awt.geom.PathIterator.isDone()"); }
-  public abstract int getWindingRule() { throw new AbstractMethodError("java.awt.geom.PathIterator.getWindingRule()"); }
-  public abstract int currentSegment(float[] coords) { throw new AbstractMethodError("java.awt.geom.PathIterator.currentSegment(float[])"); }
-  public abstract int currentSegment(double[] coords) { throw new AbstractMethodError("java.awt.geom.PathIterator.currentSegment(double[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void next() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDone() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getWindingRule() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int currentSegment(float[] coords) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int currentSegment(double[] coords) { return 0; }
   < ---- END java signatures ---- >
 }

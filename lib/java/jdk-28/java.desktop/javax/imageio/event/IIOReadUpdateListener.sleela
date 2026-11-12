@@ -58,14 +58,22 @@ class IIOReadUpdateListener {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void imageUpdate(javax.imageio.ImageReader source, java.awt.image.BufferedImage theImage, int minX, int minY, int width, int height, int periodX, int periodY, int[] bands) { throw new AbstractMethodError("javax.imageio.event.IIOReadUpdateListener.imageUpdate(javax.imageio.ImageReader, java.awt.image.BufferedImage, int, int, int, int, int, int, int[])"); }
-  public abstract void passStarted(javax.imageio.ImageReader source, java.awt.image.BufferedImage theImage, int pass, int minPass, int maxPass, int minX, int minY, int periodX, int periodY, int[] bands) { throw new AbstractMethodError("javax.imageio.event.IIOReadUpdateListener.passStarted(javax.imageio.ImageReader, java.awt.image.BufferedImage, int, int, int, int, int, int, int, int[])"); }
-  public abstract void passComplete(javax.imageio.ImageReader source, java.awt.image.BufferedImage theImage) { throw new AbstractMethodError("javax.imageio.event.IIOReadUpdateListener.passComplete(javax.imageio.ImageReader, java.awt.image.BufferedImage)"); }
-  public abstract void thumbnailPassStarted(javax.imageio.ImageReader source, java.awt.image.BufferedImage theThumbnail, int pass, int minPass, int maxPass, int minX, int minY, int periodX, int periodY, int[] bands) { throw new AbstractMethodError("javax.imageio.event.IIOReadUpdateListener.thumbnailPassStarted(javax.imageio.ImageReader, java.awt.image.BufferedImage, int, int, int, int, int, int, int, int[])"); }
-  public abstract void thumbnailUpdate(javax.imageio.ImageReader source, java.awt.image.BufferedImage theThumbnail, int minX, int minY, int width, int height, int periodX, int periodY, int[] bands) { throw new AbstractMethodError("javax.imageio.event.IIOReadUpdateListener.thumbnailUpdate(javax.imageio.ImageReader, java.awt.image.BufferedImage, int, int, int, int, int, int, int[])"); }
-  public abstract void thumbnailPassComplete(javax.imageio.ImageReader source, java.awt.image.BufferedImage theThumbnail) { throw new AbstractMethodError("javax.imageio.event.IIOReadUpdateListener.thumbnailPassComplete(javax.imageio.ImageReader, java.awt.image.BufferedImage)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void imageUpdate(javax.imageio.ImageReader source, java.awt.image.BufferedImage theImage, int minX, int minY, int width, int height, int periodX, int periodY, int[] bands) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void passStarted(javax.imageio.ImageReader source, java.awt.image.BufferedImage theImage, int pass, int minPass, int maxPass, int minX, int minY, int periodX, int periodY, int[] bands) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void passComplete(javax.imageio.ImageReader source, java.awt.image.BufferedImage theImage) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void thumbnailPassStarted(javax.imageio.ImageReader source, java.awt.image.BufferedImage theThumbnail, int pass, int minPass, int maxPass, int minX, int minY, int periodX, int periodY, int[] bands) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void thumbnailUpdate(javax.imageio.ImageReader source, java.awt.image.BufferedImage theThumbnail, int minX, int minY, int width, int height, int periodX, int periodY, int[] bands) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void thumbnailPassComplete(javax.imageio.ImageReader source, java.awt.image.BufferedImage theThumbnail) { }
   < ---- END java signatures ---- >
 }

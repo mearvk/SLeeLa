@@ -58,22 +58,38 @@ class JavaShellToolBuilder {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void run(java.lang.String... arguments) throws java.lang.Exception { throw new AbstractMethodError("jdk.jshell.tool.JavaShellToolBuilder.run(java.lang.String...)"); }
-  public static jdk.jshell.tool.JavaShellToolBuilder builder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.tool.JavaShellToolBuilder.builder()"); }
-  public abstract jdk.jshell.tool.JavaShellToolBuilder locale(java.util.Locale locale) { throw new AbstractMethodError("jdk.jshell.tool.JavaShellToolBuilder.locale(java.util.Locale)"); }
-  public abstract jdk.jshell.tool.JavaShellToolBuilder out(java.io.PrintStream cmdOut, java.io.PrintStream console, java.io.PrintStream userOut) { throw new AbstractMethodError("jdk.jshell.tool.JavaShellToolBuilder.out(java.io.PrintStream, java.io.PrintStream, java.io.PrintStream)"); }
-  public abstract jdk.jshell.tool.JavaShellToolBuilder out(java.io.PrintStream output) { throw new AbstractMethodError("jdk.jshell.tool.JavaShellToolBuilder.out(java.io.PrintStream)"); }
-  public abstract jdk.jshell.tool.JavaShellToolBuilder err(java.io.PrintStream error) { throw new AbstractMethodError("jdk.jshell.tool.JavaShellToolBuilder.err(java.io.PrintStream)"); }
-  public abstract jdk.jshell.tool.JavaShellToolBuilder err(java.io.PrintStream cmdErr, java.io.PrintStream userErr) { throw new AbstractMethodError("jdk.jshell.tool.JavaShellToolBuilder.err(java.io.PrintStream, java.io.PrintStream)"); }
-  public abstract jdk.jshell.tool.JavaShellToolBuilder in(java.io.InputStream cmdIn, java.io.InputStream userIn) { throw new AbstractMethodError("jdk.jshell.tool.JavaShellToolBuilder.in(java.io.InputStream, java.io.InputStream)"); }
-  public default int start(java.lang.String... arguments) throws java.lang.Exception { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.tool.JavaShellToolBuilder.start(java.lang.String...)"); }
-  public abstract jdk.jshell.tool.JavaShellToolBuilder env(java.util.Map<java.lang.String, java.lang.String> vars) { throw new AbstractMethodError("jdk.jshell.tool.JavaShellToolBuilder.env(java.util.Map<java.lang.String, java.lang.String>)"); }
-  public default jdk.jshell.tool.JavaShellToolBuilder windowSize(int columns, int rows) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.tool.JavaShellToolBuilder.windowSize(int, int)"); }
-  public abstract jdk.jshell.tool.JavaShellToolBuilder persistence(java.util.prefs.Preferences prefs) { throw new AbstractMethodError("jdk.jshell.tool.JavaShellToolBuilder.persistence(java.util.prefs.Preferences)"); }
-  public abstract jdk.jshell.tool.JavaShellToolBuilder promptCapture(boolean capture) { throw new AbstractMethodError("jdk.jshell.tool.JavaShellToolBuilder.promptCapture(boolean)"); }
-  public default jdk.jshell.tool.JavaShellToolBuilder interactiveTerminal(boolean terminal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.tool.JavaShellToolBuilder.interactiveTerminal(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.lang.Exception")
+  public void run(java.lang.String... arguments) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static jdk.jshell.tool.JavaShellToolBuilder builder() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.jshell.tool.JavaShellToolBuilder locale(java.util.Locale locale) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.jshell.tool.JavaShellToolBuilder out(java.io.PrintStream cmdOut, java.io.PrintStream console, java.io.PrintStream userOut) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.jshell.tool.JavaShellToolBuilder out(java.io.PrintStream output) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.jshell.tool.JavaShellToolBuilder err(java.io.PrintStream error) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.jshell.tool.JavaShellToolBuilder err(java.io.PrintStream cmdErr, java.io.PrintStream userErr) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.jshell.tool.JavaShellToolBuilder in(java.io.InputStream cmdIn, java.io.InputStream userIn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
+  public default int start(java.lang.String... arguments) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.jshell.tool.JavaShellToolBuilder env(java.util.Map<java.lang.String, java.lang.String> vars) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default jdk.jshell.tool.JavaShellToolBuilder windowSize(int columns, int rows) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.jshell.tool.JavaShellToolBuilder persistence(java.util.prefs.Preferences prefs) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.jshell.tool.JavaShellToolBuilder promptCapture(boolean capture) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default jdk.jshell.tool.JavaShellToolBuilder interactiveTerminal(boolean terminal) { return null; }
   < ---- END java signatures ---- >
 }

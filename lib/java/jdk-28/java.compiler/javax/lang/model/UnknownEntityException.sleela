@@ -59,6 +59,7 @@ class UnknownEntityException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  UnknownEntityException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.UnknownEntityException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  UnknownEntityException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

@@ -59,24 +59,39 @@ class Builder {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Builder(java.security.KeyStore.PrivateKeyEntry entry) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.Builder.<init>(java.security.KeyStore.PrivateKeyEntry)"); }
-  public Builder(java.security.PrivateKey privateKey, java.security.cert.CertPath certPath) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.Builder.<init>(java.security.PrivateKey, java.security.cert.CertPath)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Builder(java.security.KeyStore.PrivateKeyEntry entry) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Builder(java.security.PrivateKey privateKey, java.security.cert.CertPath certPath) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public jdk.security.jarsigner.JarSigner.Builder setProperty(java.lang.String key, java.lang.String value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.Builder.setProperty(java.lang.String, java.lang.String)"); }
-  public jdk.security.jarsigner.JarSigner build() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.Builder.build()"); }
-  public static java.lang.String getDefaultDigestAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.Builder.getDefaultDigestAlgorithm()"); }
-  public static java.lang.String getDefaultSignatureAlgorithm(java.security.PrivateKey key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.Builder.getDefaultSignatureAlgorithm(java.security.PrivateKey)"); }
-  public jdk.security.jarsigner.JarSigner.Builder signerName(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.Builder.signerName(java.lang.String)"); }
-  public jdk.security.jarsigner.JarSigner.Builder tsa(java.net.URI uri) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.Builder.tsa(java.net.URI)"); }
-  public jdk.security.jarsigner.JarSigner.Builder digestAlgorithm(java.lang.String algorithm) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.Builder.digestAlgorithm(java.lang.String)"); }
-  public jdk.security.jarsigner.JarSigner.Builder digestAlgorithm(java.lang.String algorithm, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.Builder.digestAlgorithm(java.lang.String, java.security.Provider)"); }
-  public jdk.security.jarsigner.JarSigner.Builder signatureAlgorithm(java.lang.String algorithm, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.Builder.signatureAlgorithm(java.lang.String, java.security.Provider)"); }
-  public jdk.security.jarsigner.JarSigner.Builder signatureAlgorithm(java.lang.String algorithm) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.Builder.signatureAlgorithm(java.lang.String)"); }
-  public jdk.security.jarsigner.JarSigner.Builder eventHandler(java.util.function.BiConsumer<java.lang.String, java.lang.String> handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.Builder.eventHandler(java.util.function.BiConsumer<java.lang.String, java.lang.String>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.security.jarsigner.JarSigner.Builder setProperty(java.lang.String key, java.lang.String value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.security.jarsigner.JarSigner build() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String getDefaultDigestAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String getDefaultSignatureAlgorithm(java.security.PrivateKey key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.security.jarsigner.JarSigner.Builder signerName(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.security.jarsigner.JarSigner.Builder tsa(java.net.URI uri) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public jdk.security.jarsigner.JarSigner.Builder digestAlgorithm(java.lang.String algorithm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public jdk.security.jarsigner.JarSigner.Builder digestAlgorithm(java.lang.String algorithm, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public jdk.security.jarsigner.JarSigner.Builder signatureAlgorithm(java.lang.String algorithm, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public jdk.security.jarsigner.JarSigner.Builder signatureAlgorithm(java.lang.String algorithm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.security.jarsigner.JarSigner.Builder eventHandler(java.util.function.BiConsumer<java.lang.String, java.lang.String> handler) { return null; }
   < ---- END java signatures ---- >
 }

@@ -92,23 +92,37 @@ class ColorSpace {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ColorSpace(int type, int numComponents) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.<init>(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ColorSpace(int type, int numComponents) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName(int component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.getName(int)"); }
-  public static java.awt.color.ColorSpace getInstance(int cspace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.getInstance(int)"); }
-  public int getType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.getType()"); }
-  public abstract float[] toRGB(float[] colorvalue) { throw new AbstractMethodError("java.awt.color.ColorSpace.toRGB(float[])"); }
-  public abstract float[] toCIEXYZ(float[] colorvalue) { throw new AbstractMethodError("java.awt.color.ColorSpace.toCIEXYZ(float[])"); }
-  public abstract float[] fromCIEXYZ(float[] colorvalue) { throw new AbstractMethodError("java.awt.color.ColorSpace.fromCIEXYZ(float[])"); }
-  public boolean isCS_sRGB() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.isCS_sRGB()"); }
-  public abstract float[] fromRGB(float[] rgbvalue) { throw new AbstractMethodError("java.awt.color.ColorSpace.fromRGB(float[])"); }
-  public float getMinValue(int component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.getMinValue(int)"); }
-  public float getMaxValue(int component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.getMaxValue(int)"); }
-  public int getNumComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.getNumComponents()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName(int component) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.color.ColorSpace getInstance(int cspace) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getType() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float[] toRGB(float[] colorvalue) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public float[] toCIEXYZ(float[] colorvalue) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public float[] fromCIEXYZ(float[] colorvalue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCS_sRGB() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public float[] fromRGB(float[] rgbvalue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMinValue(int component) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMaxValue(int component) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNumComponents() { return 0; }
   < ---- END java signatures ---- >
 }

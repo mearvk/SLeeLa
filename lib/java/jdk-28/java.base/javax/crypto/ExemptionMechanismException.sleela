@@ -58,7 +58,9 @@ class ExemptionMechanismException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ExemptionMechanismException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.ExemptionMechanismException.<init>()"); }
-  public ExemptionMechanismException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.ExemptionMechanismException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ExemptionMechanismException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ExemptionMechanismException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

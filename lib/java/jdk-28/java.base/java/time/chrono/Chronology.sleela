@@ -58,40 +58,74 @@ class Chronology {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("java.time.chrono.Chronology.equals(java.lang.Object)"); }
-  public abstract java.lang.String toString() { throw new AbstractMethodError("java.time.chrono.Chronology.toString()"); }
-  public abstract int hashCode() { throw new AbstractMethodError("java.time.chrono.Chronology.hashCode()"); }
-  public abstract int compareTo(java.time.chrono.Chronology other) { throw new AbstractMethodError("java.time.chrono.Chronology.compareTo(java.time.chrono.Chronology)"); }
-  public static java.time.chrono.Chronology of(java.lang.String id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.of(java.lang.String)"); }
-  public static java.time.chrono.Chronology from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.from(java.time.temporal.TemporalAccessor)"); }
-  public abstract java.lang.String getId() { throw new AbstractMethodError("java.time.chrono.Chronology.getId()"); }
-  public abstract java.time.temporal.ValueRange range(java.time.temporal.ChronoField field) { throw new AbstractMethodError("java.time.chrono.Chronology.range(java.time.temporal.ChronoField)"); }
-  public default java.lang.String getDisplayName(java.time.format.TextStyle style, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.getDisplayName(java.time.format.TextStyle, java.util.Locale)"); }
-  public abstract java.time.chrono.ChronoLocalDate date(int prolepticYear, int month, int dayOfMonth) { throw new AbstractMethodError("java.time.chrono.Chronology.date(int, int, int)"); }
-  public abstract java.time.chrono.ChronoLocalDate date(java.time.temporal.TemporalAccessor temporal) { throw new AbstractMethodError("java.time.chrono.Chronology.date(java.time.temporal.TemporalAccessor)"); }
-  public default java.time.chrono.ChronoLocalDate date(java.time.chrono.Era era, int yearOfEra, int month, int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.date(java.time.chrono.Era, int, int, int)"); }
-  public abstract java.util.List<java.time.chrono.Era> eras() { throw new AbstractMethodError("java.time.chrono.Chronology.eras()"); }
-  public default long epochSecond(java.time.chrono.Era era, int yearOfEra, int month, int dayOfMonth, int hour, int minute, int second, java.time.ZoneOffset zoneOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.epochSecond(java.time.chrono.Era, int, int, int, int, int, int, java.time.ZoneOffset)"); }
-  public default long epochSecond(int prolepticYear, int month, int dayOfMonth, int hour, int minute, int second, java.time.ZoneOffset zoneOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.epochSecond(int, int, int, int, int, int, java.time.ZoneOffset)"); }
-  public abstract boolean isLeapYear(long prolepticYear) { throw new AbstractMethodError("java.time.chrono.Chronology.isLeapYear(long)"); }
-  public abstract java.time.chrono.Era eraOf(int eraValue) { throw new AbstractMethodError("java.time.chrono.Chronology.eraOf(int)"); }
-  public default java.time.chrono.ChronoLocalDateTime<? extends java.time.chrono.ChronoLocalDate> localDateTime(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.localDateTime(java.time.temporal.TemporalAccessor)"); }
-  public abstract java.lang.String getCalendarType() { throw new AbstractMethodError("java.time.chrono.Chronology.getCalendarType()"); }
-  public abstract java.time.chrono.ChronoLocalDate dateEpochDay(long epochDay) { throw new AbstractMethodError("java.time.chrono.Chronology.dateEpochDay(long)"); }
-  public default java.time.chrono.ChronoLocalDate dateNow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.dateNow()"); }
-  public default java.time.chrono.ChronoLocalDate dateNow(java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.dateNow(java.time.ZoneId)"); }
-  public abstract int prolepticYear(java.time.chrono.Era era, int yearOfEra) { throw new AbstractMethodError("java.time.chrono.Chronology.prolepticYear(java.time.chrono.Era, int)"); }
-  public abstract java.time.chrono.ChronoLocalDate dateYearDay(int prolepticYear, int dayOfYear) { throw new AbstractMethodError("java.time.chrono.Chronology.dateYearDay(int, int)"); }
-  public default java.time.chrono.ChronoLocalDate dateYearDay(java.time.chrono.Era era, int yearOfEra, int dayOfYear) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.dateYearDay(java.time.chrono.Era, int, int)"); }
-  public static java.time.chrono.Chronology ofLocale(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.ofLocale(java.util.Locale)"); }
-  public static java.util.Set<java.time.chrono.Chronology> getAvailableChronologies() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.getAvailableChronologies()"); }
-  public abstract java.time.chrono.ChronoLocalDate resolveDate(java.util.Map<java.time.temporal.TemporalField, java.lang.Long> fieldValues, java.time.format.ResolverStyle resolverStyle) { throw new AbstractMethodError("java.time.chrono.Chronology.resolveDate(java.util.Map<java.time.temporal.TemporalField, java.lang.Long>, java.time.format.ResolverStyle)"); }
-  public default java.time.chrono.ChronoZonedDateTime<? extends java.time.chrono.ChronoLocalDate> zonedDateTime(java.time.Instant instant, java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.zonedDateTime(java.time.Instant, java.time.ZoneId)"); }
-  public default java.time.chrono.ChronoZonedDateTime<? extends java.time.chrono.ChronoLocalDate> zonedDateTime(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.zonedDateTime(java.time.temporal.TemporalAccessor)"); }
-  public default java.time.chrono.ChronoPeriod period(int years, int months, int days) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.period(int, int, int)"); }
-  public default boolean isIsoBased() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.Chronology.isIsoBased()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int compareTo(java.time.chrono.Chronology other) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.chrono.Chronology of(java.lang.String id) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.chrono.Chronology from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getId() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.temporal.ValueRange range(java.time.temporal.ChronoField field) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.String getDisplayName(java.time.format.TextStyle style, java.util.Locale locale) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.ChronoLocalDate date(int prolepticYear, int month, int dayOfMonth) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.ChronoLocalDate date(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoLocalDate date(java.time.chrono.Era era, int yearOfEra, int month, int dayOfMonth) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.time.chrono.Era> eras() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default long epochSecond(java.time.chrono.Era era, int yearOfEra, int month, int dayOfMonth, int hour, int minute, int second, java.time.ZoneOffset zoneOffset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default long epochSecond(int prolepticYear, int month, int dayOfMonth, int hour, int minute, int second, java.time.ZoneOffset zoneOffset) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isLeapYear(long prolepticYear) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.Era eraOf(int eraValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoLocalDateTime<? extends java.time.chrono.ChronoLocalDate> localDateTime(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCalendarType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.ChronoLocalDate dateEpochDay(long epochDay) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoLocalDate dateNow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoLocalDate dateNow(java.time.ZoneId zone) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int prolepticYear(java.time.chrono.Era era, int yearOfEra) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.ChronoLocalDate dateYearDay(int prolepticYear, int dayOfYear) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoLocalDate dateYearDay(java.time.chrono.Era era, int yearOfEra, int dayOfYear) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.chrono.Chronology ofLocale(java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Set<java.time.chrono.Chronology> getAvailableChronologies() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.ChronoLocalDate resolveDate(java.util.Map<java.time.temporal.TemporalField, java.lang.Long> fieldValues, java.time.format.ResolverStyle resolverStyle) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoZonedDateTime<? extends java.time.chrono.ChronoLocalDate> zonedDateTime(java.time.Instant instant, java.time.ZoneId zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoZonedDateTime<? extends java.time.chrono.ChronoLocalDate> zonedDateTime(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoPeriod period(int years, int months, int days) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isIsoBased() { return false; }
   < ---- END java signatures ---- >
 }

@@ -58,37 +58,56 @@ class GapContent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public GapContent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.<init>()"); }
-  public GapContent(int initialLength) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.<init>(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public GapContent() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public GapContent(int initialLength) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.swing.undo.UndoableEdit remove(int where, int nitems) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.remove(int, int)"); }
-  public int length() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.length()"); }
-  public void getChars(int where, int len, javax.swing.text.Segment chars) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.getChars(int, int, javax.swing.text.Segment)"); }
-  public java.lang.String getString(int where, int len) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.getString(int, int)"); }
-  public javax.swing.undo.UndoableEdit insertString(int where, java.lang.String str) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.insertString(int, java.lang.String)"); }
-  public javax.swing.text.Position createPosition(int offset) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.createPosition(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public javax.swing.undo.UndoableEdit remove(int where, int nitems) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int length() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public void getChars(int where, int len, javax.swing.text.Segment chars) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public java.lang.String getString(int where, int len) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public javax.swing.undo.UndoableEdit insertString(int where, java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public javax.swing.text.Position createPosition(int offset) { return null; }
   @JavaProtected
-  java.lang.Object allocateArray(int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.allocateArray(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.Object allocateArray(int len) { return null; }
   @JavaProtected
-  int getArrayLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.getArrayLength()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getArrayLength() { return 0; }
   @JavaProtected
-  void shiftEnd(int newSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.shiftEnd(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void shiftEnd(int newSize) { }
   @JavaProtected
-  void shiftGap(int newGapStart) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.shiftGap(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void shiftGap(int newGapStart) { }
   @JavaProtected
-  void resetMarksAtZero() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.resetMarksAtZero()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void resetMarksAtZero() { }
   @JavaProtected
-  void shiftGapStartDown(int newGapStart) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.shiftGapStartDown(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void shiftGapStartDown(int newGapStart) { }
   @JavaProtected
-  void shiftGapEndUp(int newGapEnd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.shiftGapEndUp(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void shiftGapEndUp(int newGapEnd) { }
   @JavaProtected
-  java.util.Vector getPositionsInRange(java.util.Vector v, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.getPositionsInRange(java.util.Vector, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.util.Vector getPositionsInRange(java.util.Vector v, int offset, int length) { return null; }
   @JavaProtected
-  void updateUndoPositions(java.util.Vector positions, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GapContent.updateUndoPositions(java.util.Vector, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void updateUndoPositions(java.util.Vector positions, int offset, int length) { }
   < ---- END java signatures ---- >
 }

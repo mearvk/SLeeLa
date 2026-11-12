@@ -58,7 +58,9 @@ class OpaqueFrameException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public OpaqueFrameException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.OpaqueFrameException.<init>()"); }
-  public OpaqueFrameException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.OpaqueFrameException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OpaqueFrameException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OpaqueFrameException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

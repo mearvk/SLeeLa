@@ -58,7 +58,9 @@ class MalformedObjectNameException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MalformedObjectNameException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MalformedObjectNameException.<init>()"); }
-  public MalformedObjectNameException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MalformedObjectNameException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MalformedObjectNameException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MalformedObjectNameException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

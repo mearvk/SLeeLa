@@ -58,17 +58,24 @@ class PopupFactory {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PopupFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.PopupFactory.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PopupFactory() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static void setSharedInstance(javax.swing.PopupFactory factory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.PopupFactory.setSharedInstance(javax.swing.PopupFactory)"); }
-  public javax.swing.Popup getPopup(java.awt.Component owner, java.awt.Component contents, int x, int y) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.PopupFactory.getPopup(java.awt.Component, java.awt.Component, int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setSharedInstance(javax.swing.PopupFactory factory) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public javax.swing.Popup getPopup(java.awt.Component owner, java.awt.Component contents, int x, int y) { return null; }
   @JavaProtected
-  javax.swing.Popup getPopup(java.awt.Component owner, java.awt.Component contents, int x, int y, boolean isHeavyWeightPopup) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.PopupFactory.getPopup(java.awt.Component, java.awt.Component, int, int, boolean)"); }
-  public static javax.swing.PopupFactory getSharedInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.PopupFactory.getSharedInstance()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  javax.swing.Popup getPopup(java.awt.Component owner, java.awt.Component contents, int x, int y, boolean isHeavyWeightPopup) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.PopupFactory getSharedInstance() { return null; }
   < ---- END java signatures ---- >
 }

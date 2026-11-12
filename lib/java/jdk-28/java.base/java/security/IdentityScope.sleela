@@ -58,24 +58,38 @@ class IdentityScope {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IdentityScope(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.IdentityScope.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IdentityScope(java.lang.String name) { }
   @JavaProtected
-  IdentityScope() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.IdentityScope.<init>()"); }
-  public IdentityScope(java.lang.String name, java.security.IdentityScope scope) throws java.security.KeyManagementException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.IdentityScope.<init>(java.lang.String, java.security.IdentityScope)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  IdentityScope() { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.KeyManagementException")
+  public IdentityScope(java.lang.String name, java.security.IdentityScope scope) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int size() { throw new AbstractMethodError("java.security.IdentityScope.size()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.IdentityScope.toString()"); }
-  public abstract void addIdentity(java.security.Identity identity) throws java.security.KeyManagementException { throw new AbstractMethodError("java.security.IdentityScope.addIdentity(java.security.Identity)"); }
-  public abstract java.security.Identity getIdentity(java.security.PublicKey key) { throw new AbstractMethodError("java.security.IdentityScope.getIdentity(java.security.PublicKey)"); }
-  public abstract java.security.Identity getIdentity(java.lang.String name) { throw new AbstractMethodError("java.security.IdentityScope.getIdentity(java.lang.String)"); }
-  public static java.security.IdentityScope getSystemScope() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.IdentityScope.getSystemScope()"); }
-  protected static void setSystemScope(java.security.IdentityScope scope) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.IdentityScope.setSystemScope(java.security.IdentityScope)"); }
-  public abstract void removeIdentity(java.security.Identity identity) throws java.security.KeyManagementException { throw new AbstractMethodError("java.security.IdentityScope.removeIdentity(java.security.Identity)"); }
-  public abstract java.util.Enumeration<java.security.Identity> identities() { throw new AbstractMethodError("java.security.IdentityScope.identities()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.KeyManagementException")
+  public void addIdentity(java.security.Identity identity) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.Identity getIdentity(java.security.PublicKey key) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.Identity getIdentity(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.security.IdentityScope getSystemScope() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static void setSystemScope(java.security.IdentityScope scope) { }
+  @throwable("java.lang.AbstractMethodError, java.security.KeyManagementException")
+  public void removeIdentity(java.security.Identity identity) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Enumeration<java.security.Identity> identities() { return null; }
   < ---- END java signatures ---- >
 }

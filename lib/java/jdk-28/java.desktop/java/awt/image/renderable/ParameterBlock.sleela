@@ -63,54 +63,99 @@ class ParameterBlock {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ParameterBlock(java.util.Vector<java.lang.Object> sources, java.util.Vector<java.lang.Object> parameters) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.<init>(java.util.Vector<java.lang.Object>, java.util.Vector<java.lang.Object>)"); }
-  public ParameterBlock(java.util.Vector<java.lang.Object> sources) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.<init>(java.util.Vector<java.lang.Object>)"); }
-  public ParameterBlock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ParameterBlock(java.util.Vector<java.lang.Object> sources, java.util.Vector<java.lang.Object> parameters) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ParameterBlock(java.util.Vector<java.lang.Object> sources) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ParameterBlock() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.clone()"); }
-  public java.awt.image.renderable.ParameterBlock add(short s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.add(short)"); }
-  public java.awt.image.renderable.ParameterBlock add(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.add(char)"); }
-  public java.awt.image.renderable.ParameterBlock add(byte b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.add(byte)"); }
-  public java.awt.image.renderable.ParameterBlock add(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.add(java.lang.Object)"); }
-  public java.awt.image.renderable.ParameterBlock add(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.add(double)"); }
-  public java.awt.image.renderable.ParameterBlock add(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.add(float)"); }
-  public java.awt.image.renderable.ParameterBlock add(long l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.add(long)"); }
-  public java.awt.image.renderable.ParameterBlock add(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.add(int)"); }
-  public java.awt.image.renderable.ParameterBlock set(long l, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.set(long, int)"); }
-  public java.awt.image.renderable.ParameterBlock set(java.lang.Object obj, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.set(java.lang.Object, int)"); }
-  public java.awt.image.renderable.ParameterBlock set(int i, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.set(int, int)"); }
-  public java.awt.image.renderable.ParameterBlock set(short s, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.set(short, int)"); }
-  public java.awt.image.renderable.ParameterBlock set(char c, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.set(char, int)"); }
-  public java.awt.image.renderable.ParameterBlock set(double d, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.set(double, int)"); }
-  public java.awt.image.renderable.ParameterBlock set(float f, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.set(float, int)"); }
-  public java.awt.image.renderable.ParameterBlock set(byte b, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.set(byte, int)"); }
-  public java.util.Vector<java.lang.Object> getParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getParameters()"); }
-  public void setParameters(java.util.Vector<java.lang.Object> parameters) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.setParameters(java.util.Vector<java.lang.Object>)"); }
-  public java.util.Vector<java.lang.Object> getSources() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getSources()"); }
-  public java.awt.image.renderable.ParameterBlock setSource(java.lang.Object source, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.setSource(java.lang.Object, int)"); }
-  public void setSources(java.util.Vector<java.lang.Object> sources) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.setSources(java.util.Vector<java.lang.Object>)"); }
-  public int getNumParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getNumParameters()"); }
-  public java.lang.Object getObjectParameter(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getObjectParameter(int)"); }
-  public java.lang.Object shallowClone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.shallowClone()"); }
-  public java.awt.image.renderable.ParameterBlock addSource(java.lang.Object source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.addSource(java.lang.Object)"); }
-  public java.awt.image.RenderedImage getRenderedSource(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getRenderedSource(int)"); }
-  public java.awt.image.renderable.RenderableImage getRenderableSource(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getRenderableSource(int)"); }
-  public int getNumSources() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getNumSources()"); }
-  public void removeSources() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.removeSources()"); }
-  public void removeParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.removeParameters()"); }
-  public byte getByteParameter(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getByteParameter(int)"); }
-  public char getCharParameter(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getCharParameter(int)"); }
-  public short getShortParameter(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getShortParameter(int)"); }
-  public int getIntParameter(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getIntParameter(int)"); }
-  public long getLongParameter(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getLongParameter(int)"); }
-  public float getFloatParameter(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getFloatParameter(int)"); }
-  public double getDoubleParameter(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getDoubleParameter(int)"); }
-  public java.lang.Class<?>[] getParamClasses() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getParamClasses()"); }
-  public java.lang.Object getSource(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.ParameterBlock.getSource(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock add(short s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock add(char c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock add(byte b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock add(java.lang.Object obj) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock add(double d) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock add(float f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock add(long l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock add(int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock set(long l, int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock set(java.lang.Object obj, int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock set(int i, int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock set(short s, int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock set(char c, int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock set(double d, int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock set(float f, int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock set(byte b, int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Vector<java.lang.Object> getParameters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setParameters(java.util.Vector<java.lang.Object> parameters) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Vector<java.lang.Object> getSources() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock setSource(java.lang.Object source, int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSources(java.util.Vector<java.lang.Object> sources) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNumParameters() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getObjectParameter(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object shallowClone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock addSource(java.lang.Object source) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.RenderedImage getRenderedSource(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.RenderableImage getRenderableSource(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNumSources() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeSources() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeParameters() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte getByteParameter(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getCharParameter(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public short getShortParameter(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getIntParameter(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getLongParameter(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getFloatParameter(int index) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getDoubleParameter(int index) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?>[] getParamClasses() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getSource(int index) { return null; }
   < ---- END java signatures ---- >
 }

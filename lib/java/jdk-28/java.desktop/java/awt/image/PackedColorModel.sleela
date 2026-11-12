@@ -58,20 +58,31 @@ class PackedColorModel {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PackedColorModel(java.awt.color.ColorSpace space, int bits, int[] colorMaskArray, int alphaMask, boolean isAlphaPremultiplied, int trans, int transferType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PackedColorModel.<init>(java.awt.color.ColorSpace, int, int[], int, boolean, int, int)"); }
-  public PackedColorModel(java.awt.color.ColorSpace space, int bits, int rmask, int gmask, int bmask, int amask, boolean isAlphaPremultiplied, int trans, int transferType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PackedColorModel.<init>(java.awt.color.ColorSpace, int, int, int, int, int, boolean, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PackedColorModel(java.awt.color.ColorSpace space, int bits, int[] colorMaskArray, int alphaMask, boolean isAlphaPremultiplied, int trans, int transferType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PackedColorModel(java.awt.color.ColorSpace space, int bits, int rmask, int gmask, int bmask, int amask, boolean isAlphaPremultiplied, int trans, int transferType) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PackedColorModel.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PackedColorModel.hashCode()"); }
-  public final int getMask(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PackedColorModel.getMask(int)"); }
-  public java.awt.image.SampleModel createCompatibleSampleModel(int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PackedColorModel.createCompatibleSampleModel(int, int)"); }
-  public boolean isCompatibleSampleModel(java.awt.image.SampleModel sm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PackedColorModel.isCompatibleSampleModel(java.awt.image.SampleModel)"); }
-  public java.awt.image.WritableRaster getAlphaRaster(java.awt.image.WritableRaster raster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PackedColorModel.getAlphaRaster(java.awt.image.WritableRaster)"); }
-  public final int[] getMasks() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.PackedColorModel.getMasks()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getMask(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.SampleModel createCompatibleSampleModel(int w, int h) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCompatibleSampleModel(java.awt.image.SampleModel sm) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.WritableRaster getAlphaRaster(java.awt.image.WritableRaster raster) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int[] getMasks() { return null; }
   < ---- END java signatures ---- >
 }

@@ -59,15 +59,24 @@ class Listener {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default java.util.concurrent.CompletionStage<?> onClose(java.net.http.WebSocket webSocket, int statusCode, java.lang.String reason) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.WebSocket.Listener.onClose(java.net.http.WebSocket, int, java.lang.String)"); }
-  public default void onError(java.net.http.WebSocket webSocket, java.lang.Throwable error) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.WebSocket.Listener.onError(java.net.http.WebSocket, java.lang.Throwable)"); }
-  public default void onOpen(java.net.http.WebSocket webSocket) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.WebSocket.Listener.onOpen(java.net.http.WebSocket)"); }
-  public default java.util.concurrent.CompletionStage<?> onText(java.net.http.WebSocket webSocket, java.lang.CharSequence data, boolean last) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.WebSocket.Listener.onText(java.net.http.WebSocket, java.lang.CharSequence, boolean)"); }
-  public default java.util.concurrent.CompletionStage<?> onBinary(java.net.http.WebSocket webSocket, java.nio.ByteBuffer data, boolean last) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.WebSocket.Listener.onBinary(java.net.http.WebSocket, java.nio.ByteBuffer, boolean)"); }
-  public default java.util.concurrent.CompletionStage<?> onPing(java.net.http.WebSocket webSocket, java.nio.ByteBuffer message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.WebSocket.Listener.onPing(java.net.http.WebSocket, java.nio.ByteBuffer)"); }
-  public default java.util.concurrent.CompletionStage<?> onPong(java.net.http.WebSocket webSocket, java.nio.ByteBuffer message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.WebSocket.Listener.onPong(java.net.http.WebSocket, java.nio.ByteBuffer)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.concurrent.CompletionStage<?> onClose(java.net.http.WebSocket webSocket, int statusCode, java.lang.String reason) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void onError(java.net.http.WebSocket webSocket, java.lang.Throwable error) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void onOpen(java.net.http.WebSocket webSocket) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.concurrent.CompletionStage<?> onText(java.net.http.WebSocket webSocket, java.lang.CharSequence data, boolean last) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.concurrent.CompletionStage<?> onBinary(java.net.http.WebSocket webSocket, java.nio.ByteBuffer data, boolean last) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.concurrent.CompletionStage<?> onPing(java.net.http.WebSocket webSocket, java.nio.ByteBuffer message) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.concurrent.CompletionStage<?> onPong(java.net.http.WebSocket webSocket, java.nio.ByteBuffer message) { return null; }
   < ---- END java signatures ---- >
 }

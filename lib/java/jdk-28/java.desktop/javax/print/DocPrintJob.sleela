@@ -58,14 +58,22 @@ class DocPrintJob {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.print.attribute.PrintJobAttributeSet getAttributes() { throw new AbstractMethodError("javax.print.DocPrintJob.getAttributes()"); }
-  public abstract void addPrintJobListener(javax.print.event.PrintJobListener listener) { throw new AbstractMethodError("javax.print.DocPrintJob.addPrintJobListener(javax.print.event.PrintJobListener)"); }
-  public abstract void removePrintJobListener(javax.print.event.PrintJobListener listener) { throw new AbstractMethodError("javax.print.DocPrintJob.removePrintJobListener(javax.print.event.PrintJobListener)"); }
-  public abstract void addPrintJobAttributeListener(javax.print.event.PrintJobAttributeListener listener, javax.print.attribute.PrintJobAttributeSet attributes) { throw new AbstractMethodError("javax.print.DocPrintJob.addPrintJobAttributeListener(javax.print.event.PrintJobAttributeListener, javax.print.attribute.PrintJobAttributeSet)"); }
-  public abstract void removePrintJobAttributeListener(javax.print.event.PrintJobAttributeListener listener) { throw new AbstractMethodError("javax.print.DocPrintJob.removePrintJobAttributeListener(javax.print.event.PrintJobAttributeListener)"); }
-  public abstract javax.print.PrintService getPrintService() { throw new AbstractMethodError("javax.print.DocPrintJob.getPrintService()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.attribute.PrintJobAttributeSet getAttributes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void addPrintJobListener(javax.print.event.PrintJobListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removePrintJobListener(javax.print.event.PrintJobListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addPrintJobAttributeListener(javax.print.event.PrintJobAttributeListener listener, javax.print.attribute.PrintJobAttributeSet attributes) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removePrintJobAttributeListener(javax.print.event.PrintJobAttributeListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.PrintService getPrintService() { return null; }
   < ---- END java signatures ---- >
 }

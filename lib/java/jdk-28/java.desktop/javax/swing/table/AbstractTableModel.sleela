@@ -63,28 +63,47 @@ class AbstractTableModel {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractTableModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractTableModel() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void fireTableCellUpdated(int row, int column) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.fireTableCellUpdated(int, int)"); }
-  public void fireTableChanged(javax.swing.event.TableModelEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.fireTableChanged(javax.swing.event.TableModelEvent)"); }
-  public int findColumn(java.lang.String columnName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.findColumn(java.lang.String)"); }
-  public javax.swing.event.TableModelListener[] getTableModelListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.getTableModelListeners()"); }
-  public void fireTableDataChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.fireTableDataChanged()"); }
-  public void fireTableStructureChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.fireTableStructureChanged()"); }
-  public void fireTableRowsInserted(int firstRow, int lastRow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.fireTableRowsInserted(int, int)"); }
-  public void fireTableRowsUpdated(int firstRow, int lastRow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.fireTableRowsUpdated(int, int)"); }
-  public void fireTableRowsDeleted(int firstRow, int lastRow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.fireTableRowsDeleted(int, int)"); }
-  public java.lang.String getColumnName(int column) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.getColumnName(int)"); }
-  public java.lang.Class<?> getColumnClass(int columnIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.getColumnClass(int)"); }
-  public void setValueAt(java.lang.Object aValue, int rowIndex, int columnIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.setValueAt(java.lang.Object, int, int)"); }
-  public void removeTableModelListener(javax.swing.event.TableModelListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.removeTableModelListener(javax.swing.event.TableModelListener)"); }
-  public void addTableModelListener(javax.swing.event.TableModelListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.addTableModelListener(javax.swing.event.TableModelListener)"); }
-  public boolean isCellEditable(int rowIndex, int columnIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.isCellEditable(int, int)"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.AbstractTableModel.getListeners(java.lang.Class<T>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fireTableCellUpdated(int row, int column) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fireTableChanged(javax.swing.event.TableModelEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int findColumn(java.lang.String columnName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.TableModelListener[] getTableModelListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fireTableDataChanged() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fireTableStructureChanged() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fireTableRowsInserted(int firstRow, int lastRow) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fireTableRowsUpdated(int firstRow, int lastRow) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fireTableRowsDeleted(int firstRow, int lastRow) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getColumnName(int column) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getColumnClass(int columnIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValueAt(java.lang.Object aValue, int rowIndex, int columnIndex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeTableModelListener(javax.swing.event.TableModelListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addTableModelListener(javax.swing.event.TableModelListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCellEditable(int rowIndex, int columnIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   < ---- END java signatures ---- >
 }

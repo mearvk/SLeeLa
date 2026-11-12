@@ -59,17 +59,25 @@ class AbstractElementVisitor6<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractElementVisitor6() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.AbstractElementVisitor6.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractElementVisitor6() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final R visit(javax.lang.model.element.Element e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.AbstractElementVisitor6.visit(javax.lang.model.element.Element)"); }
-  public final R visit(javax.lang.model.element.Element e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.AbstractElementVisitor6.visit(javax.lang.model.element.Element, P)"); }
-  public R visitModule(javax.lang.model.element.ModuleElement e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.AbstractElementVisitor6.visitModule(javax.lang.model.element.ModuleElement, P)"); }
-  public R visitUnknown(javax.lang.model.element.Element e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.AbstractElementVisitor6.visitUnknown(javax.lang.model.element.Element, P)"); }
-  public R visitRecordComponent(javax.lang.model.element.RecordComponentElement e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.AbstractElementVisitor6.visitRecordComponent(javax.lang.model.element.RecordComponentElement, P)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final R visit(javax.lang.model.element.Element e) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final R visit(javax.lang.model.element.Element e, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitModule(javax.lang.model.element.ModuleElement e, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitUnknown(javax.lang.model.element.Element e, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitRecordComponent(javax.lang.model.element.RecordComponentElement e, P p) { return null; }
   < ---- END java signatures ---- >
 }

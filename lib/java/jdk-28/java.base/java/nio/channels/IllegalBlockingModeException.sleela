@@ -58,6 +58,7 @@ class IllegalBlockingModeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IllegalBlockingModeException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.IllegalBlockingModeException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalBlockingModeException() { }
   < ---- END java constructors ---- >
 }

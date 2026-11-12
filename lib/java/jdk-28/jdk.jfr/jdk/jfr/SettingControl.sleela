@@ -59,15 +59,21 @@ class SettingControl {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SettingControl() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.SettingControl.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SettingControl() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getValue() { throw new AbstractMethodError("jdk.jfr.SettingControl.getValue()"); }
-  public abstract void setValue(java.lang.String settingValue) { throw new AbstractMethodError("jdk.jfr.SettingControl.setValue(java.lang.String)"); }
-  public abstract java.lang.String combine(java.util.Set<java.lang.String> settingValues) { throw new AbstractMethodError("jdk.jfr.SettingControl.combine(java.util.Set<java.lang.String>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setValue(java.lang.String settingValue) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String combine(java.util.Set<java.lang.String> settingValues) { return null; }
   < ---- END java signatures ---- >
 }

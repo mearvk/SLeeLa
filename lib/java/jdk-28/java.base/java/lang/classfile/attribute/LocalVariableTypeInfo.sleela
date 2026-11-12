@@ -58,13 +58,20 @@ class LocalVariableTypeInfo {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.classfile.constantpool.Utf8Entry signature() { throw new AbstractMethodError("java.lang.classfile.attribute.LocalVariableTypeInfo.signature()"); }
-  public abstract int slot() { throw new AbstractMethodError("java.lang.classfile.attribute.LocalVariableTypeInfo.slot()"); }
-  public abstract java.lang.classfile.constantpool.Utf8Entry name() { throw new AbstractMethodError("java.lang.classfile.attribute.LocalVariableTypeInfo.name()"); }
-  public abstract int length() { throw new AbstractMethodError("java.lang.classfile.attribute.LocalVariableTypeInfo.length()"); }
-  public abstract int startPc() { throw new AbstractMethodError("java.lang.classfile.attribute.LocalVariableTypeInfo.startPc()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.Utf8Entry signature() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int slot() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.Utf8Entry name() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int length() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int startPc() { return 0; }
   < ---- END java signatures ---- >
 }

@@ -58,16 +58,26 @@ class DocumentHandler {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void setDocumentLocator(org.xml.sax.Locator locator) { throw new AbstractMethodError("org.xml.sax.DocumentHandler.setDocumentLocator(org.xml.sax.Locator)"); }
-  public abstract void startDocument() throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.DocumentHandler.startDocument()"); }
-  public abstract void endDocument() throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.DocumentHandler.endDocument()"); }
-  public abstract void startElement(java.lang.String name, org.xml.sax.AttributeList atts) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.DocumentHandler.startElement(java.lang.String, org.xml.sax.AttributeList)"); }
-  public abstract void endElement(java.lang.String name) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.DocumentHandler.endElement(java.lang.String)"); }
-  public abstract void characters(char[] ch, int start, int length) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.DocumentHandler.characters(char[], int, int)"); }
-  public abstract void ignorableWhitespace(char[] ch, int start, int length) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.DocumentHandler.ignorableWhitespace(char[], int, int)"); }
-  public abstract void processingInstruction(java.lang.String target, java.lang.String data) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.DocumentHandler.processingInstruction(java.lang.String, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void setDocumentLocator(org.xml.sax.Locator locator) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void startDocument() { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void endDocument() { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void startElement(java.lang.String name, org.xml.sax.AttributeList atts) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void endElement(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void characters(char[] ch, int start, int length) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void ignorableWhitespace(char[] ch, int start, int length) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void processingInstruction(java.lang.String target, java.lang.String data) { }
   < ---- END java signatures ---- >
 }

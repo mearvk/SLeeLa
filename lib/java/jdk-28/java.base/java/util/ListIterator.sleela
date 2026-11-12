@@ -58,17 +58,28 @@ class ListIterator<E> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void remove() { throw new AbstractMethodError("java.util.ListIterator.remove()"); }
-  public abstract void add(E e) { throw new AbstractMethodError("java.util.ListIterator.add(E)"); }
-  public abstract boolean hasNext() { throw new AbstractMethodError("java.util.ListIterator.hasNext()"); }
-  public abstract E next() { throw new AbstractMethodError("java.util.ListIterator.next()"); }
-  public abstract void set(E e) { throw new AbstractMethodError("java.util.ListIterator.set(E)"); }
-  public abstract int nextIndex() { throw new AbstractMethodError("java.util.ListIterator.nextIndex()"); }
-  public abstract int previousIndex() { throw new AbstractMethodError("java.util.ListIterator.previousIndex()"); }
-  public abstract boolean hasPrevious() { throw new AbstractMethodError("java.util.ListIterator.hasPrevious()"); }
-  public abstract E previous() { throw new AbstractMethodError("java.util.ListIterator.previous()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void remove() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void add(E e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasNext() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public E next() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void set(E e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int nextIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int previousIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasPrevious() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public E previous() { return null; }
   < ---- END java signatures ---- >
 }

@@ -70,59 +70,101 @@ class JViewport {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JViewport() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JViewport() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove(java.awt.Component child) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.remove(java.awt.Component)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(java.awt.Component child) { }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.paramString()"); }
-  public final void setBorder(javax.swing.border.Border border) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setBorder(javax.swing.border.Border)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setBorder(javax.swing.border.Border border) { }
   @JavaProtected
-  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object)"); }
-  public void repaint(long tm, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.repaint(long, int, int, int, int)"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.updateUI()"); }
-  public void setUI(javax.swing.plaf.ViewportUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setUI(javax.swing.plaf.ViewportUI)"); }
-  public javax.swing.plaf.ViewportUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getUI()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getUIClassID()"); }
-  public boolean isOptimizedDrawingEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.isOptimizedDrawingEnabled()"); }
-  public void scrollRectToVisible(java.awt.Rectangle contentRect) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.scrollRectToVisible(java.awt.Rectangle)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void repaint(long tm, int x, int y, int w, int h) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.ViewportUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.ViewportUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isOptimizedDrawingEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void scrollRectToVisible(java.awt.Rectangle contentRect) { }
   @JavaProtected
-  boolean isPaintingOrigin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.isPaintingOrigin()"); }
-  public void reshape(int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.reshape(int, int, int, int)"); }
-  public java.awt.Component getView() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getView()"); }
-  public void setView(java.awt.Component view) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setView(java.awt.Component)"); }
-  public void setViewPosition(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setViewPosition(java.awt.Point)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isPaintingOrigin() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reshape(int x, int y, int w, int h) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getView() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setView(java.awt.Component view) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setViewPosition(java.awt.Point p) { }
   @JavaProtected
-  java.awt.LayoutManager createLayoutManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.createLayoutManager()"); }
-  public java.awt.Point getViewPosition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getViewPosition()"); }
-  public java.awt.Dimension getExtentSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getExtentSize()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.LayoutManager createLayoutManager() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Point getViewPosition() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getExtentSize() { return null; }
   @JavaProtected
-  boolean computeBlit(int dx, int dy, java.awt.Point blitFrom, java.awt.Point blitTo, java.awt.Dimension blitSize, java.awt.Rectangle blitPaint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.computeBlit(int, int, java.awt.Point, java.awt.Point, java.awt.Dimension, java.awt.Rectangle)"); }
-  public void setScrollMode(int mode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setScrollMode(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean computeBlit(int dx, int dy, java.awt.Point blitFrom, java.awt.Point blitTo, java.awt.Dimension blitSize, java.awt.Rectangle blitPaint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setScrollMode(int mode) { }
   @JavaProtected
-  javax.swing.JViewport.ViewListener createViewListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.createViewListener()"); }
-  public int getScrollMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getScrollMode()"); }
-  public boolean isBackingStoreEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.isBackingStoreEnabled()"); }
-  public void setBackingStoreEnabled(boolean enabled) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setBackingStoreEnabled(boolean)"); }
-  public java.awt.Dimension getViewSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getViewSize()"); }
-  public void setViewSize(java.awt.Dimension newSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setViewSize(java.awt.Dimension)"); }
-  public java.awt.Rectangle getViewRect() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getViewRect()"); }
-  public java.awt.Point toViewCoordinates(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.toViewCoordinates(java.awt.Point)"); }
-  public void setExtentSize(java.awt.Dimension newExtent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setExtentSize(java.awt.Dimension)"); }
-  public void removeChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.removeChangeListener(javax.swing.event.ChangeListener)"); }
-  public void addChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.addChangeListener(javax.swing.event.ChangeListener)"); }
-  public javax.swing.event.ChangeListener[] getChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getChangeListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JViewport.ViewListener createViewListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getScrollMode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBackingStoreEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBackingStoreEnabled(boolean enabled) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getViewSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setViewSize(java.awt.Dimension newSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getViewRect() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Point toViewCoordinates(java.awt.Point p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setExtentSize(java.awt.Dimension newExtent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeChangeListener(javax.swing.event.ChangeListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addChangeListener(javax.swing.event.ChangeListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.ChangeListener[] getChangeListeners() { return null; }
   @JavaProtected
-  void fireStateChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.fireStateChanged()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getAccessibleContext()"); }
-  public final java.awt.Insets getInsets(java.awt.Insets insets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getInsets(java.awt.Insets)"); }
-  public final java.awt.Insets getInsets() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getInsets()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireStateChanged() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.Insets getInsets(java.awt.Insets insets) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.Insets getInsets() { return null; }
   @JavaProtected
-  void addImpl(java.awt.Component child, java.lang.Object constraints, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.addImpl(java.awt.Component, java.lang.Object, int)"); }
-  public void paint(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.paint(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addImpl(java.awt.Component child, java.lang.Object constraints, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g) { }
   < ---- END java signatures ---- >
 }

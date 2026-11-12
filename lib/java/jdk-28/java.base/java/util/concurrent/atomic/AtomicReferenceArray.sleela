@@ -58,38 +58,67 @@ class AtomicReferenceArray<E> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AtomicReferenceArray(int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.<init>(int)"); }
-  public AtomicReferenceArray(E[] array) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.<init>(E[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AtomicReferenceArray(int length) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AtomicReferenceArray(E[] array) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final E get(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.get(int)"); }
-  public final int length() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.length()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.toString()"); }
-  public final void set(int i, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.set(int, E)"); }
-  public final E getOpaque(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.getOpaque(int)"); }
-  public final void setOpaque(int i, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.setOpaque(int, E)"); }
-  public final E getAcquire(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.getAcquire(int)"); }
-  public final void setRelease(int i, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.setRelease(int, E)"); }
-  public final boolean compareAndSet(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.compareAndSet(int, E, E)"); }
-  public final E compareAndExchange(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.compareAndExchange(int, E, E)"); }
-  public final E compareAndExchangeAcquire(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.compareAndExchangeAcquire(int, E, E)"); }
-  public final E compareAndExchangeRelease(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.compareAndExchangeRelease(int, E, E)"); }
-  public final boolean weakCompareAndSetPlain(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.weakCompareAndSetPlain(int, E, E)"); }
-  public final boolean weakCompareAndSet(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.weakCompareAndSet(int, E, E)"); }
-  public final boolean weakCompareAndSetAcquire(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.weakCompareAndSetAcquire(int, E, E)"); }
-  public final boolean weakCompareAndSetRelease(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.weakCompareAndSetRelease(int, E, E)"); }
-  public final E getAndSet(int i, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.getAndSet(int, E)"); }
-  public final boolean weakCompareAndSetVolatile(int i, E expectedValue, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.weakCompareAndSetVolatile(int, E, E)"); }
-  public final void lazySet(int i, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.lazySet(int, E)"); }
-  public final E getAndUpdate(int i, java.util.function.UnaryOperator<E> updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.getAndUpdate(int, java.util.function.UnaryOperator<E>)"); }
-  public final E updateAndGet(int i, java.util.function.UnaryOperator<E> updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.updateAndGet(int, java.util.function.UnaryOperator<E>)"); }
-  public final E getAndAccumulate(int i, E x, java.util.function.BinaryOperator<E> accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.getAndAccumulate(int, E, java.util.function.BinaryOperator<E>)"); }
-  public final E accumulateAndGet(int i, E x, java.util.function.BinaryOperator<E> accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.accumulateAndGet(int, E, java.util.function.BinaryOperator<E>)"); }
-  public final E getPlain(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.getPlain(int)"); }
-  public final void setPlain(int i, E newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReferenceArray.setPlain(int, E)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final E get(int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int length() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void set(int i, E newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final E getOpaque(int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setOpaque(int i, E newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final E getAcquire(int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setRelease(int i, E newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean compareAndSet(int i, E expectedValue, E newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final E compareAndExchange(int i, E expectedValue, E newValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final E compareAndExchangeAcquire(int i, E expectedValue, E newValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final E compareAndExchangeRelease(int i, E expectedValue, E newValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetPlain(int i, E expectedValue, E newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSet(int i, E expectedValue, E newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetAcquire(int i, E expectedValue, E newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetRelease(int i, E expectedValue, E newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final E getAndSet(int i, E newValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetVolatile(int i, E expectedValue, E newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void lazySet(int i, E newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final E getAndUpdate(int i, java.util.function.UnaryOperator<E> updateFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final E updateAndGet(int i, java.util.function.UnaryOperator<E> updateFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final E getAndAccumulate(int i, E x, java.util.function.BinaryOperator<E> accumulatorFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final E accumulateAndGet(int i, E x, java.util.function.BinaryOperator<E> accumulatorFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final E getPlain(int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setPlain(int i, E newValue) { }
   < ---- END java signatures ---- >
 }

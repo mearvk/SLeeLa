@@ -59,24 +59,39 @@ class DocumentBuilder {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  DocumentBuilder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  DocumentBuilder() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.reset()"); }
-  public org.w3c.dom.Document parse(java.io.File f) throws org.xml.sax.SAXException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.parse(java.io.File)"); }
-  public org.w3c.dom.Document parse(java.lang.String uri) throws org.xml.sax.SAXException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.parse(java.lang.String)"); }
-  public org.w3c.dom.Document parse(java.io.InputStream is, java.lang.String systemId) throws org.xml.sax.SAXException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.parse(java.io.InputStream, java.lang.String)"); }
-  public javax.xml.validation.Schema getSchema() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.getSchema()"); }
-  public abstract boolean isNamespaceAware() { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilder.isNamespaceAware()"); }
-  public abstract boolean isValidating() { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilder.isValidating()"); }
-  public abstract org.w3c.dom.Document newDocument() { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilder.newDocument()"); }
-  public boolean isXIncludeAware() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilder.isXIncludeAware()"); }
-  public abstract org.w3c.dom.DOMImplementation getDOMImplementation() { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilder.getDOMImplementation()"); }
-  public abstract void setEntityResolver(org.xml.sax.EntityResolver er) { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilder.setEntityResolver(org.xml.sax.EntityResolver)"); }
-  public abstract void setErrorHandler(org.xml.sax.ErrorHandler eh) { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilder.setErrorHandler(org.xml.sax.ErrorHandler)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reset() { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException, java.io.IOException")
+  public org.w3c.dom.Document parse(java.io.File f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException, java.io.IOException")
+  public org.w3c.dom.Document parse(java.lang.String uri) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException, java.io.IOException")
+  public org.w3c.dom.Document parse(java.io.InputStream is, java.lang.String systemId) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.validation.Schema getSchema() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isNamespaceAware() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isValidating() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Document newDocument() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isXIncludeAware() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.DOMImplementation getDOMImplementation() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setEntityResolver(org.xml.sax.EntityResolver er) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setErrorHandler(org.xml.sax.ErrorHandler eh) { }
   < ---- END java signatures ---- >
 }

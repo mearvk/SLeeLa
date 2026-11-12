@@ -58,49 +58,85 @@ class JTextArea {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JTextArea(javax.swing.text.Document doc, java.lang.String text, int rows, int columns) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.<init>(javax.swing.text.Document, java.lang.String, int, int)"); }
-  public JTextArea(javax.swing.text.Document doc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.<init>(javax.swing.text.Document)"); }
-  public JTextArea(java.lang.String text, int rows, int columns) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.<init>(java.lang.String, int, int)"); }
-  public JTextArea() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.<init>()"); }
-  public JTextArea(java.lang.String text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.<init>(java.lang.String)"); }
-  public JTextArea(int rows, int columns) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.<init>(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTextArea(javax.swing.text.Document doc, java.lang.String text, int rows, int columns) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTextArea(javax.swing.text.Document doc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTextArea(java.lang.String text, int rows, int columns) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTextArea() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTextArea(java.lang.String text) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTextArea(int rows, int columns) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void append(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.append(java.lang.String)"); }
-  public void insert(java.lang.String str, int pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.insert(java.lang.String, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void append(java.lang.String str) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insert(java.lang.String str, int pos) { }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.paramString()"); }
-  public java.awt.Dimension getPreferredSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getPreferredSize()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getUIClassID()"); }
-  public int getTabSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getTabSize()"); }
-  public int getLineCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getLineCount()"); }
-  public void setTabSize(int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.setTabSize(int)"); }
-  public void setLineWrap(boolean wrap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.setLineWrap(boolean)"); }
-  public void setWrapStyleWord(boolean word) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.setWrapStyleWord(boolean)"); }
-  public boolean getWrapStyleWord() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getWrapStyleWord()"); }
-  public int getLineOfOffset(int offset) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getLineOfOffset(int)"); }
-  public int getLineStartOffset(int line) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getLineStartOffset(int)"); }
-  public int getLineEndOffset(int line) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getLineEndOffset(int)"); }
-  public boolean getLineWrap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getLineWrap()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTabSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLineCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTabSize(int size) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLineWrap(boolean wrap) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setWrapStyleWord(boolean word) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getWrapStyleWord() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public int getLineOfOffset(int offset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public int getLineStartOffset(int line) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public int getLineEndOffset(int line) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getLineWrap() { return false; }
   @JavaProtected
-  int getRowHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getRowHeight()"); }
-  public int getRows() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getRows()"); }
-  public void setRows(int rows) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.setRows(int)"); }
-  public int getColumns() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getColumns()"); }
-  public void setColumns(int columns) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.setColumns(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getRowHeight() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRows() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRows(int rows) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getColumns() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColumns(int columns) { }
   @JavaProtected
-  javax.swing.text.Document createDefaultModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.createDefaultModel()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.Document createDefaultModel() { return null; }
   @JavaProtected
-  int getColumnWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getColumnWidth()"); }
-  public java.awt.Dimension getPreferredScrollableViewportSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getPreferredScrollableViewportSize()"); }
-  public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getScrollableUnitIncrement(java.awt.Rectangle, int, int)"); }
-  public boolean getScrollableTracksViewportWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getScrollableTracksViewportWidth()"); }
-  public void replaceRange(java.lang.String str, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.replaceRange(java.lang.String, int, int)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.getAccessibleContext()"); }
-  public void setFont(java.awt.Font f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextArea.setFont(java.awt.Font)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getColumnWidth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredScrollableViewportSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getScrollableTracksViewportWidth() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void replaceRange(java.lang.String str, int start, int end) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFont(java.awt.Font f) { }
   < ---- END java signatures ---- >
 }

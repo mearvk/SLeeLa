@@ -69,30 +69,49 @@ class BevelBorder {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BevelBorder(int bevelType, java.awt.Color highlightOuterColor, java.awt.Color highlightInnerColor, java.awt.Color shadowOuterColor, java.awt.Color shadowInnerColor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.<init>(int, java.awt.Color, java.awt.Color, java.awt.Color, java.awt.Color)"); }
-  public BevelBorder(int bevelType, java.awt.Color highlight, java.awt.Color shadow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.<init>(int, java.awt.Color, java.awt.Color)"); }
-  public BevelBorder(int bevelType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.<init>(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BevelBorder(int bevelType, java.awt.Color highlightOuterColor, java.awt.Color highlightInnerColor, java.awt.Color shadowOuterColor, java.awt.Color shadowInnerColor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BevelBorder(int bevelType, java.awt.Color highlight, java.awt.Color shadow) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BevelBorder(int bevelType) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void paintRaisedBevel(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.paintRaisedBevel(java.awt.Component, java.awt.Graphics, int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintRaisedBevel(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { }
   @JavaProtected
-  void paintLoweredBevel(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.paintLoweredBevel(java.awt.Component, java.awt.Graphics, int, int, int, int)"); }
-  public java.awt.Color getHighlightOuterColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.getHighlightOuterColor()"); }
-  public java.awt.Color getHighlightOuterColor(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.getHighlightOuterColor(java.awt.Component)"); }
-  public java.awt.Color getHighlightInnerColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.getHighlightInnerColor()"); }
-  public java.awt.Color getHighlightInnerColor(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.getHighlightInnerColor(java.awt.Component)"); }
-  public java.awt.Color getShadowInnerColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.getShadowInnerColor()"); }
-  public java.awt.Color getShadowInnerColor(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.getShadowInnerColor(java.awt.Component)"); }
-  public java.awt.Color getShadowOuterColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.getShadowOuterColor()"); }
-  public java.awt.Color getShadowOuterColor(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.getShadowOuterColor(java.awt.Component)"); }
-  public int getBevelType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.getBevelType()"); }
-  public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.paintBorder(java.awt.Component, java.awt.Graphics, int, int, int, int)"); }
-  public java.awt.Insets getBorderInsets(java.awt.Component c, java.awt.Insets insets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.getBorderInsets(java.awt.Component, java.awt.Insets)"); }
-  public boolean isBorderOpaque() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.BevelBorder.isBorderOpaque()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintLoweredBevel(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getHighlightOuterColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getHighlightOuterColor(java.awt.Component c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getHighlightInnerColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getHighlightInnerColor(java.awt.Component c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getShadowInnerColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getShadowInnerColor(java.awt.Component c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getShadowOuterColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getShadowOuterColor(java.awt.Component c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBevelType() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getBorderInsets(java.awt.Component c, java.awt.Insets insets) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBorderOpaque() { return false; }
   < ---- END java signatures ---- >
 }

@@ -59,23 +59,37 @@ class JavacTask {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  JavacTask() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.JavacTask.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  JavacTask() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Iterable<? extends com.sun.source.tree.CompilationUnitTree> parse() throws java.io.IOException { throw new AbstractMethodError("com.sun.source.util.JavacTask.parse()"); }
-  public static com.sun.source.util.JavacTask instance(javax.annotation.processing.ProcessingEnvironment processingEnvironment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.JavacTask.instance(javax.annotation.processing.ProcessingEnvironment)"); }
-  public abstract java.lang.Iterable<? extends javax.tools.JavaFileObject> generate() throws java.io.IOException { throw new AbstractMethodError("com.sun.source.util.JavacTask.generate()"); }
-  public abstract java.lang.Iterable<? extends javax.lang.model.element.Element> analyze() throws java.io.IOException { throw new AbstractMethodError("com.sun.source.util.JavacTask.analyze()"); }
-  public abstract void setTaskListener(com.sun.source.util.TaskListener taskListener) { throw new AbstractMethodError("com.sun.source.util.JavacTask.setTaskListener(com.sun.source.util.TaskListener)"); }
-  public abstract void addTaskListener(com.sun.source.util.TaskListener taskListener) { throw new AbstractMethodError("com.sun.source.util.JavacTask.addTaskListener(com.sun.source.util.TaskListener)"); }
-  public abstract void removeTaskListener(com.sun.source.util.TaskListener taskListener) { throw new AbstractMethodError("com.sun.source.util.JavacTask.removeTaskListener(com.sun.source.util.TaskListener)"); }
-  public void setParameterNameProvider(com.sun.source.util.ParameterNameProvider provider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.JavacTask.setParameterNameProvider(com.sun.source.util.ParameterNameProvider)"); }
-  public abstract javax.lang.model.type.TypeMirror getTypeMirror(java.lang.Iterable<? extends com.sun.source.tree.Tree> path) { throw new AbstractMethodError("com.sun.source.util.JavacTask.getTypeMirror(java.lang.Iterable<? extends com.sun.source.tree.Tree>)"); }
-  public abstract javax.lang.model.util.Elements getElements() { throw new AbstractMethodError("com.sun.source.util.JavacTask.getElements()"); }
-  public abstract javax.lang.model.util.Types getTypes() { throw new AbstractMethodError("com.sun.source.util.JavacTask.getTypes()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.lang.Iterable<? extends com.sun.source.tree.CompilationUnitTree> parse() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static com.sun.source.util.JavacTask instance(javax.annotation.processing.ProcessingEnvironment processingEnvironment) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.lang.Iterable<? extends javax.tools.JavaFileObject> generate() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.lang.Iterable<? extends javax.lang.model.element.Element> analyze() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTaskListener(com.sun.source.util.TaskListener taskListener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addTaskListener(com.sun.source.util.TaskListener taskListener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeTaskListener(com.sun.source.util.TaskListener taskListener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setParameterNameProvider(com.sun.source.util.ParameterNameProvider provider) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.type.TypeMirror getTypeMirror(java.lang.Iterable<? extends com.sun.source.tree.Tree> path) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.util.Elements getElements() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.util.Types getTypes() { return null; }
   < ---- END java signatures ---- >
 }

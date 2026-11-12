@@ -58,7 +58,9 @@ class InputMismatchException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InputMismatchException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.InputMismatchException.<init>()"); }
-  public InputMismatchException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.InputMismatchException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InputMismatchException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InputMismatchException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

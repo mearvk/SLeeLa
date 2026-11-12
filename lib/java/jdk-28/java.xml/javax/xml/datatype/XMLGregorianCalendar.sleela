@@ -58,51 +58,93 @@ class XMLGregorianCalendar {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public XMLGregorianCalendar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public XMLGregorianCalendar() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void reset() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.reset()"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.hashCode()"); }
-  public abstract java.lang.Object clone() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.clone()"); }
-  public abstract int compare(javax.xml.datatype.XMLGregorianCalendar xmlGregorianCalendar) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.compare(javax.xml.datatype.XMLGregorianCalendar)"); }
-  public abstract void clear() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.clear()"); }
-  public abstract void add(javax.xml.datatype.Duration duration) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.add(javax.xml.datatype.Duration)"); }
-  public abstract javax.xml.datatype.XMLGregorianCalendar normalize() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.normalize()"); }
-  public abstract boolean isValid() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.isValid()"); }
-  public abstract int getYear() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getYear()"); }
-  public abstract int getHour() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getHour()"); }
-  public abstract int getMinute() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getMinute()"); }
-  public abstract int getSecond() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getSecond()"); }
-  public abstract java.util.TimeZone getTimeZone(int defaultZoneoffset) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getTimeZone(int)"); }
-  public void setTime(int hour, int minute, int second) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.setTime(int, int, int)"); }
-  public void setTime(int hour, int minute, int second, java.math.BigDecimal fractional) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.setTime(int, int, int, java.math.BigDecimal)"); }
-  public void setTime(int hour, int minute, int second, int millisecond) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.setTime(int, int, int, int)"); }
-  public abstract int getMonth() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getMonth()"); }
-  public abstract void setMonth(int month) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setMonth(int)"); }
-  public abstract void setYear(java.math.BigInteger year) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setYear(java.math.BigInteger)"); }
-  public abstract void setYear(int year) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setYear(int)"); }
-  public abstract int getDay() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getDay()"); }
-  public abstract javax.xml.namespace.QName getXMLSchemaType() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getXMLSchemaType()"); }
-  public abstract void setHour(int hour) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setHour(int)"); }
-  public abstract void setMinute(int minute) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setMinute(int)"); }
-  public abstract void setSecond(int second) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setSecond(int)"); }
-  public abstract void setFractionalSecond(java.math.BigDecimal fractional) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setFractionalSecond(java.math.BigDecimal)"); }
-  public abstract void setMillisecond(int millisecond) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setMillisecond(int)"); }
-  public abstract java.math.BigDecimal getFractionalSecond() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getFractionalSecond()"); }
-  public abstract int getTimezone() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getTimezone()"); }
-  public int getMillisecond() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.getMillisecond()"); }
-  public abstract java.lang.String toXMLFormat() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.toXMLFormat()"); }
-  public abstract void setDay(int day) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setDay(int)"); }
-  public abstract void setTimezone(int offset) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setTimezone(int)"); }
-  public abstract java.math.BigInteger getEon() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getEon()"); }
-  public abstract java.math.BigInteger getEonAndYear() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getEonAndYear()"); }
-  public abstract java.util.GregorianCalendar toGregorianCalendar() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.toGregorianCalendar()"); }
-  public abstract java.util.GregorianCalendar toGregorianCalendar(java.util.TimeZone timezone, java.util.Locale aLocale, javax.xml.datatype.XMLGregorianCalendar defaults) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.toGregorianCalendar(java.util.TimeZone, java.util.Locale, javax.xml.datatype.XMLGregorianCalendar)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void reset() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int compare(javax.xml.datatype.XMLGregorianCalendar xmlGregorianCalendar) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void clear() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void add(javax.xml.datatype.Duration duration) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.datatype.XMLGregorianCalendar normalize() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isValid() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getYear() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getHour() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMinute() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getSecond() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.TimeZone getTimeZone(int defaultZoneoffset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTime(int hour, int minute, int second) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTime(int hour, int minute, int second, java.math.BigDecimal fractional) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTime(int hour, int minute, int second, int millisecond) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMonth() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMonth(int month) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setYear(java.math.BigInteger year) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setYear(int year) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getDay() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.namespace.QName getXMLSchemaType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHour(int hour) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMinute(int minute) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSecond(int second) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setFractionalSecond(java.math.BigDecimal fractional) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMillisecond(int millisecond) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.math.BigDecimal getFractionalSecond() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getTimezone() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMillisecond() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toXMLFormat() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDay(int day) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTimezone(int offset) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.math.BigInteger getEon() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.math.BigInteger getEonAndYear() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.GregorianCalendar toGregorianCalendar() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.GregorianCalendar toGregorianCalendar(java.util.TimeZone timezone, java.util.Locale aLocale, javax.xml.datatype.XMLGregorianCalendar defaults) { return null; }
   < ---- END java signatures ---- >
 }

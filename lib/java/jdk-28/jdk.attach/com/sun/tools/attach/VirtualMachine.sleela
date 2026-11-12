@@ -59,31 +59,53 @@ class VirtualMachine {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  VirtualMachine(com.sun.tools.attach.spi.AttachProvider provider, java.lang.String id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachine.<init>(com.sun.tools.attach.spi.AttachProvider, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  VirtualMachine(com.sun.tools.attach.spi.AttachProvider provider, java.lang.String id) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachine.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachine.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachine.hashCode()"); }
-  public abstract java.lang.String startLocalManagementAgent() throws java.io.IOException { throw new AbstractMethodError("com.sun.tools.attach.VirtualMachine.startLocalManagementAgent()"); }
-  public static java.util.List<com.sun.tools.attach.VirtualMachineDescriptor> list() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachine.list()"); }
-  public final java.lang.String id() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachine.id()"); }
-  public final com.sun.tools.attach.spi.AttachProvider provider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachine.provider()"); }
-  public static com.sun.tools.attach.VirtualMachine attach(java.lang.String id) throws com.sun.tools.attach.AttachNotSupportedException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachine.attach(java.lang.String)"); }
-  public static com.sun.tools.attach.VirtualMachine attach(com.sun.tools.attach.VirtualMachineDescriptor vmd) throws com.sun.tools.attach.AttachNotSupportedException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachine.attach(com.sun.tools.attach.VirtualMachineDescriptor)"); }
-  public abstract void detach() throws java.io.IOException { throw new AbstractMethodError("com.sun.tools.attach.VirtualMachine.detach()"); }
-  public void loadAgent(java.lang.String agent) throws com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachine.loadAgent(java.lang.String)"); }
-  public abstract void loadAgent(java.lang.String agent, java.lang.String options) throws com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException { throw new AbstractMethodError("com.sun.tools.attach.VirtualMachine.loadAgent(java.lang.String, java.lang.String)"); }
-  public abstract java.util.Properties getSystemProperties() throws java.io.IOException { throw new AbstractMethodError("com.sun.tools.attach.VirtualMachine.getSystemProperties()"); }
-  public abstract void loadAgentLibrary(java.lang.String agentLibrary, java.lang.String options) throws com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException { throw new AbstractMethodError("com.sun.tools.attach.VirtualMachine.loadAgentLibrary(java.lang.String, java.lang.String)"); }
-  public void loadAgentLibrary(java.lang.String agentLibrary) throws com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachine.loadAgentLibrary(java.lang.String)"); }
-  public void loadAgentPath(java.lang.String agentPath) throws com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachine.loadAgentPath(java.lang.String)"); }
-  public abstract void loadAgentPath(java.lang.String agentPath, java.lang.String options) throws com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException { throw new AbstractMethodError("com.sun.tools.attach.VirtualMachine.loadAgentPath(java.lang.String, java.lang.String)"); }
-  public abstract java.util.Properties getAgentProperties() throws java.io.IOException { throw new AbstractMethodError("com.sun.tools.attach.VirtualMachine.getAgentProperties()"); }
-  public abstract void startManagementAgent(java.util.Properties agentProperties) throws java.io.IOException { throw new AbstractMethodError("com.sun.tools.attach.VirtualMachine.startManagementAgent(java.util.Properties)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object ob) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.lang.String startLocalManagementAgent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.List<com.sun.tools.attach.VirtualMachineDescriptor> list() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String id() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final com.sun.tools.attach.spi.AttachProvider provider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, com.sun.tools.attach.AttachNotSupportedException, java.io.IOException")
+  public static com.sun.tools.attach.VirtualMachine attach(java.lang.String id) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, com.sun.tools.attach.AttachNotSupportedException, java.io.IOException")
+  public static com.sun.tools.attach.VirtualMachine attach(com.sun.tools.attach.VirtualMachineDescriptor vmd) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void detach() { }
+  @throwable("java.lang.UnsupportedOperationException, com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException")
+  public void loadAgent(java.lang.String agent) { }
+  @throwable("java.lang.AbstractMethodError, com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException")
+  public void loadAgent(java.lang.String agent, java.lang.String options) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.util.Properties getSystemProperties() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException")
+  public void loadAgentLibrary(java.lang.String agentLibrary, java.lang.String options) { }
+  @throwable("java.lang.UnsupportedOperationException, com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException")
+  public void loadAgentLibrary(java.lang.String agentLibrary) { }
+  @throwable("java.lang.UnsupportedOperationException, com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException")
+  public void loadAgentPath(java.lang.String agentPath) { }
+  @throwable("java.lang.AbstractMethodError, com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException")
+  public void loadAgentPath(java.lang.String agentPath, java.lang.String options) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.util.Properties getAgentProperties() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void startManagementAgent(java.util.Properties agentProperties) { }
   < ---- END java signatures ---- >
 }

@@ -59,27 +59,45 @@ class SchemaFactory {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SchemaFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SchemaFactory() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object getProperty(java.lang.String name) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.getProperty(java.lang.String)"); }
-  public static javax.xml.validation.SchemaFactory newInstance(java.lang.String schemaLanguage, java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.newInstance(java.lang.String, java.lang.String, java.lang.ClassLoader)"); }
-  public static javax.xml.validation.SchemaFactory newInstance(java.lang.String schemaLanguage) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.newInstance(java.lang.String)"); }
-  public void setProperty(java.lang.String name, java.lang.Object object) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.setProperty(java.lang.String, java.lang.Object)"); }
-  public abstract void setResourceResolver(org.w3c.dom.ls.LSResourceResolver resourceResolver) { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.setResourceResolver(org.w3c.dom.ls.LSResourceResolver)"); }
-  public abstract org.w3c.dom.ls.LSResourceResolver getResourceResolver() { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.getResourceResolver()"); }
-  public abstract boolean isSchemaLanguageSupported(java.lang.String schemaLanguage) { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.isSchemaLanguageSupported(java.lang.String)"); }
-  public javax.xml.validation.Schema newSchema(javax.xml.transform.Source schema) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.newSchema(javax.xml.transform.Source)"); }
-  public abstract javax.xml.validation.Schema newSchema(javax.xml.transform.Source[] schemas) throws org.xml.sax.SAXException { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.newSchema(javax.xml.transform.Source[])"); }
-  public abstract javax.xml.validation.Schema newSchema() throws org.xml.sax.SAXException { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.newSchema()"); }
-  public static javax.xml.validation.SchemaFactory newDefaultInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.newDefaultInstance()"); }
-  public abstract org.xml.sax.ErrorHandler getErrorHandler() { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.getErrorHandler()"); }
-  public abstract void setErrorHandler(org.xml.sax.ErrorHandler errorHandler) { throw new AbstractMethodError("javax.xml.validation.SchemaFactory.setErrorHandler(org.xml.sax.ErrorHandler)"); }
-  public boolean getFeature(java.lang.String name) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.getFeature(java.lang.String)"); }
-  public void setFeature(java.lang.String name, boolean value) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactory.setFeature(java.lang.String, boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public java.lang.Object getProperty(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.validation.SchemaFactory newInstance(java.lang.String schemaLanguage, java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.validation.SchemaFactory newInstance(java.lang.String schemaLanguage) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public void setProperty(java.lang.String name, java.lang.Object object) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setResourceResolver(org.w3c.dom.ls.LSResourceResolver resourceResolver) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.ls.LSResourceResolver getResourceResolver() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSchemaLanguageSupported(java.lang.String schemaLanguage) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public javax.xml.validation.Schema newSchema(javax.xml.transform.Source schema) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public javax.xml.validation.Schema newSchema(javax.xml.transform.Source[] schemas) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public javax.xml.validation.Schema newSchema() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.validation.SchemaFactory newDefaultInstance() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.xml.sax.ErrorHandler getErrorHandler() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setErrorHandler(org.xml.sax.ErrorHandler errorHandler) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public boolean getFeature(java.lang.String name) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public void setFeature(java.lang.String name, boolean value) { }
   < ---- END java signatures ---- >
 }

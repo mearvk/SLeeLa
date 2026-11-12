@@ -58,36 +58,66 @@ class ChronoLocalDate {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("java.time.chrono.ChronoLocalDate.equals(java.lang.Object)"); }
-  public abstract java.lang.String toString() { throw new AbstractMethodError("java.time.chrono.ChronoLocalDate.toString()"); }
-  public abstract int hashCode() { throw new AbstractMethodError("java.time.chrono.ChronoLocalDate.hashCode()"); }
-  public default int compareTo(java.time.chrono.ChronoLocalDate other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.compareTo(java.time.chrono.ChronoLocalDate)"); }
-  public default java.lang.String format(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.format(java.time.format.DateTimeFormatter)"); }
-  public static java.time.chrono.ChronoLocalDate from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.from(java.time.temporal.TemporalAccessor)"); }
-  public default boolean isSupported(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.isSupported(java.time.temporal.TemporalUnit)"); }
-  public default java.time.chrono.ChronoLocalDate with(java.time.temporal.TemporalField field, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.with(java.time.temporal.TemporalField, long)"); }
-  public default java.time.chrono.ChronoLocalDate with(java.time.temporal.TemporalAdjuster adjuster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.with(java.time.temporal.TemporalAdjuster)"); }
-  public default <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.query(java.time.temporal.TemporalQuery<R>)"); }
-  public default boolean isEqual(java.time.chrono.ChronoLocalDate other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.isEqual(java.time.chrono.ChronoLocalDate)"); }
-  public default java.time.chrono.ChronoLocalDate minus(java.time.temporal.TemporalAmount amount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.minus(java.time.temporal.TemporalAmount)"); }
-  public default java.time.chrono.ChronoLocalDate minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.minus(long, java.time.temporal.TemporalUnit)"); }
-  public default java.time.chrono.ChronoLocalDate plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.plus(long, java.time.temporal.TemporalUnit)"); }
-  public default java.time.chrono.ChronoLocalDate plus(java.time.temporal.TemporalAmount amount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.plus(java.time.temporal.TemporalAmount)"); }
-  public abstract long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { throw new AbstractMethodError("java.time.chrono.ChronoLocalDate.until(java.time.temporal.Temporal, java.time.temporal.TemporalUnit)"); }
-  public abstract java.time.chrono.ChronoPeriod until(java.time.chrono.ChronoLocalDate endDateExclusive) { throw new AbstractMethodError("java.time.chrono.ChronoLocalDate.until(java.time.chrono.ChronoLocalDate)"); }
-  public default java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.adjustInto(java.time.temporal.Temporal)"); }
-  public default boolean isAfter(java.time.chrono.ChronoLocalDate other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.isAfter(java.time.chrono.ChronoLocalDate)"); }
-  public default boolean isBefore(java.time.chrono.ChronoLocalDate other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.isBefore(java.time.chrono.ChronoLocalDate)"); }
-  public default boolean isLeapYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.isLeapYear()"); }
-  public abstract int lengthOfMonth() { throw new AbstractMethodError("java.time.chrono.ChronoLocalDate.lengthOfMonth()"); }
-  public default int lengthOfYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.lengthOfYear()"); }
-  public default long toEpochDay() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.toEpochDay()"); }
-  public default java.time.chrono.ChronoLocalDateTime<?> atTime(java.time.LocalTime localTime) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.atTime(java.time.LocalTime)"); }
-  public default java.time.chrono.Era getEra() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.getEra()"); }
-  public abstract java.time.chrono.Chronology getChronology() { throw new AbstractMethodError("java.time.chrono.ChronoLocalDate.getChronology()"); }
-  public static java.util.Comparator<java.time.chrono.ChronoLocalDate> timeLineOrder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoLocalDate.timeLineOrder()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default int compareTo(java.time.chrono.ChronoLocalDate other) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.String format(java.time.format.DateTimeFormatter formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.chrono.ChronoLocalDate from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isSupported(java.time.temporal.TemporalUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoLocalDate with(java.time.temporal.TemporalField field, long newValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoLocalDate with(java.time.temporal.TemporalAdjuster adjuster) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default <R> R query(java.time.temporal.TemporalQuery<R> query) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isEqual(java.time.chrono.ChronoLocalDate other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoLocalDate minus(java.time.temporal.TemporalAmount amount) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoLocalDate minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoLocalDate plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoLocalDate plus(java.time.temporal.TemporalAmount amount) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.ChronoPeriod until(java.time.chrono.ChronoLocalDate endDateExclusive) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isAfter(java.time.chrono.ChronoLocalDate other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isBefore(java.time.chrono.ChronoLocalDate other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isLeapYear() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int lengthOfMonth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default int lengthOfYear() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default long toEpochDay() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoLocalDateTime<?> atTime(java.time.LocalTime localTime) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.Era getEra() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.Chronology getChronology() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Comparator<java.time.chrono.ChronoLocalDate> timeLineOrder() { return null; }
   < ---- END java signatures ---- >
 }

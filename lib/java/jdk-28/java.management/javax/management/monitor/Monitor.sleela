@@ -73,29 +73,49 @@ class Monitor {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Monitor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Monitor() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void start() { throw new AbstractMethodError("javax.management.monitor.Monitor.start()"); }
-  public abstract void stop() { throw new AbstractMethodError("javax.management.monitor.Monitor.stop()"); }
-  public synchronized boolean isActive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.isActive()"); }
-  public void postRegister(java.lang.Boolean registrationDone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.postRegister(java.lang.Boolean)"); }
-  public void preDeregister() throws java.lang.Exception { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.preDeregister()"); }
-  public void postDeregister() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.postDeregister()"); }
-  public synchronized javax.management.ObjectName getObservedObject() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.getObservedObject()"); }
-  public synchronized java.lang.String getObservedAttribute() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.getObservedAttribute()"); }
-  public synchronized void addObservedObject(javax.management.ObjectName object) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.addObservedObject(javax.management.ObjectName)"); }
-  public synchronized void removeObservedObject(javax.management.ObjectName object) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.removeObservedObject(javax.management.ObjectName)"); }
-  public synchronized boolean containsObservedObject(javax.management.ObjectName object) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.containsObservedObject(javax.management.ObjectName)"); }
-  public synchronized javax.management.ObjectName[] getObservedObjects() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.getObservedObjects()"); }
-  public synchronized void setObservedObject(javax.management.ObjectName object) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.setObservedObject(javax.management.ObjectName)"); }
-  public void setObservedAttribute(java.lang.String attribute) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.setObservedAttribute(java.lang.String)"); }
-  public synchronized long getGranularityPeriod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.getGranularityPeriod()"); }
-  public synchronized void setGranularityPeriod(long period) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.setGranularityPeriod(long)"); }
-  public javax.management.ObjectName preRegister(javax.management.MBeanServer server, javax.management.ObjectName name) throws java.lang.Exception { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.Monitor.preRegister(javax.management.MBeanServer, javax.management.ObjectName)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void start() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void stop() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean isActive() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void postRegister(java.lang.Boolean registrationDone) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
+  public void preDeregister() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void postDeregister() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized javax.management.ObjectName getObservedObject() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String getObservedAttribute() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public synchronized void addObservedObject(javax.management.ObjectName object) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeObservedObject(javax.management.ObjectName object) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean containsObservedObject(javax.management.ObjectName object) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized javax.management.ObjectName[] getObservedObjects() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public synchronized void setObservedObject(javax.management.ObjectName object) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public void setObservedAttribute(java.lang.String attribute) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized long getGranularityPeriod() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public synchronized void setGranularityPeriod(long period) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
+  public javax.management.ObjectName preRegister(javax.management.MBeanServer server, javax.management.ObjectName name) { return null; }
   < ---- END java signatures ---- >
 }

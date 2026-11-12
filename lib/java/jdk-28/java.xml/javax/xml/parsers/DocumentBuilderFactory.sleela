@@ -59,39 +59,69 @@ class DocumentBuilderFactory {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  DocumentBuilderFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  DocumentBuilderFactory() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.xml.parsers.DocumentBuilderFactory newInstance(java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.newInstance(java.lang.String, java.lang.ClassLoader)"); }
-  public static javax.xml.parsers.DocumentBuilderFactory newInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.newInstance()"); }
-  public abstract void setAttribute(java.lang.String name, java.lang.Object value) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilderFactory.setAttribute(java.lang.String, java.lang.Object)"); }
-  public abstract java.lang.Object getAttribute(java.lang.String name) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilderFactory.getAttribute(java.lang.String)"); }
-  public javax.xml.validation.Schema getSchema() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.getSchema()"); }
-  public static javax.xml.parsers.DocumentBuilderFactory newDefaultInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.newDefaultInstance()"); }
-  public boolean isNamespaceAware() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.isNamespaceAware()"); }
-  public boolean isValidating() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.isValidating()"); }
-  public boolean isXIncludeAware() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.isXIncludeAware()"); }
-  public static javax.xml.parsers.DocumentBuilderFactory newDefaultNSInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.newDefaultNSInstance()"); }
-  public static javax.xml.parsers.DocumentBuilderFactory newNSInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.newNSInstance()"); }
-  public static javax.xml.parsers.DocumentBuilderFactory newNSInstance(java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.newNSInstance(java.lang.String, java.lang.ClassLoader)"); }
-  public void setExpandEntityReferences(boolean expandEntityRef) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.setExpandEntityReferences(boolean)"); }
-  public boolean isIgnoringElementContentWhitespace() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.isIgnoringElementContentWhitespace()"); }
-  public boolean isExpandEntityReferences() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.isExpandEntityReferences()"); }
-  public boolean isIgnoringComments() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.isIgnoringComments()"); }
-  public boolean isCoalescing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.isCoalescing()"); }
-  public void setXIncludeAware(boolean state) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.setXIncludeAware(boolean)"); }
-  public abstract javax.xml.parsers.DocumentBuilder newDocumentBuilder() throws javax.xml.parsers.ParserConfigurationException { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilderFactory.newDocumentBuilder()"); }
-  public void setIgnoringElementContentWhitespace(boolean whitespace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.setIgnoringElementContentWhitespace(boolean)"); }
-  public void setValidating(boolean validating) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.setValidating(boolean)"); }
-  public void setCoalescing(boolean coalescing) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.setCoalescing(boolean)"); }
-  public void setIgnoringComments(boolean ignoreComments) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.setIgnoringComments(boolean)"); }
-  public abstract boolean getFeature(java.lang.String name) throws javax.xml.parsers.ParserConfigurationException { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilderFactory.getFeature(java.lang.String)"); }
-  public void setNamespaceAware(boolean awareness) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.setNamespaceAware(boolean)"); }
-  public abstract void setFeature(java.lang.String name, boolean value) throws javax.xml.parsers.ParserConfigurationException { throw new AbstractMethodError("javax.xml.parsers.DocumentBuilderFactory.setFeature(java.lang.String, boolean)"); }
-  public void setSchema(javax.xml.validation.Schema schema) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.DocumentBuilderFactory.setSchema(javax.xml.validation.Schema)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.parsers.DocumentBuilderFactory newInstance(java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.parsers.DocumentBuilderFactory newInstance() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public void setAttribute(java.lang.String name, java.lang.Object value) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public java.lang.Object getAttribute(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.validation.Schema getSchema() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.parsers.DocumentBuilderFactory newDefaultInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isNamespaceAware() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isValidating() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isXIncludeAware() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.parsers.DocumentBuilderFactory newDefaultNSInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.parsers.DocumentBuilderFactory newNSInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.parsers.DocumentBuilderFactory newNSInstance(java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setExpandEntityReferences(boolean expandEntityRef) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isIgnoringElementContentWhitespace() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isExpandEntityReferences() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isIgnoringComments() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCoalescing() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setXIncludeAware(boolean state) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.parsers.ParserConfigurationException")
+  public javax.xml.parsers.DocumentBuilder newDocumentBuilder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIgnoringElementContentWhitespace(boolean whitespace) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValidating(boolean validating) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCoalescing(boolean coalescing) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIgnoringComments(boolean ignoreComments) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.parsers.ParserConfigurationException")
+  public boolean getFeature(java.lang.String name) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNamespaceAware(boolean awareness) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.parsers.ParserConfigurationException")
+  public void setFeature(java.lang.String name, boolean value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSchema(javax.xml.validation.Schema schema) { }
   < ---- END java signatures ---- >
 }

@@ -58,13 +58,20 @@ class MouseListener {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void mousePressed(java.awt.event.MouseEvent e) { throw new AbstractMethodError("java.awt.event.MouseListener.mousePressed(java.awt.event.MouseEvent)"); }
-  public abstract void mouseReleased(java.awt.event.MouseEvent e) { throw new AbstractMethodError("java.awt.event.MouseListener.mouseReleased(java.awt.event.MouseEvent)"); }
-  public abstract void mouseClicked(java.awt.event.MouseEvent e) { throw new AbstractMethodError("java.awt.event.MouseListener.mouseClicked(java.awt.event.MouseEvent)"); }
-  public abstract void mouseExited(java.awt.event.MouseEvent e) { throw new AbstractMethodError("java.awt.event.MouseListener.mouseExited(java.awt.event.MouseEvent)"); }
-  public abstract void mouseEntered(java.awt.event.MouseEvent e) { throw new AbstractMethodError("java.awt.event.MouseListener.mouseEntered(java.awt.event.MouseEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void mousePressed(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void mouseReleased(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void mouseClicked(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void mouseExited(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void mouseEntered(java.awt.event.MouseEvent e) { }
   < ---- END java signatures ---- >
 }

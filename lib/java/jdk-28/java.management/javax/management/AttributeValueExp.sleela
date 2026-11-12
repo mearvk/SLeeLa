@@ -58,19 +58,28 @@ class AttributeValueExp {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AttributeValueExp() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.AttributeValueExp.<init>()"); }
-  public AttributeValueExp(java.lang.String attr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.AttributeValueExp.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttributeValueExp() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttributeValueExp(java.lang.String attr) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.AttributeValueExp.toString()"); }
-  public javax.management.ValueExp apply(javax.management.ObjectName name) throws javax.management.BadStringOperationException, javax.management.BadBinaryOpValueExpException, javax.management.BadAttributeValueExpException, javax.management.InvalidApplicationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.AttributeValueExp.apply(javax.management.ObjectName)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.BadStringOperationException, javax.management.BadBinaryOpValueExpException, javax.management.BadAttributeValueExpException, javax.management.InvalidApplicationException")
+  public javax.management.ValueExp apply(javax.management.ObjectName name) { return null; }
   @JavaProtected
-  java.lang.Object getAttribute(javax.management.ObjectName name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.AttributeValueExp.getAttribute(javax.management.ObjectName)"); }
-  public java.lang.String getAttributeName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.AttributeValueExp.getAttributeName()"); }
-  public void setMBeanServer(javax.management.MBeanServer s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.AttributeValueExp.setMBeanServer(javax.management.MBeanServer)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.Object getAttribute(javax.management.ObjectName name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAttributeName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMBeanServer(javax.management.MBeanServer s) { }
   < ---- END java signatures ---- >
 }

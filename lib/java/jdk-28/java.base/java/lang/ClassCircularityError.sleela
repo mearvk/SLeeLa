@@ -58,7 +58,9 @@ class ClassCircularityError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ClassCircularityError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassCircularityError.<init>()"); }
-  public ClassCircularityError(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassCircularityError.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ClassCircularityError() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ClassCircularityError(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

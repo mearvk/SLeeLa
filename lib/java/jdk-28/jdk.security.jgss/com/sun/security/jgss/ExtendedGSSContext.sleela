@@ -58,11 +58,16 @@ class ExtendedGSSContext {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object inquireSecContext(com.sun.security.jgss.InquireType type) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("com.sun.security.jgss.ExtendedGSSContext.inquireSecContext(com.sun.security.jgss.InquireType)"); }
-  public abstract void requestDelegPolicy(boolean state) throws org.ietf.jgss.GSSException { throw new AbstractMethodError("com.sun.security.jgss.ExtendedGSSContext.requestDelegPolicy(boolean)"); }
-  public abstract boolean getDelegPolicyState() { throw new AbstractMethodError("com.sun.security.jgss.ExtendedGSSContext.getDelegPolicyState()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
+  public java.lang.Object inquireSecContext(com.sun.security.jgss.InquireType type) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
+  public void requestDelegPolicy(boolean state) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getDelegPolicyState() { return false; }
   < ---- END java signatures ---- >
 }

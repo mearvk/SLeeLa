@@ -58,21 +58,36 @@ class HTMLOptionElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getValue() { throw new AbstractMethodError("org.w3c.dom.html.HTMLOptionElement.getValue()"); }
-  public abstract void setValue(java.lang.String value) { throw new AbstractMethodError("org.w3c.dom.html.HTMLOptionElement.setValue(java.lang.String)"); }
-  public abstract int getIndex() { throw new AbstractMethodError("org.w3c.dom.html.HTMLOptionElement.getIndex()"); }
-  public abstract java.lang.String getLabel() { throw new AbstractMethodError("org.w3c.dom.html.HTMLOptionElement.getLabel()"); }
-  public abstract java.lang.String getText() { throw new AbstractMethodError("org.w3c.dom.html.HTMLOptionElement.getText()"); }
-  public abstract void setSelected(boolean selected) { throw new AbstractMethodError("org.w3c.dom.html.HTMLOptionElement.setSelected(boolean)"); }
-  public abstract void setLabel(java.lang.String label) { throw new AbstractMethodError("org.w3c.dom.html.HTMLOptionElement.setLabel(java.lang.String)"); }
-  public abstract boolean getDisabled() { throw new AbstractMethodError("org.w3c.dom.html.HTMLOptionElement.getDisabled()"); }
-  public abstract void setDisabled(boolean disabled) { throw new AbstractMethodError("org.w3c.dom.html.HTMLOptionElement.setDisabled(boolean)"); }
-  public abstract org.w3c.dom.html.HTMLFormElement getForm() { throw new AbstractMethodError("org.w3c.dom.html.HTMLOptionElement.getForm()"); }
-  public abstract boolean getDefaultSelected() { throw new AbstractMethodError("org.w3c.dom.html.HTMLOptionElement.getDefaultSelected()"); }
-  public abstract void setDefaultSelected(boolean defaultSelected) { throw new AbstractMethodError("org.w3c.dom.html.HTMLOptionElement.setDefaultSelected(boolean)"); }
-  public abstract boolean getSelected() { throw new AbstractMethodError("org.w3c.dom.html.HTMLOptionElement.getSelected()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setValue(java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getLabel() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getText() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSelected(boolean selected) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setLabel(java.lang.String label) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getDisabled() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDisabled(boolean disabled) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLFormElement getForm() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getDefaultSelected() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDefaultSelected(boolean defaultSelected) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getSelected() { return false; }
   < ---- END java signatures ---- >
 }

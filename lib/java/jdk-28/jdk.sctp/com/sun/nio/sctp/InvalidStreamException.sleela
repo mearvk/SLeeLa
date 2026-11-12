@@ -58,7 +58,9 @@ class InvalidStreamException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidStreamException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.InvalidStreamException.<init>()"); }
-  public InvalidStreamException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.InvalidStreamException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidStreamException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidStreamException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

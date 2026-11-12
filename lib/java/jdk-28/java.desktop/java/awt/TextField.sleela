@@ -58,42 +58,72 @@ class TextField {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TextField(java.lang.String text, int columns) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.<init>(java.lang.String, int)"); }
-  public TextField(int columns) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.<init>(int)"); }
-  public TextField(java.lang.String text) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.<init>(java.lang.String)"); }
-  public TextField() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public TextField(java.lang.String text, int columns) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public TextField(int columns) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public TextField(java.lang.String text) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public TextField() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.paramString()"); }
-  public void setText(java.lang.String t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.setText(java.lang.String)"); }
-  public java.awt.Dimension getPreferredSize(int columns) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.getPreferredSize(int)"); }
-  public java.awt.Dimension getPreferredSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.getPreferredSize()"); }
-  public java.awt.Dimension getMinimumSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.getMinimumSize()"); }
-  public java.awt.Dimension getMinimumSize(int columns) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.getMinimumSize(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setText(java.lang.String t) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(int columns) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(int columns) { return null; }
   @JavaProtected
-  void processActionEvent(java.awt.event.ActionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.processActionEvent(java.awt.event.ActionEvent)"); }
-  public synchronized void addActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.addActionListener(java.awt.event.ActionListener)"); }
-  public synchronized void removeActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.removeActionListener(java.awt.event.ActionListener)"); }
-  public synchronized java.awt.event.ActionListener[] getActionListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.getActionListeners()"); }
-  public int getColumns() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.getColumns()"); }
-  public void setColumns(int columns) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.setColumns(int)"); }
-  public synchronized void setEchoCharacter(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.setEchoCharacter(char)"); }
-  public void setEchoChar(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.setEchoChar(char)"); }
-  public char getEchoChar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.getEchoChar()"); }
-  public boolean echoCharIsSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.echoCharIsSet()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.getAccessibleContext()"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.addNotify()"); }
-  public java.awt.Dimension preferredSize(int columns) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.preferredSize(int)"); }
-  public java.awt.Dimension preferredSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.preferredSize()"); }
-  public java.awt.Dimension minimumSize(int columns) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.minimumSize(int)"); }
-  public java.awt.Dimension minimumSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.minimumSize()"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.getListeners(java.lang.Class<T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processActionEvent(java.awt.event.ActionEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.event.ActionListener[] getActionListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getColumns() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColumns(int columns) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setEchoCharacter(char c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEchoChar(char c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getEchoChar() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean echoCharIsSet() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension preferredSize(int columns) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension preferredSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension minimumSize(int columns) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension minimumSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   @JavaProtected
-  void processEvent(java.awt.AWTEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.TextField.processEvent(java.awt.AWTEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processEvent(java.awt.AWTEvent e) { }
   < ---- END java signatures ---- >
 }

@@ -58,47 +58,88 @@ class ShortBuffer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.nio.ShortBuffer reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.reset()"); }
-  public abstract short get() { throw new AbstractMethodError("java.nio.ShortBuffer.get()"); }
-  public java.nio.ShortBuffer get(int index, short[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.get(int, short[])"); }
-  public abstract short get(int index) { throw new AbstractMethodError("java.nio.ShortBuffer.get(int)"); }
-  public java.nio.ShortBuffer get(short[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.get(short[], int, int)"); }
-  public java.nio.ShortBuffer get(short[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.get(short[])"); }
-  public java.nio.ShortBuffer get(int index, short[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.get(int, short[], int, int)"); }
-  public java.nio.ShortBuffer put(java.nio.ShortBuffer src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(java.nio.ShortBuffer)"); }
-  public java.nio.ShortBuffer put(short[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(short[], int, int)"); }
-  public final java.nio.ShortBuffer put(short[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(short[])"); }
-  public java.nio.ShortBuffer put(int index, java.nio.ShortBuffer src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(int, java.nio.ShortBuffer, int, int)"); }
-  public java.nio.ShortBuffer put(int index, short[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(int, short[])"); }
-  public java.nio.ShortBuffer put(int index, short[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.put(int, short[], int, int)"); }
-  public abstract java.nio.ShortBuffer put(int index, short s) { throw new AbstractMethodError("java.nio.ShortBuffer.put(int, short)"); }
-  public abstract java.nio.ShortBuffer put(short s) { throw new AbstractMethodError("java.nio.ShortBuffer.put(short)"); }
-  public boolean equals(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.hashCode()"); }
-  public int compareTo(java.nio.ShortBuffer that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.compareTo(java.nio.ShortBuffer)"); }
-  public final java.nio.ShortBuffer clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.clear()"); }
-  public static java.nio.ShortBuffer wrap(short[] array) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.wrap(short[])"); }
-  public static java.nio.ShortBuffer wrap(short[] array, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.wrap(short[], int, int)"); }
-  public final java.nio.ShortBuffer position(int newPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.position(int)"); }
-  public int mismatch(java.nio.ShortBuffer that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.mismatch(java.nio.ShortBuffer)"); }
-  public final java.nio.ShortBuffer limit(int newLimit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.limit(int)"); }
-  public abstract boolean isDirect() { throw new AbstractMethodError("java.nio.ShortBuffer.isDirect()"); }
-  public final boolean hasArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.hasArray()"); }
-  public final short[] array() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.array()"); }
-  public final int arrayOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.arrayOffset()"); }
-  public final java.nio.ShortBuffer mark() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.mark()"); }
-  public final java.nio.ShortBuffer flip() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.flip()"); }
-  public final java.nio.ShortBuffer rewind() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.rewind()"); }
-  public abstract java.nio.ShortBuffer slice() { throw new AbstractMethodError("java.nio.ShortBuffer.slice()"); }
-  public abstract java.nio.ShortBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.ShortBuffer.slice(int, int)"); }
-  public abstract java.nio.ShortBuffer duplicate() { throw new AbstractMethodError("java.nio.ShortBuffer.duplicate()"); }
-  public static java.nio.ShortBuffer allocate(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ShortBuffer.allocate(int)"); }
-  public abstract java.nio.ShortBuffer asReadOnlyBuffer() { throw new AbstractMethodError("java.nio.ShortBuffer.asReadOnlyBuffer()"); }
-  public abstract java.nio.ShortBuffer compact() { throw new AbstractMethodError("java.nio.ShortBuffer.compact()"); }
-  public abstract java.nio.ByteOrder order() { throw new AbstractMethodError("java.nio.ShortBuffer.order()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.ShortBuffer reset() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public short get() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.ShortBuffer get(int index, short[] dst) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public short get(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.ShortBuffer get(short[] dst, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.ShortBuffer get(short[] dst) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.ShortBuffer get(int index, short[] dst, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.ShortBuffer put(java.nio.ShortBuffer src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.ShortBuffer put(short[] src, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.ShortBuffer put(short[] src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.ShortBuffer put(int index, java.nio.ShortBuffer src, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.ShortBuffer put(int index, short[] src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.ShortBuffer put(int index, short[] src, int offset, int length) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.ShortBuffer put(int index, short s) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.ShortBuffer put(short s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object ob) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.nio.ShortBuffer that) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.ShortBuffer clear() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.ShortBuffer wrap(short[] array) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.ShortBuffer wrap(short[] array, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.ShortBuffer position(int newPosition) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int mismatch(java.nio.ShortBuffer that) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.ShortBuffer limit(int newLimit) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDirect() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean hasArray() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final short[] array() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int arrayOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.ShortBuffer mark() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.ShortBuffer flip() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.ShortBuffer rewind() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.ShortBuffer slice() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.ShortBuffer slice(int index, int length) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.ShortBuffer duplicate() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.ShortBuffer allocate(int capacity) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.ShortBuffer asReadOnlyBuffer() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.ShortBuffer compact() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.ByteOrder order() { return null; }
   < ---- END java signatures ---- >
 }

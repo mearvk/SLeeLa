@@ -63,25 +63,39 @@ class SimpleTypeVisitor6<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SimpleTypeVisitor6() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitor6.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleTypeVisitor6() { }
   @JavaProtected
-  SimpleTypeVisitor6(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitor6.<init>(R)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleTypeVisitor6(R defaultValue) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public R visitError(javax.lang.model.type.ErrorType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitor6.visitError(javax.lang.model.type.ErrorType, P)"); }
-  public R visitDeclared(javax.lang.model.type.DeclaredType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitor6.visitDeclared(javax.lang.model.type.DeclaredType, P)"); }
-  public R visitExecutable(javax.lang.model.type.ExecutableType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitor6.visitExecutable(javax.lang.model.type.ExecutableType, P)"); }
-  public R visitTypeVariable(javax.lang.model.type.TypeVariable t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitor6.visitTypeVariable(javax.lang.model.type.TypeVariable, P)"); }
-  public R visitWildcard(javax.lang.model.type.WildcardType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitor6.visitWildcard(javax.lang.model.type.WildcardType, P)"); }
-  public R visitNoType(javax.lang.model.type.NoType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitor6.visitNoType(javax.lang.model.type.NoType, P)"); }
-  public R visitArray(javax.lang.model.type.ArrayType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitor6.visitArray(javax.lang.model.type.ArrayType, P)"); }
-  public R visitPrimitive(javax.lang.model.type.PrimitiveType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitor6.visitPrimitive(javax.lang.model.type.PrimitiveType, P)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitError(javax.lang.model.type.ErrorType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitDeclared(javax.lang.model.type.DeclaredType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitExecutable(javax.lang.model.type.ExecutableType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitTypeVariable(javax.lang.model.type.TypeVariable t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitWildcard(javax.lang.model.type.WildcardType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitNoType(javax.lang.model.type.NoType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitArray(javax.lang.model.type.ArrayType t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitPrimitive(javax.lang.model.type.PrimitiveType t, P p) { return null; }
   @JavaProtected
-  R defaultAction(javax.lang.model.type.TypeMirror t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitor6.defaultAction(javax.lang.model.type.TypeMirror, P)"); }
-  public R visitNull(javax.lang.model.type.NullType t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitor6.visitNull(javax.lang.model.type.NullType, P)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  R defaultAction(javax.lang.model.type.TypeMirror t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitNull(javax.lang.model.type.NullType t, P p) { return null; }
   < ---- END java signatures ---- >
 }

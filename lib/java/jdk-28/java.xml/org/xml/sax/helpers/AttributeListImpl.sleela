@@ -58,23 +58,37 @@ class AttributeListImpl {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AttributeListImpl() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.AttributeListImpl.<init>()"); }
-  public AttributeListImpl(org.xml.sax.AttributeList atts) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.AttributeListImpl.<init>(org.xml.sax.AttributeList)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttributeListImpl() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttributeListImpl(org.xml.sax.AttributeList atts) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.AttributeListImpl.getName(int)"); }
-  public int getLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.AttributeListImpl.getLength()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.AttributeListImpl.clear()"); }
-  public java.lang.String getValue(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.AttributeListImpl.getValue(int)"); }
-  public java.lang.String getValue(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.AttributeListImpl.getValue(java.lang.String)"); }
-  public java.lang.String getType(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.AttributeListImpl.getType(int)"); }
-  public java.lang.String getType(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.AttributeListImpl.getType(java.lang.String)"); }
-  public void addAttribute(java.lang.String name, java.lang.String type, java.lang.String value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.AttributeListImpl.addAttribute(java.lang.String, java.lang.String, java.lang.String)"); }
-  public void removeAttribute(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.AttributeListImpl.removeAttribute(java.lang.String)"); }
-  public void setAttributeList(org.xml.sax.AttributeList atts) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.AttributeListImpl.setAttributeList(org.xml.sax.AttributeList)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName(int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLength() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getValue(int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getValue(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getType(int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getType(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addAttribute(java.lang.String name, java.lang.String type, java.lang.String value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAttribute(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAttributeList(org.xml.sax.AttributeList atts) { }
   < ---- END java signatures ---- >
 }

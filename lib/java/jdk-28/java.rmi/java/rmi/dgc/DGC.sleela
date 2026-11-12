@@ -58,10 +58,14 @@ class DGC {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void clean(java.rmi.server.ObjID[] ids, long sequenceNum, java.rmi.dgc.VMID vmid, boolean strong) throws java.rmi.RemoteException { throw new AbstractMethodError("java.rmi.dgc.DGC.clean(java.rmi.server.ObjID[], long, java.rmi.dgc.VMID, boolean)"); }
-  public abstract java.rmi.dgc.Lease dirty(java.rmi.server.ObjID[] ids, long sequenceNum, java.rmi.dgc.Lease lease) throws java.rmi.RemoteException { throw new AbstractMethodError("java.rmi.dgc.DGC.dirty(java.rmi.server.ObjID[], long, java.rmi.dgc.Lease)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.rmi.RemoteException")
+  public void clean(java.rmi.server.ObjID[] ids, long sequenceNum, java.rmi.dgc.VMID vmid, boolean strong) { }
+  @throwable("java.lang.AbstractMethodError, java.rmi.RemoteException")
+  public java.rmi.dgc.Lease dirty(java.rmi.server.ObjID[] ids, long sequenceNum, java.rmi.dgc.Lease lease) { return null; }
   < ---- END java signatures ---- >
 }

@@ -59,19 +59,26 @@ class AbstractInterruptibleChannel {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractInterruptibleChannel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.spi.AbstractInterruptibleChannel.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractInterruptibleChannel() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  final void begin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.spi.AbstractInterruptibleChannel.begin()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void begin() { }
   @JavaProtected
-  final void end(boolean completed) throws java.nio.channels.AsynchronousCloseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.spi.AbstractInterruptibleChannel.end(boolean)"); }
-  public final boolean isOpen() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.spi.AbstractInterruptibleChannel.isOpen()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.nio.channels.AsynchronousCloseException")
+  final void end(boolean completed) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isOpen() { return false; }
   @JavaProtected
-  abstract void implCloseChannel() throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.spi.AbstractInterruptibleChannel.implCloseChannel()"); }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  void implCloseChannel() { }
   < ---- END java signatures ---- >
 }

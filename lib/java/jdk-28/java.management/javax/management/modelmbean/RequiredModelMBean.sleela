@@ -58,38 +58,66 @@ class RequiredModelMBean {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RequiredModelMBean() throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.<init>()"); }
-  public RequiredModelMBean(javax.management.modelmbean.ModelMBeanInfo mbi) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.<init>(javax.management.modelmbean.ModelMBeanInfo)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public RequiredModelMBean() { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public RequiredModelMBean(javax.management.modelmbean.ModelMBeanInfo mbi) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void load() throws javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.InstanceNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.load()"); }
-  public void store() throws javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.InstanceNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.store()"); }
-  public javax.management.AttributeList getAttributes(java.lang.String[] attrNames) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.getAttributes(java.lang.String[])"); }
-  public void setAttribute(javax.management.Attribute attribute) throws javax.management.AttributeNotFoundException, javax.management.InvalidAttributeValueException, javax.management.MBeanException, javax.management.ReflectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.setAttribute(javax.management.Attribute)"); }
-  public java.lang.Object getAttribute(java.lang.String attrName) throws javax.management.AttributeNotFoundException, javax.management.MBeanException, javax.management.ReflectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.getAttribute(java.lang.String)"); }
-  public javax.management.AttributeList setAttributes(javax.management.AttributeList attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.setAttributes(javax.management.AttributeList)"); }
-  public void postRegister(java.lang.Boolean registrationDone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.postRegister(java.lang.Boolean)"); }
-  public void preDeregister() throws java.lang.Exception { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.preDeregister()"); }
-  public void postDeregister() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.postDeregister()"); }
-  public void sendNotification(javax.management.Notification ntfyObj) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.sendNotification(javax.management.Notification)"); }
-  public void sendNotification(java.lang.String ntfyText) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.sendNotification(java.lang.String)"); }
-  public javax.management.MBeanNotificationInfo[] getNotificationInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.getNotificationInfo()"); }
-  public void setModelMBeanInfo(javax.management.modelmbean.ModelMBeanInfo mbi) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.setModelMBeanInfo(javax.management.modelmbean.ModelMBeanInfo)"); }
-  public void setManagedResource(java.lang.Object mr, java.lang.String mr_type) throws javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.InstanceNotFoundException, javax.management.modelmbean.InvalidTargetObjectTypeException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.setManagedResource(java.lang.Object, java.lang.String)"); }
-  public void sendAttributeChangeNotification(javax.management.Attribute inOldVal, javax.management.Attribute inNewVal) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.sendAttributeChangeNotification(javax.management.Attribute, javax.management.Attribute)"); }
-  public void sendAttributeChangeNotification(javax.management.AttributeChangeNotification ntfyObj) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.sendAttributeChangeNotification(javax.management.AttributeChangeNotification)"); }
-  public void addAttributeChangeNotificationListener(javax.management.NotificationListener inlistener, java.lang.String inAttributeName, java.lang.Object inhandback) throws javax.management.MBeanException, javax.management.RuntimeOperationsException, java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.addAttributeChangeNotificationListener(javax.management.NotificationListener, java.lang.String, java.lang.Object)"); }
-  public void removeAttributeChangeNotificationListener(javax.management.NotificationListener inlistener, java.lang.String inAttributeName) throws javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.ListenerNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.removeAttributeChangeNotificationListener(javax.management.NotificationListener, java.lang.String)"); }
-  public void addNotificationListener(javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.addNotificationListener(javax.management.NotificationListener, javax.management.NotificationFilter, java.lang.Object)"); }
-  public void removeNotificationListener(javax.management.NotificationListener listener) throws javax.management.ListenerNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.removeNotificationListener(javax.management.NotificationListener)"); }
-  public void removeNotificationListener(javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) throws javax.management.ListenerNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.removeNotificationListener(javax.management.NotificationListener, javax.management.NotificationFilter, java.lang.Object)"); }
-  public javax.management.MBeanInfo getMBeanInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.getMBeanInfo()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.InstanceNotFoundException")
+  public void load() { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.InstanceNotFoundException")
+  public void store() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.AttributeList getAttributes(java.lang.String[] attrNames) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.AttributeNotFoundException, javax.management.InvalidAttributeValueException, javax.management.MBeanException, javax.management.ReflectionException")
+  public void setAttribute(javax.management.Attribute attribute) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.AttributeNotFoundException, javax.management.MBeanException, javax.management.ReflectionException")
+  public java.lang.Object getAttribute(java.lang.String attrName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.AttributeList setAttributes(javax.management.AttributeList attributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void postRegister(java.lang.Boolean registrationDone) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
+  public void preDeregister() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void postDeregister() { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public void sendNotification(javax.management.Notification ntfyObj) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public void sendNotification(java.lang.String ntfyText) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.MBeanNotificationInfo[] getNotificationInfo() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public void setModelMBeanInfo(javax.management.modelmbean.ModelMBeanInfo mbi) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.InstanceNotFoundException, javax.management.modelmbean.InvalidTargetObjectTypeException")
+  public void setManagedResource(java.lang.Object mr, java.lang.String mr_type) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public void sendAttributeChangeNotification(javax.management.Attribute inOldVal, javax.management.Attribute inNewVal) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public void sendAttributeChangeNotification(javax.management.AttributeChangeNotification ntfyObj) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException, java.lang.IllegalArgumentException")
+  public void addAttributeChangeNotificationListener(javax.management.NotificationListener inlistener, java.lang.String inAttributeName, java.lang.Object inhandback) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.ListenerNotFoundException")
+  public void removeAttributeChangeNotificationListener(javax.management.NotificationListener inlistener, java.lang.String inAttributeName) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public void addNotificationListener(javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.ListenerNotFoundException")
+  public void removeNotificationListener(javax.management.NotificationListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.ListenerNotFoundException")
+  public void removeNotificationListener(javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.MBeanInfo getMBeanInfo() { return null; }
   @JavaProtected
-  javax.management.loading.ClassLoaderRepository getClassLoaderRepository() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.getClassLoaderRepository()"); }
-  public javax.management.ObjectName preRegister(javax.management.MBeanServer server, javax.management.ObjectName name) throws java.lang.Exception { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.RequiredModelMBean.preRegister(javax.management.MBeanServer, javax.management.ObjectName)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.management.loading.ClassLoaderRepository getClassLoaderRepository() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
+  public javax.management.ObjectName preRegister(javax.management.MBeanServer server, javax.management.ObjectName name) { return null; }
   < ---- END java signatures ---- >
 }

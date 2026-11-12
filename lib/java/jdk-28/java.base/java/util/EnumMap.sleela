@@ -58,26 +58,43 @@ class EnumMap<K extends java.lang.Enum<K>, V> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public EnumMap(java.util.EnumMap<K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.<init>(java.util.EnumMap<K, ? extends V>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EnumMap(java.util.EnumMap<K, ? extends V> m) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public V remove(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.remove(java.lang.Object)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.size()"); }
-  public V get(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.get(java.lang.Object)"); }
-  public V put(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.put(K, V)"); }
-  public boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.equals(java.lang.Object)"); }
-  public java.util.Collection<V> values() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.values()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.hashCode()"); }
-  public java.util.EnumMap<K, V> clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.clone()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.clear()"); }
-  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.entrySet()"); }
-  public void putAll(java.util.Map<? extends K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.putAll(java.util.Map<? extends K, ? extends V>)"); }
-  public java.util.Set<K> keySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.keySet()"); }
-  public boolean containsValue(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.containsValue(java.lang.Object)"); }
-  public boolean containsKey(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumMap.containsKey(java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public V remove(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V get(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V put(K key, V value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Collection<V> values() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.EnumMap<K, V> clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void putAll(java.util.Map<? extends K, ? extends V> m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<K> keySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsValue(java.lang.Object value) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsKey(java.lang.Object key) { return false; }
   < ---- END java signatures ---- >
 }

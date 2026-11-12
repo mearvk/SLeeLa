@@ -58,14 +58,22 @@ class StartElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.xml.namespace.QName getName() { throw new AbstractMethodError("javax.xml.stream.events.StartElement.getName()"); }
-  public abstract java.util.Iterator<javax.xml.stream.events.Attribute> getAttributes() { throw new AbstractMethodError("javax.xml.stream.events.StartElement.getAttributes()"); }
-  public abstract javax.xml.namespace.NamespaceContext getNamespaceContext() { throw new AbstractMethodError("javax.xml.stream.events.StartElement.getNamespaceContext()"); }
-  public abstract java.util.Iterator<javax.xml.stream.events.Namespace> getNamespaces() { throw new AbstractMethodError("javax.xml.stream.events.StartElement.getNamespaces()"); }
-  public abstract javax.xml.stream.events.Attribute getAttributeByName(javax.xml.namespace.QName name) { throw new AbstractMethodError("javax.xml.stream.events.StartElement.getAttributeByName(javax.xml.namespace.QName)"); }
-  public abstract java.lang.String getNamespaceURI(java.lang.String prefix) { throw new AbstractMethodError("javax.xml.stream.events.StartElement.getNamespaceURI(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.namespace.QName getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Iterator<javax.xml.stream.events.Attribute> getAttributes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.namespace.NamespaceContext getNamespaceContext() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Iterator<javax.xml.stream.events.Namespace> getNamespaces() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.stream.events.Attribute getAttributeByName(javax.xml.namespace.QName name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getNamespaceURI(java.lang.String prefix) { return null; }
   < ---- END java signatures ---- >
 }

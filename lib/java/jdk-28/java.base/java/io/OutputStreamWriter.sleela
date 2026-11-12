@@ -58,21 +58,33 @@ class OutputStreamWriter {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public OutputStreamWriter(java.io.OutputStream out, java.nio.charset.CharsetEncoder enc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.OutputStreamWriter.<init>(java.io.OutputStream, java.nio.charset.CharsetEncoder)"); }
-  public OutputStreamWriter(java.io.OutputStream out) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.OutputStreamWriter.<init>(java.io.OutputStream)"); }
-  public OutputStreamWriter(java.io.OutputStream out, java.lang.String charsetName) throws java.io.UnsupportedEncodingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.OutputStreamWriter.<init>(java.io.OutputStream, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OutputStreamWriter(java.io.OutputStream out, java.nio.charset.CharsetEncoder enc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OutputStreamWriter(java.io.OutputStream out) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.UnsupportedEncodingException")
+  public OutputStreamWriter(java.io.OutputStream out, java.lang.String charsetName) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.io.Writer append(java.lang.CharSequence csq, int start, int end) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.OutputStreamWriter.append(java.lang.CharSequence, int, int)"); }
-  public java.io.Writer append(java.lang.CharSequence csq) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.OutputStreamWriter.append(java.lang.CharSequence)"); }
-  public void flush() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.OutputStreamWriter.flush()"); }
-  public void write(char[] cbuf, int off, int len) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.OutputStreamWriter.write(char[], int, int)"); }
-  public void write(java.lang.String str, int off, int len) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.OutputStreamWriter.write(java.lang.String, int, int)"); }
-  public void write(int c) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.OutputStreamWriter.write(int)"); }
-  public java.lang.String getEncoding() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.OutputStreamWriter.getEncoding()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.io.Writer append(java.lang.CharSequence csq, int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.io.Writer append(java.lang.CharSequence csq) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void flush() { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void write(char[] cbuf, int off, int len) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void write(java.lang.String str, int off, int len) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void write(int c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getEncoding() { return null; }
   < ---- END java signatures ---- >
 }

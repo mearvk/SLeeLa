@@ -58,47 +58,88 @@ class FloatBuffer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.nio.FloatBuffer reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.reset()"); }
-  public abstract float get() { throw new AbstractMethodError("java.nio.FloatBuffer.get()"); }
-  public java.nio.FloatBuffer get(int index, float[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.get(int, float[])"); }
-  public abstract float get(int index) { throw new AbstractMethodError("java.nio.FloatBuffer.get(int)"); }
-  public java.nio.FloatBuffer get(float[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.get(float[], int, int)"); }
-  public java.nio.FloatBuffer get(float[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.get(float[])"); }
-  public java.nio.FloatBuffer get(int index, float[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.get(int, float[], int, int)"); }
-  public java.nio.FloatBuffer put(java.nio.FloatBuffer src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.put(java.nio.FloatBuffer)"); }
-  public java.nio.FloatBuffer put(float[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.put(float[], int, int)"); }
-  public final java.nio.FloatBuffer put(float[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.put(float[])"); }
-  public java.nio.FloatBuffer put(int index, java.nio.FloatBuffer src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.put(int, java.nio.FloatBuffer, int, int)"); }
-  public java.nio.FloatBuffer put(int index, float[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.put(int, float[])"); }
-  public java.nio.FloatBuffer put(int index, float[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.put(int, float[], int, int)"); }
-  public abstract java.nio.FloatBuffer put(int index, float f) { throw new AbstractMethodError("java.nio.FloatBuffer.put(int, float)"); }
-  public abstract java.nio.FloatBuffer put(float f) { throw new AbstractMethodError("java.nio.FloatBuffer.put(float)"); }
-  public boolean equals(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.hashCode()"); }
-  public int compareTo(java.nio.FloatBuffer that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.compareTo(java.nio.FloatBuffer)"); }
-  public final java.nio.FloatBuffer clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.clear()"); }
-  public static java.nio.FloatBuffer wrap(float[] array) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.wrap(float[])"); }
-  public static java.nio.FloatBuffer wrap(float[] array, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.wrap(float[], int, int)"); }
-  public final java.nio.FloatBuffer position(int newPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.position(int)"); }
-  public int mismatch(java.nio.FloatBuffer that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.mismatch(java.nio.FloatBuffer)"); }
-  public final java.nio.FloatBuffer limit(int newLimit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.limit(int)"); }
-  public abstract boolean isDirect() { throw new AbstractMethodError("java.nio.FloatBuffer.isDirect()"); }
-  public final boolean hasArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.hasArray()"); }
-  public final float[] array() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.array()"); }
-  public final int arrayOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.arrayOffset()"); }
-  public final java.nio.FloatBuffer mark() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.mark()"); }
-  public final java.nio.FloatBuffer flip() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.flip()"); }
-  public final java.nio.FloatBuffer rewind() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.rewind()"); }
-  public abstract java.nio.FloatBuffer slice() { throw new AbstractMethodError("java.nio.FloatBuffer.slice()"); }
-  public abstract java.nio.FloatBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.FloatBuffer.slice(int, int)"); }
-  public abstract java.nio.FloatBuffer duplicate() { throw new AbstractMethodError("java.nio.FloatBuffer.duplicate()"); }
-  public static java.nio.FloatBuffer allocate(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.FloatBuffer.allocate(int)"); }
-  public abstract java.nio.FloatBuffer asReadOnlyBuffer() { throw new AbstractMethodError("java.nio.FloatBuffer.asReadOnlyBuffer()"); }
-  public abstract java.nio.FloatBuffer compact() { throw new AbstractMethodError("java.nio.FloatBuffer.compact()"); }
-  public abstract java.nio.ByteOrder order() { throw new AbstractMethodError("java.nio.FloatBuffer.order()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.FloatBuffer reset() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public float get() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.FloatBuffer get(int index, float[] dst) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public float get(int index) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.FloatBuffer get(float[] dst, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.FloatBuffer get(float[] dst) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.FloatBuffer get(int index, float[] dst, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.FloatBuffer put(java.nio.FloatBuffer src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.FloatBuffer put(float[] src, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.FloatBuffer put(float[] src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.FloatBuffer put(int index, java.nio.FloatBuffer src, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.FloatBuffer put(int index, float[] src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.FloatBuffer put(int index, float[] src, int offset, int length) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.FloatBuffer put(int index, float f) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.FloatBuffer put(float f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object ob) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.nio.FloatBuffer that) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.FloatBuffer clear() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.FloatBuffer wrap(float[] array) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.FloatBuffer wrap(float[] array, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.FloatBuffer position(int newPosition) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int mismatch(java.nio.FloatBuffer that) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.FloatBuffer limit(int newLimit) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDirect() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean hasArray() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final float[] array() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int arrayOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.FloatBuffer mark() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.FloatBuffer flip() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.FloatBuffer rewind() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.FloatBuffer slice() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.FloatBuffer slice(int index, int length) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.FloatBuffer duplicate() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.FloatBuffer allocate(int capacity) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.FloatBuffer asReadOnlyBuffer() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.FloatBuffer compact() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.ByteOrder order() { return null; }
   < ---- END java signatures ---- >
 }

@@ -72,53 +72,95 @@ class JScrollPane {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JScrollPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.<init>()"); }
-  public JScrollPane(int vsbPolicy, int hsbPolicy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.<init>(int, int)"); }
-  public JScrollPane(java.awt.Component view) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.<init>(java.awt.Component)"); }
-  public JScrollPane(java.awt.Component view, int vsbPolicy, int hsbPolicy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.<init>(java.awt.Component, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JScrollPane() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JScrollPane(int vsbPolicy, int hsbPolicy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JScrollPane(java.awt.Component view) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JScrollPane(java.awt.Component view, int vsbPolicy, int hsbPolicy) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.paramString()"); }
-  public void setComponentOrientation(java.awt.ComponentOrientation co) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setComponentOrientation(java.awt.ComponentOrientation)"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.updateUI()"); }
-  public void setUI(javax.swing.plaf.ScrollPaneUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setUI(javax.swing.plaf.ScrollPaneUI)"); }
-  public javax.swing.plaf.ScrollPaneUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getUI()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getUIClassID()"); }
-  public javax.swing.JViewport getViewport() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getViewport()"); }
-  public void setColumnHeaderView(java.awt.Component view) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setColumnHeaderView(java.awt.Component)"); }
-  public java.awt.Component getCorner(java.lang.String key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getCorner(java.lang.String)"); }
-  public void setCorner(java.lang.String key, java.awt.Component corner) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setCorner(java.lang.String, java.awt.Component)"); }
-  public void setWheelScrollingEnabled(boolean handleWheel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setWheelScrollingEnabled(boolean)"); }
-  public boolean isWheelScrollingEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.isWheelScrollingEnabled()"); }
-  public void setVerticalScrollBarPolicy(int policy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setVerticalScrollBarPolicy(int)"); }
-  public void setHorizontalScrollBarPolicy(int policy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setHorizontalScrollBarPolicy(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setComponentOrientation(java.awt.ComponentOrientation co) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.ScrollPaneUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.ScrollPaneUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JViewport getViewport() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColumnHeaderView(java.awt.Component view) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getCorner(java.lang.String key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCorner(java.lang.String key, java.awt.Component corner) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setWheelScrollingEnabled(boolean handleWheel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isWheelScrollingEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVerticalScrollBarPolicy(int policy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHorizontalScrollBarPolicy(int policy) { }
   @JavaProtected
-  javax.swing.JViewport createViewport() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.createViewport()"); }
-  public void setViewport(javax.swing.JViewport viewport) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setViewport(javax.swing.JViewport)"); }
-  public javax.swing.JScrollBar createVerticalScrollBar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.createVerticalScrollBar()"); }
-  public void setVerticalScrollBar(javax.swing.JScrollBar verticalScrollBar) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setVerticalScrollBar(javax.swing.JScrollBar)"); }
-  public javax.swing.JScrollBar createHorizontalScrollBar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.createHorizontalScrollBar()"); }
-  public void setHorizontalScrollBar(javax.swing.JScrollBar horizontalScrollBar) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setHorizontalScrollBar(javax.swing.JScrollBar)"); }
-  public void setViewportView(java.awt.Component view) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setViewportView(java.awt.Component)"); }
-  public javax.swing.JViewport getColumnHeader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getColumnHeader()"); }
-  public javax.swing.JViewport getRowHeader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getRowHeader()"); }
-  public javax.swing.JScrollBar getVerticalScrollBar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getVerticalScrollBar()"); }
-  public javax.swing.JScrollBar getHorizontalScrollBar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getHorizontalScrollBar()"); }
-  public void setRowHeader(javax.swing.JViewport rowHeader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setRowHeader(javax.swing.JViewport)"); }
-  public void setColumnHeader(javax.swing.JViewport columnHeader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setColumnHeader(javax.swing.JViewport)"); }
-  public int getVerticalScrollBarPolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getVerticalScrollBarPolicy()"); }
-  public int getHorizontalScrollBarPolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getHorizontalScrollBarPolicy()"); }
-  public javax.swing.border.Border getViewportBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getViewportBorder()"); }
-  public void setViewportBorder(javax.swing.border.Border viewportBorder) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setViewportBorder(javax.swing.border.Border)"); }
-  public java.awt.Rectangle getViewportBorderBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getViewportBorderBounds()"); }
-  public void setRowHeaderView(java.awt.Component view) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setRowHeaderView(java.awt.Component)"); }
-  public boolean isValidateRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.isValidateRoot()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.getAccessibleContext()"); }
-  public void setLayout(java.awt.LayoutManager layout) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JScrollPane.setLayout(java.awt.LayoutManager)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JViewport createViewport() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setViewport(javax.swing.JViewport viewport) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JScrollBar createVerticalScrollBar() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVerticalScrollBar(javax.swing.JScrollBar verticalScrollBar) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JScrollBar createHorizontalScrollBar() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHorizontalScrollBar(javax.swing.JScrollBar horizontalScrollBar) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setViewportView(java.awt.Component view) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JViewport getColumnHeader() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JViewport getRowHeader() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JScrollBar getVerticalScrollBar() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JScrollBar getHorizontalScrollBar() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRowHeader(javax.swing.JViewport rowHeader) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColumnHeader(javax.swing.JViewport columnHeader) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVerticalScrollBarPolicy() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHorizontalScrollBarPolicy() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.border.Border getViewportBorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setViewportBorder(javax.swing.border.Border viewportBorder) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getViewportBorderBounds() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRowHeaderView(java.awt.Component view) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isValidateRoot() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayout(java.awt.LayoutManager layout) { }
   < ---- END java signatures ---- >
 }

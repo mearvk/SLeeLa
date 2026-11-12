@@ -58,39 +58,69 @@ class SQLInputImpl {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SQLInputImpl(java.lang.Object[] attributes, java.util.Map<java.lang.String, java.lang.Class<?>> map) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.<init>(java.lang.Object[], java.util.Map<java.lang.String, java.lang.Class<?>>)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public SQLInputImpl(java.lang.Object[] attributes, java.util.Map<java.lang.String, java.lang.Class<?>> map) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object readObject() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readObject()"); }
-  public int readInt() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readInt()"); }
-  public long readLong() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readLong()"); }
-  public byte readByte() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readByte()"); }
-  public short readShort() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readShort()"); }
-  public byte[] readBytes() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readBytes()"); }
-  public float readFloat() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readFloat()"); }
-  public double readDouble() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readDouble()"); }
-  public boolean readBoolean() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readBoolean()"); }
-  public java.lang.String readString() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readString()"); }
-  public java.sql.Array readArray() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readArray()"); }
-  public boolean wasNull() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.wasNull()"); }
-  public java.math.BigDecimal readBigDecimal() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readBigDecimal()"); }
-  public java.sql.Date readDate() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readDate()"); }
-  public java.sql.Time readTime() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readTime()"); }
-  public java.sql.Timestamp readTimestamp() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readTimestamp()"); }
-  public java.io.Reader readCharacterStream() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readCharacterStream()"); }
-  public java.io.InputStream readAsciiStream() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readAsciiStream()"); }
-  public java.io.InputStream readBinaryStream() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readBinaryStream()"); }
-  public java.sql.Ref readRef() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readRef()"); }
-  public java.sql.Blob readBlob() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readBlob()"); }
-  public java.sql.Clob readClob() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readClob()"); }
-  public java.net.URL readURL() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readURL()"); }
-  public java.sql.NClob readNClob() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readNClob()"); }
-  public java.lang.String readNString() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readNString()"); }
-  public java.sql.SQLXML readSQLXML() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readSQLXML()"); }
-  public java.sql.RowId readRowId() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SQLInputImpl.readRowId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.lang.Object readObject() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public int readInt() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public long readLong() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public byte readByte() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public short readShort() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public byte[] readBytes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public float readFloat() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public double readDouble() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public boolean readBoolean() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.lang.String readString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.sql.Array readArray() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public boolean wasNull() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.math.BigDecimal readBigDecimal() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.sql.Date readDate() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.sql.Time readTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.sql.Timestamp readTimestamp() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.io.Reader readCharacterStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.io.InputStream readAsciiStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.io.InputStream readBinaryStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.sql.Ref readRef() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.sql.Blob readBlob() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.sql.Clob readClob() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.net.URL readURL() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.sql.NClob readNClob() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.lang.String readNString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.sql.SQLXML readSQLXML() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.sql.RowId readRowId() { return null; }
   < ---- END java signatures ---- >
 }

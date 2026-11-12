@@ -59,6 +59,7 @@ class ToolTipUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ToolTipUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.ToolTipUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ToolTipUI() { }
   < ---- END java constructors ---- >
 }

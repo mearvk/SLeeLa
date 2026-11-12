@@ -58,11 +58,16 @@ class ErrorHandler {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void error(org.xml.sax.SAXParseException exception) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ErrorHandler.error(org.xml.sax.SAXParseException)"); }
-  public abstract void warning(org.xml.sax.SAXParseException exception) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ErrorHandler.warning(org.xml.sax.SAXParseException)"); }
-  public abstract void fatalError(org.xml.sax.SAXParseException exception) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ErrorHandler.fatalError(org.xml.sax.SAXParseException)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void error(org.xml.sax.SAXParseException exception) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void warning(org.xml.sax.SAXParseException exception) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void fatalError(org.xml.sax.SAXParseException exception) { }
   < ---- END java signatures ---- >
 }

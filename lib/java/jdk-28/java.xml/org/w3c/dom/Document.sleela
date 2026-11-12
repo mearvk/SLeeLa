@@ -58,39 +58,72 @@ class Document {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract org.w3c.dom.NodeList getElementsByTagName(java.lang.String tagname) { throw new AbstractMethodError("org.w3c.dom.Document.getElementsByTagName(java.lang.String)"); }
-  public abstract org.w3c.dom.NodeList getElementsByTagNameNS(java.lang.String namespaceURI, java.lang.String localName) { throw new AbstractMethodError("org.w3c.dom.Document.getElementsByTagNameNS(java.lang.String, java.lang.String)"); }
-  public abstract org.w3c.dom.DocumentType getDoctype() { throw new AbstractMethodError("org.w3c.dom.Document.getDoctype()"); }
-  public abstract org.w3c.dom.DOMImplementation getImplementation() { throw new AbstractMethodError("org.w3c.dom.Document.getImplementation()"); }
-  public abstract org.w3c.dom.Element getDocumentElement() { throw new AbstractMethodError("org.w3c.dom.Document.getDocumentElement()"); }
-  public abstract org.w3c.dom.Element createElement(java.lang.String tagName) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Document.createElement(java.lang.String)"); }
-  public abstract org.w3c.dom.DocumentFragment createDocumentFragment() { throw new AbstractMethodError("org.w3c.dom.Document.createDocumentFragment()"); }
-  public abstract org.w3c.dom.Text createTextNode(java.lang.String data) { throw new AbstractMethodError("org.w3c.dom.Document.createTextNode(java.lang.String)"); }
-  public abstract org.w3c.dom.Comment createComment(java.lang.String data) { throw new AbstractMethodError("org.w3c.dom.Document.createComment(java.lang.String)"); }
-  public abstract org.w3c.dom.CDATASection createCDATASection(java.lang.String data) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Document.createCDATASection(java.lang.String)"); }
-  public abstract org.w3c.dom.ProcessingInstruction createProcessingInstruction(java.lang.String target, java.lang.String data) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Document.createProcessingInstruction(java.lang.String, java.lang.String)"); }
-  public abstract org.w3c.dom.Attr createAttribute(java.lang.String name) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Document.createAttribute(java.lang.String)"); }
-  public abstract org.w3c.dom.EntityReference createEntityReference(java.lang.String name) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Document.createEntityReference(java.lang.String)"); }
-  public abstract org.w3c.dom.Node importNode(org.w3c.dom.Node importedNode, boolean deep) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Document.importNode(org.w3c.dom.Node, boolean)"); }
-  public abstract org.w3c.dom.Element createElementNS(java.lang.String namespaceURI, java.lang.String qualifiedName) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Document.createElementNS(java.lang.String, java.lang.String)"); }
-  public abstract org.w3c.dom.Attr createAttributeNS(java.lang.String namespaceURI, java.lang.String qualifiedName) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Document.createAttributeNS(java.lang.String, java.lang.String)"); }
-  public abstract org.w3c.dom.Element getElementById(java.lang.String elementId) { throw new AbstractMethodError("org.w3c.dom.Document.getElementById(java.lang.String)"); }
-  public abstract java.lang.String getInputEncoding() { throw new AbstractMethodError("org.w3c.dom.Document.getInputEncoding()"); }
-  public abstract java.lang.String getXmlEncoding() { throw new AbstractMethodError("org.w3c.dom.Document.getXmlEncoding()"); }
-  public abstract boolean getXmlStandalone() { throw new AbstractMethodError("org.w3c.dom.Document.getXmlStandalone()"); }
-  public abstract void setXmlStandalone(boolean xmlStandalone) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Document.setXmlStandalone(boolean)"); }
-  public abstract java.lang.String getXmlVersion() { throw new AbstractMethodError("org.w3c.dom.Document.getXmlVersion()"); }
-  public abstract void setXmlVersion(java.lang.String xmlVersion) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Document.setXmlVersion(java.lang.String)"); }
-  public abstract boolean getStrictErrorChecking() { throw new AbstractMethodError("org.w3c.dom.Document.getStrictErrorChecking()"); }
-  public abstract void setStrictErrorChecking(boolean strictErrorChecking) { throw new AbstractMethodError("org.w3c.dom.Document.setStrictErrorChecking(boolean)"); }
-  public abstract java.lang.String getDocumentURI() { throw new AbstractMethodError("org.w3c.dom.Document.getDocumentURI()"); }
-  public abstract void setDocumentURI(java.lang.String documentURI) { throw new AbstractMethodError("org.w3c.dom.Document.setDocumentURI(java.lang.String)"); }
-  public abstract org.w3c.dom.Node adoptNode(org.w3c.dom.Node source) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Document.adoptNode(org.w3c.dom.Node)"); }
-  public abstract org.w3c.dom.DOMConfiguration getDomConfig() { throw new AbstractMethodError("org.w3c.dom.Document.getDomConfig()"); }
-  public abstract void normalizeDocument() { throw new AbstractMethodError("org.w3c.dom.Document.normalizeDocument()"); }
-  public abstract org.w3c.dom.Node renameNode(org.w3c.dom.Node n, java.lang.String namespaceURI, java.lang.String qualifiedName) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Document.renameNode(org.w3c.dom.Node, java.lang.String, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.NodeList getElementsByTagName(java.lang.String tagname) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.NodeList getElementsByTagNameNS(java.lang.String namespaceURI, java.lang.String localName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.DocumentType getDoctype() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.DOMImplementation getImplementation() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Element getDocumentElement() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Element createElement(java.lang.String tagName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.DocumentFragment createDocumentFragment() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Text createTextNode(java.lang.String data) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Comment createComment(java.lang.String data) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.CDATASection createCDATASection(java.lang.String data) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.ProcessingInstruction createProcessingInstruction(java.lang.String target, java.lang.String data) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Attr createAttribute(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.EntityReference createEntityReference(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Node importNode(org.w3c.dom.Node importedNode, boolean deep) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Element createElementNS(java.lang.String namespaceURI, java.lang.String qualifiedName) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Attr createAttributeNS(java.lang.String namespaceURI, java.lang.String qualifiedName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Element getElementById(java.lang.String elementId) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getInputEncoding() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getXmlEncoding() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getXmlStandalone() { return false; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setXmlStandalone(boolean xmlStandalone) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getXmlVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setXmlVersion(java.lang.String xmlVersion) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getStrictErrorChecking() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setStrictErrorChecking(boolean strictErrorChecking) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDocumentURI() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDocumentURI(java.lang.String documentURI) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Node adoptNode(org.w3c.dom.Node source) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.DOMConfiguration getDomConfig() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void normalizeDocument() { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Node renameNode(org.w3c.dom.Node n, java.lang.String namespaceURI, java.lang.String qualifiedName) { return null; }
   < ---- END java signatures ---- >
 }

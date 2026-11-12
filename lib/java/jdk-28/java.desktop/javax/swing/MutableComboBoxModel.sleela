@@ -58,12 +58,18 @@ class MutableComboBoxModel<E> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void insertElementAt(E item, int index) { throw new AbstractMethodError("javax.swing.MutableComboBoxModel.insertElementAt(E, int)"); }
-  public abstract void removeElementAt(int index) { throw new AbstractMethodError("javax.swing.MutableComboBoxModel.removeElementAt(int)"); }
-  public abstract void addElement(E item) { throw new AbstractMethodError("javax.swing.MutableComboBoxModel.addElement(E)"); }
-  public abstract void removeElement(java.lang.Object obj) { throw new AbstractMethodError("javax.swing.MutableComboBoxModel.removeElement(java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void insertElementAt(E item, int index) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeElementAt(int index) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addElement(E item) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeElement(java.lang.Object obj) { }
   < ---- END java signatures ---- >
 }

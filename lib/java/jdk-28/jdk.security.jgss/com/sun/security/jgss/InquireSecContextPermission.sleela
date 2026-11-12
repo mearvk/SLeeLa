@@ -58,6 +58,7 @@ class InquireSecContextPermission {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InquireSecContextPermission(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.security.jgss.InquireSecContextPermission.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InquireSecContextPermission(java.lang.String name) { }
   < ---- END java constructors ---- >
 }

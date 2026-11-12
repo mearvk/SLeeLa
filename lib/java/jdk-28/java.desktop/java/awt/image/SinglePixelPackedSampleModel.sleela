@@ -58,35 +58,61 @@ class SinglePixelPackedSampleModel {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SinglePixelPackedSampleModel(int dataType, int w, int h, int scanlineStride, int[] bitMasks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.<init>(int, int, int, int, int[])"); }
-  public SinglePixelPackedSampleModel(int dataType, int w, int h, int[] bitMasks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.<init>(int, int, int, int[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SinglePixelPackedSampleModel(int dataType, int w, int h, int scanlineStride, int[] bitMasks) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SinglePixelPackedSampleModel(int dataType, int w, int h, int[] bitMasks) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.hashCode()"); }
-  public int getOffset(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.getOffset(int, int)"); }
-  public int[] getSampleSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.getSampleSize()"); }
-  public int getSampleSize(int band) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.getSampleSize(int)"); }
-  public java.awt.image.DataBuffer createDataBuffer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.createDataBuffer()"); }
-  public int getNumDataElements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.getNumDataElements()"); }
-  public java.awt.image.SampleModel createSubsetSampleModel(int[] bands) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.createSubsetSampleModel(int[])"); }
-  public int[] getPixel(int x, int y, int[] iArray, java.awt.image.DataBuffer data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.getPixel(int, int, int[], java.awt.image.DataBuffer)"); }
-  public int[] getPixels(int x, int y, int w, int h, int[] iArray, java.awt.image.DataBuffer data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.getPixels(int, int, int, int, int[], java.awt.image.DataBuffer)"); }
-  public int getSample(int x, int y, int b, java.awt.image.DataBuffer data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.getSample(int, int, int, java.awt.image.DataBuffer)"); }
-  public int[] getSamples(int x, int y, int w, int h, int b, int[] iArray, java.awt.image.DataBuffer data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.getSamples(int, int, int, int, int, int[], java.awt.image.DataBuffer)"); }
-  public void setDataElements(int x, int y, java.lang.Object obj, java.awt.image.DataBuffer data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.setDataElements(int, int, java.lang.Object, java.awt.image.DataBuffer)"); }
-  public void setPixels(int x, int y, int w, int h, int[] iArray, java.awt.image.DataBuffer data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.setPixels(int, int, int, int, int[], java.awt.image.DataBuffer)"); }
-  public void setPixel(int x, int y, int[] iArray, java.awt.image.DataBuffer data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.setPixel(int, int, int[], java.awt.image.DataBuffer)"); }
-  public void setSample(int x, int y, int b, int s, java.awt.image.DataBuffer data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.setSample(int, int, int, int, java.awt.image.DataBuffer)"); }
-  public void setSamples(int x, int y, int w, int h, int b, int[] iArray, java.awt.image.DataBuffer data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.setSamples(int, int, int, int, int, int[], java.awt.image.DataBuffer)"); }
-  public java.lang.Object getDataElements(int x, int y, java.lang.Object obj, java.awt.image.DataBuffer data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.getDataElements(int, int, java.lang.Object, java.awt.image.DataBuffer)"); }
-  public java.awt.image.SampleModel createCompatibleSampleModel(int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.createCompatibleSampleModel(int, int)"); }
-  public int getScanlineStride() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.getScanlineStride()"); }
-  public int[] getBitMasks() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.getBitMasks()"); }
-  public int[] getBitOffsets() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.SinglePixelPackedSampleModel.getBitOffsets()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getOffset(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getSampleSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSampleSize(int band) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.DataBuffer createDataBuffer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNumDataElements() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.SampleModel createSubsetSampleModel(int[] bands) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getPixel(int x, int y, int[] iArray, java.awt.image.DataBuffer data) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getPixels(int x, int y, int w, int h, int[] iArray, java.awt.image.DataBuffer data) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSample(int x, int y, int b, java.awt.image.DataBuffer data) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getSamples(int x, int y, int w, int h, int b, int[] iArray, java.awt.image.DataBuffer data) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDataElements(int x, int y, java.lang.Object obj, java.awt.image.DataBuffer data) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPixels(int x, int y, int w, int h, int[] iArray, java.awt.image.DataBuffer data) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPixel(int x, int y, int[] iArray, java.awt.image.DataBuffer data) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSample(int x, int y, int b, int s, java.awt.image.DataBuffer data) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSamples(int x, int y, int w, int h, int b, int[] iArray, java.awt.image.DataBuffer data) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getDataElements(int x, int y, java.lang.Object obj, java.awt.image.DataBuffer data) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.SampleModel createCompatibleSampleModel(int w, int h) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getScanlineStride() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getBitMasks() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getBitOffsets() { return null; }
   < ---- END java signatures ---- >
 }

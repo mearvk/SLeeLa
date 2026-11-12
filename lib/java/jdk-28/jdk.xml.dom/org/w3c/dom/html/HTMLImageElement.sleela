@@ -58,34 +58,62 @@ class HTMLImageElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.getName()"); }
-  public abstract void setName(java.lang.String name) { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.setName(java.lang.String)"); }
-  public abstract void setBorder(java.lang.String border) { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.setBorder(java.lang.String)"); }
-  public abstract void setWidth(java.lang.String width) { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.setWidth(java.lang.String)"); }
-  public abstract java.lang.String getHeight() { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.getHeight()"); }
-  public abstract void setHeight(java.lang.String height) { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.setHeight(java.lang.String)"); }
-  public abstract java.lang.String getBorder() { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.getBorder()"); }
-  public abstract java.lang.String getWidth() { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.getWidth()"); }
-  public abstract java.lang.String getAlign() { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.getAlign()"); }
-  public abstract void setAlign(java.lang.String align) { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.setAlign(java.lang.String)"); }
-  public abstract java.lang.String getAlt() { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.getAlt()"); }
-  public abstract void setAlt(java.lang.String alt) { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.setAlt(java.lang.String)"); }
-  public abstract java.lang.String getHspace() { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.getHspace()"); }
-  public abstract void setHspace(java.lang.String hspace) { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.setHspace(java.lang.String)"); }
-  public abstract java.lang.String getVspace() { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.getVspace()"); }
-  public abstract void setVspace(java.lang.String vspace) { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.setVspace(java.lang.String)"); }
-  public abstract java.lang.String getLongDesc() { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.getLongDesc()"); }
-  public abstract void setLongDesc(java.lang.String longDesc) { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.setLongDesc(java.lang.String)"); }
-  public abstract java.lang.String getSrc() { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.getSrc()"); }
-  public abstract void setSrc(java.lang.String src) { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.setSrc(java.lang.String)"); }
-  public abstract java.lang.String getLowSrc() { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.getLowSrc()"); }
-  public abstract void setLowSrc(java.lang.String lowSrc) { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.setLowSrc(java.lang.String)"); }
-  public abstract boolean getIsMap() { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.getIsMap()"); }
-  public abstract void setIsMap(boolean isMap) { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.setIsMap(boolean)"); }
-  public abstract java.lang.String getUseMap() { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.getUseMap()"); }
-  public abstract void setUseMap(java.lang.String useMap) { throw new AbstractMethodError("org.w3c.dom.html.HTMLImageElement.setUseMap(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setName(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBorder(java.lang.String border) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setWidth(java.lang.String width) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getHeight() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHeight(java.lang.String height) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getBorder() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getWidth() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAlign() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAlign(java.lang.String align) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAlt() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAlt(java.lang.String alt) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getHspace() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHspace(java.lang.String hspace) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getVspace() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setVspace(java.lang.String vspace) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getLongDesc() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setLongDesc(java.lang.String longDesc) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSrc() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSrc(java.lang.String src) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getLowSrc() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setLowSrc(java.lang.String lowSrc) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getIsMap() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setIsMap(boolean isMap) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getUseMap() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setUseMap(java.lang.String useMap) { }
   < ---- END java signatures ---- >
 }

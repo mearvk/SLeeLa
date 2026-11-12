@@ -58,26 +58,43 @@ class DefaultHandler2 {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultHandler2() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultHandler2() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void comment(char[] ch, int start, int length) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.comment(char[], int, int)"); }
-  public void startDTD(java.lang.String name, java.lang.String publicId, java.lang.String systemId) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.startDTD(java.lang.String, java.lang.String, java.lang.String)"); }
-  public void endDTD() throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.endDTD()"); }
-  public void startEntity(java.lang.String name) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.startEntity(java.lang.String)"); }
-  public void endEntity(java.lang.String name) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.endEntity(java.lang.String)"); }
-  public void startCDATA() throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.startCDATA()"); }
-  public void endCDATA() throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.endCDATA()"); }
-  public void elementDecl(java.lang.String name, java.lang.String model) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.elementDecl(java.lang.String, java.lang.String)"); }
-  public void attributeDecl(java.lang.String eName, java.lang.String aName, java.lang.String type, java.lang.String mode, java.lang.String value) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.attributeDecl(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public void internalEntityDecl(java.lang.String name, java.lang.String value) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.internalEntityDecl(java.lang.String, java.lang.String)"); }
-  public void externalEntityDecl(java.lang.String name, java.lang.String publicId, java.lang.String systemId) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.externalEntityDecl(java.lang.String, java.lang.String, java.lang.String)"); }
-  public org.xml.sax.InputSource getExternalSubset(java.lang.String name, java.lang.String baseURI) throws org.xml.sax.SAXException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.getExternalSubset(java.lang.String, java.lang.String)"); }
-  public org.xml.sax.InputSource resolveEntity(java.lang.String name, java.lang.String publicId, java.lang.String baseURI, java.lang.String systemId) throws org.xml.sax.SAXException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.resolveEntity(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public org.xml.sax.InputSource resolveEntity(java.lang.String publicId, java.lang.String systemId) throws org.xml.sax.SAXException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.DefaultHandler2.resolveEntity(java.lang.String, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void comment(char[] ch, int start, int length) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void startDTD(java.lang.String name, java.lang.String publicId, java.lang.String systemId) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void endDTD() { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void startEntity(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void endEntity(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void startCDATA() { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void endCDATA() { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void elementDecl(java.lang.String name, java.lang.String model) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void attributeDecl(java.lang.String eName, java.lang.String aName, java.lang.String type, java.lang.String mode, java.lang.String value) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void internalEntityDecl(java.lang.String name, java.lang.String value) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void externalEntityDecl(java.lang.String name, java.lang.String publicId, java.lang.String systemId) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException, java.io.IOException")
+  public org.xml.sax.InputSource getExternalSubset(java.lang.String name, java.lang.String baseURI) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException, java.io.IOException")
+  public org.xml.sax.InputSource resolveEntity(java.lang.String name, java.lang.String publicId, java.lang.String baseURI, java.lang.String systemId) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException, java.io.IOException")
+  public org.xml.sax.InputSource resolveEntity(java.lang.String publicId, java.lang.String systemId) { return null; }
   < ---- END java signatures ---- >
 }

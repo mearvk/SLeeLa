@@ -64,20 +64,31 @@ class TreeModelEvent {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TreeModelEvent(java.lang.Object source, javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeModelEvent.<init>(java.lang.Object, javax.swing.tree.TreePath)"); }
-  public TreeModelEvent(java.lang.Object source, java.lang.Object[] path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeModelEvent.<init>(java.lang.Object, java.lang.Object[])"); }
-  public TreeModelEvent(java.lang.Object source, javax.swing.tree.TreePath path, int[] childIndices, java.lang.Object[] children) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeModelEvent.<init>(java.lang.Object, javax.swing.tree.TreePath, int[], java.lang.Object[])"); }
-  public TreeModelEvent(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeModelEvent.<init>(java.lang.Object, java.lang.Object[], int[], java.lang.Object[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TreeModelEvent(java.lang.Object source, javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TreeModelEvent(java.lang.Object source, java.lang.Object[] path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TreeModelEvent(java.lang.Object source, javax.swing.tree.TreePath path, int[] childIndices, java.lang.Object[] children) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TreeModelEvent(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeModelEvent.toString()"); }
-  public java.lang.Object[] getPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeModelEvent.getPath()"); }
-  public java.lang.Object[] getChildren() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeModelEvent.getChildren()"); }
-  public javax.swing.tree.TreePath getTreePath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeModelEvent.getTreePath()"); }
-  public int[] getChildIndices() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.TreeModelEvent.getChildIndices()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] getPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] getChildren() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath getTreePath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getChildIndices() { return null; }
   < ---- END java signatures ---- >
 }

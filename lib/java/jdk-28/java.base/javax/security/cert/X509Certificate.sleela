@@ -58,25 +58,41 @@ class X509Certificate {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public X509Certificate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.cert.X509Certificate.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public X509Certificate() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static final javax.security.cert.X509Certificate getInstance(byte[] certData) throws javax.security.cert.CertificateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.cert.X509Certificate.getInstance(byte[])"); }
-  public static final javax.security.cert.X509Certificate getInstance(java.io.InputStream inStream) throws javax.security.cert.CertificateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.cert.X509Certificate.getInstance(java.io.InputStream)"); }
-  public abstract int getVersion() { throw new AbstractMethodError("javax.security.cert.X509Certificate.getVersion()"); }
-  public abstract java.lang.String getSigAlgName() { throw new AbstractMethodError("javax.security.cert.X509Certificate.getSigAlgName()"); }
-  public abstract byte[] getSigAlgParams() { throw new AbstractMethodError("javax.security.cert.X509Certificate.getSigAlgParams()"); }
-  public abstract void checkValidity(java.util.Date date) throws javax.security.cert.CertificateExpiredException, javax.security.cert.CertificateNotYetValidException { throw new AbstractMethodError("javax.security.cert.X509Certificate.checkValidity(java.util.Date)"); }
-  public abstract void checkValidity() throws javax.security.cert.CertificateExpiredException, javax.security.cert.CertificateNotYetValidException { throw new AbstractMethodError("javax.security.cert.X509Certificate.checkValidity()"); }
-  public abstract java.math.BigInteger getSerialNumber() { throw new AbstractMethodError("javax.security.cert.X509Certificate.getSerialNumber()"); }
-  public abstract java.security.Principal getIssuerDN() { throw new AbstractMethodError("javax.security.cert.X509Certificate.getIssuerDN()"); }
-  public abstract java.security.Principal getSubjectDN() { throw new AbstractMethodError("javax.security.cert.X509Certificate.getSubjectDN()"); }
-  public abstract java.util.Date getNotBefore() { throw new AbstractMethodError("javax.security.cert.X509Certificate.getNotBefore()"); }
-  public abstract java.util.Date getNotAfter() { throw new AbstractMethodError("javax.security.cert.X509Certificate.getNotAfter()"); }
-  public abstract java.lang.String getSigAlgOID() { throw new AbstractMethodError("javax.security.cert.X509Certificate.getSigAlgOID()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, javax.security.cert.CertificateException")
+  public static final javax.security.cert.X509Certificate getInstance(byte[] certData) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.security.cert.CertificateException")
+  public static final javax.security.cert.X509Certificate getInstance(java.io.InputStream inStream) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getVersion() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSigAlgName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] getSigAlgParams() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.security.cert.CertificateExpiredException, javax.security.cert.CertificateNotYetValidException")
+  public void checkValidity(java.util.Date date) { }
+  @throwable("java.lang.AbstractMethodError, javax.security.cert.CertificateExpiredException, javax.security.cert.CertificateNotYetValidException")
+  public void checkValidity() { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.math.BigInteger getSerialNumber() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.Principal getIssuerDN() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.Principal getSubjectDN() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Date getNotBefore() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Date getNotAfter() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSigAlgOID() { return null; }
   < ---- END java signatures ---- >
 }

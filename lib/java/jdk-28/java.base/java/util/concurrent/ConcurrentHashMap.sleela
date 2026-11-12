@@ -58,80 +58,151 @@ class ConcurrentHashMap<K, V> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ConcurrentHashMap(int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.<init>(int)"); }
-  public ConcurrentHashMap(java.util.Map<? extends K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.<init>(java.util.Map<? extends K, ? extends V>)"); }
-  public ConcurrentHashMap(int initialCapacity, float loadFactor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.<init>(int, float)"); }
-  public ConcurrentHashMap(int initialCapacity, float loadFactor, int concurrencyLevel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.<init>(int, float, int)"); }
-  public ConcurrentHashMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ConcurrentHashMap(int initialCapacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ConcurrentHashMap(java.util.Map<? extends K, ? extends V> m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ConcurrentHashMap(int initialCapacity, float loadFactor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ConcurrentHashMap(int initialCapacity, float loadFactor, int concurrencyLevel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ConcurrentHashMap() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public V remove(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.remove(java.lang.Object)"); }
-  public boolean remove(java.lang.Object key, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.remove(java.lang.Object, java.lang.Object)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.size()"); }
-  public V get(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.get(java.lang.Object)"); }
-  public V put(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.put(K, V)"); }
-  public boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.toString()"); }
-  public java.util.Collection<V> values() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.values()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.hashCode()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.clear()"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.isEmpty()"); }
-  public V replace(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.replace(K, V)"); }
-  public boolean replace(K key, V oldValue, V newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.replace(K, V, V)"); }
-  public void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
-  public boolean contains(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.contains(java.lang.Object)"); }
-  public java.util.Enumeration<V> elements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.elements()"); }
-  public V merge(K key, V value, java.util.function.BiFunction<? super V, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.merge(K, V, java.util.function.BiFunction<? super V, ? super V, ? extends V>)"); }
-  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.entrySet()"); }
-  public void putAll(java.util.Map<? extends K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.putAll(java.util.Map<? extends K, ? extends V>)"); }
-  public V putIfAbsent(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.putIfAbsent(K, V)"); }
-  public V compute(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.compute(K, java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
-  public V computeIfAbsent(K key, java.util.function.Function<? super K, ? extends V> mappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.computeIfAbsent(K, java.util.function.Function<? super K, ? extends V>)"); }
-  public <U> void forEach(long parallelismThreshold, java.util.function.BiFunction<? super K, ? super V, ? extends U> transformer, java.util.function.Consumer<? super U> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.forEach(long, java.util.function.BiFunction<? super K, ? super V, ? extends U>, java.util.function.Consumer<? super U>)"); }
-  public void forEach(long parallelismThreshold, java.util.function.BiConsumer<? super K, ? super V> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.forEach(long, java.util.function.BiConsumer<? super K, ? super V>)"); }
-  public void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.forEach(java.util.function.BiConsumer<? super K, ? super V>)"); }
-  public java.util.Enumeration<K> keys() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.keys()"); }
-  public java.util.concurrent.ConcurrentHashMap.KeySetView<K, V> keySet(V mappedValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.keySet(V)"); }
-  public java.util.concurrent.ConcurrentHashMap.KeySetView<K, V> keySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.keySet()"); }
-  public boolean containsValue(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.containsValue(java.lang.Object)"); }
-  public boolean containsKey(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.containsKey(java.lang.Object)"); }
-  public V getOrDefault(java.lang.Object key, V defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.getOrDefault(java.lang.Object, V)"); }
-  public V computeIfPresent(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.computeIfPresent(K, java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
-  public long mappingCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.mappingCount()"); }
-  public static <K> java.util.concurrent.ConcurrentHashMap.KeySetView<K, java.lang.Boolean> newKeySet(int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.newKeySet(int)"); }
-  public static <K> java.util.concurrent.ConcurrentHashMap.KeySetView<K, java.lang.Boolean> newKeySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.newKeySet()"); }
-  public <U> U search(long parallelismThreshold, java.util.function.BiFunction<? super K, ? super V, ? extends U> searchFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.search(long, java.util.function.BiFunction<? super K, ? super V, ? extends U>)"); }
-  public <U> U reduce(long parallelismThreshold, java.util.function.BiFunction<? super K, ? super V, ? extends U> transformer, java.util.function.BiFunction<? super U, ? super U, ? extends U> reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduce(long, java.util.function.BiFunction<? super K, ? super V, ? extends U>, java.util.function.BiFunction<? super U, ? super U, ? extends U>)"); }
-  public double reduceToDouble(long parallelismThreshold, java.util.function.ToDoubleBiFunction<? super K, ? super V> transformer, double basis, java.util.function.DoubleBinaryOperator reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceToDouble(long, java.util.function.ToDoubleBiFunction<? super K, ? super V>, double, java.util.function.DoubleBinaryOperator)"); }
-  public long reduceToLong(long parallelismThreshold, java.util.function.ToLongBiFunction<? super K, ? super V> transformer, long basis, java.util.function.LongBinaryOperator reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceToLong(long, java.util.function.ToLongBiFunction<? super K, ? super V>, long, java.util.function.LongBinaryOperator)"); }
-  public int reduceToInt(long parallelismThreshold, java.util.function.ToIntBiFunction<? super K, ? super V> transformer, int basis, java.util.function.IntBinaryOperator reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceToInt(long, java.util.function.ToIntBiFunction<? super K, ? super V>, int, java.util.function.IntBinaryOperator)"); }
-  public void forEachKey(long parallelismThreshold, java.util.function.Consumer<? super K> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.forEachKey(long, java.util.function.Consumer<? super K>)"); }
-  public <U> void forEachKey(long parallelismThreshold, java.util.function.Function<? super K, ? extends U> transformer, java.util.function.Consumer<? super U> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.forEachKey(long, java.util.function.Function<? super K, ? extends U>, java.util.function.Consumer<? super U>)"); }
-  public <U> U searchKeys(long parallelismThreshold, java.util.function.Function<? super K, ? extends U> searchFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.searchKeys(long, java.util.function.Function<? super K, ? extends U>)"); }
-  public <U> U reduceKeys(long parallelismThreshold, java.util.function.Function<? super K, ? extends U> transformer, java.util.function.BiFunction<? super U, ? super U, ? extends U> reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceKeys(long, java.util.function.Function<? super K, ? extends U>, java.util.function.BiFunction<? super U, ? super U, ? extends U>)"); }
-  public K reduceKeys(long parallelismThreshold, java.util.function.BiFunction<? super K, ? super K, ? extends K> reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceKeys(long, java.util.function.BiFunction<? super K, ? super K, ? extends K>)"); }
-  public double reduceKeysToDouble(long parallelismThreshold, java.util.function.ToDoubleFunction<? super K> transformer, double basis, java.util.function.DoubleBinaryOperator reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceKeysToDouble(long, java.util.function.ToDoubleFunction<? super K>, double, java.util.function.DoubleBinaryOperator)"); }
-  public long reduceKeysToLong(long parallelismThreshold, java.util.function.ToLongFunction<? super K> transformer, long basis, java.util.function.LongBinaryOperator reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceKeysToLong(long, java.util.function.ToLongFunction<? super K>, long, java.util.function.LongBinaryOperator)"); }
-  public int reduceKeysToInt(long parallelismThreshold, java.util.function.ToIntFunction<? super K> transformer, int basis, java.util.function.IntBinaryOperator reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceKeysToInt(long, java.util.function.ToIntFunction<? super K>, int, java.util.function.IntBinaryOperator)"); }
-  public <U> void forEachValue(long parallelismThreshold, java.util.function.Function<? super V, ? extends U> transformer, java.util.function.Consumer<? super U> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.forEachValue(long, java.util.function.Function<? super V, ? extends U>, java.util.function.Consumer<? super U>)"); }
-  public void forEachValue(long parallelismThreshold, java.util.function.Consumer<? super V> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.forEachValue(long, java.util.function.Consumer<? super V>)"); }
-  public <U> U searchValues(long parallelismThreshold, java.util.function.Function<? super V, ? extends U> searchFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.searchValues(long, java.util.function.Function<? super V, ? extends U>)"); }
-  public <U> U reduceValues(long parallelismThreshold, java.util.function.Function<? super V, ? extends U> transformer, java.util.function.BiFunction<? super U, ? super U, ? extends U> reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceValues(long, java.util.function.Function<? super V, ? extends U>, java.util.function.BiFunction<? super U, ? super U, ? extends U>)"); }
-  public V reduceValues(long parallelismThreshold, java.util.function.BiFunction<? super V, ? super V, ? extends V> reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceValues(long, java.util.function.BiFunction<? super V, ? super V, ? extends V>)"); }
-  public double reduceValuesToDouble(long parallelismThreshold, java.util.function.ToDoubleFunction<? super V> transformer, double basis, java.util.function.DoubleBinaryOperator reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceValuesToDouble(long, java.util.function.ToDoubleFunction<? super V>, double, java.util.function.DoubleBinaryOperator)"); }
-  public long reduceValuesToLong(long parallelismThreshold, java.util.function.ToLongFunction<? super V> transformer, long basis, java.util.function.LongBinaryOperator reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceValuesToLong(long, java.util.function.ToLongFunction<? super V>, long, java.util.function.LongBinaryOperator)"); }
-  public int reduceValuesToInt(long parallelismThreshold, java.util.function.ToIntFunction<? super V> transformer, int basis, java.util.function.IntBinaryOperator reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceValuesToInt(long, java.util.function.ToIntFunction<? super V>, int, java.util.function.IntBinaryOperator)"); }
-  public void forEachEntry(long parallelismThreshold, java.util.function.Consumer<? super java.util.Map.Entry<K, V>> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.forEachEntry(long, java.util.function.Consumer<? super java.util.Map.Entry<K, V>>)"); }
-  public <U> void forEachEntry(long parallelismThreshold, java.util.function.Function<java.util.Map.Entry<K, V>, ? extends U> transformer, java.util.function.Consumer<? super U> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.forEachEntry(long, java.util.function.Function<java.util.Map.Entry<K, V>, ? extends U>, java.util.function.Consumer<? super U>)"); }
-  public <U> U searchEntries(long parallelismThreshold, java.util.function.Function<java.util.Map.Entry<K, V>, ? extends U> searchFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.searchEntries(long, java.util.function.Function<java.util.Map.Entry<K, V>, ? extends U>)"); }
-  public java.util.Map.Entry<K, V> reduceEntries(long parallelismThreshold, java.util.function.BiFunction<java.util.Map.Entry<K, V>, java.util.Map.Entry<K, V>, ? extends java.util.Map.Entry<K, V>> reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceEntries(long, java.util.function.BiFunction<java.util.Map.Entry<K, V>, java.util.Map.Entry<K, V>, ? extends java.util.Map.Entry<K, V>>)"); }
-  public <U> U reduceEntries(long parallelismThreshold, java.util.function.Function<java.util.Map.Entry<K, V>, ? extends U> transformer, java.util.function.BiFunction<? super U, ? super U, ? extends U> reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceEntries(long, java.util.function.Function<java.util.Map.Entry<K, V>, ? extends U>, java.util.function.BiFunction<? super U, ? super U, ? extends U>)"); }
-  public double reduceEntriesToDouble(long parallelismThreshold, java.util.function.ToDoubleFunction<java.util.Map.Entry<K, V>> transformer, double basis, java.util.function.DoubleBinaryOperator reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceEntriesToDouble(long, java.util.function.ToDoubleFunction<java.util.Map.Entry<K, V>>, double, java.util.function.DoubleBinaryOperator)"); }
-  public long reduceEntriesToLong(long parallelismThreshold, java.util.function.ToLongFunction<java.util.Map.Entry<K, V>> transformer, long basis, java.util.function.LongBinaryOperator reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceEntriesToLong(long, java.util.function.ToLongFunction<java.util.Map.Entry<K, V>>, long, java.util.function.LongBinaryOperator)"); }
-  public int reduceEntriesToInt(long parallelismThreshold, java.util.function.ToIntFunction<java.util.Map.Entry<K, V>> transformer, int basis, java.util.function.IntBinaryOperator reducer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.reduceEntriesToInt(long, java.util.function.ToIntFunction<java.util.Map.Entry<K, V>>, int, java.util.function.IntBinaryOperator)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public V remove(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Object key, java.lang.Object value) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V get(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V put(K key, V value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Collection<V> values() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V replace(K key, V value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean replace(K key, V oldValue, V newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.lang.Object value) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Enumeration<V> elements() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V merge(K key, V value, java.util.function.BiFunction<? super V, ? super V, ? extends V> remappingFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void putAll(java.util.Map<? extends K, ? extends V> m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V putIfAbsent(K key, V value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V compute(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V computeIfAbsent(K key, java.util.function.Function<? super K, ? extends V> mappingFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> void forEach(long parallelismThreshold, java.util.function.BiFunction<? super K, ? super V, ? extends U> transformer, java.util.function.Consumer<? super U> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEach(long parallelismThreshold, java.util.function.BiConsumer<? super K, ? super V> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Enumeration<K> keys() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.ConcurrentHashMap.KeySetView<K, V> keySet(V mappedValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.ConcurrentHashMap.KeySetView<K, V> keySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsValue(java.lang.Object value) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsKey(java.lang.Object key) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V getOrDefault(java.lang.Object key, V defaultValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V computeIfPresent(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long mappingCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K> java.util.concurrent.ConcurrentHashMap.KeySetView<K, java.lang.Boolean> newKeySet(int initialCapacity) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K> java.util.concurrent.ConcurrentHashMap.KeySetView<K, java.lang.Boolean> newKeySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> U search(long parallelismThreshold, java.util.function.BiFunction<? super K, ? super V, ? extends U> searchFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> U reduce(long parallelismThreshold, java.util.function.BiFunction<? super K, ? super V, ? extends U> transformer, java.util.function.BiFunction<? super U, ? super U, ? extends U> reducer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double reduceToDouble(long parallelismThreshold, java.util.function.ToDoubleBiFunction<? super K, ? super V> transformer, double basis, java.util.function.DoubleBinaryOperator reducer) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long reduceToLong(long parallelismThreshold, java.util.function.ToLongBiFunction<? super K, ? super V> transformer, long basis, java.util.function.LongBinaryOperator reducer) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int reduceToInt(long parallelismThreshold, java.util.function.ToIntBiFunction<? super K, ? super V> transformer, int basis, java.util.function.IntBinaryOperator reducer) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEachKey(long parallelismThreshold, java.util.function.Consumer<? super K> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> void forEachKey(long parallelismThreshold, java.util.function.Function<? super K, ? extends U> transformer, java.util.function.Consumer<? super U> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> U searchKeys(long parallelismThreshold, java.util.function.Function<? super K, ? extends U> searchFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> U reduceKeys(long parallelismThreshold, java.util.function.Function<? super K, ? extends U> transformer, java.util.function.BiFunction<? super U, ? super U, ? extends U> reducer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public K reduceKeys(long parallelismThreshold, java.util.function.BiFunction<? super K, ? super K, ? extends K> reducer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double reduceKeysToDouble(long parallelismThreshold, java.util.function.ToDoubleFunction<? super K> transformer, double basis, java.util.function.DoubleBinaryOperator reducer) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long reduceKeysToLong(long parallelismThreshold, java.util.function.ToLongFunction<? super K> transformer, long basis, java.util.function.LongBinaryOperator reducer) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int reduceKeysToInt(long parallelismThreshold, java.util.function.ToIntFunction<? super K> transformer, int basis, java.util.function.IntBinaryOperator reducer) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> void forEachValue(long parallelismThreshold, java.util.function.Function<? super V, ? extends U> transformer, java.util.function.Consumer<? super U> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEachValue(long parallelismThreshold, java.util.function.Consumer<? super V> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> U searchValues(long parallelismThreshold, java.util.function.Function<? super V, ? extends U> searchFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> U reduceValues(long parallelismThreshold, java.util.function.Function<? super V, ? extends U> transformer, java.util.function.BiFunction<? super U, ? super U, ? extends U> reducer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V reduceValues(long parallelismThreshold, java.util.function.BiFunction<? super V, ? super V, ? extends V> reducer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double reduceValuesToDouble(long parallelismThreshold, java.util.function.ToDoubleFunction<? super V> transformer, double basis, java.util.function.DoubleBinaryOperator reducer) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long reduceValuesToLong(long parallelismThreshold, java.util.function.ToLongFunction<? super V> transformer, long basis, java.util.function.LongBinaryOperator reducer) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int reduceValuesToInt(long parallelismThreshold, java.util.function.ToIntFunction<? super V> transformer, int basis, java.util.function.IntBinaryOperator reducer) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEachEntry(long parallelismThreshold, java.util.function.Consumer<? super java.util.Map.Entry<K, V>> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> void forEachEntry(long parallelismThreshold, java.util.function.Function<java.util.Map.Entry<K, V>, ? extends U> transformer, java.util.function.Consumer<? super U> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> U searchEntries(long parallelismThreshold, java.util.function.Function<java.util.Map.Entry<K, V>, ? extends U> searchFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Map.Entry<K, V> reduceEntries(long parallelismThreshold, java.util.function.BiFunction<java.util.Map.Entry<K, V>, java.util.Map.Entry<K, V>, ? extends java.util.Map.Entry<K, V>> reducer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> U reduceEntries(long parallelismThreshold, java.util.function.Function<java.util.Map.Entry<K, V>, ? extends U> transformer, java.util.function.BiFunction<? super U, ? super U, ? extends U> reducer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double reduceEntriesToDouble(long parallelismThreshold, java.util.function.ToDoubleFunction<java.util.Map.Entry<K, V>> transformer, double basis, java.util.function.DoubleBinaryOperator reducer) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long reduceEntriesToLong(long parallelismThreshold, java.util.function.ToLongFunction<java.util.Map.Entry<K, V>> transformer, long basis, java.util.function.LongBinaryOperator reducer) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int reduceEntriesToInt(long parallelismThreshold, java.util.function.ToIntFunction<java.util.Map.Entry<K, V>> transformer, int basis, java.util.function.IntBinaryOperator reducer) { return 0; }
   < ---- END java signatures ---- >
 }

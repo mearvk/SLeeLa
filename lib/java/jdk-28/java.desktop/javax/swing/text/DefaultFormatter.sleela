@@ -58,28 +58,45 @@ class DefaultFormatter {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultFormatter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultFormatter() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.clone()"); }
-  public void install(javax.swing.JFormattedTextField ftf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.install(javax.swing.JFormattedTextField)"); }
-  public java.lang.Object stringToValue(java.lang.String string) throws java.text.ParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.stringToValue(java.lang.String)"); }
-  public void setValueClass(java.lang.Class<?> valueClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.setValueClass(java.lang.Class<?>)"); }
-  public java.lang.String valueToString(java.lang.Object value) throws java.text.ParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.valueToString(java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void install(javax.swing.JFormattedTextField ftf) { }
+  @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
+  public java.lang.Object stringToValue(java.lang.String string) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValueClass(java.lang.Class<?> valueClass) { }
+  @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
+  public java.lang.String valueToString(java.lang.Object value) { return null; }
   @JavaProtected
-  javax.swing.text.DocumentFilter getDocumentFilter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.getDocumentFilter()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.DocumentFilter getDocumentFilter() { return null; }
   @JavaProtected
-  javax.swing.text.NavigationFilter getNavigationFilter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.getNavigationFilter()"); }
-  public void setOverwriteMode(boolean overwriteMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.setOverwriteMode(boolean)"); }
-  public java.lang.Class<?> getValueClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.getValueClass()"); }
-  public boolean getAllowsInvalid() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.getAllowsInvalid()"); }
-  public boolean getOverwriteMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.getOverwriteMode()"); }
-  public boolean getCommitsOnValidEdit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.getCommitsOnValidEdit()"); }
-  public void setCommitsOnValidEdit(boolean commit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.setCommitsOnValidEdit(boolean)"); }
-  public void setAllowsInvalid(boolean allowsInvalid) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultFormatter.setAllowsInvalid(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.NavigationFilter getNavigationFilter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOverwriteMode(boolean overwriteMode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getValueClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getAllowsInvalid() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getOverwriteMode() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getCommitsOnValidEdit() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCommitsOnValidEdit(boolean commit) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAllowsInvalid(boolean allowsInvalid) { }
   < ---- END java signatures ---- >
 }

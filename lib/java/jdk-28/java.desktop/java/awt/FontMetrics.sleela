@@ -63,39 +63,69 @@ class FontMetrics {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  FontMetrics(java.awt.Font font) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.<init>(java.awt.Font)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  FontMetrics(java.awt.Font font) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.toString()"); }
-  public int getHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getHeight()"); }
-  public java.awt.geom.Rectangle2D getStringBounds(java.text.CharacterIterator ci, int beginIndex, int limit, java.awt.Graphics context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getStringBounds(java.text.CharacterIterator, int, int, java.awt.Graphics)"); }
-  public java.awt.geom.Rectangle2D getStringBounds(java.lang.String str, int beginIndex, int limit, java.awt.Graphics context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getStringBounds(java.lang.String, int, int, java.awt.Graphics)"); }
-  public java.awt.geom.Rectangle2D getStringBounds(java.lang.String str, java.awt.Graphics context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getStringBounds(java.lang.String, java.awt.Graphics)"); }
-  public java.awt.geom.Rectangle2D getStringBounds(char[] chars, int beginIndex, int limit, java.awt.Graphics context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getStringBounds(char[], int, int, java.awt.Graphics)"); }
-  public int getAscent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getAscent()"); }
-  public int getDescent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getDescent()"); }
-  public int getLeading() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getLeading()"); }
-  public boolean hasUniformLineMetrics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.hasUniformLineMetrics()"); }
-  public java.awt.font.LineMetrics getLineMetrics(java.lang.String str, int beginIndex, int limit, java.awt.Graphics context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getLineMetrics(java.lang.String, int, int, java.awt.Graphics)"); }
-  public java.awt.font.LineMetrics getLineMetrics(char[] chars, int beginIndex, int limit, java.awt.Graphics context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getLineMetrics(char[], int, int, java.awt.Graphics)"); }
-  public java.awt.font.LineMetrics getLineMetrics(java.text.CharacterIterator ci, int beginIndex, int limit, java.awt.Graphics context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getLineMetrics(java.text.CharacterIterator, int, int, java.awt.Graphics)"); }
-  public java.awt.font.LineMetrics getLineMetrics(java.lang.String str, java.awt.Graphics context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getLineMetrics(java.lang.String, java.awt.Graphics)"); }
-  public java.awt.geom.Rectangle2D getMaxCharBounds(java.awt.Graphics context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getMaxCharBounds(java.awt.Graphics)"); }
-  public int getMaxDescent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getMaxDescent()"); }
-  public int[] getWidths() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getWidths()"); }
-  public int charsWidth(char[] data, int off, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.charsWidth(char[], int, int)"); }
-  public int stringWidth(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.stringWidth(java.lang.String)"); }
-  public int charWidth(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.charWidth(char)"); }
-  public int charWidth(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.charWidth(int)"); }
-  public java.awt.font.FontRenderContext getFontRenderContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getFontRenderContext()"); }
-  public int getMaxAscent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getMaxAscent()"); }
-  public int getMaxDecent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getMaxDecent()"); }
-  public int getMaxAdvance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getMaxAdvance()"); }
-  public int bytesWidth(byte[] data, int off, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.bytesWidth(byte[], int, int)"); }
-  public java.awt.Font getFont() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontMetrics.getFont()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHeight() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getStringBounds(java.text.CharacterIterator ci, int beginIndex, int limit, java.awt.Graphics context) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getStringBounds(java.lang.String str, int beginIndex, int limit, java.awt.Graphics context) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getStringBounds(java.lang.String str, java.awt.Graphics context) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getStringBounds(char[] chars, int beginIndex, int limit, java.awt.Graphics context) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAscent() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDescent() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLeading() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasUniformLineMetrics() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.LineMetrics getLineMetrics(java.lang.String str, int beginIndex, int limit, java.awt.Graphics context) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.LineMetrics getLineMetrics(char[] chars, int beginIndex, int limit, java.awt.Graphics context) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.LineMetrics getLineMetrics(java.text.CharacterIterator ci, int beginIndex, int limit, java.awt.Graphics context) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.LineMetrics getLineMetrics(java.lang.String str, java.awt.Graphics context) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getMaxCharBounds(java.awt.Graphics context) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaxDescent() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getWidths() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int charsWidth(char[] data, int off, int len) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int stringWidth(java.lang.String str) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int charWidth(char ch) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int charWidth(int codePoint) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.FontRenderContext getFontRenderContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaxAscent() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaxDecent() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaxAdvance() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int bytesWidth(byte[] data, int off, int len) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font getFont() { return null; }
   < ---- END java signatures ---- >
 }

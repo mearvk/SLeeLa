@@ -89,85 +89,131 @@ class BasicScrollBarUI {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicScrollBarUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicScrollBarUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void installListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.installListeners()"); }
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.getPreferredSize(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListeners() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void configureScrollBarColors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.configureScrollBarColors()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void configureScrollBarColors() { }
   @JavaProtected
-  javax.swing.JButton createIncreaseButton(int orientation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.createIncreaseButton(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JButton createIncreaseButton(int orientation) { return null; }
   @JavaProtected
-  javax.swing.JButton createDecreaseButton(int orientation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.createDecreaseButton(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JButton createDecreaseButton(int orientation) { return null; }
   @JavaProtected
-  javax.swing.plaf.basic.BasicScrollBarUI.TrackListener createTrackListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.createTrackListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.basic.BasicScrollBarUI.TrackListener createTrackListener() { return null; }
   @JavaProtected
-  javax.swing.plaf.basic.BasicScrollBarUI.ArrowButtonListener createArrowButtonListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.createArrowButtonListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.basic.BasicScrollBarUI.ArrowButtonListener createArrowButtonListener() { return null; }
   @JavaProtected
-  javax.swing.plaf.basic.BasicScrollBarUI.ModelListener createModelListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.createModelListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.basic.BasicScrollBarUI.ModelListener createModelListener() { return null; }
   @JavaProtected
-  javax.swing.plaf.basic.BasicScrollBarUI.ScrollListener createScrollListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.createScrollListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.basic.BasicScrollBarUI.ScrollListener createScrollListener() { return null; }
   @JavaProtected
-  java.awt.Rectangle getThumbBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.getThumbBounds()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Rectangle getThumbBounds() { return null; }
   @JavaProtected
-  void setThumbRollover(boolean active) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.setThumbRollover(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setThumbRollover(boolean active) { }
   @JavaProtected
-  java.awt.Rectangle getTrackBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.getTrackBounds()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Rectangle getTrackBounds() { return null; }
   @JavaProtected
-  void paintThumb(java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle thumbBounds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.paintThumb(java.awt.Graphics, javax.swing.JComponent, java.awt.Rectangle)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintThumb(java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle thumbBounds) { }
   @JavaProtected
-  void paintDecreaseHighlight(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.paintDecreaseHighlight(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintDecreaseHighlight(java.awt.Graphics g) { }
   @JavaProtected
-  void paintIncreaseHighlight(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.paintIncreaseHighlight(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintIncreaseHighlight(java.awt.Graphics g) { }
   @JavaProtected
-  java.awt.Dimension getMaximumThumbSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.getMaximumThumbSize()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Dimension getMaximumThumbSize() { return null; }
   @JavaProtected
-  java.awt.Dimension getMinimumThumbSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.getMinimumThumbSize()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Dimension getMinimumThumbSize() { return null; }
   @JavaProtected
-  void setThumbBounds(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.setThumbBounds(int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setThumbBounds(int x, int y, int width, int height) { }
   @JavaProtected
-  void layoutVScrollbar(javax.swing.JScrollBar sb) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.layoutVScrollbar(javax.swing.JScrollBar)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void layoutVScrollbar(javax.swing.JScrollBar sb) { }
   @JavaProtected
-  void layoutHScrollbar(javax.swing.JScrollBar sb) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.layoutHScrollbar(javax.swing.JScrollBar)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void layoutHScrollbar(javax.swing.JScrollBar sb) { }
   @JavaProtected
-  void scrollByBlock(int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.scrollByBlock(int)"); }
-  public boolean isThumbRollover() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.isThumbRollover()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void scrollByBlock(int direction) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isThumbRollover() { return false; }
   @JavaProtected
-  void scrollByUnit(int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.scrollByUnit(int)"); }
-  public boolean getSupportsAbsolutePositioning() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.getSupportsAbsolutePositioning()"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.installUI(javax.swing.JComponent)"); }
-  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.uninstallUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void scrollByUnit(int direction) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getSupportsAbsolutePositioning() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(javax.swing.JComponent c) { }
   @JavaProtected
-  void paintTrack(java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle trackBounds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.paintTrack(java.awt.Graphics, javax.swing.JComponent, java.awt.Rectangle)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintTrack(java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle trackBounds) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void installKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.installKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installKeyboardActions() { }
   @JavaProtected
-  void uninstallKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.uninstallKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallKeyboardActions() { }
   @JavaProtected
-  void installDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.installDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults() { }
   @JavaProtected
-  void uninstallListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.uninstallListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallListeners() { }
   @JavaProtected
-  void uninstallDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.uninstallDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults() { }
   @JavaProtected
-  void installComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.installComponents()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installComponents() { }
   @JavaProtected
-  java.beans.PropertyChangeListener createPropertyChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.createPropertyChangeListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
   @JavaProtected
-  void uninstallComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.uninstallComponents()"); }
-  public void removeLayoutComponent(java.awt.Component child) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.removeLayoutComponent(java.awt.Component)"); }
-  public void addLayoutComponent(java.lang.String name, java.awt.Component child) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.addLayoutComponent(java.lang.String, java.awt.Component)"); }
-  public void layoutContainer(java.awt.Container scrollbarContainer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.layoutContainer(java.awt.Container)"); }
-  public java.awt.Dimension preferredLayoutSize(java.awt.Container scrollbarContainer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.preferredLayoutSize(java.awt.Container)"); }
-  public java.awt.Dimension minimumLayoutSize(java.awt.Container scrollbarContainer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.minimumLayoutSize(java.awt.Container)"); }
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.getMaximumSize(javax.swing.JComponent)"); }
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicScrollBarUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallComponents() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeLayoutComponent(java.awt.Component child) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addLayoutComponent(java.lang.String name, java.awt.Component child) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void layoutContainer(java.awt.Container scrollbarContainer) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension preferredLayoutSize(java.awt.Container scrollbarContainer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension minimumLayoutSize(java.awt.Container scrollbarContainer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
   < ---- END java signatures ---- >
 }

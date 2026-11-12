@@ -58,19 +58,32 @@ class TypeElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.lang.model.type.TypeMirror getSuperclass() { throw new AbstractMethodError("javax.lang.model.element.TypeElement.getSuperclass()"); }
-  public abstract java.util.List<? extends javax.lang.model.element.TypeParameterElement> getTypeParameters() { throw new AbstractMethodError("javax.lang.model.element.TypeElement.getTypeParameters()"); }
-  public abstract java.util.List<? extends javax.lang.model.type.TypeMirror> getInterfaces() { throw new AbstractMethodError("javax.lang.model.element.TypeElement.getInterfaces()"); }
-  public abstract javax.lang.model.element.Name getSimpleName() { throw new AbstractMethodError("javax.lang.model.element.TypeElement.getSimpleName()"); }
-  public default java.util.List<? extends javax.lang.model.type.TypeMirror> getPermittedSubclasses() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.TypeElement.getPermittedSubclasses()"); }
-  public default java.util.List<? extends javax.lang.model.element.RecordComponentElement> getRecordComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.TypeElement.getRecordComponents()"); }
-  public abstract javax.lang.model.type.TypeMirror asType() { throw new AbstractMethodError("javax.lang.model.element.TypeElement.asType()"); }
-  public abstract javax.lang.model.element.Name getQualifiedName() { throw new AbstractMethodError("javax.lang.model.element.TypeElement.getQualifiedName()"); }
-  public abstract javax.lang.model.element.Element getEnclosingElement() { throw new AbstractMethodError("javax.lang.model.element.TypeElement.getEnclosingElement()"); }
-  public abstract java.util.List<? extends javax.lang.model.element.Element> getEnclosedElements() { throw new AbstractMethodError("javax.lang.model.element.TypeElement.getEnclosedElements()"); }
-  public abstract javax.lang.model.element.NestingKind getNestingKind() { throw new AbstractMethodError("javax.lang.model.element.TypeElement.getNestingKind()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.type.TypeMirror getSuperclass() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends javax.lang.model.element.TypeParameterElement> getTypeParameters() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends javax.lang.model.type.TypeMirror> getInterfaces() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.Name getSimpleName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.List<? extends javax.lang.model.type.TypeMirror> getPermittedSubclasses() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.List<? extends javax.lang.model.element.RecordComponentElement> getRecordComponents() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.type.TypeMirror asType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.Name getQualifiedName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.Element getEnclosingElement() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends javax.lang.model.element.Element> getEnclosedElements() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.NestingKind getNestingKind() { return null; }
   < ---- END java signatures ---- >
 }

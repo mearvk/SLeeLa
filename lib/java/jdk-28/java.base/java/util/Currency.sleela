@@ -58,21 +58,36 @@ class Currency {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Currency.toString()"); }
-  public static java.util.Currency getInstance(java.lang.String currencyCode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Currency.getInstance(java.lang.String)"); }
-  public static java.util.Currency getInstance(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Currency.getInstance(java.util.Locale)"); }
-  public java.lang.String getDisplayName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Currency.getDisplayName()"); }
-  public java.lang.String getDisplayName(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Currency.getDisplayName(java.util.Locale)"); }
-  public java.lang.String getSymbol() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Currency.getSymbol()"); }
-  public java.lang.String getSymbol(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Currency.getSymbol(java.util.Locale)"); }
-  public java.lang.String getCurrencyCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Currency.getCurrencyCode()"); }
-  public int getDefaultFractionDigits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Currency.getDefaultFractionDigits()"); }
-  public static java.util.Set<java.util.Currency> getAvailableCurrencies() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Currency.getAvailableCurrencies()"); }
-  public static java.util.stream.Stream<java.util.Currency> availableCurrencies() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Currency.availableCurrencies()"); }
-  public int getNumericCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Currency.getNumericCode()"); }
-  public java.lang.String getNumericCodeAsString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Currency.getNumericCodeAsString()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Currency getInstance(java.lang.String currencyCode) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Currency getInstance(java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDisplayName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDisplayName(java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSymbol() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSymbol(java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getCurrencyCode() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDefaultFractionDigits() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Set<java.util.Currency> getAvailableCurrencies() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.Stream<java.util.Currency> availableCurrencies() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNumericCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getNumericCodeAsString() { return null; }
   < ---- END java signatures ---- >
 }

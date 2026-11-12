@@ -58,6 +58,7 @@ class FileLockInterruptionException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FileLockInterruptionException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.FileLockInterruptionException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FileLockInterruptionException() { }
   < ---- END java constructors ---- >
 }

@@ -64,45 +64,76 @@ class DefaultTreeModel {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultTreeModel(javax.swing.tree.TreeNode root) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.<init>(javax.swing.tree.TreeNode)"); }
-  public DefaultTreeModel(javax.swing.tree.TreeNode root, boolean asksAllowsChildren) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.<init>(javax.swing.tree.TreeNode, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultTreeModel(javax.swing.tree.TreeNode root) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultTreeModel(javax.swing.tree.TreeNode root, boolean asksAllowsChildren) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object getRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.getRoot()"); }
-  public void reload() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.reload()"); }
-  public void reload(javax.swing.tree.TreeNode node) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.reload(javax.swing.tree.TreeNode)"); }
-  public boolean isLeaf(java.lang.Object node) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.isLeaf(java.lang.Object)"); }
-  public int getChildCount(java.lang.Object parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.getChildCount(java.lang.Object)"); }
-  public java.lang.Object getChild(java.lang.Object parent, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.getChild(java.lang.Object, int)"); }
-  public void valueForPathChanged(javax.swing.tree.TreePath path, java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.valueForPathChanged(javax.swing.tree.TreePath, java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getRoot() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reload() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reload(javax.swing.tree.TreeNode node) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLeaf(java.lang.Object node) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getChildCount(java.lang.Object parent) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getChild(java.lang.Object parent, int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void valueForPathChanged(javax.swing.tree.TreePath path, java.lang.Object newValue) { }
   @JavaProtected
-  javax.swing.tree.TreeNode[] getPathToRoot(javax.swing.tree.TreeNode aNode, int depth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.getPathToRoot(javax.swing.tree.TreeNode, int)"); }
-  public javax.swing.tree.TreeNode[] getPathToRoot(javax.swing.tree.TreeNode aNode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.getPathToRoot(javax.swing.tree.TreeNode)"); }
-  public void removeTreeModelListener(javax.swing.event.TreeModelListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.removeTreeModelListener(javax.swing.event.TreeModelListener)"); }
-  public void addTreeModelListener(javax.swing.event.TreeModelListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.addTreeModelListener(javax.swing.event.TreeModelListener)"); }
-  public int getIndexOfChild(java.lang.Object parent, java.lang.Object child) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.getIndexOfChild(java.lang.Object, java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.tree.TreeNode[] getPathToRoot(javax.swing.tree.TreeNode aNode, int depth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreeNode[] getPathToRoot(javax.swing.tree.TreeNode aNode) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeTreeModelListener(javax.swing.event.TreeModelListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addTreeModelListener(javax.swing.event.TreeModelListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getIndexOfChild(java.lang.Object parent, java.lang.Object child) { return 0; }
   @JavaProtected
-  void fireTreeStructureChanged(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.fireTreeStructureChanged(java.lang.Object, java.lang.Object[], int[], java.lang.Object[])"); }
-  public void nodeStructureChanged(javax.swing.tree.TreeNode node) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.nodeStructureChanged(javax.swing.tree.TreeNode)"); }
-  public void nodeChanged(javax.swing.tree.TreeNode node) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.nodeChanged(javax.swing.tree.TreeNode)"); }
-  public void nodesWereInserted(javax.swing.tree.TreeNode node, int[] childIndices) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.nodesWereInserted(javax.swing.tree.TreeNode, int[])"); }
-  public void nodesWereRemoved(javax.swing.tree.TreeNode node, int[] childIndices, java.lang.Object[] removedChildren) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.nodesWereRemoved(javax.swing.tree.TreeNode, int[], java.lang.Object[])"); }
-  public void nodesChanged(javax.swing.tree.TreeNode node, int[] childIndices) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.nodesChanged(javax.swing.tree.TreeNode, int[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireTreeStructureChanged(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void nodeStructureChanged(javax.swing.tree.TreeNode node) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void nodeChanged(javax.swing.tree.TreeNode node) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void nodesWereInserted(javax.swing.tree.TreeNode node, int[] childIndices) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void nodesWereRemoved(javax.swing.tree.TreeNode node, int[] childIndices, java.lang.Object[] removedChildren) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void nodesChanged(javax.swing.tree.TreeNode node, int[] childIndices) { }
   @JavaProtected
-  void fireTreeNodesInserted(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.fireTreeNodesInserted(java.lang.Object, java.lang.Object[], int[], java.lang.Object[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireTreeNodesInserted(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { }
   @JavaProtected
-  void fireTreeNodesRemoved(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.fireTreeNodesRemoved(java.lang.Object, java.lang.Object[], int[], java.lang.Object[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireTreeNodesRemoved(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { }
   @JavaProtected
-  void fireTreeNodesChanged(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.fireTreeNodesChanged(java.lang.Object, java.lang.Object[], int[], java.lang.Object[])"); }
-  public void setAsksAllowsChildren(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.setAsksAllowsChildren(boolean)"); }
-  public void setRoot(javax.swing.tree.TreeNode root) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.setRoot(javax.swing.tree.TreeNode)"); }
-  public void insertNodeInto(javax.swing.tree.MutableTreeNode newChild, javax.swing.tree.MutableTreeNode parent, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.insertNodeInto(javax.swing.tree.MutableTreeNode, javax.swing.tree.MutableTreeNode, int)"); }
-  public void removeNodeFromParent(javax.swing.tree.MutableTreeNode node) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.removeNodeFromParent(javax.swing.tree.MutableTreeNode)"); }
-  public javax.swing.event.TreeModelListener[] getTreeModelListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.getTreeModelListeners()"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeModel.getListeners(java.lang.Class<T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireTreeNodesChanged(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAsksAllowsChildren(boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRoot(javax.swing.tree.TreeNode root) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertNodeInto(javax.swing.tree.MutableTreeNode newChild, javax.swing.tree.MutableTreeNode parent, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeNodeFromParent(javax.swing.tree.MutableTreeNode node) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.TreeModelListener[] getTreeModelListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   < ---- END java signatures ---- >
 }

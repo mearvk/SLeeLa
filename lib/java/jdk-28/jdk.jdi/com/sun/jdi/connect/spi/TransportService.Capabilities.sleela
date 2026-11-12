@@ -59,16 +59,23 @@ class Capabilities {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Capabilities() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.connect.spi.TransportService.Capabilities.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Capabilities() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean supportsMultipleConnections() { throw new AbstractMethodError("com.sun.jdi.connect.spi.TransportService.Capabilities.supportsMultipleConnections()"); }
-  public abstract boolean supportsAttachTimeout() { throw new AbstractMethodError("com.sun.jdi.connect.spi.TransportService.Capabilities.supportsAttachTimeout()"); }
-  public abstract boolean supportsAcceptTimeout() { throw new AbstractMethodError("com.sun.jdi.connect.spi.TransportService.Capabilities.supportsAcceptTimeout()"); }
-  public abstract boolean supportsHandshakeTimeout() { throw new AbstractMethodError("com.sun.jdi.connect.spi.TransportService.Capabilities.supportsHandshakeTimeout()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean supportsMultipleConnections() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean supportsAttachTimeout() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean supportsAcceptTimeout() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean supportsHandshakeTimeout() { return false; }
   < ---- END java signatures ---- >
 }

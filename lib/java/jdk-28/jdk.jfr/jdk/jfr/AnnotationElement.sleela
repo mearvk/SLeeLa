@@ -58,21 +58,33 @@ class AnnotationElement {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AnnotationElement(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.AnnotationElement.<init>(java.lang.Class<? extends java.lang.annotation.Annotation>)"); }
-  public AnnotationElement(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.AnnotationElement.<init>(java.lang.Class<? extends java.lang.annotation.Annotation>, java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AnnotationElement(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AnnotationElement(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType, java.lang.Object value) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object getValue(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.AnnotationElement.getValue(java.lang.String)"); }
-  public java.lang.String getTypeName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.AnnotationElement.getTypeName()"); }
-  public final <A> A getAnnotation(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.AnnotationElement.getAnnotation(java.lang.Class<? extends java.lang.annotation.Annotation>)"); }
-  public boolean hasValue(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.AnnotationElement.hasValue(java.lang.String)"); }
-  public java.util.List<jdk.jfr.AnnotationElement> getAnnotationElements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.AnnotationElement.getAnnotationElements()"); }
-  public java.util.List<java.lang.Object> getValues() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.AnnotationElement.getValues()"); }
-  public long getTypeId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.AnnotationElement.getTypeId()"); }
-  public java.util.List<jdk.jfr.ValueDescriptor> getValueDescriptors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.AnnotationElement.getValueDescriptors()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getValue(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getTypeName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final <A> A getAnnotation(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasValue(java.lang.String name) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<jdk.jfr.AnnotationElement> getAnnotationElements() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.lang.Object> getValues() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getTypeId() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<jdk.jfr.ValueDescriptor> getValueDescriptors() { return null; }
   < ---- END java signatures ---- >
 }

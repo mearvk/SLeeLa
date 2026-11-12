@@ -63,58 +63,85 @@ class Parser {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Parser(javax.swing.text.html.parser.DTD dtd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.<init>(javax.swing.text.html.parser.DTD)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Parser(javax.swing.text.html.parser.DTD dtd) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized void parse(java.io.Reader in) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.parse(java.io.Reader)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public synchronized void parse(java.io.Reader in) { }
   @JavaProtected
-  javax.swing.text.SimpleAttributeSet getAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.getAttributes()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.SimpleAttributeSet getAttributes() { return null; }
   @JavaProtected
-  void error(java.lang.String err, java.lang.String arg1, java.lang.String arg2, java.lang.String arg3) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.error(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void error(java.lang.String err, java.lang.String arg1, java.lang.String arg2, java.lang.String arg3) { }
   @JavaProtected
-  void error(java.lang.String err, java.lang.String arg1, java.lang.String arg2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.error(java.lang.String, java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void error(java.lang.String err, java.lang.String arg1, java.lang.String arg2) { }
   @JavaProtected
-  void error(java.lang.String err) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.error(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void error(java.lang.String err) { }
   @JavaProtected
-  void error(java.lang.String err, java.lang.String arg1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.error(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void error(java.lang.String err, java.lang.String arg1) { }
   @JavaProtected
-  void handleText(char[] text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.handleText(char[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void handleText(char[] text) { }
   @JavaProtected
-  void handleComment(char[] text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.handleComment(char[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void handleComment(char[] text) { }
   @JavaProtected
-  void handleStartTag(javax.swing.text.html.parser.TagElement tag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.handleStartTag(javax.swing.text.html.parser.TagElement)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void handleStartTag(javax.swing.text.html.parser.TagElement tag) { }
   @JavaProtected
-  void handleEndTag(javax.swing.text.html.parser.TagElement tag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.handleEndTag(javax.swing.text.html.parser.TagElement)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void handleEndTag(javax.swing.text.html.parser.TagElement tag) { }
   @JavaProtected
-  void handleError(int ln, java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.handleError(int, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void handleError(int ln, java.lang.String msg) { }
   @JavaProtected
-  void endTag(boolean omitted) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.endTag(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void endTag(boolean omitted) { }
   @JavaProtected
-  void startTag(javax.swing.text.html.parser.TagElement tag) throws javax.swing.text.ChangedCharSetException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.startTag(javax.swing.text.html.parser.TagElement)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.ChangedCharSetException")
+  void startTag(javax.swing.text.html.parser.TagElement tag) { }
   @JavaProtected
-  void flushAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.flushAttributes()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void flushAttributes() { }
   @JavaProtected
-  int getCurrentPos() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.getCurrentPos()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getCurrentPos() { return 0; }
   @JavaProtected
-  void handleEmptyTag(javax.swing.text.html.parser.TagElement tag) throws javax.swing.text.ChangedCharSetException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.handleEmptyTag(javax.swing.text.html.parser.TagElement)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.ChangedCharSetException")
+  void handleEmptyTag(javax.swing.text.html.parser.TagElement tag) { }
   @JavaProtected
-  javax.swing.text.html.parser.TagElement makeTag(javax.swing.text.html.parser.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.makeTag(javax.swing.text.html.parser.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.html.parser.TagElement makeTag(javax.swing.text.html.parser.Element elem) { return null; }
   @JavaProtected
-  javax.swing.text.html.parser.TagElement makeTag(javax.swing.text.html.parser.Element elem, boolean fictional) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.makeTag(javax.swing.text.html.parser.Element, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.html.parser.TagElement makeTag(javax.swing.text.html.parser.Element elem, boolean fictional) { return null; }
   @JavaProtected
-  void handleTitle(char[] text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.handleTitle(char[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void handleTitle(char[] text) { }
   @JavaProtected
-  void markFirstTime(javax.swing.text.html.parser.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.markFirstTime(javax.swing.text.html.parser.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void markFirstTime(javax.swing.text.html.parser.Element elem) { }
   @JavaProtected
-  void handleEOFInComment() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.handleEOFInComment()"); }
-  public java.lang.String parseDTDMarkup() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.parseDTDMarkup()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void handleEOFInComment() { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.lang.String parseDTDMarkup() { return null; }
   @JavaProtected
-  boolean parseMarkupDeclarations(java.lang.StringBuffer strBuff) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.parseMarkupDeclarations(java.lang.StringBuffer)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  boolean parseMarkupDeclarations(java.lang.StringBuffer strBuff) { return false; }
   @JavaProtected
-  int getCurrentLine() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.parser.Parser.getCurrentLine()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getCurrentLine() { return 0; }
   < ---- END java signatures ---- >
 }

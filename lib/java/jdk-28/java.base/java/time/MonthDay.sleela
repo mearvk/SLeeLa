@@ -58,36 +58,66 @@ class MonthDay {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int get(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.get(java.time.temporal.TemporalField)"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.hashCode()"); }
-  public int compareTo(java.time.MonthDay other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.compareTo(java.time.MonthDay)"); }
-  public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.getLong(java.time.temporal.TemporalField)"); }
-  public static java.time.MonthDay of(int month, int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.of(int, int)"); }
-  public static java.time.MonthDay of(java.time.Month month, int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.of(java.time.Month, int)"); }
-  public java.lang.String format(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.format(java.time.format.DateTimeFormatter)"); }
-  public static java.time.MonthDay from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.from(java.time.temporal.TemporalAccessor)"); }
-  public boolean isSupported(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.isSupported(java.time.temporal.TemporalField)"); }
-  public static java.time.MonthDay parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.parse(java.lang.CharSequence)"); }
-  public static java.time.MonthDay parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.parse(java.lang.CharSequence, java.time.format.DateTimeFormatter)"); }
-  public java.time.MonthDay with(java.time.Month month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.with(java.time.Month)"); }
-  public <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.query(java.time.temporal.TemporalQuery<R>)"); }
-  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.range(java.time.temporal.TemporalField)"); }
-  public static java.time.MonthDay now(java.time.Clock clock) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.now(java.time.Clock)"); }
-  public static java.time.MonthDay now() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.now()"); }
-  public int getMonthValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.getMonthValue()"); }
-  public int getDayOfMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.getDayOfMonth()"); }
-  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.adjustInto(java.time.temporal.Temporal)"); }
-  public boolean isAfter(java.time.MonthDay other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.isAfter(java.time.MonthDay)"); }
-  public boolean isBefore(java.time.MonthDay other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.isBefore(java.time.MonthDay)"); }
-  public java.time.Month getMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.getMonth()"); }
-  public java.time.MonthDay withDayOfMonth(int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.withDayOfMonth(int)"); }
-  public java.time.MonthDay withMonth(int month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.withMonth(int)"); }
-  public boolean isValidYear(int year) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.isValidYear(int)"); }
-  public java.time.LocalDate atYear(int year) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.MonthDay.atYear(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int get(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.time.MonthDay other) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getLong(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.MonthDay of(int month, int dayOfMonth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.MonthDay of(java.time.Month month, int dayOfMonth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String format(java.time.format.DateTimeFormatter formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.MonthDay from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSupported(java.time.temporal.TemporalField field) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.MonthDay parse(java.lang.CharSequence text) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.MonthDay parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.MonthDay with(java.time.Month month) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <R> R query(java.time.temporal.TemporalQuery<R> query) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.MonthDay now(java.time.Clock clock) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.MonthDay now() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMonthValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDayOfMonth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAfter(java.time.MonthDay other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBefore(java.time.MonthDay other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Month getMonth() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.MonthDay withDayOfMonth(int dayOfMonth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.MonthDay withMonth(int month) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isValidYear(int year) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate atYear(int year) { return null; }
   < ---- END java signatures ---- >
 }

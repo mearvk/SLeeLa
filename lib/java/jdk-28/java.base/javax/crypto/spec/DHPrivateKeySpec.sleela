@@ -58,15 +58,21 @@ class DHPrivateKeySpec {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DHPrivateKeySpec(java.math.BigInteger x, java.math.BigInteger p, java.math.BigInteger g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.spec.DHPrivateKeySpec.<init>(java.math.BigInteger, java.math.BigInteger, java.math.BigInteger)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DHPrivateKeySpec(java.math.BigInteger x, java.math.BigInteger p, java.math.BigInteger g) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.math.BigInteger getP() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.spec.DHPrivateKeySpec.getP()"); }
-  public java.math.BigInteger getG() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.spec.DHPrivateKeySpec.getG()"); }
-  public java.math.BigInteger getX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.spec.DHPrivateKeySpec.getX()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger getP() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger getG() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger getX() { return null; }
   < ---- END java signatures ---- >
 }

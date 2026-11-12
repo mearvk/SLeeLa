@@ -60,21 +60,33 @@ class WriteLock {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  WriteLock(java.util.concurrent.locks.ReentrantReadWriteLock lock) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock.<init>(java.util.concurrent.locks.ReentrantReadWriteLock)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  WriteLock(java.util.concurrent.locks.ReentrantReadWriteLock lock) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock.toString()"); }
-  public void lock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock.lock()"); }
-  public void lockInterruptibly() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock.lockInterruptibly()"); }
-  public boolean tryLock(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock.tryLock(long, java.util.concurrent.TimeUnit)"); }
-  public boolean tryLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock.tryLock()"); }
-  public java.util.concurrent.locks.Condition newCondition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock.newCondition()"); }
-  public int getHoldCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock.getHoldCount()"); }
-  public void unlock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock.unlock()"); }
-  public boolean isHeldByCurrentThread() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock.isHeldByCurrentThread()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void lock() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void lockInterruptibly() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public boolean tryLock(long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean tryLock() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.locks.Condition newCondition() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHoldCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void unlock() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isHeldByCurrentThread() { return false; }
   < ---- END java signatures ---- >
 }

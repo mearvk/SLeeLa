@@ -58,7 +58,9 @@ class IllegalClassFormatException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IllegalClassFormatException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.instrument.IllegalClassFormatException.<init>()"); }
-  public IllegalClassFormatException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.instrument.IllegalClassFormatException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalClassFormatException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalClassFormatException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

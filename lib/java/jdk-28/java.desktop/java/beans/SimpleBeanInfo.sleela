@@ -58,21 +58,33 @@ class SimpleBeanInfo {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SimpleBeanInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.SimpleBeanInfo.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SimpleBeanInfo() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.beans.BeanDescriptor getBeanDescriptor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.SimpleBeanInfo.getBeanDescriptor()"); }
-  public java.beans.EventSetDescriptor[] getEventSetDescriptors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.SimpleBeanInfo.getEventSetDescriptors()"); }
-  public int getDefaultEventIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.SimpleBeanInfo.getDefaultEventIndex()"); }
-  public java.beans.PropertyDescriptor[] getPropertyDescriptors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.SimpleBeanInfo.getPropertyDescriptors()"); }
-  public int getDefaultPropertyIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.SimpleBeanInfo.getDefaultPropertyIndex()"); }
-  public java.beans.MethodDescriptor[] getMethodDescriptors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.SimpleBeanInfo.getMethodDescriptors()"); }
-  public java.beans.BeanInfo[] getAdditionalBeanInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.SimpleBeanInfo.getAdditionalBeanInfo()"); }
-  public java.awt.Image getIcon(int iconKind) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.SimpleBeanInfo.getIcon(int)"); }
-  public java.awt.Image loadImage(java.lang.String resourceName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.SimpleBeanInfo.loadImage(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.BeanDescriptor getBeanDescriptor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.EventSetDescriptor[] getEventSetDescriptors() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDefaultEventIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.PropertyDescriptor[] getPropertyDescriptors() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDefaultPropertyIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.MethodDescriptor[] getMethodDescriptors() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.BeanInfo[] getAdditionalBeanInfo() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Image getIcon(int iconKind) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Image loadImage(java.lang.String resourceName) { return null; }
   < ---- END java signatures ---- >
 }

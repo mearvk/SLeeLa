@@ -58,21 +58,36 @@ class Mixer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.sound.sampled.Line getLine(javax.sound.sampled.Line.Info info) throws javax.sound.sampled.LineUnavailableException { throw new AbstractMethodError("javax.sound.sampled.Mixer.getLine(javax.sound.sampled.Line.Info)"); }
-  public abstract javax.sound.sampled.Mixer.Info getMixerInfo() { throw new AbstractMethodError("javax.sound.sampled.Mixer.getMixerInfo()"); }
-  public abstract javax.sound.sampled.Line.Info[] getSourceLineInfo() { throw new AbstractMethodError("javax.sound.sampled.Mixer.getSourceLineInfo()"); }
-  public abstract javax.sound.sampled.Line.Info[] getSourceLineInfo(javax.sound.sampled.Line.Info info) { throw new AbstractMethodError("javax.sound.sampled.Mixer.getSourceLineInfo(javax.sound.sampled.Line.Info)"); }
-  public abstract javax.sound.sampled.Line.Info[] getTargetLineInfo() { throw new AbstractMethodError("javax.sound.sampled.Mixer.getTargetLineInfo()"); }
-  public abstract javax.sound.sampled.Line.Info[] getTargetLineInfo(javax.sound.sampled.Line.Info info) { throw new AbstractMethodError("javax.sound.sampled.Mixer.getTargetLineInfo(javax.sound.sampled.Line.Info)"); }
-  public abstract boolean isLineSupported(javax.sound.sampled.Line.Info info) { throw new AbstractMethodError("javax.sound.sampled.Mixer.isLineSupported(javax.sound.sampled.Line.Info)"); }
-  public abstract int getMaxLines(javax.sound.sampled.Line.Info info) { throw new AbstractMethodError("javax.sound.sampled.Mixer.getMaxLines(javax.sound.sampled.Line.Info)"); }
-  public abstract javax.sound.sampled.Line[] getSourceLines() { throw new AbstractMethodError("javax.sound.sampled.Mixer.getSourceLines()"); }
-  public abstract javax.sound.sampled.Line[] getTargetLines() { throw new AbstractMethodError("javax.sound.sampled.Mixer.getTargetLines()"); }
-  public abstract void synchronize(javax.sound.sampled.Line[] lines, boolean maintainSync) { throw new AbstractMethodError("javax.sound.sampled.Mixer.synchronize(javax.sound.sampled.Line[], boolean)"); }
-  public abstract void unsynchronize(javax.sound.sampled.Line[] lines) { throw new AbstractMethodError("javax.sound.sampled.Mixer.unsynchronize(javax.sound.sampled.Line[])"); }
-  public abstract boolean isSynchronizationSupported(javax.sound.sampled.Line[] lines, boolean maintainSync) { throw new AbstractMethodError("javax.sound.sampled.Mixer.isSynchronizationSupported(javax.sound.sampled.Line[], boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.sound.sampled.LineUnavailableException")
+  public javax.sound.sampled.Line getLine(javax.sound.sampled.Line.Info info) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.Mixer.Info getMixerInfo() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.Line.Info[] getSourceLineInfo() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.Line.Info[] getSourceLineInfo(javax.sound.sampled.Line.Info info) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.Line.Info[] getTargetLineInfo() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.Line.Info[] getTargetLineInfo(javax.sound.sampled.Line.Info info) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isLineSupported(javax.sound.sampled.Line.Info info) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMaxLines(javax.sound.sampled.Line.Info info) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.Line[] getSourceLines() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.Line[] getTargetLines() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void synchronize(javax.sound.sampled.Line[] lines, boolean maintainSync) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void unsynchronize(javax.sound.sampled.Line[] lines) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSynchronizationSupported(javax.sound.sampled.Line[] lines, boolean maintainSync) { return false; }
   < ---- END java signatures ---- >
 }

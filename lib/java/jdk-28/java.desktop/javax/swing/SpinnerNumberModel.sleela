@@ -58,26 +58,43 @@ class SpinnerNumberModel {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SpinnerNumberModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.<init>()"); }
-  public SpinnerNumberModel(double value, double minimum, double maximum, double stepSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.<init>(double, double, double, double)"); }
-  public SpinnerNumberModel(int value, int minimum, int maximum, int stepSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.<init>(int, int, int, int)"); }
-  public SpinnerNumberModel(java.lang.Number value, java.lang.Comparable<?> minimum, java.lang.Comparable<?> maximum, java.lang.Number stepSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.<init>(java.lang.Number, java.lang.Comparable<?>, java.lang.Comparable<?>, java.lang.Number)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SpinnerNumberModel() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SpinnerNumberModel(double value, double minimum, double maximum, double stepSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SpinnerNumberModel(int value, int minimum, int maximum, int stepSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SpinnerNumberModel(java.lang.Number value, java.lang.Comparable<?> minimum, java.lang.Comparable<?> maximum, java.lang.Number stepSize) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.getValue()"); }
-  public void setValue(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.setValue(java.lang.Object)"); }
-  public java.lang.Number getNumber() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.getNumber()"); }
-  public java.lang.Comparable<?> getMaximum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.getMaximum()"); }
-  public java.lang.Comparable<?> getMinimum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.getMinimum()"); }
-  public void setMinimum(java.lang.Comparable<?> minimum) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.setMinimum(java.lang.Comparable<?>)"); }
-  public void setMaximum(java.lang.Comparable<?> maximum) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.setMaximum(java.lang.Comparable<?>)"); }
-  public void setStepSize(java.lang.Number stepSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.setStepSize(java.lang.Number)"); }
-  public java.lang.Number getStepSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.getStepSize()"); }
-  public java.lang.Object getNextValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.getNextValue()"); }
-  public java.lang.Object getPreviousValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerNumberModel.getPreviousValue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValue(java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Number getNumber() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Comparable<?> getMaximum() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Comparable<?> getMinimum() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinimum(java.lang.Comparable<?> minimum) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximum(java.lang.Comparable<?> maximum) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setStepSize(java.lang.Number stepSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Number getStepSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getNextValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getPreviousValue() { return null; }
   < ---- END java signatures ---- >
 }

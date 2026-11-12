@@ -75,27 +75,45 @@ class MouseEvent {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MouseEvent(java.awt.Component source, int id, long when, int modifiers, int x, int y, int clickCount, boolean popupTrigger, int button) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.<init>(java.awt.Component, int, long, int, int, int, int, boolean, int)"); }
-  public MouseEvent(java.awt.Component source, int id, long when, int modifiers, int x, int y, int clickCount, boolean popupTrigger) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.<init>(java.awt.Component, int, long, int, int, int, int, boolean)"); }
-  public MouseEvent(java.awt.Component source, int id, long when, int modifiers, int x, int y, int xAbs, int yAbs, int clickCount, boolean popupTrigger, int button) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.<init>(java.awt.Component, int, long, int, int, int, int, int, int, boolean, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MouseEvent(java.awt.Component source, int id, long when, int modifiers, int x, int y, int clickCount, boolean popupTrigger, int button) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MouseEvent(java.awt.Component source, int id, long when, int modifiers, int x, int y, int clickCount, boolean popupTrigger) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MouseEvent(java.awt.Component source, int id, long when, int modifiers, int x, int y, int xAbs, int yAbs, int clickCount, boolean popupTrigger, int button) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.paramString()"); }
-  public int getX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.getX()"); }
-  public int getY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.getY()"); }
-  public java.awt.Point getPoint() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.getPoint()"); }
-  public java.awt.Point getLocationOnScreen() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.getLocationOnScreen()"); }
-  public int getXOnScreen() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.getXOnScreen()"); }
-  public int getYOnScreen() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.getYOnScreen()"); }
-  public int getClickCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.getClickCount()"); }
-  public boolean isPopupTrigger() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.isPopupTrigger()"); }
-  public int getButton() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.getButton()"); }
-  public static java.lang.String getMouseModifiersText(int modifiers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.getMouseModifiersText(int)"); }
-  public synchronized void translatePoint(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.translatePoint(int, int)"); }
-  public int getModifiersEx() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.MouseEvent.getModifiersEx()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getX() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getY() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Point getPoint() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Point getLocationOnScreen() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getXOnScreen() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getYOnScreen() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getClickCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPopupTrigger() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getButton() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String getMouseModifiersText(int modifiers) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void translatePoint(int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getModifiersEx() { return 0; }
   < ---- END java signatures ---- >
 }

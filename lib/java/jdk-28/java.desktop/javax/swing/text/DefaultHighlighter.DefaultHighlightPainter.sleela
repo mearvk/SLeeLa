@@ -59,15 +59,21 @@ class DefaultHighlightPainter {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultHighlightPainter(java.awt.Color c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.DefaultHighlightPainter.<init>(java.awt.Color)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultHighlightPainter(java.awt.Color c) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Color getColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.DefaultHighlightPainter.getColor()"); }
-  public java.awt.Shape paintLayer(java.awt.Graphics g, int offs0, int offs1, java.awt.Shape bounds, javax.swing.text.JTextComponent c, javax.swing.text.View view) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.DefaultHighlightPainter.paintLayer(java.awt.Graphics, int, int, java.awt.Shape, javax.swing.text.JTextComponent, javax.swing.text.View)"); }
-  public void paint(java.awt.Graphics g, int offs0, int offs1, java.awt.Shape bounds, javax.swing.text.JTextComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.DefaultHighlightPainter.paint(java.awt.Graphics, int, int, java.awt.Shape, javax.swing.text.JTextComponent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Shape paintLayer(java.awt.Graphics g, int offs0, int offs1, java.awt.Shape bounds, javax.swing.text.JTextComponent c, javax.swing.text.View view) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, int offs0, int offs1, java.awt.Shape bounds, javax.swing.text.JTextComponent c) { }
   < ---- END java signatures ---- >
 }

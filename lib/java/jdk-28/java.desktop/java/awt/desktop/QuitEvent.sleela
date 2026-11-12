@@ -58,6 +58,7 @@ class QuitEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public QuitEvent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.desktop.QuitEvent.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public QuitEvent() { }
   < ---- END java constructors ---- >
 }

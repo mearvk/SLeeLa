@@ -58,35 +58,61 @@ class Process {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Process() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Process() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.ProcessHandle.Info info() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.info()"); }
-  public boolean isAlive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.isAlive()"); }
-  public abstract void destroy() { throw new AbstractMethodError("java.lang.Process.destroy()"); }
-  public abstract java.io.InputStream getInputStream() { throw new AbstractMethodError("java.lang.Process.getInputStream()"); }
-  public long pid() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.pid()"); }
-  public abstract java.io.InputStream getErrorStream() { throw new AbstractMethodError("java.lang.Process.getErrorStream()"); }
-  public boolean waitFor(java.time.Duration duration) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.waitFor(java.time.Duration)"); }
-  public boolean waitFor(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.waitFor(long, java.util.concurrent.TimeUnit)"); }
-  public abstract int waitFor() throws java.lang.InterruptedException { throw new AbstractMethodError("java.lang.Process.waitFor()"); }
-  public java.util.stream.Stream<java.lang.ProcessHandle> children() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.children()"); }
-  public java.util.concurrent.CompletableFuture<java.lang.Process> onExit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.onExit()"); }
-  public abstract java.io.OutputStream getOutputStream() { throw new AbstractMethodError("java.lang.Process.getOutputStream()"); }
-  public final java.io.BufferedReader inputReader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.inputReader()"); }
-  public final java.io.BufferedReader inputReader(java.nio.charset.Charset charset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.inputReader(java.nio.charset.Charset)"); }
-  public final java.io.BufferedReader errorReader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.errorReader()"); }
-  public final java.io.BufferedReader errorReader(java.nio.charset.Charset charset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.errorReader(java.nio.charset.Charset)"); }
-  public final java.io.BufferedWriter outputWriter(java.nio.charset.Charset charset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.outputWriter(java.nio.charset.Charset)"); }
-  public final java.io.BufferedWriter outputWriter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.outputWriter()"); }
-  public abstract int exitValue() { throw new AbstractMethodError("java.lang.Process.exitValue()"); }
-  public java.lang.ProcessHandle toHandle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.toHandle()"); }
-  public java.util.stream.Stream<java.lang.ProcessHandle> descendants() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.descendants()"); }
-  public java.lang.Process destroyForcibly() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.destroyForcibly()"); }
-  public boolean supportsNormalTermination() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Process.supportsNormalTermination()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.ProcessHandle.Info info() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAlive() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void destroy() { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.InputStream getInputStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long pid() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.InputStream getErrorStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public boolean waitFor(java.time.Duration duration) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public boolean waitFor(long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public int waitFor() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.Stream<java.lang.ProcessHandle> children() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.CompletableFuture<java.lang.Process> onExit() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.OutputStream getOutputStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.io.BufferedReader inputReader() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.io.BufferedReader inputReader(java.nio.charset.Charset charset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.io.BufferedReader errorReader() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.io.BufferedReader errorReader(java.nio.charset.Charset charset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.io.BufferedWriter outputWriter(java.nio.charset.Charset charset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.io.BufferedWriter outputWriter() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int exitValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.ProcessHandle toHandle() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.Stream<java.lang.ProcessHandle> descendants() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Process destroyForcibly() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean supportsNormalTermination() { return false; }
   < ---- END java signatures ---- >
 }

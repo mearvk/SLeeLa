@@ -58,6 +58,7 @@ class ClosedDirectoryStreamException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ClosedDirectoryStreamException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.ClosedDirectoryStreamException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ClosedDirectoryStreamException() { }
   < ---- END java constructors ---- >
 }

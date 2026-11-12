@@ -58,28 +58,47 @@ class PropertyDescriptor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PropertyDescriptor(java.lang.String propertyName, java.lang.Class<?> beanClass) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.<init>(java.lang.String, java.lang.Class<?>)"); }
-  public PropertyDescriptor(java.lang.String propertyName, java.lang.Class<?> beanClass, java.lang.String readMethodName, java.lang.String writeMethodName) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.<init>(java.lang.String, java.lang.Class<?>, java.lang.String, java.lang.String)"); }
-  public PropertyDescriptor(java.lang.String propertyName, java.lang.reflect.Method readMethod, java.lang.reflect.Method writeMethod) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.<init>(java.lang.String, java.lang.reflect.Method, java.lang.reflect.Method)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public PropertyDescriptor(java.lang.String propertyName, java.lang.Class<?> beanClass) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public PropertyDescriptor(java.lang.String propertyName, java.lang.Class<?> beanClass, java.lang.String readMethodName, java.lang.String writeMethodName) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public PropertyDescriptor(java.lang.String propertyName, java.lang.reflect.Method readMethod, java.lang.reflect.Method writeMethod) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.hashCode()"); }
-  public synchronized java.lang.reflect.Method getReadMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.getReadMethod()"); }
-  public synchronized java.lang.reflect.Method getWriteMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.getWriteMethod()"); }
-  public synchronized void setReadMethod(java.lang.reflect.Method readMethod) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.setReadMethod(java.lang.reflect.Method)"); }
-  public synchronized void setWriteMethod(java.lang.reflect.Method writeMethod) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.setWriteMethod(java.lang.reflect.Method)"); }
-  public synchronized java.lang.Class<?> getPropertyType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.getPropertyType()"); }
-  public boolean isConstrained() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.isConstrained()"); }
-  public void setConstrained(boolean constrained) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.setConstrained(boolean)"); }
-  public void setBound(boolean bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.setBound(boolean)"); }
-  public java.lang.Class<?> getPropertyEditorClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.getPropertyEditorClass()"); }
-  public void setPropertyEditorClass(java.lang.Class<?> propertyEditorClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.setPropertyEditorClass(java.lang.Class<?>)"); }
-  public java.beans.PropertyEditor createPropertyEditor(java.lang.Object bean) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.createPropertyEditor(java.lang.Object)"); }
-  public boolean isBound() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyDescriptor.isBound()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.reflect.Method getReadMethod() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.reflect.Method getWriteMethod() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public synchronized void setReadMethod(java.lang.reflect.Method readMethod) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public synchronized void setWriteMethod(java.lang.reflect.Method writeMethod) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Class<?> getPropertyType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isConstrained() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setConstrained(boolean constrained) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBound(boolean bound) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getPropertyEditorClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPropertyEditorClass(java.lang.Class<?> propertyEditorClass) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.PropertyEditor createPropertyEditor(java.lang.Object bean) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBound() { return false; }
   < ---- END java signatures ---- >
 }

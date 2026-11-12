@@ -58,13 +58,17 @@ class CompositeGuardingDynamicLinker {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CompositeGuardingDynamicLinker(java.lang.Iterable<? extends jdk.dynalink.linker.GuardingDynamicLinker> linkers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.support.CompositeGuardingDynamicLinker.<init>(java.lang.Iterable<? extends jdk.dynalink.linker.GuardingDynamicLinker>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CompositeGuardingDynamicLinker(java.lang.Iterable<? extends jdk.dynalink.linker.GuardingDynamicLinker> linkers) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public jdk.dynalink.linker.GuardedInvocation getGuardedInvocation(jdk.dynalink.linker.LinkRequest linkRequest, jdk.dynalink.linker.LinkerServices linkerServices) throws java.lang.Exception { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.support.CompositeGuardingDynamicLinker.getGuardedInvocation(jdk.dynalink.linker.LinkRequest, jdk.dynalink.linker.LinkerServices)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
+  public jdk.dynalink.linker.GuardedInvocation getGuardedInvocation(jdk.dynalink.linker.LinkRequest linkRequest, jdk.dynalink.linker.LinkerServices linkerServices) { return null; }
   < ---- END java signatures ---- >
 }

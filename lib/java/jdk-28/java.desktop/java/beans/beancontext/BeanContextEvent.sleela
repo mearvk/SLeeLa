@@ -63,16 +63,23 @@ class BeanContextEvent {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  BeanContextEvent(java.beans.beancontext.BeanContext bc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.beancontext.BeanContextEvent.<init>(java.beans.beancontext.BeanContext)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  BeanContextEvent(java.beans.beancontext.BeanContext bc) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.beans.beancontext.BeanContext getBeanContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.beancontext.BeanContextEvent.getBeanContext()"); }
-  public synchronized void setPropagatedFrom(java.beans.beancontext.BeanContext bc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.beancontext.BeanContextEvent.setPropagatedFrom(java.beans.beancontext.BeanContext)"); }
-  public synchronized java.beans.beancontext.BeanContext getPropagatedFrom() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.beancontext.BeanContextEvent.getPropagatedFrom()"); }
-  public synchronized boolean isPropagated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.beancontext.BeanContextEvent.isPropagated()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.beancontext.BeanContext getBeanContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setPropagatedFrom(java.beans.beancontext.BeanContext bc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.beans.beancontext.BeanContext getPropagatedFrom() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean isPropagated() { return false; }
   < ---- END java signatures ---- >
 }

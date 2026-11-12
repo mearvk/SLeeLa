@@ -58,12 +58,18 @@ class ClassFileTransform<C extends java.lang.classfile.ClassFileTransform<C, E, 
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void accept(B builder, E element) { throw new AbstractMethodError("java.lang.classfile.ClassFileTransform.accept(B, E)"); }
-  public abstract C andThen(C next_) { throw new AbstractMethodError("java.lang.classfile.ClassFileTransform.andThen(C)"); }
-  public default void atEnd(B builder) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassFileTransform.atEnd(B)"); }
-  public default void atStart(B builder) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassFileTransform.atStart(B)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void accept(B builder, E element) { }
+  @throwable("java.lang.AbstractMethodError")
+  public C andThen(C next_) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void atEnd(B builder) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void atStart(B builder) { }
   < ---- END java signatures ---- >
 }

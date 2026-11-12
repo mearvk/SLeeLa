@@ -58,31 +58,47 @@ class DefaultMetalTheme {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultMetalTheme() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultMetalTheme() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.getName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
   @JavaProtected
-  javax.swing.plaf.ColorUIResource getPrimary1() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.getPrimary1()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.ColorUIResource getPrimary1() { return null; }
   @JavaProtected
-  javax.swing.plaf.ColorUIResource getPrimary2() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.getPrimary2()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.ColorUIResource getPrimary2() { return null; }
   @JavaProtected
-  javax.swing.plaf.ColorUIResource getPrimary3() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.getPrimary3()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.ColorUIResource getPrimary3() { return null; }
   @JavaProtected
-  javax.swing.plaf.ColorUIResource getSecondary1() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.getSecondary1()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.ColorUIResource getSecondary1() { return null; }
   @JavaProtected
-  javax.swing.plaf.ColorUIResource getSecondary2() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.getSecondary2()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.ColorUIResource getSecondary2() { return null; }
   @JavaProtected
-  javax.swing.plaf.ColorUIResource getSecondary3() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.getSecondary3()"); }
-  public javax.swing.plaf.FontUIResource getControlTextFont() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.getControlTextFont()"); }
-  public javax.swing.plaf.FontUIResource getSystemTextFont() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.getSystemTextFont()"); }
-  public javax.swing.plaf.FontUIResource getUserTextFont() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.getUserTextFont()"); }
-  public javax.swing.plaf.FontUIResource getMenuTextFont() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.getMenuTextFont()"); }
-  public javax.swing.plaf.FontUIResource getWindowTitleFont() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.getWindowTitleFont()"); }
-  public javax.swing.plaf.FontUIResource getSubTextFont() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.DefaultMetalTheme.getSubTextFont()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.ColorUIResource getSecondary3() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.FontUIResource getControlTextFont() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.FontUIResource getSystemTextFont() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.FontUIResource getUserTextFont() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.FontUIResource getMenuTextFont() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.FontUIResource getWindowTitleFont() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.FontUIResource getSubTextFont() { return null; }
   < ---- END java signatures ---- >
 }

@@ -68,49 +68,82 @@ class DefaultTableColumnModel {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultTableColumnModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultTableColumnModel() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void fireColumnAdded(javax.swing.event.TableColumnModelEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.fireColumnAdded(javax.swing.event.TableColumnModelEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireColumnAdded(javax.swing.event.TableColumnModelEvent e) { }
   @JavaProtected
-  void fireColumnRemoved(javax.swing.event.TableColumnModelEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.fireColumnRemoved(javax.swing.event.TableColumnModelEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireColumnRemoved(javax.swing.event.TableColumnModelEvent e) { }
   @JavaProtected
-  void fireColumnMoved(javax.swing.event.TableColumnModelEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.fireColumnMoved(javax.swing.event.TableColumnModelEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireColumnMoved(javax.swing.event.TableColumnModelEvent e) { }
   @JavaProtected
-  void fireColumnMarginChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.fireColumnMarginChanged()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireColumnMarginChanged() { }
   @JavaProtected
-  void recalcWidthCache() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.recalcWidthCache()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void recalcWidthCache() { }
   @JavaProtected
-  void fireColumnSelectionChanged(javax.swing.event.ListSelectionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.fireColumnSelectionChanged(javax.swing.event.ListSelectionEvent)"); }
-  public javax.swing.event.TableColumnModelListener[] getColumnModelListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.getColumnModelListeners()"); }
-  public void setSelectionModel(javax.swing.ListSelectionModel newModel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.setSelectionModel(javax.swing.ListSelectionModel)"); }
-  public javax.swing.ListSelectionModel getSelectionModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.getSelectionModel()"); }
-  public void propertyChange(java.beans.PropertyChangeEvent evt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.propertyChange(java.beans.PropertyChangeEvent)"); }
-  public void valueChanged(javax.swing.event.ListSelectionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.valueChanged(javax.swing.event.ListSelectionEvent)"); }
-  public void setColumnMargin(int newMargin) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.setColumnMargin(int)"); }
-  public int getColumnMargin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.getColumnMargin()"); }
-  public int getColumnCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.getColumnCount()"); }
-  public javax.swing.table.TableColumn getColumn(int columnIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.getColumn(int)"); }
-  public void removeColumn(javax.swing.table.TableColumn column) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.removeColumn(javax.swing.table.TableColumn)"); }
-  public void addColumn(javax.swing.table.TableColumn aColumn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.addColumn(javax.swing.table.TableColumn)"); }
-  public int[] getSelectedColumns() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.getSelectedColumns()"); }
-  public boolean getColumnSelectionAllowed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.getColumnSelectionAllowed()"); }
-  public void setColumnSelectionAllowed(boolean flag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.setColumnSelectionAllowed(boolean)"); }
-  public int getSelectedColumnCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.getSelectedColumnCount()"); }
-  public int getColumnIndex(java.lang.Object identifier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.getColumnIndex(java.lang.Object)"); }
-  public void moveColumn(int columnIndex, int newIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.moveColumn(int, int)"); }
-  public int getColumnIndexAtX(int x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.getColumnIndexAtX(int)"); }
-  public int getTotalColumnWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.getTotalColumnWidth()"); }
-  public void removeColumnModelListener(javax.swing.event.TableColumnModelListener x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.removeColumnModelListener(javax.swing.event.TableColumnModelListener)"); }
-  public void addColumnModelListener(javax.swing.event.TableColumnModelListener x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.addColumnModelListener(javax.swing.event.TableColumnModelListener)"); }
-  public java.util.Enumeration<javax.swing.table.TableColumn> getColumns() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.getColumns()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireColumnSelectionChanged(javax.swing.event.ListSelectionEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.TableColumnModelListener[] getColumnModelListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionModel(javax.swing.ListSelectionModel newModel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.ListSelectionModel getSelectionModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void propertyChange(java.beans.PropertyChangeEvent evt) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void valueChanged(javax.swing.event.ListSelectionEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColumnMargin(int newMargin) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getColumnMargin() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getColumnCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.table.TableColumn getColumn(int columnIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeColumn(javax.swing.table.TableColumn column) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addColumn(javax.swing.table.TableColumn aColumn) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getSelectedColumns() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getColumnSelectionAllowed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColumnSelectionAllowed(boolean flag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSelectedColumnCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getColumnIndex(java.lang.Object identifier) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void moveColumn(int columnIndex, int newIndex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getColumnIndexAtX(int x) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTotalColumnWidth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeColumnModelListener(javax.swing.event.TableColumnModelListener x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addColumnModelListener(javax.swing.event.TableColumnModelListener x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Enumeration<javax.swing.table.TableColumn> getColumns() { return null; }
   @JavaProtected
-  javax.swing.ListSelectionModel createSelectionModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.createSelectionModel()"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.DefaultTableColumnModel.getListeners(java.lang.Class<T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.ListSelectionModel createSelectionModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,17 +58,25 @@ class HTMLFrameHyperlinkEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public HTMLFrameHyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL targetURL, java.lang.String desc, javax.swing.text.Element sourceElement, java.awt.event.InputEvent inputEvent, java.lang.String targetFrame) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLFrameHyperlinkEvent.<init>(java.lang.Object, javax.swing.event.HyperlinkEvent.EventType, java.net.URL, java.lang.String, javax.swing.text.Element, java.awt.event.InputEvent, java.lang.String)"); }
-  public HTMLFrameHyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL targetURL, java.lang.String desc, javax.swing.text.Element sourceElement, java.lang.String targetFrame) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLFrameHyperlinkEvent.<init>(java.lang.Object, javax.swing.event.HyperlinkEvent.EventType, java.net.URL, java.lang.String, javax.swing.text.Element, java.lang.String)"); }
-  public HTMLFrameHyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL targetURL, javax.swing.text.Element sourceElement, java.lang.String targetFrame) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLFrameHyperlinkEvent.<init>(java.lang.Object, javax.swing.event.HyperlinkEvent.EventType, java.net.URL, javax.swing.text.Element, java.lang.String)"); }
-  public HTMLFrameHyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL targetURL, java.lang.String desc, java.lang.String targetFrame) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLFrameHyperlinkEvent.<init>(java.lang.Object, javax.swing.event.HyperlinkEvent.EventType, java.net.URL, java.lang.String, java.lang.String)"); }
-  public HTMLFrameHyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL targetURL, java.lang.String targetFrame) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLFrameHyperlinkEvent.<init>(java.lang.Object, javax.swing.event.HyperlinkEvent.EventType, java.net.URL, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HTMLFrameHyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL targetURL, java.lang.String desc, javax.swing.text.Element sourceElement, java.awt.event.InputEvent inputEvent, java.lang.String targetFrame) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HTMLFrameHyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL targetURL, java.lang.String desc, javax.swing.text.Element sourceElement, java.lang.String targetFrame) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HTMLFrameHyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL targetURL, javax.swing.text.Element sourceElement, java.lang.String targetFrame) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HTMLFrameHyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL targetURL, java.lang.String desc, java.lang.String targetFrame) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HTMLFrameHyperlinkEvent(java.lang.Object source, javax.swing.event.HyperlinkEvent.EventType type, java.net.URL targetURL, java.lang.String targetFrame) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getTarget() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLFrameHyperlinkEvent.getTarget()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getTarget() { return null; }
   < ---- END java signatures ---- >
 }

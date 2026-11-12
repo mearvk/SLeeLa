@@ -60,15 +60,21 @@ class FilterBypass {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  FilterBypass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.NavigationFilter.FilterBypass.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  FilterBypass() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.swing.text.Caret getCaret() { throw new AbstractMethodError("javax.swing.text.NavigationFilter.FilterBypass.getCaret()"); }
-  public abstract void setDot(int dot, javax.swing.text.Position.Bias bias) { throw new AbstractMethodError("javax.swing.text.NavigationFilter.FilterBypass.setDot(int, javax.swing.text.Position.Bias)"); }
-  public abstract void moveDot(int dot, javax.swing.text.Position.Bias bias) { throw new AbstractMethodError("javax.swing.text.NavigationFilter.FilterBypass.moveDot(int, javax.swing.text.Position.Bias)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.Caret getCaret() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDot(int dot, javax.swing.text.Position.Bias bias) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void moveDot(int dot, javax.swing.text.Position.Bias bias) { }
   < ---- END java signatures ---- >
 }

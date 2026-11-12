@@ -58,28 +58,50 @@ class ScrollPaneAdjustable {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.toString()"); }
-  public int getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.getValue()"); }
-  public void setValue(int v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.setValue(int)"); }
-  public java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.paramString()"); }
-  public int getMaximum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.getMaximum()"); }
-  public int getMinimum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.getMinimum()"); }
-  public int getOrientation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.getOrientation()"); }
-  public void setMinimum(int min) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.setMinimum(int)"); }
-  public void setMaximum(int max) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.setMaximum(int)"); }
-  public synchronized void setUnitIncrement(int u) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.setUnitIncrement(int)"); }
-  public int getUnitIncrement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.getUnitIncrement()"); }
-  public synchronized void setBlockIncrement(int b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.setBlockIncrement(int)"); }
-  public int getBlockIncrement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.getBlockIncrement()"); }
-  public void setVisibleAmount(int v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.setVisibleAmount(int)"); }
-  public int getVisibleAmount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.getVisibleAmount()"); }
-  public synchronized void addAdjustmentListener(java.awt.event.AdjustmentListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.addAdjustmentListener(java.awt.event.AdjustmentListener)"); }
-  public synchronized void removeAdjustmentListener(java.awt.event.AdjustmentListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.removeAdjustmentListener(java.awt.event.AdjustmentListener)"); }
-  public void setValueIsAdjusting(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.setValueIsAdjusting(boolean)"); }
-  public synchronized java.awt.event.AdjustmentListener[] getAdjustmentListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.getAdjustmentListeners()"); }
-  public boolean getValueIsAdjusting() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPaneAdjustable.getValueIsAdjusting()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValue(int v) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaximum() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinimum() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getOrientation() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinimum(int min) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximum(int max) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setUnitIncrement(int u) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getUnitIncrement() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setBlockIncrement(int b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBlockIncrement() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVisibleAmount(int v) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVisibleAmount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addAdjustmentListener(java.awt.event.AdjustmentListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeAdjustmentListener(java.awt.event.AdjustmentListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValueIsAdjusting(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.event.AdjustmentListener[] getAdjustmentListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getValueIsAdjusting() { return false; }
   < ---- END java signatures ---- >
 }

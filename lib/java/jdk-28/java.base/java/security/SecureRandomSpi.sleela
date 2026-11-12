@@ -58,27 +58,38 @@ class SecureRandomSpi {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SecureRandomSpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandomSpi.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SecureRandomSpi() { }
   @JavaProtected
-  SecureRandomSpi(java.security.SecureRandomParameters params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandomSpi.<init>(java.security.SecureRandomParameters)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SecureRandomSpi(java.security.SecureRandomParameters params) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandomSpi.toString()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
   @JavaProtected
-  abstract void engineSetSeed(byte[] seed) { throw new AbstractMethodError("java.security.SecureRandomSpi.engineSetSeed(byte[])"); }
+  @throwable("java.lang.AbstractMethodError")
+  void engineSetSeed(byte[] seed) { }
   @JavaProtected
-  java.security.SecureRandomParameters engineGetParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandomSpi.engineGetParameters()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.security.SecureRandomParameters engineGetParameters() { return null; }
   @JavaProtected
-  void engineNextBytes(byte[] bytes, java.security.SecureRandomParameters params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandomSpi.engineNextBytes(byte[], java.security.SecureRandomParameters)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void engineNextBytes(byte[] bytes, java.security.SecureRandomParameters params) { }
   @JavaProtected
-  abstract void engineNextBytes(byte[] bytes) { throw new AbstractMethodError("java.security.SecureRandomSpi.engineNextBytes(byte[])"); }
+  @throwable("java.lang.AbstractMethodError")
+  void engineNextBytes(byte[] bytes) { }
   @JavaProtected
-  abstract byte[] engineGenerateSeed(int numBytes) { throw new AbstractMethodError("java.security.SecureRandomSpi.engineGenerateSeed(int)"); }
+  @throwable("java.lang.AbstractMethodError")
+  byte[] engineGenerateSeed(int numBytes) { return null; }
   @JavaProtected
-  void engineReseed(java.security.SecureRandomParameters params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandomSpi.engineReseed(java.security.SecureRandomParameters)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void engineReseed(java.security.SecureRandomParameters params) { }
   < ---- END java signatures ---- >
 }

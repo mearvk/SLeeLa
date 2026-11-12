@@ -58,16 +58,26 @@ class ExecutionControl {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void load(jdk.jshell.spi.ExecutionControl.ClassBytecodes[] cbcs) throws jdk.jshell.spi.ExecutionControl.ClassInstallException, jdk.jshell.spi.ExecutionControl.NotImplementedException, jdk.jshell.spi.ExecutionControl.EngineTerminationException { throw new AbstractMethodError("jdk.jshell.spi.ExecutionControl.load(jdk.jshell.spi.ExecutionControl.ClassBytecodes[])"); }
-  public abstract void stop() throws jdk.jshell.spi.ExecutionControl.EngineTerminationException, jdk.jshell.spi.ExecutionControl.InternalException { throw new AbstractMethodError("jdk.jshell.spi.ExecutionControl.stop()"); }
-  public static jdk.jshell.spi.ExecutionControl generate(jdk.jshell.spi.ExecutionEnv env, java.lang.String spec) throws java.lang.Throwable { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.spi.ExecutionControl.generate(jdk.jshell.spi.ExecutionEnv, java.lang.String)"); }
-  public static jdk.jshell.spi.ExecutionControl generate(jdk.jshell.spi.ExecutionEnv env, java.lang.String name, java.util.Map<java.lang.String, java.lang.String> parameters) throws java.lang.Throwable { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.spi.ExecutionControl.generate(jdk.jshell.spi.ExecutionEnv, java.lang.String, java.util.Map<java.lang.String, java.lang.String>)"); }
-  public abstract void redefine(jdk.jshell.spi.ExecutionControl.ClassBytecodes[] cbcs) throws jdk.jshell.spi.ExecutionControl.ClassInstallException, jdk.jshell.spi.ExecutionControl.NotImplementedException, jdk.jshell.spi.ExecutionControl.EngineTerminationException { throw new AbstractMethodError("jdk.jshell.spi.ExecutionControl.redefine(jdk.jshell.spi.ExecutionControl.ClassBytecodes[])"); }
-  public abstract java.lang.Object extensionCommand(java.lang.String command, java.lang.Object arg) throws jdk.jshell.spi.ExecutionControl.RunException, jdk.jshell.spi.ExecutionControl.EngineTerminationException, jdk.jshell.spi.ExecutionControl.InternalException { throw new AbstractMethodError("jdk.jshell.spi.ExecutionControl.extensionCommand(java.lang.String, java.lang.Object)"); }
-  public abstract void addToClasspath(java.lang.String path) throws jdk.jshell.spi.ExecutionControl.EngineTerminationException, jdk.jshell.spi.ExecutionControl.InternalException { throw new AbstractMethodError("jdk.jshell.spi.ExecutionControl.addToClasspath(java.lang.String)"); }
-  public abstract java.lang.String varValue(java.lang.String className, java.lang.String varName) throws jdk.jshell.spi.ExecutionControl.RunException, jdk.jshell.spi.ExecutionControl.EngineTerminationException, jdk.jshell.spi.ExecutionControl.InternalException { throw new AbstractMethodError("jdk.jshell.spi.ExecutionControl.varValue(java.lang.String, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, jdk.jshell.spi.ExecutionControl.ClassInstallException, jdk.jshell.spi.ExecutionControl.NotImplementedException, jdk.jshell.spi.ExecutionControl.EngineTerminationException")
+  public void load(jdk.jshell.spi.ExecutionControl.ClassBytecodes[] cbcs) { }
+  @throwable("java.lang.AbstractMethodError, jdk.jshell.spi.ExecutionControl.EngineTerminationException, jdk.jshell.spi.ExecutionControl.InternalException")
+  public void stop() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Throwable")
+  public static jdk.jshell.spi.ExecutionControl generate(jdk.jshell.spi.ExecutionEnv env, java.lang.String spec) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Throwable")
+  public static jdk.jshell.spi.ExecutionControl generate(jdk.jshell.spi.ExecutionEnv env, java.lang.String name, java.util.Map<java.lang.String, java.lang.String> parameters) { return null; }
+  @throwable("java.lang.AbstractMethodError, jdk.jshell.spi.ExecutionControl.ClassInstallException, jdk.jshell.spi.ExecutionControl.NotImplementedException, jdk.jshell.spi.ExecutionControl.EngineTerminationException")
+  public void redefine(jdk.jshell.spi.ExecutionControl.ClassBytecodes[] cbcs) { }
+  @throwable("java.lang.AbstractMethodError, jdk.jshell.spi.ExecutionControl.RunException, jdk.jshell.spi.ExecutionControl.EngineTerminationException, jdk.jshell.spi.ExecutionControl.InternalException")
+  public java.lang.Object extensionCommand(java.lang.String command, java.lang.Object arg) { return null; }
+  @throwable("java.lang.AbstractMethodError, jdk.jshell.spi.ExecutionControl.EngineTerminationException, jdk.jshell.spi.ExecutionControl.InternalException")
+  public void addToClasspath(java.lang.String path) { }
+  @throwable("java.lang.AbstractMethodError, jdk.jshell.spi.ExecutionControl.RunException, jdk.jshell.spi.ExecutionControl.EngineTerminationException, jdk.jshell.spi.ExecutionControl.InternalException")
+  public java.lang.String varValue(java.lang.String className, java.lang.String varName) { return null; }
   < ---- END java signatures ---- >
 }

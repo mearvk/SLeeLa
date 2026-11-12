@@ -58,7 +58,9 @@ class InvalidParameterSpecException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidParameterSpecException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.InvalidParameterSpecException.<init>()"); }
-  public InvalidParameterSpecException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.InvalidParameterSpecException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidParameterSpecException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidParameterSpecException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

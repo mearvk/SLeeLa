@@ -58,10 +58,14 @@ class FlavorMap {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.Map<java.awt.datatransfer.DataFlavor, java.lang.String> getNativesForFlavors(java.awt.datatransfer.DataFlavor[] flavors) { throw new AbstractMethodError("java.awt.datatransfer.FlavorMap.getNativesForFlavors(java.awt.datatransfer.DataFlavor[])"); }
-  public abstract java.util.Map<java.lang.String, java.awt.datatransfer.DataFlavor> getFlavorsForNatives(java.lang.String[] natives) { throw new AbstractMethodError("java.awt.datatransfer.FlavorMap.getFlavorsForNatives(java.lang.String[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Map<java.awt.datatransfer.DataFlavor, java.lang.String> getNativesForFlavors(java.awt.datatransfer.DataFlavor[] flavors) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Map<java.lang.String, java.awt.datatransfer.DataFlavor> getFlavorsForNatives(java.lang.String[] natives) { return null; }
   < ---- END java signatures ---- >
 }

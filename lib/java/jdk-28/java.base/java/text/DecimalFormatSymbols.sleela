@@ -58,52 +58,95 @@ class DecimalFormatSymbols {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DecimalFormatSymbols() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.<init>()"); }
-  public DecimalFormatSymbols(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.<init>(java.util.Locale)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DecimalFormatSymbols() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DecimalFormatSymbols(java.util.Locale locale) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.clone()"); }
-  public static final java.text.DecimalFormatSymbols getInstance(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getInstance(java.util.Locale)"); }
-  public static final java.text.DecimalFormatSymbols getInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getInstance()"); }
-  public static java.util.Locale[] getAvailableLocales() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getAvailableLocales()"); }
-  public java.lang.String getNaN() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getNaN()"); }
-  public java.lang.String getInfinity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getInfinity()"); }
-  public char getZeroDigit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getZeroDigit()"); }
-  public char getMonetaryGroupingSeparator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getMonetaryGroupingSeparator()"); }
-  public char getGroupingSeparator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getGroupingSeparator()"); }
-  public char getMonetaryDecimalSeparator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getMonetaryDecimalSeparator()"); }
-  public char getDecimalSeparator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getDecimalSeparator()"); }
-  public java.lang.String getExponentSeparator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getExponentSeparator()"); }
-  public java.util.Locale getLocale() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getLocale()"); }
-  public java.lang.String getInternationalCurrencySymbol() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getInternationalCurrencySymbol()"); }
-  public java.lang.String getCurrencySymbol() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getCurrencySymbol()"); }
-  public char getDigit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getDigit()"); }
-  public char getPatternSeparator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getPatternSeparator()"); }
-  public char getPercent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getPercent()"); }
-  public char getPerMill() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getPerMill()"); }
-  public char getMinusSign() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getMinusSign()"); }
-  public java.util.Currency getCurrency() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.getCurrency()"); }
-  public void setCurrency(java.util.Currency currency) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setCurrency(java.util.Currency)"); }
-  public void setZeroDigit(char zeroDigit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setZeroDigit(char)"); }
-  public void setGroupingSeparator(char groupingSeparator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setGroupingSeparator(char)"); }
-  public void setDecimalSeparator(char decimalSeparator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setDecimalSeparator(char)"); }
-  public void setPerMill(char perMill) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setPerMill(char)"); }
-  public void setPercent(char percent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setPercent(char)"); }
-  public void setDigit(char digit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setDigit(char)"); }
-  public void setPatternSeparator(char patternSeparator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setPatternSeparator(char)"); }
-  public void setInfinity(java.lang.String infinity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setInfinity(java.lang.String)"); }
-  public void setNaN(java.lang.String NaN) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setNaN(java.lang.String)"); }
-  public void setMinusSign(char minusSign) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setMinusSign(char)"); }
-  public void setCurrencySymbol(java.lang.String currency) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setCurrencySymbol(java.lang.String)"); }
-  public void setInternationalCurrencySymbol(java.lang.String currencyCode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setInternationalCurrencySymbol(java.lang.String)"); }
-  public void setMonetaryDecimalSeparator(char sep) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setMonetaryDecimalSeparator(char)"); }
-  public void setExponentSeparator(java.lang.String exp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setExponentSeparator(java.lang.String)"); }
-  public void setMonetaryGroupingSeparator(char monetaryGroupingSeparator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.DecimalFormatSymbols.setMonetaryGroupingSeparator(char)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final java.text.DecimalFormatSymbols getInstance(java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final java.text.DecimalFormatSymbols getInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Locale[] getAvailableLocales() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getNaN() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getInfinity() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getZeroDigit() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getMonetaryGroupingSeparator() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getGroupingSeparator() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getMonetaryDecimalSeparator() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getDecimalSeparator() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getExponentSeparator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale getLocale() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getInternationalCurrencySymbol() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getCurrencySymbol() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getDigit() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getPatternSeparator() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getPercent() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getPerMill() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getMinusSign() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Currency getCurrency() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCurrency(java.util.Currency currency) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setZeroDigit(char zeroDigit) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setGroupingSeparator(char groupingSeparator) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDecimalSeparator(char decimalSeparator) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPerMill(char perMill) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPercent(char percent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDigit(char digit) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPatternSeparator(char patternSeparator) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInfinity(java.lang.String infinity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNaN(java.lang.String NaN) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinusSign(char minusSign) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCurrencySymbol(java.lang.String currency) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInternationalCurrencySymbol(java.lang.String currencyCode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMonetaryDecimalSeparator(char sep) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setExponentSeparator(java.lang.String exp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMonetaryGroupingSeparator(char monetaryGroupingSeparator) { }
   < ---- END java signatures ---- >
 }

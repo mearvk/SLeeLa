@@ -60,19 +60,29 @@ class ReadLock {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ReadLock(java.util.concurrent.locks.ReentrantReadWriteLock lock) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock.<init>(java.util.concurrent.locks.ReentrantReadWriteLock)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ReadLock(java.util.concurrent.locks.ReentrantReadWriteLock lock) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock.toString()"); }
-  public void lock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock.lock()"); }
-  public void lockInterruptibly() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock.lockInterruptibly()"); }
-  public boolean tryLock(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock.tryLock(long, java.util.concurrent.TimeUnit)"); }
-  public boolean tryLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock.tryLock()"); }
-  public java.util.concurrent.locks.Condition newCondition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock.newCondition()"); }
-  public void unlock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock.unlock()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void lock() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void lockInterruptibly() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public boolean tryLock(long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean tryLock() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.locks.Condition newCondition() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void unlock() { }
   < ---- END java signatures ---- >
 }

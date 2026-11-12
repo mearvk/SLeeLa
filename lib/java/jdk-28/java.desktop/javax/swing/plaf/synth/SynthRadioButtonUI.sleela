@@ -58,18 +58,25 @@ class SynthRadioButtonUI {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SynthRadioButtonUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthRadioButtonUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SynthRadioButtonUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void paintBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthRadioButtonUI.paintBorder(javax.swing.plaf.synth.SynthContext, java.awt.Graphics, int, int, int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
   @JavaProtected
-  javax.swing.Icon getSizingIcon(javax.swing.AbstractButton b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthRadioButtonUI.getSizingIcon(javax.swing.AbstractButton)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthRadioButtonUI.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.Icon getSizingIcon(javax.swing.AbstractButton b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent b) { return null; }
   @JavaProtected
-  java.lang.String getPropertyPrefix() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthRadioButtonUI.getPropertyPrefix()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String getPropertyPrefix() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,54 +58,98 @@ class ArrayList<E> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ArrayList(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.<init>(java.util.Collection<? extends E>)"); }
-  public ArrayList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.<init>()"); }
-  public ArrayList(int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.<init>(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ArrayList(java.util.Collection<? extends E> c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ArrayList() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ArrayList(int initialCapacity) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.remove(java.lang.Object)"); }
-  public E remove(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.remove(int)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.size()"); }
-  public E get(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.get(int)"); }
-  public boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.clone()"); }
-  public void sort(java.util.Comparator<? super E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.sort(java.util.Comparator<? super E>)"); }
-  public int indexOf(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.indexOf(java.lang.Object)"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.clear()"); }
-  public int lastIndexOf(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.lastIndexOf(java.lang.Object)"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.isEmpty()"); }
-  public void replaceAll(java.util.function.UnaryOperator<E> operator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.replaceAll(java.util.function.UnaryOperator<E>)"); }
-  public boolean add(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.add(E)"); }
-  public void add(int index, E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.add(int, E)"); }
-  public java.util.List<E> subList(int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.subList(int, int)"); }
-  public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.toArray(T[])"); }
-  public java.lang.Object[] toArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.toArray()"); }
-  public java.util.Iterator<E> iterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.iterator()"); }
-  public boolean contains(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.contains(java.lang.Object)"); }
-  public java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.spliterator()"); }
-  public boolean addAll(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.addAll(java.util.Collection<? extends E>)"); }
-  public boolean addAll(int index, java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.addAll(int, java.util.Collection<? extends E>)"); }
-  public void trimToSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.trimToSize()"); }
-  public E set(int index, E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.set(int, E)"); }
-  public void forEach(java.util.function.Consumer<? super E> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.forEach(java.util.function.Consumer<? super E>)"); }
-  public void ensureCapacity(int minCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.ensureCapacity(int)"); }
-  public boolean removeIf(java.util.function.Predicate<? super E> filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.removeIf(java.util.function.Predicate<? super E>)"); }
-  public E getFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.getFirst()"); }
-  public E getLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.getLast()"); }
-  public void addFirst(E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.addFirst(E)"); }
-  public void addLast(E element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.addLast(E)"); }
-  public E removeFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.removeFirst()"); }
-  public E removeLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.removeLast()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E remove(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E get(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void sort(java.util.Comparator<? super E> c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int indexOf(java.lang.Object o) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lastIndexOf(java.lang.Object o) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void replaceAll(java.util.function.UnaryOperator<E> operator) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean add(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void add(int index, E element) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<E> subList(int fromIndex, int toIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> T[] toArray(T[] a) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] toArray() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Iterator<E> iterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Spliterator<E> spliterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean addAll(java.util.Collection<? extends E> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean addAll(int index, java.util.Collection<? extends E> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void trimToSize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E set(int index, E element) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEach(java.util.function.Consumer<? super E> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ensureCapacity(int minCapacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean removeIf(java.util.function.Predicate<? super E> filter) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E getFirst() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E getLast() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addFirst(E element) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addLast(E element) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E removeFirst() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E removeLast() { return null; }
   @JavaProtected
-  void removeRange(int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.removeRange(int, int)"); }
-  public boolean removeAll(java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.removeAll(java.util.Collection<?>)"); }
-  public boolean retainAll(java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.retainAll(java.util.Collection<?>)"); }
-  public java.util.ListIterator<E> listIterator(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.listIterator(int)"); }
-  public java.util.ListIterator<E> listIterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.ArrayList.listIterator()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void removeRange(int fromIndex, int toIndex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean removeAll(java.util.Collection<?> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean retainAll(java.util.Collection<?> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.ListIterator<E> listIterator(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.ListIterator<E> listIterator() { return null; }
   < ---- END java signatures ---- >
 }

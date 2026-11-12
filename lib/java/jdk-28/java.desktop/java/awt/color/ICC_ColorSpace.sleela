@@ -58,19 +58,29 @@ class ICC_ColorSpace {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ICC_ColorSpace(java.awt.color.ICC_Profile profile) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_ColorSpace.<init>(java.awt.color.ICC_Profile)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ICC_ColorSpace(java.awt.color.ICC_Profile profile) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public float[] toRGB(float[] colorvalue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_ColorSpace.toRGB(float[])"); }
-  public float[] toCIEXYZ(float[] colorvalue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_ColorSpace.toCIEXYZ(float[])"); }
-  public float[] fromCIEXYZ(float[] colorvalue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_ColorSpace.fromCIEXYZ(float[])"); }
-  public float[] fromRGB(float[] rgbvalue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_ColorSpace.fromRGB(float[])"); }
-  public float getMinValue(int component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_ColorSpace.getMinValue(int)"); }
-  public float getMaxValue(int component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_ColorSpace.getMaxValue(int)"); }
-  public java.awt.color.ICC_Profile getProfile() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ICC_ColorSpace.getProfile()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] toRGB(float[] colorvalue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] toCIEXYZ(float[] colorvalue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] fromCIEXYZ(float[] colorvalue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] fromRGB(float[] rgbvalue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMinValue(int component) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMaxValue(int component) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.color.ICC_Profile getProfile() { return null; }
   < ---- END java signatures ---- >
 }

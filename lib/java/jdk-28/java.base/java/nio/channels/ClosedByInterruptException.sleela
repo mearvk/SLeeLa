@@ -58,6 +58,7 @@ class ClosedByInterruptException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ClosedByInterruptException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.ClosedByInterruptException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ClosedByInterruptException() { }
   < ---- END java constructors ---- >
 }

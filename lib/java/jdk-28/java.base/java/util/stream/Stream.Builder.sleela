@@ -59,11 +59,16 @@ class Builder<T> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default java.util.stream.Stream.Builder<T> add(T t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Stream.Builder.add(T)"); }
-  public abstract void accept(T t) { throw new AbstractMethodError("java.util.stream.Stream.Builder.accept(T)"); }
-  public abstract java.util.stream.Stream<T> build() { throw new AbstractMethodError("java.util.stream.Stream.Builder.build()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.Stream.Builder<T> add(T t) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void accept(T t) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.Stream<T> build() { return null; }
   < ---- END java signatures ---- >
 }

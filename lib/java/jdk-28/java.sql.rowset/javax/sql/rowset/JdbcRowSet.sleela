@@ -58,16 +58,26 @@ class JdbcRowSet {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void commit() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.JdbcRowSet.commit()"); }
-  public abstract void rollback() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.JdbcRowSet.rollback()"); }
-  public abstract void rollback(java.sql.Savepoint s) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.JdbcRowSet.rollback(java.sql.Savepoint)"); }
-  public abstract void setAutoCommit(boolean autoCommit) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.JdbcRowSet.setAutoCommit(boolean)"); }
-  public abstract boolean getAutoCommit() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.JdbcRowSet.getAutoCommit()"); }
-  public abstract boolean getShowDeleted() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.JdbcRowSet.getShowDeleted()"); }
-  public abstract void setShowDeleted(boolean b) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.JdbcRowSet.setShowDeleted(boolean)"); }
-  public abstract javax.sql.rowset.RowSetWarning getRowSetWarnings() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.JdbcRowSet.getRowSetWarnings()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void commit() { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void rollback() { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void rollback(java.sql.Savepoint s) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setAutoCommit(boolean autoCommit) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean getAutoCommit() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean getShowDeleted() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setShowDeleted(boolean b) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public javax.sql.rowset.RowSetWarning getRowSetWarnings() { return null; }
   < ---- END java signatures ---- >
 }

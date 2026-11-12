@@ -58,47 +58,85 @@ class AtomicLong {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AtomicLong(long initialValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.<init>(long)"); }
-  public AtomicLong() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AtomicLong(long initialValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AtomicLong() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final long get() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.get()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.toString()"); }
-  public int intValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.intValue()"); }
-  public long longValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.longValue()"); }
-  public float floatValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.floatValue()"); }
-  public double doubleValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.doubleValue()"); }
-  public final void set(long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.set(long)"); }
-  public final long getOpaque() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.getOpaque()"); }
-  public final void setOpaque(long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.setOpaque(long)"); }
-  public final long getAcquire() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.getAcquire()"); }
-  public final void setRelease(long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.setRelease(long)"); }
-  public final boolean compareAndSet(long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.compareAndSet(long, long)"); }
-  public final long compareAndExchange(long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.compareAndExchange(long, long)"); }
-  public final long compareAndExchangeAcquire(long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.compareAndExchangeAcquire(long, long)"); }
-  public final long compareAndExchangeRelease(long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.compareAndExchangeRelease(long, long)"); }
-  public final boolean weakCompareAndSetPlain(long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.weakCompareAndSetPlain(long, long)"); }
-  public final boolean weakCompareAndSet(long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.weakCompareAndSet(long, long)"); }
-  public final boolean weakCompareAndSetAcquire(long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.weakCompareAndSetAcquire(long, long)"); }
-  public final boolean weakCompareAndSetRelease(long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.weakCompareAndSetRelease(long, long)"); }
-  public final long getAndSet(long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.getAndSet(long)"); }
-  public final long getAndAdd(long delta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.getAndAdd(long)"); }
-  public final long incrementAndGet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.incrementAndGet()"); }
-  public final boolean weakCompareAndSetVolatile(long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.weakCompareAndSetVolatile(long, long)"); }
-  public final void lazySet(long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.lazySet(long)"); }
-  public final long getAndIncrement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.getAndIncrement()"); }
-  public final long getAndDecrement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.getAndDecrement()"); }
-  public final long decrementAndGet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.decrementAndGet()"); }
-  public final long addAndGet(long delta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.addAndGet(long)"); }
-  public final long getAndUpdate(java.util.function.LongUnaryOperator updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.getAndUpdate(java.util.function.LongUnaryOperator)"); }
-  public final long updateAndGet(java.util.function.LongUnaryOperator updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.updateAndGet(java.util.function.LongUnaryOperator)"); }
-  public final long getAndAccumulate(long x, java.util.function.LongBinaryOperator accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.getAndAccumulate(long, java.util.function.LongBinaryOperator)"); }
-  public final long accumulateAndGet(long x, java.util.function.LongBinaryOperator accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.accumulateAndGet(long, java.util.function.LongBinaryOperator)"); }
-  public final long getPlain() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.getPlain()"); }
-  public final void setPlain(long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLong.setPlain(long)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long get() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int intValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long longValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float floatValue() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double doubleValue() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void set(long newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getOpaque() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setOpaque(long newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAcquire() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setRelease(long newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean compareAndSet(long expectedValue, long newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long compareAndExchange(long expectedValue, long newValue) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long compareAndExchangeAcquire(long expectedValue, long newValue) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long compareAndExchangeRelease(long expectedValue, long newValue) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetPlain(long expectedValue, long newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSet(long expectedValue, long newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetAcquire(long expectedValue, long newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetRelease(long expectedValue, long newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAndSet(long newValue) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAndAdd(long delta) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long incrementAndGet() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetVolatile(long expectedValue, long newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void lazySet(long newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAndIncrement() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAndDecrement() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long decrementAndGet() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long addAndGet(long delta) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAndUpdate(java.util.function.LongUnaryOperator updateFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long updateAndGet(java.util.function.LongUnaryOperator updateFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAndAccumulate(long x, java.util.function.LongBinaryOperator accumulatorFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long accumulateAndGet(long x, java.util.function.LongBinaryOperator accumulatorFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getPlain() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setPlain(long newValue) { }
   < ---- END java signatures ---- >
 }

@@ -58,12 +58,18 @@ class DeclHandler {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void elementDecl(java.lang.String name, java.lang.String model) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ext.DeclHandler.elementDecl(java.lang.String, java.lang.String)"); }
-  public abstract void attributeDecl(java.lang.String eName, java.lang.String aName, java.lang.String type, java.lang.String mode, java.lang.String value) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ext.DeclHandler.attributeDecl(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract void internalEntityDecl(java.lang.String name, java.lang.String value) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ext.DeclHandler.internalEntityDecl(java.lang.String, java.lang.String)"); }
-  public abstract void externalEntityDecl(java.lang.String name, java.lang.String publicId, java.lang.String systemId) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ext.DeclHandler.externalEntityDecl(java.lang.String, java.lang.String, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void elementDecl(java.lang.String name, java.lang.String model) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void attributeDecl(java.lang.String eName, java.lang.String aName, java.lang.String type, java.lang.String mode, java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void internalEntityDecl(java.lang.String name, java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void externalEntityDecl(java.lang.String name, java.lang.String publicId, java.lang.String systemId) { }
   < ---- END java signatures ---- >
 }

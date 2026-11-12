@@ -58,9 +58,13 @@ class SchemaFactoryConfigurationError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SchemaFactoryConfigurationError(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactoryConfigurationError.<init>(java.lang.String, java.lang.Throwable)"); }
-  public SchemaFactoryConfigurationError(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactoryConfigurationError.<init>(java.lang.Throwable)"); }
-  public SchemaFactoryConfigurationError(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactoryConfigurationError.<init>(java.lang.String)"); }
-  public SchemaFactoryConfigurationError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.SchemaFactoryConfigurationError.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SchemaFactoryConfigurationError(java.lang.String message, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SchemaFactoryConfigurationError(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SchemaFactoryConfigurationError(java.lang.String message) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SchemaFactoryConfigurationError() { }
   < ---- END java constructors ---- >
 }

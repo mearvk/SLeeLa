@@ -58,12 +58,18 @@ class Utf8Entry {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String stringValue() { throw new AbstractMethodError("java.lang.classfile.constantpool.Utf8Entry.stringValue()"); }
-  public abstract boolean equalsString(java.lang.String s) { throw new AbstractMethodError("java.lang.classfile.constantpool.Utf8Entry.equalsString(java.lang.String)"); }
-  public abstract boolean isFieldType(java.lang.constant.ClassDesc desc) { throw new AbstractMethodError("java.lang.classfile.constantpool.Utf8Entry.isFieldType(java.lang.constant.ClassDesc)"); }
-  public abstract boolean isMethodType(java.lang.constant.MethodTypeDesc desc) { throw new AbstractMethodError("java.lang.classfile.constantpool.Utf8Entry.isMethodType(java.lang.constant.MethodTypeDesc)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String stringValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equalsString(java.lang.String s) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isFieldType(java.lang.constant.ClassDesc desc) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isMethodType(java.lang.constant.MethodTypeDesc desc) { return false; }
   < ---- END java signatures ---- >
 }

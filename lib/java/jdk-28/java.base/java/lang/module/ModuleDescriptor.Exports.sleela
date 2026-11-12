@@ -59,17 +59,28 @@ class Exports {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.Set<java.lang.module.ModuleDescriptor.Exports.Modifier> modifiers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Exports.modifiers()"); }
-  public boolean equals(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Exports.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Exports.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Exports.hashCode()"); }
-  public int compareTo(java.lang.module.ModuleDescriptor.Exports that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Exports.compareTo(java.lang.module.ModuleDescriptor.Exports)"); }
-  public java.util.Set<java.lang.reflect.AccessFlag> accessFlags() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Exports.accessFlags()"); }
-  public java.lang.String source() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Exports.source()"); }
-  public boolean isQualified() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Exports.isQualified()"); }
-  public java.util.Set<java.lang.String> targets() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Exports.targets()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.module.ModuleDescriptor.Exports.Modifier> modifiers() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object ob) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.lang.module.ModuleDescriptor.Exports that) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.reflect.AccessFlag> accessFlags() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String source() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isQualified() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.String> targets() { return null; }
   < ---- END java signatures ---- >
 }

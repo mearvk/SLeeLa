@@ -58,13 +58,20 @@ class NestMembersAttribute {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static java.lang.classfile.attribute.NestMembersAttribute of(java.lang.classfile.constantpool.ClassEntry... nestMembers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.NestMembersAttribute.of(java.lang.classfile.constantpool.ClassEntry...)"); }
-  public static java.lang.classfile.attribute.NestMembersAttribute of(java.util.List<java.lang.classfile.constantpool.ClassEntry> nestMembers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.NestMembersAttribute.of(java.util.List<java.lang.classfile.constantpool.ClassEntry>)"); }
-  public abstract java.util.List<java.lang.classfile.constantpool.ClassEntry> nestMembers() { throw new AbstractMethodError("java.lang.classfile.attribute.NestMembersAttribute.nestMembers()"); }
-  public static java.lang.classfile.attribute.NestMembersAttribute ofSymbols(java.util.List<java.lang.constant.ClassDesc> nestMembers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.NestMembersAttribute.ofSymbols(java.util.List<java.lang.constant.ClassDesc>)"); }
-  public static java.lang.classfile.attribute.NestMembersAttribute ofSymbols(java.lang.constant.ClassDesc... nestMembers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.NestMembersAttribute.ofSymbols(java.lang.constant.ClassDesc...)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.NestMembersAttribute of(java.lang.classfile.constantpool.ClassEntry... nestMembers) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.NestMembersAttribute of(java.util.List<java.lang.classfile.constantpool.ClassEntry> nestMembers) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.classfile.constantpool.ClassEntry> nestMembers() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.NestMembersAttribute ofSymbols(java.util.List<java.lang.constant.ClassDesc> nestMembers) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.NestMembersAttribute ofSymbols(java.lang.constant.ClassDesc... nestMembers) { return null; }
   < ---- END java signatures ---- >
 }

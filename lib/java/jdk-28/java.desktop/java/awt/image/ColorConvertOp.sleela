@@ -58,22 +58,35 @@ class ColorConvertOp {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ColorConvertOp(java.awt.color.ICC_Profile[] profiles, java.awt.RenderingHints hints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ColorConvertOp.<init>(java.awt.color.ICC_Profile[], java.awt.RenderingHints)"); }
-  public ColorConvertOp(java.awt.color.ColorSpace srcCspace, java.awt.color.ColorSpace dstCspace, java.awt.RenderingHints hints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ColorConvertOp.<init>(java.awt.color.ColorSpace, java.awt.color.ColorSpace, java.awt.RenderingHints)"); }
-  public ColorConvertOp(java.awt.color.ColorSpace cspace, java.awt.RenderingHints hints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ColorConvertOp.<init>(java.awt.color.ColorSpace, java.awt.RenderingHints)"); }
-  public ColorConvertOp(java.awt.RenderingHints hints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ColorConvertOp.<init>(java.awt.RenderingHints)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ColorConvertOp(java.awt.color.ICC_Profile[] profiles, java.awt.RenderingHints hints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ColorConvertOp(java.awt.color.ColorSpace srcCspace, java.awt.color.ColorSpace dstCspace, java.awt.RenderingHints hints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ColorConvertOp(java.awt.color.ColorSpace cspace, java.awt.RenderingHints hints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ColorConvertOp(java.awt.RenderingHints hints) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.awt.image.BufferedImage filter(java.awt.image.BufferedImage src, java.awt.image.BufferedImage dest) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ColorConvertOp.filter(java.awt.image.BufferedImage, java.awt.image.BufferedImage)"); }
-  public final java.awt.geom.Rectangle2D getBounds2D(java.awt.image.Raster src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ColorConvertOp.getBounds2D(java.awt.image.Raster)"); }
-  public final java.awt.RenderingHints getRenderingHints() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ColorConvertOp.getRenderingHints()"); }
-  public java.awt.image.BufferedImage createCompatibleDestImage(java.awt.image.BufferedImage src, java.awt.image.ColorModel destCM) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ColorConvertOp.createCompatibleDestImage(java.awt.image.BufferedImage, java.awt.image.ColorModel)"); }
-  public final java.awt.geom.Point2D getPoint2D(java.awt.geom.Point2D srcPt, java.awt.geom.Point2D dstPt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ColorConvertOp.getPoint2D(java.awt.geom.Point2D, java.awt.geom.Point2D)"); }
-  public java.awt.image.WritableRaster createCompatibleDestRaster(java.awt.image.Raster src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ColorConvertOp.createCompatibleDestRaster(java.awt.image.Raster)"); }
-  public final java.awt.color.ICC_Profile[] getICC_Profiles() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ColorConvertOp.getICC_Profiles()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.image.BufferedImage filter(java.awt.image.BufferedImage src, java.awt.image.BufferedImage dest) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.geom.Rectangle2D getBounds2D(java.awt.image.Raster src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.RenderingHints getRenderingHints() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.BufferedImage createCompatibleDestImage(java.awt.image.BufferedImage src, java.awt.image.ColorModel destCM) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.geom.Point2D getPoint2D(java.awt.geom.Point2D srcPt, java.awt.geom.Point2D dstPt) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.WritableRaster createCompatibleDestRaster(java.awt.image.Raster src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.color.ICC_Profile[] getICC_Profiles() { return null; }
   < ---- END java signatures ---- >
 }

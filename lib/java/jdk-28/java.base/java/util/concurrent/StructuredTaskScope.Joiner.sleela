@@ -59,16 +59,26 @@ class Joiner<T, R> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract R result() throws java.lang.Throwable { throw new AbstractMethodError("java.util.concurrent.StructuredTaskScope.Joiner.result()"); }
-  public default boolean onComplete(java.util.concurrent.StructuredTaskScope.Subtask<? extends T> subtask) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.StructuredTaskScope.Joiner.onComplete(java.util.concurrent.StructuredTaskScope.Subtask<? extends T>)"); }
-  public default boolean onFork(java.util.concurrent.StructuredTaskScope.Subtask<? extends T> subtask) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.StructuredTaskScope.Joiner.onFork(java.util.concurrent.StructuredTaskScope.Subtask<? extends T>)"); }
-  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, java.util.stream.Stream<java.util.concurrent.StructuredTaskScope.Subtask<T>>> allSuccessfulOrThrow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.StructuredTaskScope.Joiner.allSuccessfulOrThrow()"); }
-  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, T> anySuccessfulResultOrThrow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.StructuredTaskScope.Joiner.anySuccessfulResultOrThrow()"); }
-  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, java.lang.Void> awaitAllSuccessfulOrThrow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.StructuredTaskScope.Joiner.awaitAllSuccessfulOrThrow()"); }
-  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, java.lang.Void> awaitAll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.StructuredTaskScope.Joiner.awaitAll()"); }
-  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, java.util.stream.Stream<java.util.concurrent.StructuredTaskScope.Subtask<T>>> allUntil(java.util.function.Predicate<java.util.concurrent.StructuredTaskScope.Subtask<? extends T>> isDone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.StructuredTaskScope.Joiner.allUntil(java.util.function.Predicate<java.util.concurrent.StructuredTaskScope.Subtask<? extends T>>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.lang.Throwable")
+  public R result() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean onComplete(java.util.concurrent.StructuredTaskScope.Subtask<? extends T> subtask) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean onFork(java.util.concurrent.StructuredTaskScope.Subtask<? extends T> subtask) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, java.util.stream.Stream<java.util.concurrent.StructuredTaskScope.Subtask<T>>> allSuccessfulOrThrow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, T> anySuccessfulResultOrThrow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, java.lang.Void> awaitAllSuccessfulOrThrow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, java.lang.Void> awaitAll() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, java.util.stream.Stream<java.util.concurrent.StructuredTaskScope.Subtask<T>>> allUntil(java.util.function.Predicate<java.util.concurrent.StructuredTaskScope.Subtask<? extends T>> isDone) { return null; }
   < ---- END java signatures ---- >
 }

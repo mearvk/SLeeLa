@@ -58,11 +58,16 @@ class RGBColor {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract org.w3c.dom.css.CSSPrimitiveValue getRed() { throw new AbstractMethodError("org.w3c.dom.css.RGBColor.getRed()"); }
-  public abstract org.w3c.dom.css.CSSPrimitiveValue getGreen() { throw new AbstractMethodError("org.w3c.dom.css.RGBColor.getGreen()"); }
-  public abstract org.w3c.dom.css.CSSPrimitiveValue getBlue() { throw new AbstractMethodError("org.w3c.dom.css.RGBColor.getBlue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.css.CSSPrimitiveValue getRed() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.css.CSSPrimitiveValue getGreen() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.css.CSSPrimitiveValue getBlue() { return null; }
   < ---- END java signatures ---- >
 }

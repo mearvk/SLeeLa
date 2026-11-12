@@ -59,35 +59,61 @@ class X509Certificate {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  X509Certificate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509Certificate.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  X509Certificate() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract byte[] getSignature() { throw new AbstractMethodError("java.security.cert.X509Certificate.getSignature()"); }
-  public abstract int getBasicConstraints() { throw new AbstractMethodError("java.security.cert.X509Certificate.getBasicConstraints()"); }
-  public void verify(java.security.PublicKey key, java.security.Provider sigProvider) throws java.security.cert.CertificateException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException, java.security.SignatureException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509Certificate.verify(java.security.PublicKey, java.security.Provider)"); }
-  public abstract int getVersion() { throw new AbstractMethodError("java.security.cert.X509Certificate.getVersion()"); }
-  public java.util.List<java.lang.String> getExtendedKeyUsage() throws java.security.cert.CertificateParsingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509Certificate.getExtendedKeyUsage()"); }
-  public java.util.Collection<java.util.List<?>> getSubjectAlternativeNames() throws java.security.cert.CertificateParsingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509Certificate.getSubjectAlternativeNames()"); }
-  public java.util.Collection<java.util.List<?>> getIssuerAlternativeNames() throws java.security.cert.CertificateParsingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509Certificate.getIssuerAlternativeNames()"); }
-  public abstract java.lang.String getSigAlgName() { throw new AbstractMethodError("java.security.cert.X509Certificate.getSigAlgName()"); }
-  public abstract byte[] getSigAlgParams() { throw new AbstractMethodError("java.security.cert.X509Certificate.getSigAlgParams()"); }
-  public abstract byte[] getTBSCertificate() throws java.security.cert.CertificateEncodingException { throw new AbstractMethodError("java.security.cert.X509Certificate.getTBSCertificate()"); }
-  public abstract void checkValidity() throws java.security.cert.CertificateExpiredException, java.security.cert.CertificateNotYetValidException { throw new AbstractMethodError("java.security.cert.X509Certificate.checkValidity()"); }
-  public abstract void checkValidity(java.util.Date date) throws java.security.cert.CertificateExpiredException, java.security.cert.CertificateNotYetValidException { throw new AbstractMethodError("java.security.cert.X509Certificate.checkValidity(java.util.Date)"); }
-  public abstract java.math.BigInteger getSerialNumber() { throw new AbstractMethodError("java.security.cert.X509Certificate.getSerialNumber()"); }
-  public abstract java.security.Principal getIssuerDN() { throw new AbstractMethodError("java.security.cert.X509Certificate.getIssuerDN()"); }
-  public abstract java.security.Principal getSubjectDN() { throw new AbstractMethodError("java.security.cert.X509Certificate.getSubjectDN()"); }
-  public abstract java.util.Date getNotBefore() { throw new AbstractMethodError("java.security.cert.X509Certificate.getNotBefore()"); }
-  public abstract java.util.Date getNotAfter() { throw new AbstractMethodError("java.security.cert.X509Certificate.getNotAfter()"); }
-  public abstract java.lang.String getSigAlgOID() { throw new AbstractMethodError("java.security.cert.X509Certificate.getSigAlgOID()"); }
-  public abstract boolean[] getIssuerUniqueID() { throw new AbstractMethodError("java.security.cert.X509Certificate.getIssuerUniqueID()"); }
-  public abstract boolean[] getSubjectUniqueID() { throw new AbstractMethodError("java.security.cert.X509Certificate.getSubjectUniqueID()"); }
-  public abstract boolean[] getKeyUsage() { throw new AbstractMethodError("java.security.cert.X509Certificate.getKeyUsage()"); }
-  public javax.security.auth.x500.X500Principal getIssuerX500Principal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509Certificate.getIssuerX500Principal()"); }
-  public javax.security.auth.x500.X500Principal getSubjectX500Principal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509Certificate.getSubjectX500Principal()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] getSignature() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getBasicConstraints() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.cert.CertificateException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException, java.security.SignatureException")
+  public void verify(java.security.PublicKey key, java.security.Provider sigProvider) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getVersion() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.cert.CertificateParsingException")
+  public java.util.List<java.lang.String> getExtendedKeyUsage() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.cert.CertificateParsingException")
+  public java.util.Collection<java.util.List<?>> getSubjectAlternativeNames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.cert.CertificateParsingException")
+  public java.util.Collection<java.util.List<?>> getIssuerAlternativeNames() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSigAlgName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] getSigAlgParams() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertificateEncodingException")
+  public byte[] getTBSCertificate() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertificateExpiredException, java.security.cert.CertificateNotYetValidException")
+  public void checkValidity() { }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertificateExpiredException, java.security.cert.CertificateNotYetValidException")
+  public void checkValidity(java.util.Date date) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.math.BigInteger getSerialNumber() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.Principal getIssuerDN() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.Principal getSubjectDN() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Date getNotBefore() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Date getNotAfter() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSigAlgOID() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean[] getIssuerUniqueID() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean[] getSubjectUniqueID() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean[] getKeyUsage() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.security.auth.x500.X500Principal getIssuerX500Principal() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.security.auth.x500.X500Principal getSubjectX500Principal() { return null; }
   < ---- END java signatures ---- >
 }

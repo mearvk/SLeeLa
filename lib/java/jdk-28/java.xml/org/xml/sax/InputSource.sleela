@@ -58,25 +58,41 @@ class InputSource {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InputSource(java.io.Reader characterStream) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.<init>(java.io.Reader)"); }
-  public InputSource(java.lang.String systemId) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.<init>(java.lang.String)"); }
-  public InputSource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InputSource(java.io.Reader characterStream) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InputSource(java.lang.String systemId) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InputSource() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.isEmpty()"); }
-  public java.lang.String getEncoding() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.getEncoding()"); }
-  public void setEncoding(java.lang.String encoding) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.setEncoding(java.lang.String)"); }
-  public java.io.Reader getCharacterStream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.getCharacterStream()"); }
-  public java.io.InputStream getByteStream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.getByteStream()"); }
-  public void setSystemId(java.lang.String systemId) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.setSystemId(java.lang.String)"); }
-  public void setByteStream(java.io.InputStream byteStream) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.setByteStream(java.io.InputStream)"); }
-  public void setCharacterStream(java.io.Reader characterStream) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.setCharacterStream(java.io.Reader)"); }
-  public void setPublicId(java.lang.String publicId) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.setPublicId(java.lang.String)"); }
-  public java.lang.String getPublicId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.getPublicId()"); }
-  public java.lang.String getSystemId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.InputSource.getSystemId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getEncoding() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEncoding(java.lang.String encoding) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.Reader getCharacterStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.InputStream getByteStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSystemId(java.lang.String systemId) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setByteStream(java.io.InputStream byteStream) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCharacterStream(java.io.Reader characterStream) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPublicId(java.lang.String publicId) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPublicId() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSystemId() { return null; }
   < ---- END java signatures ---- >
 }

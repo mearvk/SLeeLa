@@ -67,21 +67,31 @@ class StateEdit {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StateEdit(javax.swing.undo.StateEditable anObject) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.StateEdit.<init>(javax.swing.undo.StateEditable)"); }
-  public StateEdit(javax.swing.undo.StateEditable anObject, java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.StateEdit.<init>(javax.swing.undo.StateEditable, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StateEdit(javax.swing.undo.StateEditable anObject) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StateEdit(javax.swing.undo.StateEditable anObject, java.lang.String name) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void end() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.StateEdit.end()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void end() { }
   @JavaProtected
-  void init(javax.swing.undo.StateEditable anObject, java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.StateEdit.init(javax.swing.undo.StateEditable, java.lang.String)"); }
-  public void undo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.StateEdit.undo()"); }
-  public void redo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.StateEdit.redo()"); }
-  public java.lang.String getPresentationName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.StateEdit.getPresentationName()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void init(javax.swing.undo.StateEditable anObject, java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void undo() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void redo() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPresentationName() { return null; }
   @JavaProtected
-  void removeRedundantState() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.StateEdit.removeRedundantState()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void removeRedundantState() { }
   < ---- END java signatures ---- >
 }

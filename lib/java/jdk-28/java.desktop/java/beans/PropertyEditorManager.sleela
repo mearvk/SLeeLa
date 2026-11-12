@@ -58,16 +58,23 @@ class PropertyEditorManager {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PropertyEditorManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorManager.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PropertyEditorManager() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static void registerEditor(java.lang.Class<?> targetType, java.lang.Class<?> editorClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorManager.registerEditor(java.lang.Class<?>, java.lang.Class<?>)"); }
-  public static java.beans.PropertyEditor findEditor(java.lang.Class<?> targetType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorManager.findEditor(java.lang.Class<?>)"); }
-  public static java.lang.String[] getEditorSearchPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorManager.getEditorSearchPath()"); }
-  public static void setEditorSearchPath(java.lang.String[] path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyEditorManager.setEditorSearchPath(java.lang.String[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void registerEditor(java.lang.Class<?> targetType, java.lang.Class<?> editorClass) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.beans.PropertyEditor findEditor(java.lang.Class<?> targetType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String[] getEditorSearchPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setEditorSearchPath(java.lang.String[] path) { }
   < ---- END java signatures ---- >
 }

@@ -58,11 +58,16 @@ class XPathEvaluator {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object evaluate(java.lang.String expression, org.w3c.dom.Node contextNode, org.w3c.dom.xpath.XPathNSResolver resolver, short type, java.lang.Object result) throws org.w3c.dom.xpath.XPathException, org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.xpath.XPathEvaluator.evaluate(java.lang.String, org.w3c.dom.Node, org.w3c.dom.xpath.XPathNSResolver, short, java.lang.Object)"); }
-  public abstract org.w3c.dom.xpath.XPathExpression createExpression(java.lang.String expression, org.w3c.dom.xpath.XPathNSResolver resolver) throws org.w3c.dom.xpath.XPathException, org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.xpath.XPathEvaluator.createExpression(java.lang.String, org.w3c.dom.xpath.XPathNSResolver)"); }
-  public abstract org.w3c.dom.xpath.XPathNSResolver createNSResolver(org.w3c.dom.Node nodeResolver) { throw new AbstractMethodError("org.w3c.dom.xpath.XPathEvaluator.createNSResolver(org.w3c.dom.Node)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.xpath.XPathException, org.w3c.dom.DOMException")
+  public java.lang.Object evaluate(java.lang.String expression, org.w3c.dom.Node contextNode, org.w3c.dom.xpath.XPathNSResolver resolver, short type, java.lang.Object result) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.xpath.XPathException, org.w3c.dom.DOMException")
+  public org.w3c.dom.xpath.XPathExpression createExpression(java.lang.String expression, org.w3c.dom.xpath.XPathNSResolver resolver) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.xpath.XPathNSResolver createNSResolver(org.w3c.dom.Node nodeResolver) { return null; }
   < ---- END java signatures ---- >
 }

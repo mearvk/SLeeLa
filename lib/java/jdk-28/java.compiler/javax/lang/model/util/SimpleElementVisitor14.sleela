@@ -59,15 +59,20 @@ class SimpleElementVisitor14<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SimpleElementVisitor14() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleElementVisitor14.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleElementVisitor14() { }
   @JavaProtected
-  SimpleElementVisitor14(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleElementVisitor14.<init>(R)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleElementVisitor14(R defaultValue) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public R visitRecordComponent(javax.lang.model.element.RecordComponentElement e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleElementVisitor14.visitRecordComponent(javax.lang.model.element.RecordComponentElement, P)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitRecordComponent(javax.lang.model.element.RecordComponentElement e, P p) { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,16 +58,23 @@ class OctetStreamData {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public OctetStreamData(java.io.InputStream octetStream) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.OctetStreamData.<init>(java.io.InputStream)"); }
-  public OctetStreamData(java.io.InputStream octetStream, java.lang.String uri, java.lang.String mimeType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.OctetStreamData.<init>(java.io.InputStream, java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OctetStreamData(java.io.InputStream octetStream) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OctetStreamData(java.io.InputStream octetStream, java.lang.String uri, java.lang.String mimeType) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getURI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.OctetStreamData.getURI()"); }
-  public java.io.InputStream getOctetStream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.OctetStreamData.getOctetStream()"); }
-  public java.lang.String getMimeType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.OctetStreamData.getMimeType()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getURI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.InputStream getOctetStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getMimeType() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,43 +58,74 @@ class DefaultRowSorter<M, I> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultRowSorter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultRowSorter() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void sort() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.sort()"); }
-  public java.util.Comparator<?> getComparator(int column) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.getComparator(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void sort() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Comparator<?> getComparator(int column) { return null; }
   @JavaProtected
-  final javax.swing.DefaultRowSorter.ModelWrapper<M, I> getModelWrapper() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.getModelWrapper()"); }
-  public boolean isSortable(int column) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.isSortable(int)"); }
-  public java.util.List<? extends javax.swing.RowSorter.SortKey> getSortKeys() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.getSortKeys()"); }
-  public int getMaxSortKeys() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.getMaxSortKeys()"); }
-  public void setSortKeys(java.util.List<? extends javax.swing.RowSorter.SortKey> sortKeys) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.setSortKeys(java.util.List<? extends javax.swing.RowSorter.SortKey>)"); }
-  public javax.swing.RowFilter<? super M, ? super I> getRowFilter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.getRowFilter()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final javax.swing.DefaultRowSorter.ModelWrapper<M, I> getModelWrapper() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSortable(int column) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<? extends javax.swing.RowSorter.SortKey> getSortKeys() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaxSortKeys() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSortKeys(java.util.List<? extends javax.swing.RowSorter.SortKey> sortKeys) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.RowFilter<? super M, ? super I> getRowFilter() { return null; }
   @JavaProtected
-  boolean useToString(int column) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.useToString(int)"); }
-  public boolean getSortsOnUpdates() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.getSortsOnUpdates()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean useToString(int column) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getSortsOnUpdates() { return false; }
   @JavaProtected
-  final void setModelWrapper(javax.swing.DefaultRowSorter.ModelWrapper<M, I> modelWrapper) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.setModelWrapper(javax.swing.DefaultRowSorter.ModelWrapper<M, I>)"); }
-  public void setSortable(int column, boolean sortable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.setSortable(int, boolean)"); }
-  public void setMaxSortKeys(int max) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.setMaxSortKeys(int)"); }
-  public void setSortsOnUpdates(boolean sortsOnUpdates) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.setSortsOnUpdates(boolean)"); }
-  public void setRowFilter(javax.swing.RowFilter<? super M, ? super I> filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.setRowFilter(javax.swing.RowFilter<? super M, ? super I>)"); }
-  public void toggleSortOrder(int column) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.toggleSortOrder(int)"); }
-  public void setComparator(int column, java.util.Comparator<?> comparator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.setComparator(int, java.util.Comparator<?>)"); }
-  public int getModelRowCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.getModelRowCount()"); }
-  public int convertRowIndexToView(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.convertRowIndexToView(int)"); }
-  public int convertRowIndexToModel(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.convertRowIndexToModel(int)"); }
-  public int getViewRowCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.getViewRowCount()"); }
-  public void allRowsChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.allRowsChanged()"); }
-  public void rowsUpdated(int firstRow, int endRow, int column) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.rowsUpdated(int, int, int)"); }
-  public void rowsUpdated(int firstRow, int endRow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.rowsUpdated(int, int)"); }
-  public void rowsInserted(int firstRow, int endRow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.rowsInserted(int, int)"); }
-  public void rowsDeleted(int firstRow, int endRow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.rowsDeleted(int, int)"); }
-  public void modelStructureChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.modelStructureChanged()"); }
-  public final M getModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultRowSorter.getModel()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void setModelWrapper(javax.swing.DefaultRowSorter.ModelWrapper<M, I> modelWrapper) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSortable(int column, boolean sortable) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaxSortKeys(int max) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSortsOnUpdates(boolean sortsOnUpdates) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRowFilter(javax.swing.RowFilter<? super M, ? super I> filter) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void toggleSortOrder(int column) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setComparator(int column, java.util.Comparator<?> comparator) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getModelRowCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int convertRowIndexToView(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int convertRowIndexToModel(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getViewRowCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void allRowsChanged() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void rowsUpdated(int firstRow, int endRow, int column) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void rowsUpdated(int firstRow, int endRow) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void rowsInserted(int firstRow, int endRow) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void rowsDeleted(int firstRow, int endRow) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void modelStructureChanged() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final M getModel() { return null; }
   < ---- END java signatures ---- >
 }

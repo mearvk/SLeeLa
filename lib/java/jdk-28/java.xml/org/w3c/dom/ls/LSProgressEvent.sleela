@@ -58,11 +58,16 @@ class LSProgressEvent {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getPosition() { throw new AbstractMethodError("org.w3c.dom.ls.LSProgressEvent.getPosition()"); }
-  public abstract org.w3c.dom.ls.LSInput getInput() { throw new AbstractMethodError("org.w3c.dom.ls.LSProgressEvent.getInput()"); }
-  public abstract int getTotalSize() { throw new AbstractMethodError("org.w3c.dom.ls.LSProgressEvent.getTotalSize()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getPosition() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.ls.LSInput getInput() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getTotalSize() { return 0; }
   < ---- END java signatures ---- >
 }

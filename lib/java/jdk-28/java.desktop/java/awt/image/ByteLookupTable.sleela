@@ -58,16 +58,23 @@ class ByteLookupTable {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ByteLookupTable(int offset, byte[][] data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ByteLookupTable.<init>(int, byte[][])"); }
-  public ByteLookupTable(int offset, byte[] data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ByteLookupTable.<init>(int, byte[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ByteLookupTable(int offset, byte[][] data) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ByteLookupTable(int offset, byte[] data) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final byte[][] getTable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ByteLookupTable.getTable()"); }
-  public int[] lookupPixel(int[] src, int[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ByteLookupTable.lookupPixel(int[], int[])"); }
-  public byte[] lookupPixel(byte[] src, byte[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ByteLookupTable.lookupPixel(byte[], byte[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final byte[][] getTable() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] lookupPixel(int[] src, int[] dst) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] lookupPixel(byte[] src, byte[] dst) { return null; }
   < ---- END java signatures ---- >
 }

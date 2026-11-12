@@ -58,6 +58,7 @@ class NoSuchDynamicMethodException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NoSuchDynamicMethodException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.NoSuchDynamicMethodException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoSuchDynamicMethodException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

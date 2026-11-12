@@ -58,7 +58,9 @@ class InvalidRoleValueException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidRoleValueException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.InvalidRoleValueException.<init>()"); }
-  public InvalidRoleValueException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.InvalidRoleValueException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidRoleValueException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidRoleValueException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

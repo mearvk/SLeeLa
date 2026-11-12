@@ -148,12 +148,90 @@ def metadata(mid: int, fq: str) -> str:
 '''
 
 
-def member_blocks(t, sig, cls: str):
-    """Declarations, constructors and methods for a type known to the reflected API."""
+IMPL_RE = re.compile(r"^  < ---- BEGIN java implementation.*?^  < ---- END java implementation ---- >\n", re.S | re.M)
+IMPL_CTOR = r"^  (?:@\w+\s+)?(?:public |protected |private )?{cls}\s*\(([^)]*)\)"
+
+
+def impl_cover(impl: str, cls: str):
+    """What an implementation block already provides: method kinds, ctor arities, field names."""
+    methods = sg.impl_sigs(impl)
+    ctor_arities = {len(sg.split_top(x)) if x.strip() else 0
+                    for x in re.findall(IMPL_CTOR.format(cls=re.escape(cls)), impl, re.M)}
+    fields = set(dec.FIELD_DECL.findall(impl))
+    return methods, ctor_arities, fields
+
+
+PRIM_INT = {"int", "long", "short", "byte", "char"}
+
+
+def default_return(ret: str) -> str:
+    r = ret.strip()
+    if r == "void":
+        return ""
+    if r in PRIM_INT:
+        return " return 0;"
+    if r in ("double", "float"):
+        return " return 0.0;"
+    if r == "boolean":
+        return " return false;"
+    return " return null;"
+
+
+def throwable(names) -> str:
+    return '  @throwable("' + ", ".join(names) + '")'
+
+
+def params_of(m) -> str:
+    out = []
+    for ptype, pname in m["params"]:
+        if pname in sg.RESERVED_PARAMS:
+            pname = pname + "_"
+        out.append(f"{ptype} {pname}")
+    return ", ".join(out)
+
+
+def render_stub(type_name: str, m: dict) -> str:
+    """A method with its exact Java signature, not yet SLeeLa logic.
+
+    @throwable names what Java throws here: AbstractMethodError for an abstract
+    method, else UnsupportedOperationException, plus the declared throws."""
+    mods = m["mods"].split()
+    lines = []
+    if m["protected"] and not m["static"]:
+        mods = [x for x in mods if x != "protected"]
+        lines.append("  @JavaProtected")
+    first = "java.lang.AbstractMethodError" if m["abstract"] else "java.lang.UnsupportedOperationException"
+    lines.append(throwable([first] + m["throws"]))
+    mods = [x for x in mods if x != "abstract"]
+    head = " ".join(mods + ([m["tparams"]] if m["tparams"] else []) + [m["ret"], m["name"]])
+    lines.append(f"  {head}({params_of(m)}) {{{default_return(m['ret'])} }}")
+    return "\n".join(lines)
+
+
+def render_ctor_stub(type_name: str, cls: str, m: dict) -> str:
+    mods = [x for x in m["mods"].split() if x in ("public", "protected")]
+    lines = []
+    if m["protected"]:
+        mods = [x for x in mods if x != "protected"]
+        lines.append("  @JavaProtected")
+    lines.append(throwable(["java.lang.UnsupportedOperationException"] + m["throws"]))
+    head = " ".join(mods + [cls])
+    lines.append(f"  {head}({params_of(m)}) {{ }}")
+    return "\n".join(lines)
+
+
+def member_blocks(t, sig, cls: str, impl: str = ""):
+    """Declarations, constructors and methods for a type known to the reflected API.
+
+    Members already provided by the implementation block (same name and
+    accepted argument kinds, same constructor arity, same field name) are not
+    written again as stubs."""
     lines = []
     taken = set(dec.ENVELOPE) | HELPERS
+    impl_methods, impl_ctors, impl_fields = impl_cover(impl, cls)
     budget_used = FIXED_FIELDS + (2 if t["kind"] == "enum" else 0) + len(t.get("components", []))
-    decl = dec.declarations(t, cls, taken, set(), budget_used, False)
+    budget_used += len([f for f in impl_fields])
+    decl = dec.declarations(t, cls, taken | impl_fields, set(impl_methods), budget_used, bool(impl))
     if decl:
         lines.append("  < ---- BEGIN java declarations (from the JDK 28 API) ---- >")
         lines += decl
@@ -163,30 +241,35 @@ def member_blocks(t, sig, cls: str):
     if sig is None:
         return lines, 0, 0
     ctv = sg.tvar_names(sig["tparams"])
-    has_ctor_arity = set()
+    has_ctor_arity = set(impl_ctors)
     if t["kind"] == "enum":
         has_ctor_arity.add(2)
     if t["kind"] == "record":
         has_ctor_arity.add(len(t.get("components", [])))
     ctors, cseen = [], set()
     for m in sig["members"]:
+        if cls in dec.RESERVED:
+            break  # a class named by a SLeeLa keyword (String) cannot declare constructors
         if m["name"] != "<init>" or m["tparams"] or not sg.renderable(m) or len(m["params"]) in has_ctor_arity:
             continue
         key = tuple(sg.erased(p[0], ctv) for p in m["params"])
         if key in cseen:
             continue
         cseen.add(key)
-        ctors.append(sg.render_ctor(t["name"], cls, m))
+        ctors.append(render_ctor_stub(t["name"], cls, m))
     meths, mseen = [], set()
     for m in sig["members"]:
         if m["name"] == "<init>" or m["name"] in declared or m["name"] in taken or not dec.usable(m["name"], cls) or not sg.renderable(m):
             continue
         tv = ctv | sg.tvar_names(m["tparams"])
+        want = tuple(sg.kind(p[0], tv) for p in m["params"])
+        if any(sg.accepts(have, want) for have in impl_methods.get(m["name"], [])):
+            continue
         key = (m["name"], tuple(sg.erased(p[0], tv) for p in m["params"]))
         if key in mseen:
             continue
         mseen.add(key)
-        meths.append(sg.render(t["name"], m))
+        meths.append(render_stub(t["name"], m))
     if ctors:
         lines.append("")
         lines.append("  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >")
@@ -195,9 +278,11 @@ def member_blocks(t, sig, cls: str):
     if meths:
         lines.append("")
         lines.append("  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >")
-        lines.append("  << A body that is not yet SLeeLa logic throws AbstractMethodError for an")
-        lines.append("     abstract method, else UnsupportedOperationException naming the Java")
-        lines.append("     signature. Produce the SLeeLa logic from the Java Source above. >>")
+        lines.append("  << Not yet SLeeLa logic: each method returns the default value of its")
+        lines.append("     Java return type. @throwable names what Java throws for it (abstract:")
+        lines.append("     AbstractMethodError, else UnsupportedOperationException, plus the")
+        lines.append("     declared throws). Write the logic from the Java Source above into the")
+        lines.append("     java implementation block; the generator then drops the stub. >>")
         lines += meths
         lines.append("  < ---- END java signatures ---- >")
     return lines, len(ctors), len(meths)
@@ -227,8 +312,15 @@ def main() -> int:
         sup = (t.get("super") or "") if t else ""
         ifaces = ", ".join(t.get("interfaces", [])) if t else ""
         tps = sig["tparams"] if sig and sig["tparams"] and sg.renderable_text(sig["tparams"]) else ""
+        dest = API_DIR / out_rel
+        impl = ""
+        if dest.is_file():
+            mo = IMPL_RE.search(dest.read_text(encoding="utf-8", errors="replace"))
+            if mo:
+                impl = mo.group(0)
+                stats["implemented"] = stats.get("implemented", 0) + 1
         if t:
-            body, nc, nm = member_blocks(t, sig, cls)
+            body, nc, nm = member_blocks(t, sig, cls, impl)
             status = "members from the JDK 28 API (exact signatures)"
             stats["with_members"] += 1
             stats["ctors"] += nc
@@ -257,13 +349,9 @@ class {cls}{tps} {{
   String javaKind = "{kind}";
   String javaSuper = "{sup}";
 
-''' + "\n".join(body) + "\n}\n"
-        dest = API_DIR / out_rel
+''' + (impl + "\n" if impl else "") + "\n".join(body) + "\n}\n"
         dest.parent.mkdir(parents=True, exist_ok=True)
-        if dest.is_file() and "BEGIN java implementation" in dest.read_text(encoding="utf-8", errors="replace"):
-            stats["kept"] = stats.get("kept", 0) + 1  # hand-written SLeeLa logic: never overwritten
-        else:
-            dest.write_text(text, encoding="utf-8")
+        dest.write_text(text, encoding="utf-8")
         stats["files"] += 1
         index.append("\t".join([fq, module, kind, "lib/java/jdk-28/" + out_rel.as_posix(), src_url, "api" if t else "pending"]))
     (OUT / "INDEX.tsv").write_text("\n".join(index) + "\n", encoding="utf-8")
@@ -293,7 +381,7 @@ class {cls}{tps} {{
     stats["modules"] = len(counts) + len(NO_PACKAGE_MODULES)
     print(f"jdk-28: {stats['files']} files (1:1 with JDK 28 types); {stats['with_members']} with API members, "
           f"{stats['pending']} pending; {stats['ctors']} constructors, {stats['methods']} methods; "
-          f"{stats['modules']} module folders")
+          f"{stats['modules']} module folders; {stats.get('implemented', 0)} files with SLeeLa logic")
     return 0
 
 

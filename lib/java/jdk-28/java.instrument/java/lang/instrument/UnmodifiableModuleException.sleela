@@ -58,7 +58,9 @@ class UnmodifiableModuleException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnmodifiableModuleException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.instrument.UnmodifiableModuleException.<init>()"); }
-  public UnmodifiableModuleException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.instrument.UnmodifiableModuleException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnmodifiableModuleException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnmodifiableModuleException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

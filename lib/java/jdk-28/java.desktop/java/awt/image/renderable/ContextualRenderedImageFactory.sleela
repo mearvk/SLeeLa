@@ -58,14 +58,22 @@ class ContextualRenderedImageFactory {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object getProperty(java.awt.image.renderable.ParameterBlock paramBlock, java.lang.String name) { throw new AbstractMethodError("java.awt.image.renderable.ContextualRenderedImageFactory.getProperty(java.awt.image.renderable.ParameterBlock, java.lang.String)"); }
-  public abstract java.awt.image.RenderedImage create(java.awt.image.renderable.RenderContext renderContext, java.awt.image.renderable.ParameterBlock paramBlock) { throw new AbstractMethodError("java.awt.image.renderable.ContextualRenderedImageFactory.create(java.awt.image.renderable.RenderContext, java.awt.image.renderable.ParameterBlock)"); }
-  public abstract boolean isDynamic() { throw new AbstractMethodError("java.awt.image.renderable.ContextualRenderedImageFactory.isDynamic()"); }
-  public abstract java.awt.geom.Rectangle2D getBounds2D(java.awt.image.renderable.ParameterBlock paramBlock) { throw new AbstractMethodError("java.awt.image.renderable.ContextualRenderedImageFactory.getBounds2D(java.awt.image.renderable.ParameterBlock)"); }
-  public abstract java.lang.String[] getPropertyNames() { throw new AbstractMethodError("java.awt.image.renderable.ContextualRenderedImageFactory.getPropertyNames()"); }
-  public abstract java.awt.image.renderable.RenderContext mapRenderContext(int i, java.awt.image.renderable.RenderContext renderContext, java.awt.image.renderable.ParameterBlock paramBlock, java.awt.image.renderable.RenderableImage image) { throw new AbstractMethodError("java.awt.image.renderable.ContextualRenderedImageFactory.mapRenderContext(int, java.awt.image.renderable.RenderContext, java.awt.image.renderable.ParameterBlock, java.awt.image.renderable.RenderableImage)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getProperty(java.awt.image.renderable.ParameterBlock paramBlock, java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.image.RenderedImage create(java.awt.image.renderable.RenderContext renderContext, java.awt.image.renderable.ParameterBlock paramBlock) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDynamic() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.geom.Rectangle2D getBounds2D(java.awt.image.renderable.ParameterBlock paramBlock) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getPropertyNames() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.image.renderable.RenderContext mapRenderContext(int i, java.awt.image.renderable.RenderContext renderContext, java.awt.image.renderable.ParameterBlock paramBlock, java.awt.image.renderable.RenderableImage image) { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,16 +58,26 @@ class TemporalUnit {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String toString() { throw new AbstractMethodError("java.time.temporal.TemporalUnit.toString()"); }
-  public abstract long between(java.time.temporal.Temporal temporal1Inclusive, java.time.temporal.Temporal temporal2Exclusive) { throw new AbstractMethodError("java.time.temporal.TemporalUnit.between(java.time.temporal.Temporal, java.time.temporal.Temporal)"); }
-  public abstract boolean isDurationEstimated() { throw new AbstractMethodError("java.time.temporal.TemporalUnit.isDurationEstimated()"); }
-  public abstract java.time.Duration getDuration() { throw new AbstractMethodError("java.time.temporal.TemporalUnit.getDuration()"); }
-  public abstract <R extends java.time.temporal.Temporal> R addTo(R temporal, long amount) { throw new AbstractMethodError("java.time.temporal.TemporalUnit.addTo(R, long)"); }
-  public default boolean isSupportedBy(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.temporal.TemporalUnit.isSupportedBy(java.time.temporal.Temporal)"); }
-  public abstract boolean isTimeBased() { throw new AbstractMethodError("java.time.temporal.TemporalUnit.isTimeBased()"); }
-  public abstract boolean isDateBased() { throw new AbstractMethodError("java.time.temporal.TemporalUnit.isDateBased()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long between(java.time.temporal.Temporal temporal1Inclusive, java.time.temporal.Temporal temporal2Exclusive) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDurationEstimated() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.Duration getDuration() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <R extends java.time.temporal.Temporal> R addTo(R temporal, long amount) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isSupportedBy(java.time.temporal.Temporal temporal) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isTimeBased() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDateBased() { return false; }
   < ---- END java signatures ---- >
 }

@@ -58,6 +58,7 @@ class NullCipher {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NullCipher() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.NullCipher.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NullCipher() { }
   < ---- END java constructors ---- >
 }

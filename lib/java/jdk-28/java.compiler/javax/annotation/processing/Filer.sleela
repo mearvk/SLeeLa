@@ -58,12 +58,18 @@ class Filer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.tools.FileObject getResource(javax.tools.JavaFileManager.Location location, java.lang.CharSequence moduleAndPkg, java.lang.CharSequence relativeName) throws java.io.IOException { throw new AbstractMethodError("javax.annotation.processing.Filer.getResource(javax.tools.JavaFileManager.Location, java.lang.CharSequence, java.lang.CharSequence)"); }
-  public abstract javax.tools.FileObject createResource(javax.tools.JavaFileManager.Location location, java.lang.CharSequence moduleAndPkg, java.lang.CharSequence relativeName, javax.lang.model.element.Element... originatingElements) throws java.io.IOException { throw new AbstractMethodError("javax.annotation.processing.Filer.createResource(javax.tools.JavaFileManager.Location, java.lang.CharSequence, java.lang.CharSequence, javax.lang.model.element.Element...)"); }
-  public abstract javax.tools.JavaFileObject createSourceFile(java.lang.CharSequence name, javax.lang.model.element.Element... originatingElements) throws java.io.IOException { throw new AbstractMethodError("javax.annotation.processing.Filer.createSourceFile(java.lang.CharSequence, javax.lang.model.element.Element...)"); }
-  public abstract javax.tools.JavaFileObject createClassFile(java.lang.CharSequence name, javax.lang.model.element.Element... originatingElements) throws java.io.IOException { throw new AbstractMethodError("javax.annotation.processing.Filer.createClassFile(java.lang.CharSequence, javax.lang.model.element.Element...)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public javax.tools.FileObject getResource(javax.tools.JavaFileManager.Location location, java.lang.CharSequence moduleAndPkg, java.lang.CharSequence relativeName) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public javax.tools.FileObject createResource(javax.tools.JavaFileManager.Location location, java.lang.CharSequence moduleAndPkg, java.lang.CharSequence relativeName, javax.lang.model.element.Element... originatingElements) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public javax.tools.JavaFileObject createSourceFile(java.lang.CharSequence name, javax.lang.model.element.Element... originatingElements) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public javax.tools.JavaFileObject createClassFile(java.lang.CharSequence name, javax.lang.model.element.Element... originatingElements) { return null; }
   < ---- END java signatures ---- >
 }

@@ -64,35 +64,64 @@ class TreeSelectionModel {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.addPropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public abstract void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.removePropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public abstract void setRowMapper(javax.swing.tree.RowMapper newMapper) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.setRowMapper(javax.swing.tree.RowMapper)"); }
-  public abstract javax.swing.tree.RowMapper getRowMapper() { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.getRowMapper()"); }
-  public abstract void resetRowSelection() { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.resetRowSelection()"); }
-  public abstract void addSelectionPath(javax.swing.tree.TreePath path) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.addSelectionPath(javax.swing.tree.TreePath)"); }
-  public abstract void addSelectionPaths(javax.swing.tree.TreePath[] paths) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.addSelectionPaths(javax.swing.tree.TreePath[])"); }
-  public abstract javax.swing.tree.TreePath getSelectionPath() { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.getSelectionPath()"); }
-  public abstract int[] getSelectionRows() { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.getSelectionRows()"); }
-  public abstract int getSelectionCount() { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.getSelectionCount()"); }
-  public abstract int getMinSelectionRow() { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.getMinSelectionRow()"); }
-  public abstract int getMaxSelectionRow() { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.getMaxSelectionRow()"); }
-  public abstract boolean isPathSelected(javax.swing.tree.TreePath path) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.isPathSelected(javax.swing.tree.TreePath)"); }
-  public abstract void removeTreeSelectionListener(javax.swing.event.TreeSelectionListener x) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.removeTreeSelectionListener(javax.swing.event.TreeSelectionListener)"); }
-  public abstract void addTreeSelectionListener(javax.swing.event.TreeSelectionListener x) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.addTreeSelectionListener(javax.swing.event.TreeSelectionListener)"); }
-  public abstract void removeSelectionPaths(javax.swing.tree.TreePath[] paths) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.removeSelectionPaths(javax.swing.tree.TreePath[])"); }
-  public abstract void removeSelectionPath(javax.swing.tree.TreePath path) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.removeSelectionPath(javax.swing.tree.TreePath)"); }
-  public abstract boolean isSelectionEmpty() { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.isSelectionEmpty()"); }
-  public abstract int getLeadSelectionRow() { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.getLeadSelectionRow()"); }
-  public abstract void setSelectionMode(int mode) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.setSelectionMode(int)"); }
-  public abstract void setSelectionPaths(javax.swing.tree.TreePath[] paths) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.setSelectionPaths(javax.swing.tree.TreePath[])"); }
-  public abstract javax.swing.tree.TreePath[] getSelectionPaths() { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.getSelectionPaths()"); }
-  public abstract javax.swing.tree.TreePath getLeadSelectionPath() { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.getLeadSelectionPath()"); }
-  public abstract void setSelectionPath(javax.swing.tree.TreePath path) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.setSelectionPath(javax.swing.tree.TreePath)"); }
-  public abstract boolean isRowSelected(int row) { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.isRowSelected(int)"); }
-  public abstract void clearSelection() { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.clearSelection()"); }
-  public abstract int getSelectionMode() { throw new AbstractMethodError("javax.swing.tree.TreeSelectionModel.getSelectionMode()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setRowMapper(javax.swing.tree.RowMapper newMapper) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.tree.RowMapper getRowMapper() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void resetRowSelection() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addSelectionPath(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addSelectionPaths(javax.swing.tree.TreePath[] paths) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.tree.TreePath getSelectionPath() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int[] getSelectionRows() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getSelectionCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMinSelectionRow() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMaxSelectionRow() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isPathSelected(javax.swing.tree.TreePath path) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeTreeSelectionListener(javax.swing.event.TreeSelectionListener x) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addTreeSelectionListener(javax.swing.event.TreeSelectionListener x) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeSelectionPaths(javax.swing.tree.TreePath[] paths) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeSelectionPath(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSelectionEmpty() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getLeadSelectionRow() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSelectionMode(int mode) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSelectionPaths(javax.swing.tree.TreePath[] paths) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.tree.TreePath[] getSelectionPaths() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.tree.TreePath getLeadSelectionPath() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSelectionPath(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isRowSelected(int row) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void clearSelection() { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getSelectionMode() { return 0; }
   < ---- END java signatures ---- >
 }

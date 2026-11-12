@@ -58,6 +58,7 @@ class WritePendingException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public WritePendingException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.WritePendingException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public WritePendingException() { }
   < ---- END java constructors ---- >
 }

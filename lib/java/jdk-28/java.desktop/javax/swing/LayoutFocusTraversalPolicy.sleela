@@ -58,18 +58,26 @@ class LayoutFocusTraversalPolicy {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LayoutFocusTraversalPolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.LayoutFocusTraversalPolicy.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LayoutFocusTraversalPolicy() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  boolean accept(java.awt.Component aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.LayoutFocusTraversalPolicy.accept(java.awt.Component)"); }
-  public java.awt.Component getComponentAfter(java.awt.Container aContainer, java.awt.Component aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.LayoutFocusTraversalPolicy.getComponentAfter(java.awt.Container, java.awt.Component)"); }
-  public java.awt.Component getComponentBefore(java.awt.Container aContainer, java.awt.Component aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.LayoutFocusTraversalPolicy.getComponentBefore(java.awt.Container, java.awt.Component)"); }
-  public java.awt.Component getFirstComponent(java.awt.Container aContainer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.LayoutFocusTraversalPolicy.getFirstComponent(java.awt.Container)"); }
-  public java.awt.Component getLastComponent(java.awt.Container aContainer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.LayoutFocusTraversalPolicy.getLastComponent(java.awt.Container)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean accept(java.awt.Component aComponent) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponentAfter(java.awt.Container aContainer, java.awt.Component aComponent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponentBefore(java.awt.Container aContainer, java.awt.Component aComponent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getFirstComponent(java.awt.Container aContainer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getLastComponent(java.awt.Container aContainer) { return null; }
   < ---- END java signatures ---- >
 }

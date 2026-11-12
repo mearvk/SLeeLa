@@ -59,6 +59,7 @@ class CompoundBorderUIResource {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CompoundBorderUIResource(javax.swing.border.Border outsideBorder, javax.swing.border.Border insideBorder) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.CompoundBorderUIResource.<init>(javax.swing.border.Border, javax.swing.border.Border)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CompoundBorderUIResource(javax.swing.border.Border outsideBorder, javax.swing.border.Border insideBorder) { }
   < ---- END java constructors ---- >
 }

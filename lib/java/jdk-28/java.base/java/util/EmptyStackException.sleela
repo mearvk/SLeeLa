@@ -58,6 +58,7 @@ class EmptyStackException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public EmptyStackException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EmptyStackException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EmptyStackException() { }
   < ---- END java constructors ---- >
 }

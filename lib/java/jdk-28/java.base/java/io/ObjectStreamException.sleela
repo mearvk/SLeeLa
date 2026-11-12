@@ -59,12 +59,16 @@ class ObjectStreamException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ObjectStreamException(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamException.<init>(java.lang.Throwable)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ObjectStreamException(java.lang.Throwable cause) { }
   @JavaProtected
-  ObjectStreamException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ObjectStreamException() { }
   @JavaProtected
-  ObjectStreamException(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamException.<init>(java.lang.String, java.lang.Throwable)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ObjectStreamException(java.lang.String message, java.lang.Throwable cause) { }
   @JavaProtected
-  ObjectStreamException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ObjectStreamException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

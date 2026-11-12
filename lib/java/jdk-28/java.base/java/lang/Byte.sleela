@@ -66,36 +66,63 @@ class Byte {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Byte(byte value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.<init>(byte)"); }
-  public Byte(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Byte(byte value) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
+  public Byte(java.lang.String s) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.toString()"); }
-  public static java.lang.String toString(byte b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.toString(byte)"); }
-  public static int hashCode(byte value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.hashCode(byte)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.hashCode()"); }
-  public static int compareUnsigned(byte x, byte y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.compareUnsigned(byte, byte)"); }
-  public int compareTo(java.lang.Byte anotherByte) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.compareTo(java.lang.Byte)"); }
-  public static int compare(byte x, byte y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.compare(byte, byte)"); }
-  public byte byteValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.byteValue()"); }
-  public short shortValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.shortValue()"); }
-  public int intValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.intValue()"); }
-  public long longValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.longValue()"); }
-  public float floatValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.floatValue()"); }
-  public double doubleValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.doubleValue()"); }
-  public static java.lang.Byte valueOf(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.valueOf(java.lang.String)"); }
-  public static java.lang.Byte valueOf(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.valueOf(java.lang.String, int)"); }
-  public static java.lang.Byte valueOf(byte b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.valueOf(byte)"); }
-  public static java.lang.Byte decode(java.lang.String nm) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.decode(java.lang.String)"); }
-  public java.util.Optional<java.lang.constant.DynamicConstantDesc<java.lang.Byte>> describeConstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.describeConstable()"); }
-  public static long toUnsignedLong(byte x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.toUnsignedLong(byte)"); }
-  public static int toUnsignedInt(byte x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.toUnsignedInt(byte)"); }
-  public static byte parseByte(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.parseByte(java.lang.String)"); }
-  public static byte parseByte(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.parseByte(java.lang.String, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String toString(byte b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int hashCode(byte value) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int compareUnsigned(byte x, byte y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.lang.Byte anotherByte) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int compare(byte x, byte y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte byteValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public short shortValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int intValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long longValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float floatValue() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double doubleValue() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
+  public static java.lang.Byte valueOf(java.lang.String s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
+  public static java.lang.Byte valueOf(java.lang.String s, int radix) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Byte valueOf(byte b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
+  public static java.lang.Byte decode(java.lang.String nm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<java.lang.constant.DynamicConstantDesc<java.lang.Byte>> describeConstable() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static long toUnsignedLong(byte x) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int toUnsignedInt(byte x) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
+  public static byte parseByte(java.lang.String s) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
+  public static byte parseByte(java.lang.String s, int radix) { return 0; }
   < ---- END java signatures ---- >
 }

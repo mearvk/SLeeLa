@@ -58,12 +58,18 @@ class Function<T, R> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract R apply(T t) { throw new AbstractMethodError("java.util.function.Function.apply(T)"); }
-  public static <T> java.util.function.Function<T, T> identity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.function.Function.identity()"); }
-  public default <V> java.util.function.Function<V, R> compose(java.util.function.Function<? super V, ? extends T> before) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.function.Function.compose(java.util.function.Function<? super V, ? extends T>)"); }
-  public default <V> java.util.function.Function<T, V> andThen(java.util.function.Function<? super R, ? extends V> after) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.function.Function.andThen(java.util.function.Function<? super R, ? extends V>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public R apply(T t) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.function.Function<T, T> identity() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default <V> java.util.function.Function<V, R> compose(java.util.function.Function<? super V, ? extends T> before) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default <V> java.util.function.Function<T, V> andThen(java.util.function.Function<? super R, ? extends V> after) { return null; }
   < ---- END java signatures ---- >
 }

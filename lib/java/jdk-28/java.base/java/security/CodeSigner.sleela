@@ -58,17 +58,25 @@ class CodeSigner {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CodeSigner(java.security.cert.CertPath signerCertPath, java.security.Timestamp timestamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.CodeSigner.<init>(java.security.cert.CertPath, java.security.Timestamp)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CodeSigner(java.security.cert.CertPath signerCertPath, java.security.Timestamp timestamp) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.CodeSigner.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.CodeSigner.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.CodeSigner.hashCode()"); }
-  public java.security.cert.CertPath getSignerCertPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.CodeSigner.getSignerCertPath()"); }
-  public java.security.Timestamp getTimestamp() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.CodeSigner.getTimestamp()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.cert.CertPath getSignerCertPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.Timestamp getTimestamp() { return null; }
   < ---- END java signatures ---- >
 }

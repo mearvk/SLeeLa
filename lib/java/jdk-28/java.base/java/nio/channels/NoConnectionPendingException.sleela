@@ -58,6 +58,7 @@ class NoConnectionPendingException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NoConnectionPendingException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.NoConnectionPendingException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoConnectionPendingException() { }
   < ---- END java constructors ---- >
 }

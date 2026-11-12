@@ -58,25 +58,44 @@ class RuntimeMXBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getName()"); }
-  public abstract java.lang.String getClassPath() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getClassPath()"); }
-  public default long getPid() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.RuntimeMXBean.getPid()"); }
-  public abstract java.lang.String getVmName() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getVmName()"); }
-  public abstract java.lang.String getVmVendor() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getVmVendor()"); }
-  public abstract java.lang.String getVmVersion() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getVmVersion()"); }
-  public abstract java.lang.String getSpecName() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getSpecName()"); }
-  public abstract java.lang.String getSpecVendor() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getSpecVendor()"); }
-  public abstract java.lang.String getSpecVersion() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getSpecVersion()"); }
-  public abstract java.lang.String getManagementSpecVersion() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getManagementSpecVersion()"); }
-  public abstract java.lang.String getLibraryPath() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getLibraryPath()"); }
-  public abstract boolean isBootClassPathSupported() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.isBootClassPathSupported()"); }
-  public abstract java.lang.String getBootClassPath() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getBootClassPath()"); }
-  public abstract java.util.List<java.lang.String> getInputArguments() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getInputArguments()"); }
-  public abstract long getUptime() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getUptime()"); }
-  public abstract long getStartTime() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getStartTime()"); }
-  public abstract java.util.Map<java.lang.String, java.lang.String> getSystemProperties() { throw new AbstractMethodError("java.lang.management.RuntimeMXBean.getSystemProperties()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getClassPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default long getPid() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getVmName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getVmVendor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getVmVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSpecName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSpecVendor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSpecVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getManagementSpecVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getLibraryPath() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isBootClassPathSupported() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getBootClassPath() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.String> getInputArguments() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getUptime() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getStartTime() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Map<java.lang.String, java.lang.String> getSystemProperties() { return null; }
   < ---- END java signatures ---- >
 }

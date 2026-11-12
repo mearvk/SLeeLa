@@ -58,21 +58,33 @@ class X509CRLEntry {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public X509CRLEntry() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRLEntry.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public X509CRLEntry() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRLEntry.equals(java.lang.Object)"); }
-  public abstract java.lang.String toString() { throw new AbstractMethodError("java.security.cert.X509CRLEntry.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRLEntry.hashCode()"); }
-  public abstract byte[] getEncoded() throws java.security.cert.CRLException { throw new AbstractMethodError("java.security.cert.X509CRLEntry.getEncoded()"); }
-  public abstract boolean hasExtensions() { throw new AbstractMethodError("java.security.cert.X509CRLEntry.hasExtensions()"); }
-  public abstract java.util.Date getRevocationDate() { throw new AbstractMethodError("java.security.cert.X509CRLEntry.getRevocationDate()"); }
-  public java.security.cert.CRLReason getRevocationReason() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRLEntry.getRevocationReason()"); }
-  public abstract java.math.BigInteger getSerialNumber() { throw new AbstractMethodError("java.security.cert.X509CRLEntry.getSerialNumber()"); }
-  public javax.security.auth.x500.X500Principal getCertificateIssuer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.X509CRLEntry.getCertificateIssuer()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object other) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CRLException")
+  public byte[] getEncoded() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasExtensions() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Date getRevocationDate() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.cert.CRLReason getRevocationReason() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.math.BigInteger getSerialNumber() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.security.auth.x500.X500Principal getCertificateIssuer() { return null; }
   < ---- END java signatures ---- >
 }

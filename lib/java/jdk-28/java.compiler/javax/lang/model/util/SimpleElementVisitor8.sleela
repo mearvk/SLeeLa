@@ -59,8 +59,10 @@ class SimpleElementVisitor8<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SimpleElementVisitor8() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleElementVisitor8.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleElementVisitor8() { }
   @JavaProtected
-  SimpleElementVisitor8(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleElementVisitor8.<init>(R)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleElementVisitor8(R defaultValue) { }
   < ---- END java constructors ---- >
 }

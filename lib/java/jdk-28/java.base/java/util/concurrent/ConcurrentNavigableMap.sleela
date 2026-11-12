@@ -58,18 +58,30 @@ class ConcurrentNavigableMap<K, V> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.NavigableSet<K> keySet() { throw new AbstractMethodError("java.util.concurrent.ConcurrentNavigableMap.keySet()"); }
-  public abstract java.util.concurrent.ConcurrentNavigableMap<K, V> descendingMap() { throw new AbstractMethodError("java.util.concurrent.ConcurrentNavigableMap.descendingMap()"); }
-  public abstract java.util.NavigableSet<K> navigableKeySet() { throw new AbstractMethodError("java.util.concurrent.ConcurrentNavigableMap.navigableKeySet()"); }
-  public abstract java.util.NavigableSet<K> descendingKeySet() { throw new AbstractMethodError("java.util.concurrent.ConcurrentNavigableMap.descendingKeySet()"); }
-  public abstract java.util.concurrent.ConcurrentNavigableMap<K, V> subMap(K fromKey, K toKey) { throw new AbstractMethodError("java.util.concurrent.ConcurrentNavigableMap.subMap(K, K)"); }
-  public abstract java.util.concurrent.ConcurrentNavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive) { throw new AbstractMethodError("java.util.concurrent.ConcurrentNavigableMap.subMap(K, boolean, K, boolean)"); }
-  public abstract java.util.concurrent.ConcurrentNavigableMap<K, V> headMap(K toKey) { throw new AbstractMethodError("java.util.concurrent.ConcurrentNavigableMap.headMap(K)"); }
-  public abstract java.util.concurrent.ConcurrentNavigableMap<K, V> headMap(K toKey, boolean inclusive) { throw new AbstractMethodError("java.util.concurrent.ConcurrentNavigableMap.headMap(K, boolean)"); }
-  public abstract java.util.concurrent.ConcurrentNavigableMap<K, V> tailMap(K fromKey, boolean inclusive) { throw new AbstractMethodError("java.util.concurrent.ConcurrentNavigableMap.tailMap(K, boolean)"); }
-  public abstract java.util.concurrent.ConcurrentNavigableMap<K, V> tailMap(K fromKey) { throw new AbstractMethodError("java.util.concurrent.ConcurrentNavigableMap.tailMap(K)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.NavigableSet<K> keySet() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.ConcurrentNavigableMap<K, V> descendingMap() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.NavigableSet<K> navigableKeySet() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.NavigableSet<K> descendingKeySet() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.ConcurrentNavigableMap<K, V> subMap(K fromKey, K toKey) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.ConcurrentNavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.ConcurrentNavigableMap<K, V> headMap(K toKey) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.ConcurrentNavigableMap<K, V> headMap(K toKey, boolean inclusive) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.ConcurrentNavigableMap<K, V> tailMap(K fromKey, boolean inclusive) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.ConcurrentNavigableMap<K, V> tailMap(K fromKey) { return null; }
   < ---- END java signatures ---- >
 }

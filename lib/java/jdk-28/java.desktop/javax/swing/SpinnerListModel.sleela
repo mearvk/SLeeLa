@@ -58,20 +58,31 @@ class SpinnerListModel {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SpinnerListModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerListModel.<init>()"); }
-  public SpinnerListModel(java.lang.Object[] values) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerListModel.<init>(java.lang.Object[])"); }
-  public SpinnerListModel(java.util.List<?> values) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerListModel.<init>(java.util.List<?>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SpinnerListModel() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SpinnerListModel(java.lang.Object[] values) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SpinnerListModel(java.util.List<?> values) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerListModel.getValue()"); }
-  public void setValue(java.lang.Object elt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerListModel.setValue(java.lang.Object)"); }
-  public java.util.List<?> getList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerListModel.getList()"); }
-  public void setList(java.util.List<?> list) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerListModel.setList(java.util.List<?>)"); }
-  public java.lang.Object getNextValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerListModel.getNextValue()"); }
-  public java.lang.Object getPreviousValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpinnerListModel.getPreviousValue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValue(java.lang.Object elt) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<?> getList() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setList(java.util.List<?> list) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getNextValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getPreviousValue() { return null; }
   < ---- END java signatures ---- >
 }

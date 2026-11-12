@@ -59,45 +59,77 @@ class SSLSocket {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SSLSocket(java.net.InetAddress address, int port, java.net.InetAddress clientAddress, int clientPort) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLSocket.<init>(java.net.InetAddress, int, java.net.InetAddress, int)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  SSLSocket(java.net.InetAddress address, int port, java.net.InetAddress clientAddress, int clientPort) { }
   @JavaProtected
-  SSLSocket(java.lang.String host, int port, java.net.InetAddress clientAddress, int clientPort) throws java.io.IOException, java.net.UnknownHostException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLSocket.<init>(java.lang.String, int, java.net.InetAddress, int)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException, java.net.UnknownHostException")
+  SSLSocket(java.lang.String host, int port, java.net.InetAddress clientAddress, int clientPort) { }
   @JavaProtected
-  SSLSocket(java.net.InetAddress address, int port) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLSocket.<init>(java.net.InetAddress, int)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  SSLSocket(java.net.InetAddress address, int port) { }
   @JavaProtected
-  SSLSocket(java.lang.String host, int port) throws java.io.IOException, java.net.UnknownHostException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLSocket.<init>(java.lang.String, int)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException, java.net.UnknownHostException")
+  SSLSocket(java.lang.String host, int port) { }
   @JavaProtected
-  SSLSocket() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLSocket.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SSLSocket() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String[] getSupportedCipherSuites() { throw new AbstractMethodError("javax.net.ssl.SSLSocket.getSupportedCipherSuites()"); }
-  public abstract javax.net.ssl.SSLSession getSession() { throw new AbstractMethodError("javax.net.ssl.SSLSocket.getSession()"); }
-  public abstract java.lang.String[] getEnabledCipherSuites() { throw new AbstractMethodError("javax.net.ssl.SSLSocket.getEnabledCipherSuites()"); }
-  public abstract java.lang.String[] getEnabledProtocols() { throw new AbstractMethodError("javax.net.ssl.SSLSocket.getEnabledProtocols()"); }
-  public abstract boolean getNeedClientAuth() { throw new AbstractMethodError("javax.net.ssl.SSLSocket.getNeedClientAuth()"); }
-  public abstract void setNeedClientAuth(boolean need) { throw new AbstractMethodError("javax.net.ssl.SSLSocket.setNeedClientAuth(boolean)"); }
-  public abstract boolean getWantClientAuth() { throw new AbstractMethodError("javax.net.ssl.SSLSocket.getWantClientAuth()"); }
-  public abstract void setWantClientAuth(boolean want) { throw new AbstractMethodError("javax.net.ssl.SSLSocket.setWantClientAuth(boolean)"); }
-  public abstract void setEnabledCipherSuites(java.lang.String[] suites) { throw new AbstractMethodError("javax.net.ssl.SSLSocket.setEnabledCipherSuites(java.lang.String[])"); }
-  public abstract void setEnabledProtocols(java.lang.String[] protocols) { throw new AbstractMethodError("javax.net.ssl.SSLSocket.setEnabledProtocols(java.lang.String[])"); }
-  public abstract java.lang.String[] getSupportedProtocols() { throw new AbstractMethodError("javax.net.ssl.SSLSocket.getSupportedProtocols()"); }
-  public javax.net.ssl.SSLSession getHandshakeSession() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLSocket.getHandshakeSession()"); }
-  public abstract void addHandshakeCompletedListener(javax.net.ssl.HandshakeCompletedListener listener) { throw new AbstractMethodError("javax.net.ssl.SSLSocket.addHandshakeCompletedListener(javax.net.ssl.HandshakeCompletedListener)"); }
-  public abstract void removeHandshakeCompletedListener(javax.net.ssl.HandshakeCompletedListener listener) { throw new AbstractMethodError("javax.net.ssl.SSLSocket.removeHandshakeCompletedListener(javax.net.ssl.HandshakeCompletedListener)"); }
-  public abstract void startHandshake() throws java.io.IOException { throw new AbstractMethodError("javax.net.ssl.SSLSocket.startHandshake()"); }
-  public abstract void setUseClientMode(boolean mode) { throw new AbstractMethodError("javax.net.ssl.SSLSocket.setUseClientMode(boolean)"); }
-  public abstract boolean getUseClientMode() { throw new AbstractMethodError("javax.net.ssl.SSLSocket.getUseClientMode()"); }
-  public abstract void setEnableSessionCreation(boolean flag) { throw new AbstractMethodError("javax.net.ssl.SSLSocket.setEnableSessionCreation(boolean)"); }
-  public abstract boolean getEnableSessionCreation() { throw new AbstractMethodError("javax.net.ssl.SSLSocket.getEnableSessionCreation()"); }
-  public javax.net.ssl.SSLParameters getSSLParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLSocket.getSSLParameters()"); }
-  public void setSSLParameters(javax.net.ssl.SSLParameters params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLSocket.setSSLParameters(javax.net.ssl.SSLParameters)"); }
-  public java.lang.String getApplicationProtocol() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLSocket.getApplicationProtocol()"); }
-  public java.lang.String getHandshakeApplicationProtocol() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLSocket.getHandshakeApplicationProtocol()"); }
-  public void setHandshakeApplicationProtocolSelector(java.util.function.BiFunction<javax.net.ssl.SSLSocket, java.util.List<java.lang.String>, java.lang.String> selector) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLSocket.setHandshakeApplicationProtocolSelector(java.util.function.BiFunction<javax.net.ssl.SSLSocket, java.util.List<java.lang.String>, java.lang.String>)"); }
-  public java.util.function.BiFunction<javax.net.ssl.SSLSocket, java.util.List<java.lang.String>, java.lang.String> getHandshakeApplicationProtocolSelector() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLSocket.getHandshakeApplicationProtocolSelector()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getSupportedCipherSuites() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.net.ssl.SSLSession getSession() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getEnabledCipherSuites() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getEnabledProtocols() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getNeedClientAuth() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setNeedClientAuth(boolean need) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getWantClientAuth() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setWantClientAuth(boolean want) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setEnabledCipherSuites(java.lang.String[] suites) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setEnabledProtocols(java.lang.String[] protocols) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getSupportedProtocols() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.net.ssl.SSLSession getHandshakeSession() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void addHandshakeCompletedListener(javax.net.ssl.HandshakeCompletedListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeHandshakeCompletedListener(javax.net.ssl.HandshakeCompletedListener listener) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void startHandshake() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setUseClientMode(boolean mode) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getUseClientMode() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setEnableSessionCreation(boolean flag) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getEnableSessionCreation() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.net.ssl.SSLParameters getSSLParameters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSSLParameters(javax.net.ssl.SSLParameters params) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getApplicationProtocol() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getHandshakeApplicationProtocol() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHandshakeApplicationProtocolSelector(java.util.function.BiFunction<javax.net.ssl.SSLSocket, java.util.List<java.lang.String>, java.lang.String> selector) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.function.BiFunction<javax.net.ssl.SSLSocket, java.util.List<java.lang.String>, java.lang.String> getHandshakeApplicationProtocolSelector() { return null; }
   < ---- END java signatures ---- >
 }

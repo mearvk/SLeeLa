@@ -70,24 +70,42 @@ class ManagementFactory {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static java.lang.management.ClassLoadingMXBean getClassLoadingMXBean() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getClassLoadingMXBean()"); }
-  public static java.lang.management.OperatingSystemMXBean getOperatingSystemMXBean() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getOperatingSystemMXBean()"); }
-  public static java.lang.management.CompilationMXBean getCompilationMXBean() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getCompilationMXBean()"); }
-  public static java.lang.management.MemoryMXBean getMemoryMXBean() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getMemoryMXBean()"); }
-  public static java.util.List<java.lang.management.GarbageCollectorMXBean> getGarbageCollectorMXBeans() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getGarbageCollectorMXBeans()"); }
-  public static java.util.List<java.lang.management.MemoryManagerMXBean> getMemoryManagerMXBeans() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getMemoryManagerMXBeans()"); }
-  public static java.util.List<java.lang.management.MemoryPoolMXBean> getMemoryPoolMXBeans() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getMemoryPoolMXBeans()"); }
-  public static java.lang.management.RuntimeMXBean getRuntimeMXBean() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getRuntimeMXBean()"); }
-  public static java.lang.management.ThreadMXBean getThreadMXBean() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getThreadMXBean()"); }
-  public static <T extends java.lang.management.PlatformManagedObject> T getPlatformMXBean(java.lang.Class<T> mxbeanInterface) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getPlatformMXBean(java.lang.Class<T>)"); }
-  public static <T extends java.lang.management.PlatformManagedObject> T getPlatformMXBean(javax.management.MBeanServerConnection connection, java.lang.Class<T> mxbeanInterface) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getPlatformMXBean(javax.management.MBeanServerConnection, java.lang.Class<T>)"); }
-  public static <T extends java.lang.management.PlatformManagedObject> java.util.List<T> getPlatformMXBeans(javax.management.MBeanServerConnection connection, java.lang.Class<T> mxbeanInterface) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getPlatformMXBeans(javax.management.MBeanServerConnection, java.lang.Class<T>)"); }
-  public static <T extends java.lang.management.PlatformManagedObject> java.util.List<T> getPlatformMXBeans(java.lang.Class<T> mxbeanInterface) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getPlatformMXBeans(java.lang.Class<T>)"); }
-  public static <T> T newPlatformMXBeanProxy(javax.management.MBeanServerConnection connection, java.lang.String mxbeanName, java.lang.Class<T> mxbeanInterface) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.newPlatformMXBeanProxy(javax.management.MBeanServerConnection, java.lang.String, java.lang.Class<T>)"); }
-  public static synchronized javax.management.MBeanServer getPlatformMBeanServer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getPlatformMBeanServer()"); }
-  public static java.util.Set<java.lang.Class<? extends java.lang.management.PlatformManagedObject>> getPlatformManagementInterfaces() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ManagementFactory.getPlatformManagementInterfaces()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.management.ClassLoadingMXBean getClassLoadingMXBean() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.management.OperatingSystemMXBean getOperatingSystemMXBean() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.management.CompilationMXBean getCompilationMXBean() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.management.MemoryMXBean getMemoryMXBean() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.List<java.lang.management.GarbageCollectorMXBean> getGarbageCollectorMXBeans() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.List<java.lang.management.MemoryManagerMXBean> getMemoryManagerMXBeans() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.List<java.lang.management.MemoryPoolMXBean> getMemoryPoolMXBeans() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.management.RuntimeMXBean getRuntimeMXBean() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.management.ThreadMXBean getThreadMXBean() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T extends java.lang.management.PlatformManagedObject> T getPlatformMXBean(java.lang.Class<T> mxbeanInterface) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static <T extends java.lang.management.PlatformManagedObject> T getPlatformMXBean(javax.management.MBeanServerConnection connection, java.lang.Class<T> mxbeanInterface) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static <T extends java.lang.management.PlatformManagedObject> java.util.List<T> getPlatformMXBeans(javax.management.MBeanServerConnection connection, java.lang.Class<T> mxbeanInterface) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T extends java.lang.management.PlatformManagedObject> java.util.List<T> getPlatformMXBeans(java.lang.Class<T> mxbeanInterface) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static <T> T newPlatformMXBeanProxy(javax.management.MBeanServerConnection connection, java.lang.String mxbeanName, java.lang.Class<T> mxbeanInterface) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static synchronized javax.management.MBeanServer getPlatformMBeanServer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Set<java.lang.Class<? extends java.lang.management.PlatformManagedObject>> getPlatformManagementInterfaces() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,58 +58,105 @@ class ForkJoinTask<V> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ForkJoinTask() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ForkJoinTask() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final V get() throws java.lang.InterruptedException, java.util.concurrent.ExecutionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.get()"); }
-  public final V get(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.get(long, java.util.concurrent.TimeUnit)"); }
-  public final V join() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.join()"); }
-  public final java.lang.Throwable getException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.getException()"); }
-  public java.util.concurrent.Future.State state() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.state()"); }
-  public final boolean isDone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.isDone()"); }
-  public boolean cancel(boolean mayInterruptIfRunning) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.cancel(boolean)"); }
-  public static <T> java.util.concurrent.ForkJoinTask<T> adapt(java.lang.Runnable runnable, T result) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.adapt(java.lang.Runnable, T)"); }
-  public static <T> java.util.concurrent.ForkJoinTask<T> adapt(java.util.concurrent.Callable<? extends T> callable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.adapt(java.util.concurrent.Callable<? extends T>)"); }
-  public static int getQueuedTaskCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.getQueuedTaskCount()"); }
-  public static java.util.concurrent.ForkJoinPool getPool() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.getPool()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException")
+  public final V get() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException")
+  public final V get(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final V join() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Throwable getException() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.Future.State state() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isDone() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean cancel(boolean mayInterruptIfRunning) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.concurrent.ForkJoinTask<T> adapt(java.lang.Runnable runnable, T result) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.concurrent.ForkJoinTask<T> adapt(java.util.concurrent.Callable<? extends T> callable) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getQueuedTaskCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.concurrent.ForkJoinPool getPool() { return null; }
   @JavaProtected
-  abstract boolean exec() { throw new AbstractMethodError("java.util.concurrent.ForkJoinTask.exec()"); }
-  public void reinitialize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.reinitialize()"); }
-  public void complete(V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.complete(V)"); }
-  public static <T extends java.util.concurrent.ForkJoinTask<?>> java.util.Collection<T> invokeAll(java.util.Collection<T> tasks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.invokeAll(java.util.Collection<T>)"); }
-  public static void invokeAll(java.util.concurrent.ForkJoinTask<?> t1, java.util.concurrent.ForkJoinTask<?> t2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.invokeAll(java.util.concurrent.ForkJoinTask<?>, java.util.concurrent.ForkJoinTask<?>)"); }
-  public static void invokeAll(java.util.concurrent.ForkJoinTask<?>... tasks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.invokeAll(java.util.concurrent.ForkJoinTask<?>...)"); }
-  public final void quietlyComplete() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.quietlyComplete()"); }
+  @throwable("java.lang.AbstractMethodError")
+  boolean exec() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reinitialize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void complete(V value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T extends java.util.concurrent.ForkJoinTask<?>> java.util.Collection<T> invokeAll(java.util.Collection<T> tasks) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void invokeAll(java.util.concurrent.ForkJoinTask<?> t1, java.util.concurrent.ForkJoinTask<?> t2) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void invokeAll(java.util.concurrent.ForkJoinTask<?>... tasks) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void quietlyComplete() { }
   @JavaProtected
-  abstract void setRawResult(V value) { throw new AbstractMethodError("java.util.concurrent.ForkJoinTask.setRawResult(V)"); }
-  public abstract V getRawResult() { throw new AbstractMethodError("java.util.concurrent.ForkJoinTask.getRawResult()"); }
-  public final java.util.concurrent.ForkJoinTask<V> fork() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.fork()"); }
-  public static int getSurplusQueuedTaskCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.getSurplusQueuedTaskCount()"); }
-  protected static java.util.concurrent.ForkJoinTask<?> pollSubmission() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.pollSubmission()"); }
-  public final boolean isCancelled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.isCancelled()"); }
-  public final boolean isCompletedAbnormally() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.isCompletedAbnormally()"); }
-  public final boolean isCompletedNormally() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.isCompletedNormally()"); }
-  public V resultNow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.resultNow()"); }
-  public java.lang.Throwable exceptionNow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.exceptionNow()"); }
-  public void completeExceptionally(java.lang.Throwable ex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.completeExceptionally(java.lang.Throwable)"); }
-  public final void quietlyJoin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.quietlyJoin()"); }
-  public final boolean quietlyJoin(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.quietlyJoin(long, java.util.concurrent.TimeUnit)"); }
-  public final void quietlyInvoke() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.quietlyInvoke()"); }
-  public final boolean quietlyJoinUninterruptibly(long timeout, java.util.concurrent.TimeUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.quietlyJoinUninterruptibly(long, java.util.concurrent.TimeUnit)"); }
-  public static void helpQuiesce() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.helpQuiesce()"); }
-  public static boolean inForkJoinPool() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.inForkJoinPool()"); }
-  public boolean tryUnfork() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.tryUnfork()"); }
-  protected static java.util.concurrent.ForkJoinTask<?> peekNextLocalTask() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.peekNextLocalTask()"); }
-  protected static java.util.concurrent.ForkJoinTask<?> pollNextLocalTask() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.pollNextLocalTask()"); }
-  protected static java.util.concurrent.ForkJoinTask<?> pollTask() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.pollTask()"); }
-  public final short getForkJoinTaskTag() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.getForkJoinTaskTag()"); }
-  public final short setForkJoinTaskTag(short newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.setForkJoinTaskTag(short)"); }
-  public final boolean compareAndSetForkJoinTaskTag(short expect, short update) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.compareAndSetForkJoinTaskTag(short, short)"); }
-  public static java.util.concurrent.ForkJoinTask<?> adaptInterruptible(java.lang.Runnable runnable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.adaptInterruptible(java.lang.Runnable)"); }
-  public static <T> java.util.concurrent.ForkJoinTask<T> adaptInterruptible(java.lang.Runnable runnable, T result) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinTask.adaptInterruptible(java.lang.Runnable, T)"); }
+  @throwable("java.lang.AbstractMethodError")
+  void setRawResult(V value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public V getRawResult() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.concurrent.ForkJoinTask<V> fork() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getSurplusQueuedTaskCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static java.util.concurrent.ForkJoinTask<?> pollSubmission() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isCancelled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isCompletedAbnormally() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isCompletedNormally() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V resultNow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Throwable exceptionNow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void completeExceptionally(java.lang.Throwable ex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void quietlyJoin() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public final boolean quietlyJoin(long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void quietlyInvoke() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean quietlyJoinUninterruptibly(long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void helpQuiesce() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean inForkJoinPool() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean tryUnfork() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static java.util.concurrent.ForkJoinTask<?> peekNextLocalTask() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static java.util.concurrent.ForkJoinTask<?> pollNextLocalTask() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static java.util.concurrent.ForkJoinTask<?> pollTask() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final short getForkJoinTaskTag() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final short setForkJoinTaskTag(short newValue) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean compareAndSetForkJoinTaskTag(short expect, short update) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.concurrent.ForkJoinTask<?> adaptInterruptible(java.lang.Runnable runnable) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.concurrent.ForkJoinTask<T> adaptInterruptible(java.lang.Runnable runnable, T result) { return null; }
   < ---- END java signatures ---- >
 }

@@ -59,10 +59,14 @@ class Provider<S> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract S get() { throw new AbstractMethodError("java.util.ServiceLoader.Provider.get()"); }
-  public abstract java.lang.Class<? extends S> type() { throw new AbstractMethodError("java.util.ServiceLoader.Provider.type()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public S get() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Class<? extends S> type() { return null; }
   < ---- END java signatures ---- >
 }

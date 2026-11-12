@@ -58,12 +58,18 @@ class CallSite {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.invoke.MethodType type() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.CallSite.type()"); }
-  public abstract java.lang.invoke.MethodHandle getTarget() { throw new AbstractMethodError("java.lang.invoke.CallSite.getTarget()"); }
-  public abstract java.lang.invoke.MethodHandle dynamicInvoker() { throw new AbstractMethodError("java.lang.invoke.CallSite.dynamicInvoker()"); }
-  public abstract void setTarget(java.lang.invoke.MethodHandle newTarget) { throw new AbstractMethodError("java.lang.invoke.CallSite.setTarget(java.lang.invoke.MethodHandle)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodType type() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.invoke.MethodHandle getTarget() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.invoke.MethodHandle dynamicInvoker() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTarget(java.lang.invoke.MethodHandle newTarget) { }
   < ---- END java signatures ---- >
 }

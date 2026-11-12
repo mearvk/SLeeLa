@@ -58,32 +58,47 @@ class BasicRootPaneUI {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicRootPaneUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRootPaneUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicRootPaneUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void installListeners(javax.swing.JRootPane root) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRootPaneUI.installListeners(javax.swing.JRootPane)"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRootPaneUI.installUI(javax.swing.JComponent)"); }
-  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRootPaneUI.uninstallUI(javax.swing.JComponent)"); }
-  public void propertyChange(java.beans.PropertyChangeEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRootPaneUI.propertyChange(java.beans.PropertyChangeEvent)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRootPaneUI.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListeners(javax.swing.JRootPane root) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void propertyChange(java.beans.PropertyChangeEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void installKeyboardActions(javax.swing.JRootPane root) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRootPaneUI.installKeyboardActions(javax.swing.JRootPane)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installKeyboardActions(javax.swing.JRootPane root) { }
   @JavaProtected
-  void uninstallKeyboardActions(javax.swing.JRootPane root) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRootPaneUI.uninstallKeyboardActions(javax.swing.JRootPane)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallKeyboardActions(javax.swing.JRootPane root) { }
   @JavaProtected
-  void installDefaults(javax.swing.JRootPane c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRootPaneUI.installDefaults(javax.swing.JRootPane)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults(javax.swing.JRootPane c) { }
   @JavaProtected
-  void uninstallListeners(javax.swing.JRootPane root) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRootPaneUI.uninstallListeners(javax.swing.JRootPane)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallListeners(javax.swing.JRootPane root) { }
   @JavaProtected
-  void uninstallDefaults(javax.swing.JRootPane root) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRootPaneUI.uninstallDefaults(javax.swing.JRootPane)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults(javax.swing.JRootPane root) { }
   @JavaProtected
-  void installComponents(javax.swing.JRootPane root) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRootPaneUI.installComponents(javax.swing.JRootPane)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installComponents(javax.swing.JRootPane root) { }
   @JavaProtected
-  void uninstallComponents(javax.swing.JRootPane root) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRootPaneUI.uninstallComponents(javax.swing.JRootPane)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallComponents(javax.swing.JRootPane root) { }
   < ---- END java signatures ---- >
 }

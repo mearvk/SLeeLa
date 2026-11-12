@@ -58,22 +58,38 @@ class DataOutput {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void write(byte[] b, int off, int len) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.write(byte[], int, int)"); }
-  public abstract void write(byte[] b) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.write(byte[])"); }
-  public abstract void write(int b) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.write(int)"); }
-  public abstract void writeInt(int v) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.writeInt(int)"); }
-  public abstract void writeUTF(java.lang.String s) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.writeUTF(java.lang.String)"); }
-  public abstract void writeLong(long v) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.writeLong(long)"); }
-  public abstract void writeByte(int v) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.writeByte(int)"); }
-  public abstract void writeShort(int v) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.writeShort(int)"); }
-  public abstract void writeBytes(java.lang.String s) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.writeBytes(java.lang.String)"); }
-  public abstract void writeChar(int v) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.writeChar(int)"); }
-  public abstract void writeFloat(float v) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.writeFloat(float)"); }
-  public abstract void writeDouble(double v) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.writeDouble(double)"); }
-  public abstract void writeBoolean(boolean v) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.writeBoolean(boolean)"); }
-  public abstract void writeChars(java.lang.String s) throws java.io.IOException { throw new AbstractMethodError("java.io.DataOutput.writeChars(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void write(byte[] b, int off, int len) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void write(byte[] b) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void write(int b) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeInt(int v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeUTF(java.lang.String s) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeLong(long v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeByte(int v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeShort(int v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeBytes(java.lang.String s) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeChar(int v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeFloat(float v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeDouble(double v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeBoolean(boolean v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeChars(java.lang.String s) { }
   < ---- END java signatures ---- >
 }

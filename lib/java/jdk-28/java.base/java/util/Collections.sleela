@@ -64,78 +64,150 @@ class Collections {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static <T> T min(java.util.Collection<? extends T> coll, java.util.Comparator<? super T> comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.min(java.util.Collection<? extends T>, java.util.Comparator<? super T>)"); }
-  public static <T extends java.lang.Object & java.lang.Comparable<? super T>> T min(java.util.Collection<? extends T> coll) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.min(java.util.Collection<? extends T>)"); }
-  public static <T extends java.lang.Object & java.lang.Comparable<? super T>> T max(java.util.Collection<? extends T> coll) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.max(java.util.Collection<? extends T>)"); }
-  public static <T> T max(java.util.Collection<? extends T> coll, java.util.Comparator<? super T> comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.max(java.util.Collection<? extends T>, java.util.Comparator<? super T>)"); }
-  public static void reverse(java.util.List<?> list) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.reverse(java.util.List<?>)"); }
-  public static <T extends java.lang.Comparable<? super T>> void sort(java.util.List<T> list) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.sort(java.util.List<T>)"); }
-  public static <T> void sort(java.util.List<T> list, java.util.Comparator<? super T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.sort(java.util.List<T>, java.util.Comparator<? super T>)"); }
-  public static <T> void copy(java.util.List<? super T> dest, java.util.List<? extends T> src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.copy(java.util.List<? super T>, java.util.List<? extends T>)"); }
-  public static <T> boolean replaceAll(java.util.List<T> list, T oldVal, T newVal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.replaceAll(java.util.List<T>, T, T)"); }
-  public static <T> void fill(java.util.List<? super T> list, T obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.fill(java.util.List<? super T>, T)"); }
-  public static <T> java.util.ArrayList<T> list(java.util.Enumeration<T> e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.list(java.util.Enumeration<T>)"); }
-  public static <T> boolean addAll(java.util.Collection<? super T> c, T... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.addAll(java.util.Collection<? super T>, T...)"); }
-  public static <T> java.util.Enumeration<T> emptyEnumeration() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.emptyEnumeration()"); }
-  public static <E> java.util.Set<E> newSetFromMap(java.util.Map<E, java.lang.Boolean> map) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.newSetFromMap(java.util.Map<E, java.lang.Boolean>)"); }
-  public static final <T> java.util.List<T> emptyList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.emptyList()"); }
-  public static <T> java.util.Set<T> unmodifiableSet(java.util.Set<? extends T> s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableSet(java.util.Set<? extends T>)"); }
-  public static <T> java.util.Enumeration<T> enumeration(java.util.Collection<T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.enumeration(java.util.Collection<T>)"); }
-  public static <T> java.util.Set<T> synchronizedSet(java.util.Set<T> s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.synchronizedSet(java.util.Set<T>)"); }
-  public static <T> java.util.Collection<T> synchronizedCollection(java.util.Collection<T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.synchronizedCollection(java.util.Collection<T>)"); }
-  public static <T> java.util.Iterator<T> emptyIterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.emptyIterator()"); }
-  public static <T> java.util.List<T> nCopies(int n, T o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.nCopies(int, T)"); }
-  public static <T> java.util.Comparator<T> reverseOrder(java.util.Comparator<T> cmp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.reverseOrder(java.util.Comparator<T>)"); }
-  public static <T> java.util.Comparator<T> reverseOrder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.reverseOrder()"); }
-  public static <K, V> java.util.Map<K, V> unmodifiableMap(java.util.Map<? extends K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableMap(java.util.Map<? extends K, ? extends V>)"); }
-  public static <K, V> java.util.SortedMap<K, V> unmodifiableSortedMap(java.util.SortedMap<K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableSortedMap(java.util.SortedMap<K, ? extends V>)"); }
-  public static void swap(java.util.List<?> list, int i, int j) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.swap(java.util.List<?>, int, int)"); }
-  public static <T> int binarySearch(java.util.List<? extends T> list, T key, java.util.Comparator<? super T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.binarySearch(java.util.List<? extends T>, T, java.util.Comparator<? super T>)"); }
-  public static <T> int binarySearch(java.util.List<? extends java.lang.Comparable<? super T>> list, T key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.binarySearch(java.util.List<? extends java.lang.Comparable<? super T>>, T)"); }
-  public static void shuffle(java.util.List<?> list, java.util.Random rnd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.shuffle(java.util.List<?>, java.util.Random)"); }
-  public static void shuffle(java.util.List<?> list) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.shuffle(java.util.List<?>)"); }
-  public static void rotate(java.util.List<?> list, int distance) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.rotate(java.util.List<?>, int)"); }
-  public static int indexOfSubList(java.util.List<?> source, java.util.List<?> target) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.indexOfSubList(java.util.List<?>, java.util.List<?>)"); }
-  public static int lastIndexOfSubList(java.util.List<?> source, java.util.List<?> target) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.lastIndexOfSubList(java.util.List<?>, java.util.List<?>)"); }
-  public static <T> java.util.Collection<T> unmodifiableCollection(java.util.Collection<? extends T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableCollection(java.util.Collection<? extends T>)"); }
-  public static <T> java.util.SequencedCollection<T> unmodifiableSequencedCollection(java.util.SequencedCollection<? extends T> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableSequencedCollection(java.util.SequencedCollection<? extends T>)"); }
-  public static <T> java.util.SequencedSet<T> unmodifiableSequencedSet(java.util.SequencedSet<? extends T> s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableSequencedSet(java.util.SequencedSet<? extends T>)"); }
-  public static <T> java.util.SortedSet<T> unmodifiableSortedSet(java.util.SortedSet<T> s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableSortedSet(java.util.SortedSet<T>)"); }
-  public static <T> java.util.NavigableSet<T> unmodifiableNavigableSet(java.util.NavigableSet<T> s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableNavigableSet(java.util.NavigableSet<T>)"); }
-  public static <T> java.util.List<T> unmodifiableList(java.util.List<? extends T> list) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableList(java.util.List<? extends T>)"); }
-  public static <K, V> java.util.SequencedMap<K, V> unmodifiableSequencedMap(java.util.SequencedMap<? extends K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableSequencedMap(java.util.SequencedMap<? extends K, ? extends V>)"); }
-  public static <K, V> java.util.NavigableMap<K, V> unmodifiableNavigableMap(java.util.NavigableMap<K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.unmodifiableNavigableMap(java.util.NavigableMap<K, ? extends V>)"); }
-  public static <T> java.util.SortedSet<T> synchronizedSortedSet(java.util.SortedSet<T> s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.synchronizedSortedSet(java.util.SortedSet<T>)"); }
-  public static <T> java.util.NavigableSet<T> synchronizedNavigableSet(java.util.NavigableSet<T> s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.synchronizedNavigableSet(java.util.NavigableSet<T>)"); }
-  public static <T> java.util.List<T> synchronizedList(java.util.List<T> list) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.synchronizedList(java.util.List<T>)"); }
-  public static <K, V> java.util.Map<K, V> synchronizedMap(java.util.Map<K, V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.synchronizedMap(java.util.Map<K, V>)"); }
-  public static <K, V> java.util.SortedMap<K, V> synchronizedSortedMap(java.util.SortedMap<K, V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.synchronizedSortedMap(java.util.SortedMap<K, V>)"); }
-  public static <K, V> java.util.NavigableMap<K, V> synchronizedNavigableMap(java.util.NavigableMap<K, V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.synchronizedNavigableMap(java.util.NavigableMap<K, V>)"); }
-  public static <E> java.util.Collection<E> checkedCollection(java.util.Collection<E> c, java.lang.Class<E> type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.checkedCollection(java.util.Collection<E>, java.lang.Class<E>)"); }
-  public static <E> java.util.Queue<E> checkedQueue(java.util.Queue<E> queue, java.lang.Class<E> type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.checkedQueue(java.util.Queue<E>, java.lang.Class<E>)"); }
-  public static <E> java.util.Set<E> checkedSet(java.util.Set<E> s, java.lang.Class<E> type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.checkedSet(java.util.Set<E>, java.lang.Class<E>)"); }
-  public static <E> java.util.SortedSet<E> checkedSortedSet(java.util.SortedSet<E> s, java.lang.Class<E> type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.checkedSortedSet(java.util.SortedSet<E>, java.lang.Class<E>)"); }
-  public static <E> java.util.NavigableSet<E> checkedNavigableSet(java.util.NavigableSet<E> s, java.lang.Class<E> type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.checkedNavigableSet(java.util.NavigableSet<E>, java.lang.Class<E>)"); }
-  public static <E> java.util.List<E> checkedList(java.util.List<E> list, java.lang.Class<E> type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.checkedList(java.util.List<E>, java.lang.Class<E>)"); }
-  public static <K, V> java.util.Map<K, V> checkedMap(java.util.Map<K, V> m, java.lang.Class<K> keyType, java.lang.Class<V> valueType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.checkedMap(java.util.Map<K, V>, java.lang.Class<K>, java.lang.Class<V>)"); }
-  public static <K, V> java.util.SortedMap<K, V> checkedSortedMap(java.util.SortedMap<K, V> m, java.lang.Class<K> keyType, java.lang.Class<V> valueType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.checkedSortedMap(java.util.SortedMap<K, V>, java.lang.Class<K>, java.lang.Class<V>)"); }
-  public static <K, V> java.util.NavigableMap<K, V> checkedNavigableMap(java.util.NavigableMap<K, V> m, java.lang.Class<K> keyType, java.lang.Class<V> valueType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.checkedNavigableMap(java.util.NavigableMap<K, V>, java.lang.Class<K>, java.lang.Class<V>)"); }
-  public static <T> java.util.ListIterator<T> emptyListIterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.emptyListIterator()"); }
-  public static final <T> java.util.Set<T> emptySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.emptySet()"); }
-  public static <E> java.util.SortedSet<E> emptySortedSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.emptySortedSet()"); }
-  public static <E> java.util.NavigableSet<E> emptyNavigableSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.emptyNavigableSet()"); }
-  public static final <K, V> java.util.Map<K, V> emptyMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.emptyMap()"); }
-  public static final <K, V> java.util.SortedMap<K, V> emptySortedMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.emptySortedMap()"); }
-  public static final <K, V> java.util.NavigableMap<K, V> emptyNavigableMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.emptyNavigableMap()"); }
-  public static <T> java.util.Set<T> singleton(T o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.singleton(T)"); }
-  public static <T> java.util.List<T> singletonList(T o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.singletonList(T)"); }
-  public static <K, V> java.util.Map<K, V> singletonMap(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.singletonMap(K, V)"); }
-  public static int frequency(java.util.Collection<?> c, java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.frequency(java.util.Collection<?>, java.lang.Object)"); }
-  public static boolean disjoint(java.util.Collection<?> c1, java.util.Collection<?> c2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.disjoint(java.util.Collection<?>, java.util.Collection<?>)"); }
-  public static <E> java.util.SequencedSet<E> newSequencedSetFromMap(java.util.SequencedMap<E, java.lang.Boolean> map) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.newSequencedSetFromMap(java.util.SequencedMap<E, java.lang.Boolean>)"); }
-  public static <T> java.util.Queue<T> asLifoQueue(java.util.Deque<T> deque) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Collections.asLifoQueue(java.util.Deque<T>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> T min(java.util.Collection<? extends T> coll, java.util.Comparator<? super T> comp) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T extends java.lang.Object & java.lang.Comparable<? super T>> T min(java.util.Collection<? extends T> coll) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T extends java.lang.Object & java.lang.Comparable<? super T>> T max(java.util.Collection<? extends T> coll) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> T max(java.util.Collection<? extends T> coll, java.util.Comparator<? super T> comp) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void reverse(java.util.List<?> list) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T extends java.lang.Comparable<? super T>> void sort(java.util.List<T> list) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> void sort(java.util.List<T> list, java.util.Comparator<? super T> c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> void copy(java.util.List<? super T> dest, java.util.List<? extends T> src) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> boolean replaceAll(java.util.List<T> list, T oldVal, T newVal) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> void fill(java.util.List<? super T> list, T obj) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.ArrayList<T> list(java.util.Enumeration<T> e) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> boolean addAll(java.util.Collection<? super T> c, T... elements) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Enumeration<T> emptyEnumeration() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.Set<E> newSetFromMap(java.util.Map<E, java.lang.Boolean> map) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final <T> java.util.List<T> emptyList() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Set<T> unmodifiableSet(java.util.Set<? extends T> s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Enumeration<T> enumeration(java.util.Collection<T> c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Set<T> synchronizedSet(java.util.Set<T> s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Collection<T> synchronizedCollection(java.util.Collection<T> c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Iterator<T> emptyIterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.List<T> nCopies(int n, T o) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Comparator<T> reverseOrder(java.util.Comparator<T> cmp) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Comparator<T> reverseOrder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> unmodifiableMap(java.util.Map<? extends K, ? extends V> m) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.SortedMap<K, V> unmodifiableSortedMap(java.util.SortedMap<K, ? extends V> m) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void swap(java.util.List<?> list, int i, int j) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> int binarySearch(java.util.List<? extends T> list, T key, java.util.Comparator<? super T> c) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> int binarySearch(java.util.List<? extends java.lang.Comparable<? super T>> list, T key) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void shuffle(java.util.List<?> list, java.util.Random rnd) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void shuffle(java.util.List<?> list) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void rotate(java.util.List<?> list, int distance) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int indexOfSubList(java.util.List<?> source, java.util.List<?> target) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int lastIndexOfSubList(java.util.List<?> source, java.util.List<?> target) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Collection<T> unmodifiableCollection(java.util.Collection<? extends T> c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.SequencedCollection<T> unmodifiableSequencedCollection(java.util.SequencedCollection<? extends T> c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.SequencedSet<T> unmodifiableSequencedSet(java.util.SequencedSet<? extends T> s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.SortedSet<T> unmodifiableSortedSet(java.util.SortedSet<T> s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.NavigableSet<T> unmodifiableNavigableSet(java.util.NavigableSet<T> s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.List<T> unmodifiableList(java.util.List<? extends T> list) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.SequencedMap<K, V> unmodifiableSequencedMap(java.util.SequencedMap<? extends K, ? extends V> m) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.NavigableMap<K, V> unmodifiableNavigableMap(java.util.NavigableMap<K, ? extends V> m) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.SortedSet<T> synchronizedSortedSet(java.util.SortedSet<T> s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.NavigableSet<T> synchronizedNavigableSet(java.util.NavigableSet<T> s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.List<T> synchronizedList(java.util.List<T> list) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> synchronizedMap(java.util.Map<K, V> m) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.SortedMap<K, V> synchronizedSortedMap(java.util.SortedMap<K, V> m) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.NavigableMap<K, V> synchronizedNavigableMap(java.util.NavigableMap<K, V> m) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.Collection<E> checkedCollection(java.util.Collection<E> c, java.lang.Class<E> type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.Queue<E> checkedQueue(java.util.Queue<E> queue, java.lang.Class<E> type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.Set<E> checkedSet(java.util.Set<E> s, java.lang.Class<E> type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.SortedSet<E> checkedSortedSet(java.util.SortedSet<E> s, java.lang.Class<E> type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.NavigableSet<E> checkedNavigableSet(java.util.NavigableSet<E> s, java.lang.Class<E> type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> checkedList(java.util.List<E> list, java.lang.Class<E> type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> checkedMap(java.util.Map<K, V> m, java.lang.Class<K> keyType, java.lang.Class<V> valueType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.SortedMap<K, V> checkedSortedMap(java.util.SortedMap<K, V> m, java.lang.Class<K> keyType, java.lang.Class<V> valueType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.NavigableMap<K, V> checkedNavigableMap(java.util.NavigableMap<K, V> m, java.lang.Class<K> keyType, java.lang.Class<V> valueType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.ListIterator<T> emptyListIterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final <T> java.util.Set<T> emptySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.SortedSet<E> emptySortedSet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.NavigableSet<E> emptyNavigableSet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final <K, V> java.util.Map<K, V> emptyMap() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final <K, V> java.util.SortedMap<K, V> emptySortedMap() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final <K, V> java.util.NavigableMap<K, V> emptyNavigableMap() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Set<T> singleton(T o) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.List<T> singletonList(T o) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> singletonMap(K key, V value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int frequency(java.util.Collection<?> c, java.lang.Object o) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean disjoint(java.util.Collection<?> c1, java.util.Collection<?> c2) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.SequencedSet<E> newSequencedSetFromMap(java.util.SequencedMap<E, java.lang.Boolean> map) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Queue<T> asLifoQueue(java.util.Deque<T> deque) { return null; }
   < ---- END java signatures ---- >
 }

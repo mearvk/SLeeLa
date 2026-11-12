@@ -58,20 +58,27 @@ class KeyFactorySpi {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public KeyFactorySpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.KeyFactorySpi.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public KeyFactorySpi() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  abstract java.security.PublicKey engineGeneratePublic(java.security.spec.KeySpec keySpec) throws java.security.spec.InvalidKeySpecException { throw new AbstractMethodError("java.security.KeyFactorySpi.engineGeneratePublic(java.security.spec.KeySpec)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.spec.InvalidKeySpecException")
+  java.security.PublicKey engineGeneratePublic(java.security.spec.KeySpec keySpec) { return null; }
   @JavaProtected
-  abstract java.security.PrivateKey engineGeneratePrivate(java.security.spec.KeySpec keySpec) throws java.security.spec.InvalidKeySpecException { throw new AbstractMethodError("java.security.KeyFactorySpi.engineGeneratePrivate(java.security.spec.KeySpec)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.spec.InvalidKeySpecException")
+  java.security.PrivateKey engineGeneratePrivate(java.security.spec.KeySpec keySpec) { return null; }
   @JavaProtected
-  abstract <T extends java.security.spec.KeySpec> T engineGetKeySpec(java.security.Key key, java.lang.Class<T> keySpec) throws java.security.spec.InvalidKeySpecException { throw new AbstractMethodError("java.security.KeyFactorySpi.engineGetKeySpec(java.security.Key, java.lang.Class<T>)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.spec.InvalidKeySpecException")
+  <T extends java.security.spec.KeySpec> T engineGetKeySpec(java.security.Key key, java.lang.Class<T> keySpec) { return null; }
   @JavaProtected
-  abstract java.security.Key engineTranslateKey(java.security.Key key) throws java.security.InvalidKeyException { throw new AbstractMethodError("java.security.KeyFactorySpi.engineTranslateKey(java.security.Key)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidKeyException")
+  java.security.Key engineTranslateKey(java.security.Key key) { return null; }
   < ---- END java signatures ---- >
 }

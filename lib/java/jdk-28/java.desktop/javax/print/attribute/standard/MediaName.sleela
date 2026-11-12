@@ -66,16 +66,21 @@ class MediaName {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  MediaName(int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.MediaName.<init>(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  MediaName(int value) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.String[] getStringTable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.MediaName.getStringTable()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String[] getStringTable() { return null; }
   @JavaProtected
-  javax.print.attribute.EnumSyntax[] getEnumValueTable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.MediaName.getEnumValueTable()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.print.attribute.EnumSyntax[] getEnumValueTable() { return null; }
   < ---- END java signatures ---- >
 }

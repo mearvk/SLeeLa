@@ -58,7 +58,9 @@ class ShortBufferException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ShortBufferException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.ShortBufferException.<init>()"); }
-  public ShortBufferException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.ShortBufferException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ShortBufferException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ShortBufferException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

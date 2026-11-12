@@ -58,11 +58,16 @@ class CSSPageRule {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract org.w3c.dom.css.CSSStyleDeclaration getStyle() { throw new AbstractMethodError("org.w3c.dom.css.CSSPageRule.getStyle()"); }
-  public abstract java.lang.String getSelectorText() { throw new AbstractMethodError("org.w3c.dom.css.CSSPageRule.getSelectorText()"); }
-  public abstract void setSelectorText(java.lang.String selectorText) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.css.CSSPageRule.setSelectorText(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.css.CSSStyleDeclaration getStyle() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSelectorText() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setSelectorText(java.lang.String selectorText) { }
   < ---- END java signatures ---- >
 }

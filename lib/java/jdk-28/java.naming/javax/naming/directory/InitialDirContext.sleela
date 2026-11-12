@@ -58,41 +58,72 @@ class InitialDirContext {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InitialDirContext(java.util.Hashtable<?, ?> environment) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.<init>(java.util.Hashtable<?, ?>)"); }
-  public InitialDirContext() throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public InitialDirContext(java.util.Hashtable<?, ?> environment) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public InitialDirContext() { }
   @JavaProtected
-  InitialDirContext(boolean lazy) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.<init>(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  InitialDirContext(boolean lazy) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void rebind(javax.naming.Name name, java.lang.Object obj, javax.naming.directory.Attributes attrs) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.rebind(javax.naming.Name, java.lang.Object, javax.naming.directory.Attributes)"); }
-  public void rebind(java.lang.String name, java.lang.Object obj, javax.naming.directory.Attributes attrs) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.rebind(java.lang.String, java.lang.Object, javax.naming.directory.Attributes)"); }
-  public javax.naming.directory.Attributes getAttributes(javax.naming.Name name, java.lang.String[] attrIds) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.getAttributes(javax.naming.Name, java.lang.String[])"); }
-  public javax.naming.directory.Attributes getAttributes(javax.naming.Name name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.getAttributes(javax.naming.Name)"); }
-  public javax.naming.directory.Attributes getAttributes(java.lang.String name, java.lang.String[] attrIds) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.getAttributes(java.lang.String, java.lang.String[])"); }
-  public javax.naming.directory.Attributes getAttributes(java.lang.String name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.getAttributes(java.lang.String)"); }
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(javax.naming.Name name, javax.naming.directory.Attributes matchingAttributes) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.search(javax.naming.Name, javax.naming.directory.Attributes)"); }
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(java.lang.String name, javax.naming.directory.Attributes matchingAttributes, java.lang.String[] attributesToReturn) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.search(java.lang.String, javax.naming.directory.Attributes, java.lang.String[])"); }
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(java.lang.String name, javax.naming.directory.Attributes matchingAttributes) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.search(java.lang.String, javax.naming.directory.Attributes)"); }
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(javax.naming.Name name, java.lang.String filterExpr, java.lang.Object[] filterArgs, javax.naming.directory.SearchControls cons) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.search(javax.naming.Name, java.lang.String, java.lang.Object[], javax.naming.directory.SearchControls)"); }
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(java.lang.String name, java.lang.String filterExpr, java.lang.Object[] filterArgs, javax.naming.directory.SearchControls cons) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.search(java.lang.String, java.lang.String, java.lang.Object[], javax.naming.directory.SearchControls)"); }
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(javax.naming.Name name, java.lang.String filter, javax.naming.directory.SearchControls cons) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.search(javax.naming.Name, java.lang.String, javax.naming.directory.SearchControls)"); }
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(java.lang.String name, java.lang.String filter, javax.naming.directory.SearchControls cons) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.search(java.lang.String, java.lang.String, javax.naming.directory.SearchControls)"); }
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(javax.naming.Name name, javax.naming.directory.Attributes matchingAttributes, java.lang.String[] attributesToReturn) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.search(javax.naming.Name, javax.naming.directory.Attributes, java.lang.String[])"); }
-  public void bind(java.lang.String name, java.lang.Object obj, javax.naming.directory.Attributes attrs) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.bind(java.lang.String, java.lang.Object, javax.naming.directory.Attributes)"); }
-  public void bind(javax.naming.Name name, java.lang.Object obj, javax.naming.directory.Attributes attrs) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.bind(javax.naming.Name, java.lang.Object, javax.naming.directory.Attributes)"); }
-  public javax.naming.directory.DirContext createSubcontext(javax.naming.Name name, javax.naming.directory.Attributes attrs) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.createSubcontext(javax.naming.Name, javax.naming.directory.Attributes)"); }
-  public javax.naming.directory.DirContext createSubcontext(java.lang.String name, javax.naming.directory.Attributes attrs) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.createSubcontext(java.lang.String, javax.naming.directory.Attributes)"); }
-  public void modifyAttributes(java.lang.String name, javax.naming.directory.ModificationItem[] mods) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.modifyAttributes(java.lang.String, javax.naming.directory.ModificationItem[])"); }
-  public void modifyAttributes(javax.naming.Name name, int mod_op, javax.naming.directory.Attributes attrs) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.modifyAttributes(javax.naming.Name, int, javax.naming.directory.Attributes)"); }
-  public void modifyAttributes(java.lang.String name, int mod_op, javax.naming.directory.Attributes attrs) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.modifyAttributes(java.lang.String, int, javax.naming.directory.Attributes)"); }
-  public void modifyAttributes(javax.naming.Name name, javax.naming.directory.ModificationItem[] mods) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.modifyAttributes(javax.naming.Name, javax.naming.directory.ModificationItem[])"); }
-  public javax.naming.directory.DirContext getSchema(javax.naming.Name name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.getSchema(javax.naming.Name)"); }
-  public javax.naming.directory.DirContext getSchema(java.lang.String name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.getSchema(java.lang.String)"); }
-  public javax.naming.directory.DirContext getSchemaClassDefinition(javax.naming.Name name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.getSchemaClassDefinition(javax.naming.Name)"); }
-  public javax.naming.directory.DirContext getSchemaClassDefinition(java.lang.String name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InitialDirContext.getSchemaClassDefinition(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void rebind(javax.naming.Name name, java.lang.Object obj, javax.naming.directory.Attributes attrs) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void rebind(java.lang.String name, java.lang.Object obj, javax.naming.directory.Attributes attrs) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.directory.Attributes getAttributes(javax.naming.Name name, java.lang.String[] attrIds) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.directory.Attributes getAttributes(javax.naming.Name name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.directory.Attributes getAttributes(java.lang.String name, java.lang.String[] attrIds) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.directory.Attributes getAttributes(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(javax.naming.Name name, javax.naming.directory.Attributes matchingAttributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(java.lang.String name, javax.naming.directory.Attributes matchingAttributes, java.lang.String[] attributesToReturn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(java.lang.String name, javax.naming.directory.Attributes matchingAttributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(javax.naming.Name name, java.lang.String filterExpr, java.lang.Object[] filterArgs, javax.naming.directory.SearchControls cons) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(java.lang.String name, java.lang.String filterExpr, java.lang.Object[] filterArgs, javax.naming.directory.SearchControls cons) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(javax.naming.Name name, java.lang.String filter, javax.naming.directory.SearchControls cons) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(java.lang.String name, java.lang.String filter, javax.naming.directory.SearchControls cons) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(javax.naming.Name name, javax.naming.directory.Attributes matchingAttributes, java.lang.String[] attributesToReturn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void bind(java.lang.String name, java.lang.Object obj, javax.naming.directory.Attributes attrs) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void bind(javax.naming.Name name, java.lang.Object obj, javax.naming.directory.Attributes attrs) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.directory.DirContext createSubcontext(javax.naming.Name name, javax.naming.directory.Attributes attrs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.directory.DirContext createSubcontext(java.lang.String name, javax.naming.directory.Attributes attrs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void modifyAttributes(java.lang.String name, javax.naming.directory.ModificationItem[] mods) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void modifyAttributes(javax.naming.Name name, int mod_op, javax.naming.directory.Attributes attrs) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void modifyAttributes(java.lang.String name, int mod_op, javax.naming.directory.Attributes attrs) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void modifyAttributes(javax.naming.Name name, javax.naming.directory.ModificationItem[] mods) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.directory.DirContext getSchema(javax.naming.Name name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.directory.DirContext getSchema(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.directory.DirContext getSchemaClassDefinition(javax.naming.Name name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.directory.DirContext getSchemaClassDefinition(java.lang.String name) { return null; }
   < ---- END java signatures ---- >
 }

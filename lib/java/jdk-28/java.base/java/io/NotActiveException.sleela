@@ -58,7 +58,9 @@ class NotActiveException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NotActiveException(java.lang.String reason) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.NotActiveException.<init>(java.lang.String)"); }
-  public NotActiveException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.NotActiveException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotActiveException(java.lang.String reason) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotActiveException() { }
   < ---- END java constructors ---- >
 }

@@ -65,68 +65,127 @@ class DebugGraphics {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DebugGraphics(java.awt.Graphics graphics) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.<init>(java.awt.Graphics)"); }
-  public DebugGraphics(java.awt.Graphics graphics, javax.swing.JComponent component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.<init>(java.awt.Graphics, javax.swing.JComponent)"); }
-  public DebugGraphics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DebugGraphics(java.awt.Graphics graphics) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DebugGraphics(java.awt.Graphics graphics, javax.swing.JComponent component) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DebugGraphics() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Graphics create(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.create(int, int, int, int)"); }
-  public java.awt.Graphics create() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.create()"); }
-  public void setColor(java.awt.Color aColor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.setColor(java.awt.Color)"); }
-  public void dispose() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.dispose()"); }
-  public void translate(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.translate(int, int)"); }
-  public void setClip(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.setClip(int, int, int, int)"); }
-  public void setClip(java.awt.Shape clip) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.setClip(java.awt.Shape)"); }
-  public java.awt.Shape getClip() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.getClip()"); }
-  public void setDebugOptions(int options) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.setDebugOptions(int)"); }
-  public int getDebugOptions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.getDebugOptions()"); }
-  public void clipRect(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.clipRect(int, int, int, int)"); }
-  public void drawLine(int x1, int y1, int x2, int y2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawLine(int, int, int, int)"); }
-  public java.awt.Color getColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.getColor()"); }
-  public void fillRect(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.fillRect(int, int, int, int)"); }
-  public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawPolygon(int[], int[], int)"); }
-  public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.fillPolygon(int[], int[], int)"); }
-  public void drawString(java.text.AttributedCharacterIterator iterator, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawString(java.text.AttributedCharacterIterator, int, int)"); }
-  public void drawString(java.lang.String aString, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawString(java.lang.String, int, int)"); }
-  public java.awt.Rectangle getClipBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.getClipBounds()"); }
-  public void setPaintMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.setPaintMode()"); }
-  public void setXORMode(java.awt.Color aColor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.setXORMode(java.awt.Color)"); }
-  public void copyArea(int x, int y, int width, int height, int destX, int destY) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.copyArea(int, int, int, int, int, int)"); }
-  public void drawRect(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawRect(int, int, int, int)"); }
-  public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawRoundRect(int, int, int, int, int, int)"); }
-  public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.fillRoundRect(int, int, int, int, int, int)"); }
-  public void draw3DRect(int x, int y, int width, int height, boolean raised) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.draw3DRect(int, int, int, int, boolean)"); }
-  public void fill3DRect(int x, int y, int width, int height, boolean raised) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.fill3DRect(int, int, int, int, boolean)"); }
-  public void drawOval(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawOval(int, int, int, int)"); }
-  public void fillOval(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.fillOval(int, int, int, int)"); }
-  public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawArc(int, int, int, int, int, int)"); }
-  public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.fillArc(int, int, int, int, int, int)"); }
-  public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawPolyline(int[], int[], int)"); }
-  public void drawChars(char[] data, int offset, int length, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawChars(char[], int, int, int, int)"); }
-  public void drawBytes(byte[] data, int offset, int length, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawBytes(byte[], int, int, int, int)"); }
-  public boolean drawImage(java.awt.Image img, int x, int y, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawImage(java.awt.Image, int, int, java.awt.Color, java.awt.image.ImageObserver)"); }
-  public boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawImage(java.awt.Image, int, int, int, int, java.awt.Color, java.awt.image.ImageObserver)"); }
-  public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawImage(java.awt.Image, int, int, int, int, int, int, int, int, java.awt.Color, java.awt.image.ImageObserver)"); }
-  public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.image.ImageObserver observer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawImage(java.awt.Image, int, int, int, int, int, int, int, int, java.awt.image.ImageObserver)"); }
-  public boolean drawImage(java.awt.Image img, int x, int y, java.awt.image.ImageObserver observer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawImage(java.awt.Image, int, int, java.awt.image.ImageObserver)"); }
-  public boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.image.ImageObserver observer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.drawImage(java.awt.Image, int, int, int, int, java.awt.image.ImageObserver)"); }
-  public java.awt.FontMetrics getFontMetrics(java.awt.Font f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.getFontMetrics(java.awt.Font)"); }
-  public java.awt.FontMetrics getFontMetrics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.getFontMetrics()"); }
-  public static java.awt.Color flashColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.flashColor()"); }
-  public static int flashTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.flashTime()"); }
-  public static int flashCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.flashCount()"); }
-  public boolean isDrawingBuffer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.isDrawingBuffer()"); }
-  public static void setFlashColor(java.awt.Color flashColor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.setFlashColor(java.awt.Color)"); }
-  public static void setFlashTime(int flashTime) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.setFlashTime(int)"); }
-  public static void setFlashCount(int flashCount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.setFlashCount(int)"); }
-  public static void setLogStream(java.io.PrintStream stream) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.setLogStream(java.io.PrintStream)"); }
-  public static java.io.PrintStream logStream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.logStream()"); }
-  public java.awt.Font getFont() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.getFont()"); }
-  public void setFont(java.awt.Font aFont) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.setFont(java.awt.Font)"); }
-  public void clearRect(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DebugGraphics.clearRect(int, int, int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Graphics create(int x, int y, int width, int height) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Graphics create() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColor(java.awt.Color aColor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void dispose() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void translate(int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setClip(int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setClip(java.awt.Shape clip) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Shape getClip() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDebugOptions(int options) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDebugOptions() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clipRect(int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawLine(int x1, int y1, int x2, int y2) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fillRect(int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawString(java.text.AttributedCharacterIterator iterator, int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawString(java.lang.String aString, int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getClipBounds() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPaintMode() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setXORMode(java.awt.Color aColor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void copyArea(int x, int y, int width, int height, int destX, int destY) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawRect(int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void draw3DRect(int x, int y, int width, int height, boolean raised) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fill3DRect(int x, int y, int width, int height, boolean raised) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawOval(int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fillOval(int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawChars(char[] data, int offset, int length, int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawBytes(byte[] data, int offset, int length, int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean drawImage(java.awt.Image img, int x, int y, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.image.ImageObserver observer) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean drawImage(java.awt.Image img, int x, int y, java.awt.image.ImageObserver observer) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.image.ImageObserver observer) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.FontMetrics getFontMetrics(java.awt.Font f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.FontMetrics getFontMetrics() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Color flashColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int flashTime() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int flashCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDrawingBuffer() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setFlashColor(java.awt.Color flashColor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setFlashTime(int flashTime) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setFlashCount(int flashCount) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setLogStream(java.io.PrintStream stream) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.io.PrintStream logStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font getFont() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFont(java.awt.Font aFont) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clearRect(int x, int y, int width, int height) { }
   < ---- END java signatures ---- >
 }

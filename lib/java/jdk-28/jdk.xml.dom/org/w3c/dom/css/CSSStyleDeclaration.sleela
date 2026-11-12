@@ -58,18 +58,30 @@ class CSSStyleDeclaration {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getLength() { throw new AbstractMethodError("org.w3c.dom.css.CSSStyleDeclaration.getLength()"); }
-  public abstract void setProperty(java.lang.String propertyName, java.lang.String value, java.lang.String priority) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.css.CSSStyleDeclaration.setProperty(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.lang.String item(int index) { throw new AbstractMethodError("org.w3c.dom.css.CSSStyleDeclaration.item(int)"); }
-  public abstract java.lang.String getCssText() { throw new AbstractMethodError("org.w3c.dom.css.CSSStyleDeclaration.getCssText()"); }
-  public abstract void setCssText(java.lang.String cssText) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.css.CSSStyleDeclaration.setCssText(java.lang.String)"); }
-  public abstract org.w3c.dom.css.CSSRule getParentRule() { throw new AbstractMethodError("org.w3c.dom.css.CSSStyleDeclaration.getParentRule()"); }
-  public abstract java.lang.String getPropertyValue(java.lang.String propertyName) { throw new AbstractMethodError("org.w3c.dom.css.CSSStyleDeclaration.getPropertyValue(java.lang.String)"); }
-  public abstract org.w3c.dom.css.CSSValue getPropertyCSSValue(java.lang.String propertyName) { throw new AbstractMethodError("org.w3c.dom.css.CSSStyleDeclaration.getPropertyCSSValue(java.lang.String)"); }
-  public abstract java.lang.String removeProperty(java.lang.String propertyName) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.css.CSSStyleDeclaration.removeProperty(java.lang.String)"); }
-  public abstract java.lang.String getPropertyPriority(java.lang.String propertyName) { throw new AbstractMethodError("org.w3c.dom.css.CSSStyleDeclaration.getPropertyPriority(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setProperty(java.lang.String propertyName, java.lang.String value, java.lang.String priority) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String item(int index) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCssText() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setCssText(java.lang.String cssText) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.css.CSSRule getParentRule() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getPropertyValue(java.lang.String propertyName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.css.CSSValue getPropertyCSSValue(java.lang.String propertyName) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public java.lang.String removeProperty(java.lang.String propertyName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getPropertyPriority(java.lang.String propertyName) { return null; }
   < ---- END java signatures ---- >
 }

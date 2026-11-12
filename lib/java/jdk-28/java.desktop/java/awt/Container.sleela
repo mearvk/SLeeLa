@@ -58,87 +58,160 @@ class Container {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Container() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Container() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove(java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.remove(java.awt.Component)"); }
-  public void remove(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.remove(int)"); }
-  public void update(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.update(java.awt.Graphics)"); }
-  public java.awt.Component add(java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.add(java.awt.Component)"); }
-  public void add(java.awt.Component comp, java.lang.Object constraints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.add(java.awt.Component, java.lang.Object)"); }
-  public java.awt.Component add(java.awt.Component comp, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.add(java.awt.Component, int)"); }
-  public void add(java.awt.Component comp, java.lang.Object constraints, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.add(java.awt.Component, java.lang.Object, int)"); }
-  public java.awt.Component add(java.lang.String name, java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.add(java.lang.String, java.awt.Component)"); }
-  public void list(java.io.PrintStream out, int indent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.list(java.io.PrintStream, int)"); }
-  public void validate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.validate()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(java.awt.Component comp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void update(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component add(java.awt.Component comp) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void add(java.awt.Component comp, java.lang.Object constraints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component add(java.awt.Component comp, int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void add(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component add(java.lang.String name, java.awt.Component comp) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void list(java.io.PrintStream out, int indent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void validate() { }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.paramString()"); }
-  public void removeAll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.removeAll()"); }
-  public java.awt.Component getComponent(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getComponent(int)"); }
-  public void invalidate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.invalidate()"); }
-  public java.awt.Component[] getComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getComponents()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAll() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponent(int n) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void invalidate() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component[] getComponents() { return null; }
   @JavaProtected
-  void validateTree() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.validateTree()"); }
-  public final boolean isFocusTraversalPolicyProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.isFocusTraversalPolicyProvider()"); }
-  public void applyComponentOrientation(java.awt.ComponentOrientation o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.applyComponentOrientation(java.awt.ComponentOrientation)"); }
-  public void addPropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.addPropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)"); }
-  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.addPropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public synchronized void addContainerListener(java.awt.event.ContainerListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.addContainerListener(java.awt.event.ContainerListener)"); }
-  public java.awt.LayoutManager getLayout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getLayout()"); }
-  public void setComponentZOrder(java.awt.Component comp, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.setComponentZOrder(java.awt.Component, int)"); }
-  public java.awt.Dimension getPreferredSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getPreferredSize()"); }
-  public java.awt.Dimension getMinimumSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getMinimumSize()"); }
-  public void paintComponents(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.paintComponents(java.awt.Graphics)"); }
-  public void printComponents(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.printComponents(java.awt.Graphics)"); }
-  public synchronized void removeContainerListener(java.awt.event.ContainerListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.removeContainerListener(java.awt.event.ContainerListener)"); }
-  public synchronized java.awt.event.ContainerListener[] getContainerListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getContainerListeners()"); }
-  public java.awt.Point getMousePosition(boolean allowChildren) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getMousePosition(boolean)"); }
-  public boolean isAncestorOf(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.isAncestorOf(java.awt.Component)"); }
-  public void setFocusTraversalKeys(int id, java.util.Set<? extends java.awt.AWTKeyStroke> keystrokes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.setFocusTraversalKeys(int, java.util.Set<? extends java.awt.AWTKeyStroke>)"); }
-  public java.util.Set<java.awt.AWTKeyStroke> getFocusTraversalKeys(int id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getFocusTraversalKeys(int)"); }
-  public boolean areFocusTraversalKeysSet(int id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.areFocusTraversalKeysSet(int)"); }
-  public void setFocusTraversalPolicy(java.awt.FocusTraversalPolicy policy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.setFocusTraversalPolicy(java.awt.FocusTraversalPolicy)"); }
-  public boolean isFocusTraversalPolicySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.isFocusTraversalPolicySet()"); }
-  public void setFocusCycleRoot(boolean focusCycleRoot) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.setFocusCycleRoot(boolean)"); }
-  public final void setFocusTraversalPolicyProvider(boolean provider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.setFocusTraversalPolicyProvider(boolean)"); }
-  public void transferFocusDownCycle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.transferFocusDownCycle()"); }
-  public void layout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.layout()"); }
-  public boolean isValidateRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.isValidateRoot()"); }
-  public void setLayout(java.awt.LayoutManager mgr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.setLayout(java.awt.LayoutManager)"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.addNotify()"); }
-  public int countComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.countComponents()"); }
-  public java.awt.Insets insets() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.insets()"); }
-  public java.awt.Insets getInsets() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getInsets()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void validateTree() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isFocusTraversalPolicyProvider() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void applyComponentOrientation(java.awt.ComponentOrientation o) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addPropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addContainerListener(java.awt.event.ContainerListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.LayoutManager getLayout() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setComponentZOrder(java.awt.Component comp, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintComponents(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printComponents(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeContainerListener(java.awt.event.ContainerListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.event.ContainerListener[] getContainerListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public java.awt.Point getMousePosition(boolean allowChildren) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAncestorOf(java.awt.Component c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFocusTraversalKeys(int id, java.util.Set<? extends java.awt.AWTKeyStroke> keystrokes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.awt.AWTKeyStroke> getFocusTraversalKeys(int id) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean areFocusTraversalKeysSet(int id) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFocusTraversalPolicy(java.awt.FocusTraversalPolicy policy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFocusTraversalPolicySet() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFocusCycleRoot(boolean focusCycleRoot) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setFocusTraversalPolicyProvider(boolean provider) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void transferFocusDownCycle() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void layout() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isValidateRoot() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayout(java.awt.LayoutManager mgr) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int countComponents() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets insets() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getInsets() { return null; }
   @JavaProtected
-  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.addImpl(java.awt.Component, java.lang.Object, int)"); }
-  public int getComponentZOrder(java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getComponentZOrder(java.awt.Component)"); }
-  public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.removeNotify()"); }
-  public boolean isFocusCycleRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.isFocusCycleRoot()"); }
-  public boolean isFocusCycleRoot(java.awt.Container container) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.isFocusCycleRoot(java.awt.Container)"); }
-  public java.awt.FocusTraversalPolicy getFocusTraversalPolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getFocusTraversalPolicy()"); }
-  public int getComponentCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getComponentCount()"); }
-  public void doLayout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.doLayout()"); }
-  public void setFont(java.awt.Font f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.setFont(java.awt.Font)"); }
-  public java.awt.Dimension preferredSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.preferredSize()"); }
-  public java.awt.Dimension minimumSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.minimumSize()"); }
-  public java.awt.Dimension getMaximumSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getMaximumSize()"); }
-  public float getAlignmentX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getAlignmentX()"); }
-  public float getAlignmentY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getAlignmentY()"); }
-  public void paint(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.paint(java.awt.Graphics)"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getListeners(java.lang.Class<T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getComponentZOrder(java.awt.Component comp) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFocusCycleRoot() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFocusCycleRoot(java.awt.Container container) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.FocusTraversalPolicy getFocusTraversalPolicy() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getComponentCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void doLayout() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFont(java.awt.Font f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension preferredSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension minimumSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getAlignmentX() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getAlignmentY() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   @JavaProtected
-  void processContainerEvent(java.awt.event.ContainerEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.processContainerEvent(java.awt.event.ContainerEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processContainerEvent(java.awt.event.ContainerEvent e) { }
   @JavaProtected
-  void processEvent(java.awt.AWTEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.processEvent(java.awt.AWTEvent)"); }
-  public java.awt.Component getComponentAt(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getComponentAt(java.awt.Point)"); }
-  public java.awt.Component getComponentAt(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.getComponentAt(int, int)"); }
-  public void deliverEvent(java.awt.Event e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.deliverEvent(java.awt.Event)"); }
-  public java.awt.Component locate(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.locate(int, int)"); }
-  public java.awt.Component findComponentAt(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.findComponentAt(java.awt.Point)"); }
-  public java.awt.Component findComponentAt(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Container.findComponentAt(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processEvent(java.awt.AWTEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponentAt(java.awt.Point p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponentAt(int x, int y) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void deliverEvent(java.awt.Event e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component locate(int x, int y) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component findComponentAt(java.awt.Point p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component findComponentAt(int x, int y) { return null; }
   < ---- END java signatures ---- >
 }

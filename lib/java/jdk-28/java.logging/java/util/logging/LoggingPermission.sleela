@@ -58,6 +58,7 @@ class LoggingPermission {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LoggingPermission(java.lang.String name, java.lang.String actions) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LoggingPermission.<init>(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public LoggingPermission(java.lang.String name, java.lang.String actions) { }
   < ---- END java constructors ---- >
 }

@@ -58,19 +58,32 @@ class Blob {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract long length() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Blob.length()"); }
-  public abstract long position(java.sql.Blob pattern, long start) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Blob.position(java.sql.Blob, long)"); }
-  public abstract long position(byte[] pattern, long start) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Blob.position(byte[], long)"); }
-  public abstract byte[] getBytes(long pos, int length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Blob.getBytes(long, int)"); }
-  public abstract void truncate(long len) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Blob.truncate(long)"); }
-  public abstract void free() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Blob.free()"); }
-  public abstract java.io.InputStream getBinaryStream(long pos, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Blob.getBinaryStream(long, long)"); }
-  public abstract java.io.InputStream getBinaryStream() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Blob.getBinaryStream()"); }
-  public abstract int setBytes(long pos, byte[] bytes) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Blob.setBytes(long, byte[])"); }
-  public abstract int setBytes(long pos, byte[] bytes, int offset, int len) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Blob.setBytes(long, byte[], int, int)"); }
-  public abstract java.io.OutputStream setBinaryStream(long pos) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Blob.setBinaryStream(long)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public long length() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public long position(java.sql.Blob pattern, long start) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public long position(byte[] pattern, long start) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public byte[] getBytes(long pos, int length) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void truncate(long len) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void free() { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.InputStream getBinaryStream(long pos, long length) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.InputStream getBinaryStream() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int setBytes(long pos, byte[] bytes) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int setBytes(long pos, byte[] bytes, int offset, int len) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.OutputStream setBinaryStream(long pos) { return null; }
   < ---- END java signatures ---- >
 }

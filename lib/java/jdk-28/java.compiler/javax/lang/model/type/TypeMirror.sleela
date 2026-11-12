@@ -58,16 +58,26 @@ class TypeMirror {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("javax.lang.model.type.TypeMirror.equals(java.lang.Object)"); }
-  public abstract java.lang.String toString() { throw new AbstractMethodError("javax.lang.model.type.TypeMirror.toString()"); }
-  public abstract int hashCode() { throw new AbstractMethodError("javax.lang.model.type.TypeMirror.hashCode()"); }
-  public abstract <A extends java.lang.annotation.Annotation> A getAnnotation(java.lang.Class<A> annotationType) { throw new AbstractMethodError("javax.lang.model.type.TypeMirror.getAnnotation(java.lang.Class<A>)"); }
-  public abstract <A extends java.lang.annotation.Annotation> A[] getAnnotationsByType(java.lang.Class<A> annotationType) { throw new AbstractMethodError("javax.lang.model.type.TypeMirror.getAnnotationsByType(java.lang.Class<A>)"); }
-  public abstract <R, P> R accept(javax.lang.model.type.TypeVisitor<R, P> v, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeMirror.accept(javax.lang.model.type.TypeVisitor<R, P>, P)"); }
-  public abstract java.util.List<? extends javax.lang.model.element.AnnotationMirror> getAnnotationMirrors() { throw new AbstractMethodError("javax.lang.model.type.TypeMirror.getAnnotationMirrors()"); }
-  public abstract javax.lang.model.type.TypeKind getKind() { throw new AbstractMethodError("javax.lang.model.type.TypeMirror.getKind()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public <A extends java.lang.annotation.Annotation> A getAnnotation(java.lang.Class<A> annotationType) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <A extends java.lang.annotation.Annotation> A[] getAnnotationsByType(java.lang.Class<A> annotationType) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <R, P> R accept(javax.lang.model.type.TypeVisitor<R, P> v, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends javax.lang.model.element.AnnotationMirror> getAnnotationMirrors() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.type.TypeKind getKind() { return null; }
   < ---- END java signatures ---- >
 }

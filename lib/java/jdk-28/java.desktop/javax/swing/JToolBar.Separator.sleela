@@ -59,19 +59,29 @@ class Separator {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Separator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JToolBar.Separator.<init>()"); }
-  public Separator(java.awt.Dimension size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JToolBar.Separator.<init>(java.awt.Dimension)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Separator() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Separator(java.awt.Dimension size) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Dimension getPreferredSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JToolBar.Separator.getPreferredSize()"); }
-  public java.awt.Dimension getMinimumSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JToolBar.Separator.getMinimumSize()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JToolBar.Separator.getUIClassID()"); }
-  public void setSeparatorSize(java.awt.Dimension size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JToolBar.Separator.setSeparatorSize(java.awt.Dimension)"); }
-  public java.awt.Dimension getSeparatorSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JToolBar.Separator.getSeparatorSize()"); }
-  public java.awt.Dimension getMaximumSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JToolBar.Separator.getMaximumSize()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSeparatorSize(java.awt.Dimension size) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getSeparatorSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,12 +58,18 @@ class ListModel<E> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getSize() { throw new AbstractMethodError("javax.swing.ListModel.getSize()"); }
-  public abstract void addListDataListener(javax.swing.event.ListDataListener l) { throw new AbstractMethodError("javax.swing.ListModel.addListDataListener(javax.swing.event.ListDataListener)"); }
-  public abstract void removeListDataListener(javax.swing.event.ListDataListener l) { throw new AbstractMethodError("javax.swing.ListModel.removeListDataListener(javax.swing.event.ListDataListener)"); }
-  public abstract E getElementAt(int index) { throw new AbstractMethodError("javax.swing.ListModel.getElementAt(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getSize() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void addListDataListener(javax.swing.event.ListDataListener l) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeListDataListener(javax.swing.event.ListDataListener l) { }
+  @throwable("java.lang.AbstractMethodError")
+  public E getElementAt(int index) { return null; }
   < ---- END java signatures ---- >
 }

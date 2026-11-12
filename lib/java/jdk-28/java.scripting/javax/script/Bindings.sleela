@@ -58,13 +58,20 @@ class Bindings {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object remove(java.lang.Object key) { throw new AbstractMethodError("javax.script.Bindings.remove(java.lang.Object)"); }
-  public abstract java.lang.Object get(java.lang.Object key) { throw new AbstractMethodError("javax.script.Bindings.get(java.lang.Object)"); }
-  public abstract java.lang.Object put(java.lang.String name, java.lang.Object value) { throw new AbstractMethodError("javax.script.Bindings.put(java.lang.String, java.lang.Object)"); }
-  public abstract void putAll(java.util.Map<? extends java.lang.String, ?> toMerge) { throw new AbstractMethodError("javax.script.Bindings.putAll(java.util.Map<? extends java.lang.String, ?>)"); }
-  public abstract boolean containsKey(java.lang.Object key) { throw new AbstractMethodError("javax.script.Bindings.containsKey(java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object remove(java.lang.Object key) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object get(java.lang.Object key) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object put(java.lang.String name, java.lang.Object value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void putAll(java.util.Map<? extends java.lang.String, ?> toMerge) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean containsKey(java.lang.Object key) { return false; }
   < ---- END java signatures ---- >
 }

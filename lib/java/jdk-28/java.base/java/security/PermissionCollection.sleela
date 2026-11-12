@@ -58,19 +58,29 @@ class PermissionCollection {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PermissionCollection() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PermissionCollection.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PermissionCollection() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PermissionCollection.toString()"); }
-  public abstract void add(java.security.Permission permission) { throw new AbstractMethodError("java.security.PermissionCollection.add(java.security.Permission)"); }
-  public abstract java.util.Enumeration<java.security.Permission> elements() { throw new AbstractMethodError("java.security.PermissionCollection.elements()"); }
-  public void setReadOnly() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PermissionCollection.setReadOnly()"); }
-  public abstract boolean implies(java.security.Permission permission) { throw new AbstractMethodError("java.security.PermissionCollection.implies(java.security.Permission)"); }
-  public boolean isReadOnly() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PermissionCollection.isReadOnly()"); }
-  public java.util.stream.Stream<java.security.Permission> elementsAsStream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PermissionCollection.elementsAsStream()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void add(java.security.Permission permission) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Enumeration<java.security.Permission> elements() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setReadOnly() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean implies(java.security.Permission permission) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isReadOnly() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.Stream<java.security.Permission> elementsAsStream() { return null; }
   < ---- END java signatures ---- >
 }

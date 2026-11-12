@@ -58,14 +58,22 @@ class HTMLFontElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getSize() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFontElement.getSize()"); }
-  public abstract void setColor(java.lang.String color) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFontElement.setColor(java.lang.String)"); }
-  public abstract void setSize(java.lang.String size) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFontElement.setSize(java.lang.String)"); }
-  public abstract java.lang.String getColor() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFontElement.getColor()"); }
-  public abstract java.lang.String getFace() { throw new AbstractMethodError("org.w3c.dom.html.HTMLFontElement.getFace()"); }
-  public abstract void setFace(java.lang.String face) { throw new AbstractMethodError("org.w3c.dom.html.HTMLFontElement.setFace(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSize() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setColor(java.lang.String color) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSize(java.lang.String size) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getColor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getFace() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setFace(java.lang.String face) { }
   < ---- END java signatures ---- >
 }

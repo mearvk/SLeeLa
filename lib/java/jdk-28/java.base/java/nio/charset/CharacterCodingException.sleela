@@ -58,6 +58,7 @@ class CharacterCodingException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CharacterCodingException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharacterCodingException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CharacterCodingException() { }
   < ---- END java constructors ---- >
 }

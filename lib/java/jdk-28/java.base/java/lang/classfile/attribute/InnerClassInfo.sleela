@@ -58,16 +58,26 @@ class InnerClassInfo {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default java.util.Set<java.lang.reflect.AccessFlag> flags() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.InnerClassInfo.flags()"); }
-  public static java.lang.classfile.attribute.InnerClassInfo of(java.lang.constant.ClassDesc innerClass, java.util.Optional<java.lang.constant.ClassDesc> outerClass, java.util.Optional<java.lang.String> innerName, java.lang.reflect.AccessFlag... flags) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.InnerClassInfo.of(java.lang.constant.ClassDesc, java.util.Optional<java.lang.constant.ClassDesc>, java.util.Optional<java.lang.String>, java.lang.reflect.AccessFlag...)"); }
-  public static java.lang.classfile.attribute.InnerClassInfo of(java.lang.classfile.constantpool.ClassEntry innerClass, java.util.Optional<java.lang.classfile.constantpool.ClassEntry> outerClass, java.util.Optional<java.lang.classfile.constantpool.Utf8Entry> innerName, int flags) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.InnerClassInfo.of(java.lang.classfile.constantpool.ClassEntry, java.util.Optional<java.lang.classfile.constantpool.ClassEntry>, java.util.Optional<java.lang.classfile.constantpool.Utf8Entry>, int)"); }
-  public abstract int flagsMask() { throw new AbstractMethodError("java.lang.classfile.attribute.InnerClassInfo.flagsMask()"); }
-  public default boolean has(java.lang.reflect.AccessFlag flag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.InnerClassInfo.has(java.lang.reflect.AccessFlag)"); }
-  public abstract java.lang.classfile.constantpool.ClassEntry innerClass() { throw new AbstractMethodError("java.lang.classfile.attribute.InnerClassInfo.innerClass()"); }
-  public abstract java.util.Optional<java.lang.classfile.constantpool.ClassEntry> outerClass() { throw new AbstractMethodError("java.lang.classfile.attribute.InnerClassInfo.outerClass()"); }
-  public abstract java.util.Optional<java.lang.classfile.constantpool.Utf8Entry> innerName() { throw new AbstractMethodError("java.lang.classfile.attribute.InnerClassInfo.innerName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Set<java.lang.reflect.AccessFlag> flags() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.InnerClassInfo of(java.lang.constant.ClassDesc innerClass, java.util.Optional<java.lang.constant.ClassDesc> outerClass, java.util.Optional<java.lang.String> innerName, java.lang.reflect.AccessFlag... flags) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.InnerClassInfo of(java.lang.classfile.constantpool.ClassEntry innerClass, java.util.Optional<java.lang.classfile.constantpool.ClassEntry> outerClass, java.util.Optional<java.lang.classfile.constantpool.Utf8Entry> innerName, int flags) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int flagsMask() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean has(java.lang.reflect.AccessFlag flag) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.ClassEntry innerClass() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Optional<java.lang.classfile.constantpool.ClassEntry> outerClass() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Optional<java.lang.classfile.constantpool.Utf8Entry> innerName() { return null; }
   < ---- END java signatures ---- >
 }

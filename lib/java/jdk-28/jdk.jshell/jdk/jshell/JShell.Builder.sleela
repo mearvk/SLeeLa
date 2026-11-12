@@ -59,20 +59,34 @@ class Builder {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public jdk.jshell.JShell.Builder out(java.io.PrintStream out) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.Builder.out(java.io.PrintStream)"); }
-  public jdk.jshell.JShell.Builder console(jdk.jshell.JShellConsole console) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.Builder.console(jdk.jshell.JShellConsole)"); }
-  public jdk.jshell.JShell.Builder err(java.io.PrintStream err) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.Builder.err(java.io.PrintStream)"); }
-  public jdk.jshell.JShell.Builder in(java.io.InputStream in) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.Builder.in(java.io.InputStream)"); }
-  public jdk.jshell.JShell build() throws java.lang.IllegalStateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.Builder.build()"); }
-  public jdk.jshell.JShell.Builder fileManager(java.util.function.Function<javax.tools.StandardJavaFileManager, javax.tools.StandardJavaFileManager> mapping) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.Builder.fileManager(java.util.function.Function<javax.tools.StandardJavaFileManager, javax.tools.StandardJavaFileManager>)"); }
-  public jdk.jshell.JShell.Builder remoteVMOptions(java.lang.String... options) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.Builder.remoteVMOptions(java.lang.String...)"); }
-  public jdk.jshell.JShell.Builder compilerOptions(java.lang.String... options) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.Builder.compilerOptions(java.lang.String...)"); }
-  public jdk.jshell.JShell.Builder executionEngine(jdk.jshell.spi.ExecutionControlProvider executionControlProvider, java.util.Map<java.lang.String, java.lang.String> executionControlParameters) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.Builder.executionEngine(jdk.jshell.spi.ExecutionControlProvider, java.util.Map<java.lang.String, java.lang.String>)"); }
-  public jdk.jshell.JShell.Builder executionEngine(java.lang.String executionControlSpec) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.Builder.executionEngine(java.lang.String)"); }
-  public jdk.jshell.JShell.Builder tempVariableNameGenerator(java.util.function.Supplier<java.lang.String> generator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.Builder.tempVariableNameGenerator(java.util.function.Supplier<java.lang.String>)"); }
-  public jdk.jshell.JShell.Builder idGenerator(java.util.function.BiFunction<jdk.jshell.Snippet, java.lang.Integer, java.lang.String> generator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.JShell.Builder.idGenerator(java.util.function.BiFunction<jdk.jshell.Snippet, java.lang.Integer, java.lang.String>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jshell.JShell.Builder out(java.io.PrintStream out) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jshell.JShell.Builder console(jdk.jshell.JShellConsole console) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jshell.JShell.Builder err(java.io.PrintStream err) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jshell.JShell.Builder in(java.io.InputStream in) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalStateException")
+  public jdk.jshell.JShell build() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jshell.JShell.Builder fileManager(java.util.function.Function<javax.tools.StandardJavaFileManager, javax.tools.StandardJavaFileManager> mapping) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jshell.JShell.Builder remoteVMOptions(java.lang.String... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jshell.JShell.Builder compilerOptions(java.lang.String... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jshell.JShell.Builder executionEngine(jdk.jshell.spi.ExecutionControlProvider executionControlProvider, java.util.Map<java.lang.String, java.lang.String> executionControlParameters) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jshell.JShell.Builder executionEngine(java.lang.String executionControlSpec) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jshell.JShell.Builder tempVariableNameGenerator(java.util.function.Supplier<java.lang.String> generator) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jshell.JShell.Builder idGenerator(java.util.function.BiFunction<jdk.jshell.Snippet, java.lang.Integer, java.lang.String> generator) { return null; }
   < ---- END java signatures ---- >
 }

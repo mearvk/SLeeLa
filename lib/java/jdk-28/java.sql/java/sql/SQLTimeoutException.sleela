@@ -58,13 +58,21 @@ class SQLTimeoutException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SQLTimeoutException(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLTimeoutException.<init>(java.lang.Throwable)"); }
-  public SQLTimeoutException(java.lang.String reason, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLTimeoutException.<init>(java.lang.String, java.lang.Throwable)"); }
-  public SQLTimeoutException(java.lang.String reason, java.lang.String SQLState, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLTimeoutException.<init>(java.lang.String, java.lang.String, java.lang.Throwable)"); }
-  public SQLTimeoutException(java.lang.String reason, java.lang.String SQLState, int vendorCode, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLTimeoutException.<init>(java.lang.String, java.lang.String, int, java.lang.Throwable)"); }
-  public SQLTimeoutException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLTimeoutException.<init>()"); }
-  public SQLTimeoutException(java.lang.String reason) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLTimeoutException.<init>(java.lang.String)"); }
-  public SQLTimeoutException(java.lang.String reason, java.lang.String SQLState) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLTimeoutException.<init>(java.lang.String, java.lang.String)"); }
-  public SQLTimeoutException(java.lang.String reason, java.lang.String SQLState, int vendorCode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLTimeoutException.<init>(java.lang.String, java.lang.String, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLTimeoutException(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLTimeoutException(java.lang.String reason, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLTimeoutException(java.lang.String reason, java.lang.String SQLState, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLTimeoutException(java.lang.String reason, java.lang.String SQLState, int vendorCode, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLTimeoutException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLTimeoutException(java.lang.String reason) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLTimeoutException(java.lang.String reason, java.lang.String SQLState) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLTimeoutException(java.lang.String reason, java.lang.String SQLState, int vendorCode) { }
   < ---- END java constructors ---- >
 }

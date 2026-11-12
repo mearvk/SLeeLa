@@ -58,9 +58,13 @@ class InternalError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InternalError(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.InternalError.<init>(java.lang.Throwable)"); }
-  public InternalError(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.InternalError.<init>(java.lang.String, java.lang.Throwable)"); }
-  public InternalError(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.InternalError.<init>(java.lang.String)"); }
-  public InternalError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.InternalError.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InternalError(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InternalError(java.lang.String message, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InternalError(java.lang.String message) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InternalError() { }
   < ---- END java constructors ---- >
 }

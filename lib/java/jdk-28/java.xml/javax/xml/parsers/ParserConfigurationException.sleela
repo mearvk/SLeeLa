@@ -58,7 +58,9 @@ class ParserConfigurationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ParserConfigurationException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.ParserConfigurationException.<init>()"); }
-  public ParserConfigurationException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.ParserConfigurationException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ParserConfigurationException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ParserConfigurationException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

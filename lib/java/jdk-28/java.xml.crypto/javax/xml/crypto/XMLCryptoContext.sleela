@@ -58,22 +58,38 @@ class XMLCryptoContext {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object get(java.lang.Object key) { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.get(java.lang.Object)"); }
-  public abstract java.lang.Object put(java.lang.Object key, java.lang.Object value) { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.put(java.lang.Object, java.lang.Object)"); }
-  public abstract java.lang.Object getProperty(java.lang.String name) { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.getProperty(java.lang.String)"); }
-  public abstract java.lang.Object setProperty(java.lang.String name, java.lang.Object value) { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.setProperty(java.lang.String, java.lang.Object)"); }
-  public abstract java.lang.String getNamespacePrefix(java.lang.String namespaceURI, java.lang.String defaultPrefix) { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.getNamespacePrefix(java.lang.String, java.lang.String)"); }
-  public abstract java.lang.String getBaseURI() { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.getBaseURI()"); }
-  public abstract void setBaseURI(java.lang.String baseURI) { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.setBaseURI(java.lang.String)"); }
-  public abstract javax.xml.crypto.KeySelector getKeySelector() { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.getKeySelector()"); }
-  public abstract void setKeySelector(javax.xml.crypto.KeySelector ks) { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.setKeySelector(javax.xml.crypto.KeySelector)"); }
-  public abstract javax.xml.crypto.URIDereferencer getURIDereferencer() { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.getURIDereferencer()"); }
-  public abstract void setURIDereferencer(javax.xml.crypto.URIDereferencer dereferencer) { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.setURIDereferencer(javax.xml.crypto.URIDereferencer)"); }
-  public abstract java.lang.String putNamespacePrefix(java.lang.String namespaceURI, java.lang.String prefix) { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.putNamespacePrefix(java.lang.String, java.lang.String)"); }
-  public abstract java.lang.String getDefaultNamespacePrefix() { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.getDefaultNamespacePrefix()"); }
-  public abstract void setDefaultNamespacePrefix(java.lang.String defaultPrefix) { throw new AbstractMethodError("javax.xml.crypto.XMLCryptoContext.setDefaultNamespacePrefix(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object get(java.lang.Object key) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object put(java.lang.Object key, java.lang.Object value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getProperty(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object setProperty(java.lang.String name, java.lang.Object value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getNamespacePrefix(java.lang.String namespaceURI, java.lang.String defaultPrefix) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getBaseURI() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBaseURI(java.lang.String baseURI) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.KeySelector getKeySelector() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setKeySelector(javax.xml.crypto.KeySelector ks) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.URIDereferencer getURIDereferencer() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setURIDereferencer(javax.xml.crypto.URIDereferencer dereferencer) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String putNamespacePrefix(java.lang.String namespaceURI, java.lang.String prefix) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDefaultNamespacePrefix() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDefaultNamespacePrefix(java.lang.String defaultPrefix) { }
   < ---- END java signatures ---- >
 }

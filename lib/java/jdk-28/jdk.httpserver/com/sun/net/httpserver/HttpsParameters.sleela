@@ -59,23 +59,37 @@ class HttpsParameters {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  HttpsParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpsParameters.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  HttpsParameters() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void setCipherSuites(java.lang.String[] cipherSuites) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpsParameters.setCipherSuites(java.lang.String[])"); }
-  public void setProtocols(java.lang.String[] protocols) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpsParameters.setProtocols(java.lang.String[])"); }
-  public boolean getNeedClientAuth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpsParameters.getNeedClientAuth()"); }
-  public void setNeedClientAuth(boolean needClientAuth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpsParameters.setNeedClientAuth(boolean)"); }
-  public boolean getWantClientAuth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpsParameters.getWantClientAuth()"); }
-  public void setWantClientAuth(boolean wantClientAuth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpsParameters.setWantClientAuth(boolean)"); }
-  public java.lang.String[] getCipherSuites() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpsParameters.getCipherSuites()"); }
-  public java.lang.String[] getProtocols() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpsParameters.getProtocols()"); }
-  public abstract void setSSLParameters(javax.net.ssl.SSLParameters params) { throw new AbstractMethodError("com.sun.net.httpserver.HttpsParameters.setSSLParameters(javax.net.ssl.SSLParameters)"); }
-  public abstract com.sun.net.httpserver.HttpsConfigurator getHttpsConfigurator() { throw new AbstractMethodError("com.sun.net.httpserver.HttpsParameters.getHttpsConfigurator()"); }
-  public abstract java.net.InetSocketAddress getClientAddress() { throw new AbstractMethodError("com.sun.net.httpserver.HttpsParameters.getClientAddress()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCipherSuites(java.lang.String[] cipherSuites) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setProtocols(java.lang.String[] protocols) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getNeedClientAuth() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNeedClientAuth(boolean needClientAuth) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getWantClientAuth() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setWantClientAuth(boolean wantClientAuth) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getCipherSuites() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getProtocols() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSSLParameters(javax.net.ssl.SSLParameters params) { }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.net.httpserver.HttpsConfigurator getHttpsConfigurator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.InetSocketAddress getClientAddress() { return null; }
   < ---- END java signatures ---- >
 }

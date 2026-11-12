@@ -58,24 +58,39 @@ class BeansLinker {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BeansLinker() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.beans.BeansLinker.<init>()"); }
-  public BeansLinker(jdk.dynalink.beans.MissingMemberHandlerFactory missingMemberHandlerFactory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.beans.BeansLinker.<init>(jdk.dynalink.beans.MissingMemberHandlerFactory)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BeansLinker() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BeansLinker(jdk.dynalink.beans.MissingMemberHandlerFactory missingMemberHandlerFactory) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public jdk.dynalink.linker.GuardedInvocation getGuardedInvocation(jdk.dynalink.linker.LinkRequest request, jdk.dynalink.linker.LinkerServices linkerServices) throws java.lang.Exception { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.beans.BeansLinker.getGuardedInvocation(jdk.dynalink.linker.LinkRequest, jdk.dynalink.linker.LinkerServices)"); }
-  public static java.lang.Object getConstructorMethod(java.lang.Class<?> clazz, java.lang.String signature) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.beans.BeansLinker.getConstructorMethod(java.lang.Class<?>, java.lang.String)"); }
-  public static java.util.Set<java.lang.String> getReadableStaticPropertyNames(java.lang.Class<?> clazz) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.beans.BeansLinker.getReadableStaticPropertyNames(java.lang.Class<?>)"); }
-  public static java.util.Set<java.lang.String> getWritableStaticPropertyNames(java.lang.Class<?> clazz) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.beans.BeansLinker.getWritableStaticPropertyNames(java.lang.Class<?>)"); }
-  public static java.util.Set<java.lang.String> getStaticMethodNames(java.lang.Class<?> clazz) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.beans.BeansLinker.getStaticMethodNames(java.lang.Class<?>)"); }
-  public jdk.dynalink.linker.TypeBasedGuardingDynamicLinker getLinkerForClass(java.lang.Class<?> clazz) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.beans.BeansLinker.getLinkerForClass(java.lang.Class<?>)"); }
-  public static boolean isDynamicMethod(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.beans.BeansLinker.isDynamicMethod(java.lang.Object)"); }
-  public static boolean isDynamicConstructor(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.beans.BeansLinker.isDynamicConstructor(java.lang.Object)"); }
-  public static java.util.Set<java.lang.String> getReadableInstancePropertyNames(java.lang.Class<?> clazz) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.beans.BeansLinker.getReadableInstancePropertyNames(java.lang.Class<?>)"); }
-  public static java.util.Set<java.lang.String> getWritableInstancePropertyNames(java.lang.Class<?> clazz) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.beans.BeansLinker.getWritableInstancePropertyNames(java.lang.Class<?>)"); }
-  public static java.util.Set<java.lang.String> getInstanceMethodNames(java.lang.Class<?> clazz) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.beans.BeansLinker.getInstanceMethodNames(java.lang.Class<?>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
+  public jdk.dynalink.linker.GuardedInvocation getGuardedInvocation(jdk.dynalink.linker.LinkRequest request, jdk.dynalink.linker.LinkerServices linkerServices) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Object getConstructorMethod(java.lang.Class<?> clazz, java.lang.String signature) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Set<java.lang.String> getReadableStaticPropertyNames(java.lang.Class<?> clazz) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Set<java.lang.String> getWritableStaticPropertyNames(java.lang.Class<?> clazz) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Set<java.lang.String> getStaticMethodNames(java.lang.Class<?> clazz) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.dynalink.linker.TypeBasedGuardingDynamicLinker getLinkerForClass(java.lang.Class<?> clazz) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDynamicMethod(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDynamicConstructor(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Set<java.lang.String> getReadableInstancePropertyNames(java.lang.Class<?> clazz) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Set<java.lang.String> getWritableInstancePropertyNames(java.lang.Class<?> clazz) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Set<java.lang.String> getInstanceMethodNames(java.lang.Class<?> clazz) { return null; }
   < ---- END java signatures ---- >
 }

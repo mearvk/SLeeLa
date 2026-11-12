@@ -58,25 +58,44 @@ class Caret {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void setVisible(boolean v) { throw new AbstractMethodError("javax.swing.text.Caret.setVisible(boolean)"); }
-  public abstract void install(javax.swing.text.JTextComponent c) { throw new AbstractMethodError("javax.swing.text.Caret.install(javax.swing.text.JTextComponent)"); }
-  public abstract int getMark() { throw new AbstractMethodError("javax.swing.text.Caret.getMark()"); }
-  public abstract java.awt.Point getMagicCaretPosition() { throw new AbstractMethodError("javax.swing.text.Caret.getMagicCaretPosition()"); }
-  public abstract void deinstall(javax.swing.text.JTextComponent c) { throw new AbstractMethodError("javax.swing.text.Caret.deinstall(javax.swing.text.JTextComponent)"); }
-  public abstract void setDot(int dot) { throw new AbstractMethodError("javax.swing.text.Caret.setDot(int)"); }
-  public abstract void moveDot(int dot) { throw new AbstractMethodError("javax.swing.text.Caret.moveDot(int)"); }
-  public abstract int getDot() { throw new AbstractMethodError("javax.swing.text.Caret.getDot()"); }
-  public abstract int getBlinkRate() { throw new AbstractMethodError("javax.swing.text.Caret.getBlinkRate()"); }
-  public abstract void setBlinkRate(int rate) { throw new AbstractMethodError("javax.swing.text.Caret.setBlinkRate(int)"); }
-  public abstract void removeChangeListener(javax.swing.event.ChangeListener l) { throw new AbstractMethodError("javax.swing.text.Caret.removeChangeListener(javax.swing.event.ChangeListener)"); }
-  public abstract void addChangeListener(javax.swing.event.ChangeListener l) { throw new AbstractMethodError("javax.swing.text.Caret.addChangeListener(javax.swing.event.ChangeListener)"); }
-  public abstract boolean isSelectionVisible() { throw new AbstractMethodError("javax.swing.text.Caret.isSelectionVisible()"); }
-  public abstract void setSelectionVisible(boolean v) { throw new AbstractMethodError("javax.swing.text.Caret.setSelectionVisible(boolean)"); }
-  public abstract void setMagicCaretPosition(java.awt.Point p) { throw new AbstractMethodError("javax.swing.text.Caret.setMagicCaretPosition(java.awt.Point)"); }
-  public abstract boolean isVisible() { throw new AbstractMethodError("javax.swing.text.Caret.isVisible()"); }
-  public abstract void paint(java.awt.Graphics g) { throw new AbstractMethodError("javax.swing.text.Caret.paint(java.awt.Graphics)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void setVisible(boolean v) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void install(javax.swing.text.JTextComponent c) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMark() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Point getMagicCaretPosition() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void deinstall(javax.swing.text.JTextComponent c) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDot(int dot) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void moveDot(int dot) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getDot() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getBlinkRate() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBlinkRate(int rate) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeChangeListener(javax.swing.event.ChangeListener l) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addChangeListener(javax.swing.event.ChangeListener l) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSelectionVisible() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSelectionVisible(boolean v) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMagicCaretPosition(java.awt.Point p) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isVisible() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void paint(java.awt.Graphics g) { }
   < ---- END java signatures ---- >
 }

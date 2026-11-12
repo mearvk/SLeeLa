@@ -58,15 +58,21 @@ class MethodDescriptor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MethodDescriptor(java.lang.reflect.Method method, java.beans.ParameterDescriptor[] parameterDescriptors) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.MethodDescriptor.<init>(java.lang.reflect.Method, java.beans.ParameterDescriptor[])"); }
-  public MethodDescriptor(java.lang.reflect.Method method) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.MethodDescriptor.<init>(java.lang.reflect.Method)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MethodDescriptor(java.lang.reflect.Method method, java.beans.ParameterDescriptor[] parameterDescriptors) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MethodDescriptor(java.lang.reflect.Method method) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized java.lang.reflect.Method getMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.MethodDescriptor.getMethod()"); }
-  public java.beans.ParameterDescriptor[] getParameterDescriptors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.MethodDescriptor.getParameterDescriptors()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.reflect.Method getMethod() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.ParameterDescriptor[] getParameterDescriptors() { return null; }
   < ---- END java signatures ---- >
 }

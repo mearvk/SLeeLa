@@ -68,13 +68,20 @@ class CSSRule {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract short getType() { throw new AbstractMethodError("org.w3c.dom.css.CSSRule.getType()"); }
-  public abstract java.lang.String getCssText() { throw new AbstractMethodError("org.w3c.dom.css.CSSRule.getCssText()"); }
-  public abstract void setCssText(java.lang.String cssText) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.css.CSSRule.setCssText(java.lang.String)"); }
-  public abstract org.w3c.dom.css.CSSStyleSheet getParentStyleSheet() { throw new AbstractMethodError("org.w3c.dom.css.CSSRule.getParentStyleSheet()"); }
-  public abstract org.w3c.dom.css.CSSRule getParentRule() { throw new AbstractMethodError("org.w3c.dom.css.CSSRule.getParentRule()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public short getType() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCssText() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setCssText(java.lang.String cssText) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.css.CSSStyleSheet getParentStyleSheet() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.css.CSSRule getParentRule() { return null; }
   < ---- END java signatures ---- >
 }

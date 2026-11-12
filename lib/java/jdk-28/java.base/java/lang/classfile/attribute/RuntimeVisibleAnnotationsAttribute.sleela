@@ -58,11 +58,16 @@ class RuntimeVisibleAnnotationsAttribute {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.List<java.lang.classfile.Annotation> annotations() { throw new AbstractMethodError("java.lang.classfile.attribute.RuntimeVisibleAnnotationsAttribute.annotations()"); }
-  public static java.lang.classfile.attribute.RuntimeVisibleAnnotationsAttribute of(java.util.List<java.lang.classfile.Annotation> annotations) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.RuntimeVisibleAnnotationsAttribute.of(java.util.List<java.lang.classfile.Annotation>)"); }
-  public static java.lang.classfile.attribute.RuntimeVisibleAnnotationsAttribute of(java.lang.classfile.Annotation... annotations) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.RuntimeVisibleAnnotationsAttribute.of(java.lang.classfile.Annotation...)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.classfile.Annotation> annotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.RuntimeVisibleAnnotationsAttribute of(java.util.List<java.lang.classfile.Annotation> annotations) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.RuntimeVisibleAnnotationsAttribute of(java.lang.classfile.Annotation... annotations) { return null; }
   < ---- END java signatures ---- >
 }

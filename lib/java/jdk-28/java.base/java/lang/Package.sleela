@@ -58,29 +58,52 @@ class Package {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getName()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.hashCode()"); }
-  public boolean isSealed(java.net.URL url) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.isSealed(java.net.URL)"); }
-  public boolean isSealed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.isSealed()"); }
-  public boolean isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)"); }
-  public static java.lang.Package getPackage(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getPackage(java.lang.String)"); }
-  public <A extends java.lang.annotation.Annotation> A getAnnotation(java.lang.Class<A> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getAnnotation(java.lang.Class<A>)"); }
-  public <A extends java.lang.annotation.Annotation> A[] getAnnotationsByType(java.lang.Class<A> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getAnnotationsByType(java.lang.Class<A>)"); }
-  public java.lang.annotation.Annotation[] getAnnotations() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getAnnotations()"); }
-  public <A extends java.lang.annotation.Annotation> A getDeclaredAnnotation(java.lang.Class<A> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getDeclaredAnnotation(java.lang.Class<A>)"); }
-  public <A extends java.lang.annotation.Annotation> A[] getDeclaredAnnotationsByType(java.lang.Class<A> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getDeclaredAnnotationsByType(java.lang.Class<A>)"); }
-  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getDeclaredAnnotations()"); }
-  public static java.lang.Package[] getPackages() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getPackages()"); }
-  public java.lang.String getSpecificationTitle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getSpecificationTitle()"); }
-  public java.lang.String getSpecificationVersion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getSpecificationVersion()"); }
-  public java.lang.String getSpecificationVendor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getSpecificationVendor()"); }
-  public java.lang.String getImplementationTitle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getImplementationTitle()"); }
-  public java.lang.String getImplementationVersion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getImplementationVersion()"); }
-  public java.lang.String getImplementationVendor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.getImplementationVendor()"); }
-  public boolean isCompatibleWith(java.lang.String desired) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Package.isCompatibleWith(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSealed(java.net.URL url) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSealed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation> annotationClass) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Package getPackage(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <A extends java.lang.annotation.Annotation> A getAnnotation(java.lang.Class<A> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <A extends java.lang.annotation.Annotation> A[] getAnnotationsByType(java.lang.Class<A> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.annotation.Annotation[] getAnnotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <A extends java.lang.annotation.Annotation> A getDeclaredAnnotation(java.lang.Class<A> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <A extends java.lang.annotation.Annotation> A[] getDeclaredAnnotationsByType(java.lang.Class<A> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Package[] getPackages() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSpecificationTitle() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSpecificationVersion() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSpecificationVendor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getImplementationTitle() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getImplementationVersion() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getImplementationVendor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
+  public boolean isCompatibleWith(java.lang.String desired) { return false; }
   < ---- END java signatures ---- >
 }

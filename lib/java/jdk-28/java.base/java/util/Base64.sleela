@@ -58,15 +58,24 @@ class Base64 {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static java.util.Base64.Decoder getMimeDecoder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Base64.getMimeDecoder()"); }
-  public static java.util.Base64.Encoder getEncoder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Base64.getEncoder()"); }
-  public static java.util.Base64.Encoder getUrlEncoder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Base64.getUrlEncoder()"); }
-  public static java.util.Base64.Encoder getMimeEncoder(int lineLength, byte[] lineSeparator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Base64.getMimeEncoder(int, byte[])"); }
-  public static java.util.Base64.Encoder getMimeEncoder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Base64.getMimeEncoder()"); }
-  public static java.util.Base64.Decoder getUrlDecoder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Base64.getUrlDecoder()"); }
-  public static java.util.Base64.Decoder getDecoder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Base64.getDecoder()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Base64.Decoder getMimeDecoder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Base64.Encoder getEncoder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Base64.Encoder getUrlEncoder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Base64.Encoder getMimeEncoder(int lineLength, byte[] lineSeparator) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Base64.Encoder getMimeEncoder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Base64.Decoder getUrlDecoder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Base64.Decoder getDecoder() { return null; }
   < ---- END java signatures ---- >
 }

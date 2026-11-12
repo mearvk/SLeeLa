@@ -58,24 +58,39 @@ class Time {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Time(int hour, int minute, int second) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Time.<init>(int, int, int)"); }
-  public Time(long time) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Time.<init>(long)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Time(int hour, int minute, int second) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Time(long time) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Time.toString()"); }
-  public static java.sql.Time valueOf(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Time.valueOf(java.lang.String)"); }
-  public static java.sql.Time valueOf(java.time.LocalTime time) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Time.valueOf(java.time.LocalTime)"); }
-  public java.time.Instant toInstant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Time.toInstant()"); }
-  public int getYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Time.getYear()"); }
-  public void setTime(long time) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Time.setTime(long)"); }
-  public int getMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Time.getMonth()"); }
-  public java.time.LocalTime toLocalTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Time.toLocalTime()"); }
-  public void setMonth(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Time.setMonth(int)"); }
-  public void setYear(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Time.setYear(int)"); }
-  public int getDay() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Time.getDay()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.sql.Time valueOf(java.lang.String s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.sql.Time valueOf(java.time.LocalTime time) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Instant toInstant() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getYear() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTime(long time) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMonth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalTime toLocalTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMonth(int i) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setYear(int i) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDay() { return 0; }
   < ---- END java signatures ---- >
 }

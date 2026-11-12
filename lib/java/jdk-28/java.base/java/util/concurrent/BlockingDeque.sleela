@@ -58,37 +58,68 @@ class BlockingDeque<E> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean remove(java.lang.Object o) { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.remove(java.lang.Object)"); }
-  public abstract E remove() { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.remove()"); }
-  public abstract int size() { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.size()"); }
-  public abstract void put(E e) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.put(E)"); }
-  public abstract boolean add(E e) { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.add(E)"); }
-  public abstract java.util.Iterator<E> iterator() { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.iterator()"); }
-  public abstract boolean contains(java.lang.Object o) { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.contains(java.lang.Object)"); }
-  public abstract E peek() { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.peek()"); }
-  public abstract E element() { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.element()"); }
-  public abstract void addFirst(E e) { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.addFirst(E)"); }
-  public abstract void addLast(E e) { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.addLast(E)"); }
-  public abstract E poll(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.poll(long, java.util.concurrent.TimeUnit)"); }
-  public abstract E poll() { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.poll()"); }
-  public abstract boolean offer(E e, long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.offer(E, long, java.util.concurrent.TimeUnit)"); }
-  public abstract boolean offer(E e) { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.offer(E)"); }
-  public abstract void push(E e) { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.push(E)"); }
-  public abstract E pollFirst(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.pollFirst(long, java.util.concurrent.TimeUnit)"); }
-  public abstract E pollLast(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.pollLast(long, java.util.concurrent.TimeUnit)"); }
-  public abstract boolean offerLast(E e) { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.offerLast(E)"); }
-  public abstract boolean offerLast(E e, long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.offerLast(E, long, java.util.concurrent.TimeUnit)"); }
-  public abstract boolean removeFirstOccurrence(java.lang.Object o) { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.removeFirstOccurrence(java.lang.Object)"); }
-  public abstract boolean offerFirst(E e, long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.offerFirst(E, long, java.util.concurrent.TimeUnit)"); }
-  public abstract boolean offerFirst(E e) { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.offerFirst(E)"); }
-  public abstract boolean removeLastOccurrence(java.lang.Object o) { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.removeLastOccurrence(java.lang.Object)"); }
-  public abstract void putFirst(E e) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.putFirst(E)"); }
-  public abstract void putLast(E e) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.putLast(E)"); }
-  public abstract E take() throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.take()"); }
-  public abstract E takeFirst() throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.takeFirst()"); }
-  public abstract E takeLast() throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingDeque.takeLast()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean remove(java.lang.Object o) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public E remove() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int size() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public void put(E e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean add(E e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Iterator<E> iterator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean contains(java.lang.Object o) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public E peek() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E element() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void addFirst(E e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addLast(E e) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public E poll(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E poll() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public boolean offer(E e, long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean offer(E e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void push(E e) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public E pollFirst(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public E pollLast(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean offerLast(E e) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public boolean offerLast(E e, long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean removeFirstOccurrence(java.lang.Object o) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public boolean offerFirst(E e, long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean offerFirst(E e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean removeLastOccurrence(java.lang.Object o) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public void putFirst(E e) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public void putLast(E e) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public E take() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public E takeFirst() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public E takeLast() { return null; }
   < ---- END java signatures ---- >
 }

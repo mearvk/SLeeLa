@@ -58,65 +58,121 @@ class StringBuffer {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StringBuffer(java.lang.CharSequence seq) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.<init>(java.lang.CharSequence)"); }
-  public StringBuffer(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.<init>(java.lang.String)"); }
-  public StringBuffer(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.<init>(int)"); }
-  public StringBuffer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringBuffer(java.lang.CharSequence seq) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringBuffer(java.lang.String str) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringBuffer(int capacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringBuffer() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized int length() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.length()"); }
-  public synchronized java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.toString()"); }
-  public synchronized java.lang.StringBuffer append(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(int)"); }
-  public synchronized java.lang.StringBuffer append(long lng) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(long)"); }
-  public synchronized java.lang.StringBuffer append(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(float)"); }
-  public synchronized java.lang.StringBuffer append(char[] str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(char[])"); }
-  public synchronized java.lang.StringBuffer append(char[] str, int offset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(char[], int, int)"); }
-  public synchronized java.lang.StringBuffer append(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(boolean)"); }
-  public synchronized java.lang.StringBuffer append(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(char)"); }
-  public synchronized java.lang.StringBuffer append(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(double)"); }
-  public synchronized java.lang.StringBuffer append(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(java.lang.String)"); }
-  public synchronized java.lang.StringBuffer append(java.lang.StringBuffer sb) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(java.lang.StringBuffer)"); }
-  public synchronized java.lang.StringBuffer append(java.lang.CharSequence s, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.append(java.lang.CharSequence, int, int)"); }
-  public synchronized java.lang.StringBuffer reverse() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.reverse()"); }
-  public synchronized void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.getChars(int, int, char[], int)"); }
-  public synchronized int compareTo(java.lang.StringBuffer another) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.compareTo(java.lang.StringBuffer)"); }
-  public synchronized int indexOf(java.lang.String str, int fromIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.indexOf(java.lang.String, int)"); }
-  public int indexOf(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.indexOf(java.lang.String)"); }
-  public synchronized java.lang.StringBuffer insert(int offset, java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, java.lang.Object)"); }
-  public synchronized java.lang.StringBuffer insert(int index, char[] str, int offset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, char[], int, int)"); }
-  public synchronized java.lang.StringBuffer insert(int offset, char[] str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, char[])"); }
-  public java.lang.StringBuffer insert(int offset, float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, float)"); }
-  public java.lang.StringBuffer insert(int offset, long l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, long)"); }
-  public synchronized java.lang.StringBuffer insert(int offset, java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, java.lang.String)"); }
-  public synchronized java.lang.StringBuffer insert(int dstOffset, java.lang.CharSequence s, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, java.lang.CharSequence, int, int)"); }
-  public java.lang.StringBuffer insert(int offset, boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, boolean)"); }
-  public java.lang.StringBuffer insert(int offset, double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, double)"); }
-  public synchronized java.lang.StringBuffer insert(int offset, char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, char)"); }
-  public java.lang.StringBuffer insert(int offset, int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.insert(int, int)"); }
-  public synchronized char charAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.charAt(int)"); }
-  public synchronized int codePointAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.codePointAt(int)"); }
-  public synchronized int codePointBefore(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.codePointBefore(int)"); }
-  public synchronized int codePointCount(int beginIndex, int endIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.codePointCount(int, int)"); }
-  public synchronized int offsetByCodePoints(int index, int codePointOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.offsetByCodePoints(int, int)"); }
-  public synchronized int lastIndexOf(java.lang.String str, int fromIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.lastIndexOf(java.lang.String, int)"); }
-  public int lastIndexOf(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.lastIndexOf(java.lang.String)"); }
-  public synchronized java.lang.String substring(int start) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.substring(int)"); }
-  public synchronized java.lang.String substring(int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.substring(int, int)"); }
-  public synchronized java.lang.StringBuffer replace(int start, int end, java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.replace(int, int, java.lang.String)"); }
-  public synchronized java.lang.StringBuffer repeat(java.lang.CharSequence cs, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.repeat(java.lang.CharSequence, int)"); }
-  public synchronized java.lang.StringBuffer repeat(int codePoint, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.repeat(int, int)"); }
-  public synchronized java.lang.CharSequence subSequence(int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.subSequence(int, int)"); }
-  public synchronized void trimToSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.trimToSize()"); }
-  public synchronized void setLength(int newLength) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.setLength(int)"); }
-  public synchronized int capacity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.capacity()"); }
-  public synchronized void ensureCapacity(int minimumCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.ensureCapacity(int)"); }
-  public synchronized void setCharAt(int index, char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.setCharAt(int, char)"); }
-  public synchronized java.lang.StringBuffer appendCodePoint(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.appendCodePoint(int)"); }
-  public synchronized java.lang.StringBuffer delete(int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.delete(int, int)"); }
-  public synchronized java.lang.StringBuffer deleteCharAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuffer.deleteCharAt(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int length() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer append(int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer append(long lng) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer append(float f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer append(char[] str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer append(char[] str, int offset, int len) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer append(boolean b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer append(char c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer append(double d) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer append(java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer append(java.lang.StringBuffer sb) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer append(java.lang.CharSequence s, int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer reverse() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int compareTo(java.lang.StringBuffer another) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int indexOf(java.lang.String str, int fromIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int indexOf(java.lang.String str) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer insert(int offset, java.lang.Object obj) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer insert(int index, char[] str, int offset, int len) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer insert(int offset, char[] str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuffer insert(int offset, float f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuffer insert(int offset, long l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer insert(int offset, java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer insert(int dstOffset, java.lang.CharSequence s, int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuffer insert(int offset, boolean b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuffer insert(int offset, double d) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer insert(int offset, char c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuffer insert(int offset, int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized char charAt(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int codePointAt(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int codePointBefore(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int codePointCount(int beginIndex, int endIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int offsetByCodePoints(int index, int codePointOffset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int lastIndexOf(java.lang.String str, int fromIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lastIndexOf(java.lang.String str) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String substring(int start) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String substring(int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer replace(int start, int end, java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer repeat(java.lang.CharSequence cs, int count) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer repeat(int codePoint, int count) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.CharSequence subSequence(int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void trimToSize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setLength(int newLength) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int capacity() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void ensureCapacity(int minimumCapacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setCharAt(int index, char ch) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer appendCodePoint(int codePoint) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer delete(int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.StringBuffer deleteCharAt(int index) { return null; }
   < ---- END java signatures ---- >
 }

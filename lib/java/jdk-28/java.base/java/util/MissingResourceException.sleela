@@ -58,14 +58,19 @@ class MissingResourceException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MissingResourceException(java.lang.String s, java.lang.String className, java.lang.String key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.MissingResourceException.<init>(java.lang.String, java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MissingResourceException(java.lang.String s, java.lang.String className, java.lang.String key) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.MissingResourceException.getKey()"); }
-  public java.lang.String getClassName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.MissingResourceException.getClassName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getKey() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getClassName() { return null; }
   < ---- END java signatures ---- >
 }

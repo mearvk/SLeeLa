@@ -58,6 +58,7 @@ class UnsupportedAddressTypeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnsupportedAddressTypeException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.UnsupportedAddressTypeException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsupportedAddressTypeException() { }
   < ---- END java constructors ---- >
 }

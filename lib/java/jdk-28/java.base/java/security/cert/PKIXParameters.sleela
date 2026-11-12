@@ -58,38 +58,67 @@ class PKIXParameters {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PKIXParameters(java.util.Set<java.security.cert.TrustAnchor> trustAnchors) throws java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.<init>(java.util.Set<java.security.cert.TrustAnchor>)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidAlgorithmParameterException")
+  public PKIXParameters(java.util.Set<java.security.cert.TrustAnchor> trustAnchors) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.toString()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.clone()"); }
-  public void setTargetCertConstraints(java.security.cert.CertSelector selector) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.setTargetCertConstraints(java.security.cert.CertSelector)"); }
-  public void setTrustAnchors(java.util.Set<java.security.cert.TrustAnchor> trustAnchors) throws java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.setTrustAnchors(java.util.Set<java.security.cert.TrustAnchor>)"); }
-  public java.util.Set<java.security.cert.TrustAnchor> getTrustAnchors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.getTrustAnchors()"); }
-  public java.util.Set<java.lang.String> getInitialPolicies() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.getInitialPolicies()"); }
-  public void setInitialPolicies(java.util.Set<java.lang.String> initialPolicies) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.setInitialPolicies(java.util.Set<java.lang.String>)"); }
-  public void setCertStores(java.util.List<java.security.cert.CertStore> stores) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.setCertStores(java.util.List<java.security.cert.CertStore>)"); }
-  public void addCertStore(java.security.cert.CertStore store) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.addCertStore(java.security.cert.CertStore)"); }
-  public java.util.List<java.security.cert.CertStore> getCertStores() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.getCertStores()"); }
-  public void setRevocationEnabled(boolean val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.setRevocationEnabled(boolean)"); }
-  public boolean isRevocationEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.isRevocationEnabled()"); }
-  public void setExplicitPolicyRequired(boolean val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.setExplicitPolicyRequired(boolean)"); }
-  public boolean isExplicitPolicyRequired() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.isExplicitPolicyRequired()"); }
-  public void setPolicyMappingInhibited(boolean val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.setPolicyMappingInhibited(boolean)"); }
-  public boolean isPolicyMappingInhibited() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.isPolicyMappingInhibited()"); }
-  public void setAnyPolicyInhibited(boolean val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.setAnyPolicyInhibited(boolean)"); }
-  public boolean isAnyPolicyInhibited() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.isAnyPolicyInhibited()"); }
-  public void setPolicyQualifiersRejected(boolean qualifiersRejected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.setPolicyQualifiersRejected(boolean)"); }
-  public boolean getPolicyQualifiersRejected() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.getPolicyQualifiersRejected()"); }
-  public void setCertPathCheckers(java.util.List<java.security.cert.PKIXCertPathChecker> checkers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.setCertPathCheckers(java.util.List<java.security.cert.PKIXCertPathChecker>)"); }
-  public java.util.List<java.security.cert.PKIXCertPathChecker> getCertPathCheckers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.getCertPathCheckers()"); }
-  public void addCertPathChecker(java.security.cert.PKIXCertPathChecker checker) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.addCertPathChecker(java.security.cert.PKIXCertPathChecker)"); }
-  public java.lang.String getSigProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.getSigProvider()"); }
-  public void setSigProvider(java.lang.String sigProvider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.setSigProvider(java.lang.String)"); }
-  public java.security.cert.CertSelector getTargetCertConstraints() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.PKIXParameters.getTargetCertConstraints()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTargetCertConstraints(java.security.cert.CertSelector selector) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidAlgorithmParameterException")
+  public void setTrustAnchors(java.util.Set<java.security.cert.TrustAnchor> trustAnchors) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.security.cert.TrustAnchor> getTrustAnchors() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.String> getInitialPolicies() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInitialPolicies(java.util.Set<java.lang.String> initialPolicies) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCertStores(java.util.List<java.security.cert.CertStore> stores) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addCertStore(java.security.cert.CertStore store) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.security.cert.CertStore> getCertStores() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRevocationEnabled(boolean val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRevocationEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setExplicitPolicyRequired(boolean val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isExplicitPolicyRequired() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPolicyMappingInhibited(boolean val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPolicyMappingInhibited() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAnyPolicyInhibited(boolean val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAnyPolicyInhibited() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPolicyQualifiersRejected(boolean qualifiersRejected) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getPolicyQualifiersRejected() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCertPathCheckers(java.util.List<java.security.cert.PKIXCertPathChecker> checkers) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.security.cert.PKIXCertPathChecker> getCertPathCheckers() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addCertPathChecker(java.security.cert.PKIXCertPathChecker checker) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSigProvider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSigProvider(java.lang.String sigProvider) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.cert.CertSelector getTargetCertConstraints() { return null; }
   < ---- END java signatures ---- >
 }

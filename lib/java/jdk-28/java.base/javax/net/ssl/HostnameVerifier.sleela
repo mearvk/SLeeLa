@@ -58,9 +58,12 @@ class HostnameVerifier {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean verify(java.lang.String hostname, javax.net.ssl.SSLSession session) { throw new AbstractMethodError("javax.net.ssl.HostnameVerifier.verify(java.lang.String, javax.net.ssl.SSLSession)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean verify(java.lang.String hostname, javax.net.ssl.SSLSession session) { return false; }
   < ---- END java signatures ---- >
 }

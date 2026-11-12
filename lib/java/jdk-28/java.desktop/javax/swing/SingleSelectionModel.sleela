@@ -58,14 +58,22 @@ class SingleSelectionModel {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean isSelected() { throw new AbstractMethodError("javax.swing.SingleSelectionModel.isSelected()"); }
-  public abstract void setSelectedIndex(int index) { throw new AbstractMethodError("javax.swing.SingleSelectionModel.setSelectedIndex(int)"); }
-  public abstract int getSelectedIndex() { throw new AbstractMethodError("javax.swing.SingleSelectionModel.getSelectedIndex()"); }
-  public abstract void clearSelection() { throw new AbstractMethodError("javax.swing.SingleSelectionModel.clearSelection()"); }
-  public abstract void removeChangeListener(javax.swing.event.ChangeListener listener) { throw new AbstractMethodError("javax.swing.SingleSelectionModel.removeChangeListener(javax.swing.event.ChangeListener)"); }
-  public abstract void addChangeListener(javax.swing.event.ChangeListener listener) { throw new AbstractMethodError("javax.swing.SingleSelectionModel.addChangeListener(javax.swing.event.ChangeListener)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSelected() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSelectedIndex(int index) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getSelectedIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void clearSelection() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeChangeListener(javax.swing.event.ChangeListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addChangeListener(javax.swing.event.ChangeListener listener) { }
   < ---- END java signatures ---- >
 }

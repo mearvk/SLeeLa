@@ -58,22 +58,38 @@ class ModuleLayer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.toString()"); }
-  public static java.lang.ModuleLayer empty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.empty()"); }
-  public static java.lang.ModuleLayer boot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.boot()"); }
-  public java.util.Set<java.lang.Module> modules() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.modules()"); }
-  public java.lang.module.Configuration configuration() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.configuration()"); }
-  public java.util.List<java.lang.ModuleLayer> parents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.parents()"); }
-  public java.util.Optional<java.lang.Module> findModule(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.findModule(java.lang.String)"); }
-  public static java.lang.ModuleLayer.Controller defineModules(java.lang.module.Configuration cf, java.util.List<java.lang.ModuleLayer> parentLayers, java.util.function.Function<java.lang.String, java.lang.ClassLoader> clf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.defineModules(java.lang.module.Configuration, java.util.List<java.lang.ModuleLayer>, java.util.function.Function<java.lang.String, java.lang.ClassLoader>)"); }
-  public java.lang.ModuleLayer defineModules(java.lang.module.Configuration cf, java.util.function.Function<java.lang.String, java.lang.ClassLoader> clf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.defineModules(java.lang.module.Configuration, java.util.function.Function<java.lang.String, java.lang.ClassLoader>)"); }
-  public static java.lang.ModuleLayer.Controller defineModulesWithOneLoader(java.lang.module.Configuration cf, java.util.List<java.lang.ModuleLayer> parentLayers, java.lang.ClassLoader parentLoader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.defineModulesWithOneLoader(java.lang.module.Configuration, java.util.List<java.lang.ModuleLayer>, java.lang.ClassLoader)"); }
-  public java.lang.ModuleLayer defineModulesWithOneLoader(java.lang.module.Configuration cf, java.lang.ClassLoader parentLoader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.defineModulesWithOneLoader(java.lang.module.Configuration, java.lang.ClassLoader)"); }
-  public java.lang.ModuleLayer defineModulesWithManyLoaders(java.lang.module.Configuration cf, java.lang.ClassLoader parentLoader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.defineModulesWithManyLoaders(java.lang.module.Configuration, java.lang.ClassLoader)"); }
-  public static java.lang.ModuleLayer.Controller defineModulesWithManyLoaders(java.lang.module.Configuration cf, java.util.List<java.lang.ModuleLayer> parentLayers, java.lang.ClassLoader parentLoader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.defineModulesWithManyLoaders(java.lang.module.Configuration, java.util.List<java.lang.ModuleLayer>, java.lang.ClassLoader)"); }
-  public java.lang.ClassLoader findLoader(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ModuleLayer.findLoader(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.ModuleLayer empty() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.ModuleLayer boot() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.Module> modules() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.module.Configuration configuration() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.lang.ModuleLayer> parents() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<java.lang.Module> findModule(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.ModuleLayer.Controller defineModules(java.lang.module.Configuration cf, java.util.List<java.lang.ModuleLayer> parentLayers, java.util.function.Function<java.lang.String, java.lang.ClassLoader> clf) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.ModuleLayer defineModules(java.lang.module.Configuration cf, java.util.function.Function<java.lang.String, java.lang.ClassLoader> clf) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.ModuleLayer.Controller defineModulesWithOneLoader(java.lang.module.Configuration cf, java.util.List<java.lang.ModuleLayer> parentLayers, java.lang.ClassLoader parentLoader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.ModuleLayer defineModulesWithOneLoader(java.lang.module.Configuration cf, java.lang.ClassLoader parentLoader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.ModuleLayer defineModulesWithManyLoaders(java.lang.module.Configuration cf, java.lang.ClassLoader parentLoader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.ModuleLayer.Controller defineModulesWithManyLoaders(java.lang.module.Configuration cf, java.util.List<java.lang.ModuleLayer> parentLayers, java.lang.ClassLoader parentLoader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.ClassLoader findLoader(java.lang.String name) { return null; }
   < ---- END java signatures ---- >
 }

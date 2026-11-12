@@ -58,7 +58,9 @@ class KeyAlreadyExistsException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public KeyAlreadyExistsException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.KeyAlreadyExistsException.<init>()"); }
-  public KeyAlreadyExistsException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.KeyAlreadyExistsException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public KeyAlreadyExistsException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public KeyAlreadyExistsException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

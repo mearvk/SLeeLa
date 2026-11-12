@@ -59,16 +59,23 @@ class ImageTranscoderSpi {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ImageTranscoderSpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.spi.ImageTranscoderSpi.<init>()"); }
-  public ImageTranscoderSpi(java.lang.String vendorName, java.lang.String version) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.spi.ImageTranscoderSpi.<init>(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ImageTranscoderSpi() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ImageTranscoderSpi(java.lang.String vendorName, java.lang.String version) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.imageio.ImageTranscoder createTranscoderInstance() { throw new AbstractMethodError("javax.imageio.spi.ImageTranscoderSpi.createTranscoderInstance()"); }
-  public abstract java.lang.String getReaderServiceProviderName() { throw new AbstractMethodError("javax.imageio.spi.ImageTranscoderSpi.getReaderServiceProviderName()"); }
-  public abstract java.lang.String getWriterServiceProviderName() { throw new AbstractMethodError("javax.imageio.spi.ImageTranscoderSpi.getWriterServiceProviderName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.imageio.ImageTranscoder createTranscoderInstance() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getReaderServiceProviderName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getWriterServiceProviderName() { return null; }
   < ---- END java signatures ---- >
 }

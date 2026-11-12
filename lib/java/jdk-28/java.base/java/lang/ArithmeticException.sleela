@@ -58,7 +58,9 @@ class ArithmeticException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ArithmeticException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ArithmeticException.<init>()"); }
-  public ArithmeticException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ArithmeticException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ArithmeticException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ArithmeticException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

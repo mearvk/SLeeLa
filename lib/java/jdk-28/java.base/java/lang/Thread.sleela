@@ -64,65 +64,120 @@ class Thread {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Thread(java.lang.ThreadGroup group, java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.<init>(java.lang.ThreadGroup, java.lang.String)"); }
-  public Thread(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.<init>(java.lang.String)"); }
-  public Thread(java.lang.ThreadGroup group, java.lang.Runnable task, java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.<init>(java.lang.ThreadGroup, java.lang.Runnable, java.lang.String)"); }
-  public Thread() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.<init>()"); }
-  public Thread(java.lang.Runnable task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.<init>(java.lang.Runnable)"); }
-  public Thread(java.lang.ThreadGroup group, java.lang.Runnable task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.<init>(java.lang.ThreadGroup, java.lang.Runnable)"); }
-  public Thread(java.lang.ThreadGroup group, java.lang.Runnable task, java.lang.String name, long stackSize, boolean inheritInheritableThreadLocals) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.<init>(java.lang.ThreadGroup, java.lang.Runnable, java.lang.String, long, boolean)"); }
-  public Thread(java.lang.ThreadGroup group, java.lang.Runnable task, java.lang.String name, long stackSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.<init>(java.lang.ThreadGroup, java.lang.Runnable, java.lang.String, long)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Thread(java.lang.ThreadGroup group, java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Thread(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Thread(java.lang.ThreadGroup group, java.lang.Runnable task, java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Thread() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Thread(java.lang.Runnable task) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Thread(java.lang.ThreadGroup group, java.lang.Runnable task) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Thread(java.lang.ThreadGroup group, java.lang.Runnable task, java.lang.String name, long stackSize, boolean inheritInheritableThreadLocals) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Thread(java.lang.ThreadGroup group, java.lang.Runnable task, java.lang.String name, long stackSize) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.getName()"); }
-  public java.lang.StackTraceElement[] getStackTrace() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.getStackTrace()"); }
-  public void run() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.run()"); }
-  public void interrupt() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.interrupt()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.toString()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StackTraceElement[] getStackTrace() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void run() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void interrupt() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
   @JavaProtected
-  java.lang.Object clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.clone()"); }
-  public static native java.lang.Thread currentThread() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.currentThread()"); }
-  public static void onSpinWait() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.onSpinWait()"); }
-  public final boolean join(java.time.Duration duration) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.join(java.time.Duration)"); }
-  public final void join(long millis, int nanos) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.join(long, int)"); }
-  public final void join() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.join()"); }
-  public final void join(long millis) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.join(long)"); }
-  public void setContextClassLoader(java.lang.ClassLoader cl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.setContextClassLoader(java.lang.ClassLoader)"); }
-  public static native boolean holdsLock(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.holdsLock(java.lang.Object)"); }
-  public final void setPriority(int newPriority) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.setPriority(int)"); }
-  public final void setDaemon(boolean on) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.setDaemon(boolean)"); }
-  public void start() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.start()"); }
-  public final java.lang.ThreadGroup getThreadGroup() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.getThreadGroup()"); }
-  public final int getPriority() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.getPriority()"); }
-  public final boolean isDaemon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.isDaemon()"); }
-  public java.lang.ClassLoader getContextClassLoader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.getContextClassLoader()"); }
-  public static boolean interrupted() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.interrupted()"); }
-  public final boolean isVirtual() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.isVirtual()"); }
-  public static int activeCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.activeCount()"); }
-  public static int enumerate(java.lang.Thread[] tarray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.enumerate(java.lang.Thread[])"); }
-  public final boolean isAlive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.isAlive()"); }
-  public final long threadId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.threadId()"); }
-  public java.lang.Thread.UncaughtExceptionHandler getUncaughtExceptionHandler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.getUncaughtExceptionHandler()"); }
-  public static void sleep(long millis) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.sleep(long)"); }
-  public static void sleep(long millis, int nanos) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.sleep(long, int)"); }
-  public static void sleep(java.time.Duration duration) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.sleep(java.time.Duration)"); }
-  public static java.lang.Thread.Builder.OfPlatform ofPlatform() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.ofPlatform()"); }
-  public static java.lang.Thread.Builder.OfVirtual ofVirtual() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.ofVirtual()"); }
-  public static java.lang.Thread startVirtualThread(java.lang.Runnable task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.startVirtualThread(java.lang.Runnable)"); }
-  public final void stop() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.stop()"); }
-  public boolean isInterrupted() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.isInterrupted()"); }
-  public final synchronized void setName(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.setName(java.lang.String)"); }
-  public static void dumpStack() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.dumpStack()"); }
-  public final void checkAccess() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.checkAccess()"); }
-  public static java.util.Map<java.lang.Thread, java.lang.StackTraceElement[]> getAllStackTraces() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.getAllStackTraces()"); }
-  public long getId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.getId()"); }
-  public java.lang.Thread.State getState() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.getState()"); }
-  public static void setDefaultUncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler ueh) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.setDefaultUncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler)"); }
-  public static java.lang.Thread.UncaughtExceptionHandler getDefaultUncaughtExceptionHandler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.getDefaultUncaughtExceptionHandler()"); }
-  public void setUncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler ueh) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Thread.setUncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
+  java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static native java.lang.Thread currentThread() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void onSpinWait() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public final boolean join(java.time.Duration duration) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public final void join(long millis, int nanos) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public final void join() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public final void join(long millis) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setContextClassLoader(java.lang.ClassLoader cl) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static native boolean holdsLock(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setPriority(int newPriority) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setDaemon(boolean on) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void start() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.ThreadGroup getThreadGroup() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getPriority() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isDaemon() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.ClassLoader getContextClassLoader() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean interrupted() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isVirtual() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int activeCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int enumerate(java.lang.Thread[] tarray) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isAlive() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long threadId() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Thread.UncaughtExceptionHandler getUncaughtExceptionHandler() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public static void sleep(long millis) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public static void sleep(long millis, int nanos) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public static void sleep(java.time.Duration duration) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Thread.Builder.OfPlatform ofPlatform() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Thread.Builder.OfVirtual ofVirtual() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Thread startVirtualThread(java.lang.Runnable task) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void stop() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isInterrupted() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final synchronized void setName(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void dumpStack() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void checkAccess() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Map<java.lang.Thread, java.lang.StackTraceElement[]> getAllStackTraces() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getId() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Thread.State getState() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setDefaultUncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler ueh) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Thread.UncaughtExceptionHandler getDefaultUncaughtExceptionHandler() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler ueh) { }
   < ---- END java signatures ---- >
 }

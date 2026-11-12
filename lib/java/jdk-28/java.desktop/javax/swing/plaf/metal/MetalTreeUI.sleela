@@ -58,28 +58,41 @@ class MetalTreeUI {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MetalTreeUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTreeUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MetalTreeUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void decodeLineStyle(java.lang.Object lineStyleFlag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTreeUI.decodeLineStyle(java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void decodeLineStyle(java.lang.Object lineStyleFlag) { }
   @JavaProtected
-  void paintHorizontalSeparators(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTreeUI.paintHorizontalSeparators(java.awt.Graphics, javax.swing.JComponent)"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTreeUI.installUI(javax.swing.JComponent)"); }
-  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTreeUI.uninstallUI(javax.swing.JComponent)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTreeUI.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintHorizontalSeparators(java.awt.Graphics g, javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { return null; }
   @JavaProtected
-  void paintVerticalPartOfLeg(java.awt.Graphics g, java.awt.Rectangle clipBounds, java.awt.Insets insets, javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTreeUI.paintVerticalPartOfLeg(java.awt.Graphics, java.awt.Rectangle, java.awt.Insets, javax.swing.tree.TreePath)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintVerticalPartOfLeg(java.awt.Graphics g, java.awt.Rectangle clipBounds, java.awt.Insets insets, javax.swing.tree.TreePath path) { }
   @JavaProtected
-  void paintHorizontalPartOfLeg(java.awt.Graphics g, java.awt.Rectangle clipBounds, java.awt.Insets insets, java.awt.Rectangle bounds, javax.swing.tree.TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTreeUI.paintHorizontalPartOfLeg(java.awt.Graphics, java.awt.Rectangle, java.awt.Insets, java.awt.Rectangle, javax.swing.tree.TreePath, int, boolean, boolean, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintHorizontalPartOfLeg(java.awt.Graphics g, java.awt.Rectangle clipBounds, java.awt.Insets insets, java.awt.Rectangle bounds, javax.swing.tree.TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { }
   @JavaProtected
-  int getHorizontalLegBuffer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTreeUI.getHorizontalLegBuffer()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getHorizontalLegBuffer() { return 0; }
   @JavaProtected
-  boolean isLocationInExpandControl(int row, int rowLevel, int mouseX, int mouseY) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTreeUI.isLocationInExpandControl(int, int, int, int)"); }
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalTreeUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isLocationInExpandControl(int row, int rowLevel, int mouseX, int mouseY) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
   < ---- END java signatures ---- >
 }

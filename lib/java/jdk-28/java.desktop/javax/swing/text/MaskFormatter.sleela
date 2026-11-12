@@ -58,28 +58,47 @@ class MaskFormatter {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MaskFormatter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.<init>()"); }
-  public MaskFormatter(java.lang.String mask) throws java.text.ParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MaskFormatter() { }
+  @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
+  public MaskFormatter(java.lang.String mask) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getMask() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.getMask()"); }
-  public void install(javax.swing.JFormattedTextField ftf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.install(javax.swing.JFormattedTextField)"); }
-  public java.lang.Object stringToValue(java.lang.String value) throws java.text.ParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.stringToValue(java.lang.String)"); }
-  public java.lang.String valueToString(java.lang.Object value) throws java.text.ParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.valueToString(java.lang.Object)"); }
-  public void setMask(java.lang.String mask) throws java.text.ParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.setMask(java.lang.String)"); }
-  public java.lang.String getPlaceholder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.getPlaceholder()"); }
-  public boolean getValueContainsLiteralCharacters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.getValueContainsLiteralCharacters()"); }
-  public char getPlaceholderCharacter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.getPlaceholderCharacter()"); }
-  public void setValidCharacters(java.lang.String validCharacters) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.setValidCharacters(java.lang.String)"); }
-  public java.lang.String getValidCharacters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.getValidCharacters()"); }
-  public void setInvalidCharacters(java.lang.String invalidCharacters) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.setInvalidCharacters(java.lang.String)"); }
-  public java.lang.String getInvalidCharacters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.getInvalidCharacters()"); }
-  public void setPlaceholder(java.lang.String placeholder) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.setPlaceholder(java.lang.String)"); }
-  public void setPlaceholderCharacter(char placeholder) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.setPlaceholderCharacter(char)"); }
-  public void setValueContainsLiteralCharacters(boolean containsLiteralChars) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.MaskFormatter.setValueContainsLiteralCharacters(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getMask() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void install(javax.swing.JFormattedTextField ftf) { }
+  @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
+  public java.lang.Object stringToValue(java.lang.String value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
+  public java.lang.String valueToString(java.lang.Object value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
+  public void setMask(java.lang.String mask) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPlaceholder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getValueContainsLiteralCharacters() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getPlaceholderCharacter() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValidCharacters(java.lang.String validCharacters) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getValidCharacters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInvalidCharacters(java.lang.String invalidCharacters) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getInvalidCharacters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPlaceholder(java.lang.String placeholder) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPlaceholderCharacter(char placeholder) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValueContainsLiteralCharacters(boolean containsLiteralChars) { }
   < ---- END java signatures ---- >
 }

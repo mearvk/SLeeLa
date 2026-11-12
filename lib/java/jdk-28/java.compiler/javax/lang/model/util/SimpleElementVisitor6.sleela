@@ -63,21 +63,31 @@ class SimpleElementVisitor6<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SimpleElementVisitor6() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleElementVisitor6.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleElementVisitor6() { }
   @JavaProtected
-  SimpleElementVisitor6(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleElementVisitor6.<init>(R)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleElementVisitor6(R defaultValue) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public R visitType(javax.lang.model.element.TypeElement e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleElementVisitor6.visitType(javax.lang.model.element.TypeElement, P)"); }
-  public R visitExecutable(javax.lang.model.element.ExecutableElement e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleElementVisitor6.visitExecutable(javax.lang.model.element.ExecutableElement, P)"); }
-  public R visitVariable(javax.lang.model.element.VariableElement e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleElementVisitor6.visitVariable(javax.lang.model.element.VariableElement, P)"); }
-  public R visitPackage(javax.lang.model.element.PackageElement e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleElementVisitor6.visitPackage(javax.lang.model.element.PackageElement, P)"); }
-  public R visitTypeParameter(javax.lang.model.element.TypeParameterElement e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleElementVisitor6.visitTypeParameter(javax.lang.model.element.TypeParameterElement, P)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitType(javax.lang.model.element.TypeElement e, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitExecutable(javax.lang.model.element.ExecutableElement e, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitVariable(javax.lang.model.element.VariableElement e, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitPackage(javax.lang.model.element.PackageElement e, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitTypeParameter(javax.lang.model.element.TypeParameterElement e, P p) { return null; }
   @JavaProtected
-  R defaultAction(javax.lang.model.element.Element e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleElementVisitor6.defaultAction(javax.lang.model.element.Element, P)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  R defaultAction(javax.lang.model.element.Element e, P p) { return null; }
   < ---- END java signatures ---- >
 }

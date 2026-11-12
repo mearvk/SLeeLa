@@ -58,14 +58,22 @@ class Taglet {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("jdk.javadoc.doclet.Taglet.getName()"); }
-  public abstract java.lang.String toString(java.util.List<? extends com.sun.source.doctree.DocTree> tags, javax.lang.model.element.Element element) { throw new AbstractMethodError("jdk.javadoc.doclet.Taglet.toString(java.util.List<? extends com.sun.source.doctree.DocTree>, javax.lang.model.element.Element)"); }
-  public default void init(jdk.javadoc.doclet.DocletEnvironment env, jdk.javadoc.doclet.Doclet doclet) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.javadoc.doclet.Taglet.init(jdk.javadoc.doclet.DocletEnvironment, jdk.javadoc.doclet.Doclet)"); }
-  public default boolean isBlockTag() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.javadoc.doclet.Taglet.isBlockTag()"); }
-  public abstract boolean isInlineTag() { throw new AbstractMethodError("jdk.javadoc.doclet.Taglet.isInlineTag()"); }
-  public abstract java.util.Set<jdk.javadoc.doclet.Taglet.Location> getAllowedLocations() { throw new AbstractMethodError("jdk.javadoc.doclet.Taglet.getAllowedLocations()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString(java.util.List<? extends com.sun.source.doctree.DocTree> tags, javax.lang.model.element.Element element) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void init(jdk.javadoc.doclet.DocletEnvironment env, jdk.javadoc.doclet.Doclet doclet) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isBlockTag() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isInlineTag() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<jdk.javadoc.doclet.Taglet.Location> getAllowedLocations() { return null; }
   < ---- END java signatures ---- >
 }

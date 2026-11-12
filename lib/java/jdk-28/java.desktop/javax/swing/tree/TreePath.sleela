@@ -59,28 +59,45 @@ class TreePath {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  TreePath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TreePath() { }
   @JavaProtected
-  TreePath(java.lang.Object[] path, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.<init>(java.lang.Object[], int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TreePath(java.lang.Object[] path, int length) { }
   @JavaProtected
-  TreePath(javax.swing.tree.TreePath parent, java.lang.Object lastPathComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.<init>(javax.swing.tree.TreePath, java.lang.Object)"); }
-  public TreePath(java.lang.Object lastPathComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.<init>(java.lang.Object)"); }
-  public TreePath(java.lang.Object[] path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.<init>(java.lang.Object[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TreePath(javax.swing.tree.TreePath parent, java.lang.Object lastPathComponent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TreePath(java.lang.Object lastPathComponent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TreePath(java.lang.Object[] path) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.hashCode()"); }
-  public java.lang.Object[] getPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.getPath()"); }
-  public javax.swing.tree.TreePath getParentPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.getParentPath()"); }
-  public boolean isDescendant(javax.swing.tree.TreePath aTreePath) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.isDescendant(javax.swing.tree.TreePath)"); }
-  public int getPathCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.getPathCount()"); }
-  public java.lang.Object getPathComponent(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.getPathComponent(int)"); }
-  public javax.swing.tree.TreePath pathByAddingChild(java.lang.Object child) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.pathByAddingChild(java.lang.Object)"); }
-  public java.lang.Object getLastPathComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.TreePath.getLastPathComponent()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] getPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath getParentPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDescendant(javax.swing.tree.TreePath aTreePath) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getPathCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getPathComponent(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath pathByAddingChild(java.lang.Object child) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getLastPathComponent() { return null; }
   < ---- END java signatures ---- >
 }

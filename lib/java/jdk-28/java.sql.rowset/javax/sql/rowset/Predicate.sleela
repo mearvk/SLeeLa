@@ -58,11 +58,16 @@ class Predicate {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean evaluate(javax.sql.RowSet rs) { throw new AbstractMethodError("javax.sql.rowset.Predicate.evaluate(javax.sql.RowSet)"); }
-  public abstract boolean evaluate(java.lang.Object value, int column) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.Predicate.evaluate(java.lang.Object, int)"); }
-  public abstract boolean evaluate(java.lang.Object value, java.lang.String columnName) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.Predicate.evaluate(java.lang.Object, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean evaluate(javax.sql.RowSet rs) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean evaluate(java.lang.Object value, int column) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean evaluate(java.lang.Object value, java.lang.String columnName) { return false; }
   < ---- END java signatures ---- >
 }

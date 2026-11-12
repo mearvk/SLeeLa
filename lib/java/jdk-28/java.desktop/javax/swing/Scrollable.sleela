@@ -58,13 +58,20 @@ class Scrollable {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.awt.Dimension getPreferredScrollableViewportSize() { throw new AbstractMethodError("javax.swing.Scrollable.getPreferredScrollableViewportSize()"); }
-  public abstract int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { throw new AbstractMethodError("javax.swing.Scrollable.getScrollableUnitIncrement(java.awt.Rectangle, int, int)"); }
-  public abstract int getScrollableBlockIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { throw new AbstractMethodError("javax.swing.Scrollable.getScrollableBlockIncrement(java.awt.Rectangle, int, int)"); }
-  public abstract boolean getScrollableTracksViewportWidth() { throw new AbstractMethodError("javax.swing.Scrollable.getScrollableTracksViewportWidth()"); }
-  public abstract boolean getScrollableTracksViewportHeight() { throw new AbstractMethodError("javax.swing.Scrollable.getScrollableTracksViewportHeight()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Dimension getPreferredScrollableViewportSize() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getScrollableTracksViewportWidth() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getScrollableTracksViewportHeight() { return false; }
   < ---- END java signatures ---- >
 }

@@ -58,19 +58,32 @@ class Location {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("com.sun.jdi.Location.equals(java.lang.Object)"); }
-  public abstract com.sun.jdi.Method method() { throw new AbstractMethodError("com.sun.jdi.Location.method()"); }
-  public abstract int lineNumber(java.lang.String stratum) { throw new AbstractMethodError("com.sun.jdi.Location.lineNumber(java.lang.String)"); }
-  public abstract int lineNumber() { throw new AbstractMethodError("com.sun.jdi.Location.lineNumber()"); }
-  public abstract int hashCode() { throw new AbstractMethodError("com.sun.jdi.Location.hashCode()"); }
-  public abstract java.lang.String sourceName(java.lang.String stratum) throws com.sun.jdi.AbsentInformationException { throw new AbstractMethodError("com.sun.jdi.Location.sourceName(java.lang.String)"); }
-  public abstract java.lang.String sourceName() throws com.sun.jdi.AbsentInformationException { throw new AbstractMethodError("com.sun.jdi.Location.sourceName()"); }
-  public abstract java.lang.String sourcePath(java.lang.String stratum) throws com.sun.jdi.AbsentInformationException { throw new AbstractMethodError("com.sun.jdi.Location.sourcePath(java.lang.String)"); }
-  public abstract java.lang.String sourcePath() throws com.sun.jdi.AbsentInformationException { throw new AbstractMethodError("com.sun.jdi.Location.sourcePath()"); }
-  public abstract com.sun.jdi.ReferenceType declaringType() { throw new AbstractMethodError("com.sun.jdi.Location.declaringType()"); }
-  public abstract long codeIndex() { throw new AbstractMethodError("com.sun.jdi.Location.codeIndex()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.Method method() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int lineNumber(java.lang.String stratum) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int lineNumber() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.AbsentInformationException")
+  public java.lang.String sourceName(java.lang.String stratum) { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.AbsentInformationException")
+  public java.lang.String sourceName() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.AbsentInformationException")
+  public java.lang.String sourcePath(java.lang.String stratum) { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.AbsentInformationException")
+  public java.lang.String sourcePath() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.ReferenceType declaringType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long codeIndex() { return 0; }
   < ---- END java signatures ---- >
 }

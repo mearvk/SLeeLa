@@ -58,6 +58,7 @@ class InvalidApplicationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidApplicationException(java.lang.Object val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.InvalidApplicationException.<init>(java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidApplicationException(java.lang.Object val) { }
   < ---- END java constructors ---- >
 }

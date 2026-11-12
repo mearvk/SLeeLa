@@ -59,6 +59,7 @@ class SpinnerUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SpinnerUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.SpinnerUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SpinnerUI() { }
   < ---- END java constructors ---- >
 }

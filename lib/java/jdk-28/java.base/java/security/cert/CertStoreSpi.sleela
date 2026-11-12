@@ -58,14 +58,19 @@ class CertStoreSpi {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CertStoreSpi(java.security.cert.CertStoreParameters params) throws java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertStoreSpi.<init>(java.security.cert.CertStoreParameters)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidAlgorithmParameterException")
+  public CertStoreSpi(java.security.cert.CertStoreParameters params) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.Collection<? extends java.security.cert.Certificate> engineGetCertificates(java.security.cert.CertSelector selector) throws java.security.cert.CertStoreException { throw new AbstractMethodError("java.security.cert.CertStoreSpi.engineGetCertificates(java.security.cert.CertSelector)"); }
-  public abstract java.util.Collection<? extends java.security.cert.CRL> engineGetCRLs(java.security.cert.CRLSelector selector) throws java.security.cert.CertStoreException { throw new AbstractMethodError("java.security.cert.CertStoreSpi.engineGetCRLs(java.security.cert.CRLSelector)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertStoreException")
+  public java.util.Collection<? extends java.security.cert.Certificate> engineGetCertificates(java.security.cert.CertSelector selector) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertStoreException")
+  public java.util.Collection<? extends java.security.cert.CRL> engineGetCRLs(java.security.cert.CRLSelector selector) { return null; }
   < ---- END java signatures ---- >
 }

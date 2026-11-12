@@ -58,6 +58,7 @@ class AWTException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AWTException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.AWTException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AWTException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

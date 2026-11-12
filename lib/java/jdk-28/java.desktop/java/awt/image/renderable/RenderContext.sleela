@@ -58,25 +58,41 @@ class RenderContext {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RenderContext(java.awt.geom.AffineTransform usr2dev, java.awt.Shape aoi) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.<init>(java.awt.geom.AffineTransform, java.awt.Shape)"); }
-  public RenderContext(java.awt.geom.AffineTransform usr2dev) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.<init>(java.awt.geom.AffineTransform)"); }
-  public RenderContext(java.awt.geom.AffineTransform usr2dev, java.awt.Shape aoi, java.awt.RenderingHints hints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.<init>(java.awt.geom.AffineTransform, java.awt.Shape, java.awt.RenderingHints)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RenderContext(java.awt.geom.AffineTransform usr2dev, java.awt.Shape aoi) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RenderContext(java.awt.geom.AffineTransform usr2dev) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RenderContext(java.awt.geom.AffineTransform usr2dev, java.awt.Shape aoi, java.awt.RenderingHints hints) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.clone()"); }
-  public void setTransform(java.awt.geom.AffineTransform newTransform) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.setTransform(java.awt.geom.AffineTransform)"); }
-  public java.awt.geom.AffineTransform getTransform() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.getTransform()"); }
-  public void setRenderingHints(java.awt.RenderingHints hints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.setRenderingHints(java.awt.RenderingHints)"); }
-  public java.awt.RenderingHints getRenderingHints() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.getRenderingHints()"); }
-  public void preConcetenateTransform(java.awt.geom.AffineTransform modTransform) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.preConcetenateTransform(java.awt.geom.AffineTransform)"); }
-  public void concetenateTransform(java.awt.geom.AffineTransform modTransform) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.concetenateTransform(java.awt.geom.AffineTransform)"); }
-  public void preConcatenateTransform(java.awt.geom.AffineTransform modTransform) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.preConcatenateTransform(java.awt.geom.AffineTransform)"); }
-  public void concatenateTransform(java.awt.geom.AffineTransform modTransform) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.concatenateTransform(java.awt.geom.AffineTransform)"); }
-  public void setAreaOfInterest(java.awt.Shape newAoi) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.setAreaOfInterest(java.awt.Shape)"); }
-  public java.awt.Shape getAreaOfInterest() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderContext.getAreaOfInterest()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTransform(java.awt.geom.AffineTransform newTransform) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.AffineTransform getTransform() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRenderingHints(java.awt.RenderingHints hints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.RenderingHints getRenderingHints() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void preConcetenateTransform(java.awt.geom.AffineTransform modTransform) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void concetenateTransform(java.awt.geom.AffineTransform modTransform) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void preConcatenateTransform(java.awt.geom.AffineTransform modTransform) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void concatenateTransform(java.awt.geom.AffineTransform modTransform) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAreaOfInterest(java.awt.Shape newAoi) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Shape getAreaOfInterest() { return null; }
   < ---- END java signatures ---- >
 }

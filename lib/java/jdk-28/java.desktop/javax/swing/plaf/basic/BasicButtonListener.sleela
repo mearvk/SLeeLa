@@ -58,27 +58,44 @@ class BasicButtonListener {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicButtonListener(javax.swing.AbstractButton b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.<init>(javax.swing.AbstractButton)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicButtonListener(javax.swing.AbstractButton b) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void focusGained(java.awt.event.FocusEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.focusGained(java.awt.event.FocusEvent)"); }
-  public void focusLost(java.awt.event.FocusEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.focusLost(java.awt.event.FocusEvent)"); }
-  public void mousePressed(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.mousePressed(java.awt.event.MouseEvent)"); }
-  public void mouseReleased(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.mouseReleased(java.awt.event.MouseEvent)"); }
-  public void mouseClicked(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.mouseClicked(java.awt.event.MouseEvent)"); }
-  public void mouseExited(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.mouseExited(java.awt.event.MouseEvent)"); }
-  public void mouseEntered(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.mouseEntered(java.awt.event.MouseEvent)"); }
-  public void mouseMoved(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.mouseMoved(java.awt.event.MouseEvent)"); }
-  public void mouseDragged(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.mouseDragged(java.awt.event.MouseEvent)"); }
-  public void propertyChange(java.beans.PropertyChangeEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.propertyChange(java.beans.PropertyChangeEvent)"); }
-  public void stateChanged(javax.swing.event.ChangeEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.stateChanged(javax.swing.event.ChangeEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void focusGained(java.awt.event.FocusEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void focusLost(java.awt.event.FocusEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mousePressed(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseReleased(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseClicked(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseExited(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseEntered(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseMoved(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseDragged(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void propertyChange(java.beans.PropertyChangeEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void stateChanged(javax.swing.event.ChangeEvent e) { }
   @JavaProtected
-  void checkOpacity(javax.swing.AbstractButton b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.checkOpacity(javax.swing.AbstractButton)"); }
-  public void installKeyboardActions(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.installKeyboardActions(javax.swing.JComponent)"); }
-  public void uninstallKeyboardActions(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicButtonListener.uninstallKeyboardActions(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void checkOpacity(javax.swing.AbstractButton b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installKeyboardActions(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallKeyboardActions(javax.swing.JComponent c) { }
   < ---- END java signatures ---- >
 }

@@ -58,29 +58,47 @@ class SynthStyle {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SynthStyle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SynthStyle() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object get(javax.swing.plaf.synth.SynthContext context, java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.get(javax.swing.plaf.synth.SynthContext, java.lang.Object)"); }
-  public boolean getBoolean(javax.swing.plaf.synth.SynthContext context, java.lang.Object key, boolean defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.getBoolean(javax.swing.plaf.synth.SynthContext, java.lang.Object, boolean)"); }
-  public int getInt(javax.swing.plaf.synth.SynthContext context, java.lang.Object key, int defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.getInt(javax.swing.plaf.synth.SynthContext, java.lang.Object, int)"); }
-  public boolean isOpaque(javax.swing.plaf.synth.SynthContext context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.isOpaque(javax.swing.plaf.synth.SynthContext)"); }
-  public java.lang.String getString(javax.swing.plaf.synth.SynthContext context, java.lang.Object key, java.lang.String defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.getString(javax.swing.plaf.synth.SynthContext, java.lang.Object, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object get(javax.swing.plaf.synth.SynthContext context, java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getBoolean(javax.swing.plaf.synth.SynthContext context, java.lang.Object key, boolean defaultValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getInt(javax.swing.plaf.synth.SynthContext context, java.lang.Object key, int defaultValue) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isOpaque(javax.swing.plaf.synth.SynthContext context) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getString(javax.swing.plaf.synth.SynthContext context, java.lang.Object key, java.lang.String defaultValue) { return null; }
   @JavaProtected
-  abstract java.awt.Color getColorForState(javax.swing.plaf.synth.SynthContext context, javax.swing.plaf.synth.ColorType type) { throw new AbstractMethodError("javax.swing.plaf.synth.SynthStyle.getColorForState(javax.swing.plaf.synth.SynthContext, javax.swing.plaf.synth.ColorType)"); }
+  @throwable("java.lang.AbstractMethodError")
+  java.awt.Color getColorForState(javax.swing.plaf.synth.SynthContext context, javax.swing.plaf.synth.ColorType type) { return null; }
   @JavaProtected
-  abstract java.awt.Font getFontForState(javax.swing.plaf.synth.SynthContext context) { throw new AbstractMethodError("javax.swing.plaf.synth.SynthStyle.getFontForState(javax.swing.plaf.synth.SynthContext)"); }
-  public javax.swing.plaf.synth.SynthGraphicsUtils getGraphicsUtils(javax.swing.plaf.synth.SynthContext context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.getGraphicsUtils(javax.swing.plaf.synth.SynthContext)"); }
-  public java.awt.Color getColor(javax.swing.plaf.synth.SynthContext context, javax.swing.plaf.synth.ColorType type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.getColor(javax.swing.plaf.synth.SynthContext, javax.swing.plaf.synth.ColorType)"); }
-  public javax.swing.Icon getIcon(javax.swing.plaf.synth.SynthContext context, java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.getIcon(javax.swing.plaf.synth.SynthContext, java.lang.Object)"); }
-  public javax.swing.plaf.synth.SynthPainter getPainter(javax.swing.plaf.synth.SynthContext context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.getPainter(javax.swing.plaf.synth.SynthContext)"); }
-  public void installDefaults(javax.swing.plaf.synth.SynthContext context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.installDefaults(javax.swing.plaf.synth.SynthContext)"); }
-  public void uninstallDefaults(javax.swing.plaf.synth.SynthContext context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.uninstallDefaults(javax.swing.plaf.synth.SynthContext)"); }
-  public java.awt.Insets getInsets(javax.swing.plaf.synth.SynthContext context, java.awt.Insets insets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.getInsets(javax.swing.plaf.synth.SynthContext, java.awt.Insets)"); }
-  public java.awt.Font getFont(javax.swing.plaf.synth.SynthContext context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthStyle.getFont(javax.swing.plaf.synth.SynthContext)"); }
+  @throwable("java.lang.AbstractMethodError")
+  java.awt.Font getFontForState(javax.swing.plaf.synth.SynthContext context) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.synth.SynthGraphicsUtils getGraphicsUtils(javax.swing.plaf.synth.SynthContext context) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getColor(javax.swing.plaf.synth.SynthContext context, javax.swing.plaf.synth.ColorType type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getIcon(javax.swing.plaf.synth.SynthContext context, java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.synth.SynthPainter getPainter(javax.swing.plaf.synth.SynthContext context) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installDefaults(javax.swing.plaf.synth.SynthContext context) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallDefaults(javax.swing.plaf.synth.SynthContext context) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getInsets(javax.swing.plaf.synth.SynthContext context, java.awt.Insets insets) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font getFont(javax.swing.plaf.synth.SynthContext context) { return null; }
   < ---- END java signatures ---- >
 }

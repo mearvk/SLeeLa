@@ -69,81 +69,142 @@ class ImageWriter {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ImageWriter(javax.imageio.spi.ImageWriterSpi originatingProvider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.<init>(javax.imageio.spi.ImageWriterSpi)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ImageWriter(javax.imageio.spi.ImageWriterSpi originatingProvider) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.reset()"); }
-  public abstract void write(javax.imageio.metadata.IIOMetadata streamMetadata, javax.imageio.IIOImage image, javax.imageio.ImageWriteParam param) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.ImageWriter.write(javax.imageio.metadata.IIOMetadata, javax.imageio.IIOImage, javax.imageio.ImageWriteParam)"); }
-  public void write(javax.imageio.IIOImage image) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.write(javax.imageio.IIOImage)"); }
-  public java.util.Locale[] getAvailableLocales() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.getAvailableLocales()"); }
-  public java.util.Locale getLocale() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.getLocale()"); }
-  public void setLocale(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.setLocale(java.util.Locale)"); }
-  public void dispose() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.dispose()"); }
-  public synchronized void abort() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.abort()"); }
-  public void removeImage(int imageIndex) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.removeImage(int)"); }
-  public javax.imageio.spi.ImageWriterSpi getOriginatingProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.getOriginatingProvider()"); }
-  public void setOutput(java.lang.Object output) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.setOutput(java.lang.Object)"); }
-  public java.lang.Object getOutput() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.getOutput()"); }
-  public void removeAllIIOWriteWarningListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.removeAllIIOWriteWarningListeners()"); }
-  public void removeAllIIOWriteProgressListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.removeAllIIOWriteProgressListeners()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reset() { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void write(javax.imageio.metadata.IIOMetadata streamMetadata, javax.imageio.IIOImage image, javax.imageio.ImageWriteParam param) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void write(javax.imageio.IIOImage image) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale[] getAvailableLocales() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale getLocale() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLocale(java.util.Locale locale) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void dispose() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void abort() { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void removeImage(int imageIndex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.spi.ImageWriterSpi getOriginatingProvider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOutput(java.lang.Object output) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getOutput() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAllIIOWriteWarningListeners() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAllIIOWriteProgressListeners() { }
   @JavaProtected
-  synchronized void clearAbortRequest() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.clearAbortRequest()"); }
-  public javax.imageio.ImageWriteParam getDefaultWriteParam() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.getDefaultWriteParam()"); }
-  public abstract javax.imageio.metadata.IIOMetadata getDefaultStreamMetadata(javax.imageio.ImageWriteParam param) { throw new AbstractMethodError("javax.imageio.ImageWriter.getDefaultStreamMetadata(javax.imageio.ImageWriteParam)"); }
-  public abstract javax.imageio.metadata.IIOMetadata getDefaultImageMetadata(javax.imageio.ImageTypeSpecifier imageType, javax.imageio.ImageWriteParam param) { throw new AbstractMethodError("javax.imageio.ImageWriter.getDefaultImageMetadata(javax.imageio.ImageTypeSpecifier, javax.imageio.ImageWriteParam)"); }
-  public abstract javax.imageio.metadata.IIOMetadata convertStreamMetadata(javax.imageio.metadata.IIOMetadata inData, javax.imageio.ImageWriteParam param) { throw new AbstractMethodError("javax.imageio.ImageWriter.convertStreamMetadata(javax.imageio.metadata.IIOMetadata, javax.imageio.ImageWriteParam)"); }
-  public abstract javax.imageio.metadata.IIOMetadata convertImageMetadata(javax.imageio.metadata.IIOMetadata inData, javax.imageio.ImageTypeSpecifier imageType, javax.imageio.ImageWriteParam param) { throw new AbstractMethodError("javax.imageio.ImageWriter.convertImageMetadata(javax.imageio.metadata.IIOMetadata, javax.imageio.ImageTypeSpecifier, javax.imageio.ImageWriteParam)"); }
-  public int getNumThumbnailsSupported(javax.imageio.ImageTypeSpecifier imageType, javax.imageio.ImageWriteParam param, javax.imageio.metadata.IIOMetadata streamMetadata, javax.imageio.metadata.IIOMetadata imageMetadata) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.getNumThumbnailsSupported(javax.imageio.ImageTypeSpecifier, javax.imageio.ImageWriteParam, javax.imageio.metadata.IIOMetadata, javax.imageio.metadata.IIOMetadata)"); }
-  public java.awt.Dimension[] getPreferredThumbnailSizes(javax.imageio.ImageTypeSpecifier imageType, javax.imageio.ImageWriteParam param, javax.imageio.metadata.IIOMetadata streamMetadata, javax.imageio.metadata.IIOMetadata imageMetadata) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.getPreferredThumbnailSizes(javax.imageio.ImageTypeSpecifier, javax.imageio.ImageWriteParam, javax.imageio.metadata.IIOMetadata, javax.imageio.metadata.IIOMetadata)"); }
-  public boolean canWriteRasters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.canWriteRasters()"); }
-  public boolean canWriteSequence() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.canWriteSequence()"); }
-  public void prepareWriteSequence(javax.imageio.metadata.IIOMetadata streamMetadata) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.prepareWriteSequence(javax.imageio.metadata.IIOMetadata)"); }
-  public void writeToSequence(javax.imageio.IIOImage image, javax.imageio.ImageWriteParam param) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.writeToSequence(javax.imageio.IIOImage, javax.imageio.ImageWriteParam)"); }
-  public void endWriteSequence() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.endWriteSequence()"); }
-  public boolean canReplaceStreamMetadata() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.canReplaceStreamMetadata()"); }
-  public void replaceStreamMetadata(javax.imageio.metadata.IIOMetadata streamMetadata) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.replaceStreamMetadata(javax.imageio.metadata.IIOMetadata)"); }
-  public boolean canReplaceImageMetadata(int imageIndex) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.canReplaceImageMetadata(int)"); }
-  public void replaceImageMetadata(int imageIndex, javax.imageio.metadata.IIOMetadata imageMetadata) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.replaceImageMetadata(int, javax.imageio.metadata.IIOMetadata)"); }
-  public boolean canInsertImage(int imageIndex) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.canInsertImage(int)"); }
-  public void writeInsert(int imageIndex, javax.imageio.IIOImage image, javax.imageio.ImageWriteParam param) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.writeInsert(int, javax.imageio.IIOImage, javax.imageio.ImageWriteParam)"); }
-  public boolean canRemoveImage(int imageIndex) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.canRemoveImage(int)"); }
-  public boolean canWriteEmpty() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.canWriteEmpty()"); }
-  public void prepareWriteEmpty(javax.imageio.metadata.IIOMetadata streamMetadata, javax.imageio.ImageTypeSpecifier imageType, int width, int height, javax.imageio.metadata.IIOMetadata imageMetadata, java.util.List<? extends java.awt.image.BufferedImage> thumbnails, javax.imageio.ImageWriteParam param) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.prepareWriteEmpty(javax.imageio.metadata.IIOMetadata, javax.imageio.ImageTypeSpecifier, int, int, javax.imageio.metadata.IIOMetadata, java.util.List<? extends java.awt.image.BufferedImage>, javax.imageio.ImageWriteParam)"); }
-  public void endWriteEmpty() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.endWriteEmpty()"); }
-  public boolean canInsertEmpty(int imageIndex) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.canInsertEmpty(int)"); }
-  public void prepareInsertEmpty(int imageIndex, javax.imageio.ImageTypeSpecifier imageType, int width, int height, javax.imageio.metadata.IIOMetadata imageMetadata, java.util.List<? extends java.awt.image.BufferedImage> thumbnails, javax.imageio.ImageWriteParam param) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.prepareInsertEmpty(int, javax.imageio.ImageTypeSpecifier, int, int, javax.imageio.metadata.IIOMetadata, java.util.List<? extends java.awt.image.BufferedImage>, javax.imageio.ImageWriteParam)"); }
-  public void endInsertEmpty() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.endInsertEmpty()"); }
-  public boolean canReplacePixels(int imageIndex) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.canReplacePixels(int)"); }
-  public void prepareReplacePixels(int imageIndex, java.awt.Rectangle region) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.prepareReplacePixels(int, java.awt.Rectangle)"); }
-  public void replacePixels(java.awt.image.RenderedImage image, javax.imageio.ImageWriteParam param) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.replacePixels(java.awt.image.RenderedImage, javax.imageio.ImageWriteParam)"); }
-  public void endReplacePixels() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.endReplacePixels()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  synchronized void clearAbortRequest() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.ImageWriteParam getDefaultWriteParam() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.imageio.metadata.IIOMetadata getDefaultStreamMetadata(javax.imageio.ImageWriteParam param) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.imageio.metadata.IIOMetadata getDefaultImageMetadata(javax.imageio.ImageTypeSpecifier imageType, javax.imageio.ImageWriteParam param) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.imageio.metadata.IIOMetadata convertStreamMetadata(javax.imageio.metadata.IIOMetadata inData, javax.imageio.ImageWriteParam param) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.imageio.metadata.IIOMetadata convertImageMetadata(javax.imageio.metadata.IIOMetadata inData, javax.imageio.ImageTypeSpecifier imageType, javax.imageio.ImageWriteParam param) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNumThumbnailsSupported(javax.imageio.ImageTypeSpecifier imageType, javax.imageio.ImageWriteParam param, javax.imageio.metadata.IIOMetadata streamMetadata, javax.imageio.metadata.IIOMetadata imageMetadata) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension[] getPreferredThumbnailSizes(javax.imageio.ImageTypeSpecifier imageType, javax.imageio.ImageWriteParam param, javax.imageio.metadata.IIOMetadata streamMetadata, javax.imageio.metadata.IIOMetadata imageMetadata) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean canWriteRasters() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean canWriteSequence() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void prepareWriteSequence(javax.imageio.metadata.IIOMetadata streamMetadata) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void writeToSequence(javax.imageio.IIOImage image, javax.imageio.ImageWriteParam param) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void endWriteSequence() { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public boolean canReplaceStreamMetadata() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void replaceStreamMetadata(javax.imageio.metadata.IIOMetadata streamMetadata) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public boolean canReplaceImageMetadata(int imageIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void replaceImageMetadata(int imageIndex, javax.imageio.metadata.IIOMetadata imageMetadata) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public boolean canInsertImage(int imageIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void writeInsert(int imageIndex, javax.imageio.IIOImage image, javax.imageio.ImageWriteParam param) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public boolean canRemoveImage(int imageIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public boolean canWriteEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void prepareWriteEmpty(javax.imageio.metadata.IIOMetadata streamMetadata, javax.imageio.ImageTypeSpecifier imageType, int width, int height, javax.imageio.metadata.IIOMetadata imageMetadata, java.util.List<? extends java.awt.image.BufferedImage> thumbnails, javax.imageio.ImageWriteParam param) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void endWriteEmpty() { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public boolean canInsertEmpty(int imageIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void prepareInsertEmpty(int imageIndex, javax.imageio.ImageTypeSpecifier imageType, int width, int height, javax.imageio.metadata.IIOMetadata imageMetadata, java.util.List<? extends java.awt.image.BufferedImage> thumbnails, javax.imageio.ImageWriteParam param) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void endInsertEmpty() { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public boolean canReplacePixels(int imageIndex) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void prepareReplacePixels(int imageIndex, java.awt.Rectangle region) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void replacePixels(java.awt.image.RenderedImage image, javax.imageio.ImageWriteParam param) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void endReplacePixels() { }
   @JavaProtected
-  synchronized boolean abortRequested() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.abortRequested()"); }
-  public void addIIOWriteWarningListener(javax.imageio.event.IIOWriteWarningListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.addIIOWriteWarningListener(javax.imageio.event.IIOWriteWarningListener)"); }
-  public void removeIIOWriteWarningListener(javax.imageio.event.IIOWriteWarningListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.removeIIOWriteWarningListener(javax.imageio.event.IIOWriteWarningListener)"); }
-  public void addIIOWriteProgressListener(javax.imageio.event.IIOWriteProgressListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.addIIOWriteProgressListener(javax.imageio.event.IIOWriteProgressListener)"); }
-  public void removeIIOWriteProgressListener(javax.imageio.event.IIOWriteProgressListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.removeIIOWriteProgressListener(javax.imageio.event.IIOWriteProgressListener)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  synchronized boolean abortRequested() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addIIOWriteWarningListener(javax.imageio.event.IIOWriteWarningListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeIIOWriteWarningListener(javax.imageio.event.IIOWriteWarningListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addIIOWriteProgressListener(javax.imageio.event.IIOWriteProgressListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeIIOWriteProgressListener(javax.imageio.event.IIOWriteProgressListener listener) { }
   @JavaProtected
-  void processImageStarted(int imageIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.processImageStarted(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processImageStarted(int imageIndex) { }
   @JavaProtected
-  void processImageProgress(float percentageDone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.processImageProgress(float)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processImageProgress(float percentageDone) { }
   @JavaProtected
-  void processImageComplete() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.processImageComplete()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processImageComplete() { }
   @JavaProtected
-  void processThumbnailStarted(int imageIndex, int thumbnailIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.processThumbnailStarted(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processThumbnailStarted(int imageIndex, int thumbnailIndex) { }
   @JavaProtected
-  void processThumbnailProgress(float percentageDone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.processThumbnailProgress(float)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processThumbnailProgress(float percentageDone) { }
   @JavaProtected
-  void processThumbnailComplete() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.processThumbnailComplete()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processThumbnailComplete() { }
   @JavaProtected
-  void processWriteAborted() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.processWriteAborted()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processWriteAborted() { }
   @JavaProtected
-  void processWarningOccurred(int imageIndex, java.lang.String warning) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.processWarningOccurred(int, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processWarningOccurred(int imageIndex, java.lang.String warning) { }
   @JavaProtected
-  void processWarningOccurred(int imageIndex, java.lang.String baseName, java.lang.String keyword) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageWriter.processWarningOccurred(int, java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processWarningOccurred(int imageIndex, java.lang.String baseName, java.lang.String keyword) { }
   < ---- END java signatures ---- >
 }

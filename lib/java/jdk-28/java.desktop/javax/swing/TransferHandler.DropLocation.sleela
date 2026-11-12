@@ -60,14 +60,19 @@ class DropLocation {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  DropLocation(java.awt.Point dropPoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.DropLocation.<init>(java.awt.Point)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  DropLocation(java.awt.Point dropPoint) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.DropLocation.toString()"); }
-  public final java.awt.Point getDropPoint() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.DropLocation.getDropPoint()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.Point getDropPoint() { return null; }
   < ---- END java signatures ---- >
 }

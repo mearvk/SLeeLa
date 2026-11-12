@@ -58,27 +58,48 @@ class TableColumnModel {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void setSelectionModel(javax.swing.ListSelectionModel newModel) { throw new AbstractMethodError("javax.swing.table.TableColumnModel.setSelectionModel(javax.swing.ListSelectionModel)"); }
-  public abstract javax.swing.ListSelectionModel getSelectionModel() { throw new AbstractMethodError("javax.swing.table.TableColumnModel.getSelectionModel()"); }
-  public abstract void setColumnMargin(int newMargin) { throw new AbstractMethodError("javax.swing.table.TableColumnModel.setColumnMargin(int)"); }
-  public abstract int getColumnMargin() { throw new AbstractMethodError("javax.swing.table.TableColumnModel.getColumnMargin()"); }
-  public abstract int getColumnCount() { throw new AbstractMethodError("javax.swing.table.TableColumnModel.getColumnCount()"); }
-  public abstract javax.swing.table.TableColumn getColumn(int columnIndex) { throw new AbstractMethodError("javax.swing.table.TableColumnModel.getColumn(int)"); }
-  public abstract void removeColumn(javax.swing.table.TableColumn column) { throw new AbstractMethodError("javax.swing.table.TableColumnModel.removeColumn(javax.swing.table.TableColumn)"); }
-  public abstract void addColumn(javax.swing.table.TableColumn aColumn) { throw new AbstractMethodError("javax.swing.table.TableColumnModel.addColumn(javax.swing.table.TableColumn)"); }
-  public abstract int[] getSelectedColumns() { throw new AbstractMethodError("javax.swing.table.TableColumnModel.getSelectedColumns()"); }
-  public abstract boolean getColumnSelectionAllowed() { throw new AbstractMethodError("javax.swing.table.TableColumnModel.getColumnSelectionAllowed()"); }
-  public abstract void setColumnSelectionAllowed(boolean flag) { throw new AbstractMethodError("javax.swing.table.TableColumnModel.setColumnSelectionAllowed(boolean)"); }
-  public abstract int getSelectedColumnCount() { throw new AbstractMethodError("javax.swing.table.TableColumnModel.getSelectedColumnCount()"); }
-  public abstract int getColumnIndex(java.lang.Object columnIdentifier) { throw new AbstractMethodError("javax.swing.table.TableColumnModel.getColumnIndex(java.lang.Object)"); }
-  public abstract void moveColumn(int columnIndex, int newIndex) { throw new AbstractMethodError("javax.swing.table.TableColumnModel.moveColumn(int, int)"); }
-  public abstract int getColumnIndexAtX(int xPosition) { throw new AbstractMethodError("javax.swing.table.TableColumnModel.getColumnIndexAtX(int)"); }
-  public abstract int getTotalColumnWidth() { throw new AbstractMethodError("javax.swing.table.TableColumnModel.getTotalColumnWidth()"); }
-  public abstract void removeColumnModelListener(javax.swing.event.TableColumnModelListener x) { throw new AbstractMethodError("javax.swing.table.TableColumnModel.removeColumnModelListener(javax.swing.event.TableColumnModelListener)"); }
-  public abstract void addColumnModelListener(javax.swing.event.TableColumnModelListener x) { throw new AbstractMethodError("javax.swing.table.TableColumnModel.addColumnModelListener(javax.swing.event.TableColumnModelListener)"); }
-  public abstract java.util.Enumeration<javax.swing.table.TableColumn> getColumns() { throw new AbstractMethodError("javax.swing.table.TableColumnModel.getColumns()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void setSelectionModel(javax.swing.ListSelectionModel newModel) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.ListSelectionModel getSelectionModel() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setColumnMargin(int newMargin) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getColumnMargin() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getColumnCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.table.TableColumn getColumn(int columnIndex) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeColumn(javax.swing.table.TableColumn column) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addColumn(javax.swing.table.TableColumn aColumn) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int[] getSelectedColumns() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getColumnSelectionAllowed() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setColumnSelectionAllowed(boolean flag) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getSelectedColumnCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getColumnIndex(java.lang.Object columnIdentifier) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void moveColumn(int columnIndex, int newIndex) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getColumnIndexAtX(int xPosition) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getTotalColumnWidth() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeColumnModelListener(javax.swing.event.TableColumnModelListener x) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addColumnModelListener(javax.swing.event.TableColumnModelListener x) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Enumeration<javax.swing.table.TableColumn> getColumns() { return null; }
   < ---- END java signatures ---- >
 }

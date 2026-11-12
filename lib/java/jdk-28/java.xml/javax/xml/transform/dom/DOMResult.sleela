@@ -62,22 +62,35 @@ class DOMResult {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DOMResult(org.w3c.dom.Node node, org.w3c.dom.Node nextSibling, java.lang.String systemId) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMResult.<init>(org.w3c.dom.Node, org.w3c.dom.Node, java.lang.String)"); }
-  public DOMResult(org.w3c.dom.Node node, org.w3c.dom.Node nextSibling) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMResult.<init>(org.w3c.dom.Node, org.w3c.dom.Node)"); }
-  public DOMResult(org.w3c.dom.Node node, java.lang.String systemId) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMResult.<init>(org.w3c.dom.Node, java.lang.String)"); }
-  public DOMResult(org.w3c.dom.Node node) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMResult.<init>(org.w3c.dom.Node)"); }
-  public DOMResult() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMResult.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DOMResult(org.w3c.dom.Node node, org.w3c.dom.Node nextSibling, java.lang.String systemId) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DOMResult(org.w3c.dom.Node node, org.w3c.dom.Node nextSibling) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DOMResult(org.w3c.dom.Node node, java.lang.String systemId) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DOMResult(org.w3c.dom.Node node) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DOMResult() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public org.w3c.dom.Node getNode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMResult.getNode()"); }
-  public void setNode(org.w3c.dom.Node node) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMResult.setNode(org.w3c.dom.Node)"); }
-  public void setNextSibling(org.w3c.dom.Node nextSibling) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMResult.setNextSibling(org.w3c.dom.Node)"); }
-  public org.w3c.dom.Node getNextSibling() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMResult.getNextSibling()"); }
-  public void setSystemId(java.lang.String systemId) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMResult.setSystemId(java.lang.String)"); }
-  public java.lang.String getSystemId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMResult.getSystemId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public org.w3c.dom.Node getNode() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNode(org.w3c.dom.Node node) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNextSibling(org.w3c.dom.Node nextSibling) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public org.w3c.dom.Node getNextSibling() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSystemId(java.lang.String systemId) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSystemId() { return null; }
   < ---- END java signatures ---- >
 }

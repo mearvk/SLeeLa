@@ -58,15 +58,24 @@ class MBeanServerFactory {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.management.MBeanServer newMBeanServer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerFactory.newMBeanServer()"); }
-  public static javax.management.MBeanServer newMBeanServer(java.lang.String domain) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerFactory.newMBeanServer(java.lang.String)"); }
-  public static void releaseMBeanServer(javax.management.MBeanServer mbeanServer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerFactory.releaseMBeanServer(javax.management.MBeanServer)"); }
-  public static synchronized java.util.ArrayList<javax.management.MBeanServer> findMBeanServer(java.lang.String agentId) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerFactory.findMBeanServer(java.lang.String)"); }
-  public static javax.management.MBeanServer createMBeanServer(java.lang.String domain) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerFactory.createMBeanServer(java.lang.String)"); }
-  public static javax.management.MBeanServer createMBeanServer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerFactory.createMBeanServer()"); }
-  public static javax.management.loading.ClassLoaderRepository getClassLoaderRepository(javax.management.MBeanServer server) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerFactory.getClassLoaderRepository(javax.management.MBeanServer)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.MBeanServer newMBeanServer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.MBeanServer newMBeanServer(java.lang.String domain) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void releaseMBeanServer(javax.management.MBeanServer mbeanServer) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static synchronized java.util.ArrayList<javax.management.MBeanServer> findMBeanServer(java.lang.String agentId) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.MBeanServer createMBeanServer(java.lang.String domain) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.MBeanServer createMBeanServer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.loading.ClassLoaderRepository getClassLoaderRepository(javax.management.MBeanServer server) { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,7 +58,9 @@ class InvalidNameException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidNameException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InvalidNameException.<init>(java.lang.String)"); }
-  public InvalidNameException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InvalidNameException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidNameException(java.lang.String explanation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidNameException() { }
   < ---- END java constructors ---- >
 }

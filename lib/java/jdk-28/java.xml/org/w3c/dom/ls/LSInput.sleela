@@ -58,24 +58,42 @@ class LSInput {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getEncoding() { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.getEncoding()"); }
-  public abstract void setEncoding(java.lang.String encoding) { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.setEncoding(java.lang.String)"); }
-  public abstract java.lang.String getStringData() { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.getStringData()"); }
-  public abstract void setStringData(java.lang.String stringData) { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.setStringData(java.lang.String)"); }
-  public abstract boolean getCertifiedText() { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.getCertifiedText()"); }
-  public abstract void setCertifiedText(boolean certifiedText) { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.setCertifiedText(boolean)"); }
-  public abstract java.lang.String getBaseURI() { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.getBaseURI()"); }
-  public abstract void setBaseURI(java.lang.String baseURI) { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.setBaseURI(java.lang.String)"); }
-  public abstract java.io.Reader getCharacterStream() { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.getCharacterStream()"); }
-  public abstract java.io.InputStream getByteStream() { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.getByteStream()"); }
-  public abstract void setSystemId(java.lang.String systemId) { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.setSystemId(java.lang.String)"); }
-  public abstract void setByteStream(java.io.InputStream byteStream) { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.setByteStream(java.io.InputStream)"); }
-  public abstract void setCharacterStream(java.io.Reader characterStream) { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.setCharacterStream(java.io.Reader)"); }
-  public abstract void setPublicId(java.lang.String publicId) { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.setPublicId(java.lang.String)"); }
-  public abstract java.lang.String getPublicId() { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.getPublicId()"); }
-  public abstract java.lang.String getSystemId() { throw new AbstractMethodError("org.w3c.dom.ls.LSInput.getSystemId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getEncoding() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setEncoding(java.lang.String encoding) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getStringData() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setStringData(java.lang.String stringData) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getCertifiedText() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCertifiedText(boolean certifiedText) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getBaseURI() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBaseURI(java.lang.String baseURI) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.Reader getCharacterStream() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.InputStream getByteStream() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSystemId(java.lang.String systemId) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setByteStream(java.io.InputStream byteStream) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCharacterStream(java.io.Reader characterStream) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setPublicId(java.lang.String publicId) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getPublicId() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSystemId() { return null; }
   < ---- END java signatures ---- >
 }

@@ -59,20 +59,31 @@ class Info {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Info(java.lang.Class<?> lineClass, javax.sound.sampled.AudioFormat format) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.DataLine.Info.<init>(java.lang.Class<?>, javax.sound.sampled.AudioFormat)"); }
-  public Info(java.lang.Class<?> lineClass, javax.sound.sampled.AudioFormat format, int bufferSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.DataLine.Info.<init>(java.lang.Class<?>, javax.sound.sampled.AudioFormat, int)"); }
-  public Info(java.lang.Class<?> lineClass, javax.sound.sampled.AudioFormat[] formats, int minBufferSize, int maxBufferSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.DataLine.Info.<init>(java.lang.Class<?>, javax.sound.sampled.AudioFormat[], int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Info(java.lang.Class<?> lineClass, javax.sound.sampled.AudioFormat format) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Info(java.lang.Class<?> lineClass, javax.sound.sampled.AudioFormat format, int bufferSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Info(java.lang.Class<?> lineClass, javax.sound.sampled.AudioFormat[] formats, int minBufferSize, int maxBufferSize) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.DataLine.Info.toString()"); }
-  public boolean matches(javax.sound.sampled.Line.Info info) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.DataLine.Info.matches(javax.sound.sampled.Line.Info)"); }
-  public javax.sound.sampled.AudioFormat[] getFormats() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.DataLine.Info.getFormats()"); }
-  public int getMaxBufferSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.DataLine.Info.getMaxBufferSize()"); }
-  public int getMinBufferSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.DataLine.Info.getMinBufferSize()"); }
-  public boolean isFormatSupported(javax.sound.sampled.AudioFormat format) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.DataLine.Info.isFormatSupported(javax.sound.sampled.AudioFormat)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean matches(javax.sound.sampled.Line.Info info) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.sound.sampled.AudioFormat[] getFormats() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaxBufferSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinBufferSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFormatSupported(javax.sound.sampled.AudioFormat format) { return false; }
   < ---- END java signatures ---- >
 }

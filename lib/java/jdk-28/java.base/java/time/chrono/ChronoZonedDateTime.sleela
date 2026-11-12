@@ -58,41 +58,76 @@ class ChronoZonedDateTime<D extends java.time.chrono.ChronoLocalDate> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default int get(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.get(java.time.temporal.TemporalField)"); }
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("java.time.chrono.ChronoZonedDateTime.equals(java.lang.Object)"); }
-  public abstract java.lang.String toString() { throw new AbstractMethodError("java.time.chrono.ChronoZonedDateTime.toString()"); }
-  public abstract int hashCode() { throw new AbstractMethodError("java.time.chrono.ChronoZonedDateTime.hashCode()"); }
-  public default int compareTo(java.time.chrono.ChronoZonedDateTime<?> other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.compareTo(java.time.chrono.ChronoZonedDateTime<?>)"); }
-  public default long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.getLong(java.time.temporal.TemporalField)"); }
-  public default java.lang.String format(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.format(java.time.format.DateTimeFormatter)"); }
-  public static java.time.chrono.ChronoZonedDateTime<?> from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.from(java.time.temporal.TemporalAccessor)"); }
-  public abstract boolean isSupported(java.time.temporal.TemporalField field) { throw new AbstractMethodError("java.time.chrono.ChronoZonedDateTime.isSupported(java.time.temporal.TemporalField)"); }
-  public abstract java.time.chrono.ChronoZonedDateTime<D> with(java.time.temporal.TemporalField field, long newValue) { throw new AbstractMethodError("java.time.chrono.ChronoZonedDateTime.with(java.time.temporal.TemporalField, long)"); }
-  public default java.time.chrono.ChronoZonedDateTime<D> with(java.time.temporal.TemporalAdjuster adjuster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.with(java.time.temporal.TemporalAdjuster)"); }
-  public default <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.query(java.time.temporal.TemporalQuery<R>)"); }
-  public abstract java.time.ZoneOffset getOffset() { throw new AbstractMethodError("java.time.chrono.ChronoZonedDateTime.getOffset()"); }
-  public default java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.range(java.time.temporal.TemporalField)"); }
-  public default boolean isEqual(java.time.chrono.ChronoZonedDateTime<?> other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.isEqual(java.time.chrono.ChronoZonedDateTime<?>)"); }
-  public default java.time.Instant toInstant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.toInstant()"); }
-  public default java.time.chrono.ChronoZonedDateTime<D> minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.minus(long, java.time.temporal.TemporalUnit)"); }
-  public default java.time.chrono.ChronoZonedDateTime<D> minus(java.time.temporal.TemporalAmount amount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.minus(java.time.temporal.TemporalAmount)"); }
-  public abstract java.time.ZoneId getZone() { throw new AbstractMethodError("java.time.chrono.ChronoZonedDateTime.getZone()"); }
-  public abstract java.time.chrono.ChronoZonedDateTime<D> plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { throw new AbstractMethodError("java.time.chrono.ChronoZonedDateTime.plus(long, java.time.temporal.TemporalUnit)"); }
-  public default java.time.chrono.ChronoZonedDateTime<D> plus(java.time.temporal.TemporalAmount amount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.plus(java.time.temporal.TemporalAmount)"); }
-  public default boolean isAfter(java.time.chrono.ChronoZonedDateTime<?> other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.isAfter(java.time.chrono.ChronoZonedDateTime<?>)"); }
-  public default boolean isBefore(java.time.chrono.ChronoZonedDateTime<?> other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.isBefore(java.time.chrono.ChronoZonedDateTime<?>)"); }
-  public default java.time.LocalTime toLocalTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.toLocalTime()"); }
-  public default java.time.chrono.Chronology getChronology() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.getChronology()"); }
-  public default long toEpochSecond() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.toEpochSecond()"); }
-  public static java.util.Comparator<java.time.chrono.ChronoZonedDateTime<?>> timeLineOrder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.timeLineOrder()"); }
-  public abstract java.time.chrono.ChronoLocalDateTime<D> toLocalDateTime() { throw new AbstractMethodError("java.time.chrono.ChronoZonedDateTime.toLocalDateTime()"); }
-  public default D toLocalDate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.chrono.ChronoZonedDateTime.toLocalDate()"); }
-  public abstract java.time.chrono.ChronoZonedDateTime<D> withZoneSameInstant(java.time.ZoneId zone) { throw new AbstractMethodError("java.time.chrono.ChronoZonedDateTime.withZoneSameInstant(java.time.ZoneId)"); }
-  public abstract java.time.chrono.ChronoZonedDateTime<D> withZoneSameLocal(java.time.ZoneId zone) { throw new AbstractMethodError("java.time.chrono.ChronoZonedDateTime.withZoneSameLocal(java.time.ZoneId)"); }
-  public abstract java.time.chrono.ChronoZonedDateTime<D> withLaterOffsetAtOverlap() { throw new AbstractMethodError("java.time.chrono.ChronoZonedDateTime.withLaterOffsetAtOverlap()"); }
-  public abstract java.time.chrono.ChronoZonedDateTime<D> withEarlierOffsetAtOverlap() { throw new AbstractMethodError("java.time.chrono.ChronoZonedDateTime.withEarlierOffsetAtOverlap()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default int get(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default int compareTo(java.time.chrono.ChronoZonedDateTime<?> other) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default long getLong(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.String format(java.time.format.DateTimeFormatter formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.chrono.ChronoZonedDateTime<?> from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSupported(java.time.temporal.TemporalField field) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.ChronoZonedDateTime<D> with(java.time.temporal.TemporalField field, long newValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoZonedDateTime<D> with(java.time.temporal.TemporalAdjuster adjuster) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default <R> R query(java.time.temporal.TemporalQuery<R> query) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.ZoneOffset getOffset() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isEqual(java.time.chrono.ChronoZonedDateTime<?> other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.Instant toInstant() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoZonedDateTime<D> minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoZonedDateTime<D> minus(java.time.temporal.TemporalAmount amount) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.ZoneId getZone() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.ChronoZonedDateTime<D> plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.ChronoZonedDateTime<D> plus(java.time.temporal.TemporalAmount amount) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isAfter(java.time.chrono.ChronoZonedDateTime<?> other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isBefore(java.time.chrono.ChronoZonedDateTime<?> other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.LocalTime toLocalTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.time.chrono.Chronology getChronology() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default long toEpochSecond() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Comparator<java.time.chrono.ChronoZonedDateTime<?>> timeLineOrder() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.ChronoLocalDateTime<D> toLocalDateTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default D toLocalDate() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.ChronoZonedDateTime<D> withZoneSameInstant(java.time.ZoneId zone) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.ChronoZonedDateTime<D> withZoneSameLocal(java.time.ZoneId zone) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.ChronoZonedDateTime<D> withLaterOffsetAtOverlap() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.time.chrono.ChronoZonedDateTime<D> withEarlierOffsetAtOverlap() { return null; }
   < ---- END java signatures ---- >
 }

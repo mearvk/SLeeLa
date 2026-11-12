@@ -58,7 +58,9 @@ class BrokenBarrierException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BrokenBarrierException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.BrokenBarrierException.<init>()"); }
-  public BrokenBarrierException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.BrokenBarrierException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BrokenBarrierException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BrokenBarrierException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

@@ -58,16 +58,23 @@ class CookieHandler {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CookieHandler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.CookieHandler.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CookieHandler() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.Map<java.lang.String, java.util.List<java.lang.String>> get(java.net.URI uri, java.util.Map<java.lang.String, java.util.List<java.lang.String>> requestHeaders) throws java.io.IOException { throw new AbstractMethodError("java.net.CookieHandler.get(java.net.URI, java.util.Map<java.lang.String, java.util.List<java.lang.String>>)"); }
-  public abstract void put(java.net.URI uri, java.util.Map<java.lang.String, java.util.List<java.lang.String>> responseHeaders) throws java.io.IOException { throw new AbstractMethodError("java.net.CookieHandler.put(java.net.URI, java.util.Map<java.lang.String, java.util.List<java.lang.String>>)"); }
-  public static synchronized java.net.CookieHandler getDefault() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.CookieHandler.getDefault()"); }
-  public static synchronized void setDefault(java.net.CookieHandler cHandler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.CookieHandler.setDefault(java.net.CookieHandler)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.util.Map<java.lang.String, java.util.List<java.lang.String>> get(java.net.URI uri, java.util.Map<java.lang.String, java.util.List<java.lang.String>> requestHeaders) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void put(java.net.URI uri, java.util.Map<java.lang.String, java.util.List<java.lang.String>> responseHeaders) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static synchronized java.net.CookieHandler getDefault() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static synchronized void setDefault(java.net.CookieHandler cHandler) { }
   < ---- END java signatures ---- >
 }

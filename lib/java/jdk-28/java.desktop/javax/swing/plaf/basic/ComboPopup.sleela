@@ -58,16 +58,26 @@ class ComboPopup {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void show() { throw new AbstractMethodError("javax.swing.plaf.basic.ComboPopup.show()"); }
-  public abstract void hide() { throw new AbstractMethodError("javax.swing.plaf.basic.ComboPopup.hide()"); }
-  public abstract javax.swing.JList<java.lang.Object> getList() { throw new AbstractMethodError("javax.swing.plaf.basic.ComboPopup.getList()"); }
-  public abstract void uninstallingUI() { throw new AbstractMethodError("javax.swing.plaf.basic.ComboPopup.uninstallingUI()"); }
-  public abstract java.awt.event.MouseListener getMouseListener() { throw new AbstractMethodError("javax.swing.plaf.basic.ComboPopup.getMouseListener()"); }
-  public abstract java.awt.event.MouseMotionListener getMouseMotionListener() { throw new AbstractMethodError("javax.swing.plaf.basic.ComboPopup.getMouseMotionListener()"); }
-  public abstract java.awt.event.KeyListener getKeyListener() { throw new AbstractMethodError("javax.swing.plaf.basic.ComboPopup.getKeyListener()"); }
-  public abstract boolean isVisible() { throw new AbstractMethodError("javax.swing.plaf.basic.ComboPopup.isVisible()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void show() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void hide() { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.JList<java.lang.Object> getList() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void uninstallingUI() { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.event.MouseListener getMouseListener() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.event.MouseMotionListener getMouseMotionListener() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.event.KeyListener getKeyListener() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isVisible() { return false; }
   < ---- END java signatures ---- >
 }

@@ -59,14 +59,19 @@ class TimeZoneNameProvider {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  TimeZoneNameProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.spi.TimeZoneNameProvider.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TimeZoneNameProvider() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getDisplayName(java.lang.String ID, boolean daylight, int style, java.util.Locale locale) { throw new AbstractMethodError("java.util.spi.TimeZoneNameProvider.getDisplayName(java.lang.String, boolean, int, java.util.Locale)"); }
-  public java.lang.String getGenericDisplayName(java.lang.String ID, int style, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.spi.TimeZoneNameProvider.getGenericDisplayName(java.lang.String, int, java.util.Locale)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDisplayName(java.lang.String ID, boolean daylight, int style, java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getGenericDisplayName(java.lang.String ID, int style, java.util.Locale locale) { return null; }
   < ---- END java signatures ---- >
 }

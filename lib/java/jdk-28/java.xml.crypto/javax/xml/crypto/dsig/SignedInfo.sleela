@@ -58,13 +58,20 @@ class SignedInfo {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getId() { throw new AbstractMethodError("javax.xml.crypto.dsig.SignedInfo.getId()"); }
-  public abstract java.util.List<javax.xml.crypto.dsig.Reference> getReferences() { throw new AbstractMethodError("javax.xml.crypto.dsig.SignedInfo.getReferences()"); }
-  public abstract javax.xml.crypto.dsig.CanonicalizationMethod getCanonicalizationMethod() { throw new AbstractMethodError("javax.xml.crypto.dsig.SignedInfo.getCanonicalizationMethod()"); }
-  public abstract javax.xml.crypto.dsig.SignatureMethod getSignatureMethod() { throw new AbstractMethodError("javax.xml.crypto.dsig.SignedInfo.getSignatureMethod()"); }
-  public abstract java.io.InputStream getCanonicalizedData() { throw new AbstractMethodError("javax.xml.crypto.dsig.SignedInfo.getCanonicalizedData()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getId() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<javax.xml.crypto.dsig.Reference> getReferences() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.CanonicalizationMethod getCanonicalizationMethod() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.SignatureMethod getSignatureMethod() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.InputStream getCanonicalizedData() { return null; }
   < ---- END java signatures ---- >
 }

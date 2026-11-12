@@ -58,15 +58,21 @@ class SwitchPoint {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SwitchPoint() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.SwitchPoint.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SwitchPoint() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.invoke.MethodHandle guardWithTest(java.lang.invoke.MethodHandle target, java.lang.invoke.MethodHandle fallback) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.SwitchPoint.guardWithTest(java.lang.invoke.MethodHandle, java.lang.invoke.MethodHandle)"); }
-  public boolean hasBeenInvalidated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.SwitchPoint.hasBeenInvalidated()"); }
-  public static void invalidateAll(java.lang.invoke.SwitchPoint[] switchPoints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.SwitchPoint.invalidateAll(java.lang.invoke.SwitchPoint[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodHandle guardWithTest(java.lang.invoke.MethodHandle target, java.lang.invoke.MethodHandle fallback) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasBeenInvalidated() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void invalidateAll(java.lang.invoke.SwitchPoint[] switchPoints) { }
   < ---- END java signatures ---- >
 }

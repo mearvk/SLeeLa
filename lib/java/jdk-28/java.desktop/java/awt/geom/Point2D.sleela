@@ -59,25 +59,41 @@ class Point2D {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Point2D() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Point2D.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Point2D() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Point2D.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Point2D.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Point2D.clone()"); }
-  public double distance(double px, double py) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Point2D.distance(double, double)"); }
-  public double distance(java.awt.geom.Point2D pt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Point2D.distance(java.awt.geom.Point2D)"); }
-  public static double distance(double x1, double y1, double x2, double y2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Point2D.distance(double, double, double, double)"); }
-  public abstract double getX() { throw new AbstractMethodError("java.awt.geom.Point2D.getX()"); }
-  public abstract double getY() { throw new AbstractMethodError("java.awt.geom.Point2D.getY()"); }
-  public double distanceSq(double px, double py) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Point2D.distanceSq(double, double)"); }
-  public double distanceSq(java.awt.geom.Point2D pt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Point2D.distanceSq(java.awt.geom.Point2D)"); }
-  public static double distanceSq(double x1, double y1, double x2, double y2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Point2D.distanceSq(double, double, double, double)"); }
-  public abstract void setLocation(double x, double y) { throw new AbstractMethodError("java.awt.geom.Point2D.setLocation(double, double)"); }
-  public void setLocation(java.awt.geom.Point2D p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Point2D.setLocation(java.awt.geom.Point2D)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double distance(double px, double py) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double distance(java.awt.geom.Point2D pt) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double distance(double x1, double y1, double x2, double y2) { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public double getX() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public double getY() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double distanceSq(double px, double py) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double distanceSq(java.awt.geom.Point2D pt) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double distanceSq(double x1, double y1, double x2, double y2) { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setLocation(double x, double y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLocation(java.awt.geom.Point2D p) { }
   < ---- END java signatures ---- >
 }

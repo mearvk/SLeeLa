@@ -58,15 +58,21 @@ class AppConfigurationEntry {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AppConfigurationEntry(java.lang.String loginModuleName, javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag controlFlag, java.util.Map<java.lang.String, ?> options) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.AppConfigurationEntry.<init>(java.lang.String, javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag, java.util.Map<java.lang.String, ?>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AppConfigurationEntry(java.lang.String loginModuleName, javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag controlFlag, java.util.Map<java.lang.String, ?> options) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getLoginModuleName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.AppConfigurationEntry.getLoginModuleName()"); }
-  public javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag getControlFlag() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.AppConfigurationEntry.getControlFlag()"); }
-  public java.util.Map<java.lang.String, ?> getOptions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.AppConfigurationEntry.getOptions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLoginModuleName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag getControlFlag() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Map<java.lang.String, ?> getOptions() { return null; }
   < ---- END java signatures ---- >
 }

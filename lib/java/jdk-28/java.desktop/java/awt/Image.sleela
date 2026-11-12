@@ -70,22 +70,35 @@ class Image {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Image() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Image.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Image() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object getProperty(java.lang.String name, java.awt.image.ImageObserver observer) { throw new AbstractMethodError("java.awt.Image.getProperty(java.lang.String, java.awt.image.ImageObserver)"); }
-  public void flush() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Image.flush()"); }
-  public abstract int getHeight(java.awt.image.ImageObserver observer) { throw new AbstractMethodError("java.awt.Image.getHeight(java.awt.image.ImageObserver)"); }
-  public abstract java.awt.Graphics getGraphics() { throw new AbstractMethodError("java.awt.Image.getGraphics()"); }
-  public abstract int getWidth(java.awt.image.ImageObserver observer) { throw new AbstractMethodError("java.awt.Image.getWidth(java.awt.image.ImageObserver)"); }
-  public java.awt.ImageCapabilities getCapabilities(java.awt.GraphicsConfiguration gc_) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Image.getCapabilities(java.awt.GraphicsConfiguration)"); }
-  public void setAccelerationPriority(float priority) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Image.setAccelerationPriority(float)"); }
-  public java.awt.Image getScaledInstance(int width, int height, int hints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Image.getScaledInstance(int, int, int)"); }
-  public float getAccelerationPriority() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Image.getAccelerationPriority()"); }
-  public abstract java.awt.image.ImageProducer getSource() { throw new AbstractMethodError("java.awt.Image.getSource()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getProperty(java.lang.String name, java.awt.image.ImageObserver observer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void flush() { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getHeight(java.awt.image.ImageObserver observer) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Graphics getGraphics() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getWidth(java.awt.image.ImageObserver observer) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.ImageCapabilities getCapabilities(java.awt.GraphicsConfiguration gc_) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAccelerationPriority(float priority) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Image getScaledInstance(int width, int height, int hints) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getAccelerationPriority() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.image.ImageProducer getSource() { return null; }
   < ---- END java signatures ---- >
 }

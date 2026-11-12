@@ -59,22 +59,35 @@ class PutField {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PutField() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectOutputStream.PutField.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PutField() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void put(java.lang.String name, float val) { throw new AbstractMethodError("java.io.ObjectOutputStream.PutField.put(java.lang.String, float)"); }
-  public abstract void put(java.lang.String name, long val) { throw new AbstractMethodError("java.io.ObjectOutputStream.PutField.put(java.lang.String, long)"); }
-  public abstract void put(java.lang.String name, int val) { throw new AbstractMethodError("java.io.ObjectOutputStream.PutField.put(java.lang.String, int)"); }
-  public abstract void put(java.lang.String name, double val) { throw new AbstractMethodError("java.io.ObjectOutputStream.PutField.put(java.lang.String, double)"); }
-  public abstract void put(java.lang.String name, java.lang.Object val) { throw new AbstractMethodError("java.io.ObjectOutputStream.PutField.put(java.lang.String, java.lang.Object)"); }
-  public abstract void put(java.lang.String name, boolean val) { throw new AbstractMethodError("java.io.ObjectOutputStream.PutField.put(java.lang.String, boolean)"); }
-  public abstract void put(java.lang.String name, byte val) { throw new AbstractMethodError("java.io.ObjectOutputStream.PutField.put(java.lang.String, byte)"); }
-  public abstract void put(java.lang.String name, char val) { throw new AbstractMethodError("java.io.ObjectOutputStream.PutField.put(java.lang.String, char)"); }
-  public abstract void put(java.lang.String name, short val) { throw new AbstractMethodError("java.io.ObjectOutputStream.PutField.put(java.lang.String, short)"); }
-  public abstract void write(java.io.ObjectOutput out) throws java.io.IOException { throw new AbstractMethodError("java.io.ObjectOutputStream.PutField.write(java.io.ObjectOutput)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void put(java.lang.String name, float val) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void put(java.lang.String name, long val) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void put(java.lang.String name, int val) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void put(java.lang.String name, double val) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void put(java.lang.String name, java.lang.Object val) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void put(java.lang.String name, boolean val) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void put(java.lang.String name, byte val) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void put(java.lang.String name, char val) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void put(java.lang.String name, short val) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void write(java.io.ObjectOutput out) { }
   < ---- END java signatures ---- >
 }

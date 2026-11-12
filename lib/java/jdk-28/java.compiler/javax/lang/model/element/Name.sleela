@@ -58,11 +58,16 @@ class Name {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("javax.lang.model.element.Name.equals(java.lang.Object)"); }
-  public abstract int hashCode() { throw new AbstractMethodError("javax.lang.model.element.Name.hashCode()"); }
-  public abstract boolean contentEquals(java.lang.CharSequence cs) { throw new AbstractMethodError("javax.lang.model.element.Name.contentEquals(java.lang.CharSequence)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean contentEquals(java.lang.CharSequence cs) { return false; }
   < ---- END java signatures ---- >
 }

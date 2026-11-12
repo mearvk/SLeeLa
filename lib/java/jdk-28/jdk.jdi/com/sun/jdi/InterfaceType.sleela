@@ -58,12 +58,18 @@ class InterfaceType {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default com.sun.jdi.Value invokeMethod(com.sun.jdi.ThreadReference thread, com.sun.jdi.Method method, java.util.List<? extends com.sun.jdi.Value> arguments, int options) throws com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException, com.sun.jdi.IncompatibleThreadStateException, com.sun.jdi.InvocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InterfaceType.invokeMethod(com.sun.jdi.ThreadReference, com.sun.jdi.Method, java.util.List<? extends com.sun.jdi.Value>, int)"); }
-  public abstract java.util.List<com.sun.jdi.InterfaceType> superinterfaces() { throw new AbstractMethodError("com.sun.jdi.InterfaceType.superinterfaces()"); }
-  public abstract java.util.List<com.sun.jdi.InterfaceType> subinterfaces() { throw new AbstractMethodError("com.sun.jdi.InterfaceType.subinterfaces()"); }
-  public abstract java.util.List<com.sun.jdi.ClassType> implementors() { throw new AbstractMethodError("com.sun.jdi.InterfaceType.implementors()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException, com.sun.jdi.IncompatibleThreadStateException, com.sun.jdi.InvocationException")
+  public default com.sun.jdi.Value invokeMethod(com.sun.jdi.ThreadReference thread, com.sun.jdi.Method method, java.util.List<? extends com.sun.jdi.Value> arguments, int options) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.InterfaceType> superinterfaces() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.InterfaceType> subinterfaces() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.ClassType> implementors() { return null; }
   < ---- END java signatures ---- >
 }

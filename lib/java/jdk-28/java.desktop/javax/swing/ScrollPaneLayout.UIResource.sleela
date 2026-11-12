@@ -59,6 +59,7 @@ class UIResource {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UIResource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ScrollPaneLayout.UIResource.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UIResource() { }
   < ---- END java constructors ---- >
 }

@@ -58,22 +58,33 @@ class InlineView {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InlineView(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.InlineView.<init>(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InlineView(javax.swing.text.Element elem) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.swing.text.AttributeSet getAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.InlineView.getAttributes()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.AttributeSet getAttributes() { return null; }
   @JavaProtected
-  javax.swing.text.html.StyleSheet getStyleSheet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.InlineView.getStyleSheet()"); }
-  public void insertUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.InlineView.insertUpdate(javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
-  public void removeUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.InlineView.removeUpdate(javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
-  public void changedUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.InlineView.changedUpdate(javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.html.StyleSheet getStyleSheet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void changedUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
   @JavaProtected
-  void setPropertiesFromAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.InlineView.setPropertiesFromAttributes()"); }
-  public int getBreakWeight(int axis, float pos, float len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.InlineView.getBreakWeight(int, float, float)"); }
-  public javax.swing.text.View breakView(int axis, int offset, float pos, float len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.InlineView.breakView(int, int, float, float)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setPropertiesFromAttributes() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBreakWeight(int axis, float pos, float len) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.View breakView(int axis, int offset, float pos, float len) { return null; }
   < ---- END java signatures ---- >
 }

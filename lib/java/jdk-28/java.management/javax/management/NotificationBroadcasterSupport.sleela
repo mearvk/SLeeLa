@@ -58,22 +58,34 @@ class NotificationBroadcasterSupport {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NotificationBroadcasterSupport(java.util.concurrent.Executor executor, javax.management.MBeanNotificationInfo... info) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationBroadcasterSupport.<init>(java.util.concurrent.Executor, javax.management.MBeanNotificationInfo...)"); }
-  public NotificationBroadcasterSupport(javax.management.MBeanNotificationInfo... info) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationBroadcasterSupport.<init>(javax.management.MBeanNotificationInfo...)"); }
-  public NotificationBroadcasterSupport(java.util.concurrent.Executor executor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationBroadcasterSupport.<init>(java.util.concurrent.Executor)"); }
-  public NotificationBroadcasterSupport() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationBroadcasterSupport.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotificationBroadcasterSupport(java.util.concurrent.Executor executor, javax.management.MBeanNotificationInfo... info) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotificationBroadcasterSupport(javax.management.MBeanNotificationInfo... info) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotificationBroadcasterSupport(java.util.concurrent.Executor executor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotificationBroadcasterSupport() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void handleNotification(javax.management.NotificationListener listener, javax.management.Notification notif, java.lang.Object handback) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationBroadcasterSupport.handleNotification(javax.management.NotificationListener, javax.management.Notification, java.lang.Object)"); }
-  public void sendNotification(javax.management.Notification notification) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationBroadcasterSupport.sendNotification(javax.management.Notification)"); }
-  public javax.management.MBeanNotificationInfo[] getNotificationInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationBroadcasterSupport.getNotificationInfo()"); }
-  public void addNotificationListener(javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationBroadcasterSupport.addNotificationListener(javax.management.NotificationListener, javax.management.NotificationFilter, java.lang.Object)"); }
-  public void removeNotificationListener(javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) throws javax.management.ListenerNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationBroadcasterSupport.removeNotificationListener(javax.management.NotificationListener, javax.management.NotificationFilter, java.lang.Object)"); }
-  public void removeNotificationListener(javax.management.NotificationListener listener) throws javax.management.ListenerNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationBroadcasterSupport.removeNotificationListener(javax.management.NotificationListener)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void handleNotification(javax.management.NotificationListener listener, javax.management.Notification notif, java.lang.Object handback) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void sendNotification(javax.management.Notification notification) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.MBeanNotificationInfo[] getNotificationInfo() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotificationListener(javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.ListenerNotFoundException")
+  public void removeNotificationListener(javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.ListenerNotFoundException")
+  public void removeNotificationListener(javax.management.NotificationListener listener) { }
   < ---- END java signatures ---- >
 }

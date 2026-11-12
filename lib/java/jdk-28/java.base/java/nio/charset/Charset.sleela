@@ -59,33 +59,57 @@ class Charset {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Charset(java.lang.String canonicalName, java.lang.String[] aliases) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.<init>(java.lang.String, java.lang.String[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Charset(java.lang.String canonicalName, java.lang.String[] aliases) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.lang.String name() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.name()"); }
-  public static java.nio.charset.Charset forName(java.lang.String charsetName, java.nio.charset.Charset fallback) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.forName(java.lang.String, java.nio.charset.Charset)"); }
-  public static java.nio.charset.Charset forName(java.lang.String charsetName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.forName(java.lang.String)"); }
-  public final boolean equals(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.equals(java.lang.Object)"); }
-  public final java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.toString()"); }
-  public final int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.hashCode()"); }
-  public final int compareTo(java.nio.charset.Charset that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.compareTo(java.nio.charset.Charset)"); }
-  public abstract java.nio.charset.CharsetDecoder newDecoder() { throw new AbstractMethodError("java.nio.charset.Charset.newDecoder()"); }
-  public final java.nio.CharBuffer decode(java.nio.ByteBuffer bb) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.decode(java.nio.ByteBuffer)"); }
-  public abstract java.nio.charset.CharsetEncoder newEncoder() { throw new AbstractMethodError("java.nio.charset.Charset.newEncoder()"); }
-  public final java.nio.ByteBuffer encode(java.nio.CharBuffer cb) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.encode(java.nio.CharBuffer)"); }
-  public final java.nio.ByteBuffer encode(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.encode(java.lang.String)"); }
-  public static java.nio.charset.Charset defaultCharset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.defaultCharset()"); }
-  public boolean canEncode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.canEncode()"); }
-  public abstract boolean contains(java.nio.charset.Charset cs) { throw new AbstractMethodError("java.nio.charset.Charset.contains(java.nio.charset.Charset)"); }
-  public final boolean isRegistered() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.isRegistered()"); }
-  public static boolean isSupported(java.lang.String charsetName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.isSupported(java.lang.String)"); }
-  public final java.util.Set<java.lang.String> aliases() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.aliases()"); }
-  public static java.util.SortedMap<java.lang.String, java.nio.charset.Charset> availableCharsets() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.availableCharsets()"); }
-  public java.lang.String displayName(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.displayName(java.util.Locale)"); }
-  public java.lang.String displayName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.Charset.displayName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String name() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.charset.Charset forName(java.lang.String charsetName, java.nio.charset.Charset fallback) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.charset.Charset forName(java.lang.String charsetName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean equals(java.lang.Object ob) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int compareTo(java.nio.charset.Charset that) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.charset.CharsetDecoder newDecoder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.CharBuffer decode(java.nio.ByteBuffer bb) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.charset.CharsetEncoder newEncoder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.ByteBuffer encode(java.nio.CharBuffer cb) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.ByteBuffer encode(java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.charset.Charset defaultCharset() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean canEncode() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean contains(java.nio.charset.Charset cs) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isRegistered() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isSupported(java.lang.String charsetName) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.Set<java.lang.String> aliases() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.SortedMap<java.lang.String, java.nio.charset.Charset> availableCharsets() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String displayName(java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String displayName() { return null; }
   < ---- END java signatures ---- >
 }

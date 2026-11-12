@@ -62,16 +62,26 @@ class XMLSignature {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean validate(javax.xml.crypto.dsig.XMLValidateContext validateContext) throws javax.xml.crypto.dsig.XMLSignatureException { throw new AbstractMethodError("javax.xml.crypto.dsig.XMLSignature.validate(javax.xml.crypto.dsig.XMLValidateContext)"); }
-  public abstract java.lang.String getId() { throw new AbstractMethodError("javax.xml.crypto.dsig.XMLSignature.getId()"); }
-  public abstract void sign(javax.xml.crypto.dsig.XMLSignContext signContext) throws javax.xml.crypto.MarshalException, javax.xml.crypto.dsig.XMLSignatureException { throw new AbstractMethodError("javax.xml.crypto.dsig.XMLSignature.sign(javax.xml.crypto.dsig.XMLSignContext)"); }
-  public abstract java.util.List<javax.xml.crypto.dsig.XMLObject> getObjects() { throw new AbstractMethodError("javax.xml.crypto.dsig.XMLSignature.getObjects()"); }
-  public abstract javax.xml.crypto.dsig.keyinfo.KeyInfo getKeyInfo() { throw new AbstractMethodError("javax.xml.crypto.dsig.XMLSignature.getKeyInfo()"); }
-  public abstract javax.xml.crypto.dsig.SignedInfo getSignedInfo() { throw new AbstractMethodError("javax.xml.crypto.dsig.XMLSignature.getSignedInfo()"); }
-  public abstract javax.xml.crypto.dsig.XMLSignature.SignatureValue getSignatureValue() { throw new AbstractMethodError("javax.xml.crypto.dsig.XMLSignature.getSignatureValue()"); }
-  public abstract javax.xml.crypto.KeySelectorResult getKeySelectorResult() { throw new AbstractMethodError("javax.xml.crypto.dsig.XMLSignature.getKeySelectorResult()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.xml.crypto.dsig.XMLSignatureException")
+  public boolean validate(javax.xml.crypto.dsig.XMLValidateContext validateContext) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getId() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.crypto.MarshalException, javax.xml.crypto.dsig.XMLSignatureException")
+  public void sign(javax.xml.crypto.dsig.XMLSignContext signContext) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<javax.xml.crypto.dsig.XMLObject> getObjects() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.keyinfo.KeyInfo getKeyInfo() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.SignedInfo getSignedInfo() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.XMLSignature.SignatureValue getSignatureValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.KeySelectorResult getKeySelectorResult() { return null; }
   < ---- END java signatures ---- >
 }

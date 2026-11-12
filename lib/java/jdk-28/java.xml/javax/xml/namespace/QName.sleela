@@ -58,21 +58,33 @@ class QName {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public QName(java.lang.String localPart) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.namespace.QName.<init>(java.lang.String)"); }
-  public QName(java.lang.String namespaceURI, java.lang.String localPart, java.lang.String prefix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.namespace.QName.<init>(java.lang.String, java.lang.String, java.lang.String)"); }
-  public QName(java.lang.String namespaceURI, java.lang.String localPart) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.namespace.QName.<init>(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public QName(java.lang.String localPart) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public QName(java.lang.String namespaceURI, java.lang.String localPart, java.lang.String prefix) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public QName(java.lang.String namespaceURI, java.lang.String localPart) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final boolean equals(java.lang.Object objectToTest) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.namespace.QName.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.namespace.QName.toString()"); }
-  public final int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.namespace.QName.hashCode()"); }
-  public static javax.xml.namespace.QName valueOf(java.lang.String qNameAsString) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.namespace.QName.valueOf(java.lang.String)"); }
-  public java.lang.String getPrefix() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.namespace.QName.getPrefix()"); }
-  public java.lang.String getLocalPart() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.namespace.QName.getLocalPart()"); }
-  public java.lang.String getNamespaceURI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.namespace.QName.getNamespaceURI()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean equals(java.lang.Object objectToTest) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.namespace.QName valueOf(java.lang.String qNameAsString) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPrefix() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLocalPart() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getNamespaceURI() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,16 +58,23 @@ class StringSelection {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StringSelection(java.lang.String data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.StringSelection.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringSelection(java.lang.String data) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.datatransfer.DataFlavor[] getTransferDataFlavors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.StringSelection.getTransferDataFlavors()"); }
-  public boolean isDataFlavorSupported(java.awt.datatransfer.DataFlavor flavor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.StringSelection.isDataFlavorSupported(java.awt.datatransfer.DataFlavor)"); }
-  public java.lang.Object getTransferData(java.awt.datatransfer.DataFlavor flavor) throws java.awt.datatransfer.UnsupportedFlavorException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.StringSelection.getTransferData(java.awt.datatransfer.DataFlavor)"); }
-  public void lostOwnership(java.awt.datatransfer.Clipboard clipboard, java.awt.datatransfer.Transferable contents) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.StringSelection.lostOwnership(java.awt.datatransfer.Clipboard, java.awt.datatransfer.Transferable)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.datatransfer.DataFlavor[] getTransferDataFlavors() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDataFlavorSupported(java.awt.datatransfer.DataFlavor flavor) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.datatransfer.UnsupportedFlavorException, java.io.IOException")
+  public java.lang.Object getTransferData(java.awt.datatransfer.DataFlavor flavor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void lostOwnership(java.awt.datatransfer.Clipboard clipboard, java.awt.datatransfer.Transferable contents) { }
   < ---- END java signatures ---- >
 }

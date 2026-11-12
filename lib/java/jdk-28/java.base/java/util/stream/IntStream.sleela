@@ -58,56 +58,106 @@ class IntStream {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.OptionalInt min() { throw new AbstractMethodError("java.util.stream.IntStream.min()"); }
-  public abstract java.util.OptionalInt max() { throw new AbstractMethodError("java.util.stream.IntStream.max()"); }
-  public static java.util.stream.IntStream of(int t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.of(int)"); }
-  public static java.util.stream.IntStream of(int... values) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.of(int...)"); }
-  public abstract int[] toArray() { throw new AbstractMethodError("java.util.stream.IntStream.toArray()"); }
-  public abstract java.util.PrimitiveIterator.OfInt iterator() { throw new AbstractMethodError("java.util.stream.IntStream.iterator()"); }
-  public abstract java.util.stream.IntStream map(java.util.function.IntUnaryOperator mapper) { throw new AbstractMethodError("java.util.stream.IntStream.map(java.util.function.IntUnaryOperator)"); }
-  public abstract <R> R collect(java.util.function.Supplier<R> supplier, java.util.function.ObjIntConsumer<R> accumulator, java.util.function.BiConsumer<R, R> combiner) { throw new AbstractMethodError("java.util.stream.IntStream.collect(java.util.function.Supplier<R>, java.util.function.ObjIntConsumer<R>, java.util.function.BiConsumer<R, R>)"); }
-  public abstract long count() { throw new AbstractMethodError("java.util.stream.IntStream.count()"); }
-  public static java.util.stream.IntStream.Builder builder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.builder()"); }
-  public static java.util.stream.IntStream concat(java.util.stream.IntStream a, java.util.stream.IntStream b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.concat(java.util.stream.IntStream, java.util.stream.IntStream)"); }
-  public abstract java.util.stream.IntStream limit(long maxSize) { throw new AbstractMethodError("java.util.stream.IntStream.limit(long)"); }
-  public abstract java.util.Spliterator.OfInt spliterator() { throw new AbstractMethodError("java.util.stream.IntStream.spliterator()"); }
-  public abstract java.util.stream.IntStream filter(java.util.function.IntPredicate predicate) { throw new AbstractMethodError("java.util.stream.IntStream.filter(java.util.function.IntPredicate)"); }
-  public static java.util.stream.IntStream empty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.empty()"); }
-  public abstract boolean anyMatch(java.util.function.IntPredicate predicate) { throw new AbstractMethodError("java.util.stream.IntStream.anyMatch(java.util.function.IntPredicate)"); }
-  public abstract void forEach(java.util.function.IntConsumer action) { throw new AbstractMethodError("java.util.stream.IntStream.forEach(java.util.function.IntConsumer)"); }
-  public abstract java.util.OptionalInt findAny() { throw new AbstractMethodError("java.util.stream.IntStream.findAny()"); }
-  public abstract java.util.stream.IntStream skip(long n) { throw new AbstractMethodError("java.util.stream.IntStream.skip(long)"); }
-  public abstract java.util.stream.IntStream peek(java.util.function.IntConsumer action) { throw new AbstractMethodError("java.util.stream.IntStream.peek(java.util.function.IntConsumer)"); }
-  public abstract int sum() { throw new AbstractMethodError("java.util.stream.IntStream.sum()"); }
-  public abstract java.util.OptionalInt reduce(java.util.function.IntBinaryOperator op) { throw new AbstractMethodError("java.util.stream.IntStream.reduce(java.util.function.IntBinaryOperator)"); }
-  public abstract int reduce(int identity, java.util.function.IntBinaryOperator op) { throw new AbstractMethodError("java.util.stream.IntStream.reduce(int, java.util.function.IntBinaryOperator)"); }
-  public static java.util.stream.IntStream range(int startInclusive, int endExclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.range(int, int)"); }
-  public abstract java.util.stream.IntStream parallel() { throw new AbstractMethodError("java.util.stream.IntStream.parallel()"); }
-  public static java.util.stream.IntStream iterate(int seed, java.util.function.IntPredicate hasNext, java.util.function.IntUnaryOperator next_) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.iterate(int, java.util.function.IntPredicate, java.util.function.IntUnaryOperator)"); }
-  public static java.util.stream.IntStream iterate(int seed, java.util.function.IntUnaryOperator f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.iterate(int, java.util.function.IntUnaryOperator)"); }
-  public abstract java.util.stream.IntStream flatMap(java.util.function.IntFunction<? extends java.util.stream.IntStream> mapper) { throw new AbstractMethodError("java.util.stream.IntStream.flatMap(java.util.function.IntFunction<? extends java.util.stream.IntStream>)"); }
-  public abstract boolean allMatch(java.util.function.IntPredicate predicate) { throw new AbstractMethodError("java.util.stream.IntStream.allMatch(java.util.function.IntPredicate)"); }
-  public abstract java.util.stream.IntStream distinct() { throw new AbstractMethodError("java.util.stream.IntStream.distinct()"); }
-  public abstract java.util.OptionalInt findFirst() { throw new AbstractMethodError("java.util.stream.IntStream.findFirst()"); }
-  public abstract boolean noneMatch(java.util.function.IntPredicate predicate) { throw new AbstractMethodError("java.util.stream.IntStream.noneMatch(java.util.function.IntPredicate)"); }
-  public abstract java.util.stream.IntStream sorted() { throw new AbstractMethodError("java.util.stream.IntStream.sorted()"); }
-  public static java.util.stream.IntStream generate(java.util.function.IntSupplier s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.generate(java.util.function.IntSupplier)"); }
-  public abstract void forEachOrdered(java.util.function.IntConsumer action) { throw new AbstractMethodError("java.util.stream.IntStream.forEachOrdered(java.util.function.IntConsumer)"); }
-  public abstract java.util.stream.LongStream mapToLong(java.util.function.IntToLongFunction mapper) { throw new AbstractMethodError("java.util.stream.IntStream.mapToLong(java.util.function.IntToLongFunction)"); }
-  public abstract java.util.stream.DoubleStream mapToDouble(java.util.function.IntToDoubleFunction mapper) { throw new AbstractMethodError("java.util.stream.IntStream.mapToDouble(java.util.function.IntToDoubleFunction)"); }
-  public default java.util.stream.IntStream mapMulti(java.util.stream.IntStream.IntMapMultiConsumer mapper) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.mapMulti(java.util.stream.IntStream.IntMapMultiConsumer)"); }
-  public default java.util.stream.IntStream takeWhile(java.util.function.IntPredicate predicate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.takeWhile(java.util.function.IntPredicate)"); }
-  public default java.util.stream.IntStream dropWhile(java.util.function.IntPredicate predicate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.dropWhile(java.util.function.IntPredicate)"); }
-  public abstract java.util.stream.IntStream sequential() { throw new AbstractMethodError("java.util.stream.IntStream.sequential()"); }
-  public abstract <U> java.util.stream.Stream<U> mapToObj(java.util.function.IntFunction<? extends U> mapper) { throw new AbstractMethodError("java.util.stream.IntStream.mapToObj(java.util.function.IntFunction<? extends U>)"); }
-  public static java.util.stream.IntStream rangeClosed(int startInclusive, int endInclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.IntStream.rangeClosed(int, int)"); }
-  public abstract java.util.stream.Stream<java.lang.Integer> boxed() { throw new AbstractMethodError("java.util.stream.IntStream.boxed()"); }
-  public abstract java.util.OptionalDouble average() { throw new AbstractMethodError("java.util.stream.IntStream.average()"); }
-  public abstract java.util.IntSummaryStatistics summaryStatistics() { throw new AbstractMethodError("java.util.stream.IntStream.summaryStatistics()"); }
-  public abstract java.util.stream.LongStream asLongStream() { throw new AbstractMethodError("java.util.stream.IntStream.asLongStream()"); }
-  public abstract java.util.stream.DoubleStream asDoubleStream() { throw new AbstractMethodError("java.util.stream.IntStream.asDoubleStream()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.OptionalInt min() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.OptionalInt max() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.IntStream of(int t) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.IntStream of(int... values) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int[] toArray() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.PrimitiveIterator.OfInt iterator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.IntStream map(java.util.function.IntUnaryOperator mapper) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <R> R collect(java.util.function.Supplier<R> supplier, java.util.function.ObjIntConsumer<R> accumulator, java.util.function.BiConsumer<R, R> combiner) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long count() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.IntStream.Builder builder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.IntStream concat(java.util.stream.IntStream a, java.util.stream.IntStream b) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.IntStream limit(long maxSize) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Spliterator.OfInt spliterator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.IntStream filter(java.util.function.IntPredicate predicate) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.IntStream empty() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean anyMatch(java.util.function.IntPredicate predicate) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void forEach(java.util.function.IntConsumer action) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.OptionalInt findAny() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.IntStream skip(long n) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.IntStream peek(java.util.function.IntConsumer action) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int sum() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.OptionalInt reduce(java.util.function.IntBinaryOperator op) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int reduce(int identity, java.util.function.IntBinaryOperator op) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.IntStream range(int startInclusive, int endExclusive) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.IntStream parallel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.IntStream iterate(int seed, java.util.function.IntPredicate hasNext, java.util.function.IntUnaryOperator next_) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.IntStream iterate(int seed, java.util.function.IntUnaryOperator f) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.IntStream flatMap(java.util.function.IntFunction<? extends java.util.stream.IntStream> mapper) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean allMatch(java.util.function.IntPredicate predicate) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.IntStream distinct() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.OptionalInt findFirst() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean noneMatch(java.util.function.IntPredicate predicate) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.IntStream sorted() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.IntStream generate(java.util.function.IntSupplier s) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void forEachOrdered(java.util.function.IntConsumer action) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.LongStream mapToLong(java.util.function.IntToLongFunction mapper) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.DoubleStream mapToDouble(java.util.function.IntToDoubleFunction mapper) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.IntStream mapMulti(java.util.stream.IntStream.IntMapMultiConsumer mapper) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.IntStream takeWhile(java.util.function.IntPredicate predicate) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.IntStream dropWhile(java.util.function.IntPredicate predicate) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.IntStream sequential() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <U> java.util.stream.Stream<U> mapToObj(java.util.function.IntFunction<? extends U> mapper) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.IntStream rangeClosed(int startInclusive, int endInclusive) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.Stream<java.lang.Integer> boxed() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.OptionalDouble average() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.IntSummaryStatistics summaryStatistics() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.LongStream asLongStream() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.DoubleStream asDoubleStream() { return null; }
   < ---- END java signatures ---- >
 }

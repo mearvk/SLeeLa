@@ -58,32 +58,55 @@ class ConcurrentLinkedQueue<E> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ConcurrentLinkedQueue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.<init>()"); }
-  public ConcurrentLinkedQueue(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.<init>(java.util.Collection<? extends E>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ConcurrentLinkedQueue() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ConcurrentLinkedQueue(java.util.Collection<? extends E> c) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.remove(java.lang.Object)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.size()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.toString()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.clear()"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.isEmpty()"); }
-  public boolean add(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.add(E)"); }
-  public java.lang.Object[] toArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.toArray()"); }
-  public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.toArray(T[])"); }
-  public java.util.Iterator<E> iterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.iterator()"); }
-  public boolean contains(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.contains(java.lang.Object)"); }
-  public java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.spliterator()"); }
-  public boolean addAll(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.addAll(java.util.Collection<? extends E>)"); }
-  public void forEach(java.util.function.Consumer<? super E> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.forEach(java.util.function.Consumer<? super E>)"); }
-  public E peek() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.peek()"); }
-  public boolean removeIf(java.util.function.Predicate<? super E> filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.removeIf(java.util.function.Predicate<? super E>)"); }
-  public boolean removeAll(java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.removeAll(java.util.Collection<?>)"); }
-  public boolean retainAll(java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.retainAll(java.util.Collection<?>)"); }
-  public E poll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.poll()"); }
-  public boolean offer(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentLinkedQueue.offer(E)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean add(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] toArray() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> T[] toArray(T[] a) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Iterator<E> iterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Spliterator<E> spliterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean addAll(java.util.Collection<? extends E> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEach(java.util.function.Consumer<? super E> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E peek() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean removeIf(java.util.function.Predicate<? super E> filter) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean removeAll(java.util.Collection<?> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean retainAll(java.util.Collection<?> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E poll() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean offer(E e) { return false; }
   < ---- END java signatures ---- >
 }

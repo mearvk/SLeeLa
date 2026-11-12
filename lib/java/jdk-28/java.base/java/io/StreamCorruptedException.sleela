@@ -58,7 +58,9 @@ class StreamCorruptedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StreamCorruptedException(java.lang.String reason) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamCorruptedException.<init>(java.lang.String)"); }
-  public StreamCorruptedException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamCorruptedException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StreamCorruptedException(java.lang.String reason) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StreamCorruptedException() { }
   < ---- END java constructors ---- >
 }

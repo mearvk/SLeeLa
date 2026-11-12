@@ -87,44 +87,79 @@ class Color {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Color(int r, int g, int b, int a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.<init>(int, int, int, int)"); }
-  public Color(int rgb) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.<init>(int)"); }
-  public Color(float r, float g, float b, float a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.<init>(float, float, float, float)"); }
-  public Color(float r, float g, float b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.<init>(float, float, float)"); }
-  public Color(int r, int g, int b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.<init>(int, int, int)"); }
-  public Color(java.awt.color.ColorSpace cspace, float[] components, float alpha) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.<init>(java.awt.color.ColorSpace, float[], float)"); }
-  public Color(int rgba, boolean hasalpha) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.<init>(int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Color(int r, int g, int b, int a) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Color(int rgb) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Color(float r, float g, float b, float a) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Color(float r, float g, float b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Color(int r, int g, int b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Color(java.awt.color.ColorSpace cspace, float[] components, float alpha) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Color(int rgba, boolean hasalpha) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.hashCode()"); }
-  public static java.awt.Color decode(java.lang.String nm) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.decode(java.lang.String)"); }
-  public float[] getComponents(java.awt.color.ColorSpace cspace, float[] compArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getComponents(java.awt.color.ColorSpace, float[])"); }
-  public float[] getComponents(float[] compArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getComponents(float[])"); }
-  public static java.awt.Color getColor(java.lang.String nm, int v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getColor(java.lang.String, int)"); }
-  public static java.awt.Color getColor(java.lang.String nm, java.awt.Color v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getColor(java.lang.String, java.awt.Color)"); }
-  public static java.awt.Color getColor(java.lang.String nm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getColor(java.lang.String)"); }
-  public java.awt.Color brighter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.brighter()"); }
-  public java.awt.Color darker() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.darker()"); }
-  public static int HSBtoRGB(float hue, float saturation, float brightness) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.HSBtoRGB(float, float, float)"); }
-  public float[] getRGBComponents(float[] compArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getRGBComponents(float[])"); }
-  public float[] getRGBColorComponents(float[] compArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getRGBColorComponents(float[])"); }
-  public static float[] RGBtoHSB(int r, int g, int b, float[] hsbvals) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.RGBtoHSB(int, int, int, float[])"); }
-  public static java.awt.Color getHSBColor(float h, float s, float b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getHSBColor(float, float, float)"); }
-  public float[] getColorComponents(java.awt.color.ColorSpace cspace, float[] compArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getColorComponents(java.awt.color.ColorSpace, float[])"); }
-  public float[] getColorComponents(float[] compArray) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getColorComponents(float[])"); }
-  public java.awt.PaintContext createContext(java.awt.image.ColorModel cm, java.awt.Rectangle r, java.awt.geom.Rectangle2D r2d, java.awt.geom.AffineTransform xform, java.awt.RenderingHints hints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.createContext(java.awt.image.ColorModel, java.awt.Rectangle, java.awt.geom.Rectangle2D, java.awt.geom.AffineTransform, java.awt.RenderingHints)"); }
-  public int getAlpha() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getAlpha()"); }
-  public int getRed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getRed()"); }
-  public int getGreen() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getGreen()"); }
-  public int getBlue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getBlue()"); }
-  public int getTransparency() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getTransparency()"); }
-  public int getRGB() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getRGB()"); }
-  public java.awt.color.ColorSpace getColorSpace() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Color.getColorSpace()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
+  public static java.awt.Color decode(java.lang.String nm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getComponents(java.awt.color.ColorSpace cspace, float[] compArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getComponents(float[] compArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Color getColor(java.lang.String nm, int v) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Color getColor(java.lang.String nm, java.awt.Color v) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Color getColor(java.lang.String nm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color brighter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color darker() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int HSBtoRGB(float hue, float saturation, float brightness) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getRGBComponents(float[] compArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getRGBColorComponents(float[] compArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static float[] RGBtoHSB(int r, int g, int b, float[] hsbvals) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Color getHSBColor(float h, float s, float b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getColorComponents(java.awt.color.ColorSpace cspace, float[] compArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getColorComponents(float[] compArray) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.PaintContext createContext(java.awt.image.ColorModel cm, java.awt.Rectangle r, java.awt.geom.Rectangle2D r2d, java.awt.geom.AffineTransform xform, java.awt.RenderingHints hints) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAlpha() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRed() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getGreen() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBlue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTransparency() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRGB() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.color.ColorSpace getColorSpace() { return null; }
   < ---- END java signatures ---- >
 }

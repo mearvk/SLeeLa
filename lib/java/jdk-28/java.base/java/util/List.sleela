@@ -58,56 +58,106 @@ class List<E> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract E remove(int index) { throw new AbstractMethodError("java.util.List.remove(int)"); }
-  public abstract boolean remove(java.lang.Object o) { throw new AbstractMethodError("java.util.List.remove(java.lang.Object)"); }
-  public abstract int size() { throw new AbstractMethodError("java.util.List.size()"); }
-  public abstract E get(int index) { throw new AbstractMethodError("java.util.List.get(int)"); }
-  public abstract boolean equals(java.lang.Object o) { throw new AbstractMethodError("java.util.List.equals(java.lang.Object)"); }
-  public abstract int hashCode() { throw new AbstractMethodError("java.util.List.hashCode()"); }
-  public static <E> java.util.List<E> copyOf(java.util.Collection<? extends E> coll) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.copyOf(java.util.Collection<? extends E>)"); }
-  public default void sort(java.util.Comparator<? super E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.sort(java.util.Comparator<? super E>)"); }
-  public abstract int indexOf(java.lang.Object o) { throw new AbstractMethodError("java.util.List.indexOf(java.lang.Object)"); }
-  public abstract void clear() { throw new AbstractMethodError("java.util.List.clear()"); }
-  public static <E> java.util.List<E> of(E e1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E)"); }
-  public static <E> java.util.List<E> of(E e1, E e2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E)"); }
-  public static <E> java.util.List<E> of(E e1, E e2, E e3) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E)"); }
-  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E, E, E, E, E, E)"); }
-  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E, E, E, E, E, E, E)"); }
-  public static <E> java.util.List<E> of(E... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E...)"); }
-  public static <E> java.util.List<E> of() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of()"); }
-  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E, E)"); }
-  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E, E, E, E, E)"); }
-  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E, E, E)"); }
-  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E, E, E, E)"); }
-  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.of(E, E, E, E)"); }
-  public abstract int lastIndexOf(java.lang.Object o) { throw new AbstractMethodError("java.util.List.lastIndexOf(java.lang.Object)"); }
-  public abstract boolean isEmpty() { throw new AbstractMethodError("java.util.List.isEmpty()"); }
-  public default void replaceAll(java.util.function.UnaryOperator<E> operator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.replaceAll(java.util.function.UnaryOperator<E>)"); }
-  public abstract void add(int index, E element) { throw new AbstractMethodError("java.util.List.add(int, E)"); }
-  public abstract boolean add(E e) { throw new AbstractMethodError("java.util.List.add(E)"); }
-  public abstract java.util.List<E> subList(int fromIndex, int toIndex) { throw new AbstractMethodError("java.util.List.subList(int, int)"); }
-  public abstract java.lang.Object[] toArray() { throw new AbstractMethodError("java.util.List.toArray()"); }
-  public abstract <T> T[] toArray(T[] a) { throw new AbstractMethodError("java.util.List.toArray(T[])"); }
-  public abstract java.util.Iterator<E> iterator() { throw new AbstractMethodError("java.util.List.iterator()"); }
-  public abstract boolean contains(java.lang.Object o) { throw new AbstractMethodError("java.util.List.contains(java.lang.Object)"); }
-  public default java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.spliterator()"); }
-  public abstract boolean addAll(java.util.Collection<? extends E> c) { throw new AbstractMethodError("java.util.List.addAll(java.util.Collection<? extends E>)"); }
-  public abstract boolean addAll(int index, java.util.Collection<? extends E> c) { throw new AbstractMethodError("java.util.List.addAll(int, java.util.Collection<? extends E>)"); }
-  public abstract E set(int index, E element) { throw new AbstractMethodError("java.util.List.set(int, E)"); }
-  public default E getFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.getFirst()"); }
-  public default E getLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.getLast()"); }
-  public default void addFirst(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.addFirst(E)"); }
-  public default void addLast(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.addLast(E)"); }
-  public default E removeFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.removeFirst()"); }
-  public default E removeLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.removeLast()"); }
-  public abstract boolean removeAll(java.util.Collection<?> c) { throw new AbstractMethodError("java.util.List.removeAll(java.util.Collection<?>)"); }
-  public abstract boolean retainAll(java.util.Collection<?> c) { throw new AbstractMethodError("java.util.List.retainAll(java.util.Collection<?>)"); }
-  public abstract java.util.ListIterator<E> listIterator() { throw new AbstractMethodError("java.util.List.listIterator()"); }
-  public abstract java.util.ListIterator<E> listIterator(int index) { throw new AbstractMethodError("java.util.List.listIterator(int)"); }
-  public default java.util.List<E> reversed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.List.reversed()"); }
-  public abstract boolean containsAll(java.util.Collection<?> c) { throw new AbstractMethodError("java.util.List.containsAll(java.util.Collection<?>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public E remove(int index) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean remove(java.lang.Object o) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int size() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public E get(int index) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> copyOf(java.util.Collection<? extends E> coll) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void sort(java.util.Comparator<? super E> c) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int indexOf(java.lang.Object o) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> of(E e1) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> of(E e1, E e2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> of(E e1, E e2, E e3) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> of(E... elements) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> of() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E> java.util.List<E> of(E e1, E e2, E e3, E e4) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int lastIndexOf(java.lang.Object o) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void replaceAll(java.util.function.UnaryOperator<E> operator) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void add(int index, E element) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean add(E e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<E> subList(int fromIndex, int toIndex) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object[] toArray() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <T> T[] toArray(T[] a) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Iterator<E> iterator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean contains(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Spliterator<E> spliterator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean addAll(java.util.Collection<? extends E> c) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean addAll(int index, java.util.Collection<? extends E> c) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public E set(int index, E element) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default E getFirst() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default E getLast() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void addFirst(E e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void addLast(E e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default E removeFirst() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default E removeLast() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean removeAll(java.util.Collection<?> c) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean retainAll(java.util.Collection<?> c) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.ListIterator<E> listIterator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.ListIterator<E> listIterator(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.List<E> reversed() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean containsAll(java.util.Collection<?> c) { return false; }
   < ---- END java signatures ---- >
 }

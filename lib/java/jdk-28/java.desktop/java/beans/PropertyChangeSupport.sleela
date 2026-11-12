@@ -58,26 +58,43 @@ class PropertyChangeSupport {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PropertyChangeSupport(java.lang.Object sourceBean) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.<init>(java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PropertyChangeSupport(java.lang.Object sourceBean) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void firePropertyChange(java.lang.String propertyName, int oldValue, int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.firePropertyChange(java.lang.String, int, int)"); }
-  public void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object)"); }
-  public void firePropertyChange(java.lang.String propertyName, boolean oldValue, boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.firePropertyChange(java.lang.String, boolean, boolean)"); }
-  public void firePropertyChange(java.beans.PropertyChangeEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.firePropertyChange(java.beans.PropertyChangeEvent)"); }
-  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.addPropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public void addPropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.addPropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)"); }
-  public java.beans.PropertyChangeListener[] getPropertyChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.getPropertyChangeListeners()"); }
-  public java.beans.PropertyChangeListener[] getPropertyChangeListeners(java.lang.String propertyName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.getPropertyChangeListeners(java.lang.String)"); }
-  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.removePropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public void removePropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.removePropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)"); }
-  public void fireIndexedPropertyChange(java.lang.String propertyName, int index, int oldValue, int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.fireIndexedPropertyChange(java.lang.String, int, int, int)"); }
-  public void fireIndexedPropertyChange(java.lang.String propertyName, int index, java.lang.Object oldValue, java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.fireIndexedPropertyChange(java.lang.String, int, java.lang.Object, java.lang.Object)"); }
-  public void fireIndexedPropertyChange(java.lang.String propertyName, int index, boolean oldValue, boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.fireIndexedPropertyChange(java.lang.String, int, boolean, boolean)"); }
-  public boolean hasListeners(java.lang.String propertyName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeSupport.hasListeners(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void firePropertyChange(java.lang.String propertyName, int oldValue, int newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void firePropertyChange(java.lang.String propertyName, boolean oldValue, boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void firePropertyChange(java.beans.PropertyChangeEvent event) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addPropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.PropertyChangeListener[] getPropertyChangeListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.PropertyChangeListener[] getPropertyChangeListeners(java.lang.String propertyName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removePropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fireIndexedPropertyChange(java.lang.String propertyName, int index, int oldValue, int newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fireIndexedPropertyChange(java.lang.String propertyName, int index, java.lang.Object oldValue, java.lang.Object newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fireIndexedPropertyChange(java.lang.String propertyName, int index, boolean oldValue, boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasListeners(java.lang.String propertyName) { return false; }
   < ---- END java signatures ---- >
 }

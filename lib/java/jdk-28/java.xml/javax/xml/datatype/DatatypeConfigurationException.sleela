@@ -58,9 +58,13 @@ class DatatypeConfigurationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DatatypeConfigurationException(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.DatatypeConfigurationException.<init>(java.lang.Throwable)"); }
-  public DatatypeConfigurationException(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.DatatypeConfigurationException.<init>(java.lang.String, java.lang.Throwable)"); }
-  public DatatypeConfigurationException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.DatatypeConfigurationException.<init>(java.lang.String)"); }
-  public DatatypeConfigurationException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.DatatypeConfigurationException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DatatypeConfigurationException(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DatatypeConfigurationException(java.lang.String message, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DatatypeConfigurationException(java.lang.String message) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DatatypeConfigurationException() { }
   < ---- END java constructors ---- >
 }

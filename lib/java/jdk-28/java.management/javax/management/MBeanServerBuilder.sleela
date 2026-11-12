@@ -58,14 +58,19 @@ class MBeanServerBuilder {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MBeanServerBuilder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerBuilder.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MBeanServerBuilder() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.management.MBeanServerDelegate newMBeanServerDelegate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerBuilder.newMBeanServerDelegate()"); }
-  public javax.management.MBeanServer newMBeanServer(java.lang.String defaultDomain, javax.management.MBeanServer outer, javax.management.MBeanServerDelegate delegate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerBuilder.newMBeanServer(java.lang.String, javax.management.MBeanServer, javax.management.MBeanServerDelegate)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.MBeanServerDelegate newMBeanServerDelegate() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.MBeanServer newMBeanServer(java.lang.String defaultDomain, javax.management.MBeanServer outer, javax.management.MBeanServerDelegate delegate) { return null; }
   < ---- END java signatures ---- >
 }

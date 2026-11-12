@@ -58,20 +58,31 @@ class StringTokenizer {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StringTokenizer(java.lang.String str, java.lang.String delim) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.StringTokenizer.<init>(java.lang.String, java.lang.String)"); }
-  public StringTokenizer(java.lang.String str, java.lang.String delim, boolean returnDelims) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.StringTokenizer.<init>(java.lang.String, java.lang.String, boolean)"); }
-  public StringTokenizer(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.StringTokenizer.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringTokenizer(java.lang.String str, java.lang.String delim) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringTokenizer(java.lang.String str, java.lang.String delim, boolean returnDelims) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringTokenizer(java.lang.String str) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int countTokens() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.StringTokenizer.countTokens()"); }
-  public boolean hasMoreTokens() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.StringTokenizer.hasMoreTokens()"); }
-  public java.lang.String nextToken(java.lang.String delim) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.StringTokenizer.nextToken(java.lang.String)"); }
-  public java.lang.String nextToken() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.StringTokenizer.nextToken()"); }
-  public boolean hasMoreElements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.StringTokenizer.hasMoreElements()"); }
-  public java.lang.Object nextElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.StringTokenizer.nextElement()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int countTokens() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasMoreTokens() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String nextToken(java.lang.String delim) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String nextToken() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasMoreElements() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object nextElement() { return null; }
   < ---- END java signatures ---- >
 }

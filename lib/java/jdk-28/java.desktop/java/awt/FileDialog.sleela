@@ -63,29 +63,48 @@ class FileDialog {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FileDialog(java.awt.Dialog parent, java.lang.String title, int mode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.<init>(java.awt.Dialog, java.lang.String, int)"); }
-  public FileDialog(java.awt.Dialog parent, java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.<init>(java.awt.Dialog, java.lang.String)"); }
-  public FileDialog(java.awt.Dialog parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.<init>(java.awt.Dialog)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FileDialog(java.awt.Dialog parent, java.lang.String title, int mode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FileDialog(java.awt.Dialog parent, java.lang.String title) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FileDialog(java.awt.Dialog parent) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.paramString()"); }
-  public java.lang.String getFile() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.getFile()"); }
-  public int getMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.getMode()"); }
-  public void setMode(int mode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.setMode(int)"); }
-  public void setTitle(java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.setTitle(java.lang.String)"); }
-  public void setDirectory(java.lang.String dir) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.setDirectory(java.lang.String)"); }
-  public void setFile(java.lang.String file) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.setFile(java.lang.String)"); }
-  public synchronized void setFilenameFilter(java.io.FilenameFilter filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.setFilenameFilter(java.io.FilenameFilter)"); }
-  public java.lang.String getDirectory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.getDirectory()"); }
-  public java.io.File[] getFiles() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.getFiles()"); }
-  public void setMultipleMode(boolean enable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.setMultipleMode(boolean)"); }
-  public boolean isMultipleMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.isMultipleMode()"); }
-  public java.io.FilenameFilter getFilenameFilter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.getFilenameFilter()"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FileDialog.addNotify()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getFile() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMode(int mode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTitle(java.lang.String title) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDirectory(java.lang.String dir) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFile(java.lang.String file) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setFilenameFilter(java.io.FilenameFilter filter) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDirectory() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.File[] getFiles() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMultipleMode(boolean enable) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMultipleMode() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.FilenameFilter getFilenameFilter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
   < ---- END java signatures ---- >
 }

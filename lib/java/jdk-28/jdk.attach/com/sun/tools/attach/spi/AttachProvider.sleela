@@ -59,18 +59,27 @@ class AttachProvider {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AttachProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.spi.AttachProvider.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AttachProvider() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String name() { throw new AbstractMethodError("com.sun.tools.attach.spi.AttachProvider.name()"); }
-  public abstract java.lang.String type() { throw new AbstractMethodError("com.sun.tools.attach.spi.AttachProvider.type()"); }
-  public static java.util.List<com.sun.tools.attach.spi.AttachProvider> providers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.spi.AttachProvider.providers()"); }
-  public com.sun.tools.attach.VirtualMachine attachVirtualMachine(com.sun.tools.attach.VirtualMachineDescriptor vmd) throws com.sun.tools.attach.AttachNotSupportedException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.spi.AttachProvider.attachVirtualMachine(com.sun.tools.attach.VirtualMachineDescriptor)"); }
-  public abstract com.sun.tools.attach.VirtualMachine attachVirtualMachine(java.lang.String id) throws com.sun.tools.attach.AttachNotSupportedException, java.io.IOException { throw new AbstractMethodError("com.sun.tools.attach.spi.AttachProvider.attachVirtualMachine(java.lang.String)"); }
-  public abstract java.util.List<com.sun.tools.attach.VirtualMachineDescriptor> listVirtualMachines() { throw new AbstractMethodError("com.sun.tools.attach.spi.AttachProvider.listVirtualMachines()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String name() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String type() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.List<com.sun.tools.attach.spi.AttachProvider> providers() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, com.sun.tools.attach.AttachNotSupportedException, java.io.IOException")
+  public com.sun.tools.attach.VirtualMachine attachVirtualMachine(com.sun.tools.attach.VirtualMachineDescriptor vmd) { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.tools.attach.AttachNotSupportedException, java.io.IOException")
+  public com.sun.tools.attach.VirtualMachine attachVirtualMachine(java.lang.String id) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.tools.attach.VirtualMachineDescriptor> listVirtualMachines() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,26 +58,43 @@ class SynthGraphicsUtils {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SynthGraphicsUtils() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SynthGraphicsUtils() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int computeStringWidth(javax.swing.plaf.synth.SynthContext ss, java.awt.Font font, java.awt.FontMetrics metrics, java.lang.String text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.computeStringWidth(javax.swing.plaf.synth.SynthContext, java.awt.Font, java.awt.FontMetrics, java.lang.String)"); }
-  public void paintText(javax.swing.plaf.synth.SynthContext ss, java.awt.Graphics g, java.lang.String text, javax.swing.Icon icon, int hAlign, int vAlign, int hTextPosition, int vTextPosition, int iconTextGap, int mnemonicIndex, int textOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.paintText(javax.swing.plaf.synth.SynthContext, java.awt.Graphics, java.lang.String, javax.swing.Icon, int, int, int, int, int, int, int)"); }
-  public void paintText(javax.swing.plaf.synth.SynthContext ss, java.awt.Graphics g, java.lang.String text, java.awt.Rectangle bounds, int mnemonicIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.paintText(javax.swing.plaf.synth.SynthContext, java.awt.Graphics, java.lang.String, java.awt.Rectangle, int)"); }
-  public void paintText(javax.swing.plaf.synth.SynthContext ss, java.awt.Graphics g, java.lang.String text, int x, int y, int mnemonicIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.paintText(javax.swing.plaf.synth.SynthContext, java.awt.Graphics, java.lang.String, int, int, int)"); }
-  public java.awt.Dimension getPreferredSize(javax.swing.plaf.synth.SynthContext ss, java.awt.Font font, java.lang.String text, javax.swing.Icon icon, int hAlign, int vAlign, int hTextPosition, int vTextPosition, int iconTextGap, int mnemonicIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.getPreferredSize(javax.swing.plaf.synth.SynthContext, java.awt.Font, java.lang.String, javax.swing.Icon, int, int, int, int, int, int)"); }
-  public java.awt.Dimension getMinimumSize(javax.swing.plaf.synth.SynthContext ss, java.awt.Font font, java.lang.String text, javax.swing.Icon icon, int hAlign, int vAlign, int hTextPosition, int vTextPosition, int iconTextGap, int mnemonicIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.getMinimumSize(javax.swing.plaf.synth.SynthContext, java.awt.Font, java.lang.String, javax.swing.Icon, int, int, int, int, int, int)"); }
-  public java.lang.String layoutText(javax.swing.plaf.synth.SynthContext ss, java.awt.FontMetrics fm, java.lang.String text, javax.swing.Icon icon, int hAlign, int vAlign, int hTextPosition, int vTextPosition, java.awt.Rectangle viewR, java.awt.Rectangle iconR, java.awt.Rectangle textR, int iconTextGap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.layoutText(javax.swing.plaf.synth.SynthContext, java.awt.FontMetrics, java.lang.String, javax.swing.Icon, int, int, int, int, java.awt.Rectangle, java.awt.Rectangle, java.awt.Rectangle, int)"); }
-  public int getMaximumCharHeight(javax.swing.plaf.synth.SynthContext context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.getMaximumCharHeight(javax.swing.plaf.synth.SynthContext)"); }
-  public void drawLine(javax.swing.plaf.synth.SynthContext context, java.lang.Object paintKey, java.awt.Graphics g, int x1, int y1, int x2, int y2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.drawLine(javax.swing.plaf.synth.SynthContext, java.lang.Object, java.awt.Graphics, int, int, int, int)"); }
-  public void drawLine(javax.swing.plaf.synth.SynthContext context, java.lang.Object paintKey, java.awt.Graphics g, int x1, int y1, int x2, int y2, java.lang.Object styleKey) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.drawLine(javax.swing.plaf.synth.SynthContext, java.lang.Object, java.awt.Graphics, int, int, int, int, java.lang.Object)"); }
-  public static void paintIcon(javax.swing.Icon icon, javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.paintIcon(javax.swing.Icon, javax.swing.plaf.synth.SynthContext, java.awt.Graphics, int, int, int, int)"); }
-  public static int getIconWidth(javax.swing.Icon icon, javax.swing.plaf.synth.SynthContext context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.getIconWidth(javax.swing.Icon, javax.swing.plaf.synth.SynthContext)"); }
-  public static int getIconHeight(javax.swing.Icon icon, javax.swing.plaf.synth.SynthContext context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.getIconHeight(javax.swing.Icon, javax.swing.plaf.synth.SynthContext)"); }
-  public java.awt.Dimension getMaximumSize(javax.swing.plaf.synth.SynthContext ss, java.awt.Font font, java.lang.String text, javax.swing.Icon icon, int hAlign, int vAlign, int hTextPosition, int vTextPosition, int iconTextGap, int mnemonicIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthGraphicsUtils.getMaximumSize(javax.swing.plaf.synth.SynthContext, java.awt.Font, java.lang.String, javax.swing.Icon, int, int, int, int, int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int computeStringWidth(javax.swing.plaf.synth.SynthContext ss, java.awt.Font font, java.awt.FontMetrics metrics, java.lang.String text) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintText(javax.swing.plaf.synth.SynthContext ss, java.awt.Graphics g, java.lang.String text, javax.swing.Icon icon, int hAlign, int vAlign, int hTextPosition, int vTextPosition, int iconTextGap, int mnemonicIndex, int textOffset) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintText(javax.swing.plaf.synth.SynthContext ss, java.awt.Graphics g, java.lang.String text, java.awt.Rectangle bounds, int mnemonicIndex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintText(javax.swing.plaf.synth.SynthContext ss, java.awt.Graphics g, java.lang.String text, int x, int y, int mnemonicIndex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(javax.swing.plaf.synth.SynthContext ss, java.awt.Font font, java.lang.String text, javax.swing.Icon icon, int hAlign, int vAlign, int hTextPosition, int vTextPosition, int iconTextGap, int mnemonicIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(javax.swing.plaf.synth.SynthContext ss, java.awt.Font font, java.lang.String text, javax.swing.Icon icon, int hAlign, int vAlign, int hTextPosition, int vTextPosition, int iconTextGap, int mnemonicIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String layoutText(javax.swing.plaf.synth.SynthContext ss, java.awt.FontMetrics fm, java.lang.String text, javax.swing.Icon icon, int hAlign, int vAlign, int hTextPosition, int vTextPosition, java.awt.Rectangle viewR, java.awt.Rectangle iconR, java.awt.Rectangle textR, int iconTextGap) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaximumCharHeight(javax.swing.plaf.synth.SynthContext context) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawLine(javax.swing.plaf.synth.SynthContext context, java.lang.Object paintKey, java.awt.Graphics g, int x1, int y1, int x2, int y2) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawLine(javax.swing.plaf.synth.SynthContext context, java.lang.Object paintKey, java.awt.Graphics g, int x1, int y1, int x2, int y2, java.lang.Object styleKey) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void paintIcon(javax.swing.Icon icon, javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getIconWidth(javax.swing.Icon icon, javax.swing.plaf.synth.SynthContext context) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getIconHeight(javax.swing.Icon icon, javax.swing.plaf.synth.SynthContext context) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize(javax.swing.plaf.synth.SynthContext ss, java.awt.Font font, java.lang.String text, javax.swing.Icon icon, int hAlign, int vAlign, int hTextPosition, int vTextPosition, int iconTextGap, int mnemonicIndex) { return null; }
   < ---- END java signatures ---- >
 }

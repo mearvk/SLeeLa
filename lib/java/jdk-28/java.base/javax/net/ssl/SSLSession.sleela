@@ -58,29 +58,52 @@ class SSLSession {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object getValue(java.lang.String name) { throw new AbstractMethodError("javax.net.ssl.SSLSession.getValue(java.lang.String)"); }
-  public abstract byte[] getId() { throw new AbstractMethodError("javax.net.ssl.SSLSession.getId()"); }
-  public abstract java.lang.String getProtocol() { throw new AbstractMethodError("javax.net.ssl.SSLSession.getProtocol()"); }
-  public abstract void invalidate() { throw new AbstractMethodError("javax.net.ssl.SSLSession.invalidate()"); }
-  public abstract boolean isValid() { throw new AbstractMethodError("javax.net.ssl.SSLSession.isValid()"); }
-  public abstract void putValue(java.lang.String name, java.lang.Object value) { throw new AbstractMethodError("javax.net.ssl.SSLSession.putValue(java.lang.String, java.lang.Object)"); }
-  public abstract long getCreationTime() { throw new AbstractMethodError("javax.net.ssl.SSLSession.getCreationTime()"); }
-  public abstract java.lang.String getCipherSuite() { throw new AbstractMethodError("javax.net.ssl.SSLSession.getCipherSuite()"); }
-  public abstract java.security.Principal getPeerPrincipal() throws javax.net.ssl.SSLPeerUnverifiedException { throw new AbstractMethodError("javax.net.ssl.SSLSession.getPeerPrincipal()"); }
-  public abstract java.security.Principal getLocalPrincipal() { throw new AbstractMethodError("javax.net.ssl.SSLSession.getLocalPrincipal()"); }
-  public abstract javax.net.ssl.SSLSessionContext getSessionContext() { throw new AbstractMethodError("javax.net.ssl.SSLSession.getSessionContext()"); }
-  public abstract long getLastAccessedTime() { throw new AbstractMethodError("javax.net.ssl.SSLSession.getLastAccessedTime()"); }
-  public abstract void removeValue(java.lang.String name) { throw new AbstractMethodError("javax.net.ssl.SSLSession.removeValue(java.lang.String)"); }
-  public abstract java.lang.String[] getValueNames() { throw new AbstractMethodError("javax.net.ssl.SSLSession.getValueNames()"); }
-  public abstract java.security.cert.Certificate[] getPeerCertificates() throws javax.net.ssl.SSLPeerUnverifiedException { throw new AbstractMethodError("javax.net.ssl.SSLSession.getPeerCertificates()"); }
-  public abstract java.security.cert.Certificate[] getLocalCertificates() { throw new AbstractMethodError("javax.net.ssl.SSLSession.getLocalCertificates()"); }
-  public default javax.security.cert.X509Certificate[] getPeerCertificateChain() throws javax.net.ssl.SSLPeerUnverifiedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLSession.getPeerCertificateChain()"); }
-  public abstract java.lang.String getPeerHost() { throw new AbstractMethodError("javax.net.ssl.SSLSession.getPeerHost()"); }
-  public abstract int getPeerPort() { throw new AbstractMethodError("javax.net.ssl.SSLSession.getPeerPort()"); }
-  public abstract int getPacketBufferSize() { throw new AbstractMethodError("javax.net.ssl.SSLSession.getPacketBufferSize()"); }
-  public abstract int getApplicationBufferSize() { throw new AbstractMethodError("javax.net.ssl.SSLSession.getApplicationBufferSize()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getValue(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] getId() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getProtocol() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void invalidate() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isValid() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void putValue(java.lang.String name, java.lang.Object value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public long getCreationTime() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCipherSuite() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.net.ssl.SSLPeerUnverifiedException")
+  public java.security.Principal getPeerPrincipal() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.Principal getLocalPrincipal() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.net.ssl.SSLSessionContext getSessionContext() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getLastAccessedTime() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeValue(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getValueNames() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.net.ssl.SSLPeerUnverifiedException")
+  public java.security.cert.Certificate[] getPeerCertificates() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.cert.Certificate[] getLocalCertificates() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.net.ssl.SSLPeerUnverifiedException")
+  public default javax.security.cert.X509Certificate[] getPeerCertificateChain() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getPeerHost() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getPeerPort() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getPacketBufferSize() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getApplicationBufferSize() { return 0; }
   < ---- END java signatures ---- >
 }

@@ -58,7 +58,9 @@ class GenericSignatureFormatError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public GenericSignatureFormatError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.GenericSignatureFormatError.<init>()"); }
-  public GenericSignatureFormatError(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.GenericSignatureFormatError.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public GenericSignatureFormatError() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public GenericSignatureFormatError(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

@@ -72,30 +72,51 @@ class IIOParam {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  IIOParam() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  IIOParam() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.imageio.IIOParamController getController() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.getController()"); }
-  public boolean hasController() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.hasController()"); }
-  public void setController(javax.imageio.IIOParamController controller) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.setController(javax.imageio.IIOParamController)"); }
-  public javax.imageio.IIOParamController getDefaultController() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.getDefaultController()"); }
-  public boolean activateController() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.activateController()"); }
-  public void setSourceRegion(java.awt.Rectangle sourceRegion) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.setSourceRegion(java.awt.Rectangle)"); }
-  public java.awt.Rectangle getSourceRegion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.getSourceRegion()"); }
-  public void setSourceSubsampling(int sourceXSubsampling, int sourceYSubsampling, int subsamplingXOffset, int subsamplingYOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.setSourceSubsampling(int, int, int, int)"); }
-  public int getSourceXSubsampling() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.getSourceXSubsampling()"); }
-  public int getSourceYSubsampling() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.getSourceYSubsampling()"); }
-  public int getSubsamplingXOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.getSubsamplingXOffset()"); }
-  public int getSubsamplingYOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.getSubsamplingYOffset()"); }
-  public void setSourceBands(int[] sourceBands) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.setSourceBands(int[])"); }
-  public int[] getSourceBands() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.getSourceBands()"); }
-  public void setDestinationType(javax.imageio.ImageTypeSpecifier destinationType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.setDestinationType(javax.imageio.ImageTypeSpecifier)"); }
-  public javax.imageio.ImageTypeSpecifier getDestinationType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.getDestinationType()"); }
-  public void setDestinationOffset(java.awt.Point destinationOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.setDestinationOffset(java.awt.Point)"); }
-  public java.awt.Point getDestinationOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOParam.getDestinationOffset()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.IIOParamController getController() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasController() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setController(javax.imageio.IIOParamController controller) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.IIOParamController getDefaultController() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean activateController() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSourceRegion(java.awt.Rectangle sourceRegion) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getSourceRegion() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSourceSubsampling(int sourceXSubsampling, int sourceYSubsampling, int subsamplingXOffset, int subsamplingYOffset) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSourceXSubsampling() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSourceYSubsampling() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSubsamplingXOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSubsamplingYOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSourceBands(int[] sourceBands) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getSourceBands() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDestinationType(javax.imageio.ImageTypeSpecifier destinationType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.ImageTypeSpecifier getDestinationType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDestinationOffset(java.awt.Point destinationOffset) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Point getDestinationOffset() { return null; }
   < ---- END java signatures ---- >
 }

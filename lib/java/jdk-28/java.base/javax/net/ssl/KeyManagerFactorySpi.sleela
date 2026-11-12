@@ -58,18 +58,24 @@ class KeyManagerFactorySpi {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public KeyManagerFactorySpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.KeyManagerFactorySpi.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public KeyManagerFactorySpi() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  abstract javax.net.ssl.KeyManager[] engineGetKeyManagers() { throw new AbstractMethodError("javax.net.ssl.KeyManagerFactorySpi.engineGetKeyManagers()"); }
+  @throwable("java.lang.AbstractMethodError")
+  javax.net.ssl.KeyManager[] engineGetKeyManagers() { return null; }
   @JavaProtected
-  abstract void engineInit(java.security.KeyStore ks, char[] password) throws java.security.KeyStoreException, java.security.NoSuchAlgorithmException, java.security.UnrecoverableKeyException { throw new AbstractMethodError("javax.net.ssl.KeyManagerFactorySpi.engineInit(java.security.KeyStore, char[])"); }
+  @throwable("java.lang.AbstractMethodError, java.security.KeyStoreException, java.security.NoSuchAlgorithmException, java.security.UnrecoverableKeyException")
+  void engineInit(java.security.KeyStore ks, char[] password) { }
   @JavaProtected
-  abstract void engineInit(javax.net.ssl.ManagerFactoryParameters spec) throws java.security.InvalidAlgorithmParameterException { throw new AbstractMethodError("javax.net.ssl.KeyManagerFactorySpi.engineInit(javax.net.ssl.ManagerFactoryParameters)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidAlgorithmParameterException")
+  void engineInit(javax.net.ssl.ManagerFactoryParameters spec) { }
   < ---- END java signatures ---- >
 }

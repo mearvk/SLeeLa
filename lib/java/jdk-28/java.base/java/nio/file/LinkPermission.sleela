@@ -58,7 +58,9 @@ class LinkPermission {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LinkPermission(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.LinkPermission.<init>(java.lang.String)"); }
-  public LinkPermission(java.lang.String name, java.lang.String actions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.LinkPermission.<init>(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkPermission(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkPermission(java.lang.String name, java.lang.String actions) { }
   < ---- END java constructors ---- >
 }

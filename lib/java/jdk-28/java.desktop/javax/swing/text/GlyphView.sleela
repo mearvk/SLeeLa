@@ -58,44 +58,77 @@ class GlyphView {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public GlyphView(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.<init>(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public GlyphView(javax.swing.text.Element elem) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  final java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.clone()"); }
-  public javax.swing.text.Segment getText(int p0, int p1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getText(int, int)"); }
-  public float getAlignment(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getAlignment(int)"); }
-  public java.awt.Color getForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getForeground()"); }
-  public java.awt.Color getBackground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getBackground()"); }
-  public boolean isSuperscript() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.isSuperscript()"); }
-  public boolean isSubscript() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.isSubscript()"); }
-  public int getStartOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getStartOffset()"); }
-  public int getEndOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getEndOffset()"); }
-  public void insertUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.insertUpdate(javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
-  public void removeUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.removeUpdate(javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
-  public void changedUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.changedUpdate(javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
-  public float getPartialSpan(int p0, int p1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getPartialSpan(int, int)"); }
-  public float getPreferredSpan(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getPreferredSpan(int)"); }
-  public float getMinimumSpan(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getMinimumSpan(int)"); }
-  public int getBreakWeight(int axis, float pos, float len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getBreakWeight(int, float, float)"); }
-  public javax.swing.text.View createFragment(int p0, int p1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.createFragment(int, int)"); }
-  public javax.swing.text.View breakView(int axis, int p0, float pos, float len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.breakView(int, int, float, float)"); }
-  public int getNextVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getNextVisualPositionFrom(int, javax.swing.text.Position.Bias, java.awt.Shape, int, javax.swing.text.Position.Bias[])"); }
-  public boolean isUnderline() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.isUnderline()"); }
-  public boolean isStrikeThrough() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.isStrikeThrough()"); }
-  public void setGlyphPainter(javax.swing.text.GlyphView.GlyphPainter p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.setGlyphPainter(javax.swing.text.GlyphView.GlyphPainter)"); }
-  public int viewToModel(float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] biasReturn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.viewToModel(float, float, java.awt.Shape, javax.swing.text.Position.Bias[])"); }
-  public java.awt.Shape modelToView(int pos, java.awt.Shape a, javax.swing.text.Position.Bias b) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.modelToView(int, java.awt.Shape, javax.swing.text.Position.Bias)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Segment getText(int p0, int p1) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getAlignment(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getForeground() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getBackground() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSuperscript() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSubscript() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getStartOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getEndOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void changedUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getPartialSpan(int p0, int p1) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getPreferredSpan(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMinimumSpan(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBreakWeight(int axis, float pos, float len) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.View createFragment(int p0, int p1) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.View breakView(int axis, int p0, float pos, float len) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public int getNextVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isUnderline() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isStrikeThrough() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setGlyphPainter(javax.swing.text.GlyphView.GlyphPainter p) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int viewToModel(float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] biasReturn) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public java.awt.Shape modelToView(int pos, java.awt.Shape a, javax.swing.text.Position.Bias b) { return null; }
   @JavaProtected
-  void checkPainter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.checkPainter()"); }
-  public javax.swing.text.TabExpander getTabExpander() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getTabExpander()"); }
-  public javax.swing.text.GlyphView.GlyphPainter getGlyphPainter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getGlyphPainter()"); }
-  public float getTabbedSpan(float x, javax.swing.text.TabExpander e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getTabbedSpan(float, javax.swing.text.TabExpander)"); }
-  public java.awt.Font getFont() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.getFont()"); }
-  public void paint(java.awt.Graphics g, java.awt.Shape a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.GlyphView.paint(java.awt.Graphics, java.awt.Shape)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void checkPainter() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.TabExpander getTabExpander() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.GlyphView.GlyphPainter getGlyphPainter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getTabbedSpan(float x, javax.swing.text.TabExpander e) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font getFont() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, java.awt.Shape a) { }
   < ---- END java signatures ---- >
 }

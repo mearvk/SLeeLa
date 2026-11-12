@@ -59,22 +59,30 @@ class SecureClassLoader {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SecureClassLoader(java.lang.String name, java.lang.ClassLoader parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureClassLoader.<init>(java.lang.String, java.lang.ClassLoader)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SecureClassLoader(java.lang.String name, java.lang.ClassLoader parent) { }
   @JavaProtected
-  SecureClassLoader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureClassLoader.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SecureClassLoader() { }
   @JavaProtected
-  SecureClassLoader(java.lang.ClassLoader parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureClassLoader.<init>(java.lang.ClassLoader)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SecureClassLoader(java.lang.ClassLoader parent) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  final java.lang.Class<?> defineClass(java.lang.String name, java.nio.ByteBuffer b, java.security.CodeSource cs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureClassLoader.defineClass(java.lang.String, java.nio.ByteBuffer, java.security.CodeSource)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final java.lang.Class<?> defineClass(java.lang.String name, java.nio.ByteBuffer b, java.security.CodeSource cs) { return null; }
   @JavaProtected
-  final java.lang.Class<?> defineClass(java.lang.String name, byte[] b, int off, int len, java.security.CodeSource cs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureClassLoader.defineClass(java.lang.String, byte[], int, int, java.security.CodeSource)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final java.lang.Class<?> defineClass(java.lang.String name, byte[] b, int off, int len, java.security.CodeSource cs) { return null; }
   @JavaProtected
-  java.security.PermissionCollection getPermissions(java.security.CodeSource codesource) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureClassLoader.getPermissions(java.security.CodeSource)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.security.PermissionCollection getPermissions(java.security.CodeSource codesource) { return null; }
   < ---- END java signatures ---- >
 }

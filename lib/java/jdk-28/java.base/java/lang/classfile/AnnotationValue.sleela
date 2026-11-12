@@ -74,34 +74,62 @@ class AnnotationValue {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static java.lang.classfile.AnnotationValue of(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.of(java.lang.Object)"); }
-  public static java.lang.classfile.AnnotationValue.OfClass ofClass(java.lang.classfile.constantpool.Utf8Entry className) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofClass(java.lang.classfile.constantpool.Utf8Entry)"); }
-  public abstract int tag() { throw new AbstractMethodError("java.lang.classfile.AnnotationValue.tag()"); }
-  public static java.lang.classfile.AnnotationValue.OfArray ofArray(java.util.List<java.lang.classfile.AnnotationValue> values) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofArray(java.util.List<java.lang.classfile.AnnotationValue>)"); }
-  public static java.lang.classfile.AnnotationValue.OfArray ofArray(java.lang.classfile.AnnotationValue... values) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofArray(java.lang.classfile.AnnotationValue...)"); }
-  public static java.lang.classfile.AnnotationValue.OfString ofString(java.lang.String value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofString(java.lang.String)"); }
-  public static java.lang.classfile.AnnotationValue.OfString ofString(java.lang.classfile.constantpool.Utf8Entry value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofString(java.lang.classfile.constantpool.Utf8Entry)"); }
-  public static java.lang.classfile.AnnotationValue.OfLong ofLong(long value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofLong(long)"); }
-  public static java.lang.classfile.AnnotationValue.OfLong ofLong(java.lang.classfile.constantpool.LongEntry value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofLong(java.lang.classfile.constantpool.LongEntry)"); }
-  public static java.lang.classfile.AnnotationValue.OfInt ofInt(int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofInt(int)"); }
-  public static java.lang.classfile.AnnotationValue.OfInt ofInt(java.lang.classfile.constantpool.IntegerEntry value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofInt(java.lang.classfile.constantpool.IntegerEntry)"); }
-  public static java.lang.classfile.AnnotationValue.OfChar ofChar(char value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofChar(char)"); }
-  public static java.lang.classfile.AnnotationValue.OfChar ofChar(java.lang.classfile.constantpool.IntegerEntry value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofChar(java.lang.classfile.constantpool.IntegerEntry)"); }
-  public static java.lang.classfile.AnnotationValue.OfShort ofShort(short value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofShort(short)"); }
-  public static java.lang.classfile.AnnotationValue.OfShort ofShort(java.lang.classfile.constantpool.IntegerEntry value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofShort(java.lang.classfile.constantpool.IntegerEntry)"); }
-  public static java.lang.classfile.AnnotationValue.OfByte ofByte(java.lang.classfile.constantpool.IntegerEntry value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofByte(java.lang.classfile.constantpool.IntegerEntry)"); }
-  public static java.lang.classfile.AnnotationValue.OfByte ofByte(byte value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofByte(byte)"); }
-  public static java.lang.classfile.AnnotationValue.OfBoolean ofBoolean(java.lang.classfile.constantpool.IntegerEntry value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofBoolean(java.lang.classfile.constantpool.IntegerEntry)"); }
-  public static java.lang.classfile.AnnotationValue.OfBoolean ofBoolean(boolean value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofBoolean(boolean)"); }
-  public static java.lang.classfile.AnnotationValue.OfDouble ofDouble(double value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofDouble(double)"); }
-  public static java.lang.classfile.AnnotationValue.OfDouble ofDouble(java.lang.classfile.constantpool.DoubleEntry value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofDouble(java.lang.classfile.constantpool.DoubleEntry)"); }
-  public static java.lang.classfile.AnnotationValue.OfFloat ofFloat(float value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofFloat(float)"); }
-  public static java.lang.classfile.AnnotationValue.OfFloat ofFloat(java.lang.classfile.constantpool.FloatEntry value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofFloat(java.lang.classfile.constantpool.FloatEntry)"); }
-  public static java.lang.classfile.AnnotationValue.OfAnnotation ofAnnotation(java.lang.classfile.Annotation value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofAnnotation(java.lang.classfile.Annotation)"); }
-  public static java.lang.classfile.AnnotationValue.OfEnum ofEnum(java.lang.constant.ClassDesc className, java.lang.String constantName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofEnum(java.lang.constant.ClassDesc, java.lang.String)"); }
-  public static java.lang.classfile.AnnotationValue.OfEnum ofEnum(java.lang.classfile.constantpool.Utf8Entry className, java.lang.classfile.constantpool.Utf8Entry constantName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.AnnotationValue.ofEnum(java.lang.classfile.constantpool.Utf8Entry, java.lang.classfile.constantpool.Utf8Entry)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue of(java.lang.Object value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfClass ofClass(java.lang.classfile.constantpool.Utf8Entry className) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int tag() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfArray ofArray(java.util.List<java.lang.classfile.AnnotationValue> values) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfArray ofArray(java.lang.classfile.AnnotationValue... values) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfString ofString(java.lang.String value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfString ofString(java.lang.classfile.constantpool.Utf8Entry value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfLong ofLong(long value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfLong ofLong(java.lang.classfile.constantpool.LongEntry value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfInt ofInt(int value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfInt ofInt(java.lang.classfile.constantpool.IntegerEntry value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfChar ofChar(char value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfChar ofChar(java.lang.classfile.constantpool.IntegerEntry value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfShort ofShort(short value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfShort ofShort(java.lang.classfile.constantpool.IntegerEntry value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfByte ofByte(java.lang.classfile.constantpool.IntegerEntry value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfByte ofByte(byte value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfBoolean ofBoolean(java.lang.classfile.constantpool.IntegerEntry value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfBoolean ofBoolean(boolean value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfDouble ofDouble(double value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfDouble ofDouble(java.lang.classfile.constantpool.DoubleEntry value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfFloat ofFloat(float value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfFloat ofFloat(java.lang.classfile.constantpool.FloatEntry value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfAnnotation ofAnnotation(java.lang.classfile.Annotation value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfEnum ofEnum(java.lang.constant.ClassDesc className, java.lang.String constantName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.AnnotationValue.OfEnum ofEnum(java.lang.classfile.constantpool.Utf8Entry className, java.lang.classfile.constantpool.Utf8Entry constantName) { return null; }
   < ---- END java signatures ---- >
 }

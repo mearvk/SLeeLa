@@ -58,14 +58,22 @@ class DocumentType {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("org.w3c.dom.DocumentType.getName()"); }
-  public abstract java.lang.String getInternalSubset() { throw new AbstractMethodError("org.w3c.dom.DocumentType.getInternalSubset()"); }
-  public abstract org.w3c.dom.NamedNodeMap getNotations() { throw new AbstractMethodError("org.w3c.dom.DocumentType.getNotations()"); }
-  public abstract org.w3c.dom.NamedNodeMap getEntities() { throw new AbstractMethodError("org.w3c.dom.DocumentType.getEntities()"); }
-  public abstract java.lang.String getPublicId() { throw new AbstractMethodError("org.w3c.dom.DocumentType.getPublicId()"); }
-  public abstract java.lang.String getSystemId() { throw new AbstractMethodError("org.w3c.dom.DocumentType.getSystemId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getInternalSubset() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.NamedNodeMap getNotations() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.NamedNodeMap getEntities() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getPublicId() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSystemId() { return null; }
   < ---- END java signatures ---- >
 }

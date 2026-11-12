@@ -58,14 +58,22 @@ class JShellConsole {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void flush() { throw new AbstractMethodError("jdk.jshell.JShellConsole.flush()"); }
-  public abstract java.nio.charset.Charset charset() { throw new AbstractMethodError("jdk.jshell.JShellConsole.charset()"); }
-  public abstract java.lang.String readLine(java.lang.String prompt) throws java.io.IOError { throw new AbstractMethodError("jdk.jshell.JShellConsole.readLine(java.lang.String)"); }
-  public abstract java.io.Reader reader() { throw new AbstractMethodError("jdk.jshell.JShellConsole.reader()"); }
-  public abstract java.io.PrintWriter writer() { throw new AbstractMethodError("jdk.jshell.JShellConsole.writer()"); }
-  public abstract char[] readPassword(java.lang.String prompt) throws java.io.IOError { throw new AbstractMethodError("jdk.jshell.JShellConsole.readPassword(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void flush() { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.charset.Charset charset() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOError")
+  public java.lang.String readLine(java.lang.String prompt) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.Reader reader() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.PrintWriter writer() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOError")
+  public char[] readPassword(java.lang.String prompt) { return null; }
   < ---- END java signatures ---- >
 }

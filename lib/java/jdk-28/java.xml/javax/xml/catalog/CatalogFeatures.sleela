@@ -58,11 +58,16 @@ class CatalogFeatures {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String get(javax.xml.catalog.CatalogFeatures.Feature cf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.catalog.CatalogFeatures.get(javax.xml.catalog.CatalogFeatures.Feature)"); }
-  public static javax.xml.catalog.CatalogFeatures.Builder builder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.catalog.CatalogFeatures.builder()"); }
-  public static javax.xml.catalog.CatalogFeatures defaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.catalog.CatalogFeatures.defaults()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String get(javax.xml.catalog.CatalogFeatures.Feature cf) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.catalog.CatalogFeatures.Builder builder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.catalog.CatalogFeatures defaults() { return null; }
   < ---- END java signatures ---- >
 }

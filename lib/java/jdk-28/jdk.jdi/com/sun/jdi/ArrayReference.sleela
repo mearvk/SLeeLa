@@ -58,15 +58,24 @@ class ArrayReference {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int length() { throw new AbstractMethodError("com.sun.jdi.ArrayReference.length()"); }
-  public abstract com.sun.jdi.Value getValue(int index) { throw new AbstractMethodError("com.sun.jdi.ArrayReference.getValue(int)"); }
-  public abstract void setValue(int index, com.sun.jdi.Value value) throws com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException { throw new AbstractMethodError("com.sun.jdi.ArrayReference.setValue(int, com.sun.jdi.Value)"); }
-  public abstract java.util.List<com.sun.jdi.Value> getValues(int index, int length) { throw new AbstractMethodError("com.sun.jdi.ArrayReference.getValues(int, int)"); }
-  public abstract java.util.List<com.sun.jdi.Value> getValues() { throw new AbstractMethodError("com.sun.jdi.ArrayReference.getValues()"); }
-  public abstract void setValues(java.util.List<? extends com.sun.jdi.Value> values) throws com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException { throw new AbstractMethodError("com.sun.jdi.ArrayReference.setValues(java.util.List<? extends com.sun.jdi.Value>)"); }
-  public abstract void setValues(int index, java.util.List<? extends com.sun.jdi.Value> values, int srcIndex, int length) throws com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException { throw new AbstractMethodError("com.sun.jdi.ArrayReference.setValues(int, java.util.List<? extends com.sun.jdi.Value>, int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int length() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.Value getValue(int index) { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException")
+  public void setValue(int index, com.sun.jdi.Value value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.Value> getValues(int index, int length) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.Value> getValues() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException")
+  public void setValues(java.util.List<? extends com.sun.jdi.Value> values) { }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException")
+  public void setValues(int index, java.util.List<? extends com.sun.jdi.Value> values, int srcIndex, int length) { }
   < ---- END java signatures ---- >
 }

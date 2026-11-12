@@ -58,6 +58,7 @@ class AcceptPendingException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AcceptPendingException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.AcceptPendingException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AcceptPendingException() { }
   < ---- END java constructors ---- >
 }

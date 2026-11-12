@@ -64,90 +64,168 @@ class JList<E> {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.<init>()"); }
-  public JList(java.util.Vector<? extends E> listData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.<init>(java.util.Vector<? extends E>)"); }
-  public JList(E[] listData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.<init>(E[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JList() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JList(java.util.Vector<? extends E> listData) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JList(E[] listData) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.paramString()"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.updateUI()"); }
-  public void setSelectionModel(javax.swing.ListSelectionModel selectionModel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setSelectionModel(javax.swing.ListSelectionModel)"); }
-  public void setUI(javax.swing.plaf.ListUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setUI(javax.swing.plaf.ListUI)"); }
-  public javax.swing.plaf.ListUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getUI()"); }
-  public javax.swing.ListSelectionModel getSelectionModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getSelectionModel()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getUIClassID()"); }
-  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getToolTipText(java.awt.event.MouseEvent)"); }
-  public boolean isSelectionEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.isSelectionEmpty()"); }
-  public int getVisibleRowCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getVisibleRowCount()"); }
-  public void setCellRenderer(javax.swing.ListCellRenderer<? super E> cellRenderer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setCellRenderer(javax.swing.ListCellRenderer<? super E>)"); }
-  public void setSelectionInterval(int anchor, int lead) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setSelectionInterval(int, int)"); }
-  public void addSelectionInterval(int anchor, int lead) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.addSelectionInterval(int, int)"); }
-  public void removeSelectionInterval(int index0, int index1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.removeSelectionInterval(int, int)"); }
-  public void setVisibleRowCount(int visibleRowCount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setVisibleRowCount(int)"); }
-  public int getNextMatch(java.lang.String prefix, int startIndex, javax.swing.text.Position.Bias bias) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getNextMatch(java.lang.String, int, javax.swing.text.Position.Bias)"); }
-  public int getAnchorSelectionIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getAnchorSelectionIndex()"); }
-  public int getLeadSelectionIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getLeadSelectionIndex()"); }
-  public void setSelectionMode(int selectionMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setSelectionMode(int)"); }
-  public int getMinSelectionIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getMinSelectionIndex()"); }
-  public int[] getSelectedIndices() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getSelectedIndices()"); }
-  public boolean isSelectedIndex(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.isSelectedIndex(int)"); }
-  public void removeListSelectionListener(javax.swing.event.ListSelectionListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.removeListSelectionListener(javax.swing.event.ListSelectionListener)"); }
-  public void addListSelectionListener(javax.swing.event.ListSelectionListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.addListSelectionListener(javax.swing.event.ListSelectionListener)"); }
-  public int getMaxSelectionIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getMaxSelectionIndex()"); }
-  public java.awt.Color getSelectionForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getSelectionForeground()"); }
-  public void setSelectionForeground(java.awt.Color selectionForeground) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setSelectionForeground(java.awt.Color)"); }
-  public java.awt.Color getSelectionBackground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getSelectionBackground()"); }
-  public void setSelectionBackground(java.awt.Color selectionBackground) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setSelectionBackground(java.awt.Color)"); }
-  public void setSelectedIndex(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setSelectedIndex(int)"); }
-  public int getSelectedIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getSelectedIndex()"); }
-  public javax.swing.ListCellRenderer<? super E> getCellRenderer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getCellRenderer()"); }
-  public void setDragEnabled(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setDragEnabled(boolean)"); }
-  public boolean getDragEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getDragEnabled()"); }
-  public final void setDropMode(javax.swing.DropMode dropMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setDropMode(javax.swing.DropMode)"); }
-  public final javax.swing.DropMode getDropMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getDropMode()"); }
-  public final javax.swing.JList.DropLocation getDropLocation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getDropLocation()"); }
-  public java.awt.Dimension getPreferredScrollableViewportSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getPreferredScrollableViewportSize()"); }
-  public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getScrollableUnitIncrement(java.awt.Rectangle, int, int)"); }
-  public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getScrollableBlockIncrement(java.awt.Rectangle, int, int)"); }
-  public boolean getScrollableTracksViewportWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getScrollableTracksViewportWidth()"); }
-  public boolean getScrollableTracksViewportHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getScrollableTracksViewportHeight()"); }
-  public void setValueIsAdjusting(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setValueIsAdjusting(boolean)"); }
-  public boolean getValueIsAdjusting() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getValueIsAdjusting()"); }
-  public javax.swing.ListModel<E> getModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getModel()"); }
-  public void clearSelection() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.clearSelection()"); }
-  public void setModel(javax.swing.ListModel<E> model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setModel(javax.swing.ListModel<E>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionModel(javax.swing.ListSelectionModel selectionModel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.ListUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.ListUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.ListSelectionModel getSelectionModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSelectionEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVisibleRowCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCellRenderer(javax.swing.ListCellRenderer<? super E> cellRenderer) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionInterval(int anchor, int lead) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addSelectionInterval(int anchor, int lead) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeSelectionInterval(int index0, int index1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVisibleRowCount(int visibleRowCount) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNextMatch(java.lang.String prefix, int startIndex, javax.swing.text.Position.Bias bias) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAnchorSelectionIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLeadSelectionIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionMode(int selectionMode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinSelectionIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getSelectedIndices() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSelectedIndex(int index) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeListSelectionListener(javax.swing.event.ListSelectionListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addListSelectionListener(javax.swing.event.ListSelectionListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaxSelectionIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getSelectionForeground() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionForeground(java.awt.Color selectionForeground) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getSelectionBackground() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionBackground(java.awt.Color selectionBackground) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectedIndex(int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSelectedIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.ListCellRenderer<? super E> getCellRenderer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDragEnabled(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getDragEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setDropMode(javax.swing.DropMode dropMode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.swing.DropMode getDropMode() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.swing.JList.DropLocation getDropLocation() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredScrollableViewportSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getScrollableTracksViewportWidth() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getScrollableTracksViewportHeight() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValueIsAdjusting(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getValueIsAdjusting() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.ListModel<E> getModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clearSelection() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setModel(javax.swing.ListModel<E> model) { }
   @JavaProtected
-  javax.swing.ListSelectionModel createSelectionModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.createSelectionModel()"); }
-  public E getPrototypeCellValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getPrototypeCellValue()"); }
-  public int locationToIndex(java.awt.Point location) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.locationToIndex(java.awt.Point)"); }
-  public java.awt.Rectangle getCellBounds(int index0, int index1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getCellBounds(int, int)"); }
-  public int getLayoutOrientation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getLayoutOrientation()"); }
-  public void setSelectedIndices(int[] indices) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setSelectedIndices(int[])"); }
-  public java.awt.Point indexToLocation(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.indexToLocation(int)"); }
-  public int getSelectionMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getSelectionMode()"); }
-  public E getSelectedValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getSelectedValue()"); }
-  public void ensureIndexIsVisible(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.ensureIndexIsVisible(int)"); }
-  public int getFixedCellWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getFixedCellWidth()"); }
-  public int getFixedCellHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getFixedCellHeight()"); }
-  public int getFirstVisibleIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getFirstVisibleIndex()"); }
-  public void setPrototypeCellValue(E prototypeCellValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setPrototypeCellValue(E)"); }
-  public void setFixedCellWidth(int width) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setFixedCellWidth(int)"); }
-  public void setFixedCellHeight(int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setFixedCellHeight(int)"); }
-  public void setLayoutOrientation(int layoutOrientation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setLayoutOrientation(int)"); }
-  public int getLastVisibleIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getLastVisibleIndex()"); }
-  public void setListData(java.util.Vector<? extends E> listData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setListData(java.util.Vector<? extends E>)"); }
-  public void setListData(E[] listData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setListData(E[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.ListSelectionModel createSelectionModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E getPrototypeCellValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int locationToIndex(java.awt.Point location) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getCellBounds(int index0, int index1) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLayoutOrientation() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectedIndices(int[] indices) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Point indexToLocation(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSelectionMode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E getSelectedValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ensureIndexIsVisible(int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getFixedCellWidth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getFixedCellHeight() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getFirstVisibleIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPrototypeCellValue(E prototypeCellValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFixedCellWidth(int width) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFixedCellHeight(int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayoutOrientation(int layoutOrientation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLastVisibleIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setListData(java.util.Vector<? extends E> listData) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setListData(E[] listData) { }
   @JavaProtected
-  void fireSelectionValueChanged(int firstIndex, int lastIndex, boolean isAdjusting) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.fireSelectionValueChanged(int, int, boolean)"); }
-  public javax.swing.event.ListSelectionListener[] getListSelectionListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getListSelectionListeners()"); }
-  public java.lang.Object[] getSelectedValues() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getSelectedValues()"); }
-  public java.util.List<E> getSelectedValuesList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getSelectedValuesList()"); }
-  public void setSelectedValue(java.lang.Object anObject, boolean shouldScroll) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.setSelectedValue(java.lang.Object, boolean)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JList.getAccessibleContext()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireSelectionValueChanged(int firstIndex, int lastIndex, boolean isAdjusting) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.ListSelectionListener[] getListSelectionListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] getSelectedValues() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<E> getSelectedValuesList() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectedValue(java.lang.Object anObject, boolean shouldScroll) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

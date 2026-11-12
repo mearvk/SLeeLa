@@ -58,27 +58,42 @@ class SynthLabelUI {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SynthLabelUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLabelUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SynthLabelUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void update(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLabelUI.update(java.awt.Graphics, javax.swing.JComponent)"); }
-  public javax.swing.plaf.synth.SynthContext getContext(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLabelUI.getContext(javax.swing.JComponent)"); }
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLabelUI.getPreferredSize(javax.swing.JComponent)"); }
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLabelUI.getMinimumSize(javax.swing.JComponent)"); }
-  public void paintBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLabelUI.paintBorder(javax.swing.plaf.synth.SynthContext, java.awt.Graphics, int, int, int, int)"); }
-  public void propertyChange(java.beans.PropertyChangeEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLabelUI.propertyChange(java.beans.PropertyChangeEvent)"); }
-  public int getBaseline(javax.swing.JComponent c, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLabelUI.getBaseline(javax.swing.JComponent, int, int)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLabelUI.createUI(javax.swing.JComponent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void update(java.awt.Graphics g, javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.synth.SynthContext getContext(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void propertyChange(java.beans.PropertyChangeEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBaseline(javax.swing.JComponent c, int width, int height) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void installDefaults(javax.swing.JLabel c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLabelUI.installDefaults(javax.swing.JLabel)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults(javax.swing.JLabel c) { }
   @JavaProtected
-  void uninstallDefaults(javax.swing.JLabel c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLabelUI.uninstallDefaults(javax.swing.JLabel)"); }
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLabelUI.getMaximumSize(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults(javax.swing.JLabel c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void paint(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthLabelUI.paint(javax.swing.plaf.synth.SynthContext, java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paint(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g) { }
   < ---- END java signatures ---- >
 }

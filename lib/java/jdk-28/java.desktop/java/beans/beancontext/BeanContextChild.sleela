@@ -58,14 +58,22 @@ class BeanContextChild {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void addPropertyChangeListener(java.lang.String name, java.beans.PropertyChangeListener pcl) { throw new AbstractMethodError("java.beans.beancontext.BeanContextChild.addPropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)"); }
-  public abstract void removePropertyChangeListener(java.lang.String name, java.beans.PropertyChangeListener pcl) { throw new AbstractMethodError("java.beans.beancontext.BeanContextChild.removePropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)"); }
-  public abstract void addVetoableChangeListener(java.lang.String name, java.beans.VetoableChangeListener vcl) { throw new AbstractMethodError("java.beans.beancontext.BeanContextChild.addVetoableChangeListener(java.lang.String, java.beans.VetoableChangeListener)"); }
-  public abstract void removeVetoableChangeListener(java.lang.String name, java.beans.VetoableChangeListener vcl) { throw new AbstractMethodError("java.beans.beancontext.BeanContextChild.removeVetoableChangeListener(java.lang.String, java.beans.VetoableChangeListener)"); }
-  public abstract void setBeanContext(java.beans.beancontext.BeanContext bc) throws java.beans.PropertyVetoException { throw new AbstractMethodError("java.beans.beancontext.BeanContextChild.setBeanContext(java.beans.beancontext.BeanContext)"); }
-  public abstract java.beans.beancontext.BeanContext getBeanContext() { throw new AbstractMethodError("java.beans.beancontext.BeanContextChild.getBeanContext()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void addPropertyChangeListener(java.lang.String name, java.beans.PropertyChangeListener pcl) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removePropertyChangeListener(java.lang.String name, java.beans.PropertyChangeListener pcl) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addVetoableChangeListener(java.lang.String name, java.beans.VetoableChangeListener vcl) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeVetoableChangeListener(java.lang.String name, java.beans.VetoableChangeListener vcl) { }
+  @throwable("java.lang.AbstractMethodError, java.beans.PropertyVetoException")
+  public void setBeanContext(java.beans.beancontext.BeanContext bc) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.beans.beancontext.BeanContext getBeanContext() { return null; }
   < ---- END java signatures ---- >
 }

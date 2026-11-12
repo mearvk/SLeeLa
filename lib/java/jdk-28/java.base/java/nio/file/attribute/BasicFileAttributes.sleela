@@ -58,17 +58,28 @@ class BasicFileAttributes {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract long size() { throw new AbstractMethodError("java.nio.file.attribute.BasicFileAttributes.size()"); }
-  public abstract boolean isDirectory() { throw new AbstractMethodError("java.nio.file.attribute.BasicFileAttributes.isDirectory()"); }
-  public abstract boolean isRegularFile() { throw new AbstractMethodError("java.nio.file.attribute.BasicFileAttributes.isRegularFile()"); }
-  public abstract boolean isOther() { throw new AbstractMethodError("java.nio.file.attribute.BasicFileAttributes.isOther()"); }
-  public abstract boolean isSymbolicLink() { throw new AbstractMethodError("java.nio.file.attribute.BasicFileAttributes.isSymbolicLink()"); }
-  public abstract java.nio.file.attribute.FileTime lastModifiedTime() { throw new AbstractMethodError("java.nio.file.attribute.BasicFileAttributes.lastModifiedTime()"); }
-  public abstract java.nio.file.attribute.FileTime lastAccessTime() { throw new AbstractMethodError("java.nio.file.attribute.BasicFileAttributes.lastAccessTime()"); }
-  public abstract java.nio.file.attribute.FileTime creationTime() { throw new AbstractMethodError("java.nio.file.attribute.BasicFileAttributes.creationTime()"); }
-  public abstract java.lang.Object fileKey() { throw new AbstractMethodError("java.nio.file.attribute.BasicFileAttributes.fileKey()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public long size() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDirectory() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isRegularFile() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isOther() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSymbolicLink() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.file.attribute.FileTime lastModifiedTime() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.file.attribute.FileTime lastAccessTime() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.file.attribute.FileTime creationTime() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object fileKey() { return null; }
   < ---- END java signatures ---- >
 }

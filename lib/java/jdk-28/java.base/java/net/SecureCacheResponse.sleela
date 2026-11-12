@@ -58,18 +58,27 @@ class SecureCacheResponse {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SecureCacheResponse() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.SecureCacheResponse.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SecureCacheResponse() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getCipherSuite() { throw new AbstractMethodError("java.net.SecureCacheResponse.getCipherSuite()"); }
-  public abstract java.util.List<java.security.cert.Certificate> getLocalCertificateChain() { throw new AbstractMethodError("java.net.SecureCacheResponse.getLocalCertificateChain()"); }
-  public abstract java.util.List<java.security.cert.Certificate> getServerCertificateChain() throws javax.net.ssl.SSLPeerUnverifiedException { throw new AbstractMethodError("java.net.SecureCacheResponse.getServerCertificateChain()"); }
-  public abstract java.security.Principal getPeerPrincipal() throws javax.net.ssl.SSLPeerUnverifiedException { throw new AbstractMethodError("java.net.SecureCacheResponse.getPeerPrincipal()"); }
-  public abstract java.security.Principal getLocalPrincipal() { throw new AbstractMethodError("java.net.SecureCacheResponse.getLocalPrincipal()"); }
-  public java.util.Optional<javax.net.ssl.SSLSession> getSSLSession() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.SecureCacheResponse.getSSLSession()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCipherSuite() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.security.cert.Certificate> getLocalCertificateChain() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.net.ssl.SSLPeerUnverifiedException")
+  public java.util.List<java.security.cert.Certificate> getServerCertificateChain() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.net.ssl.SSLPeerUnverifiedException")
+  public java.security.Principal getPeerPrincipal() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.Principal getLocalPrincipal() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<javax.net.ssl.SSLSession> getSSLSession() { return null; }
   < ---- END java signatures ---- >
 }

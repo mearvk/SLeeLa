@@ -58,20 +58,34 @@ class HTMLBodyElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getText() { throw new AbstractMethodError("org.w3c.dom.html.HTMLBodyElement.getText()"); }
-  public abstract void setText(java.lang.String text) { throw new AbstractMethodError("org.w3c.dom.html.HTMLBodyElement.setText(java.lang.String)"); }
-  public abstract java.lang.String getLink() { throw new AbstractMethodError("org.w3c.dom.html.HTMLBodyElement.getLink()"); }
-  public abstract java.lang.String getBackground() { throw new AbstractMethodError("org.w3c.dom.html.HTMLBodyElement.getBackground()"); }
-  public abstract void setBackground(java.lang.String background) { throw new AbstractMethodError("org.w3c.dom.html.HTMLBodyElement.setBackground(java.lang.String)"); }
-  public abstract java.lang.String getBgColor() { throw new AbstractMethodError("org.w3c.dom.html.HTMLBodyElement.getBgColor()"); }
-  public abstract java.lang.String getALink() { throw new AbstractMethodError("org.w3c.dom.html.HTMLBodyElement.getALink()"); }
-  public abstract void setALink(java.lang.String aLink) { throw new AbstractMethodError("org.w3c.dom.html.HTMLBodyElement.setALink(java.lang.String)"); }
-  public abstract void setBgColor(java.lang.String bgColor) { throw new AbstractMethodError("org.w3c.dom.html.HTMLBodyElement.setBgColor(java.lang.String)"); }
-  public abstract void setLink(java.lang.String link) { throw new AbstractMethodError("org.w3c.dom.html.HTMLBodyElement.setLink(java.lang.String)"); }
-  public abstract java.lang.String getVLink() { throw new AbstractMethodError("org.w3c.dom.html.HTMLBodyElement.getVLink()"); }
-  public abstract void setVLink(java.lang.String vLink) { throw new AbstractMethodError("org.w3c.dom.html.HTMLBodyElement.setVLink(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getText() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setText(java.lang.String text) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getLink() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getBackground() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBackground(java.lang.String background) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getBgColor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getALink() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setALink(java.lang.String aLink) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBgColor(java.lang.String bgColor) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setLink(java.lang.String link) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getVLink() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setVLink(java.lang.String vLink) { }
   < ---- END java signatures ---- >
 }

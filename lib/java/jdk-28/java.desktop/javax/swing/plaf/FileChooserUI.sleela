@@ -59,19 +59,29 @@ class FileChooserUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  FileChooserUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.FileChooserUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  FileChooserUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.swing.JButton getDefaultButton(javax.swing.JFileChooser fc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.FileChooserUI.getDefaultButton(javax.swing.JFileChooser)"); }
-  public abstract javax.swing.filechooser.FileFilter getAcceptAllFileFilter(javax.swing.JFileChooser fc) { throw new AbstractMethodError("javax.swing.plaf.FileChooserUI.getAcceptAllFileFilter(javax.swing.JFileChooser)"); }
-  public abstract void ensureFileIsVisible(javax.swing.JFileChooser fc, java.io.File f) { throw new AbstractMethodError("javax.swing.plaf.FileChooserUI.ensureFileIsVisible(javax.swing.JFileChooser, java.io.File)"); }
-  public abstract void rescanCurrentDirectory(javax.swing.JFileChooser fc) { throw new AbstractMethodError("javax.swing.plaf.FileChooserUI.rescanCurrentDirectory(javax.swing.JFileChooser)"); }
-  public abstract java.lang.String getDialogTitle(javax.swing.JFileChooser fc) { throw new AbstractMethodError("javax.swing.plaf.FileChooserUI.getDialogTitle(javax.swing.JFileChooser)"); }
-  public abstract javax.swing.filechooser.FileView getFileView(javax.swing.JFileChooser fc) { throw new AbstractMethodError("javax.swing.plaf.FileChooserUI.getFileView(javax.swing.JFileChooser)"); }
-  public abstract java.lang.String getApproveButtonText(javax.swing.JFileChooser fc) { throw new AbstractMethodError("javax.swing.plaf.FileChooserUI.getApproveButtonText(javax.swing.JFileChooser)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JButton getDefaultButton(javax.swing.JFileChooser fc) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.filechooser.FileFilter getAcceptAllFileFilter(javax.swing.JFileChooser fc) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void ensureFileIsVisible(javax.swing.JFileChooser fc, java.io.File f) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void rescanCurrentDirectory(javax.swing.JFileChooser fc) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDialogTitle(javax.swing.JFileChooser fc) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.filechooser.FileView getFileView(javax.swing.JFileChooser fc) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getApproveButtonText(javax.swing.JFileChooser fc) { return null; }
   < ---- END java signatures ---- >
 }

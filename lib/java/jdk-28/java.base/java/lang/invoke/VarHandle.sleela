@@ -58,54 +58,102 @@ class VarHandle {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final native java.lang.Object get(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.get(java.lang.Object...)"); }
-  public final java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.toString()"); }
-  public static void storeStoreFence() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.storeStoreFence()"); }
-  public static void fullFence() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.fullFence()"); }
-  public java.util.Optional<java.lang.invoke.VarHandle.VarHandleDesc> describeConstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.describeConstable()"); }
-  public final native void set(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.set(java.lang.Object...)"); }
-  public java.lang.Class<?> varType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.varType()"); }
-  public java.util.List<java.lang.Class<?>> coordinateTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.coordinateTypes()"); }
-  public final java.lang.invoke.MethodType accessModeType(java.lang.invoke.VarHandle.AccessMode accessMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.accessModeType(java.lang.invoke.VarHandle.AccessMode)"); }
-  public boolean isAccessModeSupported(java.lang.invoke.VarHandle.AccessMode accessMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.isAccessModeSupported(java.lang.invoke.VarHandle.AccessMode)"); }
-  public static void loadLoadFence() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.loadLoadFence()"); }
-  public boolean hasInvokeExactBehavior() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.hasInvokeExactBehavior()"); }
-  public final native java.lang.Object getVolatile(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getVolatile(java.lang.Object...)"); }
-  public final native void setVolatile(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.setVolatile(java.lang.Object...)"); }
-  public final native java.lang.Object getOpaque(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getOpaque(java.lang.Object...)"); }
-  public final native void setOpaque(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.setOpaque(java.lang.Object...)"); }
-  public final native java.lang.Object getAcquire(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAcquire(java.lang.Object...)"); }
-  public final native void setRelease(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.setRelease(java.lang.Object...)"); }
-  public final native boolean compareAndSet(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.compareAndSet(java.lang.Object...)"); }
-  public final native java.lang.Object compareAndExchange(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.compareAndExchange(java.lang.Object...)"); }
-  public final native java.lang.Object compareAndExchangeAcquire(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.compareAndExchangeAcquire(java.lang.Object...)"); }
-  public final native java.lang.Object compareAndExchangeRelease(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.compareAndExchangeRelease(java.lang.Object...)"); }
-  public final native boolean weakCompareAndSetPlain(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.weakCompareAndSetPlain(java.lang.Object...)"); }
-  public final native boolean weakCompareAndSet(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.weakCompareAndSet(java.lang.Object...)"); }
-  public final native boolean weakCompareAndSetAcquire(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.weakCompareAndSetAcquire(java.lang.Object...)"); }
-  public final native boolean weakCompareAndSetRelease(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.weakCompareAndSetRelease(java.lang.Object...)"); }
-  public final native java.lang.Object getAndSet(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndSet(java.lang.Object...)"); }
-  public final native java.lang.Object getAndSetAcquire(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndSetAcquire(java.lang.Object...)"); }
-  public final native java.lang.Object getAndSetRelease(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndSetRelease(java.lang.Object...)"); }
-  public final native java.lang.Object getAndAdd(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndAdd(java.lang.Object...)"); }
-  public final native java.lang.Object getAndAddAcquire(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndAddAcquire(java.lang.Object...)"); }
-  public final native java.lang.Object getAndAddRelease(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndAddRelease(java.lang.Object...)"); }
-  public final native java.lang.Object getAndBitwiseOr(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndBitwiseOr(java.lang.Object...)"); }
-  public final native java.lang.Object getAndBitwiseOrAcquire(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndBitwiseOrAcquire(java.lang.Object...)"); }
-  public final native java.lang.Object getAndBitwiseOrRelease(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndBitwiseOrRelease(java.lang.Object...)"); }
-  public final native java.lang.Object getAndBitwiseAnd(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndBitwiseAnd(java.lang.Object...)"); }
-  public final native java.lang.Object getAndBitwiseAndAcquire(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndBitwiseAndAcquire(java.lang.Object...)"); }
-  public final native java.lang.Object getAndBitwiseAndRelease(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndBitwiseAndRelease(java.lang.Object...)"); }
-  public final native java.lang.Object getAndBitwiseXor(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndBitwiseXor(java.lang.Object...)"); }
-  public final native java.lang.Object getAndBitwiseXorAcquire(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndBitwiseXorAcquire(java.lang.Object...)"); }
-  public final native java.lang.Object getAndBitwiseXorRelease(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.getAndBitwiseXorRelease(java.lang.Object...)"); }
-  public abstract java.lang.invoke.VarHandle withInvokeExactBehavior() { throw new AbstractMethodError("java.lang.invoke.VarHandle.withInvokeExactBehavior()"); }
-  public abstract java.lang.invoke.VarHandle withInvokeBehavior() { throw new AbstractMethodError("java.lang.invoke.VarHandle.withInvokeBehavior()"); }
-  public java.lang.invoke.MethodHandle toMethodHandle(java.lang.invoke.VarHandle.AccessMode accessMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.toMethodHandle(java.lang.invoke.VarHandle.AccessMode)"); }
-  public static void acquireFence() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.acquireFence()"); }
-  public static void releaseFence() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.VarHandle.releaseFence()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object get(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void storeStoreFence() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void fullFence() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<java.lang.invoke.VarHandle.VarHandleDesc> describeConstable() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native void set(java.lang.Object... args) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> varType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.lang.Class<?>> coordinateTypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.invoke.MethodType accessModeType(java.lang.invoke.VarHandle.AccessMode accessMode) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAccessModeSupported(java.lang.invoke.VarHandle.AccessMode accessMode) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void loadLoadFence() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasInvokeExactBehavior() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getVolatile(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native void setVolatile(java.lang.Object... args) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getOpaque(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native void setOpaque(java.lang.Object... args) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAcquire(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native void setRelease(java.lang.Object... args) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native boolean compareAndSet(java.lang.Object... args) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object compareAndExchange(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object compareAndExchangeAcquire(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object compareAndExchangeRelease(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native boolean weakCompareAndSetPlain(java.lang.Object... args) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native boolean weakCompareAndSet(java.lang.Object... args) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native boolean weakCompareAndSetAcquire(java.lang.Object... args) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native boolean weakCompareAndSetRelease(java.lang.Object... args) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndSet(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndSetAcquire(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndSetRelease(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndAdd(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndAddAcquire(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndAddRelease(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndBitwiseOr(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndBitwiseOrAcquire(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndBitwiseOrRelease(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndBitwiseAnd(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndBitwiseAndAcquire(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndBitwiseAndRelease(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndBitwiseXor(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndBitwiseXorAcquire(java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Object getAndBitwiseXorRelease(java.lang.Object... args) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.invoke.VarHandle withInvokeExactBehavior() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.invoke.VarHandle withInvokeBehavior() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.invoke.MethodHandle toMethodHandle(java.lang.invoke.VarHandle.AccessMode accessMode) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void acquireFence() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void releaseFence() { }
   < ---- END java signatures ---- >
 }

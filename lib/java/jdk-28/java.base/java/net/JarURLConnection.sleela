@@ -63,20 +63,31 @@ class JarURLConnection {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  JarURLConnection(java.net.URL url) throws java.net.MalformedURLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.JarURLConnection.<init>(java.net.URL)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.net.MalformedURLException")
+  JarURLConnection(java.net.URL url) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.security.cert.Certificate[] getCertificates() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.JarURLConnection.getCertificates()"); }
-  public java.util.jar.Attributes getMainAttributes() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.JarURLConnection.getMainAttributes()"); }
-  public java.util.jar.Attributes getAttributes() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.JarURLConnection.getAttributes()"); }
-  public java.util.jar.Manifest getManifest() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.JarURLConnection.getManifest()"); }
-  public java.util.jar.JarEntry getJarEntry() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.JarURLConnection.getJarEntry()"); }
-  public java.lang.String getEntryName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.JarURLConnection.getEntryName()"); }
-  public abstract java.util.jar.JarFile getJarFile() throws java.io.IOException { throw new AbstractMethodError("java.net.JarURLConnection.getJarFile()"); }
-  public java.net.URL getJarFileURL() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.JarURLConnection.getJarFileURL()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.security.cert.Certificate[] getCertificates() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.util.jar.Attributes getMainAttributes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.util.jar.Attributes getAttributes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.util.jar.Manifest getManifest() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.util.jar.JarEntry getJarEntry() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getEntryName() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.util.jar.JarFile getJarFile() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.URL getJarFileURL() { return null; }
   < ---- END java signatures ---- >
 }

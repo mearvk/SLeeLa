@@ -59,28 +59,47 @@ class HttpExchange {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  HttpExchange() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpExchange.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  HttpExchange() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getProtocol() { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.getProtocol()"); }
-  public abstract java.net.InetSocketAddress getLocalAddress() { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.getLocalAddress()"); }
-  public abstract java.net.InetSocketAddress getRemoteAddress() { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.getRemoteAddress()"); }
-  public abstract void setAttribute(java.lang.String name, java.lang.Object value) { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.setAttribute(java.lang.String, java.lang.Object)"); }
-  public abstract java.lang.Object getAttribute(java.lang.String name) { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.getAttribute(java.lang.String)"); }
-  public abstract int getResponseCode() { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.getResponseCode()"); }
-  public abstract com.sun.net.httpserver.HttpPrincipal getPrincipal() { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.getPrincipal()"); }
-  public abstract java.lang.String getRequestMethod() { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.getRequestMethod()"); }
-  public abstract com.sun.net.httpserver.Headers getRequestHeaders() { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.getRequestHeaders()"); }
-  public abstract com.sun.net.httpserver.Headers getResponseHeaders() { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.getResponseHeaders()"); }
-  public abstract java.net.URI getRequestURI() { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.getRequestURI()"); }
-  public abstract com.sun.net.httpserver.HttpContext getHttpContext() { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.getHttpContext()"); }
-  public abstract java.io.InputStream getRequestBody() { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.getRequestBody()"); }
-  public abstract void sendResponseHeaders(int rCode, long responseLength) throws java.io.IOException { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.sendResponseHeaders(int, long)"); }
-  public abstract void setStreams(java.io.InputStream i, java.io.OutputStream o) { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.setStreams(java.io.InputStream, java.io.OutputStream)"); }
-  public abstract java.io.OutputStream getResponseBody() { throw new AbstractMethodError("com.sun.net.httpserver.HttpExchange.getResponseBody()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getProtocol() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.InetSocketAddress getLocalAddress() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.InetSocketAddress getRemoteAddress() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAttribute(java.lang.String name, java.lang.Object value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getAttribute(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getResponseCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.net.httpserver.HttpPrincipal getPrincipal() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getRequestMethod() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.net.httpserver.Headers getRequestHeaders() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.net.httpserver.Headers getResponseHeaders() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.URI getRequestURI() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.net.httpserver.HttpContext getHttpContext() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.InputStream getRequestBody() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void sendResponseHeaders(int rCode, long responseLength) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setStreams(java.io.InputStream i, java.io.OutputStream o) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.OutputStream getResponseBody() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,50 +58,91 @@ class StringBuilder {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StringBuilder(java.lang.CharSequence seq) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.<init>(java.lang.CharSequence)"); }
-  public StringBuilder(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.<init>(java.lang.String)"); }
-  public StringBuilder(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.<init>(int)"); }
-  public StringBuilder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringBuilder(java.lang.CharSequence seq) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringBuilder(java.lang.String str) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringBuilder(int capacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringBuilder() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.toString()"); }
-  public java.lang.StringBuilder append(java.lang.CharSequence s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(java.lang.CharSequence)"); }
-  public java.lang.StringBuilder append(java.lang.CharSequence s, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(java.lang.CharSequence, int, int)"); }
-  public java.lang.StringBuilder append(char[] str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(char[])"); }
-  public java.lang.StringBuilder append(char[] str, int offset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(char[], int, int)"); }
-  public java.lang.StringBuilder append(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(java.lang.String)"); }
-  public java.lang.StringBuilder append(long lng) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(long)"); }
-  public java.lang.StringBuilder append(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(float)"); }
-  public java.lang.StringBuilder append(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(double)"); }
-  public java.lang.StringBuilder append(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(boolean)"); }
-  public java.lang.StringBuilder append(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(char)"); }
-  public java.lang.StringBuilder append(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.append(int)"); }
-  public java.lang.StringBuilder reverse() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.reverse()"); }
-  public int compareTo(java.lang.StringBuilder another) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.compareTo(java.lang.StringBuilder)"); }
-  public int indexOf(java.lang.String str, int fromIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.indexOf(java.lang.String, int)"); }
-  public int indexOf(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.indexOf(java.lang.String)"); }
-  public java.lang.StringBuilder insert(int dstOffset, java.lang.CharSequence s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, java.lang.CharSequence)"); }
-  public java.lang.StringBuilder insert(int offset, java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, java.lang.String)"); }
-  public java.lang.StringBuilder insert(int offset, char[] str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, char[])"); }
-  public java.lang.StringBuilder insert(int offset, int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, int)"); }
-  public java.lang.StringBuilder insert(int offset, double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, double)"); }
-  public java.lang.StringBuilder insert(int offset, float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, float)"); }
-  public java.lang.StringBuilder insert(int offset, long l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, long)"); }
-  public java.lang.StringBuilder insert(int offset, char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, char)"); }
-  public java.lang.StringBuilder insert(int offset, boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, boolean)"); }
-  public java.lang.StringBuilder insert(int dstOffset, java.lang.CharSequence s, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, java.lang.CharSequence, int, int)"); }
-  public java.lang.StringBuilder insert(int index, char[] str, int offset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.insert(int, char[], int, int)"); }
-  public int lastIndexOf(java.lang.String str, int fromIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.lastIndexOf(java.lang.String, int)"); }
-  public int lastIndexOf(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.lastIndexOf(java.lang.String)"); }
-  public java.lang.StringBuilder replace(int start, int end, java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.replace(int, int, java.lang.String)"); }
-  public java.lang.StringBuilder repeat(int codePoint, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.repeat(int, int)"); }
-  public java.lang.StringBuilder repeat(java.lang.CharSequence cs, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.repeat(java.lang.CharSequence, int)"); }
-  public java.lang.StringBuilder appendCodePoint(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.appendCodePoint(int)"); }
-  public java.lang.StringBuilder delete(int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.delete(int, int)"); }
-  public java.lang.StringBuilder deleteCharAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StringBuilder.deleteCharAt(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder append(java.lang.CharSequence s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder append(java.lang.CharSequence s, int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder append(char[] str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder append(char[] str, int offset, int len) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder append(java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder append(long lng) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder append(float f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder append(double d) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder append(boolean b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder append(char c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder append(int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder reverse() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.lang.StringBuilder another) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int indexOf(java.lang.String str, int fromIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int indexOf(java.lang.String str) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder insert(int dstOffset, java.lang.CharSequence s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder insert(int offset, java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder insert(int offset, char[] str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder insert(int offset, int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder insert(int offset, double d) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder insert(int offset, float f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder insert(int offset, long l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder insert(int offset, char c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder insert(int offset, boolean b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder insert(int dstOffset, java.lang.CharSequence s, int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder insert(int index, char[] str, int offset, int len) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lastIndexOf(java.lang.String str, int fromIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lastIndexOf(java.lang.String str) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder replace(int start, int end, java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder repeat(int codePoint, int count) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder repeat(java.lang.CharSequence cs, int count) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder appendCodePoint(int codePoint) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder delete(int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuilder deleteCharAt(int index) { return null; }
   < ---- END java signatures ---- >
 }

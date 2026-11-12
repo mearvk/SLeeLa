@@ -58,15 +58,24 @@ class ScopedValue<T> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public T get() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ScopedValue.get()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ScopedValue.hashCode()"); }
-  public static <T> java.lang.ScopedValue<T> newInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ScopedValue.newInstance()"); }
-  public T orElse(T other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ScopedValue.orElse(T)"); }
-  public <X extends java.lang.Throwable> T orElseThrow(java.util.function.Supplier<? extends X> exceptionSupplier) throws X { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ScopedValue.orElseThrow(java.util.function.Supplier<? extends X>)"); }
-  public static <T> java.lang.ScopedValue.Carrier where(java.lang.ScopedValue<T> key, T value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ScopedValue.where(java.lang.ScopedValue<T>, T)"); }
-  public boolean isBound() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ScopedValue.isBound()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public T get() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.lang.ScopedValue<T> newInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public T orElse(T other) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, X")
+  public <X extends java.lang.Throwable> T orElseThrow(java.util.function.Supplier<? extends X> exceptionSupplier) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.lang.ScopedValue.Carrier where(java.lang.ScopedValue<T> key, T value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBound() { return false; }
   < ---- END java signatures ---- >
 }

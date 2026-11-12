@@ -59,21 +59,33 @@ class PrintServiceLookup {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  PrintServiceLookup() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.PrintServiceLookup.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  PrintServiceLookup() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.print.PrintService getDefaultPrintService() { throw new AbstractMethodError("javax.print.PrintServiceLookup.getDefaultPrintService()"); }
-  public abstract javax.print.PrintService[] getPrintServices(javax.print.DocFlavor flavor, javax.print.attribute.AttributeSet attributes) { throw new AbstractMethodError("javax.print.PrintServiceLookup.getPrintServices(javax.print.DocFlavor, javax.print.attribute.AttributeSet)"); }
-  public abstract javax.print.PrintService[] getPrintServices() { throw new AbstractMethodError("javax.print.PrintServiceLookup.getPrintServices()"); }
-  public abstract javax.print.MultiDocPrintService[] getMultiDocPrintServices(javax.print.DocFlavor[] flavors, javax.print.attribute.AttributeSet attributes) { throw new AbstractMethodError("javax.print.PrintServiceLookup.getMultiDocPrintServices(javax.print.DocFlavor[], javax.print.attribute.AttributeSet)"); }
-  public static final javax.print.MultiDocPrintService[] lookupMultiDocPrintServices(javax.print.DocFlavor[] flavors, javax.print.attribute.AttributeSet attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.PrintServiceLookup.lookupMultiDocPrintServices(javax.print.DocFlavor[], javax.print.attribute.AttributeSet)"); }
-  public static final javax.print.PrintService lookupDefaultPrintService() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.PrintServiceLookup.lookupDefaultPrintService()"); }
-  public static boolean registerService(javax.print.PrintService service) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.PrintServiceLookup.registerService(javax.print.PrintService)"); }
-  public static boolean registerServiceProvider(javax.print.PrintServiceLookup sp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.PrintServiceLookup.registerServiceProvider(javax.print.PrintServiceLookup)"); }
-  public static final javax.print.PrintService[] lookupPrintServices(javax.print.DocFlavor flavor, javax.print.attribute.AttributeSet attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.PrintServiceLookup.lookupPrintServices(javax.print.DocFlavor, javax.print.attribute.AttributeSet)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.PrintService getDefaultPrintService() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.PrintService[] getPrintServices(javax.print.DocFlavor flavor, javax.print.attribute.AttributeSet attributes) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.PrintService[] getPrintServices() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.MultiDocPrintService[] getMultiDocPrintServices(javax.print.DocFlavor[] flavors, javax.print.attribute.AttributeSet attributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final javax.print.MultiDocPrintService[] lookupMultiDocPrintServices(javax.print.DocFlavor[] flavors, javax.print.attribute.AttributeSet attributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final javax.print.PrintService lookupDefaultPrintService() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean registerService(javax.print.PrintService service) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean registerServiceProvider(javax.print.PrintServiceLookup sp) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final javax.print.PrintService[] lookupPrintServices(javax.print.DocFlavor flavor, javax.print.attribute.AttributeSet attributes) { return null; }
   < ---- END java signatures ---- >
 }

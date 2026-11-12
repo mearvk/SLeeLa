@@ -58,17 +58,25 @@ class NumberUpSupported {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NumberUpSupported(int[][] members) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.NumberUpSupported.<init>(int[][])"); }
-  public NumberUpSupported(int lowerBound, int upperBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.NumberUpSupported.<init>(int, int)"); }
-  public NumberUpSupported(int member) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.NumberUpSupported.<init>(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NumberUpSupported(int[][] members) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NumberUpSupported(int lowerBound, int upperBound) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NumberUpSupported(int member) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.NumberUpSupported.getName()"); }
-  public boolean equals(java.lang.Object object) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.NumberUpSupported.equals(java.lang.Object)"); }
-  public final java.lang.Class<? extends javax.print.attribute.Attribute> getCategory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.NumberUpSupported.getCategory()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object object) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Class<? extends javax.print.attribute.Attribute> getCategory() { return null; }
   < ---- END java signatures ---- >
 }

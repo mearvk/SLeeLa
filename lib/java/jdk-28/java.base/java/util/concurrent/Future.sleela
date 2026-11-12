@@ -58,16 +58,26 @@ class Future<V> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract V get(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException { throw new AbstractMethodError("java.util.concurrent.Future.get(long, java.util.concurrent.TimeUnit)"); }
-  public abstract V get() throws java.lang.InterruptedException, java.util.concurrent.ExecutionException { throw new AbstractMethodError("java.util.concurrent.Future.get()"); }
-  public default java.util.concurrent.Future.State state() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Future.state()"); }
-  public abstract boolean isDone() { throw new AbstractMethodError("java.util.concurrent.Future.isDone()"); }
-  public abstract boolean cancel(boolean mayInterruptIfRunning) { throw new AbstractMethodError("java.util.concurrent.Future.cancel(boolean)"); }
-  public abstract boolean isCancelled() { throw new AbstractMethodError("java.util.concurrent.Future.isCancelled()"); }
-  public default V resultNow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Future.resultNow()"); }
-  public default java.lang.Throwable exceptionNow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Future.exceptionNow()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException")
+  public V get(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException, java.util.concurrent.ExecutionException")
+  public V get() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.concurrent.Future.State state() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDone() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean cancel(boolean mayInterruptIfRunning) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isCancelled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V resultNow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.Throwable exceptionNow() { return null; }
   < ---- END java signatures ---- >
 }

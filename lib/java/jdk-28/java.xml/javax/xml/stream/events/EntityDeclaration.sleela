@@ -58,14 +58,22 @@ class EntityDeclaration {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("javax.xml.stream.events.EntityDeclaration.getName()"); }
-  public abstract java.lang.String getNotationName() { throw new AbstractMethodError("javax.xml.stream.events.EntityDeclaration.getNotationName()"); }
-  public abstract java.lang.String getReplacementText() { throw new AbstractMethodError("javax.xml.stream.events.EntityDeclaration.getReplacementText()"); }
-  public abstract java.lang.String getBaseURI() { throw new AbstractMethodError("javax.xml.stream.events.EntityDeclaration.getBaseURI()"); }
-  public abstract java.lang.String getPublicId() { throw new AbstractMethodError("javax.xml.stream.events.EntityDeclaration.getPublicId()"); }
-  public abstract java.lang.String getSystemId() { throw new AbstractMethodError("javax.xml.stream.events.EntityDeclaration.getSystemId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getNotationName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getReplacementText() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getBaseURI() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getPublicId() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSystemId() { return null; }
   < ---- END java signatures ---- >
 }

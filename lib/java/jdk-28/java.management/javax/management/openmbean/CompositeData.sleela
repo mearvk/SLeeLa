@@ -58,17 +58,28 @@ class CompositeData {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object get(java.lang.String key) { throw new AbstractMethodError("javax.management.openmbean.CompositeData.get(java.lang.String)"); }
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("javax.management.openmbean.CompositeData.equals(java.lang.Object)"); }
-  public abstract java.lang.String toString() { throw new AbstractMethodError("javax.management.openmbean.CompositeData.toString()"); }
-  public abstract java.util.Collection<?> values() { throw new AbstractMethodError("javax.management.openmbean.CompositeData.values()"); }
-  public abstract int hashCode() { throw new AbstractMethodError("javax.management.openmbean.CompositeData.hashCode()"); }
-  public abstract boolean containsValue(java.lang.Object value) { throw new AbstractMethodError("javax.management.openmbean.CompositeData.containsValue(java.lang.Object)"); }
-  public abstract boolean containsKey(java.lang.String key) { throw new AbstractMethodError("javax.management.openmbean.CompositeData.containsKey(java.lang.String)"); }
-  public abstract java.lang.Object[] getAll(java.lang.String[] keys) { throw new AbstractMethodError("javax.management.openmbean.CompositeData.getAll(java.lang.String[])"); }
-  public abstract javax.management.openmbean.CompositeType getCompositeType() { throw new AbstractMethodError("javax.management.openmbean.CompositeData.getCompositeType()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object get(java.lang.String key) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Collection<?> values() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean containsValue(java.lang.Object value) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean containsKey(java.lang.String key) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object[] getAll(java.lang.String[] keys) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.openmbean.CompositeType getCompositeType() { return null; }
   < ---- END java signatures ---- >
 }

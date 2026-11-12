@@ -58,6 +58,7 @@ class PrintFilesEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PrintFilesEvent(java.util.List<java.io.File> files) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.desktop.PrintFilesEvent.<init>(java.util.List<java.io.File>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PrintFilesEvent(java.util.List<java.io.File> files) { }
   < ---- END java constructors ---- >
 }

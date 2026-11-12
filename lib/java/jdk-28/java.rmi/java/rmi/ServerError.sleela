@@ -58,6 +58,7 @@ class ServerError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ServerError(java.lang.String s, java.lang.Error err) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.ServerError.<init>(java.lang.String, java.lang.Error)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ServerError(java.lang.String s, java.lang.Error err) { }
   < ---- END java constructors ---- >
 }

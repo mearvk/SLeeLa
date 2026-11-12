@@ -65,32 +65,58 @@ class Range {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String toString() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.toString()"); }
-  public abstract void detach() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.detach()"); }
-  public abstract void setStart(org.w3c.dom.Node refNode, int offset) throws org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.setStart(org.w3c.dom.Node, int)"); }
-  public abstract void selectNode(org.w3c.dom.Node refNode) throws org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.selectNode(org.w3c.dom.Node)"); }
-  public abstract int getStartOffset() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.getStartOffset()"); }
-  public abstract int getEndOffset() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.getEndOffset()"); }
-  public abstract void setEnd(org.w3c.dom.Node refNode, int offset) throws org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.setEnd(org.w3c.dom.Node, int)"); }
-  public abstract void collapse(boolean toStart) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.collapse(boolean)"); }
-  public abstract org.w3c.dom.Node getStartContainer() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.getStartContainer()"); }
-  public abstract org.w3c.dom.Node getEndContainer() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.getEndContainer()"); }
-  public abstract boolean getCollapsed() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.getCollapsed()"); }
-  public abstract org.w3c.dom.Node getCommonAncestorContainer() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.getCommonAncestorContainer()"); }
-  public abstract void setStartBefore(org.w3c.dom.Node refNode) throws org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.setStartBefore(org.w3c.dom.Node)"); }
-  public abstract void setStartAfter(org.w3c.dom.Node refNode) throws org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.setStartAfter(org.w3c.dom.Node)"); }
-  public abstract void setEndBefore(org.w3c.dom.Node refNode) throws org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.setEndBefore(org.w3c.dom.Node)"); }
-  public abstract void setEndAfter(org.w3c.dom.Node refNode) throws org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.setEndAfter(org.w3c.dom.Node)"); }
-  public abstract void selectNodeContents(org.w3c.dom.Node refNode) throws org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.selectNodeContents(org.w3c.dom.Node)"); }
-  public abstract short compareBoundaryPoints(short how, org.w3c.dom.ranges.Range sourceRange) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.compareBoundaryPoints(short, org.w3c.dom.ranges.Range)"); }
-  public abstract void deleteContents() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.deleteContents()"); }
-  public abstract org.w3c.dom.DocumentFragment extractContents() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.extractContents()"); }
-  public abstract org.w3c.dom.DocumentFragment cloneContents() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.cloneContents()"); }
-  public abstract void insertNode(org.w3c.dom.Node newNode) throws org.w3c.dom.DOMException, org.w3c.dom.ranges.RangeException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.insertNode(org.w3c.dom.Node)"); }
-  public abstract void surroundContents(org.w3c.dom.Node newParent) throws org.w3c.dom.DOMException, org.w3c.dom.ranges.RangeException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.surroundContents(org.w3c.dom.Node)"); }
-  public abstract org.w3c.dom.ranges.Range cloneRange() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.ranges.Range.cloneRange()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void detach() { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
+  public void setStart(org.w3c.dom.Node refNode, int offset) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
+  public void selectNode(org.w3c.dom.Node refNode) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public int getStartOffset() { return 0; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public int getEndOffset() { return 0; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
+  public void setEnd(org.w3c.dom.Node refNode, int offset) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void collapse(boolean toStart) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Node getStartContainer() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Node getEndContainer() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public boolean getCollapsed() { return false; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Node getCommonAncestorContainer() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
+  public void setStartBefore(org.w3c.dom.Node refNode) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
+  public void setStartAfter(org.w3c.dom.Node refNode) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
+  public void setEndBefore(org.w3c.dom.Node refNode) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
+  public void setEndAfter(org.w3c.dom.Node refNode) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
+  public void selectNodeContents(org.w3c.dom.Node refNode) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public short compareBoundaryPoints(short how, org.w3c.dom.ranges.Range sourceRange) { return 0; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void deleteContents() { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.DocumentFragment extractContents() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.DocumentFragment cloneContents() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException, org.w3c.dom.ranges.RangeException")
+  public void insertNode(org.w3c.dom.Node newNode) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException, org.w3c.dom.ranges.RangeException")
+  public void surroundContents(org.w3c.dom.Node newParent) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.ranges.Range cloneRange() { return null; }
   < ---- END java signatures ---- >
 }

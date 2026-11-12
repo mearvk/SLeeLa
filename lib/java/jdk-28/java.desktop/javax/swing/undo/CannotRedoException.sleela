@@ -58,6 +58,7 @@ class CannotRedoException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CannotRedoException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.CannotRedoException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CannotRedoException() { }
   < ---- END java constructors ---- >
 }

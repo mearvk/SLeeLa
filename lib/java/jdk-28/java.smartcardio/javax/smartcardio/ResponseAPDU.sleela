@@ -58,21 +58,33 @@ class ResponseAPDU {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ResponseAPDU(byte[] apdu) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ResponseAPDU.<init>(byte[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ResponseAPDU(byte[] apdu) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ResponseAPDU.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ResponseAPDU.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ResponseAPDU.hashCode()"); }
-  public byte[] getBytes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ResponseAPDU.getBytes()"); }
-  public byte[] getData() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ResponseAPDU.getData()"); }
-  public int getSW1() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ResponseAPDU.getSW1()"); }
-  public int getSW2() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ResponseAPDU.getSW2()"); }
-  public int getSW() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ResponseAPDU.getSW()"); }
-  public int getNr() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ResponseAPDU.getNr()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getBytes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getData() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSW1() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSW2() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSW() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNr() { return 0; }
   < ---- END java signatures ---- >
 }

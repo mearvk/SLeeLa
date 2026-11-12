@@ -58,16 +58,26 @@ class Reference {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean validate(javax.xml.crypto.dsig.XMLValidateContext validateContext) throws javax.xml.crypto.dsig.XMLSignatureException { throw new AbstractMethodError("javax.xml.crypto.dsig.Reference.validate(javax.xml.crypto.dsig.XMLValidateContext)"); }
-  public abstract java.lang.String getId() { throw new AbstractMethodError("javax.xml.crypto.dsig.Reference.getId()"); }
-  public abstract java.util.List<javax.xml.crypto.dsig.Transform> getTransforms() { throw new AbstractMethodError("javax.xml.crypto.dsig.Reference.getTransforms()"); }
-  public abstract javax.xml.crypto.dsig.DigestMethod getDigestMethod() { throw new AbstractMethodError("javax.xml.crypto.dsig.Reference.getDigestMethod()"); }
-  public abstract byte[] getDigestValue() { throw new AbstractMethodError("javax.xml.crypto.dsig.Reference.getDigestValue()"); }
-  public abstract byte[] getCalculatedDigestValue() { throw new AbstractMethodError("javax.xml.crypto.dsig.Reference.getCalculatedDigestValue()"); }
-  public abstract javax.xml.crypto.Data getDereferencedData() { throw new AbstractMethodError("javax.xml.crypto.dsig.Reference.getDereferencedData()"); }
-  public abstract java.io.InputStream getDigestInputStream() { throw new AbstractMethodError("javax.xml.crypto.dsig.Reference.getDigestInputStream()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.xml.crypto.dsig.XMLSignatureException")
+  public boolean validate(javax.xml.crypto.dsig.XMLValidateContext validateContext) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getId() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<javax.xml.crypto.dsig.Transform> getTransforms() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.dsig.DigestMethod getDigestMethod() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] getDigestValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] getCalculatedDigestValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.crypto.Data getDereferencedData() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.InputStream getDigestInputStream() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,7 +58,9 @@ class InterruptedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InterruptedException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.InterruptedException.<init>()"); }
-  public InterruptedException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.InterruptedException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InterruptedException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InterruptedException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

@@ -58,24 +58,42 @@ class InputMethod {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.Locale getLocale() { throw new AbstractMethodError("java.awt.im.spi.InputMethod.getLocale()"); }
-  public abstract boolean setLocale(java.util.Locale locale) { throw new AbstractMethodError("java.awt.im.spi.InputMethod.setLocale(java.util.Locale)"); }
-  public abstract void deactivate(boolean isTemporary) { throw new AbstractMethodError("java.awt.im.spi.InputMethod.deactivate(boolean)"); }
-  public abstract void dispose() { throw new AbstractMethodError("java.awt.im.spi.InputMethod.dispose()"); }
-  public abstract void endComposition() { throw new AbstractMethodError("java.awt.im.spi.InputMethod.endComposition()"); }
-  public abstract void activate() { throw new AbstractMethodError("java.awt.im.spi.InputMethod.activate()"); }
-  public abstract void setCharacterSubsets(java.lang.Character.Subset[] subsets) { throw new AbstractMethodError("java.awt.im.spi.InputMethod.setCharacterSubsets(java.lang.Character.Subset[])"); }
-  public abstract void setCompositionEnabled(boolean enable) { throw new AbstractMethodError("java.awt.im.spi.InputMethod.setCompositionEnabled(boolean)"); }
-  public abstract boolean isCompositionEnabled() { throw new AbstractMethodError("java.awt.im.spi.InputMethod.isCompositionEnabled()"); }
-  public abstract void reconvert() { throw new AbstractMethodError("java.awt.im.spi.InputMethod.reconvert()"); }
-  public abstract void setInputMethodContext(java.awt.im.spi.InputMethodContext context) { throw new AbstractMethodError("java.awt.im.spi.InputMethod.setInputMethodContext(java.awt.im.spi.InputMethodContext)"); }
-  public abstract void notifyClientWindowChange(java.awt.Rectangle bounds) { throw new AbstractMethodError("java.awt.im.spi.InputMethod.notifyClientWindowChange(java.awt.Rectangle)"); }
-  public abstract void hideWindows() { throw new AbstractMethodError("java.awt.im.spi.InputMethod.hideWindows()"); }
-  public abstract java.lang.Object getControlObject() { throw new AbstractMethodError("java.awt.im.spi.InputMethod.getControlObject()"); }
-  public abstract void removeNotify() { throw new AbstractMethodError("java.awt.im.spi.InputMethod.removeNotify()"); }
-  public abstract void dispatchEvent(java.awt.AWTEvent event) { throw new AbstractMethodError("java.awt.im.spi.InputMethod.dispatchEvent(java.awt.AWTEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Locale getLocale() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean setLocale(java.util.Locale locale) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void deactivate(boolean isTemporary) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void dispose() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void endComposition() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void activate() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCharacterSubsets(java.lang.Character.Subset[] subsets) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCompositionEnabled(boolean enable) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isCompositionEnabled() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void reconvert() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setInputMethodContext(java.awt.im.spi.InputMethodContext context) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void notifyClientWindowChange(java.awt.Rectangle bounds) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void hideWindows() { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getControlObject() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeNotify() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void dispatchEvent(java.awt.AWTEvent event) { }
   < ---- END java signatures ---- >
 }

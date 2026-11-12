@@ -58,39 +58,72 @@ class Elements {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.lang.model.element.Name getName(java.lang.CharSequence cs) { throw new AbstractMethodError("javax.lang.model.util.Elements.getName(java.lang.CharSequence)"); }
-  public default boolean isBridge(javax.lang.model.element.ExecutableElement e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.isBridge(javax.lang.model.element.ExecutableElement)"); }
-  public abstract boolean isDeprecated(javax.lang.model.element.Element e) { throw new AbstractMethodError("javax.lang.model.util.Elements.isDeprecated(javax.lang.model.element.Element)"); }
-  public abstract boolean overrides(javax.lang.model.element.ExecutableElement overrider, javax.lang.model.element.ExecutableElement overridden, javax.lang.model.element.TypeElement type) { throw new AbstractMethodError("javax.lang.model.util.Elements.overrides(javax.lang.model.element.ExecutableElement, javax.lang.model.element.ExecutableElement, javax.lang.model.element.TypeElement)"); }
-  public abstract java.lang.String getConstantExpression(java.lang.Object value) { throw new AbstractMethodError("javax.lang.model.util.Elements.getConstantExpression(java.lang.Object)"); }
-  public default javax.lang.model.util.Elements.DocCommentKind getDocCommentKind(javax.lang.model.element.Element e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.getDocCommentKind(javax.lang.model.element.Element)"); }
-  public abstract java.lang.String getDocComment(javax.lang.model.element.Element e) { throw new AbstractMethodError("javax.lang.model.util.Elements.getDocComment(javax.lang.model.element.Element)"); }
-  public default java.util.Set<? extends javax.lang.model.element.ModuleElement> getAllModuleElements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.getAllModuleElements()"); }
-  public default javax.lang.model.element.PackageElement getPackageElement(javax.lang.model.element.ModuleElement module, java.lang.CharSequence name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.getPackageElement(javax.lang.model.element.ModuleElement, java.lang.CharSequence)"); }
-  public abstract javax.lang.model.element.PackageElement getPackageElement(java.lang.CharSequence name) { throw new AbstractMethodError("javax.lang.model.util.Elements.getPackageElement(java.lang.CharSequence)"); }
-  public default javax.lang.model.element.TypeElement getTypeElement(javax.lang.model.element.ModuleElement module, java.lang.CharSequence name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.getTypeElement(javax.lang.model.element.ModuleElement, java.lang.CharSequence)"); }
-  public abstract javax.lang.model.element.TypeElement getTypeElement(java.lang.CharSequence name) { throw new AbstractMethodError("javax.lang.model.util.Elements.getTypeElement(java.lang.CharSequence)"); }
-  public default java.util.Set<? extends javax.lang.model.element.PackageElement> getAllPackageElements(java.lang.CharSequence name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.getAllPackageElements(java.lang.CharSequence)"); }
-  public default java.util.Set<? extends javax.lang.model.element.TypeElement> getAllTypeElements(java.lang.CharSequence name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.getAllTypeElements(java.lang.CharSequence)"); }
-  public default javax.lang.model.element.ModuleElement getModuleElement(java.lang.CharSequence name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.getModuleElement(java.lang.CharSequence)"); }
-  public abstract java.util.Map<? extends javax.lang.model.element.ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> getElementValuesWithDefaults(javax.lang.model.element.AnnotationMirror a) { throw new AbstractMethodError("javax.lang.model.util.Elements.getElementValuesWithDefaults(javax.lang.model.element.AnnotationMirror)"); }
-  public abstract javax.lang.model.element.Name getBinaryName(javax.lang.model.element.TypeElement type) { throw new AbstractMethodError("javax.lang.model.util.Elements.getBinaryName(javax.lang.model.element.TypeElement)"); }
-  public abstract javax.lang.model.element.PackageElement getPackageOf(javax.lang.model.element.Element e) { throw new AbstractMethodError("javax.lang.model.util.Elements.getPackageOf(javax.lang.model.element.Element)"); }
-  public default javax.lang.model.element.ModuleElement getModuleOf(javax.lang.model.element.Element e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.getModuleOf(javax.lang.model.element.Element)"); }
-  public abstract java.util.List<? extends javax.lang.model.element.Element> getAllMembers(javax.lang.model.element.TypeElement type) { throw new AbstractMethodError("javax.lang.model.util.Elements.getAllMembers(javax.lang.model.element.TypeElement)"); }
-  public default javax.lang.model.element.TypeElement getOutermostTypeElement(javax.lang.model.element.Element e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.getOutermostTypeElement(javax.lang.model.element.Element)"); }
-  public abstract java.util.List<? extends javax.lang.model.element.AnnotationMirror> getAllAnnotationMirrors(javax.lang.model.element.Element e) { throw new AbstractMethodError("javax.lang.model.util.Elements.getAllAnnotationMirrors(javax.lang.model.element.Element)"); }
-  public abstract boolean hides(javax.lang.model.element.Element hider, javax.lang.model.element.Element hidden) { throw new AbstractMethodError("javax.lang.model.util.Elements.hides(javax.lang.model.element.Element, javax.lang.model.element.Element)"); }
-  public abstract void printElements(java.io.Writer w, javax.lang.model.element.Element... elements) { throw new AbstractMethodError("javax.lang.model.util.Elements.printElements(java.io.Writer, javax.lang.model.element.Element...)"); }
-  public abstract boolean isFunctionalInterface(javax.lang.model.element.TypeElement type) { throw new AbstractMethodError("javax.lang.model.util.Elements.isFunctionalInterface(javax.lang.model.element.TypeElement)"); }
-  public default boolean isAutomaticModule(javax.lang.model.element.ModuleElement module) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.isAutomaticModule(javax.lang.model.element.ModuleElement)"); }
-  public default javax.lang.model.element.TypeElement getEnumConstantBody(javax.lang.model.element.VariableElement enumConstant) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.getEnumConstantBody(javax.lang.model.element.VariableElement)"); }
-  public default javax.lang.model.element.RecordComponentElement recordComponentFor(javax.lang.model.element.ExecutableElement accessor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.recordComponentFor(javax.lang.model.element.ExecutableElement)"); }
-  public default boolean isCanonicalConstructor(javax.lang.model.element.ExecutableElement e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.isCanonicalConstructor(javax.lang.model.element.ExecutableElement)"); }
-  public default boolean isCompactConstructor(javax.lang.model.element.ExecutableElement e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.isCompactConstructor(javax.lang.model.element.ExecutableElement)"); }
-  public default javax.tools.JavaFileObject getFileObjectOf(javax.lang.model.element.Element e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.Elements.getFileObjectOf(javax.lang.model.element.Element)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.Name getName(java.lang.CharSequence cs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isBridge(javax.lang.model.element.ExecutableElement e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDeprecated(javax.lang.model.element.Element e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean overrides(javax.lang.model.element.ExecutableElement overrider, javax.lang.model.element.ExecutableElement overridden, javax.lang.model.element.TypeElement type) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getConstantExpression(java.lang.Object value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default javax.lang.model.util.Elements.DocCommentKind getDocCommentKind(javax.lang.model.element.Element e) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDocComment(javax.lang.model.element.Element e) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Set<? extends javax.lang.model.element.ModuleElement> getAllModuleElements() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default javax.lang.model.element.PackageElement getPackageElement(javax.lang.model.element.ModuleElement module, java.lang.CharSequence name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.PackageElement getPackageElement(java.lang.CharSequence name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default javax.lang.model.element.TypeElement getTypeElement(javax.lang.model.element.ModuleElement module, java.lang.CharSequence name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.TypeElement getTypeElement(java.lang.CharSequence name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Set<? extends javax.lang.model.element.PackageElement> getAllPackageElements(java.lang.CharSequence name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Set<? extends javax.lang.model.element.TypeElement> getAllTypeElements(java.lang.CharSequence name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default javax.lang.model.element.ModuleElement getModuleElement(java.lang.CharSequence name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Map<? extends javax.lang.model.element.ExecutableElement, ? extends javax.lang.model.element.AnnotationValue> getElementValuesWithDefaults(javax.lang.model.element.AnnotationMirror a) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.Name getBinaryName(javax.lang.model.element.TypeElement type) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.PackageElement getPackageOf(javax.lang.model.element.Element e) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default javax.lang.model.element.ModuleElement getModuleOf(javax.lang.model.element.Element e) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends javax.lang.model.element.Element> getAllMembers(javax.lang.model.element.TypeElement type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default javax.lang.model.element.TypeElement getOutermostTypeElement(javax.lang.model.element.Element e) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends javax.lang.model.element.AnnotationMirror> getAllAnnotationMirrors(javax.lang.model.element.Element e) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hides(javax.lang.model.element.Element hider, javax.lang.model.element.Element hidden) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void printElements(java.io.Writer w, javax.lang.model.element.Element... elements) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isFunctionalInterface(javax.lang.model.element.TypeElement type) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isAutomaticModule(javax.lang.model.element.ModuleElement module) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default javax.lang.model.element.TypeElement getEnumConstantBody(javax.lang.model.element.VariableElement enumConstant) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default javax.lang.model.element.RecordComponentElement recordComponentFor(javax.lang.model.element.ExecutableElement accessor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isCanonicalConstructor(javax.lang.model.element.ExecutableElement e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isCompactConstructor(javax.lang.model.element.ExecutableElement e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default javax.tools.JavaFileObject getFileObjectOf(javax.lang.model.element.Element e) { return null; }
   < ---- END java signatures ---- >
 }

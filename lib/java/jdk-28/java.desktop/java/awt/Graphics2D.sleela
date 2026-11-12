@@ -59,51 +59,93 @@ class Graphics2D {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Graphics2D() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics2D.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Graphics2D() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void scale(double sx, double sy) { throw new AbstractMethodError("java.awt.Graphics2D.scale(double, double)"); }
-  public abstract void fill(java.awt.Shape s) { throw new AbstractMethodError("java.awt.Graphics2D.fill(java.awt.Shape)"); }
-  public abstract void transform(java.awt.geom.AffineTransform Tx) { throw new AbstractMethodError("java.awt.Graphics2D.transform(java.awt.geom.AffineTransform)"); }
-  public abstract void rotate(double theta) { throw new AbstractMethodError("java.awt.Graphics2D.rotate(double)"); }
-  public abstract void rotate(double theta, double x, double y) { throw new AbstractMethodError("java.awt.Graphics2D.rotate(double, double, double)"); }
-  public abstract boolean hit(java.awt.Rectangle rect, java.awt.Shape s, boolean onStroke) { throw new AbstractMethodError("java.awt.Graphics2D.hit(java.awt.Rectangle, java.awt.Shape, boolean)"); }
-  public abstract void translate(int x, int y) { throw new AbstractMethodError("java.awt.Graphics2D.translate(int, int)"); }
-  public abstract void translate(double tx, double ty) { throw new AbstractMethodError("java.awt.Graphics2D.translate(double, double)"); }
-  public abstract java.awt.Color getBackground() { throw new AbstractMethodError("java.awt.Graphics2D.getBackground()"); }
-  public abstract void setBackground(java.awt.Color color) { throw new AbstractMethodError("java.awt.Graphics2D.setBackground(java.awt.Color)"); }
-  public abstract java.awt.font.FontRenderContext getFontRenderContext() { throw new AbstractMethodError("java.awt.Graphics2D.getFontRenderContext()"); }
-  public abstract void drawString(java.lang.String str, int x, int y) { throw new AbstractMethodError("java.awt.Graphics2D.drawString(java.lang.String, int, int)"); }
-  public abstract void drawString(java.text.AttributedCharacterIterator iterator, int x, int y) { throw new AbstractMethodError("java.awt.Graphics2D.drawString(java.text.AttributedCharacterIterator, int, int)"); }
-  public abstract void drawString(java.text.AttributedCharacterIterator iterator, float x, float y) { throw new AbstractMethodError("java.awt.Graphics2D.drawString(java.text.AttributedCharacterIterator, float, float)"); }
-  public abstract void drawString(java.lang.String str, float x, float y) { throw new AbstractMethodError("java.awt.Graphics2D.drawString(java.lang.String, float, float)"); }
-  public void draw3DRect(int x, int y, int width, int height, boolean raised) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics2D.draw3DRect(int, int, int, int, boolean)"); }
-  public void fill3DRect(int x, int y, int width, int height, boolean raised) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics2D.fill3DRect(int, int, int, int, boolean)"); }
-  public abstract boolean drawImage(java.awt.Image img, java.awt.geom.AffineTransform xform, java.awt.image.ImageObserver obs) { throw new AbstractMethodError("java.awt.Graphics2D.drawImage(java.awt.Image, java.awt.geom.AffineTransform, java.awt.image.ImageObserver)"); }
-  public abstract void drawImage(java.awt.image.BufferedImage img, java.awt.image.BufferedImageOp op, int x, int y) { throw new AbstractMethodError("java.awt.Graphics2D.drawImage(java.awt.image.BufferedImage, java.awt.image.BufferedImageOp, int, int)"); }
-  public abstract void shear(double shx, double shy) { throw new AbstractMethodError("java.awt.Graphics2D.shear(double, double)"); }
-  public abstract void setTransform(java.awt.geom.AffineTransform Tx) { throw new AbstractMethodError("java.awt.Graphics2D.setTransform(java.awt.geom.AffineTransform)"); }
-  public abstract void setComposite(java.awt.Composite comp) { throw new AbstractMethodError("java.awt.Graphics2D.setComposite(java.awt.Composite)"); }
-  public abstract java.awt.geom.AffineTransform getTransform() { throw new AbstractMethodError("java.awt.Graphics2D.getTransform()"); }
-  public abstract java.awt.Paint getPaint() { throw new AbstractMethodError("java.awt.Graphics2D.getPaint()"); }
-  public abstract void setPaint(java.awt.Paint paint) { throw new AbstractMethodError("java.awt.Graphics2D.setPaint(java.awt.Paint)"); }
-  public abstract void draw(java.awt.Shape s) { throw new AbstractMethodError("java.awt.Graphics2D.draw(java.awt.Shape)"); }
-  public abstract void drawRenderedImage(java.awt.image.RenderedImage img, java.awt.geom.AffineTransform xform) { throw new AbstractMethodError("java.awt.Graphics2D.drawRenderedImage(java.awt.image.RenderedImage, java.awt.geom.AffineTransform)"); }
-  public abstract void drawRenderableImage(java.awt.image.renderable.RenderableImage img, java.awt.geom.AffineTransform xform) { throw new AbstractMethodError("java.awt.Graphics2D.drawRenderableImage(java.awt.image.renderable.RenderableImage, java.awt.geom.AffineTransform)"); }
-  public abstract void drawGlyphVector(java.awt.font.GlyphVector g, float x, float y) { throw new AbstractMethodError("java.awt.Graphics2D.drawGlyphVector(java.awt.font.GlyphVector, float, float)"); }
-  public abstract java.awt.GraphicsConfiguration getDeviceConfiguration() { throw new AbstractMethodError("java.awt.Graphics2D.getDeviceConfiguration()"); }
-  public abstract void setStroke(java.awt.Stroke s) { throw new AbstractMethodError("java.awt.Graphics2D.setStroke(java.awt.Stroke)"); }
-  public abstract void setRenderingHint(java.awt.RenderingHints.Key hintKey, java.lang.Object hintValue) { throw new AbstractMethodError("java.awt.Graphics2D.setRenderingHint(java.awt.RenderingHints.Key, java.lang.Object)"); }
-  public abstract java.lang.Object getRenderingHint(java.awt.RenderingHints.Key hintKey) { throw new AbstractMethodError("java.awt.Graphics2D.getRenderingHint(java.awt.RenderingHints.Key)"); }
-  public abstract void setRenderingHints(java.util.Map<?, ?> hints) { throw new AbstractMethodError("java.awt.Graphics2D.setRenderingHints(java.util.Map<?, ?>)"); }
-  public abstract void addRenderingHints(java.util.Map<?, ?> hints) { throw new AbstractMethodError("java.awt.Graphics2D.addRenderingHints(java.util.Map<?, ?>)"); }
-  public abstract java.awt.RenderingHints getRenderingHints() { throw new AbstractMethodError("java.awt.Graphics2D.getRenderingHints()"); }
-  public abstract java.awt.Composite getComposite() { throw new AbstractMethodError("java.awt.Graphics2D.getComposite()"); }
-  public abstract java.awt.Stroke getStroke() { throw new AbstractMethodError("java.awt.Graphics2D.getStroke()"); }
-  public abstract void clip(java.awt.Shape s) { throw new AbstractMethodError("java.awt.Graphics2D.clip(java.awt.Shape)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void scale(double sx, double sy) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void fill(java.awt.Shape s) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void transform(java.awt.geom.AffineTransform Tx) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void rotate(double theta) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void rotate(double theta, double x, double y) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hit(java.awt.Rectangle rect, java.awt.Shape s, boolean onStroke) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void translate(int x, int y) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void translate(double tx, double ty) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Color getBackground() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBackground(java.awt.Color color) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.font.FontRenderContext getFontRenderContext() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawString(java.lang.String str, int x, int y) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawString(java.text.AttributedCharacterIterator iterator, int x, int y) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawString(java.text.AttributedCharacterIterator iterator, float x, float y) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawString(java.lang.String str, float x, float y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void draw3DRect(int x, int y, int width, int height, boolean raised) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fill3DRect(int x, int y, int width, int height, boolean raised) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean drawImage(java.awt.Image img, java.awt.geom.AffineTransform xform, java.awt.image.ImageObserver obs) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawImage(java.awt.image.BufferedImage img, java.awt.image.BufferedImageOp op, int x, int y) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void shear(double shx, double shy) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTransform(java.awt.geom.AffineTransform Tx) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setComposite(java.awt.Composite comp) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.geom.AffineTransform getTransform() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Paint getPaint() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setPaint(java.awt.Paint paint) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void draw(java.awt.Shape s) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawRenderedImage(java.awt.image.RenderedImage img, java.awt.geom.AffineTransform xform) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawRenderableImage(java.awt.image.renderable.RenderableImage img, java.awt.geom.AffineTransform xform) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawGlyphVector(java.awt.font.GlyphVector g, float x, float y) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.GraphicsConfiguration getDeviceConfiguration() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setStroke(java.awt.Stroke s) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setRenderingHint(java.awt.RenderingHints.Key hintKey, java.lang.Object hintValue) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getRenderingHint(java.awt.RenderingHints.Key hintKey) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setRenderingHints(java.util.Map<?, ?> hints) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addRenderingHints(java.util.Map<?, ?> hints) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.RenderingHints getRenderingHints() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Composite getComposite() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Stroke getStroke() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void clip(java.awt.Shape s) { }
   < ---- END java signatures ---- >
 }

@@ -58,30 +58,49 @@ class HashAttributeSet {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public HashAttributeSet(javax.print.attribute.Attribute[] attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.<init>(javax.print.attribute.Attribute[])"); }
-  public HashAttributeSet(javax.print.attribute.AttributeSet attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.<init>(javax.print.attribute.AttributeSet)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashAttributeSet(javax.print.attribute.Attribute[] attributes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashAttributeSet(javax.print.attribute.AttributeSet attributes) { }
   @JavaProtected
-  HashAttributeSet(javax.print.attribute.Attribute attribute, java.lang.Class<?> interfaceName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.<init>(javax.print.attribute.Attribute, java.lang.Class<?>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  HashAttributeSet(javax.print.attribute.Attribute attribute, java.lang.Class<?> interfaceName) { }
   @JavaProtected
-  HashAttributeSet(javax.print.attribute.Attribute[] attributes, java.lang.Class<?> interfaceName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.<init>(javax.print.attribute.Attribute[], java.lang.Class<?>)"); }
-  public HashAttributeSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  HashAttributeSet(javax.print.attribute.Attribute[] attributes, java.lang.Class<?> interfaceName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashAttributeSet() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean remove(java.lang.Class<?> category) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.remove(java.lang.Class<?>)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.size()"); }
-  public javax.print.attribute.Attribute get(java.lang.Class<?> category) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.get(java.lang.Class<?>)"); }
-  public boolean equals(java.lang.Object object) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.hashCode()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.clear()"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.isEmpty()"); }
-  public boolean add(javax.print.attribute.Attribute attribute) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.add(javax.print.attribute.Attribute)"); }
-  public javax.print.attribute.Attribute[] toArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.toArray()"); }
-  public boolean addAll(javax.print.attribute.AttributeSet attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.addAll(javax.print.attribute.AttributeSet)"); }
-  public boolean containsValue(javax.print.attribute.Attribute attribute) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.containsValue(javax.print.attribute.Attribute)"); }
-  public boolean containsKey(java.lang.Class<?> category) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashAttributeSet.containsKey(java.lang.Class<?>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Class<?> category) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.print.attribute.Attribute get(java.lang.Class<?> category) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object object) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean add(javax.print.attribute.Attribute attribute) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.print.attribute.Attribute[] toArray() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean addAll(javax.print.attribute.AttributeSet attributes) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsValue(javax.print.attribute.Attribute attribute) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsKey(java.lang.Class<?> category) { return false; }
   < ---- END java signatures ---- >
 }

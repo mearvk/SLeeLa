@@ -59,10 +59,14 @@ class BoxPainter {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public float getInset(int side, javax.swing.text.View v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.StyleSheet.BoxPainter.getInset(int, javax.swing.text.View)"); }
-  public void paint(java.awt.Graphics g, float x, float y, float w, float h, javax.swing.text.View v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.StyleSheet.BoxPainter.paint(java.awt.Graphics, float, float, float, float, javax.swing.text.View)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getInset(int side, javax.swing.text.View v) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, float x, float y, float w, float h, javax.swing.text.View v) { }
   < ---- END java signatures ---- >
 }

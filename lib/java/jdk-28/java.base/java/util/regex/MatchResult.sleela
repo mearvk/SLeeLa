@@ -58,20 +58,34 @@ class MatchResult {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String group(int group) { throw new AbstractMethodError("java.util.regex.MatchResult.group(int)"); }
-  public default java.lang.String group(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.MatchResult.group(java.lang.String)"); }
-  public abstract java.lang.String group() { throw new AbstractMethodError("java.util.regex.MatchResult.group()"); }
-  public default int end(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.MatchResult.end(java.lang.String)"); }
-  public abstract int end(int group) { throw new AbstractMethodError("java.util.regex.MatchResult.end(int)"); }
-  public abstract int end() { throw new AbstractMethodError("java.util.regex.MatchResult.end()"); }
-  public abstract int start() { throw new AbstractMethodError("java.util.regex.MatchResult.start()"); }
-  public default int start(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.MatchResult.start(java.lang.String)"); }
-  public abstract int start(int group) { throw new AbstractMethodError("java.util.regex.MatchResult.start(int)"); }
-  public default java.util.Map<java.lang.String, java.lang.Integer> namedGroups() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.MatchResult.namedGroups()"); }
-  public abstract int groupCount() { throw new AbstractMethodError("java.util.regex.MatchResult.groupCount()"); }
-  public default boolean hasMatch() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.regex.MatchResult.hasMatch()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String group(int group) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.String group(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String group() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default int end(java.lang.String name) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int end(int group) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int end() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int start() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default int start(java.lang.String name) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int start(int group) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Map<java.lang.String, java.lang.Integer> namedGroups() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int groupCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean hasMatch() { return false; }
   < ---- END java signatures ---- >
 }

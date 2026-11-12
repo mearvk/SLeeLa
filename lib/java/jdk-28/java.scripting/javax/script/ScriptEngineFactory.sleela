@@ -58,20 +58,34 @@ class ScriptEngineFactory {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object getParameter(java.lang.String key) { throw new AbstractMethodError("javax.script.ScriptEngineFactory.getParameter(java.lang.String)"); }
-  public abstract java.util.List<java.lang.String> getMimeTypes() { throw new AbstractMethodError("javax.script.ScriptEngineFactory.getMimeTypes()"); }
-  public abstract java.util.List<java.lang.String> getNames() { throw new AbstractMethodError("javax.script.ScriptEngineFactory.getNames()"); }
-  public abstract java.lang.String getEngineName() { throw new AbstractMethodError("javax.script.ScriptEngineFactory.getEngineName()"); }
-  public abstract java.lang.String getProgram(java.lang.String... statements) { throw new AbstractMethodError("javax.script.ScriptEngineFactory.getProgram(java.lang.String...)"); }
-  public abstract java.util.List<java.lang.String> getExtensions() { throw new AbstractMethodError("javax.script.ScriptEngineFactory.getExtensions()"); }
-  public abstract java.lang.String getEngineVersion() { throw new AbstractMethodError("javax.script.ScriptEngineFactory.getEngineVersion()"); }
-  public abstract java.lang.String getLanguageName() { throw new AbstractMethodError("javax.script.ScriptEngineFactory.getLanguageName()"); }
-  public abstract java.lang.String getLanguageVersion() { throw new AbstractMethodError("javax.script.ScriptEngineFactory.getLanguageVersion()"); }
-  public abstract java.lang.String getMethodCallSyntax(java.lang.String obj, java.lang.String m, java.lang.String... args) { throw new AbstractMethodError("javax.script.ScriptEngineFactory.getMethodCallSyntax(java.lang.String, java.lang.String, java.lang.String...)"); }
-  public abstract java.lang.String getOutputStatement(java.lang.String toDisplay) { throw new AbstractMethodError("javax.script.ScriptEngineFactory.getOutputStatement(java.lang.String)"); }
-  public abstract javax.script.ScriptEngine getScriptEngine() { throw new AbstractMethodError("javax.script.ScriptEngineFactory.getScriptEngine()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getParameter(java.lang.String key) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.String> getMimeTypes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.String> getNames() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getEngineName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getProgram(java.lang.String... statements) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.String> getExtensions() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getEngineVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getLanguageName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getLanguageVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getMethodCallSyntax(java.lang.String obj, java.lang.String m, java.lang.String... args) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getOutputStatement(java.lang.String toDisplay) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.script.ScriptEngine getScriptEngine() { return null; }
   < ---- END java signatures ---- >
 }

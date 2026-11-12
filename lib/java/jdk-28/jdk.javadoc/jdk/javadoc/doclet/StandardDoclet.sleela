@@ -58,19 +58,29 @@ class StandardDoclet {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StandardDoclet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.javadoc.doclet.StandardDoclet.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StandardDoclet() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.javadoc.doclet.StandardDoclet.getName()"); }
-  public boolean run(jdk.javadoc.doclet.DocletEnvironment docEnv) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.javadoc.doclet.StandardDoclet.run(jdk.javadoc.doclet.DocletEnvironment)"); }
-  public void init(java.util.Locale locale, jdk.javadoc.doclet.Reporter reporter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.javadoc.doclet.StandardDoclet.init(java.util.Locale, jdk.javadoc.doclet.Reporter)"); }
-  public java.util.Locale getLocale() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.javadoc.doclet.StandardDoclet.getLocale()"); }
-  public jdk.javadoc.doclet.Reporter getReporter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.javadoc.doclet.StandardDoclet.getReporter()"); }
-  public javax.lang.model.SourceVersion getSupportedSourceVersion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.javadoc.doclet.StandardDoclet.getSupportedSourceVersion()"); }
-  public java.util.Set<? extends jdk.javadoc.doclet.Doclet.Option> getSupportedOptions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.javadoc.doclet.StandardDoclet.getSupportedOptions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean run(jdk.javadoc.doclet.DocletEnvironment docEnv) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void init(java.util.Locale locale, jdk.javadoc.doclet.Reporter reporter) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale getLocale() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.javadoc.doclet.Reporter getReporter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.lang.model.SourceVersion getSupportedSourceVersion() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<? extends jdk.javadoc.doclet.Doclet.Option> getSupportedOptions() { return null; }
   < ---- END java signatures ---- >
 }

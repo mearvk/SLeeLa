@@ -58,7 +58,9 @@ class CharConversionException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CharConversionException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.CharConversionException.<init>()"); }
-  public CharConversionException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.CharConversionException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CharConversionException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CharConversionException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

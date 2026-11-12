@@ -131,107 +131,205 @@ class Character {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Character(char value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.<init>(char)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Character(char value) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static java.lang.String getName(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.getName(int)"); }
-  public static boolean isJavaIdentifierStart(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isJavaIdentifierStart(char)"); }
-  public static boolean isJavaIdentifierStart(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isJavaIdentifierStart(int)"); }
-  public static boolean isJavaIdentifierPart(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isJavaIdentifierPart(char)"); }
-  public static boolean isJavaIdentifierPart(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isJavaIdentifierPart(int)"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toString()"); }
-  public static java.lang.String toString(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toString(int)"); }
-  public static java.lang.String toString(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toString(char)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.hashCode()"); }
-  public static int hashCode(char value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.hashCode(char)"); }
-  public static char reverseBytes(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.reverseBytes(char)"); }
-  public int compareTo(java.lang.Character anotherCharacter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.compareTo(java.lang.Character)"); }
-  public static boolean isDigit(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isDigit(char)"); }
-  public static boolean isDigit(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isDigit(int)"); }
-  public static boolean isLowerCase(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isLowerCase(char)"); }
-  public static boolean isLowerCase(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isLowerCase(int)"); }
-  public static boolean isUpperCase(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isUpperCase(int)"); }
-  public static boolean isUpperCase(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isUpperCase(char)"); }
-  public static boolean isWhitespace(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isWhitespace(char)"); }
-  public static boolean isWhitespace(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isWhitespace(int)"); }
-  public static int compare(char x, char y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.compare(char, char)"); }
-  public char charValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.charValue()"); }
-  public static java.lang.Character valueOf(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.valueOf(char)"); }
-  public static char[] toChars(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toChars(int)"); }
-  public static int toChars(int codePoint, char[] dst, int dstIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toChars(int, char[], int)"); }
-  public static boolean isHighSurrogate(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isHighSurrogate(char)"); }
-  public static boolean isLowSurrogate(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isLowSurrogate(char)"); }
-  public static boolean isSurrogate(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isSurrogate(char)"); }
-  public static boolean isSupplementaryCodePoint(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isSupplementaryCodePoint(int)"); }
-  public static char highSurrogate(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.highSurrogate(int)"); }
-  public static char lowSurrogate(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.lowSurrogate(int)"); }
-  public static int toCodePoint(char high, char low) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toCodePoint(char, char)"); }
-  public static int codePointAt(java.lang.CharSequence seq, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.codePointAt(java.lang.CharSequence, int)"); }
-  public static int codePointAt(char[] a, int index, int limit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.codePointAt(char[], int, int)"); }
-  public static int codePointAt(char[] a, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.codePointAt(char[], int)"); }
-  public static int codePointBefore(java.lang.CharSequence seq, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.codePointBefore(java.lang.CharSequence, int)"); }
-  public static int codePointBefore(char[] a, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.codePointBefore(char[], int)"); }
-  public static int codePointBefore(char[] a, int index, int start) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.codePointBefore(char[], int, int)"); }
-  public static int codePointCount(java.lang.CharSequence seq, int beginIndex, int endIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.codePointCount(java.lang.CharSequence, int, int)"); }
-  public static int codePointCount(char[] a, int offset, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.codePointCount(char[], int, int)"); }
-  public static int offsetByCodePoints(char[] a, int start, int count, int index, int codePointOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.offsetByCodePoints(char[], int, int, int, int)"); }
-  public static int offsetByCodePoints(java.lang.CharSequence seq, int index, int codePointOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.offsetByCodePoints(java.lang.CharSequence, int, int)"); }
-  public static char toLowerCase(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toLowerCase(char)"); }
-  public static int toLowerCase(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toLowerCase(int)"); }
-  public static int toUpperCase(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toUpperCase(int)"); }
-  public static char toUpperCase(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toUpperCase(char)"); }
-  public static boolean isBmpCodePoint(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isBmpCodePoint(int)"); }
-  public java.util.Optional<java.lang.constant.DynamicConstantDesc<java.lang.Character>> describeConstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.describeConstable()"); }
-  public static int getType(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.getType(char)"); }
-  public static int getType(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.getType(int)"); }
-  public static boolean isLetter(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isLetter(char)"); }
-  public static boolean isLetter(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isLetter(int)"); }
-  public static boolean isLetterOrDigit(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isLetterOrDigit(int)"); }
-  public static boolean isLetterOrDigit(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isLetterOrDigit(char)"); }
-  public static boolean isValidCodePoint(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isValidCodePoint(int)"); }
-  public static boolean isTitleCase(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isTitleCase(int)"); }
-  public static boolean isTitleCase(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isTitleCase(char)"); }
-  public static boolean isDefined(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isDefined(char)"); }
-  public static boolean isDefined(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isDefined(int)"); }
-  public static boolean isIdeographic(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isIdeographic(int)"); }
-  public static boolean isUnicodeIdentifierStart(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isUnicodeIdentifierStart(int)"); }
-  public static boolean isUnicodeIdentifierStart(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isUnicodeIdentifierStart(char)"); }
-  public static boolean isUnicodeIdentifierPart(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isUnicodeIdentifierPart(int)"); }
-  public static boolean isUnicodeIdentifierPart(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isUnicodeIdentifierPart(char)"); }
-  public static boolean isIdentifierIgnorable(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isIdentifierIgnorable(int)"); }
-  public static boolean isIdentifierIgnorable(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isIdentifierIgnorable(char)"); }
-  public static boolean isEmoji(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isEmoji(int)"); }
-  public static boolean isEmojiPresentation(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isEmojiPresentation(int)"); }
-  public static boolean isEmojiModifier(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isEmojiModifier(int)"); }
-  public static boolean isEmojiModifierBase(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isEmojiModifierBase(int)"); }
-  public static boolean isEmojiComponent(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isEmojiComponent(int)"); }
-  public static boolean isExtendedPictographic(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isExtendedPictographic(int)"); }
-  public static char toTitleCase(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toTitleCase(char)"); }
-  public static int toTitleCase(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.toTitleCase(int)"); }
-  public static int digit(char ch, int radix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.digit(char, int)"); }
-  public static int digit(int codePoint, int radix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.digit(int, int)"); }
-  public static int getNumericValue(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.getNumericValue(int)"); }
-  public static int getNumericValue(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.getNumericValue(char)"); }
-  public static boolean isSpaceChar(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isSpaceChar(char)"); }
-  public static boolean isSpaceChar(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isSpaceChar(int)"); }
-  public static boolean isISOControl(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isISOControl(int)"); }
-  public static boolean isISOControl(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isISOControl(char)"); }
-  public static byte getDirectionality(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.getDirectionality(char)"); }
-  public static byte getDirectionality(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.getDirectionality(int)"); }
-  public static boolean isMirrored(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isMirrored(char)"); }
-  public static boolean isMirrored(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isMirrored(int)"); }
-  public static boolean isSurrogatePair(char high, char low) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isSurrogatePair(char, char)"); }
-  public static int charCount(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.charCount(int)"); }
-  public static boolean isJavaLetter(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isJavaLetter(char)"); }
-  public static boolean isJavaLetterOrDigit(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isJavaLetterOrDigit(char)"); }
-  public static boolean isAlphabetic(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isAlphabetic(int)"); }
-  public static boolean isSpace(char ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.isSpace(char)"); }
-  public static char forDigit(int digit, int radix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.forDigit(int, int)"); }
-  public static int codePointOf(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Character.codePointOf(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String getName(int codePoint) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isJavaIdentifierStart(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isJavaIdentifierStart(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isJavaIdentifierPart(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isJavaIdentifierPart(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String toString(int codePoint) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String toString(char c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int hashCode(char value) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static char reverseBytes(char ch) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.lang.Character anotherCharacter) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDigit(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDigit(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLowerCase(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLowerCase(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isUpperCase(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isUpperCase(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isWhitespace(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isWhitespace(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int compare(char x, char y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char charValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Character valueOf(char c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static char[] toChars(int codePoint) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int toChars(int codePoint, char[] dst, int dstIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isHighSurrogate(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLowSurrogate(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isSurrogate(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isSupplementaryCodePoint(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static char highSurrogate(int codePoint) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static char lowSurrogate(int codePoint) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int toCodePoint(char high, char low) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int codePointAt(java.lang.CharSequence seq, int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int codePointAt(char[] a, int index, int limit) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int codePointAt(char[] a, int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int codePointBefore(java.lang.CharSequence seq, int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int codePointBefore(char[] a, int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int codePointBefore(char[] a, int index, int start) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int codePointCount(java.lang.CharSequence seq, int beginIndex, int endIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int codePointCount(char[] a, int offset, int count) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int offsetByCodePoints(char[] a, int start, int count, int index, int codePointOffset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int offsetByCodePoints(java.lang.CharSequence seq, int index, int codePointOffset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static char toLowerCase(char ch) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int toLowerCase(int codePoint) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int toUpperCase(int codePoint) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static char toUpperCase(char ch) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isBmpCodePoint(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<java.lang.constant.DynamicConstantDesc<java.lang.Character>> describeConstable() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getType(char ch) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getType(int codePoint) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLetter(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLetter(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLetterOrDigit(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLetterOrDigit(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isValidCodePoint(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isTitleCase(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isTitleCase(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDefined(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDefined(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isIdeographic(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isUnicodeIdentifierStart(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isUnicodeIdentifierStart(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isUnicodeIdentifierPart(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isUnicodeIdentifierPart(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isIdentifierIgnorable(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isIdentifierIgnorable(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isEmoji(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isEmojiPresentation(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isEmojiModifier(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isEmojiModifierBase(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isEmojiComponent(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isExtendedPictographic(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static char toTitleCase(char ch) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int toTitleCase(int codePoint) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int digit(char ch, int radix) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int digit(int codePoint, int radix) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getNumericValue(int codePoint) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getNumericValue(char ch) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isSpaceChar(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isSpaceChar(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isISOControl(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isISOControl(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static byte getDirectionality(char ch) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static byte getDirectionality(int codePoint) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isMirrored(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isMirrored(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isSurrogatePair(char high, char low) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int charCount(int codePoint) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isJavaLetter(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isJavaLetterOrDigit(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isAlphabetic(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isSpace(char ch) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static char forDigit(int digit, int radix) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int codePointOf(java.lang.String name) { return 0; }
   < ---- END java signatures ---- >
 }

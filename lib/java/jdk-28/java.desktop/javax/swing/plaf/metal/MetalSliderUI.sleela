@@ -72,38 +72,57 @@ class MetalSliderUI {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MetalSliderUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MetalSliderUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void paintThumb(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.paintThumb(java.awt.Graphics)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintThumb(java.awt.Graphics g) { }
   @JavaProtected
-  java.awt.Dimension getThumbSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.getThumbSize()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Dimension getThumbSize() { return null; }
   @JavaProtected
-  void paintMinorTickForHorizSlider(java.awt.Graphics g, java.awt.Rectangle tickBounds, int x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.paintMinorTickForHorizSlider(java.awt.Graphics, java.awt.Rectangle, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintMinorTickForHorizSlider(java.awt.Graphics g, java.awt.Rectangle tickBounds, int x) { }
   @JavaProtected
-  void paintMajorTickForHorizSlider(java.awt.Graphics g, java.awt.Rectangle tickBounds, int x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.paintMajorTickForHorizSlider(java.awt.Graphics, java.awt.Rectangle, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintMajorTickForHorizSlider(java.awt.Graphics g, java.awt.Rectangle tickBounds, int x) { }
   @JavaProtected
-  void paintMinorTickForVertSlider(java.awt.Graphics g, java.awt.Rectangle tickBounds, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.paintMinorTickForVertSlider(java.awt.Graphics, java.awt.Rectangle, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintMinorTickForVertSlider(java.awt.Graphics g, java.awt.Rectangle tickBounds, int y) { }
   @JavaProtected
-  void paintMajorTickForVertSlider(java.awt.Graphics g, java.awt.Rectangle tickBounds, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.paintMajorTickForVertSlider(java.awt.Graphics, java.awt.Rectangle, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintMajorTickForVertSlider(java.awt.Graphics g, java.awt.Rectangle tickBounds, int y) { }
   @JavaProtected
-  void scrollDueToClickInTrack(int dir) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.scrollDueToClickInTrack(int)"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.installUI(javax.swing.JComponent)"); }
-  public int getTickLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.getTickLength()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void scrollDueToClickInTrack(int dir) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTickLength() { return 0; }
   @JavaProtected
-  int getThumbOverhang() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.getThumbOverhang()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getThumbOverhang() { return 0; }
   @JavaProtected
-  int getTrackWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.getTrackWidth()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getTrackWidth() { return 0; }
   @JavaProtected
-  int getTrackLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.getTrackLength()"); }
-  public void paintTrack(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.paintTrack(java.awt.Graphics)"); }
-  public void paintFocus(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.paintFocus(java.awt.Graphics)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getTrackLength() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintTrack(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintFocus(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  java.beans.PropertyChangeListener createPropertyChangeListener(javax.swing.JSlider slider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalSliderUI.createPropertyChangeListener(javax.swing.JSlider)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.beans.PropertyChangeListener createPropertyChangeListener(javax.swing.JSlider slider) { return null; }
   < ---- END java signatures ---- >
 }

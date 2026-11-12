@@ -59,8 +59,10 @@ class TypeKindVisitorPreview<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  TypeKindVisitorPreview() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitorPreview.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TypeKindVisitorPreview() { }
   @JavaProtected
-  TypeKindVisitorPreview(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitorPreview.<init>(R)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TypeKindVisitorPreview(R defaultValue) { }
   < ---- END java constructors ---- >
 }

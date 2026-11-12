@@ -58,26 +58,46 @@ class HTMLDocument {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void write(java.lang.String text) { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.write(java.lang.String)"); }
-  public abstract void open() { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.open()"); }
-  public abstract void writeln(java.lang.String text) { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.writeln(java.lang.String)"); }
-  public abstract java.lang.String getURL() { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.getURL()"); }
-  public abstract org.w3c.dom.html.HTMLElement getBody() { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.getBody()"); }
-  public abstract java.lang.String getTitle() { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.getTitle()"); }
-  public abstract void setTitle(java.lang.String title) { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.setTitle(java.lang.String)"); }
-  public abstract java.lang.String getCookie() { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.getCookie()"); }
-  public abstract java.lang.String getDomain() { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.getDomain()"); }
-  public abstract org.w3c.dom.html.HTMLCollection getApplets() { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.getApplets()"); }
-  public abstract java.lang.String getReferrer() { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.getReferrer()"); }
-  public abstract void setBody(org.w3c.dom.html.HTMLElement body) { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.setBody(org.w3c.dom.html.HTMLElement)"); }
-  public abstract org.w3c.dom.html.HTMLCollection getImages() { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.getImages()"); }
-  public abstract org.w3c.dom.html.HTMLCollection getLinks() { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.getLinks()"); }
-  public abstract org.w3c.dom.html.HTMLCollection getForms() { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.getForms()"); }
-  public abstract org.w3c.dom.html.HTMLCollection getAnchors() { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.getAnchors()"); }
-  public abstract void setCookie(java.lang.String cookie) { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.setCookie(java.lang.String)"); }
-  public abstract org.w3c.dom.NodeList getElementsByName(java.lang.String elementName) { throw new AbstractMethodError("org.w3c.dom.html.HTMLDocument.getElementsByName(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void write(java.lang.String text) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void open() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void writeln(java.lang.String text) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getURL() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLElement getBody() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getTitle() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTitle(java.lang.String title) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCookie() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDomain() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLCollection getApplets() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getReferrer() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBody(org.w3c.dom.html.HTMLElement body) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLCollection getImages() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLCollection getLinks() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLCollection getForms() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLCollection getAnchors() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCookie(java.lang.String cookie) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.NodeList getElementsByName(java.lang.String elementName) { return null; }
   < ---- END java signatures ---- >
 }

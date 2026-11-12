@@ -58,41 +58,73 @@ class StampedLock {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StampedLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StampedLock() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.toString()"); }
-  public boolean validate(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.validate(long)"); }
-  public void unlock(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.unlock(long)"); }
-  public long readLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.readLock()"); }
-  public long writeLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.writeLock()"); }
-  public int getReadLockCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.getReadLockCount()"); }
-  public boolean isWriteLocked() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.isWriteLocked()"); }
-  public long tryReadLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryReadLock()"); }
-  public long tryReadLock(long time, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryReadLock(long, java.util.concurrent.TimeUnit)"); }
-  public long tryWriteLock(long time, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryWriteLock(long, java.util.concurrent.TimeUnit)"); }
-  public long tryWriteLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryWriteLock()"); }
-  public void unlockWrite(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.unlockWrite(long)"); }
-  public void unlockRead(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.unlockRead(long)"); }
-  public long writeLockInterruptibly() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.writeLockInterruptibly()"); }
-  public long readLockInterruptibly() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.readLockInterruptibly()"); }
-  public long tryOptimisticRead() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryOptimisticRead()"); }
-  public long tryConvertToWriteLock(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryConvertToWriteLock(long)"); }
-  public long tryConvertToReadLock(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryConvertToReadLock(long)"); }
-  public long tryConvertToOptimisticRead(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryConvertToOptimisticRead(long)"); }
-  public boolean tryUnlockWrite() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryUnlockWrite()"); }
-  public boolean tryUnlockRead() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.tryUnlockRead()"); }
-  public boolean isReadLocked() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.isReadLocked()"); }
-  public static boolean isWriteLockStamp(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.isWriteLockStamp(long)"); }
-  public static boolean isReadLockStamp(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.isReadLockStamp(long)"); }
-  public static boolean isLockStamp(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.isLockStamp(long)"); }
-  public static boolean isOptimisticReadStamp(long stamp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.isOptimisticReadStamp(long)"); }
-  public java.util.concurrent.locks.Lock asReadLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.asReadLock()"); }
-  public java.util.concurrent.locks.Lock asWriteLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.asWriteLock()"); }
-  public java.util.concurrent.locks.ReadWriteLock asReadWriteLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.StampedLock.asReadWriteLock()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean validate(long stamp) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void unlock(long stamp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long readLock() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long writeLock() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getReadLockCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isWriteLocked() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long tryReadLock() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public long tryReadLock(long time, java.util.concurrent.TimeUnit unit) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public long tryWriteLock(long time, java.util.concurrent.TimeUnit unit) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long tryWriteLock() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void unlockWrite(long stamp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void unlockRead(long stamp) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public long writeLockInterruptibly() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public long readLockInterruptibly() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long tryOptimisticRead() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long tryConvertToWriteLock(long stamp) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long tryConvertToReadLock(long stamp) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long tryConvertToOptimisticRead(long stamp) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean tryUnlockWrite() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean tryUnlockRead() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isReadLocked() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isWriteLockStamp(long stamp) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isReadLockStamp(long stamp) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLockStamp(long stamp) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isOptimisticReadStamp(long stamp) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.locks.Lock asReadLock() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.locks.Lock asWriteLock() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.locks.ReadWriteLock asReadWriteLock() { return null; }
   < ---- END java signatures ---- >
 }

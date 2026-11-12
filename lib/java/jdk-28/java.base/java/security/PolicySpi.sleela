@@ -58,18 +58,24 @@ class PolicySpi {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PolicySpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PolicySpi.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PolicySpi() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.security.PermissionCollection engineGetPermissions(java.security.CodeSource codesource) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PolicySpi.engineGetPermissions(java.security.CodeSource)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.security.PermissionCollection engineGetPermissions(java.security.CodeSource codesource) { return null; }
   @JavaProtected
-  abstract boolean engineImplies(java.security.ProtectionDomain domain, java.security.Permission permission) { throw new AbstractMethodError("java.security.PolicySpi.engineImplies(java.security.ProtectionDomain, java.security.Permission)"); }
+  @throwable("java.lang.AbstractMethodError")
+  boolean engineImplies(java.security.ProtectionDomain domain, java.security.Permission permission) { return false; }
   @JavaProtected
-  void engineRefresh() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.PolicySpi.engineRefresh()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void engineRefresh() { }
   < ---- END java signatures ---- >
 }

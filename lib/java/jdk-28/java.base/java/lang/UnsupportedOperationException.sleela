@@ -58,9 +58,13 @@ class UnsupportedOperationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnsupportedOperationException(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.UnsupportedOperationException.<init>(java.lang.Throwable)"); }
-  public UnsupportedOperationException(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.UnsupportedOperationException.<init>(java.lang.String, java.lang.Throwable)"); }
-  public UnsupportedOperationException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.UnsupportedOperationException.<init>(java.lang.String)"); }
-  public UnsupportedOperationException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.UnsupportedOperationException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsupportedOperationException(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsupportedOperationException(java.lang.String message, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsupportedOperationException(java.lang.String message) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsupportedOperationException() { }
   < ---- END java constructors ---- >
 }

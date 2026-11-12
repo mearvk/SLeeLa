@@ -58,7 +58,9 @@ class UnsupportedClassVersionError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnsupportedClassVersionError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.UnsupportedClassVersionError.<init>()"); }
-  public UnsupportedClassVersionError(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.UnsupportedClassVersionError.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsupportedClassVersionError() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsupportedClassVersionError(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

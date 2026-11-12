@@ -58,7 +58,9 @@ class NativeMethodException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NativeMethodException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.NativeMethodException.<init>()"); }
-  public NativeMethodException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.NativeMethodException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NativeMethodException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NativeMethodException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

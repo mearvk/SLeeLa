@@ -63,37 +63,65 @@ class MetalIconFactory {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MetalIconFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MetalIconFactory() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.swing.Icon getFileChooserDetailViewIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getFileChooserDetailViewIcon()"); }
-  public static javax.swing.Icon getFileChooserHomeFolderIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getFileChooserHomeFolderIcon()"); }
-  public static javax.swing.Icon getFileChooserListViewIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getFileChooserListViewIcon()"); }
-  public static javax.swing.Icon getFileChooserNewFolderIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getFileChooserNewFolderIcon()"); }
-  public static javax.swing.Icon getFileChooserUpFolderIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getFileChooserUpFolderIcon()"); }
-  public static javax.swing.Icon getInternalFrameAltMaximizeIcon(int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getInternalFrameAltMaximizeIcon(int)"); }
-  public static javax.swing.Icon getInternalFrameCloseIcon(int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getInternalFrameCloseIcon(int)"); }
-  public static javax.swing.Icon getInternalFrameDefaultMenuIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getInternalFrameDefaultMenuIcon()"); }
-  public static javax.swing.Icon getInternalFrameMaximizeIcon(int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getInternalFrameMaximizeIcon(int)"); }
-  public static javax.swing.Icon getInternalFrameMinimizeIcon(int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getInternalFrameMinimizeIcon(int)"); }
-  public static javax.swing.Icon getTreeComputerIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getTreeComputerIcon()"); }
-  public static javax.swing.Icon getTreeFloppyDriveIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getTreeFloppyDriveIcon()"); }
-  public static javax.swing.Icon getTreeFolderIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getTreeFolderIcon()"); }
-  public static javax.swing.Icon getTreeHardDriveIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getTreeHardDriveIcon()"); }
-  public static javax.swing.Icon getTreeLeafIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getTreeLeafIcon()"); }
-  public static javax.swing.Icon getTreeControlIcon(boolean isCollapsed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getTreeControlIcon(boolean)"); }
-  public static javax.swing.Icon getHorizontalSliderThumbIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getHorizontalSliderThumbIcon()"); }
-  public static javax.swing.Icon getVerticalSliderThumbIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getVerticalSliderThumbIcon()"); }
-  public static javax.swing.Icon getMenuItemCheckIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getMenuItemCheckIcon()"); }
-  public static javax.swing.Icon getMenuItemArrowIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getMenuItemArrowIcon()"); }
-  public static javax.swing.Icon getMenuArrowIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getMenuArrowIcon()"); }
-  public static javax.swing.Icon getCheckBoxIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getCheckBoxIcon()"); }
-  public static javax.swing.Icon getRadioButtonIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getRadioButtonIcon()"); }
-  public static javax.swing.Icon getCheckBoxMenuItemIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getCheckBoxMenuItemIcon()"); }
-  public static javax.swing.Icon getRadioButtonMenuItemIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.getRadioButtonMenuItemIcon()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getFileChooserDetailViewIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getFileChooserHomeFolderIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getFileChooserListViewIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getFileChooserNewFolderIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getFileChooserUpFolderIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getInternalFrameAltMaximizeIcon(int size) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getInternalFrameCloseIcon(int size) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getInternalFrameDefaultMenuIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getInternalFrameMaximizeIcon(int size) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getInternalFrameMinimizeIcon(int size) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getTreeComputerIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getTreeFloppyDriveIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getTreeFolderIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getTreeHardDriveIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getTreeLeafIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getTreeControlIcon(boolean isCollapsed) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getHorizontalSliderThumbIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getVerticalSliderThumbIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getMenuItemCheckIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getMenuItemArrowIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getMenuArrowIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getCheckBoxIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getRadioButtonIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getCheckBoxMenuItemIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Icon getRadioButtonMenuItemIcon() { return null; }
   < ---- END java signatures ---- >
 }

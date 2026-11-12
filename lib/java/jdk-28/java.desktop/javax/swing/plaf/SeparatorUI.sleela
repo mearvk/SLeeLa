@@ -59,6 +59,7 @@ class SeparatorUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SeparatorUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.SeparatorUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SeparatorUI() { }
   < ---- END java constructors ---- >
 }

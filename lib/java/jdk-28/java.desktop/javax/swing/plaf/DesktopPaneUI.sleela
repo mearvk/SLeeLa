@@ -59,6 +59,7 @@ class DesktopPaneUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  DesktopPaneUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.DesktopPaneUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  DesktopPaneUI() { }
   < ---- END java constructors ---- >
 }

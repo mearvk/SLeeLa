@@ -62,41 +62,59 @@ class SignatureSpi {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SignatureSpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SignatureSpi.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SignatureSpi() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SignatureSpi.clone()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
+  public java.lang.Object clone() { return null; }
   @JavaProtected
-  java.security.AlgorithmParameters engineGetParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SignatureSpi.engineGetParameters()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.security.AlgorithmParameters engineGetParameters() { return null; }
   @JavaProtected
-  abstract void engineUpdate(byte b) throws java.security.SignatureException { throw new AbstractMethodError("java.security.SignatureSpi.engineUpdate(byte)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.SignatureException")
+  void engineUpdate(byte b) { }
   @JavaProtected
-  abstract void engineUpdate(byte[] b, int off, int len) throws java.security.SignatureException { throw new AbstractMethodError("java.security.SignatureSpi.engineUpdate(byte[], int, int)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.SignatureException")
+  void engineUpdate(byte[] b, int off, int len) { }
   @JavaProtected
-  void engineUpdate(java.nio.ByteBuffer input) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SignatureSpi.engineUpdate(java.nio.ByteBuffer)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void engineUpdate(java.nio.ByteBuffer input) { }
   @JavaProtected
-  abstract void engineInitVerify(java.security.PublicKey publicKey) throws java.security.InvalidKeyException { throw new AbstractMethodError("java.security.SignatureSpi.engineInitVerify(java.security.PublicKey)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidKeyException")
+  void engineInitVerify(java.security.PublicKey publicKey) { }
   @JavaProtected
-  void engineInitSign(java.security.PrivateKey privateKey, java.security.SecureRandom random) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SignatureSpi.engineInitSign(java.security.PrivateKey, java.security.SecureRandom)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException")
+  void engineInitSign(java.security.PrivateKey privateKey, java.security.SecureRandom random) { }
   @JavaProtected
-  abstract void engineInitSign(java.security.PrivateKey privateKey) throws java.security.InvalidKeyException { throw new AbstractMethodError("java.security.SignatureSpi.engineInitSign(java.security.PrivateKey)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidKeyException")
+  void engineInitSign(java.security.PrivateKey privateKey) { }
   @JavaProtected
-  abstract byte[] engineSign() throws java.security.SignatureException { throw new AbstractMethodError("java.security.SignatureSpi.engineSign()"); }
+  @throwable("java.lang.AbstractMethodError, java.security.SignatureException")
+  byte[] engineSign() { return null; }
   @JavaProtected
-  int engineSign(byte[] outbuf, int offset, int len) throws java.security.SignatureException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SignatureSpi.engineSign(byte[], int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.security.SignatureException")
+  int engineSign(byte[] outbuf, int offset, int len) { return 0; }
   @JavaProtected
-  boolean engineVerify(byte[] sigBytes, int offset, int length) throws java.security.SignatureException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SignatureSpi.engineVerify(byte[], int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.security.SignatureException")
+  boolean engineVerify(byte[] sigBytes, int offset, int length) { return false; }
   @JavaProtected
-  abstract boolean engineVerify(byte[] sigBytes) throws java.security.SignatureException { throw new AbstractMethodError("java.security.SignatureSpi.engineVerify(byte[])"); }
+  @throwable("java.lang.AbstractMethodError, java.security.SignatureException")
+  boolean engineVerify(byte[] sigBytes) { return false; }
   @JavaProtected
-  void engineSetParameter(java.security.spec.AlgorithmParameterSpec params) throws java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SignatureSpi.engineSetParameter(java.security.spec.AlgorithmParameterSpec)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidAlgorithmParameterException")
+  void engineSetParameter(java.security.spec.AlgorithmParameterSpec params) { }
   @JavaProtected
-  abstract void engineSetParameter(java.lang.String param, java.lang.Object value) throws java.security.InvalidParameterException { throw new AbstractMethodError("java.security.SignatureSpi.engineSetParameter(java.lang.String, java.lang.Object)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidParameterException")
+  void engineSetParameter(java.lang.String param, java.lang.Object value) { }
   @JavaProtected
-  abstract java.lang.Object engineGetParameter(java.lang.String param) throws java.security.InvalidParameterException { throw new AbstractMethodError("java.security.SignatureSpi.engineGetParameter(java.lang.String)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidParameterException")
+  java.lang.Object engineGetParameter(java.lang.String param) { return null; }
   < ---- END java signatures ---- >
 }

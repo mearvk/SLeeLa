@@ -83,34 +83,62 @@ class IIOMetadataFormat {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getRootName() { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getRootName()"); }
-  public abstract java.lang.String[] getAttributeNames(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeNames(java.lang.String)"); }
-  public abstract boolean canNodeAppear(java.lang.String elementName, javax.imageio.ImageTypeSpecifier imageType) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.canNodeAppear(java.lang.String, javax.imageio.ImageTypeSpecifier)"); }
-  public abstract int getElementMinChildren(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getElementMinChildren(java.lang.String)"); }
-  public abstract int getElementMaxChildren(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getElementMaxChildren(java.lang.String)"); }
-  public abstract java.lang.String getElementDescription(java.lang.String elementName, java.util.Locale locale) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getElementDescription(java.lang.String, java.util.Locale)"); }
-  public abstract int getChildPolicy(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getChildPolicy(java.lang.String)"); }
-  public abstract java.lang.String[] getChildNames(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getChildNames(java.lang.String)"); }
-  public abstract int getAttributeValueType(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeValueType(java.lang.String, java.lang.String)"); }
-  public abstract int getAttributeDataType(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeDataType(java.lang.String, java.lang.String)"); }
-  public abstract boolean isAttributeRequired(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.isAttributeRequired(java.lang.String, java.lang.String)"); }
-  public abstract java.lang.String getAttributeDefaultValue(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeDefaultValue(java.lang.String, java.lang.String)"); }
-  public abstract java.lang.String[] getAttributeEnumerations(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeEnumerations(java.lang.String, java.lang.String)"); }
-  public abstract java.lang.String getAttributeMinValue(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeMinValue(java.lang.String, java.lang.String)"); }
-  public abstract java.lang.String getAttributeMaxValue(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeMaxValue(java.lang.String, java.lang.String)"); }
-  public abstract int getAttributeListMinLength(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeListMinLength(java.lang.String, java.lang.String)"); }
-  public abstract int getAttributeListMaxLength(java.lang.String elementName, java.lang.String attrName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeListMaxLength(java.lang.String, java.lang.String)"); }
-  public abstract java.lang.String getAttributeDescription(java.lang.String elementName, java.lang.String attrName, java.util.Locale locale) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getAttributeDescription(java.lang.String, java.lang.String, java.util.Locale)"); }
-  public abstract int getObjectValueType(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectValueType(java.lang.String)"); }
-  public abstract java.lang.Class<?> getObjectClass(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectClass(java.lang.String)"); }
-  public abstract java.lang.Object getObjectDefaultValue(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectDefaultValue(java.lang.String)"); }
-  public abstract java.lang.Object[] getObjectEnumerations(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectEnumerations(java.lang.String)"); }
-  public abstract java.lang.Comparable<?> getObjectMinValue(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectMinValue(java.lang.String)"); }
-  public abstract java.lang.Comparable<?> getObjectMaxValue(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectMaxValue(java.lang.String)"); }
-  public abstract int getObjectArrayMinLength(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectArrayMinLength(java.lang.String)"); }
-  public abstract int getObjectArrayMaxLength(java.lang.String elementName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadataFormat.getObjectArrayMaxLength(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getRootName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getAttributeNames(java.lang.String elementName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canNodeAppear(java.lang.String elementName, javax.imageio.ImageTypeSpecifier imageType) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getElementMinChildren(java.lang.String elementName) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getElementMaxChildren(java.lang.String elementName) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getElementDescription(java.lang.String elementName, java.util.Locale locale) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getChildPolicy(java.lang.String elementName) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getChildNames(java.lang.String elementName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getAttributeValueType(java.lang.String elementName, java.lang.String attrName) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getAttributeDataType(java.lang.String elementName, java.lang.String attrName) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isAttributeRequired(java.lang.String elementName, java.lang.String attrName) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAttributeDefaultValue(java.lang.String elementName, java.lang.String attrName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getAttributeEnumerations(java.lang.String elementName, java.lang.String attrName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAttributeMinValue(java.lang.String elementName, java.lang.String attrName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAttributeMaxValue(java.lang.String elementName, java.lang.String attrName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getAttributeListMinLength(java.lang.String elementName, java.lang.String attrName) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getAttributeListMaxLength(java.lang.String elementName, java.lang.String attrName) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAttributeDescription(java.lang.String elementName, java.lang.String attrName, java.util.Locale locale) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getObjectValueType(java.lang.String elementName) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Class<?> getObjectClass(java.lang.String elementName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getObjectDefaultValue(java.lang.String elementName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object[] getObjectEnumerations(java.lang.String elementName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Comparable<?> getObjectMinValue(java.lang.String elementName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Comparable<?> getObjectMaxValue(java.lang.String elementName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getObjectArrayMinLength(java.lang.String elementName) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getObjectArrayMaxLength(java.lang.String elementName) { return 0; }
   < ---- END java signatures ---- >
 }

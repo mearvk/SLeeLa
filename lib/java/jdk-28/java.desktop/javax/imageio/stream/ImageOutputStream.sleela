@@ -58,31 +58,56 @@ class ImageOutputStream {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void write(byte[] b, int off, int len) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.write(byte[], int, int)"); }
-  public abstract void write(byte[] b) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.write(byte[])"); }
-  public abstract void write(int b) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.write(int)"); }
-  public abstract void writeInt(int v) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeInt(int)"); }
-  public abstract void writeUTF(java.lang.String s) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeUTF(java.lang.String)"); }
-  public abstract void writeLong(long v) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeLong(long)"); }
-  public abstract void writeByte(int v) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeByte(int)"); }
-  public abstract void writeShort(int v) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeShort(int)"); }
-  public abstract void writeBytes(java.lang.String s) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeBytes(java.lang.String)"); }
-  public abstract void writeChar(int v) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeChar(int)"); }
-  public abstract void writeFloat(float v) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeFloat(float)"); }
-  public abstract void writeDouble(double v) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeDouble(double)"); }
-  public abstract void writeBoolean(boolean v) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeBoolean(boolean)"); }
-  public abstract void writeChars(char[] c, int off, int len) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeChars(char[], int, int)"); }
-  public abstract void writeChars(java.lang.String s) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeChars(java.lang.String)"); }
-  public abstract void writeBit(int bit) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeBit(int)"); }
-  public abstract void flushBefore(long pos) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.flushBefore(long)"); }
-  public abstract void writeBits(long bits, int numBits) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeBits(long, int)"); }
-  public abstract void writeInts(int[] i, int off, int len) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeInts(int[], int, int)"); }
-  public abstract void writeLongs(long[] l, int off, int len) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeLongs(long[], int, int)"); }
-  public abstract void writeFloats(float[] f, int off, int len) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeFloats(float[], int, int)"); }
-  public abstract void writeDoubles(double[] d, int off, int len) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeDoubles(double[], int, int)"); }
-  public abstract void writeShorts(short[] s, int off, int len) throws java.io.IOException { throw new AbstractMethodError("javax.imageio.stream.ImageOutputStream.writeShorts(short[], int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void write(byte[] b, int off, int len) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void write(byte[] b) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void write(int b) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeInt(int v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeUTF(java.lang.String s) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeLong(long v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeByte(int v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeShort(int v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeBytes(java.lang.String s) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeChar(int v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeFloat(float v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeDouble(double v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeBoolean(boolean v) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeChars(char[] c, int off, int len) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeChars(java.lang.String s) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeBit(int bit) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void flushBefore(long pos) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeBits(long bits, int numBits) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeInts(int[] i, int off, int len) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeLongs(long[] l, int off, int len) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeFloats(float[] f, int off, int len) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeDoubles(double[] d, int off, int len) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void writeShorts(short[] s, int off, int len) { }
   < ---- END java signatures ---- >
 }

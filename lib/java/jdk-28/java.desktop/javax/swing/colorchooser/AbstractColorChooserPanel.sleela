@@ -63,28 +63,45 @@ class AbstractColorChooserPanel {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractColorChooserPanel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.colorchooser.AbstractColorChooserPanel.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractColorChooserPanel() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getDisplayName() { throw new AbstractMethodError("javax.swing.colorchooser.AbstractColorChooserPanel.getDisplayName()"); }
-  public void setColorTransparencySelectionEnabled(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.colorchooser.AbstractColorChooserPanel.setColorTransparencySelectionEnabled(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDisplayName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColorTransparencySelectionEnabled(boolean b) { }
   @JavaProtected
-  abstract void buildChooser() { throw new AbstractMethodError("javax.swing.colorchooser.AbstractColorChooserPanel.buildChooser()"); }
-  public abstract void updateChooser() { throw new AbstractMethodError("javax.swing.colorchooser.AbstractColorChooserPanel.updateChooser()"); }
-  public javax.swing.colorchooser.ColorSelectionModel getColorSelectionModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.colorchooser.AbstractColorChooserPanel.getColorSelectionModel()"); }
-  public abstract javax.swing.Icon getSmallDisplayIcon() { throw new AbstractMethodError("javax.swing.colorchooser.AbstractColorChooserPanel.getSmallDisplayIcon()"); }
-  public abstract javax.swing.Icon getLargeDisplayIcon() { throw new AbstractMethodError("javax.swing.colorchooser.AbstractColorChooserPanel.getLargeDisplayIcon()"); }
-  public void installChooserPanel(javax.swing.JColorChooser enclosingChooser) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.colorchooser.AbstractColorChooserPanel.installChooserPanel(javax.swing.JColorChooser)"); }
-  public void uninstallChooserPanel(javax.swing.JColorChooser enclosingChooser) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.colorchooser.AbstractColorChooserPanel.uninstallChooserPanel(javax.swing.JColorChooser)"); }
+  @throwable("java.lang.AbstractMethodError")
+  void buildChooser() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void updateChooser() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.colorchooser.ColorSelectionModel getColorSelectionModel() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.Icon getSmallDisplayIcon() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.Icon getLargeDisplayIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installChooserPanel(javax.swing.JColorChooser enclosingChooser) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallChooserPanel(javax.swing.JColorChooser enclosingChooser) { }
   @JavaProtected
-  java.awt.Color getColorFromModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.colorchooser.AbstractColorChooserPanel.getColorFromModel()"); }
-  public boolean isColorTransparencySelectionEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.colorchooser.AbstractColorChooserPanel.isColorTransparencySelectionEnabled()"); }
-  public int getMnemonic() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.colorchooser.AbstractColorChooserPanel.getMnemonic()"); }
-  public int getDisplayedMnemonicIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.colorchooser.AbstractColorChooserPanel.getDisplayedMnemonicIndex()"); }
-  public void paint(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.colorchooser.AbstractColorChooserPanel.paint(java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Color getColorFromModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isColorTransparencySelectionEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMnemonic() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDisplayedMnemonicIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g) { }
   < ---- END java signatures ---- >
 }

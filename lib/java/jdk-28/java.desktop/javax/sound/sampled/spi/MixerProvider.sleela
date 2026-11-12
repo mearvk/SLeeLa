@@ -59,15 +59,21 @@ class MixerProvider {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  MixerProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.spi.MixerProvider.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  MixerProvider() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.sound.sampled.Mixer getMixer(javax.sound.sampled.Mixer.Info info) { throw new AbstractMethodError("javax.sound.sampled.spi.MixerProvider.getMixer(javax.sound.sampled.Mixer.Info)"); }
-  public abstract javax.sound.sampled.Mixer.Info[] getMixerInfo() { throw new AbstractMethodError("javax.sound.sampled.spi.MixerProvider.getMixerInfo()"); }
-  public boolean isMixerSupported(javax.sound.sampled.Mixer.Info info) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.spi.MixerProvider.isMixerSupported(javax.sound.sampled.Mixer.Info)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.Mixer getMixer(javax.sound.sampled.Mixer.Info info) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.Mixer.Info[] getMixerInfo() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMixerSupported(javax.sound.sampled.Mixer.Info info) { return false; }
   < ---- END java signatures ---- >
 }

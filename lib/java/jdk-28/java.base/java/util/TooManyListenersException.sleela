@@ -58,7 +58,9 @@ class TooManyListenersException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TooManyListenersException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TooManyListenersException.<init>()"); }
-  public TooManyListenersException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.TooManyListenersException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TooManyListenersException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TooManyListenersException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

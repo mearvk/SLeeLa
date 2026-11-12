@@ -58,13 +58,20 @@ class MemoryMXBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean isVerbose() { throw new AbstractMethodError("java.lang.management.MemoryMXBean.isVerbose()"); }
-  public abstract void setVerbose(boolean value) { throw new AbstractMethodError("java.lang.management.MemoryMXBean.setVerbose(boolean)"); }
-  public abstract int getObjectPendingFinalizationCount() { throw new AbstractMethodError("java.lang.management.MemoryMXBean.getObjectPendingFinalizationCount()"); }
-  public abstract java.lang.management.MemoryUsage getHeapMemoryUsage() { throw new AbstractMethodError("java.lang.management.MemoryMXBean.getHeapMemoryUsage()"); }
-  public abstract java.lang.management.MemoryUsage getNonHeapMemoryUsage() { throw new AbstractMethodError("java.lang.management.MemoryMXBean.getNonHeapMemoryUsage()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isVerbose() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setVerbose(boolean value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getObjectPendingFinalizationCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.management.MemoryUsage getHeapMemoryUsage() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.management.MemoryUsage getNonHeapMemoryUsage() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,12 +58,18 @@ class Iterator<E> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default void remove() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Iterator.remove()"); }
-  public default void forEachRemaining(java.util.function.Consumer<? super E> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Iterator.forEachRemaining(java.util.function.Consumer<? super E>)"); }
-  public abstract boolean hasNext() { throw new AbstractMethodError("java.util.Iterator.hasNext()"); }
-  public abstract E next() { throw new AbstractMethodError("java.util.Iterator.next()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void remove() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void forEachRemaining(java.util.function.Consumer<? super E> action) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasNext() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public E next() { return null; }
   < ---- END java signatures ---- >
 }

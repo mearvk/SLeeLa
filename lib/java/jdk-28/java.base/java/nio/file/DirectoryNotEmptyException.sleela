@@ -58,6 +58,7 @@ class DirectoryNotEmptyException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DirectoryNotEmptyException(java.lang.String dir) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.DirectoryNotEmptyException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DirectoryNotEmptyException(java.lang.String dir) { }
   < ---- END java constructors ---- >
 }

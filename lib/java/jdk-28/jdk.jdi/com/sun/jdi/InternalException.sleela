@@ -58,16 +58,23 @@ class InternalException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InternalException(java.lang.String s, int errorCode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InternalException.<init>(java.lang.String, int)"); }
-  public InternalException(int errorCode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InternalException.<init>(int)"); }
-  public InternalException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InternalException.<init>(java.lang.String)"); }
-  public InternalException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InternalException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InternalException(java.lang.String s, int errorCode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InternalException(int errorCode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InternalException(java.lang.String s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InternalException() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int errorCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InternalException.errorCode()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int errorCode() { return 0; }
   < ---- END java signatures ---- >
 }

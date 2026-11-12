@@ -58,14 +58,22 @@ class DirectMethodHandleDesc {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String methodName() { throw new AbstractMethodError("java.lang.constant.DirectMethodHandleDesc.methodName()"); }
-  public abstract java.lang.constant.DirectMethodHandleDesc.Kind kind() { throw new AbstractMethodError("java.lang.constant.DirectMethodHandleDesc.kind()"); }
-  public abstract java.lang.constant.ClassDesc owner() { throw new AbstractMethodError("java.lang.constant.DirectMethodHandleDesc.owner()"); }
-  public abstract int refKind() { throw new AbstractMethodError("java.lang.constant.DirectMethodHandleDesc.refKind()"); }
-  public abstract java.lang.String lookupDescriptor() { throw new AbstractMethodError("java.lang.constant.DirectMethodHandleDesc.lookupDescriptor()"); }
-  public abstract boolean isOwnerInterface() { throw new AbstractMethodError("java.lang.constant.DirectMethodHandleDesc.isOwnerInterface()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String methodName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.constant.DirectMethodHandleDesc.Kind kind() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.constant.ClassDesc owner() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int refKind() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String lookupDescriptor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isOwnerInterface() { return false; }
   < ---- END java signatures ---- >
 }

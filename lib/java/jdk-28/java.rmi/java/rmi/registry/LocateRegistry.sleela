@@ -58,15 +58,24 @@ class LocateRegistry {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static java.rmi.registry.Registry getRegistry(java.lang.String host) throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.registry.LocateRegistry.getRegistry(java.lang.String)"); }
-  public static java.rmi.registry.Registry getRegistry(java.lang.String host, int port) throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.registry.LocateRegistry.getRegistry(java.lang.String, int)"); }
-  public static java.rmi.registry.Registry getRegistry(java.lang.String host, int port, java.rmi.server.RMIClientSocketFactory csf) throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.registry.LocateRegistry.getRegistry(java.lang.String, int, java.rmi.server.RMIClientSocketFactory)"); }
-  public static java.rmi.registry.Registry getRegistry(int port) throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.registry.LocateRegistry.getRegistry(int)"); }
-  public static java.rmi.registry.Registry getRegistry() throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.registry.LocateRegistry.getRegistry()"); }
-  public static java.rmi.registry.Registry createRegistry(int port, java.rmi.server.RMIClientSocketFactory csf, java.rmi.server.RMIServerSocketFactory ssf) throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.registry.LocateRegistry.createRegistry(int, java.rmi.server.RMIClientSocketFactory, java.rmi.server.RMIServerSocketFactory)"); }
-  public static java.rmi.registry.Registry createRegistry(int port) throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.registry.LocateRegistry.createRegistry(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  public static java.rmi.registry.Registry getRegistry(java.lang.String host) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  public static java.rmi.registry.Registry getRegistry(java.lang.String host, int port) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  public static java.rmi.registry.Registry getRegistry(java.lang.String host, int port, java.rmi.server.RMIClientSocketFactory csf) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  public static java.rmi.registry.Registry getRegistry(int port) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  public static java.rmi.registry.Registry getRegistry() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  public static java.rmi.registry.Registry createRegistry(int port, java.rmi.server.RMIClientSocketFactory csf, java.rmi.server.RMIServerSocketFactory ssf) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  public static java.rmi.registry.Registry createRegistry(int port) { return null; }
   < ---- END java signatures ---- >
 }

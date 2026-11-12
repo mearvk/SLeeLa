@@ -58,18 +58,27 @@ class Book {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Book() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Book.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Book() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void append(java.awt.print.Printable painter, java.awt.print.PageFormat page) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Book.append(java.awt.print.Printable, java.awt.print.PageFormat)"); }
-  public void append(java.awt.print.Printable painter, java.awt.print.PageFormat page, int numPages) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Book.append(java.awt.print.Printable, java.awt.print.PageFormat, int)"); }
-  public java.awt.print.PageFormat getPageFormat(int pageIndex) throws java.lang.IndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Book.getPageFormat(int)"); }
-  public java.awt.print.Printable getPrintable(int pageIndex) throws java.lang.IndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Book.getPrintable(int)"); }
-  public int getNumberOfPages() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Book.getNumberOfPages()"); }
-  public void setPage(int pageIndex, java.awt.print.Printable painter, java.awt.print.PageFormat page) throws java.lang.IndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.Book.setPage(int, java.awt.print.Printable, java.awt.print.PageFormat)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void append(java.awt.print.Printable painter, java.awt.print.PageFormat page) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void append(java.awt.print.Printable painter, java.awt.print.PageFormat page, int numPages) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IndexOutOfBoundsException")
+  public java.awt.print.PageFormat getPageFormat(int pageIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IndexOutOfBoundsException")
+  public java.awt.print.Printable getPrintable(int pageIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNumberOfPages() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IndexOutOfBoundsException")
+  public void setPage(int pageIndex, java.awt.print.Printable painter, java.awt.print.PageFormat page) { }
   < ---- END java signatures ---- >
 }

@@ -58,16 +58,23 @@ class AttributeModificationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AttributeModificationException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.AttributeModificationException.<init>(java.lang.String)"); }
-  public AttributeModificationException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.AttributeModificationException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttributeModificationException(java.lang.String explanation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttributeModificationException() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.AttributeModificationException.toString()"); }
-  public void setUnexecutedModifications(javax.naming.directory.ModificationItem[] e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.AttributeModificationException.setUnexecutedModifications(javax.naming.directory.ModificationItem[])"); }
-  public javax.naming.directory.ModificationItem[] getUnexecutedModifications() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.AttributeModificationException.getUnexecutedModifications()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUnexecutedModifications(javax.naming.directory.ModificationItem[] e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.naming.directory.ModificationItem[] getUnexecutedModifications() { return null; }
   < ---- END java signatures ---- >
 }

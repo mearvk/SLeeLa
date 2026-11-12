@@ -58,23 +58,37 @@ class EventQueueMonitor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public EventQueueMonitor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.EventQueueMonitor.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EventQueueMonitor() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static void maybeInitialize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.EventQueueMonitor.maybeInitialize()"); }
-  public static javax.accessibility.Accessible getAccessibleAt(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.EventQueueMonitor.getAccessibleAt(java.awt.Point)"); }
-  public void eventDispatched(java.awt.AWTEvent theEvent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.EventQueueMonitor.eventDispatched(java.awt.AWTEvent)"); }
-  public static void addTopLevelWindowListener(com.sun.java.accessibility.util.TopLevelWindowListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.EventQueueMonitor.addTopLevelWindowListener(com.sun.java.accessibility.util.TopLevelWindowListener)"); }
-  public static java.awt.Window[] getTopLevelWindows() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.EventQueueMonitor.getTopLevelWindows()"); }
-  public static java.awt.Window getTopLevelWindowWithFocus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.EventQueueMonitor.getTopLevelWindowWithFocus()"); }
-  public static boolean isGUIInitialized() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.EventQueueMonitor.isGUIInitialized()"); }
-  public static void addGUIInitializedListener(com.sun.java.accessibility.util.GUIInitializedListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.EventQueueMonitor.addGUIInitializedListener(com.sun.java.accessibility.util.GUIInitializedListener)"); }
-  public static void removeGUIInitializedListener(com.sun.java.accessibility.util.GUIInitializedListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.EventQueueMonitor.removeGUIInitializedListener(com.sun.java.accessibility.util.GUIInitializedListener)"); }
-  public static void removeTopLevelWindowListener(com.sun.java.accessibility.util.TopLevelWindowListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.EventQueueMonitor.removeTopLevelWindowListener(com.sun.java.accessibility.util.TopLevelWindowListener)"); }
-  public static java.awt.Point getCurrentMousePosition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.java.accessibility.util.EventQueueMonitor.getCurrentMousePosition()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void maybeInitialize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.accessibility.Accessible getAccessibleAt(java.awt.Point p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void eventDispatched(java.awt.AWTEvent theEvent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addTopLevelWindowListener(com.sun.java.accessibility.util.TopLevelWindowListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Window[] getTopLevelWindows() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Window getTopLevelWindowWithFocus() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isGUIInitialized() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addGUIInitializedListener(com.sun.java.accessibility.util.GUIInitializedListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removeGUIInitializedListener(com.sun.java.accessibility.util.GUIInitializedListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removeTopLevelWindowListener(com.sun.java.accessibility.util.TopLevelWindowListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Point getCurrentMousePosition() { return null; }
   < ---- END java signatures ---- >
 }

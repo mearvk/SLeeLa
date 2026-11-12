@@ -59,62 +59,115 @@ class Graphics {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Graphics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Graphics() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void finalize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.finalize()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.toString()"); }
-  public java.awt.Graphics create(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.create(int, int, int, int)"); }
-  public abstract java.awt.Graphics create() { throw new AbstractMethodError("java.awt.Graphics.create()"); }
-  public abstract void setColor(java.awt.Color c) { throw new AbstractMethodError("java.awt.Graphics.setColor(java.awt.Color)"); }
-  public abstract void dispose() { throw new AbstractMethodError("java.awt.Graphics.dispose()"); }
-  public abstract void translate(int x, int y) { throw new AbstractMethodError("java.awt.Graphics.translate(int, int)"); }
-  public abstract void setClip(int x, int y, int width, int height) { throw new AbstractMethodError("java.awt.Graphics.setClip(int, int, int, int)"); }
-  public abstract void setClip(java.awt.Shape clip) { throw new AbstractMethodError("java.awt.Graphics.setClip(java.awt.Shape)"); }
-  public abstract java.awt.Shape getClip() { throw new AbstractMethodError("java.awt.Graphics.getClip()"); }
-  public abstract void clipRect(int x, int y, int width, int height) { throw new AbstractMethodError("java.awt.Graphics.clipRect(int, int, int, int)"); }
-  public abstract void drawLine(int x1, int y1, int x2, int y2) { throw new AbstractMethodError("java.awt.Graphics.drawLine(int, int, int, int)"); }
-  public abstract java.awt.Color getColor() { throw new AbstractMethodError("java.awt.Graphics.getColor()"); }
-  public abstract void fillRect(int x, int y, int width, int height) { throw new AbstractMethodError("java.awt.Graphics.fillRect(int, int, int, int)"); }
-  public void drawPolygon(java.awt.Polygon p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.drawPolygon(java.awt.Polygon)"); }
-  public abstract void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) { throw new AbstractMethodError("java.awt.Graphics.drawPolygon(int[], int[], int)"); }
-  public abstract void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) { throw new AbstractMethodError("java.awt.Graphics.fillPolygon(int[], int[], int)"); }
-  public void fillPolygon(java.awt.Polygon p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.fillPolygon(java.awt.Polygon)"); }
-  public abstract void drawString(java.text.AttributedCharacterIterator iterator, int x, int y) { throw new AbstractMethodError("java.awt.Graphics.drawString(java.text.AttributedCharacterIterator, int, int)"); }
-  public abstract void drawString(java.lang.String str, int x, int y) { throw new AbstractMethodError("java.awt.Graphics.drawString(java.lang.String, int, int)"); }
-  public java.awt.Rectangle getClipBounds(java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.getClipBounds(java.awt.Rectangle)"); }
-  public abstract java.awt.Rectangle getClipBounds() { throw new AbstractMethodError("java.awt.Graphics.getClipBounds()"); }
-  public abstract void setPaintMode() { throw new AbstractMethodError("java.awt.Graphics.setPaintMode()"); }
-  public abstract void setXORMode(java.awt.Color c1) { throw new AbstractMethodError("java.awt.Graphics.setXORMode(java.awt.Color)"); }
-  public abstract void copyArea(int x, int y, int width, int height, int dx, int dy) { throw new AbstractMethodError("java.awt.Graphics.copyArea(int, int, int, int, int, int)"); }
-  public void drawRect(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.drawRect(int, int, int, int)"); }
-  public abstract void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) { throw new AbstractMethodError("java.awt.Graphics.drawRoundRect(int, int, int, int, int, int)"); }
-  public abstract void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) { throw new AbstractMethodError("java.awt.Graphics.fillRoundRect(int, int, int, int, int, int)"); }
-  public void draw3DRect(int x, int y, int width, int height, boolean raised) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.draw3DRect(int, int, int, int, boolean)"); }
-  public void fill3DRect(int x, int y, int width, int height, boolean raised) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.fill3DRect(int, int, int, int, boolean)"); }
-  public abstract void drawOval(int x, int y, int width, int height) { throw new AbstractMethodError("java.awt.Graphics.drawOval(int, int, int, int)"); }
-  public abstract void fillOval(int x, int y, int width, int height) { throw new AbstractMethodError("java.awt.Graphics.fillOval(int, int, int, int)"); }
-  public abstract void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) { throw new AbstractMethodError("java.awt.Graphics.drawArc(int, int, int, int, int, int)"); }
-  public abstract void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) { throw new AbstractMethodError("java.awt.Graphics.fillArc(int, int, int, int, int, int)"); }
-  public abstract void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) { throw new AbstractMethodError("java.awt.Graphics.drawPolyline(int[], int[], int)"); }
-  public void drawChars(char[] data, int offset, int length, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.drawChars(char[], int, int, int, int)"); }
-  public void drawBytes(byte[] data, int offset, int length, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.drawBytes(byte[], int, int, int, int)"); }
-  public abstract boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { throw new AbstractMethodError("java.awt.Graphics.drawImage(java.awt.Image, int, int, int, int, java.awt.Color, java.awt.image.ImageObserver)"); }
-  public abstract boolean drawImage(java.awt.Image img, int x, int y, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { throw new AbstractMethodError("java.awt.Graphics.drawImage(java.awt.Image, int, int, java.awt.Color, java.awt.image.ImageObserver)"); }
-  public abstract boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.image.ImageObserver observer) { throw new AbstractMethodError("java.awt.Graphics.drawImage(java.awt.Image, int, int, int, int, int, int, int, int, java.awt.image.ImageObserver)"); }
-  public abstract boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { throw new AbstractMethodError("java.awt.Graphics.drawImage(java.awt.Image, int, int, int, int, int, int, int, int, java.awt.Color, java.awt.image.ImageObserver)"); }
-  public abstract boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.image.ImageObserver observer) { throw new AbstractMethodError("java.awt.Graphics.drawImage(java.awt.Image, int, int, int, int, java.awt.image.ImageObserver)"); }
-  public abstract boolean drawImage(java.awt.Image img, int x, int y, java.awt.image.ImageObserver observer) { throw new AbstractMethodError("java.awt.Graphics.drawImage(java.awt.Image, int, int, java.awt.image.ImageObserver)"); }
-  public java.awt.Rectangle getClipRect() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.getClipRect()"); }
-  public boolean hitClip(int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.hitClip(int, int, int, int)"); }
-  public abstract java.awt.FontMetrics getFontMetrics(java.awt.Font f) { throw new AbstractMethodError("java.awt.Graphics.getFontMetrics(java.awt.Font)"); }
-  public java.awt.FontMetrics getFontMetrics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Graphics.getFontMetrics()"); }
-  public abstract java.awt.Font getFont() { throw new AbstractMethodError("java.awt.Graphics.getFont()"); }
-  public abstract void setFont(java.awt.Font font) { throw new AbstractMethodError("java.awt.Graphics.setFont(java.awt.Font)"); }
-  public abstract void clearRect(int x, int y, int width, int height) { throw new AbstractMethodError("java.awt.Graphics.clearRect(int, int, int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void finalize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Graphics create(int x, int y, int width, int height) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Graphics create() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setColor(java.awt.Color c) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void dispose() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void translate(int x, int y) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setClip(int x, int y, int width, int height) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setClip(java.awt.Shape clip) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Shape getClip() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void clipRect(int x, int y, int width, int height) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawLine(int x1, int y1, int x2, int y2) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Color getColor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void fillRect(int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawPolygon(java.awt.Polygon p) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fillPolygon(java.awt.Polygon p) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawString(java.text.AttributedCharacterIterator iterator, int x, int y) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawString(java.lang.String str, int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getClipBounds(java.awt.Rectangle r) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Rectangle getClipBounds() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setPaintMode() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setXORMode(java.awt.Color c1) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void copyArea(int x, int y, int width, int height, int dx, int dy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawRect(int x, int y, int width, int height) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void draw3DRect(int x, int y, int width, int height, boolean raised) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fill3DRect(int x, int y, int width, int height, boolean raised) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawOval(int x, int y, int width, int height) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void fillOval(int x, int y, int width, int height) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawChars(char[] data, int offset, int length, int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void drawBytes(byte[] data, int offset, int length, int x, int y) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean drawImage(java.awt.Image img, int x, int y, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.image.ImageObserver observer) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.image.ImageObserver observer) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean drawImage(java.awt.Image img, int x, int y, java.awt.image.ImageObserver observer) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getClipRect() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hitClip(int x, int y, int width, int height) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.FontMetrics getFontMetrics(java.awt.Font f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.FontMetrics getFontMetrics() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Font getFont() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setFont(java.awt.Font font) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void clearRect(int x, int y, int width, int height) { }
   < ---- END java signatures ---- >
 }

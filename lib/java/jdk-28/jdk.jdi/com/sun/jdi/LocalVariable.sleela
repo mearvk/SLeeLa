@@ -58,16 +58,26 @@ class LocalVariable {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String signature() { throw new AbstractMethodError("com.sun.jdi.LocalVariable.signature()"); }
-  public abstract java.lang.String name() { throw new AbstractMethodError("com.sun.jdi.LocalVariable.name()"); }
-  public abstract com.sun.jdi.Type type() throws com.sun.jdi.ClassNotLoadedException { throw new AbstractMethodError("com.sun.jdi.LocalVariable.type()"); }
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("com.sun.jdi.LocalVariable.equals(java.lang.Object)"); }
-  public abstract int hashCode() { throw new AbstractMethodError("com.sun.jdi.LocalVariable.hashCode()"); }
-  public abstract boolean isArgument() { throw new AbstractMethodError("com.sun.jdi.LocalVariable.isArgument()"); }
-  public abstract java.lang.String genericSignature() { throw new AbstractMethodError("com.sun.jdi.LocalVariable.genericSignature()"); }
-  public abstract boolean isVisible(com.sun.jdi.StackFrame frame) { throw new AbstractMethodError("com.sun.jdi.LocalVariable.isVisible(com.sun.jdi.StackFrame)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String signature() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String name() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.ClassNotLoadedException")
+  public com.sun.jdi.Type type() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isArgument() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String genericSignature() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isVisible(com.sun.jdi.StackFrame frame) { return false; }
   < ---- END java signatures ---- >
 }

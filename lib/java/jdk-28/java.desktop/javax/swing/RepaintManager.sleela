@@ -58,30 +58,51 @@ class RepaintManager {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RepaintManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RepaintManager() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.toString()"); }
-  public void setDoubleBufferMaximumSize(java.awt.Dimension d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.setDoubleBufferMaximumSize(java.awt.Dimension)"); }
-  public void markCompletelyDirty(javax.swing.JComponent aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.markCompletelyDirty(javax.swing.JComponent)"); }
-  public boolean isCompletelyDirty(javax.swing.JComponent aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.isCompletelyDirty(javax.swing.JComponent)"); }
-  public void paintDirtyRegions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.paintDirtyRegions()"); }
-  public java.awt.Dimension getDoubleBufferMaximumSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.getDoubleBufferMaximumSize()"); }
-  public void validateInvalidComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.validateInvalidComponents()"); }
-  public void setDoubleBufferingEnabled(boolean aFlag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.setDoubleBufferingEnabled(boolean)"); }
-  public static javax.swing.RepaintManager currentManager(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.currentManager(java.awt.Component)"); }
-  public boolean isDoubleBufferingEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.isDoubleBufferingEnabled()"); }
-  public void addDirtyRegion(java.awt.Window window, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.addDirtyRegion(java.awt.Window, int, int, int, int)"); }
-  public synchronized void addInvalidComponent(javax.swing.JComponent invalidComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.addInvalidComponent(javax.swing.JComponent)"); }
-  public synchronized void removeInvalidComponent(javax.swing.JComponent component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.removeInvalidComponent(javax.swing.JComponent)"); }
-  public java.awt.Rectangle getDirtyRegion(javax.swing.JComponent aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.getDirtyRegion(javax.swing.JComponent)"); }
-  public java.awt.Image getVolatileOffscreenBuffer(java.awt.Component c, int proposedWidth, int proposedHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.getVolatileOffscreenBuffer(java.awt.Component, int, int)"); }
-  public java.awt.Image getOffscreenBuffer(java.awt.Component c, int proposedWidth, int proposedHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.getOffscreenBuffer(java.awt.Component, int, int)"); }
-  public void markCompletelyClean(javax.swing.JComponent aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.markCompletelyClean(javax.swing.JComponent)"); }
-  public static void setCurrentManager(javax.swing.RepaintManager aRepaintManager) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.RepaintManager.setCurrentManager(javax.swing.RepaintManager)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDoubleBufferMaximumSize(java.awt.Dimension d) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void markCompletelyDirty(javax.swing.JComponent aComponent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCompletelyDirty(javax.swing.JComponent aComponent) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintDirtyRegions() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getDoubleBufferMaximumSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void validateInvalidComponents() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDoubleBufferingEnabled(boolean aFlag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.RepaintManager currentManager(java.awt.Component c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDoubleBufferingEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addDirtyRegion(java.awt.Window window, int x, int y, int w, int h) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addInvalidComponent(javax.swing.JComponent invalidComponent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeInvalidComponent(javax.swing.JComponent component) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getDirtyRegion(javax.swing.JComponent aComponent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Image getVolatileOffscreenBuffer(java.awt.Component c, int proposedWidth, int proposedHeight) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Image getOffscreenBuffer(java.awt.Component c, int proposedWidth, int proposedHeight) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void markCompletelyClean(javax.swing.JComponent aComponent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setCurrentManager(javax.swing.RepaintManager aRepaintManager) { }
   < ---- END java signatures ---- >
 }

@@ -58,32 +58,55 @@ class Utilities {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Utilities() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Utilities() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static final javax.swing.text.Element getParagraphElement(javax.swing.text.JTextComponent c, int offs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getParagraphElement(javax.swing.text.JTextComponent, int)"); }
-  public static final int getRowStart(javax.swing.text.JTextComponent c, int offs) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getRowStart(javax.swing.text.JTextComponent, int)"); }
-  public static final int getRowEnd(javax.swing.text.JTextComponent c, int offs) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getRowEnd(javax.swing.text.JTextComponent, int)"); }
-  public static final int getBreakLocation(javax.swing.text.Segment s, java.awt.FontMetrics metrics, float x0, float x, javax.swing.text.TabExpander e, int startOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getBreakLocation(javax.swing.text.Segment, java.awt.FontMetrics, float, float, javax.swing.text.TabExpander, int)"); }
-  public static final int getBreakLocation(javax.swing.text.Segment s, java.awt.FontMetrics metrics, int x0, int x, javax.swing.text.TabExpander e, int startOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getBreakLocation(javax.swing.text.Segment, java.awt.FontMetrics, int, int, javax.swing.text.TabExpander, int)"); }
-  public static final int getPositionAbove(javax.swing.text.JTextComponent c, int offs, float x) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getPositionAbove(javax.swing.text.JTextComponent, int, float)"); }
-  public static final int getPositionAbove(javax.swing.text.JTextComponent c, int offs, int x) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getPositionAbove(javax.swing.text.JTextComponent, int, int)"); }
-  public static final int getPositionBelow(javax.swing.text.JTextComponent c, int offs, int x) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getPositionBelow(javax.swing.text.JTextComponent, int, int)"); }
-  public static final int getPositionBelow(javax.swing.text.JTextComponent c, int offs, float x) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getPositionBelow(javax.swing.text.JTextComponent, int, float)"); }
-  public static final int getWordStart(javax.swing.text.JTextComponent c, int offs) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getWordStart(javax.swing.text.JTextComponent, int)"); }
-  public static final int getWordEnd(javax.swing.text.JTextComponent c, int offs) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getWordEnd(javax.swing.text.JTextComponent, int)"); }
-  public static final int getNextWord(javax.swing.text.JTextComponent c, int offs) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getNextWord(javax.swing.text.JTextComponent, int)"); }
-  public static final int getPreviousWord(javax.swing.text.JTextComponent c, int offs) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getPreviousWord(javax.swing.text.JTextComponent, int)"); }
-  public static final float getTabbedTextWidth(javax.swing.text.Segment s, java.awt.FontMetrics metrics, float x, javax.swing.text.TabExpander e, int startOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getTabbedTextWidth(javax.swing.text.Segment, java.awt.FontMetrics, float, javax.swing.text.TabExpander, int)"); }
-  public static final int getTabbedTextWidth(javax.swing.text.Segment s, java.awt.FontMetrics metrics, int x, javax.swing.text.TabExpander e, int startOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getTabbedTextWidth(javax.swing.text.Segment, java.awt.FontMetrics, int, javax.swing.text.TabExpander, int)"); }
-  public static final int drawTabbedText(javax.swing.text.Segment s, int x, int y, java.awt.Graphics g, javax.swing.text.TabExpander e, int startOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.drawTabbedText(javax.swing.text.Segment, int, int, java.awt.Graphics, javax.swing.text.TabExpander, int)"); }
-  public static final float drawTabbedText(javax.swing.text.Segment s, float x, float y, java.awt.Graphics2D g, javax.swing.text.TabExpander e, int startOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.drawTabbedText(javax.swing.text.Segment, float, float, java.awt.Graphics2D, javax.swing.text.TabExpander, int)"); }
-  public static final int getTabbedTextOffset(javax.swing.text.Segment s, java.awt.FontMetrics metrics, int x0, int x, javax.swing.text.TabExpander e, int startOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getTabbedTextOffset(javax.swing.text.Segment, java.awt.FontMetrics, int, int, javax.swing.text.TabExpander, int)"); }
-  public static final int getTabbedTextOffset(javax.swing.text.Segment s, java.awt.FontMetrics metrics, float x0, float x, javax.swing.text.TabExpander e, int startOffset, boolean round) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getTabbedTextOffset(javax.swing.text.Segment, java.awt.FontMetrics, float, float, javax.swing.text.TabExpander, int, boolean)"); }
-  public static final int getTabbedTextOffset(javax.swing.text.Segment s, java.awt.FontMetrics metrics, int x0, int x, javax.swing.text.TabExpander e, int startOffset, boolean round) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.Utilities.getTabbedTextOffset(javax.swing.text.Segment, java.awt.FontMetrics, int, int, javax.swing.text.TabExpander, int, boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final javax.swing.text.Element getParagraphElement(javax.swing.text.JTextComponent c, int offs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public static final int getRowStart(javax.swing.text.JTextComponent c, int offs) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public static final int getRowEnd(javax.swing.text.JTextComponent c, int offs) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final int getBreakLocation(javax.swing.text.Segment s, java.awt.FontMetrics metrics, float x0, float x, javax.swing.text.TabExpander e, int startOffset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final int getBreakLocation(javax.swing.text.Segment s, java.awt.FontMetrics metrics, int x0, int x, javax.swing.text.TabExpander e, int startOffset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public static final int getPositionAbove(javax.swing.text.JTextComponent c, int offs, float x) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public static final int getPositionAbove(javax.swing.text.JTextComponent c, int offs, int x) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public static final int getPositionBelow(javax.swing.text.JTextComponent c, int offs, int x) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public static final int getPositionBelow(javax.swing.text.JTextComponent c, int offs, float x) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public static final int getWordStart(javax.swing.text.JTextComponent c, int offs) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public static final int getWordEnd(javax.swing.text.JTextComponent c, int offs) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public static final int getNextWord(javax.swing.text.JTextComponent c, int offs) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public static final int getPreviousWord(javax.swing.text.JTextComponent c, int offs) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final float getTabbedTextWidth(javax.swing.text.Segment s, java.awt.FontMetrics metrics, float x, javax.swing.text.TabExpander e, int startOffset) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final int getTabbedTextWidth(javax.swing.text.Segment s, java.awt.FontMetrics metrics, int x, javax.swing.text.TabExpander e, int startOffset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final int drawTabbedText(javax.swing.text.Segment s, int x, int y, java.awt.Graphics g, javax.swing.text.TabExpander e, int startOffset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final float drawTabbedText(javax.swing.text.Segment s, float x, float y, java.awt.Graphics2D g, javax.swing.text.TabExpander e, int startOffset) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final int getTabbedTextOffset(javax.swing.text.Segment s, java.awt.FontMetrics metrics, int x0, int x, javax.swing.text.TabExpander e, int startOffset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final int getTabbedTextOffset(javax.swing.text.Segment s, java.awt.FontMetrics metrics, float x0, float x, javax.swing.text.TabExpander e, int startOffset, boolean round) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final int getTabbedTextOffset(javax.swing.text.Segment s, java.awt.FontMetrics metrics, int x0, int x, javax.swing.text.TabExpander e, int startOffset, boolean round) { return 0; }
   < ---- END java signatures ---- >
 }

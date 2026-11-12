@@ -58,9 +58,12 @@ class TileObserver {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void tileUpdate(java.awt.image.WritableRenderedImage source, int tileX, int tileY, boolean willBeWritable) { throw new AbstractMethodError("java.awt.image.TileObserver.tileUpdate(java.awt.image.WritableRenderedImage, int, int, boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void tileUpdate(java.awt.image.WritableRenderedImage source, int tileX, int tileY, boolean willBeWritable) { }
   < ---- END java signatures ---- >
 }

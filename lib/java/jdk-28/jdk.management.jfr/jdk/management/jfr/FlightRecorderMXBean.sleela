@@ -62,27 +62,48 @@ class FlightRecorderMXBean {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract long openStream(long recordingId, java.util.Map<java.lang.String, java.lang.String> streamOptions) throws java.io.IOException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.openStream(long, java.util.Map<java.lang.String, java.lang.String>)"); }
-  public abstract void copyTo(long recordingId, java.lang.String outputFile) throws java.io.IOException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.copyTo(long, java.lang.String)"); }
-  public abstract void startRecording(long recordingId) throws java.lang.IllegalStateException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.startRecording(long)"); }
-  public abstract boolean stopRecording(long recordingId) throws java.lang.IllegalArgumentException, java.lang.IllegalStateException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.stopRecording(long)"); }
-  public abstract java.util.List<jdk.management.jfr.EventTypeInfo> getEventTypes() { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.getEventTypes()"); }
-  public abstract long newRecording() throws java.lang.IllegalStateException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.newRecording()"); }
-  public abstract void setConfiguration(long recordingId, java.lang.String contents) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.setConfiguration(long, java.lang.String)"); }
-  public abstract byte[] readStream(long streamId) throws java.io.IOException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.readStream(long)"); }
-  public abstract long cloneRecording(long recordingId, boolean stop) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.cloneRecording(long, boolean)"); }
-  public abstract void closeRecording(long recordingId) throws java.io.IOException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.closeRecording(long)"); }
-  public abstract void closeStream(long streamId) throws java.io.IOException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.closeStream(long)"); }
-  public abstract java.util.Map<java.lang.String, java.lang.String> getRecordingOptions(long recordingId) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.getRecordingOptions(long)"); }
-  public abstract java.util.Map<java.lang.String, java.lang.String> getRecordingSettings(long recordingId) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.getRecordingSettings(long)"); }
-  public abstract void setPredefinedConfiguration(long recordingId, java.lang.String configurationName) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.setPredefinedConfiguration(long, java.lang.String)"); }
-  public abstract void setRecordingSettings(long recordingId, java.util.Map<java.lang.String, java.lang.String> settings) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.setRecordingSettings(long, java.util.Map<java.lang.String, java.lang.String>)"); }
-  public abstract void setRecordingOptions(long recordingId, java.util.Map<java.lang.String, java.lang.String> options) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.setRecordingOptions(long, java.util.Map<java.lang.String, java.lang.String>)"); }
-  public abstract java.util.List<jdk.management.jfr.ConfigurationInfo> getConfigurations() { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.getConfigurations()"); }
-  public abstract java.util.List<jdk.management.jfr.RecordingInfo> getRecordings() { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.getRecordings()"); }
-  public abstract long takeSnapshot() { throw new AbstractMethodError("jdk.management.jfr.FlightRecorderMXBean.takeSnapshot()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public long openStream(long recordingId, java.util.Map<java.lang.String, java.lang.String> streamOptions) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void copyTo(long recordingId, java.lang.String outputFile) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalStateException")
+  public void startRecording(long recordingId) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException, java.lang.IllegalStateException")
+  public boolean stopRecording(long recordingId) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<jdk.management.jfr.EventTypeInfo> getEventTypes() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalStateException")
+  public long newRecording() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public void setConfiguration(long recordingId, java.lang.String contents) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public byte[] readStream(long streamId) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public long cloneRecording(long recordingId, boolean stop) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void closeRecording(long recordingId) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void closeStream(long streamId) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public java.util.Map<java.lang.String, java.lang.String> getRecordingOptions(long recordingId) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public java.util.Map<java.lang.String, java.lang.String> getRecordingSettings(long recordingId) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public void setPredefinedConfiguration(long recordingId, java.lang.String configurationName) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public void setRecordingSettings(long recordingId, java.util.Map<java.lang.String, java.lang.String> settings) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public void setRecordingOptions(long recordingId, java.util.Map<java.lang.String, java.lang.String> options) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<jdk.management.jfr.ConfigurationInfo> getConfigurations() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<jdk.management.jfr.RecordingInfo> getRecordings() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long takeSnapshot() { return 0; }
   < ---- END java signatures ---- >
 }

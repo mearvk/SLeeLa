@@ -59,22 +59,32 @@ class ForkJoinWorkerThread {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ForkJoinWorkerThread(java.util.concurrent.ForkJoinPool pool) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinWorkerThread.<init>(java.util.concurrent.ForkJoinPool)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ForkJoinWorkerThread(java.util.concurrent.ForkJoinPool pool) { }
   @JavaProtected
-  ForkJoinWorkerThread(java.lang.ThreadGroup group, java.util.concurrent.ForkJoinPool pool, boolean preserveThreadLocals) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinWorkerThread.<init>(java.lang.ThreadGroup, java.util.concurrent.ForkJoinPool, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ForkJoinWorkerThread(java.lang.ThreadGroup group, java.util.concurrent.ForkJoinPool pool, boolean preserveThreadLocals) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void run() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinWorkerThread.run()"); }
-  public int getQueuedTaskCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinWorkerThread.getQueuedTaskCount()"); }
-  public java.util.concurrent.ForkJoinPool getPool() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinWorkerThread.getPool()"); }
-  public int getPoolIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinWorkerThread.getPoolIndex()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void run() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getQueuedTaskCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.ForkJoinPool getPool() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getPoolIndex() { return 0; }
   @JavaProtected
-  void onStart() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinWorkerThread.onStart()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void onStart() { }
   @JavaProtected
-  void onTermination(java.lang.Throwable exception) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinWorkerThread.onTermination(java.lang.Throwable)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void onTermination(java.lang.Throwable exception) { }
   < ---- END java signatures ---- >
 }

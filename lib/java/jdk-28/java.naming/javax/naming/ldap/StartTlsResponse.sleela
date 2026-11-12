@@ -63,18 +63,27 @@ class StartTlsResponse {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  StartTlsResponse() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.StartTlsResponse.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  StartTlsResponse() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.StartTlsResponse.getID()"); }
-  public abstract void setEnabledCipherSuites(java.lang.String[] suites) { throw new AbstractMethodError("javax.naming.ldap.StartTlsResponse.setEnabledCipherSuites(java.lang.String[])"); }
-  public abstract void setHostnameVerifier(javax.net.ssl.HostnameVerifier verifier) { throw new AbstractMethodError("javax.naming.ldap.StartTlsResponse.setHostnameVerifier(javax.net.ssl.HostnameVerifier)"); }
-  public byte[] getEncodedValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.StartTlsResponse.getEncodedValue()"); }
-  public abstract javax.net.ssl.SSLSession negotiate(javax.net.ssl.SSLSocketFactory factory) throws java.io.IOException { throw new AbstractMethodError("javax.naming.ldap.StartTlsResponse.negotiate(javax.net.ssl.SSLSocketFactory)"); }
-  public abstract javax.net.ssl.SSLSession negotiate() throws java.io.IOException { throw new AbstractMethodError("javax.naming.ldap.StartTlsResponse.negotiate()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getID() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setEnabledCipherSuites(java.lang.String[] suites) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHostnameVerifier(javax.net.ssl.HostnameVerifier verifier) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getEncodedValue() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public javax.net.ssl.SSLSession negotiate(javax.net.ssl.SSLSocketFactory factory) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public javax.net.ssl.SSLSession negotiate() { return null; }
   < ---- END java signatures ---- >
 }

@@ -59,7 +59,9 @@ class LineBorderUIResource {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LineBorderUIResource(java.awt.Color color) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.LineBorderUIResource.<init>(java.awt.Color)"); }
-  public LineBorderUIResource(java.awt.Color color, int thickness) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.LineBorderUIResource.<init>(java.awt.Color, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LineBorderUIResource(java.awt.Color color) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LineBorderUIResource(java.awt.Color color, int thickness) { }
   < ---- END java constructors ---- >
 }

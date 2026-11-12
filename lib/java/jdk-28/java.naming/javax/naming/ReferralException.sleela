@@ -59,19 +59,28 @@ class ReferralException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ReferralException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ReferralException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ReferralException(java.lang.String explanation) { }
   @JavaProtected
-  ReferralException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ReferralException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ReferralException() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object getReferralInfo() { throw new AbstractMethodError("javax.naming.ReferralException.getReferralInfo()"); }
-  public abstract javax.naming.Context getReferralContext(java.util.Hashtable<?, ?> env) throws javax.naming.NamingException { throw new AbstractMethodError("javax.naming.ReferralException.getReferralContext(java.util.Hashtable<?, ?>)"); }
-  public abstract javax.naming.Context getReferralContext() throws javax.naming.NamingException { throw new AbstractMethodError("javax.naming.ReferralException.getReferralContext()"); }
-  public abstract boolean skipReferral() { throw new AbstractMethodError("javax.naming.ReferralException.skipReferral()"); }
-  public abstract void retryReferral() { throw new AbstractMethodError("javax.naming.ReferralException.retryReferral()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getReferralInfo() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
+  public javax.naming.Context getReferralContext(java.util.Hashtable<?, ?> env) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
+  public javax.naming.Context getReferralContext() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean skipReferral() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void retryReferral() { }
   < ---- END java signatures ---- >
 }

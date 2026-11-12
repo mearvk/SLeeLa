@@ -58,17 +58,24 @@ class ConstantCallSite {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ConstantCallSite(java.lang.invoke.MethodHandle target) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.ConstantCallSite.<init>(java.lang.invoke.MethodHandle)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ConstantCallSite(java.lang.invoke.MethodHandle target) { }
   @JavaProtected
-  ConstantCallSite(java.lang.invoke.MethodType targetType, java.lang.invoke.MethodHandle createTargetHook) throws java.lang.Throwable { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.ConstantCallSite.<init>(java.lang.invoke.MethodType, java.lang.invoke.MethodHandle)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Throwable")
+  ConstantCallSite(java.lang.invoke.MethodType targetType, java.lang.invoke.MethodHandle createTargetHook) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.lang.invoke.MethodHandle getTarget() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.ConstantCallSite.getTarget()"); }
-  public final java.lang.invoke.MethodHandle dynamicInvoker() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.ConstantCallSite.dynamicInvoker()"); }
-  public final void setTarget(java.lang.invoke.MethodHandle ignore) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.ConstantCallSite.setTarget(java.lang.invoke.MethodHandle)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.invoke.MethodHandle getTarget() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.invoke.MethodHandle dynamicInvoker() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setTarget(java.lang.invoke.MethodHandle ignore) { }
   < ---- END java signatures ---- >
 }

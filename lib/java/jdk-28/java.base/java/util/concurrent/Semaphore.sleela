@@ -58,33 +58,55 @@ class Semaphore {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Semaphore(int permits) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.<init>(int)"); }
-  public Semaphore(int permits, boolean fair) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.<init>(int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Semaphore(int permits) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Semaphore(int permits, boolean fair) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.toString()"); }
-  public void release() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.release()"); }
-  public void release(int permits) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.release(int)"); }
-  public final boolean hasQueuedThreads() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.hasQueuedThreads()"); }
-  public final int getQueueLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.getQueueLength()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void release() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void release(int permits) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean hasQueuedThreads() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getQueueLength() { return 0; }
   @JavaProtected
-  java.util.Collection<java.lang.Thread> getQueuedThreads() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.getQueuedThreads()"); }
-  public boolean isFair() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.isFair()"); }
-  public void acquire() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.acquire()"); }
-  public void acquire(int permits) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.acquire(int)"); }
-  public boolean tryAcquire(int permits, long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.tryAcquire(int, long, java.util.concurrent.TimeUnit)"); }
-  public boolean tryAcquire(int permits) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.tryAcquire(int)"); }
-  public boolean tryAcquire(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.tryAcquire(long, java.util.concurrent.TimeUnit)"); }
-  public boolean tryAcquire() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.tryAcquire()"); }
-  public int drainPermits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.drainPermits()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.util.Collection<java.lang.Thread> getQueuedThreads() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFair() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void acquire() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void acquire(int permits) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public boolean tryAcquire(int permits, long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean tryAcquire(int permits) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public boolean tryAcquire(long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean tryAcquire() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int drainPermits() { return 0; }
   @JavaProtected
-  void reducePermits(int reduction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.reducePermits(int)"); }
-  public void acquireUninterruptibly() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.acquireUninterruptibly()"); }
-  public void acquireUninterruptibly(int permits) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.acquireUninterruptibly(int)"); }
-  public int availablePermits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Semaphore.availablePermits()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void reducePermits(int reduction) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void acquireUninterruptibly() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void acquireUninterruptibly(int permits) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int availablePermits() { return 0; }
   < ---- END java signatures ---- >
 }

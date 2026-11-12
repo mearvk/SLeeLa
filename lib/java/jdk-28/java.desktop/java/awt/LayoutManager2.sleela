@@ -58,13 +58,20 @@ class LayoutManager2 {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void addLayoutComponent(java.awt.Component comp, java.lang.Object constraints) { throw new AbstractMethodError("java.awt.LayoutManager2.addLayoutComponent(java.awt.Component, java.lang.Object)"); }
-  public abstract void invalidateLayout(java.awt.Container target) { throw new AbstractMethodError("java.awt.LayoutManager2.invalidateLayout(java.awt.Container)"); }
-  public abstract java.awt.Dimension maximumLayoutSize(java.awt.Container target) { throw new AbstractMethodError("java.awt.LayoutManager2.maximumLayoutSize(java.awt.Container)"); }
-  public abstract float getLayoutAlignmentX(java.awt.Container target) { throw new AbstractMethodError("java.awt.LayoutManager2.getLayoutAlignmentX(java.awt.Container)"); }
-  public abstract float getLayoutAlignmentY(java.awt.Container target) { throw new AbstractMethodError("java.awt.LayoutManager2.getLayoutAlignmentY(java.awt.Container)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void addLayoutComponent(java.awt.Component comp, java.lang.Object constraints) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void invalidateLayout(java.awt.Container target) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Dimension maximumLayoutSize(java.awt.Container target) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getLayoutAlignmentX(java.awt.Container target) { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getLayoutAlignmentY(java.awt.Container target) { return 0.0; }
   < ---- END java signatures ---- >
 }

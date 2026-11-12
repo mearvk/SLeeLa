@@ -58,17 +58,28 @@ class FileObject {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("javax.tools.FileObject.getName()"); }
-  public abstract boolean delete() { throw new AbstractMethodError("javax.tools.FileObject.delete()"); }
-  public abstract java.net.URI toUri() { throw new AbstractMethodError("javax.tools.FileObject.toUri()"); }
-  public abstract long getLastModified() { throw new AbstractMethodError("javax.tools.FileObject.getLastModified()"); }
-  public abstract java.lang.CharSequence getCharContent(boolean ignoreEncodingErrors) throws java.io.IOException { throw new AbstractMethodError("javax.tools.FileObject.getCharContent(boolean)"); }
-  public abstract java.io.OutputStream openOutputStream() throws java.io.IOException { throw new AbstractMethodError("javax.tools.FileObject.openOutputStream()"); }
-  public abstract java.io.InputStream openInputStream() throws java.io.IOException { throw new AbstractMethodError("javax.tools.FileObject.openInputStream()"); }
-  public abstract java.io.Reader openReader(boolean ignoreEncodingErrors) throws java.io.IOException { throw new AbstractMethodError("javax.tools.FileObject.openReader(boolean)"); }
-  public abstract java.io.Writer openWriter() throws java.io.IOException { throw new AbstractMethodError("javax.tools.FileObject.openWriter()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean delete() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.URI toUri() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getLastModified() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.lang.CharSequence getCharContent(boolean ignoreEncodingErrors) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.io.OutputStream openOutputStream() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.io.InputStream openInputStream() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.io.Reader openReader(boolean ignoreEncodingErrors) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.io.Writer openWriter() { return null; }
   < ---- END java signatures ---- >
 }

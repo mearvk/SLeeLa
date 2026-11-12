@@ -59,8 +59,10 @@ class TypeKindVisitor14<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  TypeKindVisitor14() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor14.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TypeKindVisitor14() { }
   @JavaProtected
-  TypeKindVisitor14(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.TypeKindVisitor14.<init>(R)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TypeKindVisitor14(R defaultValue) { }
   < ---- END java constructors ---- >
 }

@@ -59,6 +59,7 @@ class AbstractTypeVisitorPreview<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractTypeVisitorPreview() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.AbstractTypeVisitorPreview.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractTypeVisitorPreview() { }
   < ---- END java constructors ---- >
 }

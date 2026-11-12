@@ -58,19 +58,29 @@ class VirtualMachineDescriptor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public VirtualMachineDescriptor(com.sun.tools.attach.spi.AttachProvider provider, java.lang.String id, java.lang.String displayName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachineDescriptor.<init>(com.sun.tools.attach.spi.AttachProvider, java.lang.String, java.lang.String)"); }
-  public VirtualMachineDescriptor(com.sun.tools.attach.spi.AttachProvider provider, java.lang.String id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachineDescriptor.<init>(com.sun.tools.attach.spi.AttachProvider, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public VirtualMachineDescriptor(com.sun.tools.attach.spi.AttachProvider provider, java.lang.String id, java.lang.String displayName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public VirtualMachineDescriptor(com.sun.tools.attach.spi.AttachProvider provider, java.lang.String id) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachineDescriptor.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachineDescriptor.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachineDescriptor.hashCode()"); }
-  public java.lang.String id() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachineDescriptor.id()"); }
-  public com.sun.tools.attach.spi.AttachProvider provider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachineDescriptor.provider()"); }
-  public java.lang.String displayName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.VirtualMachineDescriptor.displayName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object ob) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String id() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public com.sun.tools.attach.spi.AttachProvider provider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String displayName() { return null; }
   < ---- END java signatures ---- >
 }

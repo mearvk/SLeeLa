@@ -58,6 +58,7 @@ class NonWritableChannelException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NonWritableChannelException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.NonWritableChannelException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NonWritableChannelException() { }
   < ---- END java constructors ---- >
 }

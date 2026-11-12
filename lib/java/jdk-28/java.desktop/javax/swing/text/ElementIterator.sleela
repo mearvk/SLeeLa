@@ -58,18 +58,27 @@ class ElementIterator {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ElementIterator(javax.swing.text.Document document) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ElementIterator.<init>(javax.swing.text.Document)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ElementIterator(javax.swing.text.Document document) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ElementIterator.clone()"); }
-  public javax.swing.text.Element next() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ElementIterator.next()"); }
-  public javax.swing.text.Element first() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ElementIterator.first()"); }
-  public javax.swing.text.Element current() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ElementIterator.current()"); }
-  public int depth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ElementIterator.depth()"); }
-  public javax.swing.text.Element previous() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ElementIterator.previous()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Element next() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Element first() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Element current() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int depth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Element previous() { return null; }
   < ---- END java signatures ---- >
 }

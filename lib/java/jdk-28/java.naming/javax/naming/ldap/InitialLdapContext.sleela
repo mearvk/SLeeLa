@@ -58,20 +58,31 @@ class InitialLdapContext {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InitialLdapContext() throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.InitialLdapContext.<init>()"); }
-  public InitialLdapContext(java.util.Hashtable<?, ?> environment, javax.naming.ldap.Control[] connCtls) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.InitialLdapContext.<init>(java.util.Hashtable<?, ?>, javax.naming.ldap.Control[])"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public InitialLdapContext() { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public InitialLdapContext(java.util.Hashtable<?, ?> environment, javax.naming.ldap.Control[] connCtls) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.naming.ldap.LdapContext newInstance(javax.naming.ldap.Control[] reqCtls) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.InitialLdapContext.newInstance(javax.naming.ldap.Control[])"); }
-  public javax.naming.ldap.ExtendedResponse extendedOperation(javax.naming.ldap.ExtendedRequest request) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.InitialLdapContext.extendedOperation(javax.naming.ldap.ExtendedRequest)"); }
-  public javax.naming.ldap.Control[] getConnectControls() throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.InitialLdapContext.getConnectControls()"); }
-  public void setRequestControls(javax.naming.ldap.Control[] requestControls) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.InitialLdapContext.setRequestControls(javax.naming.ldap.Control[])"); }
-  public javax.naming.ldap.Control[] getRequestControls() throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.InitialLdapContext.getRequestControls()"); }
-  public javax.naming.ldap.Control[] getResponseControls() throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.InitialLdapContext.getResponseControls()"); }
-  public void reconnect(javax.naming.ldap.Control[] connCtls) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.InitialLdapContext.reconnect(javax.naming.ldap.Control[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.ldap.LdapContext newInstance(javax.naming.ldap.Control[] reqCtls) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.ldap.ExtendedResponse extendedOperation(javax.naming.ldap.ExtendedRequest request) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.ldap.Control[] getConnectControls() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void setRequestControls(javax.naming.ldap.Control[] requestControls) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.ldap.Control[] getRequestControls() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.ldap.Control[] getResponseControls() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void reconnect(javax.naming.ldap.Control[] connCtls) { }
   < ---- END java signatures ---- >
 }

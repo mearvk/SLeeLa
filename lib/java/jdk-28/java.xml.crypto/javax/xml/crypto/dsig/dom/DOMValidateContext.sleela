@@ -58,14 +58,19 @@ class DOMValidateContext {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DOMValidateContext(javax.xml.crypto.KeySelector ks, org.w3c.dom.Node node) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.dom.DOMValidateContext.<init>(javax.xml.crypto.KeySelector, org.w3c.dom.Node)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DOMValidateContext(javax.xml.crypto.KeySelector ks, org.w3c.dom.Node node) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public org.w3c.dom.Node getNode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.dom.DOMValidateContext.getNode()"); }
-  public void setNode(org.w3c.dom.Node node) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.dom.DOMValidateContext.setNode(org.w3c.dom.Node)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public org.w3c.dom.Node getNode() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNode(org.w3c.dom.Node node) { }
   < ---- END java signatures ---- >
 }

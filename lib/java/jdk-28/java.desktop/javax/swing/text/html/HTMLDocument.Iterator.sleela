@@ -60,18 +60,27 @@ class Iterator {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Iterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLDocument.Iterator.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Iterator() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void next() { throw new AbstractMethodError("javax.swing.text.html.HTMLDocument.Iterator.next()"); }
-  public abstract javax.swing.text.AttributeSet getAttributes() { throw new AbstractMethodError("javax.swing.text.html.HTMLDocument.Iterator.getAttributes()"); }
-  public abstract boolean isValid() { throw new AbstractMethodError("javax.swing.text.html.HTMLDocument.Iterator.isValid()"); }
-  public abstract int getStartOffset() { throw new AbstractMethodError("javax.swing.text.html.HTMLDocument.Iterator.getStartOffset()"); }
-  public abstract int getEndOffset() { throw new AbstractMethodError("javax.swing.text.html.HTMLDocument.Iterator.getEndOffset()"); }
-  public abstract javax.swing.text.html.HTML.Tag getTag() { throw new AbstractMethodError("javax.swing.text.html.HTMLDocument.Iterator.getTag()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void next() { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.AttributeSet getAttributes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isValid() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getStartOffset() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getEndOffset() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.html.HTML.Tag getTag() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,16 +58,25 @@ class Reference<T> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public T get() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ref.Reference.get()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public T get() { return null; }
   @JavaProtected
-  java.lang.Object clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ref.Reference.clone()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ref.Reference.clear()"); }
-  public boolean enqueue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ref.Reference.enqueue()"); }
-  public final boolean refersTo(T obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ref.Reference.refersTo(T)"); }
-  public boolean isEnqueued() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ref.Reference.isEnqueued()"); }
-  public static void reachabilityFence(java.lang.Object ref) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ref.Reference.reachabilityFence(java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
+  java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean enqueue() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean refersTo(T obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEnqueued() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void reachabilityFence(java.lang.Object ref) { }
   < ---- END java signatures ---- >
 }

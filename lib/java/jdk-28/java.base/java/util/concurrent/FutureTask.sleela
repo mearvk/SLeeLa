@@ -58,31 +58,49 @@ class FutureTask<V> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FutureTask(java.lang.Runnable runnable, V result) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.<init>(java.lang.Runnable, V)"); }
-  public FutureTask(java.util.concurrent.Callable<V> callable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.<init>(java.util.concurrent.Callable<V>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FutureTask(java.lang.Runnable runnable, V result) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FutureTask(java.util.concurrent.Callable<V> callable) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void run() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.run()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void run() { }
   @JavaProtected
-  void done() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.done()"); }
-  public V get(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.get(long, java.util.concurrent.TimeUnit)"); }
-  public V get() throws java.lang.InterruptedException, java.util.concurrent.ExecutionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.get()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.toString()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void done() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException")
+  public V get(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException")
+  public V get() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
   @JavaProtected
-  void set(V v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.set(V)"); }
-  public java.util.concurrent.Future.State state() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.state()"); }
-  public boolean isDone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.isDone()"); }
-  public boolean cancel(boolean mayInterruptIfRunning) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.cancel(boolean)"); }
-  public boolean isCancelled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.isCancelled()"); }
-  public V resultNow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.resultNow()"); }
-  public java.lang.Throwable exceptionNow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.exceptionNow()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void set(V v) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.Future.State state() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDone() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean cancel(boolean mayInterruptIfRunning) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCancelled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V resultNow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Throwable exceptionNow() { return null; }
   @JavaProtected
-  void setException(java.lang.Throwable t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.setException(java.lang.Throwable)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setException(java.lang.Throwable t) { }
   @JavaProtected
-  boolean runAndReset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.FutureTask.runAndReset()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean runAndReset() { return false; }
   < ---- END java signatures ---- >
 }

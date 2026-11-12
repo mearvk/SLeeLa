@@ -58,13 +58,20 @@ class HTMLLegendElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getAccessKey() { throw new AbstractMethodError("org.w3c.dom.html.HTMLLegendElement.getAccessKey()"); }
-  public abstract void setAccessKey(java.lang.String accessKey) { throw new AbstractMethodError("org.w3c.dom.html.HTMLLegendElement.setAccessKey(java.lang.String)"); }
-  public abstract java.lang.String getAlign() { throw new AbstractMethodError("org.w3c.dom.html.HTMLLegendElement.getAlign()"); }
-  public abstract void setAlign(java.lang.String align) { throw new AbstractMethodError("org.w3c.dom.html.HTMLLegendElement.setAlign(java.lang.String)"); }
-  public abstract org.w3c.dom.html.HTMLFormElement getForm() { throw new AbstractMethodError("org.w3c.dom.html.HTMLLegendElement.getForm()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAccessKey() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAccessKey(java.lang.String accessKey) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAlign() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAlign(java.lang.String align) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLFormElement getForm() { return null; }
   < ---- END java signatures ---- >
 }

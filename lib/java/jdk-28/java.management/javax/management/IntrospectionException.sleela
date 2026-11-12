@@ -58,7 +58,9 @@ class IntrospectionException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IntrospectionException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.IntrospectionException.<init>()"); }
-  public IntrospectionException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.IntrospectionException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IntrospectionException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IntrospectionException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

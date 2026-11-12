@@ -59,16 +59,26 @@ class DirectiveVisitor<R, P> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default R visit(javax.lang.model.element.ModuleElement.Directive d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.ModuleElement.DirectiveVisitor.visit(javax.lang.model.element.ModuleElement.Directive)"); }
-  public default R visit(javax.lang.model.element.ModuleElement.Directive d, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.ModuleElement.DirectiveVisitor.visit(javax.lang.model.element.ModuleElement.Directive, P)"); }
-  public abstract R visitExports(javax.lang.model.element.ModuleElement.ExportsDirective d, P p) { throw new AbstractMethodError("javax.lang.model.element.ModuleElement.DirectiveVisitor.visitExports(javax.lang.model.element.ModuleElement.ExportsDirective, P)"); }
-  public abstract R visitOpens(javax.lang.model.element.ModuleElement.OpensDirective d, P p) { throw new AbstractMethodError("javax.lang.model.element.ModuleElement.DirectiveVisitor.visitOpens(javax.lang.model.element.ModuleElement.OpensDirective, P)"); }
-  public abstract R visitProvides(javax.lang.model.element.ModuleElement.ProvidesDirective d, P p) { throw new AbstractMethodError("javax.lang.model.element.ModuleElement.DirectiveVisitor.visitProvides(javax.lang.model.element.ModuleElement.ProvidesDirective, P)"); }
-  public abstract R visitRequires(javax.lang.model.element.ModuleElement.RequiresDirective d, P p) { throw new AbstractMethodError("javax.lang.model.element.ModuleElement.DirectiveVisitor.visitRequires(javax.lang.model.element.ModuleElement.RequiresDirective, P)"); }
-  public abstract R visitUses(javax.lang.model.element.ModuleElement.UsesDirective d, P p) { throw new AbstractMethodError("javax.lang.model.element.ModuleElement.DirectiveVisitor.visitUses(javax.lang.model.element.ModuleElement.UsesDirective, P)"); }
-  public default R visitUnknown(javax.lang.model.element.ModuleElement.Directive d, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.ModuleElement.DirectiveVisitor.visitUnknown(javax.lang.model.element.ModuleElement.Directive, P)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default R visit(javax.lang.model.element.ModuleElement.Directive d) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default R visit(javax.lang.model.element.ModuleElement.Directive d, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitExports(javax.lang.model.element.ModuleElement.ExportsDirective d, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitOpens(javax.lang.model.element.ModuleElement.OpensDirective d, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitProvides(javax.lang.model.element.ModuleElement.ProvidesDirective d, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitRequires(javax.lang.model.element.ModuleElement.RequiresDirective d, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitUses(javax.lang.model.element.ModuleElement.UsesDirective d, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default R visitUnknown(javax.lang.model.element.ModuleElement.Directive d, P p) { return null; }
   < ---- END java signatures ---- >
 }

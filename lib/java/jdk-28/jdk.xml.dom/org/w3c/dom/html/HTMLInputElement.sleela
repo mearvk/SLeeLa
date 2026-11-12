@@ -58,46 +58,86 @@ class HTMLInputElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getName()"); }
-  public abstract java.lang.String getValue() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getValue()"); }
-  public abstract void setReadOnly(boolean readOnly) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setReadOnly(boolean)"); }
-  public abstract void setName(java.lang.String name) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setName(java.lang.String)"); }
-  public abstract void setValue(java.lang.String value) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setValue(java.lang.String)"); }
-  public abstract java.lang.String getType() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getType()"); }
-  public abstract java.lang.String getDefaultValue() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getDefaultValue()"); }
-  public abstract java.lang.String getSize() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getSize()"); }
-  public abstract void setSize(java.lang.String size) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setSize(java.lang.String)"); }
-  public abstract void select() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.select()"); }
-  public abstract void setDefaultValue(java.lang.String defaultValue) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setDefaultValue(java.lang.String)"); }
-  public abstract void focus() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.focus()"); }
-  public abstract void blur() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.blur()"); }
-  public abstract void click() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.click()"); }
-  public abstract int getTabIndex() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getTabIndex()"); }
-  public abstract boolean getDisabled() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getDisabled()"); }
-  public abstract void setDisabled(boolean disabled) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setDisabled(boolean)"); }
-  public abstract java.lang.String getAccessKey() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getAccessKey()"); }
-  public abstract void setAccessKey(java.lang.String accessKey) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setAccessKey(java.lang.String)"); }
-  public abstract void setTabIndex(int tabIndex) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setTabIndex(int)"); }
-  public abstract java.lang.String getAlign() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getAlign()"); }
-  public abstract void setAlign(java.lang.String align) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setAlign(java.lang.String)"); }
-  public abstract java.lang.String getAlt() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getAlt()"); }
-  public abstract void setAlt(java.lang.String alt) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setAlt(java.lang.String)"); }
-  public abstract org.w3c.dom.html.HTMLFormElement getForm() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getForm()"); }
-  public abstract java.lang.String getSrc() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getSrc()"); }
-  public abstract void setSrc(java.lang.String src) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setSrc(java.lang.String)"); }
-  public abstract java.lang.String getUseMap() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getUseMap()"); }
-  public abstract void setUseMap(java.lang.String useMap) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setUseMap(java.lang.String)"); }
-  public abstract boolean getDefaultChecked() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getDefaultChecked()"); }
-  public abstract void setDefaultChecked(boolean defaultChecked) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setDefaultChecked(boolean)"); }
-  public abstract java.lang.String getAccept() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getAccept()"); }
-  public abstract void setAccept(java.lang.String accept) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setAccept(java.lang.String)"); }
-  public abstract boolean getChecked() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getChecked()"); }
-  public abstract void setChecked(boolean checked) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setChecked(boolean)"); }
-  public abstract void setMaxLength(int maxLength) { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.setMaxLength(int)"); }
-  public abstract boolean getReadOnly() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getReadOnly()"); }
-  public abstract int getMaxLength() { throw new AbstractMethodError("org.w3c.dom.html.HTMLInputElement.getMaxLength()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setReadOnly(boolean readOnly) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setName(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setValue(java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDefaultValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSize() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSize(java.lang.String size) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void select() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDefaultValue(java.lang.String defaultValue) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void focus() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void blur() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void click() { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getTabIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getDisabled() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDisabled(boolean disabled) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAccessKey() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAccessKey(java.lang.String accessKey) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTabIndex(int tabIndex) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAlign() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAlign(java.lang.String align) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAlt() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAlt(java.lang.String alt) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.html.HTMLFormElement getForm() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSrc() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSrc(java.lang.String src) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getUseMap() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setUseMap(java.lang.String useMap) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getDefaultChecked() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDefaultChecked(boolean defaultChecked) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAccept() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAccept(java.lang.String accept) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getChecked() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setChecked(boolean checked) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMaxLength(int maxLength) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getReadOnly() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMaxLength() { return 0; }
   < ---- END java signatures ---- >
 }

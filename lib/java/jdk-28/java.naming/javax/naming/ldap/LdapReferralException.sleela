@@ -59,17 +59,24 @@ class LdapReferralException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  LdapReferralException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapReferralException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  LdapReferralException(java.lang.String explanation) { }
   @JavaProtected
-  LdapReferralException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ldap.LdapReferralException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  LdapReferralException() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.naming.Context getReferralContext(java.util.Hashtable<?, ?> env) throws javax.naming.NamingException { throw new AbstractMethodError("javax.naming.ldap.LdapReferralException.getReferralContext(java.util.Hashtable<?, ?>)"); }
-  public abstract javax.naming.Context getReferralContext(java.util.Hashtable<?, ?> env, javax.naming.ldap.Control[] reqCtls) throws javax.naming.NamingException { throw new AbstractMethodError("javax.naming.ldap.LdapReferralException.getReferralContext(java.util.Hashtable<?, ?>, javax.naming.ldap.Control[])"); }
-  public abstract javax.naming.Context getReferralContext() throws javax.naming.NamingException { throw new AbstractMethodError("javax.naming.ldap.LdapReferralException.getReferralContext()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
+  public javax.naming.Context getReferralContext(java.util.Hashtable<?, ?> env) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
+  public javax.naming.Context getReferralContext(java.util.Hashtable<?, ?> env, javax.naming.ldap.Control[] reqCtls) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
+  public javax.naming.Context getReferralContext() { return null; }
   < ---- END java signatures ---- >
 }

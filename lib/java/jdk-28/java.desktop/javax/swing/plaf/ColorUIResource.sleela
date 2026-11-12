@@ -58,9 +58,13 @@ class ColorUIResource {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ColorUIResource(java.awt.Color c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.ColorUIResource.<init>(java.awt.Color)"); }
-  public ColorUIResource(float r, float g, float b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.ColorUIResource.<init>(float, float, float)"); }
-  public ColorUIResource(int rgb) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.ColorUIResource.<init>(int)"); }
-  public ColorUIResource(int r, int g, int b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.ColorUIResource.<init>(int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ColorUIResource(java.awt.Color c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ColorUIResource(float r, float g, float b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ColorUIResource(int rgb) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ColorUIResource(int r, int g, int b) { }
   < ---- END java constructors ---- >
 }

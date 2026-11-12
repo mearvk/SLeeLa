@@ -69,45 +69,81 @@ class Cipher {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Cipher(javax.crypto.CipherSpi cipherSpi, java.security.Provider provider, java.lang.String transformation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.<init>(javax.crypto.CipherSpi, java.security.Provider, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Cipher(javax.crypto.CipherSpi cipherSpi, java.security.Provider provider, java.lang.String transformation) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.toString()"); }
-  public final int update(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset) throws javax.crypto.ShortBufferException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.update(byte[], int, int, byte[], int)"); }
-  public final int update(byte[] input, int inputOffset, int inputLen, byte[] output) throws javax.crypto.ShortBufferException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.update(byte[], int, int, byte[])"); }
-  public final byte[] update(byte[] input, int inputOffset, int inputLen) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.update(byte[], int, int)"); }
-  public final byte[] update(byte[] input) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.update(byte[])"); }
-  public final int update(java.nio.ByteBuffer input, java.nio.ByteBuffer output) throws javax.crypto.ShortBufferException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.update(java.nio.ByteBuffer, java.nio.ByteBuffer)"); }
-  public final byte[] wrap(java.security.Key key) throws javax.crypto.IllegalBlockSizeException, java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.wrap(java.security.Key)"); }
-  public static final javax.crypto.Cipher getInstance(java.lang.String transformation) throws java.security.NoSuchAlgorithmException, javax.crypto.NoSuchPaddingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.getInstance(java.lang.String)"); }
-  public static final javax.crypto.Cipher getInstance(java.lang.String transformation, java.security.Provider provider) throws java.security.NoSuchAlgorithmException, javax.crypto.NoSuchPaddingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.getInstance(java.lang.String, java.security.Provider)"); }
-  public static final javax.crypto.Cipher getInstance(java.lang.String transformation, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException, javax.crypto.NoSuchPaddingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.getInstance(java.lang.String, java.lang.String)"); }
-  public final void init(int opmode, java.security.Key key, java.security.AlgorithmParameters params) throws java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.init(int, java.security.Key, java.security.AlgorithmParameters)"); }
-  public final void init(int opmode, java.security.Key key) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.init(int, java.security.Key)"); }
-  public final void init(int opmode, java.security.Key key, java.security.spec.AlgorithmParameterSpec params, java.security.SecureRandom random) throws java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.init(int, java.security.Key, java.security.spec.AlgorithmParameterSpec, java.security.SecureRandom)"); }
-  public final java.security.AlgorithmParameters getParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.getParameters()"); }
-  public final java.security.Key unwrap(byte[] wrappedKey, java.lang.String wrappedKeyAlgorithm, int wrappedKeyType) throws java.security.InvalidKeyException, java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.unwrap(byte[], java.lang.String, int)"); }
-  public final java.security.Provider getProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.getProvider()"); }
-  public final java.lang.String getAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.getAlgorithm()"); }
-  public final javax.crypto.ExemptionMechanism getExemptionMechanism() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.getExemptionMechanism()"); }
-  public final void updateAAD(byte[] src, int offset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.updateAAD(byte[], int, int)"); }
-  public final void updateAAD(byte[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.updateAAD(byte[])"); }
-  public final void updateAAD(java.nio.ByteBuffer src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.updateAAD(java.nio.ByteBuffer)"); }
-  public final int getOutputSize(int inputLen) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.getOutputSize(int)"); }
-  public final byte[] getIV() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.getIV()"); }
-  public static final int getMaxAllowedKeyLength(java.lang.String transformation) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.getMaxAllowedKeyLength(java.lang.String)"); }
-  public static final java.security.spec.AlgorithmParameterSpec getMaxAllowedParameterSpec(java.lang.String transformation) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.getMaxAllowedParameterSpec(java.lang.String)"); }
-  public final int doFinal(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset) throws javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.doFinal(byte[], int, int, byte[], int)"); }
-  public final byte[] doFinal() throws javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.doFinal()"); }
-  public final byte[] doFinal(byte[] input, int inputOffset, int inputLen) throws javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.doFinal(byte[], int, int)"); }
-  public final int doFinal(java.nio.ByteBuffer input, java.nio.ByteBuffer output) throws javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.doFinal(java.nio.ByteBuffer, java.nio.ByteBuffer)"); }
-  public final int doFinal(byte[] input, int inputOffset, int inputLen, byte[] output) throws javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.doFinal(byte[], int, int, byte[])"); }
-  public final byte[] doFinal(byte[] input) throws javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.doFinal(byte[])"); }
-  public final int doFinal(byte[] output, int outputOffset) throws javax.crypto.IllegalBlockSizeException, javax.crypto.ShortBufferException, javax.crypto.BadPaddingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.doFinal(byte[], int)"); }
-  public final int getBlockSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.Cipher.getBlockSize()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException")
+  public final int update(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException")
+  public final int update(byte[] input, int inputOffset, int inputLen, byte[] output) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final byte[] update(byte[] input, int inputOffset, int inputLen) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final byte[] update(byte[] input) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException")
+  public final int update(java.nio.ByteBuffer input, java.nio.ByteBuffer output) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.IllegalBlockSizeException, java.security.InvalidKeyException")
+  public final byte[] wrap(java.security.Key key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, javax.crypto.NoSuchPaddingException")
+  public static final javax.crypto.Cipher getInstance(java.lang.String transformation) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, javax.crypto.NoSuchPaddingException")
+  public static final javax.crypto.Cipher getInstance(java.lang.String transformation, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException, javax.crypto.NoSuchPaddingException")
+  public static final javax.crypto.Cipher getInstance(java.lang.String transformation, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException")
+  public final void init(int opmode, java.security.Key key, java.security.AlgorithmParameters params) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException")
+  public final void init(int opmode, java.security.Key key) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException")
+  public final void init(int opmode, java.security.Key key, java.security.spec.AlgorithmParameterSpec params, java.security.SecureRandom random) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.AlgorithmParameters getParameters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException, java.security.NoSuchAlgorithmException")
+  public final java.security.Key unwrap(byte[] wrappedKey, java.lang.String wrappedKeyAlgorithm, int wrappedKeyType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.Provider getProvider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.crypto.ExemptionMechanism getExemptionMechanism() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void updateAAD(byte[] src, int offset, int len) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void updateAAD(byte[] src) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void updateAAD(java.nio.ByteBuffer src) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getOutputSize(int inputLen) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final byte[] getIV() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static final int getMaxAllowedKeyLength(java.lang.String transformation) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static final java.security.spec.AlgorithmParameterSpec getMaxAllowedParameterSpec(java.lang.String transformation) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
+  public final int doFinal(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
+  public final byte[] doFinal() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
+  public final byte[] doFinal(byte[] input, int inputOffset, int inputLen) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
+  public final int doFinal(java.nio.ByteBuffer input, java.nio.ByteBuffer output) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
+  public final int doFinal(byte[] input, int inputOffset, int inputLen, byte[] output) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
+  public final byte[] doFinal(byte[] input) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.crypto.IllegalBlockSizeException, javax.crypto.ShortBufferException, javax.crypto.BadPaddingException")
+  public final int doFinal(byte[] output, int outputOffset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getBlockSize() { return 0; }
   < ---- END java signatures ---- >
 }

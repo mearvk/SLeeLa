@@ -64,23 +64,35 @@ class AbstractCellEditor {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractCellEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractCellEditor.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractCellEditor() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void fireEditingStopped() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractCellEditor.fireEditingStopped()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireEditingStopped() { }
   @JavaProtected
-  void fireEditingCanceled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractCellEditor.fireEditingCanceled()"); }
-  public boolean isCellEditable(java.util.EventObject e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractCellEditor.isCellEditable(java.util.EventObject)"); }
-  public boolean shouldSelectCell(java.util.EventObject anEvent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractCellEditor.shouldSelectCell(java.util.EventObject)"); }
-  public boolean stopCellEditing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractCellEditor.stopCellEditing()"); }
-  public void cancelCellEditing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractCellEditor.cancelCellEditing()"); }
-  public void addCellEditorListener(javax.swing.event.CellEditorListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractCellEditor.addCellEditorListener(javax.swing.event.CellEditorListener)"); }
-  public void removeCellEditorListener(javax.swing.event.CellEditorListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractCellEditor.removeCellEditorListener(javax.swing.event.CellEditorListener)"); }
-  public javax.swing.event.CellEditorListener[] getCellEditorListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractCellEditor.getCellEditorListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireEditingCanceled() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCellEditable(java.util.EventObject e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean shouldSelectCell(java.util.EventObject anEvent) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean stopCellEditing() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void cancelCellEditing() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addCellEditorListener(javax.swing.event.CellEditorListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeCellEditorListener(javax.swing.event.CellEditorListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.CellEditorListener[] getCellEditorListeners() { return null; }
   < ---- END java signatures ---- >
 }

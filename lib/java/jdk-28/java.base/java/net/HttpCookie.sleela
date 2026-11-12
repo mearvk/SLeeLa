@@ -58,42 +58,75 @@ class HttpCookie {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public HttpCookie(java.lang.String name, java.lang.String value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.<init>(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HttpCookie(java.lang.String name, java.lang.String value) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.getName()"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.clone()"); }
-  public java.lang.String getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.getValue()"); }
-  public void setValue(java.lang.String newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.setValue(java.lang.String)"); }
-  public static java.util.List<java.net.HttpCookie> parse(java.lang.String header) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.parse(java.lang.String)"); }
-  public java.lang.String getPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.getPath()"); }
-  public void setVersion(int v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.setVersion(int)"); }
-  public void setComment(java.lang.String purpose) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.setComment(java.lang.String)"); }
-  public java.lang.String getComment() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.getComment()"); }
-  public int getVersion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.getVersion()"); }
-  public boolean getSecure() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.getSecure()"); }
-  public boolean isHttpOnly() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.isHttpOnly()"); }
-  public java.lang.String getPortlist() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.getPortlist()"); }
-  public void setPath(java.lang.String uri) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.setPath(java.lang.String)"); }
-  public java.lang.String getDomain() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.getDomain()"); }
-  public void setDomain(java.lang.String pattern) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.setDomain(java.lang.String)"); }
-  public void setPortlist(java.lang.String ports) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.setPortlist(java.lang.String)"); }
-  public boolean hasExpired() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.hasExpired()"); }
-  public void setCommentURL(java.lang.String purpose) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.setCommentURL(java.lang.String)"); }
-  public java.lang.String getCommentURL() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.getCommentURL()"); }
-  public void setDiscard(boolean discard) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.setDiscard(boolean)"); }
-  public boolean getDiscard() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.getDiscard()"); }
-  public void setMaxAge(long expiry) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.setMaxAge(long)"); }
-  public long getMaxAge() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.getMaxAge()"); }
-  public void setSecure(boolean flag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.setSecure(boolean)"); }
-  public void setHttpOnly(boolean httpOnly) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.setHttpOnly(boolean)"); }
-  public static boolean domainMatches(java.lang.String domain, java.lang.String host) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpCookie.domainMatches(java.lang.String, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValue(java.lang.String newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.List<java.net.HttpCookie> parse(java.lang.String header) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVersion(int v) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setComment(java.lang.String purpose) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getComment() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVersion() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getSecure() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isHttpOnly() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPortlist() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPath(java.lang.String uri) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDomain() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDomain(java.lang.String pattern) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPortlist(java.lang.String ports) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasExpired() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCommentURL(java.lang.String purpose) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getCommentURL() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDiscard(boolean discard) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getDiscard() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaxAge(long expiry) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getMaxAge() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSecure(boolean flag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHttpOnly(boolean httpOnly) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean domainMatches(java.lang.String domain, java.lang.String host) { return false; }
   < ---- END java signatures ---- >
 }

@@ -64,37 +64,62 @@ class ScrollPane {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ScrollPane(int scrollbarDisplayPolicy) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.<init>(int)"); }
-  public ScrollPane() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public ScrollPane(int scrollbarDisplayPolicy) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public ScrollPane() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.paramString()"); }
-  public void printComponents(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.printComponents(java.awt.Graphics)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printComponents(java.awt.Graphics g) { }
   @JavaProtected
-  boolean eventTypeEnabled(int type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.eventTypeEnabled(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean eventTypeEnabled(int type) { return false; }
   @JavaProtected
-  void processMouseWheelEvent(java.awt.event.MouseWheelEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.processMouseWheelEvent(java.awt.event.MouseWheelEvent)"); }
-  public void layout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.layout()"); }
-  public void setWheelScrollingEnabled(boolean handleWheel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.setWheelScrollingEnabled(boolean)"); }
-  public int getHScrollbarHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.getHScrollbarHeight()"); }
-  public int getVScrollbarWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.getVScrollbarWidth()"); }
-  public void setScrollPosition(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.setScrollPosition(java.awt.Point)"); }
-  public void setScrollPosition(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.setScrollPosition(int, int)"); }
-  public java.awt.Point getScrollPosition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.getScrollPosition()"); }
-  public java.awt.Dimension getViewportSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.getViewportSize()"); }
-  public boolean isWheelScrollingEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.isWheelScrollingEnabled()"); }
-  public int getScrollbarDisplayPolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.getScrollbarDisplayPolicy()"); }
-  public java.awt.Adjustable getVAdjustable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.getVAdjustable()"); }
-  public java.awt.Adjustable getHAdjustable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.getHAdjustable()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.getAccessibleContext()"); }
-  public final void setLayout(java.awt.LayoutManager mgr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.setLayout(java.awt.LayoutManager)"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.addNotify()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processMouseWheelEvent(java.awt.event.MouseWheelEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void layout() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setWheelScrollingEnabled(boolean handleWheel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHScrollbarHeight() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVScrollbarWidth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setScrollPosition(java.awt.Point p) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setScrollPosition(int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Point getScrollPosition() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getViewportSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isWheelScrollingEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getScrollbarDisplayPolicy() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Adjustable getVAdjustable() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Adjustable getHAdjustable() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setLayout(java.awt.LayoutManager mgr) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
   @JavaProtected
-  final void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.addImpl(java.awt.Component, java.lang.Object, int)"); }
-  public void doLayout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ScrollPane.doLayout()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void doLayout() { }
   < ---- END java signatures ---- >
 }

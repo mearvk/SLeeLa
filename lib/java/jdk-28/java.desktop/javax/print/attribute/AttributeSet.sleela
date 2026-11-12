@@ -58,20 +58,34 @@ class AttributeSet {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean remove(java.lang.Class<?> category) { throw new AbstractMethodError("javax.print.attribute.AttributeSet.remove(java.lang.Class<?>)"); }
-  public abstract int size() { throw new AbstractMethodError("javax.print.attribute.AttributeSet.size()"); }
-  public abstract javax.print.attribute.Attribute get(java.lang.Class<?> category) { throw new AbstractMethodError("javax.print.attribute.AttributeSet.get(java.lang.Class<?>)"); }
-  public abstract boolean equals(java.lang.Object object) { throw new AbstractMethodError("javax.print.attribute.AttributeSet.equals(java.lang.Object)"); }
-  public abstract int hashCode() { throw new AbstractMethodError("javax.print.attribute.AttributeSet.hashCode()"); }
-  public abstract void clear() { throw new AbstractMethodError("javax.print.attribute.AttributeSet.clear()"); }
-  public abstract boolean isEmpty() { throw new AbstractMethodError("javax.print.attribute.AttributeSet.isEmpty()"); }
-  public abstract boolean add(javax.print.attribute.Attribute attribute) { throw new AbstractMethodError("javax.print.attribute.AttributeSet.add(javax.print.attribute.Attribute)"); }
-  public abstract javax.print.attribute.Attribute[] toArray() { throw new AbstractMethodError("javax.print.attribute.AttributeSet.toArray()"); }
-  public abstract boolean addAll(javax.print.attribute.AttributeSet attributes) { throw new AbstractMethodError("javax.print.attribute.AttributeSet.addAll(javax.print.attribute.AttributeSet)"); }
-  public abstract boolean containsValue(javax.print.attribute.Attribute attribute) { throw new AbstractMethodError("javax.print.attribute.AttributeSet.containsValue(javax.print.attribute.Attribute)"); }
-  public abstract boolean containsKey(java.lang.Class<?> category) { throw new AbstractMethodError("javax.print.attribute.AttributeSet.containsKey(java.lang.Class<?>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean remove(java.lang.Class<?> category) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int size() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.attribute.Attribute get(java.lang.Class<?> category) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object object) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void clear() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean add(javax.print.attribute.Attribute attribute) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.attribute.Attribute[] toArray() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean addAll(javax.print.attribute.AttributeSet attributes) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean containsValue(javax.print.attribute.Attribute attribute) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean containsKey(java.lang.Class<?> category) { return false; }
   < ---- END java signatures ---- >
 }

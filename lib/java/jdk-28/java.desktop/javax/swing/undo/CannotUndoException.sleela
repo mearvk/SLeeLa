@@ -58,6 +58,7 @@ class CannotUndoException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CannotUndoException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.CannotUndoException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CannotUndoException() { }
   < ---- END java constructors ---- >
 }

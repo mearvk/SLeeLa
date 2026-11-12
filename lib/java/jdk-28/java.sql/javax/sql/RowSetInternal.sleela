@@ -58,13 +58,20 @@ class RowSetInternal {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object[] getParams() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetInternal.getParams()"); }
-  public abstract java.sql.Connection getConnection() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetInternal.getConnection()"); }
-  public abstract void setMetaData(javax.sql.RowSetMetaData md) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetInternal.setMetaData(javax.sql.RowSetMetaData)"); }
-  public abstract java.sql.ResultSet getOriginal() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetInternal.getOriginal()"); }
-  public abstract java.sql.ResultSet getOriginalRow() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSetInternal.getOriginalRow()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.Object[] getParams() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.Connection getConnection() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setMetaData(javax.sql.RowSetMetaData md) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getOriginal() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getOriginalRow() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,6 +58,7 @@ class ClosedChannelException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ClosedChannelException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.ClosedChannelException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ClosedChannelException() { }
   < ---- END java constructors ---- >
 }

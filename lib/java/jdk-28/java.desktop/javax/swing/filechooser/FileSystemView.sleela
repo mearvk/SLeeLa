@@ -58,41 +58,72 @@ class FileSystemView {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FileSystemView() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FileSystemView() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean isRoot(java.io.File f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.isRoot(java.io.File)"); }
-  public java.io.File getChild(java.io.File parent, java.lang.String fileName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getChild(java.io.File, java.lang.String)"); }
-  public java.io.File[] getFiles(java.io.File dir, boolean useFileHiding) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getFiles(java.io.File, boolean)"); }
-  public java.io.File createFileObject(java.lang.String path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.createFileObject(java.lang.String)"); }
-  public java.io.File createFileObject(java.io.File dir, java.lang.String filename) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.createFileObject(java.io.File, java.lang.String)"); }
-  public static javax.swing.filechooser.FileSystemView getFileSystemView() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getFileSystemView()"); }
-  public boolean isParent(java.io.File folder, java.io.File file) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.isParent(java.io.File, java.io.File)"); }
-  public java.io.File getDefaultDirectory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getDefaultDirectory()"); }
-  public java.lang.Boolean isTraversable(java.io.File f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.isTraversable(java.io.File)"); }
-  public java.io.File getParentDirectory(java.io.File dir) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getParentDirectory(java.io.File)"); }
-  public java.io.File[] getRoots() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getRoots()"); }
-  public boolean isFileSystem(java.io.File f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.isFileSystem(java.io.File)"); }
-  public boolean isFileSystemRoot(java.io.File dir) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.isFileSystemRoot(java.io.File)"); }
-  public boolean isComputerNode(java.io.File dir) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.isComputerNode(java.io.File)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRoot(java.io.File f) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.File getChild(java.io.File parent, java.lang.String fileName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.File[] getFiles(java.io.File dir, boolean useFileHiding) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.File createFileObject(java.lang.String path) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.File createFileObject(java.io.File dir, java.lang.String filename) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.filechooser.FileSystemView getFileSystemView() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isParent(java.io.File folder, java.io.File file) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.File getDefaultDirectory() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Boolean isTraversable(java.io.File f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.File getParentDirectory(java.io.File dir) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.File[] getRoots() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFileSystem(java.io.File f) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFileSystemRoot(java.io.File dir) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isComputerNode(java.io.File dir) { return false; }
   @JavaProtected
-  java.io.File createFileSystemRoot(java.io.File f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.createFileSystemRoot(java.io.File)"); }
-  public boolean isHiddenFile(java.io.File f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.isHiddenFile(java.io.File)"); }
-  public java.io.File getLinkLocation(java.io.File file) throws java.io.FileNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getLinkLocation(java.io.File)"); }
-  public java.lang.String getSystemDisplayName(java.io.File f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getSystemDisplayName(java.io.File)"); }
-  public java.lang.String getSystemTypeDescription(java.io.File f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getSystemTypeDescription(java.io.File)"); }
-  public javax.swing.Icon getSystemIcon(java.io.File f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getSystemIcon(java.io.File)"); }
-  public javax.swing.Icon getSystemIcon(java.io.File f, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getSystemIcon(java.io.File, int, int)"); }
-  public abstract java.io.File createNewFolder(java.io.File containingDir) throws java.io.IOException { throw new AbstractMethodError("javax.swing.filechooser.FileSystemView.createNewFolder(java.io.File)"); }
-  public boolean isDrive(java.io.File dir) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.isDrive(java.io.File)"); }
-  public boolean isFloppyDrive(java.io.File dir) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.isFloppyDrive(java.io.File)"); }
-  public java.io.File getHomeDirectory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getHomeDirectory()"); }
-  public java.io.File[] getChooserComboBoxFiles() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getChooserComboBoxFiles()"); }
-  public final java.io.File[] getChooserShortcutPanelFiles() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.getChooserShortcutPanelFiles()"); }
-  public boolean isLink(java.io.File file) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.filechooser.FileSystemView.isLink(java.io.File)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.io.File createFileSystemRoot(java.io.File f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isHiddenFile(java.io.File f) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.FileNotFoundException")
+  public java.io.File getLinkLocation(java.io.File file) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSystemDisplayName(java.io.File f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSystemTypeDescription(java.io.File f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getSystemIcon(java.io.File f) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getSystemIcon(java.io.File f, int width, int height) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.io.File createNewFolder(java.io.File containingDir) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDrive(java.io.File dir) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFloppyDrive(java.io.File dir) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.File getHomeDirectory() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.File[] getChooserComboBoxFiles() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.io.File[] getChooserShortcutPanelFiles() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLink(java.io.File file) { return false; }
   < ---- END java signatures ---- >
 }

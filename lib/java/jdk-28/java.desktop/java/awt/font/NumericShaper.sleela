@@ -81,23 +81,40 @@ class NumericShaper {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.hashCode()"); }
-  public void shape(char[] text, int start, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.shape(char[], int, int)"); }
-  public void shape(char[] text, int start, int count, int context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.shape(char[], int, int, int)"); }
-  public void shape(char[] text, int start, int count, java.awt.font.NumericShaper.Range context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.shape(char[], int, int, java.awt.font.NumericShaper.Range)"); }
-  public boolean isContextual() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.isContextual()"); }
-  public static java.awt.font.NumericShaper getShaper(java.awt.font.NumericShaper.Range singleRange) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.getShaper(java.awt.font.NumericShaper.Range)"); }
-  public static java.awt.font.NumericShaper getShaper(int singleRange) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.getShaper(int)"); }
-  public static java.awt.font.NumericShaper getContextualShaper(java.util.Set<java.awt.font.NumericShaper.Range> ranges, java.awt.font.NumericShaper.Range defaultContext) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.getContextualShaper(java.util.Set<java.awt.font.NumericShaper.Range>, java.awt.font.NumericShaper.Range)"); }
-  public static java.awt.font.NumericShaper getContextualShaper(int ranges, int defaultContext) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.getContextualShaper(int, int)"); }
-  public static java.awt.font.NumericShaper getContextualShaper(java.util.Set<java.awt.font.NumericShaper.Range> ranges) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.getContextualShaper(java.util.Set<java.awt.font.NumericShaper.Range>)"); }
-  public static java.awt.font.NumericShaper getContextualShaper(int ranges) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.getContextualShaper(int)"); }
-  public int getRanges() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.getRanges()"); }
-  public java.util.Set<java.awt.font.NumericShaper.Range> getRangeSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.NumericShaper.getRangeSet()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void shape(char[] text, int start, int count) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void shape(char[] text, int start, int count, int context) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void shape(char[] text, int start, int count, java.awt.font.NumericShaper.Range context) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isContextual() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.font.NumericShaper getShaper(java.awt.font.NumericShaper.Range singleRange) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.font.NumericShaper getShaper(int singleRange) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.font.NumericShaper getContextualShaper(java.util.Set<java.awt.font.NumericShaper.Range> ranges, java.awt.font.NumericShaper.Range defaultContext) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.font.NumericShaper getContextualShaper(int ranges, int defaultContext) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.font.NumericShaper getContextualShaper(java.util.Set<java.awt.font.NumericShaper.Range> ranges) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.font.NumericShaper getContextualShaper(int ranges) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRanges() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.awt.font.NumericShaper.Range> getRangeSet() { return null; }
   < ---- END java signatures ---- >
 }

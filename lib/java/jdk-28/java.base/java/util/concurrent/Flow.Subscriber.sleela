@@ -59,12 +59,18 @@ class Subscriber<T> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void onSubscribe(java.util.concurrent.Flow.Subscription subscription) { throw new AbstractMethodError("java.util.concurrent.Flow.Subscriber.onSubscribe(java.util.concurrent.Flow.Subscription)"); }
-  public abstract void onNext(T item) { throw new AbstractMethodError("java.util.concurrent.Flow.Subscriber.onNext(T)"); }
-  public abstract void onError(java.lang.Throwable throwable) { throw new AbstractMethodError("java.util.concurrent.Flow.Subscriber.onError(java.lang.Throwable)"); }
-  public abstract void onComplete() { throw new AbstractMethodError("java.util.concurrent.Flow.Subscriber.onComplete()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void onSubscribe(java.util.concurrent.Flow.Subscription subscription) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void onNext(T item) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void onError(java.lang.Throwable throwable) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void onComplete() { }
   < ---- END java signatures ---- >
 }

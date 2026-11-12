@@ -58,55 +58,104 @@ class LongStream {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.OptionalLong min() { throw new AbstractMethodError("java.util.stream.LongStream.min()"); }
-  public abstract java.util.OptionalLong max() { throw new AbstractMethodError("java.util.stream.LongStream.max()"); }
-  public static java.util.stream.LongStream of(long t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.LongStream.of(long)"); }
-  public static java.util.stream.LongStream of(long... values) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.LongStream.of(long...)"); }
-  public abstract long[] toArray() { throw new AbstractMethodError("java.util.stream.LongStream.toArray()"); }
-  public abstract java.util.PrimitiveIterator.OfLong iterator() { throw new AbstractMethodError("java.util.stream.LongStream.iterator()"); }
-  public abstract java.util.stream.LongStream map(java.util.function.LongUnaryOperator mapper) { throw new AbstractMethodError("java.util.stream.LongStream.map(java.util.function.LongUnaryOperator)"); }
-  public abstract <R> R collect(java.util.function.Supplier<R> supplier, java.util.function.ObjLongConsumer<R> accumulator, java.util.function.BiConsumer<R, R> combiner) { throw new AbstractMethodError("java.util.stream.LongStream.collect(java.util.function.Supplier<R>, java.util.function.ObjLongConsumer<R>, java.util.function.BiConsumer<R, R>)"); }
-  public abstract long count() { throw new AbstractMethodError("java.util.stream.LongStream.count()"); }
-  public static java.util.stream.LongStream.Builder builder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.LongStream.builder()"); }
-  public static java.util.stream.LongStream concat(java.util.stream.LongStream a, java.util.stream.LongStream b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.LongStream.concat(java.util.stream.LongStream, java.util.stream.LongStream)"); }
-  public abstract java.util.stream.LongStream limit(long maxSize) { throw new AbstractMethodError("java.util.stream.LongStream.limit(long)"); }
-  public abstract java.util.Spliterator.OfLong spliterator() { throw new AbstractMethodError("java.util.stream.LongStream.spliterator()"); }
-  public abstract java.util.stream.LongStream filter(java.util.function.LongPredicate predicate) { throw new AbstractMethodError("java.util.stream.LongStream.filter(java.util.function.LongPredicate)"); }
-  public static java.util.stream.LongStream empty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.LongStream.empty()"); }
-  public abstract boolean anyMatch(java.util.function.LongPredicate predicate) { throw new AbstractMethodError("java.util.stream.LongStream.anyMatch(java.util.function.LongPredicate)"); }
-  public abstract void forEach(java.util.function.LongConsumer action) { throw new AbstractMethodError("java.util.stream.LongStream.forEach(java.util.function.LongConsumer)"); }
-  public abstract java.util.OptionalLong findAny() { throw new AbstractMethodError("java.util.stream.LongStream.findAny()"); }
-  public abstract java.util.stream.LongStream skip(long n) { throw new AbstractMethodError("java.util.stream.LongStream.skip(long)"); }
-  public abstract java.util.stream.LongStream peek(java.util.function.LongConsumer action) { throw new AbstractMethodError("java.util.stream.LongStream.peek(java.util.function.LongConsumer)"); }
-  public abstract long sum() { throw new AbstractMethodError("java.util.stream.LongStream.sum()"); }
-  public abstract java.util.OptionalLong reduce(java.util.function.LongBinaryOperator op) { throw new AbstractMethodError("java.util.stream.LongStream.reduce(java.util.function.LongBinaryOperator)"); }
-  public abstract long reduce(long identity, java.util.function.LongBinaryOperator op) { throw new AbstractMethodError("java.util.stream.LongStream.reduce(long, java.util.function.LongBinaryOperator)"); }
-  public static java.util.stream.LongStream range(long startInclusive, long endExclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.LongStream.range(long, long)"); }
-  public abstract java.util.stream.LongStream parallel() { throw new AbstractMethodError("java.util.stream.LongStream.parallel()"); }
-  public static java.util.stream.LongStream iterate(long seed, java.util.function.LongPredicate hasNext, java.util.function.LongUnaryOperator next_) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.LongStream.iterate(long, java.util.function.LongPredicate, java.util.function.LongUnaryOperator)"); }
-  public static java.util.stream.LongStream iterate(long seed, java.util.function.LongUnaryOperator f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.LongStream.iterate(long, java.util.function.LongUnaryOperator)"); }
-  public abstract java.util.stream.LongStream flatMap(java.util.function.LongFunction<? extends java.util.stream.LongStream> mapper) { throw new AbstractMethodError("java.util.stream.LongStream.flatMap(java.util.function.LongFunction<? extends java.util.stream.LongStream>)"); }
-  public abstract boolean allMatch(java.util.function.LongPredicate predicate) { throw new AbstractMethodError("java.util.stream.LongStream.allMatch(java.util.function.LongPredicate)"); }
-  public abstract java.util.stream.LongStream distinct() { throw new AbstractMethodError("java.util.stream.LongStream.distinct()"); }
-  public abstract java.util.OptionalLong findFirst() { throw new AbstractMethodError("java.util.stream.LongStream.findFirst()"); }
-  public abstract boolean noneMatch(java.util.function.LongPredicate predicate) { throw new AbstractMethodError("java.util.stream.LongStream.noneMatch(java.util.function.LongPredicate)"); }
-  public abstract java.util.stream.LongStream sorted() { throw new AbstractMethodError("java.util.stream.LongStream.sorted()"); }
-  public static java.util.stream.LongStream generate(java.util.function.LongSupplier s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.LongStream.generate(java.util.function.LongSupplier)"); }
-  public abstract void forEachOrdered(java.util.function.LongConsumer action) { throw new AbstractMethodError("java.util.stream.LongStream.forEachOrdered(java.util.function.LongConsumer)"); }
-  public abstract java.util.stream.IntStream mapToInt(java.util.function.LongToIntFunction mapper) { throw new AbstractMethodError("java.util.stream.LongStream.mapToInt(java.util.function.LongToIntFunction)"); }
-  public abstract java.util.stream.DoubleStream mapToDouble(java.util.function.LongToDoubleFunction mapper) { throw new AbstractMethodError("java.util.stream.LongStream.mapToDouble(java.util.function.LongToDoubleFunction)"); }
-  public default java.util.stream.LongStream mapMulti(java.util.stream.LongStream.LongMapMultiConsumer mapper) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.LongStream.mapMulti(java.util.stream.LongStream.LongMapMultiConsumer)"); }
-  public default java.util.stream.LongStream takeWhile(java.util.function.LongPredicate predicate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.LongStream.takeWhile(java.util.function.LongPredicate)"); }
-  public default java.util.stream.LongStream dropWhile(java.util.function.LongPredicate predicate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.LongStream.dropWhile(java.util.function.LongPredicate)"); }
-  public abstract java.util.stream.LongStream sequential() { throw new AbstractMethodError("java.util.stream.LongStream.sequential()"); }
-  public abstract <U> java.util.stream.Stream<U> mapToObj(java.util.function.LongFunction<? extends U> mapper) { throw new AbstractMethodError("java.util.stream.LongStream.mapToObj(java.util.function.LongFunction<? extends U>)"); }
-  public static java.util.stream.LongStream rangeClosed(long startInclusive, long endInclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.LongStream.rangeClosed(long, long)"); }
-  public abstract java.util.stream.Stream<java.lang.Long> boxed() { throw new AbstractMethodError("java.util.stream.LongStream.boxed()"); }
-  public abstract java.util.OptionalDouble average() { throw new AbstractMethodError("java.util.stream.LongStream.average()"); }
-  public abstract java.util.LongSummaryStatistics summaryStatistics() { throw new AbstractMethodError("java.util.stream.LongStream.summaryStatistics()"); }
-  public abstract java.util.stream.DoubleStream asDoubleStream() { throw new AbstractMethodError("java.util.stream.LongStream.asDoubleStream()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.OptionalLong min() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.OptionalLong max() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.LongStream of(long t) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.LongStream of(long... values) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long[] toArray() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.PrimitiveIterator.OfLong iterator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.LongStream map(java.util.function.LongUnaryOperator mapper) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <R> R collect(java.util.function.Supplier<R> supplier, java.util.function.ObjLongConsumer<R> accumulator, java.util.function.BiConsumer<R, R> combiner) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long count() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.LongStream.Builder builder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.LongStream concat(java.util.stream.LongStream a, java.util.stream.LongStream b) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.LongStream limit(long maxSize) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Spliterator.OfLong spliterator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.LongStream filter(java.util.function.LongPredicate predicate) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.LongStream empty() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean anyMatch(java.util.function.LongPredicate predicate) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void forEach(java.util.function.LongConsumer action) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.OptionalLong findAny() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.LongStream skip(long n) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.LongStream peek(java.util.function.LongConsumer action) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long sum() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.OptionalLong reduce(java.util.function.LongBinaryOperator op) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long reduce(long identity, java.util.function.LongBinaryOperator op) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.LongStream range(long startInclusive, long endExclusive) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.LongStream parallel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.LongStream iterate(long seed, java.util.function.LongPredicate hasNext, java.util.function.LongUnaryOperator next_) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.LongStream iterate(long seed, java.util.function.LongUnaryOperator f) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.LongStream flatMap(java.util.function.LongFunction<? extends java.util.stream.LongStream> mapper) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean allMatch(java.util.function.LongPredicate predicate) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.LongStream distinct() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.OptionalLong findFirst() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean noneMatch(java.util.function.LongPredicate predicate) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.LongStream sorted() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.LongStream generate(java.util.function.LongSupplier s) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void forEachOrdered(java.util.function.LongConsumer action) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.IntStream mapToInt(java.util.function.LongToIntFunction mapper) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.DoubleStream mapToDouble(java.util.function.LongToDoubleFunction mapper) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.LongStream mapMulti(java.util.stream.LongStream.LongMapMultiConsumer mapper) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.LongStream takeWhile(java.util.function.LongPredicate predicate) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.LongStream dropWhile(java.util.function.LongPredicate predicate) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.LongStream sequential() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <U> java.util.stream.Stream<U> mapToObj(java.util.function.LongFunction<? extends U> mapper) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.LongStream rangeClosed(long startInclusive, long endInclusive) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.Stream<java.lang.Long> boxed() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.OptionalDouble average() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.LongSummaryStatistics summaryStatistics() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.DoubleStream asDoubleStream() { return null; }
   < ---- END java signatures ---- >
 }

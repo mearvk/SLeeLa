@@ -58,13 +58,20 @@ class InputMethodDescriptor {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.Locale[] getAvailableLocales() throws java.awt.AWTException { throw new AbstractMethodError("java.awt.im.spi.InputMethodDescriptor.getAvailableLocales()"); }
-  public abstract boolean hasDynamicLocaleList() { throw new AbstractMethodError("java.awt.im.spi.InputMethodDescriptor.hasDynamicLocaleList()"); }
-  public abstract java.lang.String getInputMethodDisplayName(java.util.Locale inputLocale, java.util.Locale displayLanguage) { throw new AbstractMethodError("java.awt.im.spi.InputMethodDescriptor.getInputMethodDisplayName(java.util.Locale, java.util.Locale)"); }
-  public abstract java.awt.Image getInputMethodIcon(java.util.Locale inputLocale) { throw new AbstractMethodError("java.awt.im.spi.InputMethodDescriptor.getInputMethodIcon(java.util.Locale)"); }
-  public abstract java.awt.im.spi.InputMethod createInputMethod() throws java.lang.Exception { throw new AbstractMethodError("java.awt.im.spi.InputMethodDescriptor.createInputMethod()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.awt.AWTException")
+  public java.util.Locale[] getAvailableLocales() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasDynamicLocaleList() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getInputMethodDisplayName(java.util.Locale inputLocale, java.util.Locale displayLanguage) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Image getInputMethodIcon(java.util.Locale inputLocale) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.Exception")
+  public java.awt.im.spi.InputMethod createInputMethod() { return null; }
   < ---- END java signatures ---- >
 }

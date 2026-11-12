@@ -58,22 +58,38 @@ class SortedSet<E> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract E last() { throw new AbstractMethodError("java.util.SortedSet.last()"); }
-  public default java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SortedSet.spliterator()"); }
-  public abstract E first() { throw new AbstractMethodError("java.util.SortedSet.first()"); }
-  public default E getFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SortedSet.getFirst()"); }
-  public default E getLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SortedSet.getLast()"); }
-  public default void addFirst(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SortedSet.addFirst(E)"); }
-  public default void addLast(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SortedSet.addLast(E)"); }
-  public default E removeFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SortedSet.removeFirst()"); }
-  public default E removeLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SortedSet.removeLast()"); }
-  public default java.util.SortedSet<E> reversed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.SortedSet.reversed()"); }
-  public abstract java.util.Comparator<? super E> comparator() { throw new AbstractMethodError("java.util.SortedSet.comparator()"); }
-  public abstract java.util.SortedSet<E> subSet(E fromElement, E toElement) { throw new AbstractMethodError("java.util.SortedSet.subSet(E, E)"); }
-  public abstract java.util.SortedSet<E> headSet(E toElement) { throw new AbstractMethodError("java.util.SortedSet.headSet(E)"); }
-  public abstract java.util.SortedSet<E> tailSet(E fromElement) { throw new AbstractMethodError("java.util.SortedSet.tailSet(E)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public E last() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Spliterator<E> spliterator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E first() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default E getFirst() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default E getLast() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void addFirst(E e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void addLast(E e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default E removeFirst() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default E removeLast() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.SortedSet<E> reversed() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Comparator<? super E> comparator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.SortedSet<E> subSet(E fromElement, E toElement) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.SortedSet<E> headSet(E toElement) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.SortedSet<E> tailSet(E fromElement) { return null; }
   < ---- END java signatures ---- >
 }

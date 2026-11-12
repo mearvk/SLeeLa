@@ -58,17 +58,25 @@ class CookieManager {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CookieManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.CookieManager.<init>()"); }
-  public CookieManager(java.net.CookieStore store, java.net.CookiePolicy cookiePolicy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.CookieManager.<init>(java.net.CookieStore, java.net.CookiePolicy)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CookieManager() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CookieManager(java.net.CookieStore store, java.net.CookiePolicy cookiePolicy) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.Map<java.lang.String, java.util.List<java.lang.String>> get(java.net.URI uri, java.util.Map<java.lang.String, java.util.List<java.lang.String>> requestHeaders) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.CookieManager.get(java.net.URI, java.util.Map<java.lang.String, java.util.List<java.lang.String>>)"); }
-  public void put(java.net.URI uri, java.util.Map<java.lang.String, java.util.List<java.lang.String>> responseHeaders) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.CookieManager.put(java.net.URI, java.util.Map<java.lang.String, java.util.List<java.lang.String>>)"); }
-  public void setCookiePolicy(java.net.CookiePolicy cookiePolicy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.CookieManager.setCookiePolicy(java.net.CookiePolicy)"); }
-  public java.net.CookieStore getCookieStore() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.CookieManager.getCookieStore()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.util.Map<java.lang.String, java.util.List<java.lang.String>> get(java.net.URI uri, java.util.Map<java.lang.String, java.util.List<java.lang.String>> requestHeaders) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void put(java.net.URI uri, java.util.Map<java.lang.String, java.util.List<java.lang.String>> responseHeaders) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCookiePolicy(java.net.CookiePolicy cookiePolicy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.CookieStore getCookieStore() { return null; }
   < ---- END java signatures ---- >
 }

@@ -74,46 +74,74 @@ class DefaultTreeCellEditor {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultTreeCellEditor(javax.swing.JTree tree, javax.swing.tree.DefaultTreeCellRenderer renderer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.<init>(javax.swing.JTree, javax.swing.tree.DefaultTreeCellRenderer)"); }
-  public DefaultTreeCellEditor(javax.swing.JTree tree, javax.swing.tree.DefaultTreeCellRenderer renderer, javax.swing.tree.TreeCellEditor editor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.<init>(javax.swing.JTree, javax.swing.tree.DefaultTreeCellRenderer, javax.swing.tree.TreeCellEditor)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultTreeCellEditor(javax.swing.JTree tree, javax.swing.tree.DefaultTreeCellRenderer renderer) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultTreeCellEditor(javax.swing.JTree tree, javax.swing.tree.DefaultTreeCellRenderer renderer, javax.swing.tree.TreeCellEditor editor) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Color getBorderSelectionColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.getBorderSelectionColor()"); }
-  public void setBorderSelectionColor(java.awt.Color newColor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.setBorderSelectionColor(java.awt.Color)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getBorderSelectionColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBorderSelectionColor(java.awt.Color newColor) { }
   @JavaProtected
-  javax.swing.tree.TreeCellEditor createTreeCellEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.createTreeCellEditor()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.tree.TreeCellEditor createTreeCellEditor() { return null; }
   @JavaProtected
-  java.awt.Container createContainer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.createContainer()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Container createContainer() { return null; }
   @JavaProtected
-  void setTree(javax.swing.JTree newTree) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.setTree(javax.swing.JTree)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setTree(javax.swing.JTree newTree) { }
   @JavaProtected
-  void determineOffset(javax.swing.JTree tree, java.lang.Object value, boolean isSelected, boolean expanded, boolean leaf, int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.determineOffset(javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void determineOffset(javax.swing.JTree tree, java.lang.Object value, boolean isSelected, boolean expanded, boolean leaf, int row) { }
   @JavaProtected
-  void prepareForEditing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.prepareForEditing()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void prepareForEditing() { }
   @JavaProtected
-  boolean canEditImmediately(java.util.EventObject event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.canEditImmediately(java.util.EventObject)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean canEditImmediately(java.util.EventObject event) { return false; }
   @JavaProtected
-  boolean shouldStartEditingTimer(java.util.EventObject event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.shouldStartEditingTimer(java.util.EventObject)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean shouldStartEditingTimer(java.util.EventObject event) { return false; }
   @JavaProtected
-  void startEditingTimer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.startEditingTimer()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void startEditingTimer() { }
   @JavaProtected
-  boolean inHitRegion(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.inHitRegion(int, int)"); }
-  public void valueChanged(javax.swing.event.TreeSelectionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.valueChanged(javax.swing.event.TreeSelectionEvent)"); }
-  public java.awt.Component getTreeCellEditorComponent(javax.swing.JTree tree, java.lang.Object value, boolean isSelected, boolean expanded, boolean leaf, int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.getTreeCellEditorComponent(javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int)"); }
-  public void actionPerformed(java.awt.event.ActionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.actionPerformed(java.awt.event.ActionEvent)"); }
-  public boolean isCellEditable(java.util.EventObject event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.isCellEditable(java.util.EventObject)"); }
-  public boolean shouldSelectCell(java.util.EventObject event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.shouldSelectCell(java.util.EventObject)"); }
-  public boolean stopCellEditing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.stopCellEditing()"); }
-  public void cancelCellEditing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.cancelCellEditing()"); }
-  public void addCellEditorListener(javax.swing.event.CellEditorListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.addCellEditorListener(javax.swing.event.CellEditorListener)"); }
-  public void removeCellEditorListener(javax.swing.event.CellEditorListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.removeCellEditorListener(javax.swing.event.CellEditorListener)"); }
-  public javax.swing.event.CellEditorListener[] getCellEditorListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.getCellEditorListeners()"); }
-  public java.lang.Object getCellEditorValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.getCellEditorValue()"); }
-  public java.awt.Font getFont() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.getFont()"); }
-  public void setFont(java.awt.Font font) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.DefaultTreeCellEditor.setFont(java.awt.Font)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean inHitRegion(int x, int y) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void valueChanged(javax.swing.event.TreeSelectionEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getTreeCellEditorComponent(javax.swing.JTree tree, java.lang.Object value, boolean isSelected, boolean expanded, boolean leaf, int row) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void actionPerformed(java.awt.event.ActionEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCellEditable(java.util.EventObject event) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean shouldSelectCell(java.util.EventObject event) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean stopCellEditing() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void cancelCellEditing() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addCellEditorListener(javax.swing.event.CellEditorListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeCellEditorListener(javax.swing.event.CellEditorListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.CellEditorListener[] getCellEditorListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getCellEditorValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font getFont() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFont(java.awt.Font font) { }
   < ---- END java signatures ---- >
 }

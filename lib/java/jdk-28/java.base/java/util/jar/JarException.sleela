@@ -58,7 +58,9 @@ class JarException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JarException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.jar.JarException.<init>()"); }
-  public JarException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.jar.JarException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JarException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JarException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

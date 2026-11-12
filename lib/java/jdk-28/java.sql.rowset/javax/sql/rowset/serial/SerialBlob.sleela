@@ -58,27 +58,45 @@ class SerialBlob {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SerialBlob(byte[] b) throws javax.sql.rowset.serial.SerialException, java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.<init>(byte[])"); }
-  public SerialBlob(java.sql.Blob blob) throws javax.sql.rowset.serial.SerialException, java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.<init>(java.sql.Blob)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException, java.sql.SQLException")
+  public SerialBlob(byte[] b) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException, java.sql.SQLException")
+  public SerialBlob(java.sql.Blob blob) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.equals(java.lang.Object)"); }
-  public long length() throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.length()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.clone()"); }
-  public long position(java.sql.Blob pattern, long start) throws javax.sql.rowset.serial.SerialException, java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.position(java.sql.Blob, long)"); }
-  public long position(byte[] pattern, long start) throws javax.sql.rowset.serial.SerialException, java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.position(byte[], long)"); }
-  public byte[] getBytes(long pos, int length) throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.getBytes(long, int)"); }
-  public void truncate(long length) throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.truncate(long)"); }
-  public void free() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.free()"); }
-  public java.io.InputStream getBinaryStream(long pos, long length) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.getBinaryStream(long, long)"); }
-  public java.io.InputStream getBinaryStream() throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.getBinaryStream()"); }
-  public int setBytes(long pos, byte[] bytes) throws javax.sql.rowset.serial.SerialException, java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.setBytes(long, byte[])"); }
-  public int setBytes(long pos, byte[] bytes, int offset, int length) throws javax.sql.rowset.serial.SerialException, java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.setBytes(long, byte[], int, int)"); }
-  public java.io.OutputStream setBinaryStream(long pos) throws javax.sql.rowset.serial.SerialException, java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialBlob.setBinaryStream(long)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public long length() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException, java.sql.SQLException")
+  public long position(java.sql.Blob pattern, long start) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException, java.sql.SQLException")
+  public long position(byte[] pattern, long start) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public byte[] getBytes(long pos, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public void truncate(long length) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void free() { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public java.io.InputStream getBinaryStream(long pos, long length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public java.io.InputStream getBinaryStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException, java.sql.SQLException")
+  public int setBytes(long pos, byte[] bytes) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException, java.sql.SQLException")
+  public int setBytes(long pos, byte[] bytes, int offset, int length) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException, java.sql.SQLException")
+  public java.io.OutputStream setBinaryStream(long pos) { return null; }
   < ---- END java signatures ---- >
 }

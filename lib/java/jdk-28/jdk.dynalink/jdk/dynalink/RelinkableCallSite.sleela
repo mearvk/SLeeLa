@@ -58,12 +58,18 @@ class RelinkableCallSite {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract jdk.dynalink.CallSiteDescriptor getDescriptor() { throw new AbstractMethodError("jdk.dynalink.RelinkableCallSite.getDescriptor()"); }
-  public abstract void initialize(java.lang.invoke.MethodHandle relinkAndInvoke) { throw new AbstractMethodError("jdk.dynalink.RelinkableCallSite.initialize(java.lang.invoke.MethodHandle)"); }
-  public abstract void resetAndRelink(jdk.dynalink.linker.GuardedInvocation guardedInvocation, java.lang.invoke.MethodHandle relinkAndInvoke) { throw new AbstractMethodError("jdk.dynalink.RelinkableCallSite.resetAndRelink(jdk.dynalink.linker.GuardedInvocation, java.lang.invoke.MethodHandle)"); }
-  public abstract void relink(jdk.dynalink.linker.GuardedInvocation guardedInvocation, java.lang.invoke.MethodHandle relinkAndInvoke) { throw new AbstractMethodError("jdk.dynalink.RelinkableCallSite.relink(jdk.dynalink.linker.GuardedInvocation, java.lang.invoke.MethodHandle)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.dynalink.CallSiteDescriptor getDescriptor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void initialize(java.lang.invoke.MethodHandle relinkAndInvoke) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void resetAndRelink(jdk.dynalink.linker.GuardedInvocation guardedInvocation, java.lang.invoke.MethodHandle relinkAndInvoke) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void relink(jdk.dynalink.linker.GuardedInvocation guardedInvocation, java.lang.invoke.MethodHandle relinkAndInvoke) { }
   < ---- END java signatures ---- >
 }

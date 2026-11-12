@@ -58,11 +58,16 @@ class BasicFileAttributeView {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String name() { throw new AbstractMethodError("java.nio.file.attribute.BasicFileAttributeView.name()"); }
-  public abstract java.nio.file.attribute.BasicFileAttributes readAttributes() throws java.io.IOException { throw new AbstractMethodError("java.nio.file.attribute.BasicFileAttributeView.readAttributes()"); }
-  public abstract void setTimes(java.nio.file.attribute.FileTime lastModifiedTime, java.nio.file.attribute.FileTime lastAccessTime, java.nio.file.attribute.FileTime createTime) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.attribute.BasicFileAttributeView.setTimes(java.nio.file.attribute.FileTime, java.nio.file.attribute.FileTime, java.nio.file.attribute.FileTime)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String name() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.file.attribute.BasicFileAttributes readAttributes() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void setTimes(java.nio.file.attribute.FileTime lastModifiedTime, java.nio.file.attribute.FileTime lastAccessTime, java.nio.file.attribute.FileTime createTime) { }
   < ---- END java signatures ---- >
 }

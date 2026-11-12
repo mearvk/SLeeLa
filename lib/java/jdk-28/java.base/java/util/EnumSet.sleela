@@ -58,20 +58,34 @@ class EnumSet<E extends java.lang.Enum<E>> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.EnumSet<E> clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumSet.clone()"); }
-  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> copyOf(java.util.Collection<E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumSet.copyOf(java.util.Collection<E>)"); }
-  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> of(E e1, E e2, E e3) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumSet.of(E, E, E)"); }
-  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> of(E e1, E e2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumSet.of(E, E)"); }
-  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> of(E e1, E e2, E e3, E e4) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumSet.of(E, E, E, E)"); }
-  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> of(E first, E... rest) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumSet.of(E, E...)"); }
-  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> of(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumSet.of(E)"); }
-  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> of(E e1, E e2, E e3, E e4, E e5) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumSet.of(E, E, E, E, E)"); }
-  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> noneOf(java.lang.Class<E> elementType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumSet.noneOf(java.lang.Class<E>)"); }
-  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> range(E from, E to) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumSet.range(E, E)"); }
-  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> allOf(java.lang.Class<E> elementType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumSet.allOf(java.lang.Class<E>)"); }
-  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> complementOf(java.util.EnumSet<E> s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.EnumSet.complementOf(java.util.EnumSet<E>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.EnumSet<E> clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> copyOf(java.util.Collection<E> c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> of(E e1, E e2, E e3) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> of(E e1, E e2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> of(E e1, E e2, E e3, E e4) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> of(E first, E... rest) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> of(E e) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> of(E e1, E e2, E e3, E e4, E e5) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> noneOf(java.lang.Class<E> elementType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> range(E from, E to) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> allOf(java.lang.Class<E> elementType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <E extends java.lang.Enum<E>> java.util.EnumSet<E> complementOf(java.util.EnumSet<E> s) { return null; }
   < ---- END java signatures ---- >
 }

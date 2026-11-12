@@ -58,7 +58,9 @@ class RelationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RelationException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationException.<init>()"); }
-  public RelationException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RelationException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RelationException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

@@ -58,14 +58,22 @@ class UnixDomainSocketAddress {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.UnixDomainSocketAddress.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.UnixDomainSocketAddress.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.UnixDomainSocketAddress.hashCode()"); }
-  public static java.net.UnixDomainSocketAddress of(java.nio.file.Path path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.UnixDomainSocketAddress.of(java.nio.file.Path)"); }
-  public static java.net.UnixDomainSocketAddress of(java.lang.String pathname) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.UnixDomainSocketAddress.of(java.lang.String)"); }
-  public java.nio.file.Path getPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.UnixDomainSocketAddress.getPath()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.UnixDomainSocketAddress of(java.nio.file.Path path) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.UnixDomainSocketAddress of(java.lang.String pathname) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.file.Path getPath() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,14 +58,19 @@ class UnknownElementException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnknownElementException(javax.lang.model.element.Element e, java.lang.Object p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.UnknownElementException.<init>(javax.lang.model.element.Element, java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnknownElementException(javax.lang.model.element.Element e, java.lang.Object p) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object getArgument() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.UnknownElementException.getArgument()"); }
-  public javax.lang.model.element.Element getUnknownElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.element.UnknownElementException.getUnknownElement()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getArgument() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.lang.model.element.Element getUnknownElement() { return null; }
   < ---- END java signatures ---- >
 }

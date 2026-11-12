@@ -58,22 +58,35 @@ class CompositeDataSupport {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CompositeDataSupport(javax.management.openmbean.CompositeType compositeType, java.util.Map<java.lang.String, ?> items) throws javax.management.openmbean.OpenDataException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.CompositeDataSupport.<init>(javax.management.openmbean.CompositeType, java.util.Map<java.lang.String, ?>)"); }
-  public CompositeDataSupport(javax.management.openmbean.CompositeType compositeType, java.lang.String[] itemNames, java.lang.Object[] itemValues) throws javax.management.openmbean.OpenDataException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.CompositeDataSupport.<init>(javax.management.openmbean.CompositeType, java.lang.String[], java.lang.Object[])"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.openmbean.OpenDataException")
+  public CompositeDataSupport(javax.management.openmbean.CompositeType compositeType, java.util.Map<java.lang.String, ?> items) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.openmbean.OpenDataException")
+  public CompositeDataSupport(javax.management.openmbean.CompositeType compositeType, java.lang.String[] itemNames, java.lang.Object[] itemValues) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object get(java.lang.String key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.CompositeDataSupport.get(java.lang.String)"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.CompositeDataSupport.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.CompositeDataSupport.toString()"); }
-  public java.util.Collection<?> values() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.CompositeDataSupport.values()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.CompositeDataSupport.hashCode()"); }
-  public boolean containsValue(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.CompositeDataSupport.containsValue(java.lang.Object)"); }
-  public boolean containsKey(java.lang.String key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.CompositeDataSupport.containsKey(java.lang.String)"); }
-  public java.lang.Object[] getAll(java.lang.String[] keys) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.CompositeDataSupport.getAll(java.lang.String[])"); }
-  public javax.management.openmbean.CompositeType getCompositeType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.CompositeDataSupport.getCompositeType()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object get(java.lang.String key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Collection<?> values() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsValue(java.lang.Object value) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsKey(java.lang.String key) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] getAll(java.lang.String[] keys) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.openmbean.CompositeType getCompositeType() { return null; }
   < ---- END java signatures ---- >
 }

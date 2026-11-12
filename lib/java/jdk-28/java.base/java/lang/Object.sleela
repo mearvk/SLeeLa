@@ -58,25 +58,39 @@ class Object {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Object() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Object.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Object() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void finalize() throws java.lang.Throwable { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Object.finalize()"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Object.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Object.toString()"); }
-  public native int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Object.hashCode()"); }
-  public final native java.lang.Class<?> getClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Object.getClass()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Throwable")
+  void finalize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public native int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native java.lang.Class<?> getClass() { return null; }
   @JavaProtected
-  native java.lang.Object clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Object.clone()"); }
-  public final native void notify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Object.notify()"); }
-  public final native void notifyAll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Object.notifyAll()"); }
-  public final void wait(long timeoutMillis) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Object.wait(long)"); }
-  public final void wait(long timeoutMillis, int nanos) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Object.wait(long, int)"); }
-  public final void wait() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Object.wait()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
+  native java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native void notify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final native void notifyAll() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public final void wait(long timeoutMillis) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public final void wait(long timeoutMillis, int nanos) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public final void wait() { }
   < ---- END java signatures ---- >
 }

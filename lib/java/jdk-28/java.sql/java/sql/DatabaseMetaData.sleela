@@ -122,185 +122,364 @@ class DatabaseMetaData {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.sql.ResultSet getAttributes(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String typeNamePattern, java.lang.String attributeNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getAttributes(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract boolean isReadOnly() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.isReadOnly()"); }
-  public abstract java.lang.String getURL() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getURL()"); }
-  public abstract boolean storesLowerCaseQuotedIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesLowerCaseQuotedIdentifiers()"); }
-  public abstract java.sql.ResultSet getTables(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern, java.lang.String[] types) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTables(java.lang.String, java.lang.String, java.lang.String, java.lang.String[])"); }
-  public abstract java.lang.String getUserName() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getUserName()"); }
-  public abstract java.sql.ResultSet getColumns(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern, java.lang.String columnNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getColumns(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.sql.Connection getConnection() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getConnection()"); }
-  public abstract boolean supportsMultipleOpenResults() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMultipleOpenResults()"); }
-  public abstract boolean storesUpperCaseQuotedIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesUpperCaseQuotedIdentifiers()"); }
-  public abstract int getResultSetHoldability() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getResultSetHoldability()"); }
-  public abstract boolean allProceduresAreCallable() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.allProceduresAreCallable()"); }
-  public abstract boolean allTablesAreSelectable() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.allTablesAreSelectable()"); }
-  public abstract boolean nullsAreSortedHigh() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullsAreSortedHigh()"); }
-  public abstract boolean nullsAreSortedLow() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullsAreSortedLow()"); }
-  public abstract boolean nullsAreSortedAtStart() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullsAreSortedAtStart()"); }
-  public abstract boolean nullsAreSortedAtEnd() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullsAreSortedAtEnd()"); }
-  public abstract java.lang.String getDatabaseProductName() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDatabaseProductName()"); }
-  public abstract java.lang.String getDatabaseProductVersion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDatabaseProductVersion()"); }
-  public abstract java.lang.String getDriverName() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDriverName()"); }
-  public abstract java.lang.String getDriverVersion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDriverVersion()"); }
-  public abstract int getDriverMajorVersion() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDriverMajorVersion()"); }
-  public abstract int getDriverMinorVersion() { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDriverMinorVersion()"); }
-  public abstract boolean usesLocalFiles() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.usesLocalFiles()"); }
-  public abstract boolean usesLocalFilePerTable() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.usesLocalFilePerTable()"); }
-  public abstract boolean storesUpperCaseIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesUpperCaseIdentifiers()"); }
-  public abstract boolean storesLowerCaseIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesLowerCaseIdentifiers()"); }
-  public abstract boolean storesMixedCaseIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesMixedCaseIdentifiers()"); }
-  public abstract java.lang.String getIdentifierQuoteString() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getIdentifierQuoteString()"); }
-  public abstract java.lang.String getSQLKeywords() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSQLKeywords()"); }
-  public abstract java.lang.String getNumericFunctions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getNumericFunctions()"); }
-  public abstract java.lang.String getStringFunctions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getStringFunctions()"); }
-  public abstract java.lang.String getSystemFunctions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSystemFunctions()"); }
-  public abstract java.lang.String getTimeDateFunctions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTimeDateFunctions()"); }
-  public abstract java.lang.String getSearchStringEscape() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSearchStringEscape()"); }
-  public abstract java.lang.String getExtraNameCharacters() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getExtraNameCharacters()"); }
-  public abstract boolean supportsAlterTableWithAddColumn() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsAlterTableWithAddColumn()"); }
-  public abstract boolean supportsAlterTableWithDropColumn() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsAlterTableWithDropColumn()"); }
-  public abstract boolean supportsColumnAliasing() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsColumnAliasing()"); }
-  public abstract boolean nullPlusNonNullIsNull() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.nullPlusNonNullIsNull()"); }
-  public abstract boolean supportsConvert(int fromType, int toType) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsConvert(int, int)"); }
-  public abstract boolean supportsConvert() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsConvert()"); }
-  public abstract boolean supportsTableCorrelationNames() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsTableCorrelationNames()"); }
-  public abstract boolean supportsDifferentTableCorrelationNames() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsDifferentTableCorrelationNames()"); }
-  public abstract boolean supportsExpressionsInOrderBy() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsExpressionsInOrderBy()"); }
-  public abstract boolean supportsOrderByUnrelated() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOrderByUnrelated()"); }
-  public abstract boolean supportsGroupBy() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsGroupBy()"); }
-  public abstract boolean supportsGroupByUnrelated() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsGroupByUnrelated()"); }
-  public abstract boolean supportsGroupByBeyondSelect() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsGroupByBeyondSelect()"); }
-  public abstract boolean supportsLikeEscapeClause() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsLikeEscapeClause()"); }
-  public abstract boolean supportsMultipleResultSets() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMultipleResultSets()"); }
-  public abstract boolean supportsMultipleTransactions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMultipleTransactions()"); }
-  public abstract boolean supportsNonNullableColumns() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsNonNullableColumns()"); }
-  public abstract boolean supportsMinimumSQLGrammar() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMinimumSQLGrammar()"); }
-  public abstract boolean supportsCoreSQLGrammar() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCoreSQLGrammar()"); }
-  public abstract boolean supportsExtendedSQLGrammar() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsExtendedSQLGrammar()"); }
-  public abstract boolean supportsANSI92EntryLevelSQL() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsANSI92EntryLevelSQL()"); }
-  public abstract boolean supportsANSI92IntermediateSQL() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsANSI92IntermediateSQL()"); }
-  public abstract boolean supportsANSI92FullSQL() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsANSI92FullSQL()"); }
-  public abstract boolean supportsIntegrityEnhancementFacility() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsIntegrityEnhancementFacility()"); }
-  public abstract boolean supportsOuterJoins() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOuterJoins()"); }
-  public abstract boolean supportsFullOuterJoins() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsFullOuterJoins()"); }
-  public abstract boolean supportsLimitedOuterJoins() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsLimitedOuterJoins()"); }
-  public abstract java.lang.String getSchemaTerm() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSchemaTerm()"); }
-  public abstract java.lang.String getProcedureTerm() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getProcedureTerm()"); }
-  public abstract java.lang.String getCatalogTerm() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getCatalogTerm()"); }
-  public abstract boolean isCatalogAtStart() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.isCatalogAtStart()"); }
-  public abstract java.lang.String getCatalogSeparator() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getCatalogSeparator()"); }
-  public abstract boolean supportsSchemasInDataManipulation() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInDataManipulation()"); }
-  public abstract boolean supportsSchemasInProcedureCalls() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInProcedureCalls()"); }
-  public abstract boolean supportsSchemasInTableDefinitions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInTableDefinitions()"); }
-  public abstract boolean supportsSchemasInIndexDefinitions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInIndexDefinitions()"); }
-  public abstract boolean supportsSchemasInPrivilegeDefinitions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSchemasInPrivilegeDefinitions()"); }
-  public abstract boolean supportsCatalogsInDataManipulation() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInDataManipulation()"); }
-  public abstract boolean supportsCatalogsInProcedureCalls() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInProcedureCalls()"); }
-  public abstract boolean supportsCatalogsInTableDefinitions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInTableDefinitions()"); }
-  public abstract boolean supportsCatalogsInIndexDefinitions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInIndexDefinitions()"); }
-  public abstract boolean supportsCatalogsInPrivilegeDefinitions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCatalogsInPrivilegeDefinitions()"); }
-  public abstract boolean supportsPositionedDelete() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsPositionedDelete()"); }
-  public abstract boolean supportsPositionedUpdate() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsPositionedUpdate()"); }
-  public abstract boolean supportsSelectForUpdate() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSelectForUpdate()"); }
-  public abstract boolean supportsStoredProcedures() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsStoredProcedures()"); }
-  public abstract boolean supportsSubqueriesInComparisons() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSubqueriesInComparisons()"); }
-  public abstract boolean supportsSubqueriesInExists() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSubqueriesInExists()"); }
-  public abstract boolean supportsSubqueriesInIns() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSubqueriesInIns()"); }
-  public abstract boolean supportsSubqueriesInQuantifieds() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSubqueriesInQuantifieds()"); }
-  public abstract boolean supportsCorrelatedSubqueries() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsCorrelatedSubqueries()"); }
-  public abstract boolean supportsUnion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsUnion()"); }
-  public abstract boolean supportsUnionAll() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsUnionAll()"); }
-  public abstract boolean supportsOpenCursorsAcrossCommit() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOpenCursorsAcrossCommit()"); }
-  public abstract boolean supportsOpenCursorsAcrossRollback() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOpenCursorsAcrossRollback()"); }
-  public abstract boolean supportsOpenStatementsAcrossCommit() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOpenStatementsAcrossCommit()"); }
-  public abstract boolean supportsOpenStatementsAcrossRollback() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsOpenStatementsAcrossRollback()"); }
-  public abstract int getMaxBinaryLiteralLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxBinaryLiteralLength()"); }
-  public abstract int getMaxCharLiteralLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxCharLiteralLength()"); }
-  public abstract int getMaxColumnNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnNameLength()"); }
-  public abstract int getMaxColumnsInGroupBy() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInGroupBy()"); }
-  public abstract int getMaxColumnsInIndex() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInIndex()"); }
-  public abstract int getMaxColumnsInOrderBy() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInOrderBy()"); }
-  public abstract int getMaxColumnsInSelect() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInSelect()"); }
-  public abstract int getMaxColumnsInTable() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxColumnsInTable()"); }
-  public abstract int getMaxConnections() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxConnections()"); }
-  public abstract int getMaxCursorNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxCursorNameLength()"); }
-  public abstract int getMaxIndexLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxIndexLength()"); }
-  public abstract int getMaxSchemaNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxSchemaNameLength()"); }
-  public abstract int getMaxProcedureNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxProcedureNameLength()"); }
-  public abstract int getMaxCatalogNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxCatalogNameLength()"); }
-  public abstract int getMaxRowSize() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxRowSize()"); }
-  public abstract boolean doesMaxRowSizeIncludeBlobs() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.doesMaxRowSizeIncludeBlobs()"); }
-  public abstract int getMaxStatementLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxStatementLength()"); }
-  public abstract int getMaxStatements() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxStatements()"); }
-  public abstract int getMaxTableNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxTableNameLength()"); }
-  public abstract int getMaxTablesInSelect() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxTablesInSelect()"); }
-  public abstract int getMaxUserNameLength() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getMaxUserNameLength()"); }
-  public abstract int getDefaultTransactionIsolation() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDefaultTransactionIsolation()"); }
-  public abstract boolean supportsTransactions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsTransactions()"); }
-  public abstract boolean supportsTransactionIsolationLevel(int level) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsTransactionIsolationLevel(int)"); }
-  public abstract boolean supportsDataManipulationTransactionsOnly() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsDataManipulationTransactionsOnly()"); }
-  public abstract boolean dataDefinitionCausesTransactionCommit() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.dataDefinitionCausesTransactionCommit()"); }
-  public abstract boolean dataDefinitionIgnoredInTransactions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.dataDefinitionIgnoredInTransactions()"); }
-  public abstract java.sql.ResultSet getProcedures(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String procedureNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getProcedures(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.sql.ResultSet getProcedureColumns(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String procedureNamePattern, java.lang.String columnNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getProcedureColumns(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.sql.ResultSet getSchemas(java.lang.String catalog, java.lang.String schemaPattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSchemas(java.lang.String, java.lang.String)"); }
-  public abstract java.sql.ResultSet getSchemas() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSchemas()"); }
-  public abstract java.sql.ResultSet getCatalogs() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getCatalogs()"); }
-  public abstract java.sql.ResultSet getTableTypes() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTableTypes()"); }
-  public abstract java.sql.ResultSet getColumnPrivileges(java.lang.String catalog, java.lang.String schema, java.lang.String table, java.lang.String columnNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getColumnPrivileges(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.sql.ResultSet getTablePrivileges(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTablePrivileges(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.sql.ResultSet getBestRowIdentifier(java.lang.String catalog, java.lang.String schema, java.lang.String table, int scope, boolean nullable) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getBestRowIdentifier(java.lang.String, java.lang.String, java.lang.String, int, boolean)"); }
-  public abstract java.sql.ResultSet getVersionColumns(java.lang.String catalog, java.lang.String schema, java.lang.String table) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getVersionColumns(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.sql.ResultSet getPrimaryKeys(java.lang.String catalog, java.lang.String schema, java.lang.String table) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getPrimaryKeys(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.sql.ResultSet getImportedKeys(java.lang.String catalog, java.lang.String schema, java.lang.String table) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getImportedKeys(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.sql.ResultSet getExportedKeys(java.lang.String catalog, java.lang.String schema, java.lang.String table) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getExportedKeys(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.sql.ResultSet getCrossReference(java.lang.String parentCatalog, java.lang.String parentSchema, java.lang.String parentTable, java.lang.String foreignCatalog, java.lang.String foreignSchema, java.lang.String foreignTable) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getCrossReference(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.sql.ResultSet getTypeInfo() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getTypeInfo()"); }
-  public abstract java.sql.ResultSet getIndexInfo(java.lang.String catalog, java.lang.String schema, java.lang.String table, boolean unique, boolean approximate) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getIndexInfo(java.lang.String, java.lang.String, java.lang.String, boolean, boolean)"); }
-  public abstract boolean supportsResultSetType(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsResultSetType(int)"); }
-  public abstract boolean supportsResultSetConcurrency(int type, int concurrency) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsResultSetConcurrency(int, int)"); }
-  public abstract boolean ownUpdatesAreVisible(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.ownUpdatesAreVisible(int)"); }
-  public abstract boolean ownDeletesAreVisible(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.ownDeletesAreVisible(int)"); }
-  public abstract boolean ownInsertsAreVisible(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.ownInsertsAreVisible(int)"); }
-  public abstract boolean othersUpdatesAreVisible(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.othersUpdatesAreVisible(int)"); }
-  public abstract boolean othersDeletesAreVisible(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.othersDeletesAreVisible(int)"); }
-  public abstract boolean othersInsertsAreVisible(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.othersInsertsAreVisible(int)"); }
-  public abstract boolean updatesAreDetected(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.updatesAreDetected(int)"); }
-  public abstract boolean deletesAreDetected(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.deletesAreDetected(int)"); }
-  public abstract boolean insertsAreDetected(int type) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.insertsAreDetected(int)"); }
-  public abstract boolean supportsBatchUpdates() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsBatchUpdates()"); }
-  public abstract java.sql.ResultSet getUDTs(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String typeNamePattern, int[] types) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getUDTs(java.lang.String, java.lang.String, java.lang.String, int[])"); }
-  public abstract boolean supportsSavepoints() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsSavepoints()"); }
-  public abstract boolean supportsNamedParameters() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsNamedParameters()"); }
-  public abstract boolean supportsGetGeneratedKeys() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsGetGeneratedKeys()"); }
-  public abstract java.sql.ResultSet getSuperTypes(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String typeNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSuperTypes(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.sql.ResultSet getSuperTables(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSuperTables(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract boolean supportsResultSetHoldability(int holdability) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsResultSetHoldability(int)"); }
-  public abstract int getDatabaseMajorVersion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDatabaseMajorVersion()"); }
-  public abstract int getDatabaseMinorVersion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getDatabaseMinorVersion()"); }
-  public abstract int getJDBCMajorVersion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getJDBCMajorVersion()"); }
-  public abstract int getJDBCMinorVersion() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getJDBCMinorVersion()"); }
-  public abstract int getSQLStateType() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getSQLStateType()"); }
-  public abstract boolean locatorsUpdateCopy() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.locatorsUpdateCopy()"); }
-  public abstract boolean supportsStatementPooling() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsStatementPooling()"); }
-  public abstract java.sql.RowIdLifetime getRowIdLifetime() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getRowIdLifetime()"); }
-  public abstract boolean supportsStoredFunctionsUsingCallSyntax() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsStoredFunctionsUsingCallSyntax()"); }
-  public abstract boolean autoCommitFailureClosesAllResultSets() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.autoCommitFailureClosesAllResultSets()"); }
-  public abstract java.sql.ResultSet getClientInfoProperties() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getClientInfoProperties()"); }
-  public abstract java.sql.ResultSet getFunctions(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String functionNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getFunctions(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.sql.ResultSet getFunctionColumns(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String functionNamePattern, java.lang.String columnNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getFunctionColumns(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract java.sql.ResultSet getPseudoColumns(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern, java.lang.String columnNamePattern) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.getPseudoColumns(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract boolean generatedKeyAlwaysReturned() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.generatedKeyAlwaysReturned()"); }
-  public default long getMaxLogicalLobSize() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DatabaseMetaData.getMaxLogicalLobSize()"); }
-  public default boolean supportsRefCursors() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DatabaseMetaData.supportsRefCursors()"); }
-  public default boolean supportsSharding() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DatabaseMetaData.supportsSharding()"); }
-  public abstract boolean storesMixedCaseQuotedIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.storesMixedCaseQuotedIdentifiers()"); }
-  public abstract boolean supportsMixedCaseQuotedIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMixedCaseQuotedIdentifiers()"); }
-  public abstract boolean supportsMixedCaseIdentifiers() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsMixedCaseIdentifiers()"); }
-  public abstract boolean supportsDataDefinitionAndDataManipulationTransactions() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.DatabaseMetaData.supportsDataDefinitionAndDataManipulationTransactions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getAttributes(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String typeNamePattern, java.lang.String attributeNamePattern) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean isReadOnly() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getURL() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean storesLowerCaseQuotedIdentifiers() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getTables(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern, java.lang.String[] types) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getUserName() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getColumns(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern, java.lang.String columnNamePattern) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.Connection getConnection() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsMultipleOpenResults() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean storesUpperCaseQuotedIdentifiers() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getResultSetHoldability() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean allProceduresAreCallable() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean allTablesAreSelectable() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean nullsAreSortedHigh() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean nullsAreSortedLow() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean nullsAreSortedAtStart() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean nullsAreSortedAtEnd() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getDatabaseProductName() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getDatabaseProductVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getDriverName() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getDriverVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getDriverMajorVersion() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getDriverMinorVersion() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean usesLocalFiles() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean usesLocalFilePerTable() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean storesUpperCaseIdentifiers() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean storesLowerCaseIdentifiers() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean storesMixedCaseIdentifiers() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getIdentifierQuoteString() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getSQLKeywords() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getNumericFunctions() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getStringFunctions() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getSystemFunctions() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getTimeDateFunctions() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getSearchStringEscape() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getExtraNameCharacters() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsAlterTableWithAddColumn() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsAlterTableWithDropColumn() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsColumnAliasing() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean nullPlusNonNullIsNull() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsConvert(int fromType, int toType) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsConvert() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsTableCorrelationNames() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsDifferentTableCorrelationNames() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsExpressionsInOrderBy() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsOrderByUnrelated() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsGroupBy() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsGroupByUnrelated() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsGroupByBeyondSelect() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsLikeEscapeClause() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsMultipleResultSets() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsMultipleTransactions() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsNonNullableColumns() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsMinimumSQLGrammar() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsCoreSQLGrammar() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsExtendedSQLGrammar() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsANSI92EntryLevelSQL() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsANSI92IntermediateSQL() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsANSI92FullSQL() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsIntegrityEnhancementFacility() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsOuterJoins() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsFullOuterJoins() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsLimitedOuterJoins() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getSchemaTerm() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getProcedureTerm() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getCatalogTerm() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean isCatalogAtStart() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getCatalogSeparator() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsSchemasInDataManipulation() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsSchemasInProcedureCalls() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsSchemasInTableDefinitions() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsSchemasInIndexDefinitions() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsSchemasInPrivilegeDefinitions() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsCatalogsInDataManipulation() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsCatalogsInProcedureCalls() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsCatalogsInTableDefinitions() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsCatalogsInIndexDefinitions() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsCatalogsInPrivilegeDefinitions() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsPositionedDelete() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsPositionedUpdate() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsSelectForUpdate() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsStoredProcedures() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsSubqueriesInComparisons() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsSubqueriesInExists() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsSubqueriesInIns() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsSubqueriesInQuantifieds() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsCorrelatedSubqueries() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsUnion() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsUnionAll() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsOpenCursorsAcrossCommit() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsOpenCursorsAcrossRollback() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsOpenStatementsAcrossCommit() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsOpenStatementsAcrossRollback() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxBinaryLiteralLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxCharLiteralLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxColumnNameLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxColumnsInGroupBy() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxColumnsInIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxColumnsInOrderBy() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxColumnsInSelect() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxColumnsInTable() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxConnections() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxCursorNameLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxIndexLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxSchemaNameLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxProcedureNameLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxCatalogNameLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxRowSize() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean doesMaxRowSizeIncludeBlobs() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxStatementLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxStatements() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxTableNameLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxTablesInSelect() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getMaxUserNameLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getDefaultTransactionIsolation() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsTransactions() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsTransactionIsolationLevel(int level) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsDataManipulationTransactionsOnly() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean dataDefinitionCausesTransactionCommit() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean dataDefinitionIgnoredInTransactions() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getProcedures(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String procedureNamePattern) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getProcedureColumns(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String procedureNamePattern, java.lang.String columnNamePattern) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getSchemas(java.lang.String catalog, java.lang.String schemaPattern) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getSchemas() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getCatalogs() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getTableTypes() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getColumnPrivileges(java.lang.String catalog, java.lang.String schema, java.lang.String table, java.lang.String columnNamePattern) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getTablePrivileges(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getBestRowIdentifier(java.lang.String catalog, java.lang.String schema, java.lang.String table, int scope, boolean nullable) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getVersionColumns(java.lang.String catalog, java.lang.String schema, java.lang.String table) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getPrimaryKeys(java.lang.String catalog, java.lang.String schema, java.lang.String table) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getImportedKeys(java.lang.String catalog, java.lang.String schema, java.lang.String table) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getExportedKeys(java.lang.String catalog, java.lang.String schema, java.lang.String table) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getCrossReference(java.lang.String parentCatalog, java.lang.String parentSchema, java.lang.String parentTable, java.lang.String foreignCatalog, java.lang.String foreignSchema, java.lang.String foreignTable) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getTypeInfo() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getIndexInfo(java.lang.String catalog, java.lang.String schema, java.lang.String table, boolean unique, boolean approximate) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsResultSetType(int type) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsResultSetConcurrency(int type, int concurrency) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean ownUpdatesAreVisible(int type) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean ownDeletesAreVisible(int type) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean ownInsertsAreVisible(int type) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean othersUpdatesAreVisible(int type) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean othersDeletesAreVisible(int type) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean othersInsertsAreVisible(int type) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean updatesAreDetected(int type) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean deletesAreDetected(int type) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean insertsAreDetected(int type) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsBatchUpdates() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getUDTs(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String typeNamePattern, int[] types) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsSavepoints() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsNamedParameters() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsGetGeneratedKeys() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getSuperTypes(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String typeNamePattern) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getSuperTables(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsResultSetHoldability(int holdability) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getDatabaseMajorVersion() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getDatabaseMinorVersion() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getJDBCMajorVersion() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getJDBCMinorVersion() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getSQLStateType() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean locatorsUpdateCopy() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsStatementPooling() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.RowIdLifetime getRowIdLifetime() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsStoredFunctionsUsingCallSyntax() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean autoCommitFailureClosesAllResultSets() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getClientInfoProperties() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getFunctions(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String functionNamePattern) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getFunctionColumns(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String functionNamePattern, java.lang.String columnNamePattern) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.ResultSet getPseudoColumns(java.lang.String catalog, java.lang.String schemaPattern, java.lang.String tableNamePattern, java.lang.String columnNamePattern) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean generatedKeyAlwaysReturned() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public default long getMaxLogicalLobSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public default boolean supportsRefCursors() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public default boolean supportsSharding() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean storesMixedCaseQuotedIdentifiers() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsMixedCaseQuotedIdentifiers() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsMixedCaseIdentifiers() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean supportsDataDefinitionAndDataManipulationTransactions() { return false; }
   < ---- END java signatures ---- >
 }

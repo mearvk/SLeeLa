@@ -58,6 +58,7 @@ class NoninvertibleTransformException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NoninvertibleTransformException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.NoninvertibleTransformException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoninvertibleTransformException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

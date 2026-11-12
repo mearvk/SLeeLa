@@ -58,7 +58,9 @@ class FileSystemNotFoundException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FileSystemNotFoundException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.FileSystemNotFoundException.<init>()"); }
-  public FileSystemNotFoundException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.FileSystemNotFoundException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FileSystemNotFoundException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FileSystemNotFoundException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

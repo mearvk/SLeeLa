@@ -58,18 +58,27 @@ class DragSourceDragEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DragSourceDragEvent(java.awt.dnd.DragSourceContext dsc, int dropAction, int action, int modifiers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragSourceDragEvent.<init>(java.awt.dnd.DragSourceContext, int, int, int)"); }
-  public DragSourceDragEvent(java.awt.dnd.DragSourceContext dsc, int dropAction, int action, int modifiers, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragSourceDragEvent.<init>(java.awt.dnd.DragSourceContext, int, int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DragSourceDragEvent(java.awt.dnd.DragSourceContext dsc, int dropAction, int action, int modifiers) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DragSourceDragEvent(java.awt.dnd.DragSourceContext dsc, int dropAction, int action, int modifiers, int x, int y) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int getGestureModifiers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragSourceDragEvent.getGestureModifiers()"); }
-  public int getGestureModifiersEx() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragSourceDragEvent.getGestureModifiersEx()"); }
-  public int getTargetActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragSourceDragEvent.getTargetActions()"); }
-  public int getUserAction() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragSourceDragEvent.getUserAction()"); }
-  public int getDropAction() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragSourceDragEvent.getDropAction()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getGestureModifiers() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getGestureModifiersEx() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTargetActions() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getUserAction() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDropAction() { return 0; }
   < ---- END java signatures ---- >
 }

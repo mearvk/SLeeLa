@@ -58,19 +58,29 @@ class Role {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Role(java.lang.String roleName, java.util.List<javax.management.ObjectName> roleValue) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.Role.<init>(java.lang.String, java.util.List<javax.management.ObjectName>)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public Role(java.lang.String roleName, java.util.List<javax.management.ObjectName> roleValue) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.Role.toString()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.Role.clone()"); }
-  public void setRoleName(java.lang.String roleName) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.Role.setRoleName(java.lang.String)"); }
-  public void setRoleValue(java.util.List<javax.management.ObjectName> roleValue) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.Role.setRoleValue(java.util.List<javax.management.ObjectName>)"); }
-  public java.lang.String getRoleName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.Role.getRoleName()"); }
-  public java.util.List<javax.management.ObjectName> getRoleValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.Role.getRoleValue()"); }
-  public static java.lang.String roleValueToString(java.util.List<javax.management.ObjectName> roleValue) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.Role.roleValueToString(java.util.List<javax.management.ObjectName>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public void setRoleName(java.lang.String roleName) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public void setRoleValue(java.util.List<javax.management.ObjectName> roleValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getRoleName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<javax.management.ObjectName> getRoleValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public static java.lang.String roleValueToString(java.util.List<javax.management.ObjectName> roleValue) { return null; }
   < ---- END java signatures ---- >
 }

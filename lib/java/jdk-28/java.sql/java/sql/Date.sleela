@@ -58,25 +58,41 @@ class Date {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Date(int year, int month, int day) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.<init>(int, int, int)"); }
-  public Date(long date) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.<init>(long)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Date(int year, int month, int day) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Date(long date) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.toString()"); }
-  public static java.sql.Date valueOf(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.valueOf(java.lang.String)"); }
-  public static java.sql.Date valueOf(java.time.LocalDate date) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.valueOf(java.time.LocalDate)"); }
-  public java.time.Instant toInstant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.toInstant()"); }
-  public void setTime(long date) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.setTime(long)"); }
-  public int getSeconds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.getSeconds()"); }
-  public java.time.LocalDate toLocalDate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.toLocalDate()"); }
-  public int getHours() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.getHours()"); }
-  public void setHours(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.setHours(int)"); }
-  public int getMinutes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.getMinutes()"); }
-  public void setMinutes(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.setMinutes(int)"); }
-  public void setSeconds(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.Date.setSeconds(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.sql.Date valueOf(java.lang.String s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.sql.Date valueOf(java.time.LocalDate date) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Instant toInstant() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTime(long date) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSeconds() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate toLocalDate() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHours() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHours(int i) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinutes() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinutes(int i) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSeconds(int i) { }
   < ---- END java signatures ---- >
 }

@@ -70,41 +70,73 @@ class Query {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Query() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Query() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.management.ValueExp value(long val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.value(long)"); }
-  public static javax.management.ValueExp value(int val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.value(int)"); }
-  public static javax.management.ValueExp value(java.lang.Number val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.value(java.lang.Number)"); }
-  public static javax.management.StringValueExp value(java.lang.String val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.value(java.lang.String)"); }
-  public static javax.management.ValueExp value(float val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.value(float)"); }
-  public static javax.management.ValueExp value(double val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.value(double)"); }
-  public static javax.management.ValueExp value(boolean val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.value(boolean)"); }
-  public static javax.management.QueryExp match(javax.management.AttributeValueExp a, javax.management.StringValueExp s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.match(javax.management.AttributeValueExp, javax.management.StringValueExp)"); }
-  public static javax.management.QueryExp in(javax.management.ValueExp val, javax.management.ValueExp[] valueList) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.in(javax.management.ValueExp, javax.management.ValueExp[])"); }
-  public static javax.management.AttributeValueExp attr(java.lang.String className, java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.attr(java.lang.String, java.lang.String)"); }
-  public static javax.management.AttributeValueExp attr(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.attr(java.lang.String)"); }
-  public static javax.management.QueryExp eq(javax.management.ValueExp v1, javax.management.ValueExp v2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.eq(javax.management.ValueExp, javax.management.ValueExp)"); }
-  public static javax.management.QueryExp lt(javax.management.ValueExp v1, javax.management.ValueExp v2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.lt(javax.management.ValueExp, javax.management.ValueExp)"); }
-  public static javax.management.QueryExp between(javax.management.ValueExp v1, javax.management.ValueExp v2, javax.management.ValueExp v3) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.between(javax.management.ValueExp, javax.management.ValueExp, javax.management.ValueExp)"); }
-  public static javax.management.QueryExp or(javax.management.QueryExp q1, javax.management.QueryExp q2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.or(javax.management.QueryExp, javax.management.QueryExp)"); }
-  public static javax.management.QueryExp and(javax.management.QueryExp q1, javax.management.QueryExp q2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.and(javax.management.QueryExp, javax.management.QueryExp)"); }
-  public static javax.management.QueryExp not(javax.management.QueryExp queryExp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.not(javax.management.QueryExp)"); }
-  public static javax.management.ValueExp minus(javax.management.ValueExp value1, javax.management.ValueExp value2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.minus(javax.management.ValueExp, javax.management.ValueExp)"); }
-  public static javax.management.ValueExp plus(javax.management.ValueExp value1, javax.management.ValueExp value2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.plus(javax.management.ValueExp, javax.management.ValueExp)"); }
-  public static javax.management.ValueExp div(javax.management.ValueExp value1, javax.management.ValueExp value2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.div(javax.management.ValueExp, javax.management.ValueExp)"); }
-  public static javax.management.ValueExp times(javax.management.ValueExp value1, javax.management.ValueExp value2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.times(javax.management.ValueExp, javax.management.ValueExp)"); }
-  public static javax.management.QueryExp gt(javax.management.ValueExp v1, javax.management.ValueExp v2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.gt(javax.management.ValueExp, javax.management.ValueExp)"); }
-  public static javax.management.QueryExp geq(javax.management.ValueExp v1, javax.management.ValueExp v2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.geq(javax.management.ValueExp, javax.management.ValueExp)"); }
-  public static javax.management.QueryExp leq(javax.management.ValueExp v1, javax.management.ValueExp v2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.leq(javax.management.ValueExp, javax.management.ValueExp)"); }
-  public static javax.management.AttributeValueExp classattr() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.classattr()"); }
-  public static javax.management.QueryExp initialSubString(javax.management.AttributeValueExp a, javax.management.StringValueExp s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.initialSubString(javax.management.AttributeValueExp, javax.management.StringValueExp)"); }
-  public static javax.management.QueryExp anySubString(javax.management.AttributeValueExp a, javax.management.StringValueExp s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.anySubString(javax.management.AttributeValueExp, javax.management.StringValueExp)"); }
-  public static javax.management.QueryExp finalSubString(javax.management.AttributeValueExp a, javax.management.StringValueExp s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.finalSubString(javax.management.AttributeValueExp, javax.management.StringValueExp)"); }
-  public static javax.management.QueryExp isInstanceOf(javax.management.StringValueExp classNameValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.Query.isInstanceOf(javax.management.StringValueExp)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.ValueExp value(long val) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.ValueExp value(int val) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.ValueExp value(java.lang.Number val) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.StringValueExp value(java.lang.String val) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.ValueExp value(float val) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.ValueExp value(double val) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.ValueExp value(boolean val) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp match(javax.management.AttributeValueExp a, javax.management.StringValueExp s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp in(javax.management.ValueExp val, javax.management.ValueExp[] valueList) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.AttributeValueExp attr(java.lang.String className, java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.AttributeValueExp attr(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp eq(javax.management.ValueExp v1, javax.management.ValueExp v2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp lt(javax.management.ValueExp v1, javax.management.ValueExp v2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp between(javax.management.ValueExp v1, javax.management.ValueExp v2, javax.management.ValueExp v3) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp or(javax.management.QueryExp q1, javax.management.QueryExp q2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp and(javax.management.QueryExp q1, javax.management.QueryExp q2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp not(javax.management.QueryExp queryExp) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.ValueExp minus(javax.management.ValueExp value1, javax.management.ValueExp value2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.ValueExp plus(javax.management.ValueExp value1, javax.management.ValueExp value2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.ValueExp div(javax.management.ValueExp value1, javax.management.ValueExp value2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.ValueExp times(javax.management.ValueExp value1, javax.management.ValueExp value2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp gt(javax.management.ValueExp v1, javax.management.ValueExp v2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp geq(javax.management.ValueExp v1, javax.management.ValueExp v2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp leq(javax.management.ValueExp v1, javax.management.ValueExp v2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.AttributeValueExp classattr() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp initialSubString(javax.management.AttributeValueExp a, javax.management.StringValueExp s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp anySubString(javax.management.AttributeValueExp a, javax.management.StringValueExp s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp finalSubString(javax.management.AttributeValueExp a, javax.management.StringValueExp s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.management.QueryExp isInstanceOf(javax.management.StringValueExp classNameValue) { return null; }
   < ---- END java signatures ---- >
 }

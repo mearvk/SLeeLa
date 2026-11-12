@@ -68,23 +68,37 @@ class Double {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Double() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RoundRectangle2D.Double.<init>()"); }
-  public Double(double x, double y, double w, double h, double arcw, double arch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RoundRectangle2D.Double.<init>(double, double, double, double, double, double)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Double() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Double(double x, double y, double w, double h, double arcw, double arch) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RoundRectangle2D.Double.isEmpty()"); }
-  public double getX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RoundRectangle2D.Double.getX()"); }
-  public double getY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RoundRectangle2D.Double.getY()"); }
-  public double getHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RoundRectangle2D.Double.getHeight()"); }
-  public java.awt.geom.Rectangle2D getBounds2D() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RoundRectangle2D.Double.getBounds2D()"); }
-  public double getWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RoundRectangle2D.Double.getWidth()"); }
-  public double getArcWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RoundRectangle2D.Double.getArcWidth()"); }
-  public double getArcHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RoundRectangle2D.Double.getArcHeight()"); }
-  public void setRoundRect(java.awt.geom.RoundRectangle2D rr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RoundRectangle2D.Double.setRoundRect(java.awt.geom.RoundRectangle2D)"); }
-  public void setRoundRect(double x, double y, double w, double h, double arcw, double arch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RoundRectangle2D.Double.setRoundRect(double, double, double, double, double, double)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getX() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getY() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getHeight() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getBounds2D() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getWidth() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getArcWidth() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getArcHeight() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRoundRect(java.awt.geom.RoundRectangle2D rr) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRoundRect(double x, double y, double w, double h, double arcw, double arch) { }
   < ---- END java signatures ---- >
 }

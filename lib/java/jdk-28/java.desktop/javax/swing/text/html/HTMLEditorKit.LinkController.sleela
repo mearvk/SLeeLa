@@ -59,17 +59,24 @@ class LinkController {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LinkController() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.LinkController.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkController() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void mouseClicked(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.LinkController.mouseClicked(java.awt.event.MouseEvent)"); }
-  public void mouseMoved(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.LinkController.mouseMoved(java.awt.event.MouseEvent)"); }
-  public void mouseDragged(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.LinkController.mouseDragged(java.awt.event.MouseEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseClicked(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseMoved(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseDragged(java.awt.event.MouseEvent e) { }
   @JavaProtected
-  void activateLink(int pos, javax.swing.JEditorPane editor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.LinkController.activateLink(int, javax.swing.JEditorPane)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void activateLink(int pos, javax.swing.JEditorPane editor) { }
   < ---- END java signatures ---- >
 }

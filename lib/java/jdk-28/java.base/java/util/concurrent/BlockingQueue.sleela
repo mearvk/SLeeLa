@@ -58,19 +58,32 @@ class BlockingQueue<E> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean remove(java.lang.Object o) { throw new AbstractMethodError("java.util.concurrent.BlockingQueue.remove(java.lang.Object)"); }
-  public abstract void put(E e) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingQueue.put(E)"); }
-  public abstract boolean add(E e) { throw new AbstractMethodError("java.util.concurrent.BlockingQueue.add(E)"); }
-  public abstract boolean contains(java.lang.Object o) { throw new AbstractMethodError("java.util.concurrent.BlockingQueue.contains(java.lang.Object)"); }
-  public abstract E poll(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingQueue.poll(long, java.util.concurrent.TimeUnit)"); }
-  public abstract boolean offer(E e) { throw new AbstractMethodError("java.util.concurrent.BlockingQueue.offer(E)"); }
-  public abstract boolean offer(E e, long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingQueue.offer(E, long, java.util.concurrent.TimeUnit)"); }
-  public abstract E take() throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.BlockingQueue.take()"); }
-  public abstract int drainTo(java.util.Collection<? super E> c) { throw new AbstractMethodError("java.util.concurrent.BlockingQueue.drainTo(java.util.Collection<? super E>)"); }
-  public abstract int drainTo(java.util.Collection<? super E> c, int maxElements) { throw new AbstractMethodError("java.util.concurrent.BlockingQueue.drainTo(java.util.Collection<? super E>, int)"); }
-  public abstract int remainingCapacity() { throw new AbstractMethodError("java.util.concurrent.BlockingQueue.remainingCapacity()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean remove(java.lang.Object o) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public void put(E e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean add(E e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean contains(java.lang.Object o) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public E poll(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean offer(E e) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public boolean offer(E e, long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public E take() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int drainTo(java.util.Collection<? super E> c) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int drainTo(java.util.Collection<? super E> c, int maxElements) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int remainingCapacity() { return 0; }
   < ---- END java signatures ---- >
 }

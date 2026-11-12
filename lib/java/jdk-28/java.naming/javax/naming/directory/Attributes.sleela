@@ -58,17 +58,28 @@ class Attributes {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.naming.directory.Attribute remove(java.lang.String attrID) { throw new AbstractMethodError("javax.naming.directory.Attributes.remove(java.lang.String)"); }
-  public abstract int size() { throw new AbstractMethodError("javax.naming.directory.Attributes.size()"); }
-  public abstract javax.naming.directory.Attribute get(java.lang.String attrID) { throw new AbstractMethodError("javax.naming.directory.Attributes.get(java.lang.String)"); }
-  public abstract javax.naming.directory.Attribute put(java.lang.String attrID, java.lang.Object val) { throw new AbstractMethodError("javax.naming.directory.Attributes.put(java.lang.String, java.lang.Object)"); }
-  public abstract javax.naming.directory.Attribute put(javax.naming.directory.Attribute attr) { throw new AbstractMethodError("javax.naming.directory.Attributes.put(javax.naming.directory.Attribute)"); }
-  public abstract java.lang.Object clone() { throw new AbstractMethodError("javax.naming.directory.Attributes.clone()"); }
-  public abstract javax.naming.NamingEnumeration<? extends javax.naming.directory.Attribute> getAll() { throw new AbstractMethodError("javax.naming.directory.Attributes.getAll()"); }
-  public abstract boolean isCaseIgnored() { throw new AbstractMethodError("javax.naming.directory.Attributes.isCaseIgnored()"); }
-  public abstract javax.naming.NamingEnumeration<java.lang.String> getIDs() { throw new AbstractMethodError("javax.naming.directory.Attributes.getIDs()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.naming.directory.Attribute remove(java.lang.String attrID) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int size() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.naming.directory.Attribute get(java.lang.String attrID) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.naming.directory.Attribute put(java.lang.String attrID, java.lang.Object val) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.naming.directory.Attribute put(javax.naming.directory.Attribute attr) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.naming.NamingEnumeration<? extends javax.naming.directory.Attribute> getAll() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isCaseIgnored() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.naming.NamingEnumeration<java.lang.String> getIDs() { return null; }
   < ---- END java signatures ---- >
 }

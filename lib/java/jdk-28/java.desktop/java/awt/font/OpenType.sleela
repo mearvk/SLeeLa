@@ -112,15 +112,24 @@ class OpenType {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getVersion() { throw new AbstractMethodError("java.awt.font.OpenType.getVersion()"); }
-  public abstract byte[] getFontTable(java.lang.String strSfntTag, int offset, int count) { throw new AbstractMethodError("java.awt.font.OpenType.getFontTable(java.lang.String, int, int)"); }
-  public abstract byte[] getFontTable(int sfntTag, int offset, int count) { throw new AbstractMethodError("java.awt.font.OpenType.getFontTable(int, int, int)"); }
-  public abstract byte[] getFontTable(java.lang.String strSfntTag) { throw new AbstractMethodError("java.awt.font.OpenType.getFontTable(java.lang.String)"); }
-  public abstract byte[] getFontTable(int sfntTag) { throw new AbstractMethodError("java.awt.font.OpenType.getFontTable(int)"); }
-  public abstract int getFontTableSize(java.lang.String strSfntTag) { throw new AbstractMethodError("java.awt.font.OpenType.getFontTableSize(java.lang.String)"); }
-  public abstract int getFontTableSize(int sfntTag) { throw new AbstractMethodError("java.awt.font.OpenType.getFontTableSize(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getVersion() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] getFontTable(java.lang.String strSfntTag, int offset, int count) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] getFontTable(int sfntTag, int offset, int count) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] getFontTable(java.lang.String strSfntTag) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] getFontTable(int sfntTag) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getFontTableSize(java.lang.String strSfntTag) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getFontTableSize(int sfntTag) { return 0; }
   < ---- END java signatures ---- >
 }

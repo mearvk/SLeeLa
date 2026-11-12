@@ -58,15 +58,24 @@ class Condition {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean await(long time, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.locks.Condition.await(long, java.util.concurrent.TimeUnit)"); }
-  public abstract void await() throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.locks.Condition.await()"); }
-  public abstract void signal() { throw new AbstractMethodError("java.util.concurrent.locks.Condition.signal()"); }
-  public abstract void awaitUninterruptibly() { throw new AbstractMethodError("java.util.concurrent.locks.Condition.awaitUninterruptibly()"); }
-  public abstract boolean awaitUntil(java.util.Date deadline) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.locks.Condition.awaitUntil(java.util.Date)"); }
-  public abstract long awaitNanos(long nanosTimeout) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.locks.Condition.awaitNanos(long)"); }
-  public abstract void signalAll() { throw new AbstractMethodError("java.util.concurrent.locks.Condition.signalAll()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public boolean await(long time, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public void await() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void signal() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void awaitUninterruptibly() { }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public boolean awaitUntil(java.util.Date deadline) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public long awaitNanos(long nanosTimeout) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void signalAll() { }
   < ---- END java signatures ---- >
 }

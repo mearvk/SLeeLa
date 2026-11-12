@@ -58,12 +58,18 @@ class Request {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default com.sun.net.httpserver.Request with(java.lang.String headerName, java.util.List<java.lang.String> headerValues) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.Request.with(java.lang.String, java.util.List<java.lang.String>)"); }
-  public abstract java.lang.String getRequestMethod() { throw new AbstractMethodError("com.sun.net.httpserver.Request.getRequestMethod()"); }
-  public abstract com.sun.net.httpserver.Headers getRequestHeaders() { throw new AbstractMethodError("com.sun.net.httpserver.Request.getRequestHeaders()"); }
-  public abstract java.net.URI getRequestURI() { throw new AbstractMethodError("com.sun.net.httpserver.Request.getRequestURI()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default com.sun.net.httpserver.Request with(java.lang.String headerName, java.util.List<java.lang.String> headerValues) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getRequestMethod() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.net.httpserver.Headers getRequestHeaders() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.URI getRequestURI() { return null; }
   < ---- END java signatures ---- >
 }

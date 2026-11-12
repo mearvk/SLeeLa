@@ -58,6 +58,7 @@ class AboutEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AboutEvent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.desktop.AboutEvent.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AboutEvent() { }
   < ---- END java constructors ---- >
 }

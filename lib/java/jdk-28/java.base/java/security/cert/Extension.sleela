@@ -58,12 +58,18 @@ class Extension {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void encode(java.io.OutputStream out) throws java.io.IOException { throw new AbstractMethodError("java.security.cert.Extension.encode(java.io.OutputStream)"); }
-  public abstract byte[] getValue() { throw new AbstractMethodError("java.security.cert.Extension.getValue()"); }
-  public abstract java.lang.String getId() { throw new AbstractMethodError("java.security.cert.Extension.getId()"); }
-  public abstract boolean isCritical() { throw new AbstractMethodError("java.security.cert.Extension.isCritical()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void encode(java.io.OutputStream out) { }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] getValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getId() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isCritical() { return false; }
   < ---- END java signatures ---- >
 }

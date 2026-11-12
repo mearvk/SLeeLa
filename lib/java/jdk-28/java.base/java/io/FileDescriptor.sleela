@@ -64,14 +64,19 @@ class FileDescriptor {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FileDescriptor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.FileDescriptor.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FileDescriptor() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void sync() throws java.io.SyncFailedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.FileDescriptor.sync()"); }
-  public boolean valid() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.FileDescriptor.valid()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.SyncFailedException")
+  public void sync() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean valid() { return false; }
   < ---- END java signatures ---- >
 }

@@ -58,18 +58,27 @@ class TransformException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TransformException(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformException.<init>(java.lang.Throwable)"); }
-  public TransformException(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformException.<init>(java.lang.String, java.lang.Throwable)"); }
-  public TransformException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformException.<init>(java.lang.String)"); }
-  public TransformException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TransformException(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TransformException(java.lang.String message, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TransformException(java.lang.String message) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TransformException() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void printStackTrace() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformException.printStackTrace()"); }
-  public void printStackTrace(java.io.PrintStream s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformException.printStackTrace(java.io.PrintStream)"); }
-  public java.lang.Throwable getCause() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.TransformException.getCause()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printStackTrace() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printStackTrace(java.io.PrintStream s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Throwable getCause() { return null; }
   < ---- END java signatures ---- >
 }

@@ -67,20 +67,28 @@ class InsertHTMLTextAction {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InsertHTMLTextAction(java.lang.String name, java.lang.String html, javax.swing.text.html.HTML.Tag parentTag, javax.swing.text.html.HTML.Tag addTag, javax.swing.text.html.HTML.Tag alternateParentTag, javax.swing.text.html.HTML.Tag alternateAddTag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.InsertHTMLTextAction.<init>(java.lang.String, java.lang.String, javax.swing.text.html.HTML.Tag, javax.swing.text.html.HTML.Tag, javax.swing.text.html.HTML.Tag, javax.swing.text.html.HTML.Tag)"); }
-  public InsertHTMLTextAction(java.lang.String name, java.lang.String html, javax.swing.text.html.HTML.Tag parentTag, javax.swing.text.html.HTML.Tag addTag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.InsertHTMLTextAction.<init>(java.lang.String, java.lang.String, javax.swing.text.html.HTML.Tag, javax.swing.text.html.HTML.Tag)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InsertHTMLTextAction(java.lang.String name, java.lang.String html, javax.swing.text.html.HTML.Tag parentTag, javax.swing.text.html.HTML.Tag addTag, javax.swing.text.html.HTML.Tag alternateParentTag, javax.swing.text.html.HTML.Tag alternateAddTag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InsertHTMLTextAction(java.lang.String name, java.lang.String html, javax.swing.text.html.HTML.Tag parentTag, javax.swing.text.html.HTML.Tag addTag) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void insertHTML(javax.swing.JEditorPane editor, javax.swing.text.html.HTMLDocument doc, int offset, java.lang.String html, int popDepth, int pushDepth, javax.swing.text.html.HTML.Tag addTag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.InsertHTMLTextAction.insertHTML(javax.swing.JEditorPane, javax.swing.text.html.HTMLDocument, int, java.lang.String, int, int, javax.swing.text.html.HTML.Tag)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void insertHTML(javax.swing.JEditorPane editor, javax.swing.text.html.HTMLDocument doc, int offset, java.lang.String html, int popDepth, int pushDepth, javax.swing.text.html.HTML.Tag addTag) { }
   @JavaProtected
-  void insertAtBoundry(javax.swing.JEditorPane editor, javax.swing.text.html.HTMLDocument doc, int offset, javax.swing.text.Element insertElement, java.lang.String html, javax.swing.text.html.HTML.Tag parentTag, javax.swing.text.html.HTML.Tag addTag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.InsertHTMLTextAction.insertAtBoundry(javax.swing.JEditorPane, javax.swing.text.html.HTMLDocument, int, javax.swing.text.Element, java.lang.String, javax.swing.text.html.HTML.Tag, javax.swing.text.html.HTML.Tag)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void insertAtBoundry(javax.swing.JEditorPane editor, javax.swing.text.html.HTMLDocument doc, int offset, javax.swing.text.Element insertElement, java.lang.String html, javax.swing.text.html.HTML.Tag parentTag, javax.swing.text.html.HTML.Tag addTag) { }
   @JavaProtected
-  void insertAtBoundary(javax.swing.JEditorPane editor, javax.swing.text.html.HTMLDocument doc, int offset, javax.swing.text.Element insertElement, java.lang.String html, javax.swing.text.html.HTML.Tag parentTag, javax.swing.text.html.HTML.Tag addTag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.InsertHTMLTextAction.insertAtBoundary(javax.swing.JEditorPane, javax.swing.text.html.HTMLDocument, int, javax.swing.text.Element, java.lang.String, javax.swing.text.html.HTML.Tag, javax.swing.text.html.HTML.Tag)"); }
-  public void actionPerformed(java.awt.event.ActionEvent ae) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.InsertHTMLTextAction.actionPerformed(java.awt.event.ActionEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void insertAtBoundary(javax.swing.JEditorPane editor, javax.swing.text.html.HTMLDocument doc, int offset, javax.swing.text.Element insertElement, java.lang.String html, javax.swing.text.html.HTML.Tag parentTag, javax.swing.text.html.HTML.Tag addTag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void actionPerformed(java.awt.event.ActionEvent ae) { }
   < ---- END java signatures ---- >
 }

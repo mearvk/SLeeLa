@@ -58,11 +58,16 @@ class XPathNodes {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int size() { throw new AbstractMethodError("javax.xml.xpath.XPathNodes.size()"); }
-  public abstract org.w3c.dom.Node get(int index) throws javax.xml.xpath.XPathException { throw new AbstractMethodError("javax.xml.xpath.XPathNodes.get(int)"); }
-  public abstract java.util.Iterator<org.w3c.dom.Node> iterator() { throw new AbstractMethodError("javax.xml.xpath.XPathNodes.iterator()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int size() { return 0; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.xpath.XPathException")
+  public org.w3c.dom.Node get(int index) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Iterator<org.w3c.dom.Node> iterator() { return null; }
   < ---- END java signatures ---- >
 }

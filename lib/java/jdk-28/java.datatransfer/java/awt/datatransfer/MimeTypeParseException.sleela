@@ -58,7 +58,9 @@ class MimeTypeParseException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MimeTypeParseException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.MimeTypeParseException.<init>()"); }
-  public MimeTypeParseException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.MimeTypeParseException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MimeTypeParseException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MimeTypeParseException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

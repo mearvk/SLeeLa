@@ -59,20 +59,31 @@ class FormatConversionProvider {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  FormatConversionProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.spi.FormatConversionProvider.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  FormatConversionProvider() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean isSourceEncodingSupported(javax.sound.sampled.AudioFormat.Encoding sourceEncoding) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.spi.FormatConversionProvider.isSourceEncodingSupported(javax.sound.sampled.AudioFormat.Encoding)"); }
-  public abstract javax.sound.sampled.AudioFormat.Encoding[] getTargetEncodings(javax.sound.sampled.AudioFormat sourceFormat) { throw new AbstractMethodError("javax.sound.sampled.spi.FormatConversionProvider.getTargetEncodings(javax.sound.sampled.AudioFormat)"); }
-  public abstract javax.sound.sampled.AudioFormat.Encoding[] getTargetEncodings() { throw new AbstractMethodError("javax.sound.sampled.spi.FormatConversionProvider.getTargetEncodings()"); }
-  public boolean isConversionSupported(javax.sound.sampled.AudioFormat.Encoding targetEncoding, javax.sound.sampled.AudioFormat sourceFormat) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.spi.FormatConversionProvider.isConversionSupported(javax.sound.sampled.AudioFormat.Encoding, javax.sound.sampled.AudioFormat)"); }
-  public abstract javax.sound.sampled.AudioInputStream getAudioInputStream(javax.sound.sampled.AudioFormat.Encoding targetEncoding, javax.sound.sampled.AudioInputStream sourceStream) { throw new AbstractMethodError("javax.sound.sampled.spi.FormatConversionProvider.getAudioInputStream(javax.sound.sampled.AudioFormat.Encoding, javax.sound.sampled.AudioInputStream)"); }
-  public abstract javax.sound.sampled.AudioFormat[] getTargetFormats(javax.sound.sampled.AudioFormat.Encoding targetEncoding, javax.sound.sampled.AudioFormat sourceFormat) { throw new AbstractMethodError("javax.sound.sampled.spi.FormatConversionProvider.getTargetFormats(javax.sound.sampled.AudioFormat.Encoding, javax.sound.sampled.AudioFormat)"); }
-  public abstract javax.sound.sampled.AudioFormat.Encoding[] getSourceEncodings() { throw new AbstractMethodError("javax.sound.sampled.spi.FormatConversionProvider.getSourceEncodings()"); }
-  public boolean isTargetEncodingSupported(javax.sound.sampled.AudioFormat.Encoding targetEncoding) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.spi.FormatConversionProvider.isTargetEncodingSupported(javax.sound.sampled.AudioFormat.Encoding)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSourceEncodingSupported(javax.sound.sampled.AudioFormat.Encoding sourceEncoding) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.AudioFormat.Encoding[] getTargetEncodings(javax.sound.sampled.AudioFormat sourceFormat) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.AudioFormat.Encoding[] getTargetEncodings() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isConversionSupported(javax.sound.sampled.AudioFormat.Encoding targetEncoding, javax.sound.sampled.AudioFormat sourceFormat) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.AudioInputStream getAudioInputStream(javax.sound.sampled.AudioFormat.Encoding targetEncoding, javax.sound.sampled.AudioInputStream sourceStream) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.AudioFormat[] getTargetFormats(javax.sound.sampled.AudioFormat.Encoding targetEncoding, javax.sound.sampled.AudioFormat sourceFormat) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.AudioFormat.Encoding[] getSourceEncodings() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isTargetEncodingSupported(javax.sound.sampled.AudioFormat.Encoding targetEncoding) { return false; }
   < ---- END java signatures ---- >
 }

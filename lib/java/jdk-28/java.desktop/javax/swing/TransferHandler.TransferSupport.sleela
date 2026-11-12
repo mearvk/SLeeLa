@@ -59,23 +59,37 @@ class TransferSupport {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TransferSupport(java.awt.Component component, java.awt.datatransfer.Transferable transferable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.TransferSupport.<init>(java.awt.Component, java.awt.datatransfer.Transferable)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TransferSupport(java.awt.Component component, java.awt.datatransfer.Transferable transferable) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Component getComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.TransferSupport.getComponent()"); }
-  public boolean isDrop() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.TransferSupport.isDrop()"); }
-  public int getSourceDropActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.TransferSupport.getSourceDropActions()"); }
-  public int getUserDropAction() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.TransferSupport.getUserDropAction()"); }
-  public void setShowDropLocation(boolean showDropLocation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.TransferSupport.setShowDropLocation(boolean)"); }
-  public void setDropAction(int dropAction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.TransferSupport.setDropAction(int)"); }
-  public java.awt.datatransfer.DataFlavor[] getDataFlavors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.TransferSupport.getDataFlavors()"); }
-  public int getDropAction() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.TransferSupport.getDropAction()"); }
-  public java.awt.datatransfer.Transferable getTransferable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.TransferSupport.getTransferable()"); }
-  public javax.swing.TransferHandler.DropLocation getDropLocation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.TransferSupport.getDropLocation()"); }
-  public boolean isDataFlavorSupported(java.awt.datatransfer.DataFlavor df) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.TransferHandler.TransferSupport.isDataFlavorSupported(java.awt.datatransfer.DataFlavor)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDrop() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSourceDropActions() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getUserDropAction() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setShowDropLocation(boolean showDropLocation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDropAction(int dropAction) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.datatransfer.DataFlavor[] getDataFlavors() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDropAction() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.datatransfer.Transferable getTransferable() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.TransferHandler.DropLocation getDropLocation() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDataFlavorSupported(java.awt.datatransfer.DataFlavor df) { return false; }
   < ---- END java signatures ---- >
 }

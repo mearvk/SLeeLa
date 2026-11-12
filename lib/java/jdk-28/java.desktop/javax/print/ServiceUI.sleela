@@ -58,13 +58,17 @@ class ServiceUI {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ServiceUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.ServiceUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ServiceUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.print.PrintService printDialog(java.awt.GraphicsConfiguration gc_, int x, int y, javax.print.PrintService[] services, javax.print.PrintService defaultService, javax.print.DocFlavor flavor, javax.print.attribute.PrintRequestAttributeSet attributes) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.ServiceUI.printDialog(java.awt.GraphicsConfiguration, int, int, javax.print.PrintService[], javax.print.PrintService, javax.print.DocFlavor, javax.print.attribute.PrintRequestAttributeSet)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public static javax.print.PrintService printDialog(java.awt.GraphicsConfiguration gc_, int x, int y, javax.print.PrintService[] services, javax.print.PrintService defaultService, javax.print.DocFlavor flavor, javax.print.attribute.PrintRequestAttributeSet attributes) { return null; }
   < ---- END java signatures ---- >
 }

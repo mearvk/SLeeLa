@@ -64,53 +64,92 @@ class InitialContext {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InitialContext(java.util.Hashtable<?, ?> environment) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.<init>(java.util.Hashtable<?, ?>)"); }
-  public InitialContext() throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public InitialContext(java.util.Hashtable<?, ?> environment) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public InitialContext() { }
   @JavaProtected
-  InitialContext(boolean lazy) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.<init>(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  InitialContext(boolean lazy) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.naming.NamingEnumeration<javax.naming.NameClassPair> list(java.lang.String name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.list(java.lang.String)"); }
-  public javax.naming.NamingEnumeration<javax.naming.NameClassPair> list(javax.naming.Name name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.list(javax.naming.Name)"); }
-  public java.lang.Object lookup(javax.naming.Name name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.lookup(javax.naming.Name)"); }
-  public java.lang.Object lookup(java.lang.String name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.lookup(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NamingEnumeration<javax.naming.NameClassPair> list(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NamingEnumeration<javax.naming.NameClassPair> list(javax.naming.Name name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public java.lang.Object lookup(javax.naming.Name name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public java.lang.Object lookup(java.lang.String name) { return null; }
   @JavaProtected
-  void init(java.util.Hashtable<?, ?> environment) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.init(java.util.Hashtable<?, ?>)"); }
-  public void rebind(javax.naming.Name name, java.lang.Object obj) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.rebind(javax.naming.Name, java.lang.Object)"); }
-  public void rebind(java.lang.String name, java.lang.Object obj) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.rebind(java.lang.String, java.lang.Object)"); }
-  public void bind(javax.naming.Name name, java.lang.Object obj) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.bind(javax.naming.Name, java.lang.Object)"); }
-  public void bind(java.lang.String name, java.lang.Object obj) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.bind(java.lang.String, java.lang.Object)"); }
-  public void rename(javax.naming.Name oldName, javax.naming.Name newName) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.rename(javax.naming.Name, javax.naming.Name)"); }
-  public void rename(java.lang.String oldName, java.lang.String newName) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.rename(java.lang.String, java.lang.String)"); }
-  public static <T> T doLookup(java.lang.String name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.doLookup(java.lang.String)"); }
-  public static <T> T doLookup(javax.naming.Name name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.doLookup(javax.naming.Name)"); }
-  public javax.naming.NamingEnumeration<javax.naming.Binding> listBindings(javax.naming.Name name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.listBindings(javax.naming.Name)"); }
-  public javax.naming.NamingEnumeration<javax.naming.Binding> listBindings(java.lang.String name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.listBindings(java.lang.String)"); }
-  public void destroySubcontext(java.lang.String name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.destroySubcontext(java.lang.String)"); }
-  public void destroySubcontext(javax.naming.Name name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.destroySubcontext(javax.naming.Name)"); }
-  public javax.naming.Context createSubcontext(java.lang.String name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.createSubcontext(java.lang.String)"); }
-  public javax.naming.Context createSubcontext(javax.naming.Name name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.createSubcontext(javax.naming.Name)"); }
-  public java.lang.Object lookupLink(java.lang.String name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.lookupLink(java.lang.String)"); }
-  public java.lang.Object lookupLink(javax.naming.Name name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.lookupLink(javax.naming.Name)"); }
-  public javax.naming.NameParser getNameParser(java.lang.String name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.getNameParser(java.lang.String)"); }
-  public javax.naming.NameParser getNameParser(javax.naming.Name name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.getNameParser(javax.naming.Name)"); }
-  public java.lang.String composeName(java.lang.String name, java.lang.String prefix) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.composeName(java.lang.String, java.lang.String)"); }
-  public javax.naming.Name composeName(javax.naming.Name name, javax.naming.Name prefix) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.composeName(javax.naming.Name, javax.naming.Name)"); }
-  public java.lang.Object addToEnvironment(java.lang.String propName, java.lang.Object propVal) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.addToEnvironment(java.lang.String, java.lang.Object)"); }
-  public java.lang.Object removeFromEnvironment(java.lang.String propName) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.removeFromEnvironment(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  void init(java.util.Hashtable<?, ?> environment) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void rebind(javax.naming.Name name, java.lang.Object obj) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void rebind(java.lang.String name, java.lang.Object obj) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void bind(javax.naming.Name name, java.lang.Object obj) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void bind(java.lang.String name, java.lang.Object obj) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void rename(javax.naming.Name oldName, javax.naming.Name newName) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void rename(java.lang.String oldName, java.lang.String newName) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public static <T> T doLookup(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public static <T> T doLookup(javax.naming.Name name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NamingEnumeration<javax.naming.Binding> listBindings(javax.naming.Name name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NamingEnumeration<javax.naming.Binding> listBindings(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void destroySubcontext(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void destroySubcontext(javax.naming.Name name) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.Context createSubcontext(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.Context createSubcontext(javax.naming.Name name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public java.lang.Object lookupLink(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public java.lang.Object lookupLink(javax.naming.Name name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NameParser getNameParser(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.NameParser getNameParser(javax.naming.Name name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public java.lang.String composeName(java.lang.String name, java.lang.String prefix) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public javax.naming.Name composeName(javax.naming.Name name, javax.naming.Name prefix) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public java.lang.Object addToEnvironment(java.lang.String propName, java.lang.Object propVal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public java.lang.Object removeFromEnvironment(java.lang.String propName) { return null; }
   @JavaProtected
-  javax.naming.Context getDefaultInitCtx() throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.getDefaultInitCtx()"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  javax.naming.Context getDefaultInitCtx() { return null; }
   @JavaProtected
-  javax.naming.Context getURLOrDefaultInitCtx(javax.naming.Name name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.getURLOrDefaultInitCtx(javax.naming.Name)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  javax.naming.Context getURLOrDefaultInitCtx(javax.naming.Name name) { return null; }
   @JavaProtected
-  javax.naming.Context getURLOrDefaultInitCtx(java.lang.String name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.getURLOrDefaultInitCtx(java.lang.String)"); }
-  public void unbind(java.lang.String name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.unbind(java.lang.String)"); }
-  public void unbind(javax.naming.Name name) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.unbind(javax.naming.Name)"); }
-  public java.lang.String getNameInNamespace() throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.getNameInNamespace()"); }
-  public java.util.Hashtable<?, ?> getEnvironment() throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.InitialContext.getEnvironment()"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  javax.naming.Context getURLOrDefaultInitCtx(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void unbind(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public void unbind(javax.naming.Name name) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public java.lang.String getNameInNamespace() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public java.util.Hashtable<?, ?> getEnvironment() { return null; }
   < ---- END java signatures ---- >
 }

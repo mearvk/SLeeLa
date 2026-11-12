@@ -58,20 +58,31 @@ class ModelMBeanAttributeInfo {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ModelMBeanAttributeInfo(javax.management.modelmbean.ModelMBeanAttributeInfo inInfo) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanAttributeInfo.<init>(javax.management.modelmbean.ModelMBeanAttributeInfo)"); }
-  public ModelMBeanAttributeInfo(java.lang.String name, java.lang.String type, java.lang.String description, boolean isReadable, boolean isWritable, boolean isIs, javax.management.Descriptor descriptor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanAttributeInfo.<init>(java.lang.String, java.lang.String, java.lang.String, boolean, boolean, boolean, javax.management.Descriptor)"); }
-  public ModelMBeanAttributeInfo(java.lang.String name, java.lang.String type, java.lang.String description, boolean isReadable, boolean isWritable, boolean isIs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanAttributeInfo.<init>(java.lang.String, java.lang.String, java.lang.String, boolean, boolean, boolean)"); }
-  public ModelMBeanAttributeInfo(java.lang.String name, java.lang.String description, java.lang.reflect.Method getter, java.lang.reflect.Method setter, javax.management.Descriptor descriptor) throws javax.management.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanAttributeInfo.<init>(java.lang.String, java.lang.String, java.lang.reflect.Method, java.lang.reflect.Method, javax.management.Descriptor)"); }
-  public ModelMBeanAttributeInfo(java.lang.String name, java.lang.String description, java.lang.reflect.Method getter, java.lang.reflect.Method setter) throws javax.management.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanAttributeInfo.<init>(java.lang.String, java.lang.String, java.lang.reflect.Method, java.lang.reflect.Method)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ModelMBeanAttributeInfo(javax.management.modelmbean.ModelMBeanAttributeInfo inInfo) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ModelMBeanAttributeInfo(java.lang.String name, java.lang.String type, java.lang.String description, boolean isReadable, boolean isWritable, boolean isIs, javax.management.Descriptor descriptor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ModelMBeanAttributeInfo(java.lang.String name, java.lang.String type, java.lang.String description, boolean isReadable, boolean isWritable, boolean isIs) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.IntrospectionException")
+  public ModelMBeanAttributeInfo(java.lang.String name, java.lang.String description, java.lang.reflect.Method getter, java.lang.reflect.Method setter, javax.management.Descriptor descriptor) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.IntrospectionException")
+  public ModelMBeanAttributeInfo(java.lang.String name, java.lang.String description, java.lang.reflect.Method getter, java.lang.reflect.Method setter) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanAttributeInfo.toString()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanAttributeInfo.clone()"); }
-  public javax.management.Descriptor getDescriptor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanAttributeInfo.getDescriptor()"); }
-  public void setDescriptor(javax.management.Descriptor inDescriptor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanAttributeInfo.setDescriptor(javax.management.Descriptor)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.Descriptor getDescriptor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDescriptor(javax.management.Descriptor inDescriptor) { }
   < ---- END java signatures ---- >
 }

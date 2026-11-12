@@ -58,12 +58,18 @@ class MBeanRegistration {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void postRegister(java.lang.Boolean registrationDone) { throw new AbstractMethodError("javax.management.MBeanRegistration.postRegister(java.lang.Boolean)"); }
-  public abstract void preDeregister() throws java.lang.Exception { throw new AbstractMethodError("javax.management.MBeanRegistration.preDeregister()"); }
-  public abstract void postDeregister() { throw new AbstractMethodError("javax.management.MBeanRegistration.postDeregister()"); }
-  public abstract javax.management.ObjectName preRegister(javax.management.MBeanServer server, javax.management.ObjectName name) throws java.lang.Exception { throw new AbstractMethodError("javax.management.MBeanRegistration.preRegister(javax.management.MBeanServer, javax.management.ObjectName)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void postRegister(java.lang.Boolean registrationDone) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.Exception")
+  public void preDeregister() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void postDeregister() { }
+  @throwable("java.lang.AbstractMethodError, java.lang.Exception")
+  public javax.management.ObjectName preRegister(javax.management.MBeanServer server, javax.management.ObjectName name) { return null; }
   < ---- END java signatures ---- >
 }

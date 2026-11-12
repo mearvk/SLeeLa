@@ -59,22 +59,34 @@ class CertPath {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  CertPath(java.lang.String type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPath.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  CertPath(java.lang.String type) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPath.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPath.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPath.hashCode()"); }
-  public abstract java.util.List<? extends java.security.cert.Certificate> getCertificates() { throw new AbstractMethodError("java.security.cert.CertPath.getCertificates()"); }
-  public java.lang.String getType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPath.getType()"); }
-  public abstract byte[] getEncoded(java.lang.String encoding) throws java.security.cert.CertificateEncodingException { throw new AbstractMethodError("java.security.cert.CertPath.getEncoded(java.lang.String)"); }
-  public abstract byte[] getEncoded() throws java.security.cert.CertificateEncodingException { throw new AbstractMethodError("java.security.cert.CertPath.getEncoded()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends java.security.cert.Certificate> getCertificates() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getType() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertificateEncodingException")
+  public byte[] getEncoded(java.lang.String encoding) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertificateEncodingException")
+  public byte[] getEncoded() { return null; }
   @JavaProtected
-  java.lang.Object writeReplace() throws java.io.ObjectStreamException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPath.writeReplace()"); }
-  public abstract java.util.Iterator<java.lang.String> getEncodings() { throw new AbstractMethodError("java.security.cert.CertPath.getEncodings()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.ObjectStreamException")
+  java.lang.Object writeReplace() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Iterator<java.lang.String> getEncodings() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,24 +58,42 @@ class DriverManager {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static void println(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.println(java.lang.String)"); }
-  public static java.sql.Connection getConnection(java.lang.String url) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.getConnection(java.lang.String)"); }
-  public static java.sql.Connection getConnection(java.lang.String url, java.lang.String user, java.lang.String password) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.getConnection(java.lang.String, java.lang.String, java.lang.String)"); }
-  public static java.sql.Connection getConnection(java.lang.String url, java.util.Properties info) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.getConnection(java.lang.String, java.util.Properties)"); }
-  public static void setLogStream(java.io.PrintStream out) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.setLogStream(java.io.PrintStream)"); }
-  public static java.io.PrintWriter getLogWriter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.getLogWriter()"); }
-  public static void registerDriver(java.sql.Driver driver) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.registerDriver(java.sql.Driver)"); }
-  public static void registerDriver(java.sql.Driver driver, java.sql.DriverAction da) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.registerDriver(java.sql.Driver, java.sql.DriverAction)"); }
-  public static java.util.Enumeration<java.sql.Driver> getDrivers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.getDrivers()"); }
-  public static void setLogWriter(java.io.PrintWriter out) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.setLogWriter(java.io.PrintWriter)"); }
-  public static java.sql.Driver getDriver(java.lang.String url) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.getDriver(java.lang.String)"); }
-  public static void deregisterDriver(java.sql.Driver driver) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.deregisterDriver(java.sql.Driver)"); }
-  public static java.util.stream.Stream<java.sql.Driver> drivers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.drivers()"); }
-  public static void setLoginTimeout(int seconds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.setLoginTimeout(int)"); }
-  public static int getLoginTimeout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.getLoginTimeout()"); }
-  public static java.io.PrintStream getLogStream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.DriverManager.getLogStream()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void println(java.lang.String message) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public static java.sql.Connection getConnection(java.lang.String url) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public static java.sql.Connection getConnection(java.lang.String url, java.lang.String user, java.lang.String password) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public static java.sql.Connection getConnection(java.lang.String url, java.util.Properties info) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setLogStream(java.io.PrintStream out) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.io.PrintWriter getLogWriter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public static void registerDriver(java.sql.Driver driver) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public static void registerDriver(java.sql.Driver driver, java.sql.DriverAction da) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Enumeration<java.sql.Driver> getDrivers() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setLogWriter(java.io.PrintWriter out) { }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public static java.sql.Driver getDriver(java.lang.String url) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public static void deregisterDriver(java.sql.Driver driver) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.Stream<java.sql.Driver> drivers() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setLoginTimeout(int seconds) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getLoginTimeout() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.io.PrintStream getLogStream() { return null; }
   < ---- END java signatures ---- >
 }

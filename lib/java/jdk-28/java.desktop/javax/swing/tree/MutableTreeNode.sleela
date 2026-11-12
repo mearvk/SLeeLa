@@ -58,14 +58,22 @@ class MutableTreeNode {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void remove(javax.swing.tree.MutableTreeNode node) { throw new AbstractMethodError("javax.swing.tree.MutableTreeNode.remove(javax.swing.tree.MutableTreeNode)"); }
-  public abstract void remove(int index) { throw new AbstractMethodError("javax.swing.tree.MutableTreeNode.remove(int)"); }
-  public abstract void insert(javax.swing.tree.MutableTreeNode child, int index) { throw new AbstractMethodError("javax.swing.tree.MutableTreeNode.insert(javax.swing.tree.MutableTreeNode, int)"); }
-  public abstract void setParent(javax.swing.tree.MutableTreeNode newParent) { throw new AbstractMethodError("javax.swing.tree.MutableTreeNode.setParent(javax.swing.tree.MutableTreeNode)"); }
-  public abstract void removeFromParent() { throw new AbstractMethodError("javax.swing.tree.MutableTreeNode.removeFromParent()"); }
-  public abstract void setUserObject(java.lang.Object object) { throw new AbstractMethodError("javax.swing.tree.MutableTreeNode.setUserObject(java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void remove(javax.swing.tree.MutableTreeNode node) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void remove(int index) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void insert(javax.swing.tree.MutableTreeNode child, int index) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setParent(javax.swing.tree.MutableTreeNode newParent) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeFromParent() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setUserObject(java.lang.Object object) { }
   < ---- END java signatures ---- >
 }

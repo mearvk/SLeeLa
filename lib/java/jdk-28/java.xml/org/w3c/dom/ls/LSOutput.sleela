@@ -58,16 +58,26 @@ class LSOutput {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getEncoding() { throw new AbstractMethodError("org.w3c.dom.ls.LSOutput.getEncoding()"); }
-  public abstract void setEncoding(java.lang.String encoding) { throw new AbstractMethodError("org.w3c.dom.ls.LSOutput.setEncoding(java.lang.String)"); }
-  public abstract java.io.Writer getCharacterStream() { throw new AbstractMethodError("org.w3c.dom.ls.LSOutput.getCharacterStream()"); }
-  public abstract java.io.OutputStream getByteStream() { throw new AbstractMethodError("org.w3c.dom.ls.LSOutput.getByteStream()"); }
-  public abstract void setSystemId(java.lang.String systemId) { throw new AbstractMethodError("org.w3c.dom.ls.LSOutput.setSystemId(java.lang.String)"); }
-  public abstract void setByteStream(java.io.OutputStream byteStream) { throw new AbstractMethodError("org.w3c.dom.ls.LSOutput.setByteStream(java.io.OutputStream)"); }
-  public abstract void setCharacterStream(java.io.Writer characterStream) { throw new AbstractMethodError("org.w3c.dom.ls.LSOutput.setCharacterStream(java.io.Writer)"); }
-  public abstract java.lang.String getSystemId() { throw new AbstractMethodError("org.w3c.dom.ls.LSOutput.getSystemId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getEncoding() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setEncoding(java.lang.String encoding) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.Writer getCharacterStream() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.OutputStream getByteStream() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSystemId(java.lang.String systemId) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setByteStream(java.io.OutputStream byteStream) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCharacterStream(java.io.Writer characterStream) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSystemId() { return null; }
   < ---- END java signatures ---- >
 }

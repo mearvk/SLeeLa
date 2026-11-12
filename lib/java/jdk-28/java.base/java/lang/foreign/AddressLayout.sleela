@@ -58,15 +58,24 @@ class AddressLayout {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.foreign.AddressLayout withByteAlignment(long byteAlignment) { throw new AbstractMethodError("java.lang.foreign.AddressLayout.withByteAlignment(long)"); }
-  public abstract java.lang.foreign.AddressLayout withName(java.lang.String name) { throw new AbstractMethodError("java.lang.foreign.AddressLayout.withName(java.lang.String)"); }
-  public abstract java.lang.foreign.AddressLayout withoutName() { throw new AbstractMethodError("java.lang.foreign.AddressLayout.withoutName()"); }
-  public abstract java.lang.foreign.AddressLayout withOrder(java.nio.ByteOrder order) { throw new AbstractMethodError("java.lang.foreign.AddressLayout.withOrder(java.nio.ByteOrder)"); }
-  public abstract java.lang.foreign.AddressLayout withTargetLayout(java.lang.foreign.MemoryLayout layout) { throw new AbstractMethodError("java.lang.foreign.AddressLayout.withTargetLayout(java.lang.foreign.MemoryLayout)"); }
-  public abstract java.lang.foreign.AddressLayout withoutTargetLayout() { throw new AbstractMethodError("java.lang.foreign.AddressLayout.withoutTargetLayout()"); }
-  public abstract java.util.Optional<java.lang.foreign.MemoryLayout> targetLayout() { throw new AbstractMethodError("java.lang.foreign.AddressLayout.targetLayout()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.foreign.AddressLayout withByteAlignment(long byteAlignment) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.foreign.AddressLayout withName(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.foreign.AddressLayout withoutName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.foreign.AddressLayout withOrder(java.nio.ByteOrder order) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.foreign.AddressLayout withTargetLayout(java.lang.foreign.MemoryLayout layout) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.foreign.AddressLayout withoutTargetLayout() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Optional<java.lang.foreign.MemoryLayout> targetLayout() { return null; }
   < ---- END java signatures ---- >
 }

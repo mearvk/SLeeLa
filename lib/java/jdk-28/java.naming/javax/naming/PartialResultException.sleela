@@ -58,7 +58,9 @@ class PartialResultException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PartialResultException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.PartialResultException.<init>(java.lang.String)"); }
-  public PartialResultException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.PartialResultException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PartialResultException(java.lang.String explanation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PartialResultException() { }
   < ---- END java constructors ---- >
 }

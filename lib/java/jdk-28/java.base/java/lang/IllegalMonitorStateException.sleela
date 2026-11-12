@@ -58,7 +58,9 @@ class IllegalMonitorStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IllegalMonitorStateException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.IllegalMonitorStateException.<init>()"); }
-  public IllegalMonitorStateException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.IllegalMonitorStateException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalMonitorStateException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalMonitorStateException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

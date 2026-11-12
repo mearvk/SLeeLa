@@ -58,27 +58,38 @@ class MacSpi {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MacSpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.MacSpi.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MacSpi() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.MacSpi.clone()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
+  public java.lang.Object clone() { return null; }
   @JavaProtected
-  abstract int engineGetMacLength() { throw new AbstractMethodError("javax.crypto.MacSpi.engineGetMacLength()"); }
+  @throwable("java.lang.AbstractMethodError")
+  int engineGetMacLength() { return 0; }
   @JavaProtected
-  abstract void engineUpdate(byte[] input, int offset, int len) { throw new AbstractMethodError("javax.crypto.MacSpi.engineUpdate(byte[], int, int)"); }
+  @throwable("java.lang.AbstractMethodError")
+  void engineUpdate(byte[] input, int offset, int len) { }
   @JavaProtected
-  abstract void engineUpdate(byte input) { throw new AbstractMethodError("javax.crypto.MacSpi.engineUpdate(byte)"); }
+  @throwable("java.lang.AbstractMethodError")
+  void engineUpdate(byte input) { }
   @JavaProtected
-  void engineUpdate(java.nio.ByteBuffer input) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.MacSpi.engineUpdate(java.nio.ByteBuffer)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void engineUpdate(java.nio.ByteBuffer input) { }
   @JavaProtected
-  abstract void engineReset() { throw new AbstractMethodError("javax.crypto.MacSpi.engineReset()"); }
+  @throwable("java.lang.AbstractMethodError")
+  void engineReset() { }
   @JavaProtected
-  abstract byte[] engineDoFinal() { throw new AbstractMethodError("javax.crypto.MacSpi.engineDoFinal()"); }
+  @throwable("java.lang.AbstractMethodError")
+  byte[] engineDoFinal() { return null; }
   @JavaProtected
-  abstract void engineInit(java.security.Key key, java.security.spec.AlgorithmParameterSpec params) throws java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException { throw new AbstractMethodError("javax.crypto.MacSpi.engineInit(java.security.Key, java.security.spec.AlgorithmParameterSpec)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException")
+  void engineInit(java.security.Key key, java.security.spec.AlgorithmParameterSpec params) { }
   < ---- END java signatures ---- >
 }

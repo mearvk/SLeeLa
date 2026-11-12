@@ -58,13 +58,20 @@ class VariableTree {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.lang.model.element.Name getName() { throw new AbstractMethodError("com.sun.source.tree.VariableTree.getName()"); }
-  public abstract com.sun.source.tree.ModifiersTree getModifiers() { throw new AbstractMethodError("com.sun.source.tree.VariableTree.getModifiers()"); }
-  public abstract com.sun.source.tree.Tree getType() { throw new AbstractMethodError("com.sun.source.tree.VariableTree.getType()"); }
-  public abstract com.sun.source.tree.ExpressionTree getNameExpression() { throw new AbstractMethodError("com.sun.source.tree.VariableTree.getNameExpression()"); }
-  public abstract com.sun.source.tree.ExpressionTree getInitializer() { throw new AbstractMethodError("com.sun.source.tree.VariableTree.getInitializer()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.Name getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.ModifiersTree getModifiers() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.Tree getType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.ExpressionTree getNameExpression() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.ExpressionTree getInitializer() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,29 +58,52 @@ class Array {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static native java.lang.Object get(java.lang.Object array, int index) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.get(java.lang.Object, int)"); }
-  public static native int getLength(java.lang.Object array) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.getLength(java.lang.Object)"); }
-  public static native boolean getBoolean(java.lang.Object array, int index) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.getBoolean(java.lang.Object, int)"); }
-  public static native byte getByte(java.lang.Object array, int index) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.getByte(java.lang.Object, int)"); }
-  public static native short getShort(java.lang.Object array, int index) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.getShort(java.lang.Object, int)"); }
-  public static native char getChar(java.lang.Object array, int index) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.getChar(java.lang.Object, int)"); }
-  public static native int getInt(java.lang.Object array, int index) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.getInt(java.lang.Object, int)"); }
-  public static native long getLong(java.lang.Object array, int index) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.getLong(java.lang.Object, int)"); }
-  public static native float getFloat(java.lang.Object array, int index) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.getFloat(java.lang.Object, int)"); }
-  public static native double getDouble(java.lang.Object array, int index) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.getDouble(java.lang.Object, int)"); }
-  public static java.lang.Object newInstance(java.lang.Class<?> componentType, int length) throws java.lang.NegativeArraySizeException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.newInstance(java.lang.Class<?>, int)"); }
-  public static java.lang.Object newInstance(java.lang.Class<?> componentType, int... dimensions) throws java.lang.IllegalArgumentException, java.lang.NegativeArraySizeException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.newInstance(java.lang.Class<?>, int...)"); }
-  public static native void set(java.lang.Object array, int index, java.lang.Object value) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.set(java.lang.Object, int, java.lang.Object)"); }
-  public static native void setBoolean(java.lang.Object array, int index, boolean z) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.setBoolean(java.lang.Object, int, boolean)"); }
-  public static native void setByte(java.lang.Object array, int index, byte b) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.setByte(java.lang.Object, int, byte)"); }
-  public static native void setChar(java.lang.Object array, int index, char c) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.setChar(java.lang.Object, int, char)"); }
-  public static native void setShort(java.lang.Object array, int index, short s) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.setShort(java.lang.Object, int, short)"); }
-  public static native void setInt(java.lang.Object array, int index, int i) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.setInt(java.lang.Object, int, int)"); }
-  public static native void setLong(java.lang.Object array, int index, long l) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.setLong(java.lang.Object, int, long)"); }
-  public static native void setFloat(java.lang.Object array, int index, float f) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.setFloat(java.lang.Object, int, float)"); }
-  public static native void setDouble(java.lang.Object array, int index, double d) throws java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Array.setDouble(java.lang.Object, int, double)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native java.lang.Object get(java.lang.Object array, int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public static native int getLength(java.lang.Object array) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native boolean getBoolean(java.lang.Object array, int index) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native byte getByte(java.lang.Object array, int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native short getShort(java.lang.Object array, int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native char getChar(java.lang.Object array, int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native int getInt(java.lang.Object array, int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native long getLong(java.lang.Object array, int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native float getFloat(java.lang.Object array, int index) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native double getDouble(java.lang.Object array, int index) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NegativeArraySizeException")
+  public static java.lang.Object newInstance(java.lang.Class<?> componentType, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.NegativeArraySizeException")
+  public static java.lang.Object newInstance(java.lang.Class<?> componentType, int... dimensions) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native void set(java.lang.Object array, int index, java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native void setBoolean(java.lang.Object array, int index, boolean z) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native void setByte(java.lang.Object array, int index, byte b) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native void setChar(java.lang.Object array, int index, char c) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native void setShort(java.lang.Object array, int index, short s) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native void setInt(java.lang.Object array, int index, int i) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native void setLong(java.lang.Object array, int index, long l) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native void setFloat(java.lang.Object array, int index, float f) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.ArrayIndexOutOfBoundsException")
+  public static native void setDouble(java.lang.Object array, int index, double d) { }
   < ---- END java signatures ---- >
 }

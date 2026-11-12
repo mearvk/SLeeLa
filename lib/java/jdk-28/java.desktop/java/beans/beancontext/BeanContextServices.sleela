@@ -58,17 +58,28 @@ class BeanContextServices {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object getService(java.beans.beancontext.BeanContextChild child, java.lang.Object requestor, java.lang.Class<?> serviceClass, java.lang.Object serviceSelector, java.beans.beancontext.BeanContextServiceRevokedListener bcsrl) throws java.util.TooManyListenersException { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.getService(java.beans.beancontext.BeanContextChild, java.lang.Object, java.lang.Class<?>, java.lang.Object, java.beans.beancontext.BeanContextServiceRevokedListener)"); }
-  public abstract java.util.Iterator<?> getCurrentServiceSelectors(java.lang.Class<?> serviceClass) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.getCurrentServiceSelectors(java.lang.Class<?>)"); }
-  public abstract boolean addService(java.lang.Class<?> serviceClass, java.beans.beancontext.BeanContextServiceProvider serviceProvider) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.addService(java.lang.Class<?>, java.beans.beancontext.BeanContextServiceProvider)"); }
-  public abstract void revokeService(java.lang.Class<?> serviceClass, java.beans.beancontext.BeanContextServiceProvider serviceProvider, boolean revokeCurrentServicesNow) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.revokeService(java.lang.Class<?>, java.beans.beancontext.BeanContextServiceProvider, boolean)"); }
-  public abstract boolean hasService(java.lang.Class<?> serviceClass) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.hasService(java.lang.Class<?>)"); }
-  public abstract void releaseService(java.beans.beancontext.BeanContextChild child, java.lang.Object requestor, java.lang.Object service) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.releaseService(java.beans.beancontext.BeanContextChild, java.lang.Object, java.lang.Object)"); }
-  public abstract java.util.Iterator<?> getCurrentServiceClasses() { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.getCurrentServiceClasses()"); }
-  public abstract void addBeanContextServicesListener(java.beans.beancontext.BeanContextServicesListener bcsl) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.addBeanContextServicesListener(java.beans.beancontext.BeanContextServicesListener)"); }
-  public abstract void removeBeanContextServicesListener(java.beans.beancontext.BeanContextServicesListener bcsl) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.removeBeanContextServicesListener(java.beans.beancontext.BeanContextServicesListener)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.util.TooManyListenersException")
+  public java.lang.Object getService(java.beans.beancontext.BeanContextChild child, java.lang.Object requestor, java.lang.Class<?> serviceClass, java.lang.Object serviceSelector, java.beans.beancontext.BeanContextServiceRevokedListener bcsrl) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Iterator<?> getCurrentServiceSelectors(java.lang.Class<?> serviceClass) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean addService(java.lang.Class<?> serviceClass, java.beans.beancontext.BeanContextServiceProvider serviceProvider) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void revokeService(java.lang.Class<?> serviceClass, java.beans.beancontext.BeanContextServiceProvider serviceProvider, boolean revokeCurrentServicesNow) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasService(java.lang.Class<?> serviceClass) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void releaseService(java.beans.beancontext.BeanContextChild child, java.lang.Object requestor, java.lang.Object service) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Iterator<?> getCurrentServiceClasses() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void addBeanContextServicesListener(java.beans.beancontext.BeanContextServicesListener bcsl) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeBeanContextServicesListener(java.beans.beancontext.BeanContextServicesListener bcsl) { }
   < ---- END java signatures ---- >
 }

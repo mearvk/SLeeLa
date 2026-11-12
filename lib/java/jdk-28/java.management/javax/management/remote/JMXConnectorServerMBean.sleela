@@ -58,16 +58,26 @@ class JMXConnectorServerMBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void start() throws java.io.IOException { throw new AbstractMethodError("javax.management.remote.JMXConnectorServerMBean.start()"); }
-  public abstract void stop() throws java.io.IOException { throw new AbstractMethodError("javax.management.remote.JMXConnectorServerMBean.stop()"); }
-  public abstract javax.management.remote.JMXServiceURL getAddress() { throw new AbstractMethodError("javax.management.remote.JMXConnectorServerMBean.getAddress()"); }
-  public abstract java.util.Map<java.lang.String, ?> getAttributes() { throw new AbstractMethodError("javax.management.remote.JMXConnectorServerMBean.getAttributes()"); }
-  public abstract boolean isActive() { throw new AbstractMethodError("javax.management.remote.JMXConnectorServerMBean.isActive()"); }
-  public abstract void setMBeanServerForwarder(javax.management.remote.MBeanServerForwarder mbsf) { throw new AbstractMethodError("javax.management.remote.JMXConnectorServerMBean.setMBeanServerForwarder(javax.management.remote.MBeanServerForwarder)"); }
-  public abstract java.lang.String[] getConnectionIds() { throw new AbstractMethodError("javax.management.remote.JMXConnectorServerMBean.getConnectionIds()"); }
-  public abstract javax.management.remote.JMXConnector toJMXConnector(java.util.Map<java.lang.String, ?> env) throws java.io.IOException { throw new AbstractMethodError("javax.management.remote.JMXConnectorServerMBean.toJMXConnector(java.util.Map<java.lang.String, ?>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void start() { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void stop() { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.remote.JMXServiceURL getAddress() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Map<java.lang.String, ?> getAttributes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isActive() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMBeanServerForwarder(javax.management.remote.MBeanServerForwarder mbsf) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getConnectionIds() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public javax.management.remote.JMXConnector toJMXConnector(java.util.Map<java.lang.String, ?> env) { return null; }
   < ---- END java signatures ---- >
 }

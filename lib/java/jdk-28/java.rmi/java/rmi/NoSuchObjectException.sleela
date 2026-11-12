@@ -58,6 +58,7 @@ class NoSuchObjectException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NoSuchObjectException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.NoSuchObjectException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoSuchObjectException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

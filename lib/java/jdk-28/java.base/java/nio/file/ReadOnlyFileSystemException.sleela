@@ -58,6 +58,7 @@ class ReadOnlyFileSystemException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ReadOnlyFileSystemException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.ReadOnlyFileSystemException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ReadOnlyFileSystemException() { }
   < ---- END java constructors ---- >
 }

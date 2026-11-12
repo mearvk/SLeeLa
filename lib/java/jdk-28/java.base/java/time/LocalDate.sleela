@@ -64,73 +64,140 @@ class LocalDate {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int get(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.get(java.time.temporal.TemporalField)"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.hashCode()"); }
-  public int compareTo(java.time.chrono.ChronoLocalDate other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.compareTo(java.time.chrono.ChronoLocalDate)"); }
-  public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.getLong(java.time.temporal.TemporalField)"); }
-  public static java.time.LocalDate of(int year, int month, int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.of(int, int, int)"); }
-  public static java.time.LocalDate of(int year, java.time.Month month, int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.of(int, java.time.Month, int)"); }
-  public java.lang.String format(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.format(java.time.format.DateTimeFormatter)"); }
-  public static java.time.LocalDate from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.from(java.time.temporal.TemporalAccessor)"); }
-  public boolean isSupported(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.isSupported(java.time.temporal.TemporalUnit)"); }
-  public static java.time.LocalDate parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.parse(java.lang.CharSequence)"); }
-  public static java.time.LocalDate parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.parse(java.lang.CharSequence, java.time.format.DateTimeFormatter)"); }
-  public java.time.LocalDate with(java.time.temporal.TemporalAdjuster adjuster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.with(java.time.temporal.TemporalAdjuster)"); }
-  public java.time.LocalDate with(java.time.temporal.TemporalField field, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.with(java.time.temporal.TemporalField, long)"); }
-  public <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.query(java.time.temporal.TemporalQuery<R>)"); }
-  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.range(java.time.temporal.TemporalField)"); }
-  public static java.time.LocalDate now() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.now()"); }
-  public static java.time.LocalDate now(java.time.Clock clock) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.now(java.time.Clock)"); }
-  public boolean isEqual(java.time.chrono.ChronoLocalDate other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.isEqual(java.time.chrono.ChronoLocalDate)"); }
-  public int getYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.getYear()"); }
-  public int getMonthValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.getMonthValue()"); }
-  public int getDayOfMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.getDayOfMonth()"); }
-  public java.time.LocalDate minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.minus(long, java.time.temporal.TemporalUnit)"); }
-  public java.time.LocalDate minus(java.time.temporal.TemporalAmount amountToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.minus(java.time.temporal.TemporalAmount)"); }
-  public java.time.LocalDate plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.plus(long, java.time.temporal.TemporalUnit)"); }
-  public java.time.LocalDate plus(java.time.temporal.TemporalAmount amountToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.plus(java.time.temporal.TemporalAmount)"); }
-  public java.time.Period until(java.time.chrono.ChronoLocalDate endDateExclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.until(java.time.chrono.ChronoLocalDate)"); }
-  public long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.until(java.time.temporal.Temporal, java.time.temporal.TemporalUnit)"); }
-  public java.time.LocalDate plusDays(long daysToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.plusDays(long)"); }
-  public java.time.LocalDate minusDays(long daysToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.minusDays(long)"); }
-  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.adjustInto(java.time.temporal.Temporal)"); }
-  public static java.time.LocalDate ofInstant(java.time.Instant instant, java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.ofInstant(java.time.Instant, java.time.ZoneId)"); }
-  public boolean isAfter(java.time.chrono.ChronoLocalDate other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.isAfter(java.time.chrono.ChronoLocalDate)"); }
-  public boolean isBefore(java.time.chrono.ChronoLocalDate other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.isBefore(java.time.chrono.ChronoLocalDate)"); }
-  public boolean isLeapYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.isLeapYear()"); }
-  public static java.time.LocalDate ofEpochDay(long epochDay) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.ofEpochDay(long)"); }
-  public int lengthOfMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.lengthOfMonth()"); }
-  public int lengthOfYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.lengthOfYear()"); }
-  public java.time.Month getMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.getMonth()"); }
-  public long toEpochDay() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.toEpochDay()"); }
-  public java.time.DayOfWeek getDayOfWeek() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.getDayOfWeek()"); }
-  public int getDayOfYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.getDayOfYear()"); }
-  public java.time.LocalDate withDayOfMonth(int dayOfMonth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.withDayOfMonth(int)"); }
-  public java.time.LocalDate withDayOfYear(int dayOfYear) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.withDayOfYear(int)"); }
-  public java.time.LocalDate plusWeeks(long weeksToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.plusWeeks(long)"); }
-  public java.time.LocalDate withMonth(int month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.withMonth(int)"); }
-  public java.time.LocalDate plusMonths(long monthsToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.plusMonths(long)"); }
-  public java.time.LocalDate withYear(int year) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.withYear(int)"); }
-  public static java.time.LocalDate ofYearDay(int year, int dayOfYear) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.ofYearDay(int, int)"); }
-  public java.time.LocalDate plusYears(long yearsToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.plusYears(long)"); }
-  public java.time.LocalDate minusMonths(long monthsToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.minusMonths(long)"); }
-  public java.time.LocalDateTime atTime(int hour, int minute, int second) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.atTime(int, int, int)"); }
-  public java.time.LocalDateTime atTime(int hour, int minute, int second, int nanoOfSecond) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.atTime(int, int, int, int)"); }
-  public java.time.LocalDateTime atTime(int hour, int minute) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.atTime(int, int)"); }
-  public java.time.LocalDateTime atTime(java.time.LocalTime time) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.atTime(java.time.LocalTime)"); }
-  public java.time.chrono.IsoEra getEra() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.getEra()"); }
-  public java.time.chrono.IsoChronology getChronology() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.getChronology()"); }
-  public java.time.LocalDate minusYears(long yearsToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.minusYears(long)"); }
-  public java.time.LocalDate minusWeeks(long weeksToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.minusWeeks(long)"); }
-  public java.util.stream.Stream<java.time.LocalDate> datesUntil(java.time.LocalDate endExclusive, java.time.Period step) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.datesUntil(java.time.LocalDate, java.time.Period)"); }
-  public java.util.stream.Stream<java.time.LocalDate> datesUntil(java.time.LocalDate endExclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.datesUntil(java.time.LocalDate)"); }
-  public java.time.LocalDateTime atStartOfDay() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.atStartOfDay()"); }
-  public java.time.ZonedDateTime atStartOfDay(java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.atStartOfDay(java.time.ZoneId)"); }
-  public long toEpochSecond(java.time.LocalTime time, java.time.ZoneOffset offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.LocalDate.toEpochSecond(java.time.LocalTime, java.time.ZoneOffset)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int get(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.time.chrono.ChronoLocalDate other) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getLong(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.LocalDate of(int year, int month, int dayOfMonth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.LocalDate of(int year, java.time.Month month, int dayOfMonth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String format(java.time.format.DateTimeFormatter formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.LocalDate from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSupported(java.time.temporal.TemporalUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.LocalDate parse(java.lang.CharSequence text) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.LocalDate parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate with(java.time.temporal.TemporalAdjuster adjuster) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate with(java.time.temporal.TemporalField field, long newValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <R> R query(java.time.temporal.TemporalQuery<R> query) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.LocalDate now() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.LocalDate now(java.time.Clock clock) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEqual(java.time.chrono.ChronoLocalDate other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getYear() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMonthValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDayOfMonth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate minus(java.time.temporal.TemporalAmount amountToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate plus(java.time.temporal.TemporalAmount amountToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Period until(java.time.chrono.ChronoLocalDate endDateExclusive) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate plusDays(long daysToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate minusDays(long daysToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.LocalDate ofInstant(java.time.Instant instant, java.time.ZoneId zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAfter(java.time.chrono.ChronoLocalDate other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBefore(java.time.chrono.ChronoLocalDate other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLeapYear() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.LocalDate ofEpochDay(long epochDay) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lengthOfMonth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lengthOfYear() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Month getMonth() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toEpochDay() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.DayOfWeek getDayOfWeek() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDayOfYear() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate withDayOfMonth(int dayOfMonth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate withDayOfYear(int dayOfYear) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate plusWeeks(long weeksToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate withMonth(int month) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate plusMonths(long monthsToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate withYear(int year) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.LocalDate ofYearDay(int year, int dayOfYear) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate plusYears(long yearsToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate minusMonths(long monthsToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDateTime atTime(int hour, int minute, int second) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDateTime atTime(int hour, int minute, int second, int nanoOfSecond) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDateTime atTime(int hour, int minute) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDateTime atTime(java.time.LocalTime time) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.IsoEra getEra() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.chrono.IsoChronology getChronology() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate minusYears(long yearsToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDate minusWeeks(long weeksToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.Stream<java.time.LocalDate> datesUntil(java.time.LocalDate endExclusive, java.time.Period step) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.Stream<java.time.LocalDate> datesUntil(java.time.LocalDate endExclusive) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDateTime atStartOfDay() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.ZonedDateTime atStartOfDay(java.time.ZoneId zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toEpochSecond(java.time.LocalTime time, java.time.ZoneOffset offset) { return 0; }
   < ---- END java signatures ---- >
 }

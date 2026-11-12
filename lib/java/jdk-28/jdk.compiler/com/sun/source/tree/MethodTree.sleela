@@ -58,17 +58,28 @@ class MethodTree {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.lang.model.element.Name getName() { throw new AbstractMethodError("com.sun.source.tree.MethodTree.getName()"); }
-  public abstract com.sun.source.tree.ModifiersTree getModifiers() { throw new AbstractMethodError("com.sun.source.tree.MethodTree.getModifiers()"); }
-  public abstract java.util.List<? extends com.sun.source.tree.TypeParameterTree> getTypeParameters() { throw new AbstractMethodError("com.sun.source.tree.MethodTree.getTypeParameters()"); }
-  public abstract com.sun.source.tree.Tree getReturnType() { throw new AbstractMethodError("com.sun.source.tree.MethodTree.getReturnType()"); }
-  public abstract com.sun.source.tree.Tree getDefaultValue() { throw new AbstractMethodError("com.sun.source.tree.MethodTree.getDefaultValue()"); }
-  public abstract java.util.List<? extends com.sun.source.tree.VariableTree> getParameters() { throw new AbstractMethodError("com.sun.source.tree.MethodTree.getParameters()"); }
-  public abstract com.sun.source.tree.VariableTree getReceiverParameter() { throw new AbstractMethodError("com.sun.source.tree.MethodTree.getReceiverParameter()"); }
-  public abstract java.util.List<? extends com.sun.source.tree.ExpressionTree> getThrows() { throw new AbstractMethodError("com.sun.source.tree.MethodTree.getThrows()"); }
-  public abstract com.sun.source.tree.BlockTree getBody() { throw new AbstractMethodError("com.sun.source.tree.MethodTree.getBody()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.Name getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.ModifiersTree getModifiers() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends com.sun.source.tree.TypeParameterTree> getTypeParameters() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.Tree getReturnType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.Tree getDefaultValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends com.sun.source.tree.VariableTree> getParameters() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.VariableTree getReceiverParameter() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends com.sun.source.tree.ExpressionTree> getThrows() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.BlockTree getBody() { return null; }
   < ---- END java signatures ---- >
 }

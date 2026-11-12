@@ -58,28 +58,47 @@ class FeatureDescriptor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FeatureDescriptor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FeatureDescriptor() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.getName()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.toString()"); }
-  public boolean isHidden() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.isHidden()"); }
-  public java.lang.Object getValue(java.lang.String attributeName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.getValue(java.lang.String)"); }
-  public void setName(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setName(java.lang.String)"); }
-  public void setValue(java.lang.String attributeName, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setValue(java.lang.String, java.lang.Object)"); }
-  public java.lang.String getDisplayName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.getDisplayName()"); }
-  public void setHidden(boolean hidden) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setHidden(boolean)"); }
-  public void setDisplayName(java.lang.String displayName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setDisplayName(java.lang.String)"); }
-  public boolean isExpert() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.isExpert()"); }
-  public void setExpert(boolean expert) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setExpert(boolean)"); }
-  public boolean isPreferred() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.isPreferred()"); }
-  public java.lang.String getShortDescription() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.getShortDescription()"); }
-  public java.util.Enumeration<java.lang.String> attributeNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.attributeNames()"); }
-  public void setPreferred(boolean preferred) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setPreferred(boolean)"); }
-  public void setShortDescription(java.lang.String text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.FeatureDescriptor.setShortDescription(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isHidden() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getValue(java.lang.String attributeName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setName(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValue(java.lang.String attributeName, java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDisplayName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHidden(boolean hidden) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDisplayName(java.lang.String displayName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isExpert() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setExpert(boolean expert) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPreferred() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getShortDescription() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Enumeration<java.lang.String> attributeNames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPreferred(boolean preferred) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setShortDescription(java.lang.String text) { }
   < ---- END java signatures ---- >
 }

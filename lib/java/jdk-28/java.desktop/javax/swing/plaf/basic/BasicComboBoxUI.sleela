@@ -80,90 +80,142 @@ class BasicComboBoxUI {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicComboBoxUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicComboBoxUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void installListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.installListeners()"); }
-  public int getAccessibleChildrenCount(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.getAccessibleChildrenCount(javax.swing.JComponent)"); }
-  public javax.accessibility.Accessible getAccessibleChild(javax.swing.JComponent c, int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.getAccessibleChild(javax.swing.JComponent, int)"); }
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.getPreferredSize(javax.swing.JComponent)"); }
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.getMinimumSize(javax.swing.JComponent)"); }
-  public boolean isFocusTraversable(javax.swing.JComboBox<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.isFocusTraversable(javax.swing.JComboBox<?>)"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.installUI(javax.swing.JComponent)"); }
-  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.uninstallUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListeners() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAccessibleChildrenCount(javax.swing.JComponent c) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.Accessible getAccessibleChild(javax.swing.JComponent c, int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFocusTraversable(javax.swing.JComboBox<?> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(javax.swing.JComponent c) { }
   @JavaProtected
-  java.awt.Rectangle rectangleForCurrentValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.rectangleForCurrentValue()"); }
-  public void paintCurrentValueBackground(java.awt.Graphics g, java.awt.Rectangle bounds, boolean hasFocus) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.paintCurrentValueBackground(java.awt.Graphics, java.awt.Rectangle, boolean)"); }
-  public void paintCurrentValue(java.awt.Graphics g, java.awt.Rectangle bounds, boolean hasFocus) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.paintCurrentValue(java.awt.Graphics, java.awt.Rectangle, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Rectangle rectangleForCurrentValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintCurrentValueBackground(java.awt.Graphics g, java.awt.Rectangle bounds, boolean hasFocus) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintCurrentValue(java.awt.Graphics g, java.awt.Rectangle bounds, boolean hasFocus) { }
   @JavaProtected
-  java.awt.Dimension getDisplaySize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.getDisplaySize()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Dimension getDisplaySize() { return null; }
   @JavaProtected
-  java.awt.Dimension getSizeForComponent(java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.getSizeForComponent(java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Dimension getSizeForComponent(java.awt.Component comp) { return null; }
   @JavaProtected
-  java.awt.Dimension getDefaultSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.getDefaultSize()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Dimension getDefaultSize() { return null; }
   @JavaProtected
-  boolean isNavigationKey(int keyCode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.isNavigationKey(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isNavigationKey(int keyCode) { return false; }
   @JavaProtected
-  void selectNextPossibleValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.selectNextPossibleValue()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void selectNextPossibleValue() { }
   @JavaProtected
-  void selectPreviousPossibleValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.selectPreviousPossibleValue()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void selectPreviousPossibleValue() { }
   @JavaProtected
-  void toggleOpenClose() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.toggleOpenClose()"); }
-  public void removeEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.removeEditor()"); }
-  public void setPopupVisible(javax.swing.JComboBox<?> c, boolean v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.setPopupVisible(javax.swing.JComboBox<?>, boolean)"); }
-  public boolean isPopupVisible(javax.swing.JComboBox<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.isPopupVisible(javax.swing.JComboBox<?>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void toggleOpenClose() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeEditor() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPopupVisible(javax.swing.JComboBox<?> c, boolean v) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPopupVisible(javax.swing.JComboBox<?> c) { return false; }
   @JavaProtected
-  void configureEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.configureEditor()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void configureEditor() { }
   @JavaProtected
-  java.awt.LayoutManager createLayoutManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.createLayoutManager()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.LayoutManager createLayoutManager() { return null; }
   @JavaProtected
-  javax.swing.ComboBoxEditor createEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.createEditor()"); }
-  public int getBaseline(javax.swing.JComponent c, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.getBaseline(javax.swing.JComponent, int, int)"); }
-  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.getBaselineResizeBehavior(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.ComboBoxEditor createEditor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBaseline(javax.swing.JComponent c, int width, int height) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  java.awt.event.ItemListener createItemListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.createItemListener()"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.ItemListener createItemListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void installKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.installKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installKeyboardActions() { }
   @JavaProtected
-  void uninstallKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.uninstallKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallKeyboardActions() { }
   @JavaProtected
-  void installDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.installDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults() { }
   @JavaProtected
-  java.awt.event.KeyListener createKeyListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.createKeyListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.KeyListener createKeyListener() { return null; }
   @JavaProtected
-  void uninstallListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.uninstallListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallListeners() { }
   @JavaProtected
-  void uninstallDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.uninstallDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults() { }
   @JavaProtected
-  void installComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.installComponents()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installComponents() { }
   @JavaProtected
-  java.beans.PropertyChangeListener createPropertyChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.createPropertyChangeListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
   @JavaProtected
-  void uninstallComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.uninstallComponents()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallComponents() { }
   @JavaProtected
-  javax.swing.plaf.basic.ComboPopup createPopup() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.createPopup()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.basic.ComboPopup createPopup() { return null; }
   @JavaProtected
-  javax.swing.ListCellRenderer<java.lang.Object> createRenderer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.createRenderer()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.ListCellRenderer<java.lang.Object> createRenderer() { return null; }
   @JavaProtected
-  java.awt.event.FocusListener createFocusListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.createFocusListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.FocusListener createFocusListener() { return null; }
   @JavaProtected
-  javax.swing.event.ListDataListener createListDataListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.createListDataListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.event.ListDataListener createListDataListener() { return null; }
   @JavaProtected
-  javax.swing.JButton createArrowButton() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.createArrowButton()"); }
-  public void configureArrowButton() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.configureArrowButton()"); }
-  public void addEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.addEditor()"); }
-  public void unconfigureArrowButton() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.unconfigureArrowButton()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JButton createArrowButton() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void configureArrowButton() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addEditor() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void unconfigureArrowButton() { }
   @JavaProtected
-  void unconfigureEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.unconfigureEditor()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void unconfigureEditor() { }
   @JavaProtected
-  java.awt.Insets getInsets() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.getInsets()"); }
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.getMaximumSize(javax.swing.JComponent)"); }
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboBoxUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Insets getInsets() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
   < ---- END java signatures ---- >
 }

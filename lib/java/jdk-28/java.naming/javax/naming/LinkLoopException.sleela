@@ -58,7 +58,9 @@ class LinkLoopException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LinkLoopException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.LinkLoopException.<init>(java.lang.String)"); }
-  public LinkLoopException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.LinkLoopException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkLoopException(java.lang.String explanation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkLoopException() { }
   < ---- END java constructors ---- >
 }

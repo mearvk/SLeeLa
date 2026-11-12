@@ -62,16 +62,26 @@ class JMXConnector {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void connect() throws java.io.IOException { throw new AbstractMethodError("javax.management.remote.JMXConnector.connect()"); }
-  public abstract void connect(java.util.Map<java.lang.String, ?> env) throws java.io.IOException { throw new AbstractMethodError("javax.management.remote.JMXConnector.connect(java.util.Map<java.lang.String, ?>)"); }
-  public abstract java.lang.String getConnectionId() throws java.io.IOException { throw new AbstractMethodError("javax.management.remote.JMXConnector.getConnectionId()"); }
-  public abstract void addConnectionNotificationListener(javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) { throw new AbstractMethodError("javax.management.remote.JMXConnector.addConnectionNotificationListener(javax.management.NotificationListener, javax.management.NotificationFilter, java.lang.Object)"); }
-  public abstract void removeConnectionNotificationListener(javax.management.NotificationListener l, javax.management.NotificationFilter f, java.lang.Object handback) throws javax.management.ListenerNotFoundException { throw new AbstractMethodError("javax.management.remote.JMXConnector.removeConnectionNotificationListener(javax.management.NotificationListener, javax.management.NotificationFilter, java.lang.Object)"); }
-  public abstract void removeConnectionNotificationListener(javax.management.NotificationListener listener) throws javax.management.ListenerNotFoundException { throw new AbstractMethodError("javax.management.remote.JMXConnector.removeConnectionNotificationListener(javax.management.NotificationListener)"); }
-  public abstract javax.management.MBeanServerConnection getMBeanServerConnection() throws java.io.IOException { throw new AbstractMethodError("javax.management.remote.JMXConnector.getMBeanServerConnection()"); }
-  public default javax.management.MBeanServerConnection getMBeanServerConnection(javax.security.auth.Subject delegationSubject) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.JMXConnector.getMBeanServerConnection(javax.security.auth.Subject)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void connect() { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void connect(java.util.Map<java.lang.String, ?> env) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.lang.String getConnectionId() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void addConnectionNotificationListener(javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) { }
+  @throwable("java.lang.AbstractMethodError, javax.management.ListenerNotFoundException")
+  public void removeConnectionNotificationListener(javax.management.NotificationListener l, javax.management.NotificationFilter f, java.lang.Object handback) { }
+  @throwable("java.lang.AbstractMethodError, javax.management.ListenerNotFoundException")
+  public void removeConnectionNotificationListener(javax.management.NotificationListener listener) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public javax.management.MBeanServerConnection getMBeanServerConnection() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public default javax.management.MBeanServerConnection getMBeanServerConnection(javax.security.auth.Subject delegationSubject) { return null; }
   < ---- END java signatures ---- >
 }

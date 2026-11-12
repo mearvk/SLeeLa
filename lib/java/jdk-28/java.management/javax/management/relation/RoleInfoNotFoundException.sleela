@@ -58,7 +58,9 @@ class RoleInfoNotFoundException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RoleInfoNotFoundException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleInfoNotFoundException.<init>()"); }
-  public RoleInfoNotFoundException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleInfoNotFoundException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RoleInfoNotFoundException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RoleInfoNotFoundException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

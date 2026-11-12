@@ -58,13 +58,20 @@ class NewClassTree {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.List<? extends com.sun.source.tree.Tree> getTypeArguments() { throw new AbstractMethodError("com.sun.source.tree.NewClassTree.getTypeArguments()"); }
-  public abstract java.util.List<? extends com.sun.source.tree.ExpressionTree> getArguments() { throw new AbstractMethodError("com.sun.source.tree.NewClassTree.getArguments()"); }
-  public abstract com.sun.source.tree.ExpressionTree getEnclosingExpression() { throw new AbstractMethodError("com.sun.source.tree.NewClassTree.getEnclosingExpression()"); }
-  public abstract com.sun.source.tree.ExpressionTree getIdentifier() { throw new AbstractMethodError("com.sun.source.tree.NewClassTree.getIdentifier()"); }
-  public abstract com.sun.source.tree.ClassTree getClassBody() { throw new AbstractMethodError("com.sun.source.tree.NewClassTree.getClassBody()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends com.sun.source.tree.Tree> getTypeArguments() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends com.sun.source.tree.ExpressionTree> getArguments() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.ExpressionTree getEnclosingExpression() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.ExpressionTree getIdentifier() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.ClassTree getClassBody() { return null; }
   < ---- END java signatures ---- >
 }

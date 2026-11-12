@@ -64,25 +64,38 @@ class Size2DSyntax {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Size2DSyntax(float x, float y, int units) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.Size2DSyntax.<init>(float, float, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Size2DSyntax(float x, float y, int units) { }
   @JavaProtected
-  Size2DSyntax(int x, int y, int units) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.Size2DSyntax.<init>(int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Size2DSyntax(int x, int y, int units) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object object) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.Size2DSyntax.equals(java.lang.Object)"); }
-  public java.lang.String toString(int units, java.lang.String unitsName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.Size2DSyntax.toString(int, java.lang.String)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.Size2DSyntax.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.Size2DSyntax.hashCode()"); }
-  public float[] getSize(int units) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.Size2DSyntax.getSize(int)"); }
-  public float getX(int units) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.Size2DSyntax.getX(int)"); }
-  public float getY(int units) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.Size2DSyntax.getY(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object object) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString(int units, java.lang.String unitsName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getSize(int units) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getX(int units) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getY(int units) { return 0.0; }
   @JavaProtected
-  int getXMicrometers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.Size2DSyntax.getXMicrometers()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getXMicrometers() { return 0; }
   @JavaProtected
-  int getYMicrometers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.Size2DSyntax.getYMicrometers()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getYMicrometers() { return 0; }
   < ---- END java signatures ---- >
 }

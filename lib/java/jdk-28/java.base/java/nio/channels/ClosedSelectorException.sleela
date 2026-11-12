@@ -58,6 +58,7 @@ class ClosedSelectorException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ClosedSelectorException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.ClosedSelectorException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ClosedSelectorException() { }
   < ---- END java constructors ---- >
 }

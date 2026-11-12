@@ -58,32 +58,55 @@ class DataBufferFloat {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DataBufferFloat(float[][] dataArray, int size, int[] offsets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.<init>(float[][], int, int[])"); }
-  public DataBufferFloat(float[][] dataArray, int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.<init>(float[][], int)"); }
-  public DataBufferFloat(float[] dataArray, int size, int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.<init>(float[], int, int)"); }
-  public DataBufferFloat(int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.<init>(int)"); }
-  public DataBufferFloat(int size, int numBanks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.<init>(int, int)"); }
-  public DataBufferFloat(float[] dataArray, int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.<init>(float[], int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataBufferFloat(float[][] dataArray, int size, int[] offsets) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataBufferFloat(float[][] dataArray, int size) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataBufferFloat(float[] dataArray, int size, int offset) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataBufferFloat(int size) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataBufferFloat(int size, int numBanks) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataBufferFloat(float[] dataArray, int size) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public float[] getData(int bank) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.getData(int)"); }
-  public float[] getData() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.getData()"); }
-  public int getElem(int bank, int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.getElem(int, int)"); }
-  public int getElem(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.getElem(int)"); }
-  public float getElemFloat(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.getElemFloat(int)"); }
-  public float getElemFloat(int bank, int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.getElemFloat(int, int)"); }
-  public double getElemDouble(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.getElemDouble(int)"); }
-  public double getElemDouble(int bank, int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.getElemDouble(int, int)"); }
-  public void setElem(int bank, int i, int val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.setElem(int, int, int)"); }
-  public void setElem(int i, int val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.setElem(int, int)"); }
-  public void setElemFloat(int i, float val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.setElemFloat(int, float)"); }
-  public void setElemFloat(int bank, int i, float val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.setElemFloat(int, int, float)"); }
-  public void setElemDouble(int i, double val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.setElemDouble(int, double)"); }
-  public void setElemDouble(int bank, int i, double val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.setElemDouble(int, int, double)"); }
-  public float[][] getBankData() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.DataBufferFloat.getBankData()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getData(int bank) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getData() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getElem(int bank, int i) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getElem(int i) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getElemFloat(int i) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getElemFloat(int bank, int i) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getElemDouble(int i) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getElemDouble(int bank, int i) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setElem(int bank, int i, int val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setElem(int i, int val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setElemFloat(int i, float val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setElemFloat(int bank, int i, float val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setElemDouble(int i, double val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setElemDouble(int bank, int i, double val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[][] getBankData() { return null; }
   < ---- END java signatures ---- >
 }

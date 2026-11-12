@@ -58,28 +58,44 @@ class MenuComponent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MenuComponent() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public MenuComponent() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.getName()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.toString()"); }
-  public java.awt.MenuContainer getParent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.getParent()"); }
-  public void setName(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.setName(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.MenuContainer getParent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setName(java.lang.String name) { }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.paramString()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.getAccessibleContext()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
   @JavaProtected
-  final java.lang.Object getTreeLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.getTreeLock()"); }
-  public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.removeNotify()"); }
-  public final void dispatchEvent(java.awt.AWTEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.dispatchEvent(java.awt.AWTEvent)"); }
-  public java.awt.Font getFont() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.getFont()"); }
-  public void setFont(java.awt.Font f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.setFont(java.awt.Font)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final java.lang.Object getTreeLock() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void dispatchEvent(java.awt.AWTEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font getFont() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFont(java.awt.Font f) { }
   @JavaProtected
-  void processEvent(java.awt.AWTEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.processEvent(java.awt.AWTEvent)"); }
-  public boolean postEvent(java.awt.Event evt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MenuComponent.postEvent(java.awt.Event)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processEvent(java.awt.AWTEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean postEvent(java.awt.Event evt) { return false; }
   < ---- END java signatures ---- >
 }

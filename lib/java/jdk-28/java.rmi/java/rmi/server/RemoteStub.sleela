@@ -59,15 +59,20 @@ class RemoteStub {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  RemoteStub() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.RemoteStub.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  RemoteStub() { }
   @JavaProtected
-  RemoteStub(java.rmi.server.RemoteRef ref) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.RemoteStub.<init>(java.rmi.server.RemoteRef)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  RemoteStub(java.rmi.server.RemoteRef ref) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  protected static void setRef(java.rmi.server.RemoteStub stub, java.rmi.server.RemoteRef ref) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.RemoteStub.setRef(java.rmi.server.RemoteStub, java.rmi.server.RemoteRef)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static void setRef(java.rmi.server.RemoteStub stub, java.rmi.server.RemoteRef ref) { }
   < ---- END java signatures ---- >
 }

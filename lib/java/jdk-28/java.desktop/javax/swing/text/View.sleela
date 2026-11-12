@@ -67,62 +67,111 @@ class View {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public View(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.<init>(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public View(javax.swing.text.Element elem) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.remove(int)"); }
-  public void append(javax.swing.text.View v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.append(javax.swing.text.View)"); }
-  public void insert(int offs, javax.swing.text.View v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.insert(int, javax.swing.text.View)"); }
-  public void replace(int offset, int length, javax.swing.text.View[] views) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.replace(int, int, javax.swing.text.View[])"); }
-  public javax.swing.text.View getParent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getParent()"); }
-  public javax.swing.text.AttributeSet getAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getAttributes()"); }
-  public void removeAll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.removeAll()"); }
-  public javax.swing.text.Element getElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getElement()"); }
-  public void setParent(javax.swing.text.View parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.setParent(javax.swing.text.View)"); }
-  public void setSize(float width, float height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.setSize(float, float)"); }
-  public float getAlignment(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getAlignment(int)"); }
-  public java.awt.Graphics getGraphics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getGraphics()"); }
-  public java.lang.String getToolTipText(float x, float y, java.awt.Shape allocation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getToolTipText(float, float, java.awt.Shape)"); }
-  public int getStartOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getStartOffset()"); }
-  public javax.swing.text.ViewFactory getViewFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getViewFactory()"); }
-  public int getEndOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getEndOffset()"); }
-  public void insertUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.insertUpdate(javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
-  public void removeUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.removeUpdate(javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
-  public void changedUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.changedUpdate(javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
-  public int getViewCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getViewCount()"); }
-  public javax.swing.text.View getView(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getView(int)"); }
-  public abstract float getPreferredSpan(int axis) { throw new AbstractMethodError("javax.swing.text.View.getPreferredSpan(int)"); }
-  public java.awt.Shape getChildAllocation(int index, java.awt.Shape a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getChildAllocation(int, java.awt.Shape)"); }
-  public float getMinimumSpan(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getMinimumSpan(int)"); }
-  public float getMaximumSpan(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getMaximumSpan(int)"); }
-  public int getBreakWeight(int axis, float pos, float len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getBreakWeight(int, float, float)"); }
-  public javax.swing.text.View createFragment(int p0, int p1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.createFragment(int, int)"); }
-  public javax.swing.text.View breakView(int axis, int offset, float pos, float len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.breakView(int, int, float, float)"); }
-  public void preferenceChanged(javax.swing.text.View child, boolean width, boolean height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.preferenceChanged(javax.swing.text.View, boolean, boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(int i) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void append(javax.swing.text.View v) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insert(int offs, javax.swing.text.View v) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void replace(int offset, int length, javax.swing.text.View[] views) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.View getParent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.AttributeSet getAttributes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAll() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Element getElement() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setParent(javax.swing.text.View parent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSize(float width, float height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getAlignment(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Graphics getGraphics() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getToolTipText(float x, float y, java.awt.Shape allocation) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getStartOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.ViewFactory getViewFactory() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getEndOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void changedUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getViewCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.View getView(int n) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getPreferredSpan(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Shape getChildAllocation(int index, java.awt.Shape a) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMinimumSpan(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMaximumSpan(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBreakWeight(int axis, float pos, float len) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.View createFragment(int p0, int p1) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.View breakView(int axis, int offset, float pos, float len) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void preferenceChanged(javax.swing.text.View child, boolean width, boolean height) { }
   @JavaProtected
-  void forwardUpdate(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.forwardUpdate(javax.swing.event.DocumentEvent.ElementChange, javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
-  public int getResizeWeight(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getResizeWeight(int)"); }
-  public int getNextVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getNextVisualPositionFrom(int, javax.swing.text.Position.Bias, java.awt.Shape, int, javax.swing.text.Position.Bias[])"); }
-  public int getViewIndex(float x, float y, java.awt.Shape allocation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getViewIndex(float, float, java.awt.Shape)"); }
-  public int getViewIndex(int pos, javax.swing.text.Position.Bias b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getViewIndex(int, javax.swing.text.Position.Bias)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void forwardUpdate(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getResizeWeight(int axis) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public int getNextVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getViewIndex(float x, float y, java.awt.Shape allocation) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getViewIndex(int pos, javax.swing.text.Position.Bias b) { return 0; }
   @JavaProtected
-  boolean updateChildren(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.updateChildren(javax.swing.event.DocumentEvent.ElementChange, javax.swing.event.DocumentEvent, javax.swing.text.ViewFactory)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean updateChildren(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, javax.swing.text.ViewFactory f) { return false; }
   @JavaProtected
-  void updateLayout(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, java.awt.Shape a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.updateLayout(javax.swing.event.DocumentEvent.ElementChange, javax.swing.event.DocumentEvent, java.awt.Shape)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void updateLayout(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, java.awt.Shape a) { }
   @JavaProtected
-  void forwardUpdateToView(javax.swing.text.View v, javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.forwardUpdateToView(javax.swing.text.View, javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
-  public abstract int viewToModel(float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] biasReturn) { throw new AbstractMethodError("javax.swing.text.View.viewToModel(float, float, java.awt.Shape, javax.swing.text.Position.Bias[])"); }
-  public int viewToModel(float x, float y, java.awt.Shape a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.viewToModel(float, float, java.awt.Shape)"); }
-  public java.awt.Shape modelToView(int p0, javax.swing.text.Position.Bias b0, int p1, javax.swing.text.Position.Bias b1, java.awt.Shape a) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.modelToView(int, javax.swing.text.Position.Bias, int, javax.swing.text.Position.Bias, java.awt.Shape)"); }
-  public abstract java.awt.Shape modelToView(int pos, java.awt.Shape a, javax.swing.text.Position.Bias b) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.text.View.modelToView(int, java.awt.Shape, javax.swing.text.Position.Bias)"); }
-  public java.awt.Shape modelToView(int pos, java.awt.Shape a) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.modelToView(int, java.awt.Shape)"); }
-  public javax.swing.text.Document getDocument() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getDocument()"); }
-  public java.awt.Container getContainer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.getContainer()"); }
-  public boolean isVisible() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.View.isVisible()"); }
-  public abstract void paint(java.awt.Graphics g, java.awt.Shape allocation) { throw new AbstractMethodError("javax.swing.text.View.paint(java.awt.Graphics, java.awt.Shape)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void forwardUpdateToView(javax.swing.text.View v, javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int viewToModel(float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] biasReturn) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int viewToModel(float x, float y, java.awt.Shape a) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public java.awt.Shape modelToView(int p0, javax.swing.text.Position.Bias b0, int p1, javax.swing.text.Position.Bias b1, java.awt.Shape a) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public java.awt.Shape modelToView(int pos, java.awt.Shape a, javax.swing.text.Position.Bias b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public java.awt.Shape modelToView(int pos, java.awt.Shape a) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Document getDocument() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Container getContainer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isVisible() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void paint(java.awt.Graphics g, java.awt.Shape allocation) { }
   < ---- END java signatures ---- >
 }

@@ -58,13 +58,20 @@ class ImageProducer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void addConsumer(java.awt.image.ImageConsumer ic) { throw new AbstractMethodError("java.awt.image.ImageProducer.addConsumer(java.awt.image.ImageConsumer)"); }
-  public abstract boolean isConsumer(java.awt.image.ImageConsumer ic) { throw new AbstractMethodError("java.awt.image.ImageProducer.isConsumer(java.awt.image.ImageConsumer)"); }
-  public abstract void removeConsumer(java.awt.image.ImageConsumer ic) { throw new AbstractMethodError("java.awt.image.ImageProducer.removeConsumer(java.awt.image.ImageConsumer)"); }
-  public abstract void startProduction(java.awt.image.ImageConsumer ic) { throw new AbstractMethodError("java.awt.image.ImageProducer.startProduction(java.awt.image.ImageConsumer)"); }
-  public abstract void requestTopDownLeftRightResend(java.awt.image.ImageConsumer ic) { throw new AbstractMethodError("java.awt.image.ImageProducer.requestTopDownLeftRightResend(java.awt.image.ImageConsumer)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void addConsumer(java.awt.image.ImageConsumer ic) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isConsumer(java.awt.image.ImageConsumer ic) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeConsumer(java.awt.image.ImageConsumer ic) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void startProduction(java.awt.image.ImageConsumer ic) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void requestTopDownLeftRightResend(java.awt.image.ImageConsumer ic) { }
   < ---- END java signatures ---- >
 }

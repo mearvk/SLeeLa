@@ -58,22 +58,38 @@ class Gatherer<T, A, R> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static <T, A, R> java.util.stream.Gatherer<T, A, R> of(java.util.function.Supplier<A> initializer, java.util.stream.Gatherer.Integrator<A, T, R> integrator, java.util.function.BinaryOperator<A> combiner, java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>> finisher) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.of(java.util.function.Supplier<A>, java.util.stream.Gatherer.Integrator<A, T, R>, java.util.function.BinaryOperator<A>, java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>>)"); }
-  public static <T, R> java.util.stream.Gatherer<T, java.lang.Void, R> of(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R> integrator, java.util.function.BiConsumer<java.lang.Void, java.util.stream.Gatherer.Downstream<? super R>> finisher) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.of(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R>, java.util.function.BiConsumer<java.lang.Void, java.util.stream.Gatherer.Downstream<? super R>>)"); }
-  public static <T, R> java.util.stream.Gatherer<T, java.lang.Void, R> of(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R> integrator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.of(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R>)"); }
-  public default <RR> java.util.stream.Gatherer<T, ?, RR> andThen(java.util.stream.Gatherer<? super R, ?, ? extends RR> that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.andThen(java.util.stream.Gatherer<? super R, ?, ? extends RR>)"); }
-  public default java.util.function.BinaryOperator<A> combiner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.combiner()"); }
-  public default java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>> finisher() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.finisher()"); }
-  public default java.util.function.Supplier<A> initializer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.initializer()"); }
-  public static <A> java.util.function.Supplier<A> defaultInitializer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.defaultInitializer()"); }
-  public static <A> java.util.function.BinaryOperator<A> defaultCombiner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.defaultCombiner()"); }
-  public static <A, R> java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>> defaultFinisher() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.defaultFinisher()"); }
-  public abstract java.util.stream.Gatherer.Integrator<A, T, R> integrator() { throw new AbstractMethodError("java.util.stream.Gatherer.integrator()"); }
-  public static <T, A, R> java.util.stream.Gatherer<T, A, R> ofSequential(java.util.function.Supplier<A> initializer, java.util.stream.Gatherer.Integrator<A, T, R> integrator, java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>> finisher) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.ofSequential(java.util.function.Supplier<A>, java.util.stream.Gatherer.Integrator<A, T, R>, java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>>)"); }
-  public static <T, R> java.util.stream.Gatherer<T, java.lang.Void, R> ofSequential(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R> integrator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.ofSequential(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R>)"); }
-  public static <T, R> java.util.stream.Gatherer<T, java.lang.Void, R> ofSequential(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R> integrator, java.util.function.BiConsumer<java.lang.Void, java.util.stream.Gatherer.Downstream<? super R>> finisher) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.ofSequential(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R>, java.util.function.BiConsumer<java.lang.Void, java.util.stream.Gatherer.Downstream<? super R>>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T, A, R> java.util.stream.Gatherer<T, A, R> of(java.util.function.Supplier<A> initializer, java.util.stream.Gatherer.Integrator<A, T, R> integrator, java.util.function.BinaryOperator<A> combiner, java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>> finisher) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T, R> java.util.stream.Gatherer<T, java.lang.Void, R> of(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R> integrator, java.util.function.BiConsumer<java.lang.Void, java.util.stream.Gatherer.Downstream<? super R>> finisher) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T, R> java.util.stream.Gatherer<T, java.lang.Void, R> of(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R> integrator) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default <RR> java.util.stream.Gatherer<T, ?, RR> andThen(java.util.stream.Gatherer<? super R, ?, ? extends RR> that) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.function.BinaryOperator<A> combiner() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>> finisher() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.function.Supplier<A> initializer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <A> java.util.function.Supplier<A> defaultInitializer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <A> java.util.function.BinaryOperator<A> defaultCombiner() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <A, R> java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>> defaultFinisher() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.Gatherer.Integrator<A, T, R> integrator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T, A, R> java.util.stream.Gatherer<T, A, R> ofSequential(java.util.function.Supplier<A> initializer, java.util.stream.Gatherer.Integrator<A, T, R> integrator, java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>> finisher) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T, R> java.util.stream.Gatherer<T, java.lang.Void, R> ofSequential(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R> integrator) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T, R> java.util.stream.Gatherer<T, java.lang.Void, R> ofSequential(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R> integrator, java.util.function.BiConsumer<java.lang.Void, java.util.stream.Gatherer.Downstream<? super R>> finisher) { return null; }
   < ---- END java signatures ---- >
 }

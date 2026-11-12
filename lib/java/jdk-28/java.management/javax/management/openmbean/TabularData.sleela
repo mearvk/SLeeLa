@@ -58,24 +58,42 @@ class TabularData {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.management.openmbean.CompositeData remove(java.lang.Object[] key) { throw new AbstractMethodError("javax.management.openmbean.TabularData.remove(java.lang.Object[])"); }
-  public abstract int size() { throw new AbstractMethodError("javax.management.openmbean.TabularData.size()"); }
-  public abstract javax.management.openmbean.CompositeData get(java.lang.Object[] key) { throw new AbstractMethodError("javax.management.openmbean.TabularData.get(java.lang.Object[])"); }
-  public abstract void put(javax.management.openmbean.CompositeData value) { throw new AbstractMethodError("javax.management.openmbean.TabularData.put(javax.management.openmbean.CompositeData)"); }
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("javax.management.openmbean.TabularData.equals(java.lang.Object)"); }
-  public abstract java.lang.String toString() { throw new AbstractMethodError("javax.management.openmbean.TabularData.toString()"); }
-  public abstract java.util.Collection<?> values() { throw new AbstractMethodError("javax.management.openmbean.TabularData.values()"); }
-  public abstract int hashCode() { throw new AbstractMethodError("javax.management.openmbean.TabularData.hashCode()"); }
-  public abstract void clear() { throw new AbstractMethodError("javax.management.openmbean.TabularData.clear()"); }
-  public abstract boolean isEmpty() { throw new AbstractMethodError("javax.management.openmbean.TabularData.isEmpty()"); }
-  public abstract void putAll(javax.management.openmbean.CompositeData[] values) { throw new AbstractMethodError("javax.management.openmbean.TabularData.putAll(javax.management.openmbean.CompositeData[])"); }
-  public abstract java.util.Set<?> keySet() { throw new AbstractMethodError("javax.management.openmbean.TabularData.keySet()"); }
-  public abstract boolean containsValue(javax.management.openmbean.CompositeData value) { throw new AbstractMethodError("javax.management.openmbean.TabularData.containsValue(javax.management.openmbean.CompositeData)"); }
-  public abstract boolean containsKey(java.lang.Object[] key) { throw new AbstractMethodError("javax.management.openmbean.TabularData.containsKey(java.lang.Object[])"); }
-  public abstract javax.management.openmbean.TabularType getTabularType() { throw new AbstractMethodError("javax.management.openmbean.TabularData.getTabularType()"); }
-  public abstract java.lang.Object[] calculateIndex(javax.management.openmbean.CompositeData value) { throw new AbstractMethodError("javax.management.openmbean.TabularData.calculateIndex(javax.management.openmbean.CompositeData)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.openmbean.CompositeData remove(java.lang.Object[] key) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int size() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.openmbean.CompositeData get(java.lang.Object[] key) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void put(javax.management.openmbean.CompositeData value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Collection<?> values() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void clear() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void putAll(javax.management.openmbean.CompositeData[] values) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<?> keySet() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean containsValue(javax.management.openmbean.CompositeData value) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean containsKey(java.lang.Object[] key) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.openmbean.TabularType getTabularType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object[] calculateIndex(javax.management.openmbean.CompositeData value) { return null; }
   < ---- END java signatures ---- >
 }

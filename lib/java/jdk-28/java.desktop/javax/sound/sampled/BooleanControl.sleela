@@ -59,18 +59,26 @@ class BooleanControl {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  BooleanControl(javax.sound.sampled.BooleanControl.Type type, boolean initialValue, java.lang.String trueStateLabel, java.lang.String falseStateLabel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.BooleanControl.<init>(javax.sound.sampled.BooleanControl.Type, boolean, java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  BooleanControl(javax.sound.sampled.BooleanControl.Type type, boolean initialValue, java.lang.String trueStateLabel, java.lang.String falseStateLabel) { }
   @JavaProtected
-  BooleanControl(javax.sound.sampled.BooleanControl.Type type, boolean initialValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.BooleanControl.<init>(javax.sound.sampled.BooleanControl.Type, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  BooleanControl(javax.sound.sampled.BooleanControl.Type type, boolean initialValue) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.BooleanControl.toString()"); }
-  public boolean getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.BooleanControl.getValue()"); }
-  public void setValue(boolean value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.BooleanControl.setValue(boolean)"); }
-  public java.lang.String getStateLabel(boolean state) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.BooleanControl.getStateLabel(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getValue() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValue(boolean value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getStateLabel(boolean state) { return null; }
   < ---- END java signatures ---- >
 }

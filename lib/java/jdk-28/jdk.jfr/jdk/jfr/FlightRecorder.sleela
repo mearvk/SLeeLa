@@ -58,20 +58,34 @@ class FlightRecorder {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static void register(java.lang.Class<? extends jdk.jfr.Event> eventClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.FlightRecorder.register(java.lang.Class<? extends jdk.jfr.Event>)"); }
-  public static void unregister(java.lang.Class<? extends jdk.jfr.Event> eventClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.FlightRecorder.unregister(java.lang.Class<? extends jdk.jfr.Event>)"); }
-  public static void addListener(jdk.jfr.FlightRecorderListener changeListener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.FlightRecorder.addListener(jdk.jfr.FlightRecorderListener)"); }
-  public static boolean isInitialized() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.FlightRecorder.isInitialized()"); }
-  public static boolean isAvailable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.FlightRecorder.isAvailable()"); }
-  public static boolean removeListener(jdk.jfr.FlightRecorderListener changeListener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.FlightRecorder.removeListener(jdk.jfr.FlightRecorderListener)"); }
-  public static void addPeriodicEvent(java.lang.Class<? extends jdk.jfr.Event> eventClass, java.lang.Runnable hook) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.FlightRecorder.addPeriodicEvent(java.lang.Class<? extends jdk.jfr.Event>, java.lang.Runnable)"); }
-  public static boolean removePeriodicEvent(java.lang.Runnable hook) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.FlightRecorder.removePeriodicEvent(java.lang.Runnable)"); }
-  public java.util.List<jdk.jfr.EventType> getEventTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.FlightRecorder.getEventTypes()"); }
-  public static jdk.jfr.FlightRecorder getFlightRecorder() throws java.lang.IllegalStateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.FlightRecorder.getFlightRecorder()"); }
-  public java.util.List<jdk.jfr.Recording> getRecordings() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.FlightRecorder.getRecordings()"); }
-  public jdk.jfr.Recording takeSnapshot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.FlightRecorder.takeSnapshot()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void register(java.lang.Class<? extends jdk.jfr.Event> eventClass) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void unregister(java.lang.Class<? extends jdk.jfr.Event> eventClass) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addListener(jdk.jfr.FlightRecorderListener changeListener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isInitialized() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isAvailable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean removeListener(jdk.jfr.FlightRecorderListener changeListener) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addPeriodicEvent(java.lang.Class<? extends jdk.jfr.Event> eventClass, java.lang.Runnable hook) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean removePeriodicEvent(java.lang.Runnable hook) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<jdk.jfr.EventType> getEventTypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalStateException")
+  public static jdk.jfr.FlightRecorder getFlightRecorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<jdk.jfr.Recording> getRecordings() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jfr.Recording takeSnapshot() { return null; }
   < ---- END java signatures ---- >
 }

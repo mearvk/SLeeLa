@@ -59,75 +59,120 @@ class ClassLoader {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ClassLoader(java.lang.String name, java.lang.ClassLoader parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.<init>(java.lang.String, java.lang.ClassLoader)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ClassLoader(java.lang.String name, java.lang.ClassLoader parent) { }
   @JavaProtected
-  ClassLoader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ClassLoader() { }
   @JavaProtected
-  ClassLoader(java.lang.ClassLoader parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.<init>(java.lang.ClassLoader)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ClassLoader(java.lang.ClassLoader parent) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getName()"); }
-  public java.lang.Class<?> loadClass(java.lang.String name) throws java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.loadClass(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException")
+  public java.lang.Class<?> loadClass(java.lang.String name) { return null; }
   @JavaProtected
-  java.lang.Class<?> loadClass(java.lang.String name, boolean resolve) throws java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.loadClass(java.lang.String, boolean)"); }
-  public static java.lang.ClassLoader getPlatformClassLoader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getPlatformClassLoader()"); }
-  public static java.lang.ClassLoader getSystemClassLoader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getSystemClassLoader()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException")
+  java.lang.Class<?> loadClass(java.lang.String name, boolean resolve) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.ClassLoader getPlatformClassLoader() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.ClassLoader getSystemClassLoader() { return null; }
   @JavaProtected
-  java.lang.Package definePackage(java.lang.String name, java.lang.String specTitle, java.lang.String specVersion, java.lang.String specVendor, java.lang.String implTitle, java.lang.String implVersion, java.lang.String implVendor, java.net.URL sealBase) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.definePackage(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.net.URL)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.Package definePackage(java.lang.String name, java.lang.String specTitle, java.lang.String specVersion, java.lang.String specVendor, java.lang.String implTitle, java.lang.String implVersion, java.lang.String implVendor, java.net.URL sealBase) { return null; }
   @JavaProtected
-  java.net.URL findResource(java.lang.String moduleName, java.lang.String name) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.findResource(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  java.net.URL findResource(java.lang.String moduleName, java.lang.String name) { return null; }
   @JavaProtected
-  java.net.URL findResource(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.findResource(java.lang.String)"); }
-  public static java.io.InputStream getSystemResourceAsStream(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getSystemResourceAsStream(java.lang.String)"); }
-  public java.io.InputStream getResourceAsStream(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getResourceAsStream(java.lang.String)"); }
-  public static java.net.URL getSystemResource(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getSystemResource(java.lang.String)"); }
-  public java.net.URL getResource(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getResource(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.net.URL findResource(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.io.InputStream getSystemResourceAsStream(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.InputStream getResourceAsStream(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.URL getSystemResource(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.URL getResource(java.lang.String name) { return null; }
   @JavaProtected
-  java.lang.Package getPackage(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getPackage(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.Package getPackage(java.lang.String name) { return null; }
   @JavaProtected
-  final void setSigners(java.lang.Class<?> c, java.lang.Object[] signers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.setSigners(java.lang.Class<?>, java.lang.Object[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void setSigners(java.lang.Class<?> c, java.lang.Object[] signers) { }
   @JavaProtected
-  java.lang.Object getClassLoadingLock(java.lang.String className) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getClassLoadingLock(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.Object getClassLoadingLock(java.lang.String className) { return null; }
   @JavaProtected
-  final java.lang.Class<?> findLoadedClass(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.findLoadedClass(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final java.lang.Class<?> findLoadedClass(java.lang.String name) { return null; }
   @JavaProtected
-  java.lang.Class<?> findClass(java.lang.String moduleName, java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.findClass(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.Class<?> findClass(java.lang.String moduleName, java.lang.String name) { return null; }
   @JavaProtected
-  java.lang.Class<?> findClass(java.lang.String name) throws java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.findClass(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException")
+  java.lang.Class<?> findClass(java.lang.String name) { return null; }
   @JavaProtected
-  final void resolveClass(java.lang.Class<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.resolveClass(java.lang.Class<?>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void resolveClass(java.lang.Class<?> c) { }
   @JavaProtected
-  final java.lang.Class<?> defineClass(java.lang.String name, byte[] b, int off, int len) throws java.lang.ClassFormatError { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.defineClass(java.lang.String, byte[], int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassFormatError")
+  final java.lang.Class<?> defineClass(java.lang.String name, byte[] b, int off, int len) { return null; }
   @JavaProtected
-  final java.lang.Class<?> defineClass(java.lang.String name, byte[] b, int off, int len, java.security.ProtectionDomain protectionDomain) throws java.lang.ClassFormatError { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.defineClass(java.lang.String, byte[], int, int, java.security.ProtectionDomain)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassFormatError")
+  final java.lang.Class<?> defineClass(java.lang.String name, byte[] b, int off, int len, java.security.ProtectionDomain protectionDomain) { return null; }
   @JavaProtected
-  final java.lang.Class<?> defineClass(java.lang.String name, java.nio.ByteBuffer b, java.security.ProtectionDomain protectionDomain) throws java.lang.ClassFormatError { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.defineClass(java.lang.String, java.nio.ByteBuffer, java.security.ProtectionDomain)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassFormatError")
+  final java.lang.Class<?> defineClass(java.lang.String name, java.nio.ByteBuffer b, java.security.ProtectionDomain protectionDomain) { return null; }
   @JavaProtected
-  final java.lang.Class<?> defineClass(byte[] b, int off, int len) throws java.lang.ClassFormatError { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.defineClass(byte[], int, int)"); }
-  public java.util.Enumeration<java.net.URL> getResources(java.lang.String name) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getResources(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassFormatError")
+  final java.lang.Class<?> defineClass(byte[] b, int off, int len) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.util.Enumeration<java.net.URL> getResources(java.lang.String name) { return null; }
   @JavaProtected
-  java.util.Enumeration<java.net.URL> findResources(java.lang.String name) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.findResources(java.lang.String)"); }
-  protected static boolean registerAsParallelCapable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.registerAsParallelCapable()"); }
-  public final java.lang.Package getDefinedPackage(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getDefinedPackage(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  java.util.Enumeration<java.net.URL> findResources(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static boolean registerAsParallelCapable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Package getDefinedPackage(java.lang.String name) { return null; }
   @JavaProtected
-  java.lang.String findLibrary(java.lang.String libname) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.findLibrary(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String findLibrary(java.lang.String libname) { return null; }
   @JavaProtected
-  final java.lang.Class<?> findSystemClass(java.lang.String name) throws java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.findSystemClass(java.lang.String)"); }
-  public java.util.stream.Stream<java.net.URL> resources(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.resources(java.lang.String)"); }
-  public final boolean isRegisteredAsParallelCapable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.isRegisteredAsParallelCapable()"); }
-  public static java.util.Enumeration<java.net.URL> getSystemResources(java.lang.String name) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getSystemResources(java.lang.String)"); }
-  public final java.lang.ClassLoader getParent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getParent()"); }
-  public final java.lang.Module getUnnamedModule() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getUnnamedModule()"); }
-  public final java.lang.Package[] getDefinedPackages() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getDefinedPackages()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException")
+  final java.lang.Class<?> findSystemClass(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.Stream<java.net.URL> resources(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isRegisteredAsParallelCapable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static java.util.Enumeration<java.net.URL> getSystemResources(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.ClassLoader getParent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Module getUnnamedModule() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Package[] getDefinedPackages() { return null; }
   @JavaProtected
-  java.lang.Package[] getPackages() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.getPackages()"); }
-  public void setDefaultAssertionStatus(boolean enabled) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.setDefaultAssertionStatus(boolean)"); }
-  public void setPackageAssertionStatus(java.lang.String packageName, boolean enabled) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.setPackageAssertionStatus(java.lang.String, boolean)"); }
-  public void setClassAssertionStatus(java.lang.String className, boolean enabled) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.setClassAssertionStatus(java.lang.String, boolean)"); }
-  public void clearAssertionStatus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ClassLoader.clearAssertionStatus()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.Package[] getPackages() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultAssertionStatus(boolean enabled) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPackageAssertionStatus(java.lang.String packageName, boolean enabled) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setClassAssertionStatus(java.lang.String className, boolean enabled) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clearAssertionStatus() { }
   < ---- END java signatures ---- >
 }

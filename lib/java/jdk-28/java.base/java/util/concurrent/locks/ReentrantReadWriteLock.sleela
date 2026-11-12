@@ -58,37 +58,60 @@ class ReentrantReadWriteLock {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ReentrantReadWriteLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.<init>()"); }
-  public ReentrantReadWriteLock(boolean fair) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.<init>(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ReentrantReadWriteLock() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ReentrantReadWriteLock(boolean fair) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.toString()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
   @JavaProtected
-  java.lang.Thread getOwner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.getOwner()"); }
-  public final boolean hasQueuedThreads() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.hasQueuedThreads()"); }
-  public final int getQueueLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.getQueueLength()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.Thread getOwner() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean hasQueuedThreads() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getQueueLength() { return 0; }
   @JavaProtected
-  java.util.Collection<java.lang.Thread> getQueuedThreads() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.getQueuedThreads()"); }
-  public boolean hasWaiters(java.util.concurrent.locks.Condition condition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.hasWaiters(java.util.concurrent.locks.Condition)"); }
-  public int getWaitQueueLength(java.util.concurrent.locks.Condition condition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.getWaitQueueLength(java.util.concurrent.locks.Condition)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.util.Collection<java.lang.Thread> getQueuedThreads() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasWaiters(java.util.concurrent.locks.Condition condition) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getWaitQueueLength(java.util.concurrent.locks.Condition condition) { return 0; }
   @JavaProtected
-  java.util.Collection<java.lang.Thread> getWaitingThreads(java.util.concurrent.locks.Condition condition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.getWaitingThreads(java.util.concurrent.locks.Condition)"); }
-  public final boolean isFair() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.isFair()"); }
-  public final boolean hasQueuedThread(java.lang.Thread thread) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.hasQueuedThread(java.lang.Thread)"); }
-  public java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock readLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.readLock()"); }
-  public java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock writeLock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.writeLock()"); }
-  public int getReadLockCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.getReadLockCount()"); }
-  public boolean isWriteLocked() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.isWriteLocked()"); }
-  public int getWriteHoldCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.getWriteHoldCount()"); }
-  public int getReadHoldCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.getReadHoldCount()"); }
-  public boolean isWriteLockedByCurrentThread() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.isWriteLockedByCurrentThread()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.util.Collection<java.lang.Thread> getWaitingThreads(java.util.concurrent.locks.Condition condition) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isFair() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean hasQueuedThread(java.lang.Thread thread) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock readLock() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock writeLock() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getReadLockCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isWriteLocked() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getWriteHoldCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getReadHoldCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isWriteLockedByCurrentThread() { return false; }
   @JavaProtected
-  java.util.Collection<java.lang.Thread> getQueuedWriterThreads() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.getQueuedWriterThreads()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.util.Collection<java.lang.Thread> getQueuedWriterThreads() { return null; }
   @JavaProtected
-  java.util.Collection<java.lang.Thread> getQueuedReaderThreads() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.ReentrantReadWriteLock.getQueuedReaderThreads()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.util.Collection<java.lang.Thread> getQueuedReaderThreads() { return null; }
   < ---- END java signatures ---- >
 }

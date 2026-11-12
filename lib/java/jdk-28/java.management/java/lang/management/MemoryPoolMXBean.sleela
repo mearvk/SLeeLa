@@ -58,26 +58,46 @@ class MemoryPoolMXBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.getName()"); }
-  public abstract java.lang.management.MemoryType getType() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.getType()"); }
-  public abstract boolean isValid() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.isValid()"); }
-  public abstract java.lang.management.MemoryUsage getUsage() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.getUsage()"); }
-  public abstract java.lang.management.MemoryUsage getPeakUsage() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.getPeakUsage()"); }
-  public abstract void resetPeakUsage() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.resetPeakUsage()"); }
-  public abstract java.lang.String[] getMemoryManagerNames() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.getMemoryManagerNames()"); }
-  public abstract long getUsageThreshold() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.getUsageThreshold()"); }
-  public abstract void setUsageThreshold(long threshold) { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.setUsageThreshold(long)"); }
-  public abstract boolean isUsageThresholdExceeded() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.isUsageThresholdExceeded()"); }
-  public abstract long getUsageThresholdCount() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.getUsageThresholdCount()"); }
-  public abstract boolean isUsageThresholdSupported() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.isUsageThresholdSupported()"); }
-  public abstract long getCollectionUsageThreshold() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.getCollectionUsageThreshold()"); }
-  public abstract void setCollectionUsageThreshold(long threshold) { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.setCollectionUsageThreshold(long)"); }
-  public abstract boolean isCollectionUsageThresholdExceeded() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.isCollectionUsageThresholdExceeded()"); }
-  public abstract long getCollectionUsageThresholdCount() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.getCollectionUsageThresholdCount()"); }
-  public abstract java.lang.management.MemoryUsage getCollectionUsage() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.getCollectionUsage()"); }
-  public abstract boolean isCollectionUsageThresholdSupported() { throw new AbstractMethodError("java.lang.management.MemoryPoolMXBean.isCollectionUsageThresholdSupported()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.management.MemoryType getType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isValid() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.management.MemoryUsage getUsage() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.management.MemoryUsage getPeakUsage() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void resetPeakUsage() { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getMemoryManagerNames() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getUsageThreshold() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setUsageThreshold(long threshold) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isUsageThresholdExceeded() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getUsageThresholdCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isUsageThresholdSupported() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getCollectionUsageThreshold() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCollectionUsageThreshold(long threshold) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isCollectionUsageThresholdExceeded() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getCollectionUsageThresholdCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.management.MemoryUsage getCollectionUsage() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isCollectionUsageThresholdSupported() { return false; }
   < ---- END java signatures ---- >
 }

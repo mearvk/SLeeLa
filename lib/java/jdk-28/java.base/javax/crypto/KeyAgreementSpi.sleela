@@ -58,24 +58,33 @@ class KeyAgreementSpi {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public KeyAgreementSpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreementSpi.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public KeyAgreementSpi() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  abstract java.security.Key engineDoPhase(java.security.Key key, boolean lastPhase) throws java.security.InvalidKeyException, java.lang.IllegalStateException { throw new AbstractMethodError("javax.crypto.KeyAgreementSpi.engineDoPhase(java.security.Key, boolean)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidKeyException, java.lang.IllegalStateException")
+  java.security.Key engineDoPhase(java.security.Key key, boolean lastPhase) { return null; }
   @JavaProtected
-  abstract int engineGenerateSecret(byte[] sharedSecret, int offset) throws java.lang.IllegalStateException, javax.crypto.ShortBufferException { throw new AbstractMethodError("javax.crypto.KeyAgreementSpi.engineGenerateSecret(byte[], int)"); }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalStateException, javax.crypto.ShortBufferException")
+  int engineGenerateSecret(byte[] sharedSecret, int offset) { return 0; }
   @JavaProtected
-  abstract javax.crypto.SecretKey engineGenerateSecret(java.lang.String algorithm) throws java.lang.IllegalStateException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException { throw new AbstractMethodError("javax.crypto.KeyAgreementSpi.engineGenerateSecret(java.lang.String)"); }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalStateException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException")
+  javax.crypto.SecretKey engineGenerateSecret(java.lang.String algorithm) { return null; }
   @JavaProtected
-  abstract byte[] engineGenerateSecret() throws java.lang.IllegalStateException { throw new AbstractMethodError("javax.crypto.KeyAgreementSpi.engineGenerateSecret()"); }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalStateException")
+  byte[] engineGenerateSecret() { return null; }
   @JavaProtected
-  abstract void engineInit(java.security.Key key, java.security.SecureRandom random) throws java.security.InvalidKeyException { throw new AbstractMethodError("javax.crypto.KeyAgreementSpi.engineInit(java.security.Key, java.security.SecureRandom)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidKeyException")
+  void engineInit(java.security.Key key, java.security.SecureRandom random) { }
   @JavaProtected
-  abstract void engineInit(java.security.Key key, java.security.spec.AlgorithmParameterSpec params, java.security.SecureRandom random) throws java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException { throw new AbstractMethodError("javax.crypto.KeyAgreementSpi.engineInit(java.security.Key, java.security.spec.AlgorithmParameterSpec, java.security.SecureRandom)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException")
+  void engineInit(java.security.Key key, java.security.spec.AlgorithmParameterSpec params, java.security.SecureRandom random) { }
   < ---- END java signatures ---- >
 }

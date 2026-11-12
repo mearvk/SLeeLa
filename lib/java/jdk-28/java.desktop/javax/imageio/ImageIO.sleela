@@ -58,34 +58,62 @@ class ImageIO {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static boolean write(java.awt.image.RenderedImage im, java.lang.String formatName, java.io.File output) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.write(java.awt.image.RenderedImage, java.lang.String, java.io.File)"); }
-  public static java.awt.image.BufferedImage read(java.io.InputStream input) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.read(java.io.InputStream)"); }
-  public static javax.imageio.ImageReader getImageReader(javax.imageio.ImageWriter writer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getImageReader(javax.imageio.ImageWriter)"); }
-  public static void setUseCache(boolean useCache) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.setUseCache(boolean)"); }
-  public static boolean getUseCache() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getUseCache()"); }
-  public static void setCacheDirectory(java.io.File cacheDirectory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.setCacheDirectory(java.io.File)"); }
-  public static java.io.File getCacheDirectory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getCacheDirectory()"); }
-  public static javax.imageio.stream.ImageInputStream createImageInputStream(java.lang.Object input) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.createImageInputStream(java.lang.Object)"); }
-  public static java.util.Iterator<javax.imageio.ImageReader> getImageReaders(java.lang.Object input) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getImageReaders(java.lang.Object)"); }
-  public static javax.imageio.stream.ImageOutputStream createImageOutputStream(java.lang.Object output) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.createImageOutputStream(java.lang.Object)"); }
-  public static java.util.Iterator<javax.imageio.ImageWriter> getImageWriters(javax.imageio.ImageTypeSpecifier type, java.lang.String formatName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getImageWriters(javax.imageio.ImageTypeSpecifier, java.lang.String)"); }
-  public static void scanForPlugins() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.scanForPlugins()"); }
-  public static java.lang.String[] getReaderFormatNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getReaderFormatNames()"); }
-  public static java.lang.String[] getReaderMIMETypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getReaderMIMETypes()"); }
-  public static java.lang.String[] getReaderFileSuffixes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getReaderFileSuffixes()"); }
-  public static java.util.Iterator<javax.imageio.ImageReader> getImageReadersByFormatName(java.lang.String formatName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getImageReadersByFormatName(java.lang.String)"); }
-  public static java.util.Iterator<javax.imageio.ImageReader> getImageReadersBySuffix(java.lang.String fileSuffix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getImageReadersBySuffix(java.lang.String)"); }
-  public static java.util.Iterator<javax.imageio.ImageReader> getImageReadersByMIMEType(java.lang.String MIMEType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getImageReadersByMIMEType(java.lang.String)"); }
-  public static java.lang.String[] getWriterFormatNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getWriterFormatNames()"); }
-  public static java.lang.String[] getWriterMIMETypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getWriterMIMETypes()"); }
-  public static java.lang.String[] getWriterFileSuffixes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getWriterFileSuffixes()"); }
-  public static java.util.Iterator<javax.imageio.ImageWriter> getImageWritersByFormatName(java.lang.String formatName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getImageWritersByFormatName(java.lang.String)"); }
-  public static java.util.Iterator<javax.imageio.ImageWriter> getImageWritersBySuffix(java.lang.String fileSuffix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getImageWritersBySuffix(java.lang.String)"); }
-  public static java.util.Iterator<javax.imageio.ImageWriter> getImageWritersByMIMEType(java.lang.String MIMEType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getImageWritersByMIMEType(java.lang.String)"); }
-  public static javax.imageio.ImageWriter getImageWriter(javax.imageio.ImageReader reader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getImageWriter(javax.imageio.ImageReader)"); }
-  public static java.util.Iterator<javax.imageio.ImageTranscoder> getImageTranscoders(javax.imageio.ImageReader reader, javax.imageio.ImageWriter writer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.ImageIO.getImageTranscoders(javax.imageio.ImageReader, javax.imageio.ImageWriter)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static boolean write(java.awt.image.RenderedImage im, java.lang.String formatName, java.io.File output) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static java.awt.image.BufferedImage read(java.io.InputStream input) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.imageio.ImageReader getImageReader(javax.imageio.ImageWriter writer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setUseCache(boolean useCache) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean getUseCache() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setCacheDirectory(java.io.File cacheDirectory) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.io.File getCacheDirectory() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static javax.imageio.stream.ImageInputStream createImageInputStream(java.lang.Object input) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Iterator<javax.imageio.ImageReader> getImageReaders(java.lang.Object input) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static javax.imageio.stream.ImageOutputStream createImageOutputStream(java.lang.Object output) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Iterator<javax.imageio.ImageWriter> getImageWriters(javax.imageio.ImageTypeSpecifier type, java.lang.String formatName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void scanForPlugins() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String[] getReaderFormatNames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String[] getReaderMIMETypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String[] getReaderFileSuffixes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Iterator<javax.imageio.ImageReader> getImageReadersByFormatName(java.lang.String formatName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Iterator<javax.imageio.ImageReader> getImageReadersBySuffix(java.lang.String fileSuffix) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Iterator<javax.imageio.ImageReader> getImageReadersByMIMEType(java.lang.String MIMEType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String[] getWriterFormatNames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String[] getWriterMIMETypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String[] getWriterFileSuffixes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Iterator<javax.imageio.ImageWriter> getImageWritersByFormatName(java.lang.String formatName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Iterator<javax.imageio.ImageWriter> getImageWritersBySuffix(java.lang.String fileSuffix) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Iterator<javax.imageio.ImageWriter> getImageWritersByMIMEType(java.lang.String MIMEType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.imageio.ImageWriter getImageWriter(javax.imageio.ImageReader reader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Iterator<javax.imageio.ImageTranscoder> getImageTranscoders(javax.imageio.ImageReader reader, javax.imageio.ImageWriter writer) { return null; }
   < ---- END java signatures ---- >
 }

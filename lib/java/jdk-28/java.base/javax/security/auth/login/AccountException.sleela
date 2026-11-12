@@ -58,7 +58,9 @@ class AccountException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AccountException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.AccountException.<init>()"); }
-  public AccountException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.AccountException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AccountException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AccountException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

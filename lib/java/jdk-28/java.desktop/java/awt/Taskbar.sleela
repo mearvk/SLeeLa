@@ -58,22 +58,38 @@ class Taskbar {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean isSupported(java.awt.Taskbar.Feature feature) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.isSupported(java.awt.Taskbar.Feature)"); }
-  public java.awt.Image getIconImage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.getIconImage()"); }
-  public java.awt.PopupMenu getMenu() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.getMenu()"); }
-  public void setIconImage(java.awt.Image image) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setIconImage(java.awt.Image)"); }
-  public static boolean isTaskbarSupported() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.isTaskbarSupported()"); }
-  public void requestUserAttention(boolean enabled, boolean critical) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.requestUserAttention(boolean, boolean)"); }
-  public void requestWindowUserAttention(java.awt.Window w) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.requestWindowUserAttention(java.awt.Window)"); }
-  public void setMenu(java.awt.PopupMenu menu) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setMenu(java.awt.PopupMenu)"); }
-  public void setIconBadge(java.lang.String badge) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setIconBadge(java.lang.String)"); }
-  public void setWindowIconBadge(java.awt.Window w, java.awt.Image badge) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setWindowIconBadge(java.awt.Window, java.awt.Image)"); }
-  public void setProgressValue(int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setProgressValue(int)"); }
-  public void setWindowProgressValue(java.awt.Window w, int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setWindowProgressValue(java.awt.Window, int)"); }
-  public void setWindowProgressState(java.awt.Window w, java.awt.Taskbar.State state) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.setWindowProgressState(java.awt.Window, java.awt.Taskbar.State)"); }
-  public static synchronized java.awt.Taskbar getTaskbar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Taskbar.getTaskbar()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSupported(java.awt.Taskbar.Feature feature) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Image getIconImage() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.PopupMenu getMenu() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIconImage(java.awt.Image image) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isTaskbarSupported() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void requestUserAttention(boolean enabled, boolean critical) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void requestWindowUserAttention(java.awt.Window w) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMenu(java.awt.PopupMenu menu) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIconBadge(java.lang.String badge) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setWindowIconBadge(java.awt.Window w, java.awt.Image badge) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setProgressValue(int value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setWindowProgressValue(java.awt.Window w, int value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setWindowProgressState(java.awt.Window w, java.awt.Taskbar.State state) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static synchronized java.awt.Taskbar getTaskbar() { return null; }
   < ---- END java signatures ---- >
 }

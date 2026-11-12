@@ -59,14 +59,22 @@ class Content {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.swing.undo.UndoableEdit remove(int where, int nitems) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.text.AbstractDocument.Content.remove(int, int)"); }
-  public abstract int length() { throw new AbstractMethodError("javax.swing.text.AbstractDocument.Content.length()"); }
-  public abstract void getChars(int where, int len, javax.swing.text.Segment txt) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.text.AbstractDocument.Content.getChars(int, int, javax.swing.text.Segment)"); }
-  public abstract java.lang.String getString(int where, int len) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.text.AbstractDocument.Content.getString(int, int)"); }
-  public abstract javax.swing.undo.UndoableEdit insertString(int where, java.lang.String str) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.text.AbstractDocument.Content.insertString(int, java.lang.String)"); }
-  public abstract javax.swing.text.Position createPosition(int offset) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.text.AbstractDocument.Content.createPosition(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public javax.swing.undo.UndoableEdit remove(int where, int nitems) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int length() { return 0; }
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public void getChars(int where, int len, javax.swing.text.Segment txt) { }
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public java.lang.String getString(int where, int len) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public javax.swing.undo.UndoableEdit insertString(int where, java.lang.String str) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public javax.swing.text.Position createPosition(int offset) { return null; }
   < ---- END java signatures ---- >
 }

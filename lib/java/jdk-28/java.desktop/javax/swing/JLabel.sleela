@@ -62,52 +62,92 @@ class JLabel {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JLabel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.<init>()"); }
-  public JLabel(javax.swing.Icon image) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.<init>(javax.swing.Icon)"); }
-  public JLabel(javax.swing.Icon image, int horizontalAlignment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.<init>(javax.swing.Icon, int)"); }
-  public JLabel(java.lang.String text, javax.swing.Icon icon, int horizontalAlignment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.<init>(java.lang.String, javax.swing.Icon, int)"); }
-  public JLabel(java.lang.String text, int horizontalAlignment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.<init>(java.lang.String, int)"); }
-  public JLabel(java.lang.String text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JLabel() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JLabel(javax.swing.Icon image) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JLabel(javax.swing.Icon image, int horizontalAlignment) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JLabel(java.lang.String text, javax.swing.Icon icon, int horizontalAlignment) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JLabel(java.lang.String text, int horizontalAlignment) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JLabel(java.lang.String text) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.paramString()"); }
-  public java.lang.String getText() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getText()"); }
-  public void setText(java.lang.String text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.setText(java.lang.String)"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.updateUI()"); }
-  public void setUI(javax.swing.plaf.LabelUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.setUI(javax.swing.plaf.LabelUI)"); }
-  public javax.swing.plaf.LabelUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getUI()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getUIClassID()"); }
-  public javax.swing.Icon getIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getIcon()"); }
-  public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.imageUpdate(java.awt.Image, int, int, int, int, int)"); }
-  public javax.swing.Icon getDisabledIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getDisabledIcon()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getText() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setText(java.lang.String text) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.LabelUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.LabelUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int w, int h) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getDisabledIcon() { return null; }
   @JavaProtected
-  int checkVerticalKey(int key, java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.checkVerticalKey(int, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int checkVerticalKey(int key, java.lang.String message) { return 0; }
   @JavaProtected
-  int checkHorizontalKey(int key, java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.checkHorizontalKey(int, java.lang.String)"); }
-  public void setDisplayedMnemonicIndex(int index) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.setDisplayedMnemonicIndex(int)"); }
-  public void setIcon(javax.swing.Icon icon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.setIcon(javax.swing.Icon)"); }
-  public void setDisabledIcon(javax.swing.Icon disabledIcon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.setDisabledIcon(javax.swing.Icon)"); }
-  public void setIconTextGap(int iconTextGap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.setIconTextGap(int)"); }
-  public int getVerticalAlignment() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getVerticalAlignment()"); }
-  public void setVerticalAlignment(int alignment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.setVerticalAlignment(int)"); }
-  public int getHorizontalAlignment() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getHorizontalAlignment()"); }
-  public void setHorizontalAlignment(int alignment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.setHorizontalAlignment(int)"); }
-  public int getVerticalTextPosition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getVerticalTextPosition()"); }
-  public void setVerticalTextPosition(int textPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.setVerticalTextPosition(int)"); }
-  public int getHorizontalTextPosition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getHorizontalTextPosition()"); }
-  public void setHorizontalTextPosition(int textPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.setHorizontalTextPosition(int)"); }
-  public int getIconTextGap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getIconTextGap()"); }
-  public int getDisplayedMnemonicIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getDisplayedMnemonicIndex()"); }
-  public int getDisplayedMnemonic() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getDisplayedMnemonic()"); }
-  public void setDisplayedMnemonic(int key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.setDisplayedMnemonic(int)"); }
-  public void setDisplayedMnemonic(char aChar) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.setDisplayedMnemonic(char)"); }
-  public java.awt.Component getLabelFor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getLabelFor()"); }
-  public void setLabelFor(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.setLabelFor(java.awt.Component)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JLabel.getAccessibleContext()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int checkHorizontalKey(int key, java.lang.String message) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public void setDisplayedMnemonicIndex(int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIcon(javax.swing.Icon icon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDisabledIcon(javax.swing.Icon disabledIcon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIconTextGap(int iconTextGap) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVerticalAlignment() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVerticalAlignment(int alignment) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHorizontalAlignment() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHorizontalAlignment(int alignment) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVerticalTextPosition() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVerticalTextPosition(int textPosition) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHorizontalTextPosition() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHorizontalTextPosition(int textPosition) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getIconTextGap() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDisplayedMnemonicIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDisplayedMnemonic() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDisplayedMnemonic(int key) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDisplayedMnemonic(char aChar) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getLabelFor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLabelFor(java.awt.Component c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,20 +58,31 @@ class RC5ParameterSpec {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RC5ParameterSpec(int version, int rounds, int wordSize, byte[] iv, int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.spec.RC5ParameterSpec.<init>(int, int, int, byte[], int)"); }
-  public RC5ParameterSpec(int version, int rounds, int wordSize, byte[] iv) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.spec.RC5ParameterSpec.<init>(int, int, int, byte[])"); }
-  public RC5ParameterSpec(int version, int rounds, int wordSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.spec.RC5ParameterSpec.<init>(int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RC5ParameterSpec(int version, int rounds, int wordSize, byte[] iv, int offset) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RC5ParameterSpec(int version, int rounds, int wordSize, byte[] iv) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RC5ParameterSpec(int version, int rounds, int wordSize) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.spec.RC5ParameterSpec.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.spec.RC5ParameterSpec.hashCode()"); }
-  public int getVersion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.spec.RC5ParameterSpec.getVersion()"); }
-  public int getWordSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.spec.RC5ParameterSpec.getWordSize()"); }
-  public byte[] getIV() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.spec.RC5ParameterSpec.getIV()"); }
-  public int getRounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.spec.RC5ParameterSpec.getRounds()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVersion() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getWordSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getIV() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRounds() { return 0; }
   < ---- END java signatures ---- >
 }

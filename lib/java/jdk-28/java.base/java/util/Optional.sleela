@@ -58,28 +58,50 @@ class Optional<T> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public T get() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.get()"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.hashCode()"); }
-  public static <T> java.util.Optional<T> of(T value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.of(T)"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.isEmpty()"); }
-  public <U> java.util.Optional<U> map(java.util.function.Function<? super T, ? extends U> mapper) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.map(java.util.function.Function<? super T, ? extends U>)"); }
-  public java.util.stream.Stream<T> stream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.stream()"); }
-  public java.util.Optional<T> filter(java.util.function.Predicate<? super T> predicate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.filter(java.util.function.Predicate<? super T>)"); }
-  public static <T> java.util.Optional<T> empty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.empty()"); }
-  public T orElse(T other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.orElse(T)"); }
-  public boolean isPresent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.isPresent()"); }
-  public T orElseThrow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.orElseThrow()"); }
-  public <X extends java.lang.Throwable> T orElseThrow(java.util.function.Supplier<? extends X> exceptionSupplier) throws X { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.orElseThrow(java.util.function.Supplier<? extends X>)"); }
-  public <U> java.util.Optional<U> flatMap(java.util.function.Function<? super T, ? extends java.util.Optional<? extends U>> mapper) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.flatMap(java.util.function.Function<? super T, ? extends java.util.Optional<? extends U>>)"); }
-  public static <T> java.util.Optional<T> ofNullable(T value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.ofNullable(T)"); }
-  public void ifPresent(java.util.function.Consumer<? super T> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.ifPresent(java.util.function.Consumer<? super T>)"); }
-  public void ifPresentOrElse(java.util.function.Consumer<? super T> action, java.lang.Runnable emptyAction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.ifPresentOrElse(java.util.function.Consumer<? super T>, java.lang.Runnable)"); }
-  public java.util.Optional<T> or(java.util.function.Supplier<? extends java.util.Optional<? extends T>> supplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.or(java.util.function.Supplier<? extends java.util.Optional<? extends T>>)"); }
-  public T orElseGet(java.util.function.Supplier<? extends T> supplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Optional.orElseGet(java.util.function.Supplier<? extends T>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public T get() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Optional<T> of(T value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> java.util.Optional<U> map(java.util.function.Function<? super T, ? extends U> mapper) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.Stream<T> stream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<T> filter(java.util.function.Predicate<? super T> predicate) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Optional<T> empty() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public T orElse(T other) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPresent() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public T orElseThrow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, X")
+  public <X extends java.lang.Throwable> T orElseThrow(java.util.function.Supplier<? extends X> exceptionSupplier) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <U> java.util.Optional<U> flatMap(java.util.function.Function<? super T, ? extends java.util.Optional<? extends U>> mapper) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Optional<T> ofNullable(T value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ifPresent(java.util.function.Consumer<? super T> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ifPresentOrElse(java.util.function.Consumer<? super T> action, java.lang.Runnable emptyAction) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<T> or(java.util.function.Supplier<? extends java.util.Optional<? extends T>> supplier) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public T orElseGet(java.util.function.Supplier<? extends T> supplier) { return null; }
   < ---- END java signatures ---- >
 }

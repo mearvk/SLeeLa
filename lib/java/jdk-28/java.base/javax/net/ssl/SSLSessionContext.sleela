@@ -58,14 +58,22 @@ class SSLSessionContext {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.net.ssl.SSLSession getSession(byte[] sessionId) { throw new AbstractMethodError("javax.net.ssl.SSLSessionContext.getSession(byte[])"); }
-  public abstract java.util.Enumeration<byte[]> getIds() { throw new AbstractMethodError("javax.net.ssl.SSLSessionContext.getIds()"); }
-  public abstract void setSessionTimeout(int seconds) { throw new AbstractMethodError("javax.net.ssl.SSLSessionContext.setSessionTimeout(int)"); }
-  public abstract int getSessionTimeout() { throw new AbstractMethodError("javax.net.ssl.SSLSessionContext.getSessionTimeout()"); }
-  public abstract void setSessionCacheSize(int size) { throw new AbstractMethodError("javax.net.ssl.SSLSessionContext.setSessionCacheSize(int)"); }
-  public abstract int getSessionCacheSize() { throw new AbstractMethodError("javax.net.ssl.SSLSessionContext.getSessionCacheSize()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.net.ssl.SSLSession getSession(byte[] sessionId) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Enumeration<byte[]> getIds() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSessionTimeout(int seconds) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getSessionTimeout() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSessionCacheSize(int size) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getSessionCacheSize() { return 0; }
   < ---- END java signatures ---- >
 }

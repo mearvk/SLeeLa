@@ -58,15 +58,24 @@ class RecordedEvent {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public jdk.jfr.consumer.RecordedStackTrace getStackTrace() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedEvent.getStackTrace()"); }
-  public java.util.List<jdk.jfr.ValueDescriptor> getFields() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedEvent.getFields()"); }
-  public java.time.Duration getDuration() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedEvent.getDuration()"); }
-  public jdk.jfr.EventType getEventType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedEvent.getEventType()"); }
-  public jdk.jfr.consumer.RecordedThread getThread() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedEvent.getThread()"); }
-  public java.time.Instant getStartTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedEvent.getStartTime()"); }
-  public java.time.Instant getEndTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedEvent.getEndTime()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jfr.consumer.RecordedStackTrace getStackTrace() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<jdk.jfr.ValueDescriptor> getFields() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Duration getDuration() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jfr.EventType getEventType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.jfr.consumer.RecordedThread getThread() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Instant getStartTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Instant getEndTime() { return null; }
   < ---- END java signatures ---- >
 }

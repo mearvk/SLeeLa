@@ -58,7 +58,9 @@ class CertificateParsingException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CertificateParsingException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.cert.CertificateParsingException.<init>()"); }
-  public CertificateParsingException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.cert.CertificateParsingException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CertificateParsingException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CertificateParsingException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

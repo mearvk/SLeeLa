@@ -58,13 +58,20 @@ class NetworkChannel {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.nio.channels.NetworkChannel bind(java.net.SocketAddress local) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.NetworkChannel.bind(java.net.SocketAddress)"); }
-  public abstract java.net.SocketAddress getLocalAddress() throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.NetworkChannel.getLocalAddress()"); }
-  public abstract <T> java.nio.channels.NetworkChannel setOption(java.net.SocketOption<T> name, T value) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.NetworkChannel.setOption(java.net.SocketOption<T>, T)"); }
-  public abstract <T> T getOption(java.net.SocketOption<T> name) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.NetworkChannel.getOption(java.net.SocketOption<T>)"); }
-  public abstract java.util.Set<java.net.SocketOption<?>> supportedOptions() { throw new AbstractMethodError("java.nio.channels.NetworkChannel.supportedOptions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.channels.NetworkChannel bind(java.net.SocketAddress local) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.net.SocketAddress getLocalAddress() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public <T> java.nio.channels.NetworkChannel setOption(java.net.SocketOption<T> name, T value) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public <T> T getOption(java.net.SocketOption<T> name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<java.net.SocketOption<?>> supportedOptions() { return null; }
   < ---- END java signatures ---- >
 }

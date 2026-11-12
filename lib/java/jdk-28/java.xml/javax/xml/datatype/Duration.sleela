@@ -58,36 +58,63 @@ class Duration {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Duration() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Duration() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object duration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.toString()"); }
-  public abstract int hashCode() { throw new AbstractMethodError("javax.xml.datatype.Duration.hashCode()"); }
-  public abstract int compare(javax.xml.datatype.Duration duration) { throw new AbstractMethodError("javax.xml.datatype.Duration.compare(javax.xml.datatype.Duration)"); }
-  public abstract javax.xml.datatype.Duration add(javax.xml.datatype.Duration rhs) { throw new AbstractMethodError("javax.xml.datatype.Duration.add(javax.xml.datatype.Duration)"); }
-  public abstract java.lang.Number getField(javax.xml.datatype.DatatypeConstants.Field field) { throw new AbstractMethodError("javax.xml.datatype.Duration.getField(javax.xml.datatype.DatatypeConstants.Field)"); }
-  public abstract javax.xml.datatype.Duration multiply(java.math.BigDecimal factor) { throw new AbstractMethodError("javax.xml.datatype.Duration.multiply(java.math.BigDecimal)"); }
-  public javax.xml.datatype.Duration multiply(int factor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.multiply(int)"); }
-  public abstract javax.xml.datatype.Duration negate() { throw new AbstractMethodError("javax.xml.datatype.Duration.negate()"); }
-  public javax.xml.datatype.Duration subtract(javax.xml.datatype.Duration rhs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.subtract(javax.xml.datatype.Duration)"); }
-  public int getMonths() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.getMonths()"); }
-  public int getSeconds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.getSeconds()"); }
-  public void addTo(java.util.Date date) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.addTo(java.util.Date)"); }
-  public int getDays() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.getDays()"); }
-  public int getYears() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.getYears()"); }
-  public abstract boolean isSet(javax.xml.datatype.DatatypeConstants.Field field) { throw new AbstractMethodError("javax.xml.datatype.Duration.isSet(javax.xml.datatype.DatatypeConstants.Field)"); }
-  public long getTimeInMillis(java.util.Date startInstant) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.getTimeInMillis(java.util.Date)"); }
-  public int getHours() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.getHours()"); }
-  public int getMinutes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.getMinutes()"); }
-  public abstract int getSign() { throw new AbstractMethodError("javax.xml.datatype.Duration.getSign()"); }
-  public javax.xml.namespace.QName getXMLSchemaType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.getXMLSchemaType()"); }
-  public abstract javax.xml.datatype.Duration normalizeWith(java.util.Calendar startTimeInstant) { throw new AbstractMethodError("javax.xml.datatype.Duration.normalizeWith(java.util.Calendar)"); }
-  public boolean isLongerThan(javax.xml.datatype.Duration duration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.isLongerThan(javax.xml.datatype.Duration)"); }
-  public boolean isShorterThan(javax.xml.datatype.Duration duration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.Duration.isShorterThan(javax.xml.datatype.Duration)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object duration) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int compare(javax.xml.datatype.Duration duration) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.datatype.Duration add(javax.xml.datatype.Duration rhs) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Number getField(javax.xml.datatype.DatatypeConstants.Field field) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.datatype.Duration multiply(java.math.BigDecimal factor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.datatype.Duration multiply(int factor) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.datatype.Duration negate() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.datatype.Duration subtract(javax.xml.datatype.Duration rhs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMonths() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSeconds() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addTo(java.util.Date date) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDays() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getYears() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSet(javax.xml.datatype.DatatypeConstants.Field field) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getTimeInMillis(java.util.Date startInstant) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHours() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinutes() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getSign() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.namespace.QName getXMLSchemaType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.datatype.Duration normalizeWith(java.util.Calendar startTimeInstant) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLongerThan(javax.xml.datatype.Duration duration) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isShorterThan(javax.xml.datatype.Duration duration) { return false; }
   < ---- END java signatures ---- >
 }

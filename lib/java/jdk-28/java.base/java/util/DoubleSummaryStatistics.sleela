@@ -58,21 +58,33 @@ class DoubleSummaryStatistics {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DoubleSummaryStatistics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.DoubleSummaryStatistics.<init>()"); }
-  public DoubleSummaryStatistics(long count, double min, double max, double sum) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.DoubleSummaryStatistics.<init>(long, double, double, double)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DoubleSummaryStatistics() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public DoubleSummaryStatistics(long count, double min, double max, double sum) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.DoubleSummaryStatistics.toString()"); }
-  public void accept(double value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.DoubleSummaryStatistics.accept(double)"); }
-  public final long getCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.DoubleSummaryStatistics.getCount()"); }
-  public void combine(java.util.DoubleSummaryStatistics other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.DoubleSummaryStatistics.combine(java.util.DoubleSummaryStatistics)"); }
-  public final double getSum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.DoubleSummaryStatistics.getSum()"); }
-  public final double getMin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.DoubleSummaryStatistics.getMin()"); }
-  public final double getAverage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.DoubleSummaryStatistics.getAverage()"); }
-  public final double getMax() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.DoubleSummaryStatistics.getMax()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void accept(double value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void combine(java.util.DoubleSummaryStatistics other) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final double getSum() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final double getMin() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final double getAverage() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final double getMax() { return 0.0; }
   < ---- END java signatures ---- >
 }

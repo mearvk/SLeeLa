@@ -58,29 +58,52 @@ class ExactConversionsSupport {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static boolean isIntToCharExact(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isIntToCharExact(int)"); }
-  public static boolean isIntToByteExact(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isIntToByteExact(int)"); }
-  public static boolean isIntToShortExact(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isIntToShortExact(int)"); }
-  public static boolean isIntToFloatExact(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isIntToFloatExact(int)"); }
-  public static boolean isLongToByteExact(long n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isLongToByteExact(long)"); }
-  public static boolean isLongToShortExact(long n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isLongToShortExact(long)"); }
-  public static boolean isLongToCharExact(long n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isLongToCharExact(long)"); }
-  public static boolean isLongToIntExact(long n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isLongToIntExact(long)"); }
-  public static boolean isLongToFloatExact(long n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isLongToFloatExact(long)"); }
-  public static boolean isLongToDoubleExact(long n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isLongToDoubleExact(long)"); }
-  public static boolean isFloatToByteExact(float n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isFloatToByteExact(float)"); }
-  public static boolean isFloatToShortExact(float n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isFloatToShortExact(float)"); }
-  public static boolean isFloatToCharExact(float n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isFloatToCharExact(float)"); }
-  public static boolean isFloatToIntExact(float n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isFloatToIntExact(float)"); }
-  public static boolean isFloatToLongExact(float n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isFloatToLongExact(float)"); }
-  public static boolean isDoubleToByteExact(double n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isDoubleToByteExact(double)"); }
-  public static boolean isDoubleToShortExact(double n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isDoubleToShortExact(double)"); }
-  public static boolean isDoubleToCharExact(double n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isDoubleToCharExact(double)"); }
-  public static boolean isDoubleToIntExact(double n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isDoubleToIntExact(double)"); }
-  public static boolean isDoubleToLongExact(double n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isDoubleToLongExact(double)"); }
-  public static boolean isDoubleToFloatExact(double n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.runtime.ExactConversionsSupport.isDoubleToFloatExact(double)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isIntToCharExact(int n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isIntToByteExact(int n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isIntToShortExact(int n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isIntToFloatExact(int n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLongToByteExact(long n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLongToShortExact(long n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLongToCharExact(long n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLongToIntExact(long n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLongToFloatExact(long n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isLongToDoubleExact(long n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isFloatToByteExact(float n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isFloatToShortExact(float n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isFloatToCharExact(float n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isFloatToIntExact(float n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isFloatToLongExact(float n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDoubleToByteExact(double n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDoubleToShortExact(double n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDoubleToCharExact(double n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDoubleToIntExact(double n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDoubleToLongExact(double n) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDoubleToFloatExact(double n) { return false; }
   < ---- END java signatures ---- >
 }

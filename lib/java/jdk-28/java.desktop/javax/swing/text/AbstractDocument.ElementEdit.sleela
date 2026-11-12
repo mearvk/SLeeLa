@@ -59,18 +59,27 @@ class ElementEdit {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ElementEdit(javax.swing.text.Element e, int index, javax.swing.text.Element[] removed, javax.swing.text.Element[] added) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.ElementEdit.<init>(javax.swing.text.Element, int, javax.swing.text.Element[], javax.swing.text.Element[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ElementEdit(javax.swing.text.Element e, int index, javax.swing.text.Element[] removed, javax.swing.text.Element[] added) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int getIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.ElementEdit.getIndex()"); }
-  public javax.swing.text.Element getElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.ElementEdit.getElement()"); }
-  public javax.swing.text.Element[] getChildrenRemoved() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.ElementEdit.getChildrenRemoved()"); }
-  public javax.swing.text.Element[] getChildrenAdded() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.ElementEdit.getChildrenAdded()"); }
-  public void undo() throws javax.swing.undo.CannotUndoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.ElementEdit.undo()"); }
-  public void redo() throws javax.swing.undo.CannotRedoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.AbstractDocument.ElementEdit.redo()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getIndex() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Element getElement() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Element[] getChildrenRemoved() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Element[] getChildrenAdded() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.undo.CannotUndoException")
+  public void undo() { }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.undo.CannotRedoException")
+  public void redo() { }
   < ---- END java signatures ---- >
 }

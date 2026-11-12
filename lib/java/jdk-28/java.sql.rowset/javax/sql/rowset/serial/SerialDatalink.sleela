@@ -58,16 +58,23 @@ class SerialDatalink {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SerialDatalink(java.net.URL url) throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialDatalink.<init>(java.net.URL)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public SerialDatalink(java.net.URL url) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialDatalink.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialDatalink.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialDatalink.clone()"); }
-  public java.net.URL getDatalink() throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialDatalink.getDatalink()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public java.net.URL getDatalink() { return null; }
   < ---- END java signatures ---- >
 }

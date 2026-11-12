@@ -58,15 +58,21 @@ class EdDSAParameterSpec {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public EdDSAParameterSpec(boolean prehash) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.EdDSAParameterSpec.<init>(boolean)"); }
-  public EdDSAParameterSpec(boolean prehash, byte[] context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.EdDSAParameterSpec.<init>(boolean, byte[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EdDSAParameterSpec(boolean prehash) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EdDSAParameterSpec(boolean prehash, byte[] context) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.Optional<byte[]> getContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.EdDSAParameterSpec.getContext()"); }
-  public boolean isPrehash() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.EdDSAParameterSpec.isPrehash()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<byte[]> getContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPrehash() { return false; }
   < ---- END java signatures ---- >
 }

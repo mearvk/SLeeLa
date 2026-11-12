@@ -58,14 +58,22 @@ class ComboBoxEditor {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void addActionListener(java.awt.event.ActionListener l) { throw new AbstractMethodError("javax.swing.ComboBoxEditor.addActionListener(java.awt.event.ActionListener)"); }
-  public abstract void removeActionListener(java.awt.event.ActionListener l) { throw new AbstractMethodError("javax.swing.ComboBoxEditor.removeActionListener(java.awt.event.ActionListener)"); }
-  public abstract void selectAll() { throw new AbstractMethodError("javax.swing.ComboBoxEditor.selectAll()"); }
-  public abstract java.lang.Object getItem() { throw new AbstractMethodError("javax.swing.ComboBoxEditor.getItem()"); }
-  public abstract java.awt.Component getEditorComponent() { throw new AbstractMethodError("javax.swing.ComboBoxEditor.getEditorComponent()"); }
-  public abstract void setItem(java.lang.Object anObject) { throw new AbstractMethodError("javax.swing.ComboBoxEditor.setItem(java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void addActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void selectAll() { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getItem() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Component getEditorComponent() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setItem(java.lang.Object anObject) { }
   < ---- END java signatures ---- >
 }

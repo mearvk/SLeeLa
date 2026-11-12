@@ -58,16 +58,26 @@ class TreeModel {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object getRoot() { throw new AbstractMethodError("javax.swing.tree.TreeModel.getRoot()"); }
-  public abstract boolean isLeaf(java.lang.Object node) { throw new AbstractMethodError("javax.swing.tree.TreeModel.isLeaf(java.lang.Object)"); }
-  public abstract int getChildCount(java.lang.Object parent) { throw new AbstractMethodError("javax.swing.tree.TreeModel.getChildCount(java.lang.Object)"); }
-  public abstract java.lang.Object getChild(java.lang.Object parent, int index) { throw new AbstractMethodError("javax.swing.tree.TreeModel.getChild(java.lang.Object, int)"); }
-  public abstract void valueForPathChanged(javax.swing.tree.TreePath path, java.lang.Object newValue) { throw new AbstractMethodError("javax.swing.tree.TreeModel.valueForPathChanged(javax.swing.tree.TreePath, java.lang.Object)"); }
-  public abstract void removeTreeModelListener(javax.swing.event.TreeModelListener l) { throw new AbstractMethodError("javax.swing.tree.TreeModel.removeTreeModelListener(javax.swing.event.TreeModelListener)"); }
-  public abstract void addTreeModelListener(javax.swing.event.TreeModelListener l) { throw new AbstractMethodError("javax.swing.tree.TreeModel.addTreeModelListener(javax.swing.event.TreeModelListener)"); }
-  public abstract int getIndexOfChild(java.lang.Object parent, java.lang.Object child) { throw new AbstractMethodError("javax.swing.tree.TreeModel.getIndexOfChild(java.lang.Object, java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getRoot() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isLeaf(java.lang.Object node) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getChildCount(java.lang.Object parent) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getChild(java.lang.Object parent, int index) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void valueForPathChanged(javax.swing.tree.TreePath path, java.lang.Object newValue) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeTreeModelListener(javax.swing.event.TreeModelListener l) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addTreeModelListener(javax.swing.event.TreeModelListener l) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getIndexOfChild(java.lang.Object parent, java.lang.Object child) { return 0; }
   < ---- END java signatures ---- >
 }

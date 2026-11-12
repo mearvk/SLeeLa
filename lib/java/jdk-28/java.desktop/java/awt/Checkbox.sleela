@@ -58,35 +58,58 @@ class Checkbox {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Checkbox(java.lang.String label, boolean state, java.awt.CheckboxGroup group) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.<init>(java.lang.String, boolean, java.awt.CheckboxGroup)"); }
-  public Checkbox(java.lang.String label, java.awt.CheckboxGroup group, boolean state) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.<init>(java.lang.String, java.awt.CheckboxGroup, boolean)"); }
-  public Checkbox(java.lang.String label) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.<init>(java.lang.String)"); }
-  public Checkbox() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.<init>()"); }
-  public Checkbox(java.lang.String label, boolean state) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.<init>(java.lang.String, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Checkbox(java.lang.String label, boolean state, java.awt.CheckboxGroup group) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Checkbox(java.lang.String label, java.awt.CheckboxGroup group, boolean state) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Checkbox(java.lang.String label) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Checkbox() { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Checkbox(java.lang.String label, boolean state) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean getState() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.getState()"); }
-  public void setState(boolean state) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.setState(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getState() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setState(boolean state) { }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.paramString()"); }
-  public java.lang.String getLabel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.getLabel()"); }
-  public void setLabel(java.lang.String label) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.setLabel(java.lang.String)"); }
-  public void setCheckboxGroup(java.awt.CheckboxGroup g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.setCheckboxGroup(java.awt.CheckboxGroup)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLabel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLabel(java.lang.String label) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCheckboxGroup(java.awt.CheckboxGroup g) { }
   @JavaProtected
-  void processItemEvent(java.awt.event.ItemEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.processItemEvent(java.awt.event.ItemEvent)"); }
-  public synchronized void addItemListener(java.awt.event.ItemListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.addItemListener(java.awt.event.ItemListener)"); }
-  public java.lang.Object[] getSelectedObjects() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.getSelectedObjects()"); }
-  public java.awt.CheckboxGroup getCheckboxGroup() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.getCheckboxGroup()"); }
-  public synchronized void removeItemListener(java.awt.event.ItemListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.removeItemListener(java.awt.event.ItemListener)"); }
-  public synchronized java.awt.event.ItemListener[] getItemListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.getItemListeners()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.getAccessibleContext()"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.addNotify()"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.getListeners(java.lang.Class<T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processItemEvent(java.awt.event.ItemEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addItemListener(java.awt.event.ItemListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] getSelectedObjects() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.CheckboxGroup getCheckboxGroup() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeItemListener(java.awt.event.ItemListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.event.ItemListener[] getItemListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   @JavaProtected
-  void processEvent(java.awt.AWTEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Checkbox.processEvent(java.awt.AWTEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processEvent(java.awt.AWTEvent e) { }
   < ---- END java signatures ---- >
 }

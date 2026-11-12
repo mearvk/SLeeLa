@@ -59,6 +59,7 @@ class MenuItemUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  MenuItemUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.MenuItemUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  MenuItemUI() { }
   < ---- END java constructors ---- >
 }

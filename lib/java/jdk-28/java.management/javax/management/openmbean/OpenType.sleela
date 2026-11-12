@@ -64,20 +64,31 @@ class OpenType<T> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  OpenType(java.lang.String className, java.lang.String typeName, java.lang.String description) throws javax.management.openmbean.OpenDataException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.OpenType.<init>(java.lang.String, java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.openmbean.OpenDataException")
+  OpenType(java.lang.String className, java.lang.String typeName, java.lang.String description) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("javax.management.openmbean.OpenType.equals(java.lang.Object)"); }
-  public abstract java.lang.String toString() { throw new AbstractMethodError("javax.management.openmbean.OpenType.toString()"); }
-  public abstract int hashCode() { throw new AbstractMethodError("javax.management.openmbean.OpenType.hashCode()"); }
-  public boolean isArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.OpenType.isArray()"); }
-  public java.lang.String getTypeName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.OpenType.getTypeName()"); }
-  public java.lang.String getClassName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.OpenType.getClassName()"); }
-  public java.lang.String getDescription() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.OpenType.getDescription()"); }
-  public abstract boolean isValue(java.lang.Object obj) { throw new AbstractMethodError("javax.management.openmbean.OpenType.isValue(java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isArray() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getTypeName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getClassName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDescription() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isValue(java.lang.Object obj) { return false; }
   < ---- END java signatures ---- >
 }

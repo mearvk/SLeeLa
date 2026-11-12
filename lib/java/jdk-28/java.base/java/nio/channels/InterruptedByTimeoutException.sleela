@@ -58,6 +58,7 @@ class InterruptedByTimeoutException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InterruptedByTimeoutException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.InterruptedByTimeoutException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InterruptedByTimeoutException() { }
   < ---- END java constructors ---- >
 }

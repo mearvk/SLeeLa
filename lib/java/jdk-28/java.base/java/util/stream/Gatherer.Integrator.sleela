@@ -59,11 +59,16 @@ class Integrator<A, T, R> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static <A, T, R> java.util.stream.Gatherer.Integrator<A, T, R> of(java.util.stream.Gatherer.Integrator<A, T, R> integrator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.Integrator.of(java.util.stream.Gatherer.Integrator<A, T, R>)"); }
-  public abstract boolean integrate(A state, T element, java.util.stream.Gatherer.Downstream<? super R> downstream) { throw new AbstractMethodError("java.util.stream.Gatherer.Integrator.integrate(A, T, java.util.stream.Gatherer.Downstream<? super R>)"); }
-  public static <A, T, R> java.util.stream.Gatherer.Integrator.Greedy<A, T, R> ofGreedy(java.util.stream.Gatherer.Integrator.Greedy<A, T, R> greedy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherer.Integrator.ofGreedy(java.util.stream.Gatherer.Integrator.Greedy<A, T, R>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <A, T, R> java.util.stream.Gatherer.Integrator<A, T, R> of(java.util.stream.Gatherer.Integrator<A, T, R> integrator) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean integrate(A state, T element, java.util.stream.Gatherer.Downstream<? super R> downstream) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <A, T, R> java.util.stream.Gatherer.Integrator.Greedy<A, T, R> ofGreedy(java.util.stream.Gatherer.Integrator.Greedy<A, T, R> greedy) { return null; }
   < ---- END java signatures ---- >
 }

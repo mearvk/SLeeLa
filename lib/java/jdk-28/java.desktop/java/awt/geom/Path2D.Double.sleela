@@ -59,26 +59,43 @@ class Double {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Double(java.awt.Shape s, java.awt.geom.AffineTransform at) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.<init>(java.awt.Shape, java.awt.geom.AffineTransform)"); }
-  public Double(java.awt.Shape s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.<init>(java.awt.Shape)"); }
-  public Double(int rule, int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.<init>(int, int)"); }
-  public Double(int rule) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.<init>(int)"); }
-  public Double() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Double(java.awt.Shape s, java.awt.geom.AffineTransform at) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Double(java.awt.Shape s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Double(int rule, int initialCapacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Double(int rule) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Double() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final void append(java.awt.geom.PathIterator pi, boolean connect) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.append(java.awt.geom.PathIterator, boolean)"); }
-  public final java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.clone()"); }
-  public final void transform(java.awt.geom.AffineTransform at) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.transform(java.awt.geom.AffineTransform)"); }
-  public final void trimToSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.trimToSize()"); }
-  public final synchronized java.awt.geom.Rectangle2D getBounds2D() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.getBounds2D()"); }
-  public final java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.getPathIterator(java.awt.geom.AffineTransform)"); }
-  public final synchronized void moveTo(double x, double y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.moveTo(double, double)"); }
-  public final synchronized void lineTo(double x, double y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.lineTo(double, double)"); }
-  public final synchronized void quadTo(double x1, double y1, double x2, double y2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.quadTo(double, double, double, double)"); }
-  public final synchronized void curveTo(double x1, double y1, double x2, double y2, double x3, double y3) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Path2D.Double.curveTo(double, double, double, double, double, double)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void append(java.awt.geom.PathIterator pi, boolean connect) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void transform(java.awt.geom.AffineTransform at) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void trimToSize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final synchronized java.awt.geom.Rectangle2D getBounds2D() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final synchronized void moveTo(double x, double y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final synchronized void lineTo(double x, double y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final synchronized void quadTo(double x1, double y1, double x2, double y2) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final synchronized void curveTo(double x1, double y1, double x2, double y2, double x3, double y3) { }
   < ---- END java signatures ---- >
 }

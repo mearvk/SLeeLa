@@ -59,18 +59,27 @@ class SplitPaneUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SplitPaneUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.SplitPaneUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SplitPaneUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void resetToPreferredSizes(javax.swing.JSplitPane jc) { throw new AbstractMethodError("javax.swing.plaf.SplitPaneUI.resetToPreferredSizes(javax.swing.JSplitPane)"); }
-  public abstract void setDividerLocation(javax.swing.JSplitPane jc, int location) { throw new AbstractMethodError("javax.swing.plaf.SplitPaneUI.setDividerLocation(javax.swing.JSplitPane, int)"); }
-  public abstract int getMinimumDividerLocation(javax.swing.JSplitPane jc) { throw new AbstractMethodError("javax.swing.plaf.SplitPaneUI.getMinimumDividerLocation(javax.swing.JSplitPane)"); }
-  public abstract int getMaximumDividerLocation(javax.swing.JSplitPane jc) { throw new AbstractMethodError("javax.swing.plaf.SplitPaneUI.getMaximumDividerLocation(javax.swing.JSplitPane)"); }
-  public abstract void finishedPaintingChildren(javax.swing.JSplitPane jc, java.awt.Graphics g) { throw new AbstractMethodError("javax.swing.plaf.SplitPaneUI.finishedPaintingChildren(javax.swing.JSplitPane, java.awt.Graphics)"); }
-  public abstract int getDividerLocation(javax.swing.JSplitPane jc) { throw new AbstractMethodError("javax.swing.plaf.SplitPaneUI.getDividerLocation(javax.swing.JSplitPane)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void resetToPreferredSizes(javax.swing.JSplitPane jc) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDividerLocation(javax.swing.JSplitPane jc, int location) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMinimumDividerLocation(javax.swing.JSplitPane jc) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMaximumDividerLocation(javax.swing.JSplitPane jc) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void finishedPaintingChildren(javax.swing.JSplitPane jc, java.awt.Graphics g) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getDividerLocation(javax.swing.JSplitPane jc) { return 0; }
   < ---- END java signatures ---- >
 }

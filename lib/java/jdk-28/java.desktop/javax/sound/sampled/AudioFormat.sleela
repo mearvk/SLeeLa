@@ -68,25 +68,41 @@ class AudioFormat {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AudioFormat(float sampleRate, int sampleSizeInBits, int channels, boolean signed, boolean bigEndian) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.<init>(float, int, int, boolean, boolean)"); }
-  public AudioFormat(javax.sound.sampled.AudioFormat.Encoding encoding, float sampleRate, int sampleSizeInBits, int channels, int frameSize, float frameRate, boolean bigEndian, java.util.Map<java.lang.String, java.lang.Object> properties) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.<init>(javax.sound.sampled.AudioFormat.Encoding, float, int, int, int, float, boolean, java.util.Map<java.lang.String, java.lang.Object>)"); }
-  public AudioFormat(javax.sound.sampled.AudioFormat.Encoding encoding, float sampleRate, int sampleSizeInBits, int channels, int frameSize, float frameRate, boolean bigEndian) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.<init>(javax.sound.sampled.AudioFormat.Encoding, float, int, int, int, float, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AudioFormat(float sampleRate, int sampleSizeInBits, int channels, boolean signed, boolean bigEndian) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AudioFormat(javax.sound.sampled.AudioFormat.Encoding encoding, float sampleRate, int sampleSizeInBits, int channels, int frameSize, float frameRate, boolean bigEndian, java.util.Map<java.lang.String, java.lang.Object> properties) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AudioFormat(javax.sound.sampled.AudioFormat.Encoding encoding, float sampleRate, int sampleSizeInBits, int channels, int frameSize, float frameRate, boolean bigEndian) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object getProperty(java.lang.String key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.getProperty(java.lang.String)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.toString()"); }
-  public boolean matches(javax.sound.sampled.AudioFormat format) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.matches(javax.sound.sampled.AudioFormat)"); }
-  public java.util.Map<java.lang.String, java.lang.Object> properties() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.properties()"); }
-  public boolean isBigEndian() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.isBigEndian()"); }
-  public javax.sound.sampled.AudioFormat.Encoding getEncoding() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.getEncoding()"); }
-  public int getChannels() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.getChannels()"); }
-  public float getSampleRate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.getSampleRate()"); }
-  public int getSampleSizeInBits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.getSampleSizeInBits()"); }
-  public float getFrameRate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.getFrameRate()"); }
-  public int getFrameSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.AudioFormat.getFrameSize()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getProperty(java.lang.String key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean matches(javax.sound.sampled.AudioFormat format) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Map<java.lang.String, java.lang.Object> properties() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBigEndian() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.sound.sampled.AudioFormat.Encoding getEncoding() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getChannels() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getSampleRate() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSampleSizeInBits() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getFrameRate() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getFrameSize() { return 0; }
   < ---- END java signatures ---- >
 }

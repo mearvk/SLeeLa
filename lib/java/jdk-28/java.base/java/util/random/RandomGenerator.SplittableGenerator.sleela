@@ -59,17 +59,28 @@ class SplittableGenerator {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static java.util.random.RandomGenerator.SplittableGenerator of(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.SplittableGenerator.of(java.lang.String)"); }
-  public abstract java.util.random.RandomGenerator.SplittableGenerator split(java.util.random.RandomGenerator.SplittableGenerator source) { throw new AbstractMethodError("java.util.random.RandomGenerator.SplittableGenerator.split(java.util.random.RandomGenerator.SplittableGenerator)"); }
-  public abstract java.util.random.RandomGenerator.SplittableGenerator split() { throw new AbstractMethodError("java.util.random.RandomGenerator.SplittableGenerator.split()"); }
-  public abstract java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits(long streamSize, java.util.random.RandomGenerator.SplittableGenerator source) { throw new AbstractMethodError("java.util.random.RandomGenerator.SplittableGenerator.splits(long, java.util.random.RandomGenerator.SplittableGenerator)"); }
-  public abstract java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits(java.util.random.RandomGenerator.SplittableGenerator source) { throw new AbstractMethodError("java.util.random.RandomGenerator.SplittableGenerator.splits(java.util.random.RandomGenerator.SplittableGenerator)"); }
-  public abstract java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits(long streamSize) { throw new AbstractMethodError("java.util.random.RandomGenerator.SplittableGenerator.splits(long)"); }
-  public default java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.SplittableGenerator.splits()"); }
-  public default java.util.stream.Stream<java.util.random.RandomGenerator> rngs(long streamSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.SplittableGenerator.rngs(long)"); }
-  public default java.util.stream.Stream<java.util.random.RandomGenerator> rngs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.SplittableGenerator.rngs()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.random.RandomGenerator.SplittableGenerator of(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.random.RandomGenerator.SplittableGenerator split(java.util.random.RandomGenerator.SplittableGenerator source) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.random.RandomGenerator.SplittableGenerator split() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits(long streamSize, java.util.random.RandomGenerator.SplittableGenerator source) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits(java.util.random.RandomGenerator.SplittableGenerator source) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits(long streamSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.Stream<java.util.random.RandomGenerator.SplittableGenerator> splits() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.Stream<java.util.random.RandomGenerator> rngs(long streamSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.Stream<java.util.random.RandomGenerator> rngs() { return null; }
   < ---- END java signatures ---- >
 }

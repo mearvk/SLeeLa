@@ -60,6 +60,7 @@ class Result {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Result() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.Authenticator.Result.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Result() { }
   < ---- END java constructors ---- >
 }

@@ -58,7 +58,9 @@ class BadPaddingException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BadPaddingException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.BadPaddingException.<init>()"); }
-  public BadPaddingException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.BadPaddingException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BadPaddingException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BadPaddingException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

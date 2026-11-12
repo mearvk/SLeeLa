@@ -58,7 +58,9 @@ class MBeanRegistrationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MBeanRegistrationException(java.lang.Exception e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanRegistrationException.<init>(java.lang.Exception)"); }
-  public MBeanRegistrationException(java.lang.Exception e, java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanRegistrationException.<init>(java.lang.Exception, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MBeanRegistrationException(java.lang.Exception e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MBeanRegistrationException(java.lang.Exception e, java.lang.String message) { }
   < ---- END java constructors ---- >
 }

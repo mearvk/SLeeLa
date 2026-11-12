@@ -58,7 +58,9 @@ class InstantiationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InstantiationException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.InstantiationException.<init>()"); }
-  public InstantiationException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.InstantiationException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InstantiationException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InstantiationException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

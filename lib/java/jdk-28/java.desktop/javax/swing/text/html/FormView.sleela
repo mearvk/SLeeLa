@@ -63,20 +63,28 @@ class FormView {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FormView(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.FormView.<init>(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FormView(javax.swing.text.Element elem) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.awt.Component createComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.FormView.createComponent()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Component createComponent() { return null; }
   @JavaProtected
-  void submitData(java.lang.String data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.FormView.submitData(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void submitData(java.lang.String data) { }
   @JavaProtected
-  void imageSubmit(java.lang.String imageData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.FormView.imageSubmit(java.lang.String)"); }
-  public float getMaximumSpan(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.FormView.getMaximumSpan(int)"); }
-  public void actionPerformed(java.awt.event.ActionEvent evt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.FormView.actionPerformed(java.awt.event.ActionEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void imageSubmit(java.lang.String imageData) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMaximumSpan(int axis) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void actionPerformed(java.awt.event.ActionEvent evt) { }
   < ---- END java signatures ---- >
 }

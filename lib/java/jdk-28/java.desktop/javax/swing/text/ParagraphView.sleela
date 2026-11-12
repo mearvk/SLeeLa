@@ -62,50 +62,76 @@ class ParagraphView {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ParagraphView(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.<init>(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ParagraphView(javax.swing.text.Element elem) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public float getAlignment(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.getAlignment(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getAlignment(int axis) { return 0.0; }
   @JavaProtected
-  void setJustification(int j) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.setJustification(int)"); }
-  public void changedUpdate(javax.swing.event.DocumentEvent changes, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.changedUpdate(javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
-  public int getFlowSpan(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.getFlowSpan(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setJustification(int j) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void changedUpdate(javax.swing.event.DocumentEvent changes, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getFlowSpan(int index) { return 0; }
   @JavaProtected
-  javax.swing.SizeRequirements calculateMinorAxisRequirements(int axis, javax.swing.SizeRequirements r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.calculateMinorAxisRequirements(int, javax.swing.SizeRequirements)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.SizeRequirements calculateMinorAxisRequirements(int axis, javax.swing.SizeRequirements r) { return null; }
   @JavaProtected
-  void setPropertiesFromAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.setPropertiesFromAttributes()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setPropertiesFromAttributes() { }
   @JavaProtected
-  void setLineSpacing(float ls) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.setLineSpacing(float)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setLineSpacing(float ls) { }
   @JavaProtected
-  void setFirstLineIndent(float fi) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.setFirstLineIndent(float)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setFirstLineIndent(float fi) { }
   @JavaProtected
-  int getClosestPositionTo(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet, int rowIndex, int x) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.getClosestPositionTo(int, javax.swing.text.Position.Bias, java.awt.Shape, int, javax.swing.text.Position.Bias[], int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  int getClosestPositionTo(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet, int rowIndex, int x) { return 0; }
   @JavaProtected
-  javax.swing.text.TabSet getTabSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.getTabSet()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.TabSet getTabSet() { return null; }
   @JavaProtected
-  int findOffsetToCharactersInString(char[] string, int start) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.findOffsetToCharactersInString(char[], int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int findOffsetToCharactersInString(char[] string, int start) { return 0; }
   @JavaProtected
-  float getPartialSize(int startOffset, int endOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.getPartialSize(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  float getPartialSize(int startOffset, int endOffset) { return 0.0; }
   @JavaProtected
-  int getLayoutViewCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.getLayoutViewCount()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getLayoutViewCount() { return 0; }
   @JavaProtected
-  javax.swing.text.View getLayoutView(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.getLayoutView(int)"); }
-  public int getBreakWeight(int axis, float len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.getBreakWeight(int, float)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.View getLayoutView(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBreakWeight(int axis, float len) { return 0; }
   @JavaProtected
-  int getNextNorthSouthVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.getNextNorthSouthVisualPositionFrom(int, javax.swing.text.Position.Bias, java.awt.Shape, int, javax.swing.text.Position.Bias[])"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  int getNextNorthSouthVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
   @JavaProtected
-  boolean flipEastAndWestAtEnds(int position, javax.swing.text.Position.Bias bias) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.flipEastAndWestAtEnds(int, javax.swing.text.Position.Bias)"); }
-  public int getFlowStart(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.getFlowStart(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean flipEastAndWestAtEnds(int position, javax.swing.text.Position.Bias bias) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getFlowStart(int index) { return 0; }
   @JavaProtected
-  javax.swing.text.View createRow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.createRow()"); }
-  public float nextTabStop(float x, int tabOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.nextTabStop(float, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.View createRow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float nextTabStop(float x, int tabOffset) { return 0.0; }
   @JavaProtected
-  float getTabBase() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.getTabBase()"); }
-  public javax.swing.text.View breakView(int axis, float len, java.awt.Shape a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.breakView(int, float, java.awt.Shape)"); }
-  public void paint(java.awt.Graphics g, java.awt.Shape a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ParagraphView.paint(java.awt.Graphics, java.awt.Shape)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  float getTabBase() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.View breakView(int axis, float len, java.awt.Shape a) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, java.awt.Shape a) { }
   < ---- END java signatures ---- >
 }

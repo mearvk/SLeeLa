@@ -58,12 +58,18 @@ class Catalog {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String matchURI(java.lang.String uri) { throw new AbstractMethodError("javax.xml.catalog.Catalog.matchURI(java.lang.String)"); }
-  public abstract java.lang.String matchSystem(java.lang.String systemId) { throw new AbstractMethodError("javax.xml.catalog.Catalog.matchSystem(java.lang.String)"); }
-  public abstract java.lang.String matchPublic(java.lang.String publicId) { throw new AbstractMethodError("javax.xml.catalog.Catalog.matchPublic(java.lang.String)"); }
-  public abstract java.util.stream.Stream<javax.xml.catalog.Catalog> catalogs() { throw new AbstractMethodError("javax.xml.catalog.Catalog.catalogs()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String matchURI(java.lang.String uri) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String matchSystem(java.lang.String systemId) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String matchPublic(java.lang.String publicId) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.Stream<javax.xml.catalog.Catalog> catalogs() { return null; }
   < ---- END java signatures ---- >
 }

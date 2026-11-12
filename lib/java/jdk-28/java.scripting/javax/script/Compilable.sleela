@@ -58,10 +58,14 @@ class Compilable {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.script.CompiledScript compile(java.lang.String script) throws javax.script.ScriptException { throw new AbstractMethodError("javax.script.Compilable.compile(java.lang.String)"); }
-  public abstract javax.script.CompiledScript compile(java.io.Reader script) throws javax.script.ScriptException { throw new AbstractMethodError("javax.script.Compilable.compile(java.io.Reader)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.script.ScriptException")
+  public javax.script.CompiledScript compile(java.lang.String script) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.script.ScriptException")
+  public javax.script.CompiledScript compile(java.io.Reader script) { return null; }
   < ---- END java signatures ---- >
 }

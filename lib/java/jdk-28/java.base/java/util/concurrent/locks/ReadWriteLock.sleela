@@ -58,10 +58,14 @@ class ReadWriteLock {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.concurrent.locks.Lock readLock() { throw new AbstractMethodError("java.util.concurrent.locks.ReadWriteLock.readLock()"); }
-  public abstract java.util.concurrent.locks.Lock writeLock() { throw new AbstractMethodError("java.util.concurrent.locks.ReadWriteLock.writeLock()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.locks.Lock readLock() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.locks.Lock writeLock() { return null; }
   < ---- END java signatures ---- >
 }

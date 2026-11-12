@@ -103,22 +103,38 @@ class TimeUnit {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public long convert(java.time.Duration duration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.convert(java.time.Duration)"); }
-  public long convert(long sourceDuration, java.util.concurrent.TimeUnit sourceUnit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.convert(long, java.util.concurrent.TimeUnit)"); }
-  public static java.util.concurrent.TimeUnit of(java.time.temporal.ChronoUnit chronoUnit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.of(java.time.temporal.ChronoUnit)"); }
-  public long toNanos(long duration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.toNanos(long)"); }
-  public long toMillis(long duration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.toMillis(long)"); }
-  public void sleep(long timeout) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.sleep(long)"); }
-  public long toDays(long duration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.toDays(long)"); }
-  public long toSeconds(long duration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.toSeconds(long)"); }
-  public long toHours(long duration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.toHours(long)"); }
-  public long toMinutes(long duration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.toMinutes(long)"); }
-  public long toMicros(long duration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.toMicros(long)"); }
-  public void timedWait(java.lang.Object obj, long timeout) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.timedWait(java.lang.Object, long)"); }
-  public void timedJoin(java.lang.Thread thread, long timeout) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.timedJoin(java.lang.Thread, long)"); }
-  public java.time.temporal.ChronoUnit toChronoUnit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeUnit.toChronoUnit()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public long convert(java.time.Duration duration) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long convert(long sourceDuration, java.util.concurrent.TimeUnit sourceUnit) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.concurrent.TimeUnit of(java.time.temporal.ChronoUnit chronoUnit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toNanos(long duration) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toMillis(long duration) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void sleep(long timeout) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toDays(long duration) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toSeconds(long duration) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toHours(long duration) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toMinutes(long duration) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toMicros(long duration) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void timedWait(java.lang.Object obj, long timeout) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void timedJoin(java.lang.Thread thread, long timeout) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.ChronoUnit toChronoUnit() { return null; }
   < ---- END java signatures ---- >
 }

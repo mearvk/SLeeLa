@@ -58,6 +58,7 @@ class AsynchronousCloseException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AsynchronousCloseException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.AsynchronousCloseException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AsynchronousCloseException() { }
   < ---- END java constructors ---- >
 }

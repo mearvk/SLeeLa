@@ -58,18 +58,30 @@ class KDF {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.crypto.KDF getInstance(java.lang.String algorithm, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KDF.getInstance(java.lang.String, java.lang.String)"); }
-  public static javax.crypto.KDF getInstance(java.lang.String algorithm, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KDF.getInstance(java.lang.String, java.security.Provider)"); }
-  public static javax.crypto.KDF getInstance(java.lang.String algorithm, javax.crypto.KDFParameters kdfParameters, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException, java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KDF.getInstance(java.lang.String, javax.crypto.KDFParameters, java.lang.String)"); }
-  public static javax.crypto.KDF getInstance(java.lang.String algorithm, javax.crypto.KDFParameters kdfParameters, java.security.Provider provider) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KDF.getInstance(java.lang.String, javax.crypto.KDFParameters, java.security.Provider)"); }
-  public static javax.crypto.KDF getInstance(java.lang.String algorithm) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KDF.getInstance(java.lang.String)"); }
-  public javax.crypto.KDFParameters getParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KDF.getParameters()"); }
-  public java.lang.String getAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KDF.getAlgorithm()"); }
-  public javax.crypto.SecretKey deriveKey(java.lang.String alg, java.security.spec.AlgorithmParameterSpec derivationSpec) throws java.security.InvalidAlgorithmParameterException, java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KDF.deriveKey(java.lang.String, java.security.spec.AlgorithmParameterSpec)"); }
-  public byte[] deriveData(java.security.spec.AlgorithmParameterSpec derivationSpec) throws java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KDF.deriveData(java.security.spec.AlgorithmParameterSpec)"); }
-  public java.lang.String getProviderName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KDF.getProviderName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException")
+  public static javax.crypto.KDF getInstance(java.lang.String algorithm, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static javax.crypto.KDF getInstance(java.lang.String algorithm, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException, java.security.InvalidAlgorithmParameterException")
+  public static javax.crypto.KDF getInstance(java.lang.String algorithm, javax.crypto.KDFParameters kdfParameters, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException")
+  public static javax.crypto.KDF getInstance(java.lang.String algorithm, javax.crypto.KDFParameters kdfParameters, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static javax.crypto.KDF getInstance(java.lang.String algorithm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.crypto.KDFParameters getParameters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidAlgorithmParameterException, java.security.NoSuchAlgorithmException")
+  public javax.crypto.SecretKey deriveKey(java.lang.String alg, java.security.spec.AlgorithmParameterSpec derivationSpec) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidAlgorithmParameterException")
+  public byte[] deriveData(java.security.spec.AlgorithmParameterSpec derivationSpec) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getProviderName() { return null; }
   < ---- END java signatures ---- >
 }

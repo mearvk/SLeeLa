@@ -58,7 +58,9 @@ class NotContextException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NotContextException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.NotContextException.<init>(java.lang.String)"); }
-  public NotContextException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.NotContextException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotContextException(java.lang.String explanation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotContextException() { }
   < ---- END java constructors ---- >
 }

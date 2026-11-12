@@ -58,17 +58,28 @@ class AccessibleEditableText {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void delete(int startIndex, int endIndex) { throw new AbstractMethodError("javax.accessibility.AccessibleEditableText.delete(int, int)"); }
-  public abstract void setAttributes(int startIndex, int endIndex, javax.swing.text.AttributeSet as) { throw new AbstractMethodError("javax.accessibility.AccessibleEditableText.setAttributes(int, int, javax.swing.text.AttributeSet)"); }
-  public abstract void cut(int startIndex, int endIndex) { throw new AbstractMethodError("javax.accessibility.AccessibleEditableText.cut(int, int)"); }
-  public abstract void setTextContents(java.lang.String s) { throw new AbstractMethodError("javax.accessibility.AccessibleEditableText.setTextContents(java.lang.String)"); }
-  public abstract void insertTextAtIndex(int index, java.lang.String s) { throw new AbstractMethodError("javax.accessibility.AccessibleEditableText.insertTextAtIndex(int, java.lang.String)"); }
-  public abstract java.lang.String getTextRange(int startIndex, int endIndex) { throw new AbstractMethodError("javax.accessibility.AccessibleEditableText.getTextRange(int, int)"); }
-  public abstract void paste(int startIndex) { throw new AbstractMethodError("javax.accessibility.AccessibleEditableText.paste(int)"); }
-  public abstract void selectText(int startIndex, int endIndex) { throw new AbstractMethodError("javax.accessibility.AccessibleEditableText.selectText(int, int)"); }
-  public abstract void replaceText(int startIndex, int endIndex, java.lang.String s) { throw new AbstractMethodError("javax.accessibility.AccessibleEditableText.replaceText(int, int, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void delete(int startIndex, int endIndex) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAttributes(int startIndex, int endIndex, javax.swing.text.AttributeSet as) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void cut(int startIndex, int endIndex) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTextContents(java.lang.String s) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void insertTextAtIndex(int index, java.lang.String s) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getTextRange(int startIndex, int endIndex) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void paste(int startIndex) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void selectText(int startIndex, int endIndex) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void replaceText(int startIndex, int endIndex, java.lang.String s) { }
   < ---- END java signatures ---- >
 }

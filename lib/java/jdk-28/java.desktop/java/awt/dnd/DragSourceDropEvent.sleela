@@ -58,16 +58,23 @@ class DragSourceDropEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DragSourceDropEvent(java.awt.dnd.DragSourceContext dsc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragSourceDropEvent.<init>(java.awt.dnd.DragSourceContext)"); }
-  public DragSourceDropEvent(java.awt.dnd.DragSourceContext dsc, int action, boolean success, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragSourceDropEvent.<init>(java.awt.dnd.DragSourceContext, int, boolean, int, int)"); }
-  public DragSourceDropEvent(java.awt.dnd.DragSourceContext dsc, int action, boolean success) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragSourceDropEvent.<init>(java.awt.dnd.DragSourceContext, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DragSourceDropEvent(java.awt.dnd.DragSourceContext dsc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DragSourceDropEvent(java.awt.dnd.DragSourceContext dsc, int action, boolean success, int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DragSourceDropEvent(java.awt.dnd.DragSourceContext dsc, int action, boolean success) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int getDropAction() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragSourceDropEvent.getDropAction()"); }
-  public boolean getDropSuccess() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DragSourceDropEvent.getDropSuccess()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDropAction() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getDropSuccess() { return false; }
   < ---- END java signatures ---- >
 }

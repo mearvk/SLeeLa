@@ -103,20 +103,34 @@ class DayOfWeek {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int get(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.get(java.time.temporal.TemporalField)"); }
-  public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.getLong(java.time.temporal.TemporalField)"); }
-  public static java.time.DayOfWeek of(int dayOfWeek) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.of(int)"); }
-  public int getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.getValue()"); }
-  public static java.time.DayOfWeek from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.from(java.time.temporal.TemporalAccessor)"); }
-  public boolean isSupported(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.isSupported(java.time.temporal.TemporalField)"); }
-  public <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.query(java.time.temporal.TemporalQuery<R>)"); }
-  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.range(java.time.temporal.TemporalField)"); }
-  public java.lang.String getDisplayName(java.time.format.TextStyle style, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.getDisplayName(java.time.format.TextStyle, java.util.Locale)"); }
-  public java.time.DayOfWeek minus(long days) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.minus(long)"); }
-  public java.time.DayOfWeek plus(long days) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.plus(long)"); }
-  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.DayOfWeek.adjustInto(java.time.temporal.Temporal)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int get(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getLong(java.time.temporal.TemporalField field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.DayOfWeek of(int dayOfWeek) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.DayOfWeek from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSupported(java.time.temporal.TemporalField field) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <R> R query(java.time.temporal.TemporalQuery<R> query) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDisplayName(java.time.format.TextStyle style, java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.DayOfWeek minus(long days) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.DayOfWeek plus(long days) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { return null; }
   < ---- END java signatures ---- >
 }

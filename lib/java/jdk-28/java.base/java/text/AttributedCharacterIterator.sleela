@@ -58,15 +58,24 @@ class AttributedCharacterIterator {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.Map<java.text.AttributedCharacterIterator.Attribute, java.lang.Object> getAttributes() { throw new AbstractMethodError("java.text.AttributedCharacterIterator.getAttributes()"); }
-  public abstract java.lang.Object getAttribute(java.text.AttributedCharacterIterator.Attribute attribute) { throw new AbstractMethodError("java.text.AttributedCharacterIterator.getAttribute(java.text.AttributedCharacterIterator.Attribute)"); }
-  public abstract int getRunStart() { throw new AbstractMethodError("java.text.AttributedCharacterIterator.getRunStart()"); }
-  public abstract int getRunStart(java.util.Set<? extends java.text.AttributedCharacterIterator.Attribute> attributes) { throw new AbstractMethodError("java.text.AttributedCharacterIterator.getRunStart(java.util.Set<? extends java.text.AttributedCharacterIterator.Attribute>)"); }
-  public abstract int getRunLimit(java.util.Set<? extends java.text.AttributedCharacterIterator.Attribute> attributes) { throw new AbstractMethodError("java.text.AttributedCharacterIterator.getRunLimit(java.util.Set<? extends java.text.AttributedCharacterIterator.Attribute>)"); }
-  public abstract int getRunLimit() { throw new AbstractMethodError("java.text.AttributedCharacterIterator.getRunLimit()"); }
-  public abstract java.util.Set<java.text.AttributedCharacterIterator.Attribute> getAllAttributeKeys() { throw new AbstractMethodError("java.text.AttributedCharacterIterator.getAllAttributeKeys()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Map<java.text.AttributedCharacterIterator.Attribute, java.lang.Object> getAttributes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getAttribute(java.text.AttributedCharacterIterator.Attribute attribute) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getRunStart() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getRunStart(java.util.Set<? extends java.text.AttributedCharacterIterator.Attribute> attributes) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getRunLimit(java.util.Set<? extends java.text.AttributedCharacterIterator.Attribute> attributes) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getRunLimit() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<java.text.AttributedCharacterIterator.Attribute> getAllAttributeKeys() { return null; }
   < ---- END java signatures ---- >
 }

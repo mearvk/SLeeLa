@@ -58,9 +58,13 @@ class SecurityException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SecurityException(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityException.<init>(java.lang.Throwable)"); }
-  public SecurityException(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityException.<init>(java.lang.String, java.lang.Throwable)"); }
-  public SecurityException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityException.<init>(java.lang.String)"); }
-  public SecurityException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SecurityException(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SecurityException(java.lang.String message, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SecurityException(java.lang.String s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SecurityException() { }
   < ---- END java constructors ---- >
 }

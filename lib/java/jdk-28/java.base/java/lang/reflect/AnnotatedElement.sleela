@@ -58,15 +58,24 @@ class AnnotatedElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default boolean isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AnnotatedElement.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)"); }
-  public abstract <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { throw new AbstractMethodError("java.lang.reflect.AnnotatedElement.getAnnotation(java.lang.Class<T>)"); }
-  public default <T extends java.lang.annotation.Annotation> T[] getAnnotationsByType(java.lang.Class<T> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AnnotatedElement.getAnnotationsByType(java.lang.Class<T>)"); }
-  public abstract java.lang.annotation.Annotation[] getAnnotations() { throw new AbstractMethodError("java.lang.reflect.AnnotatedElement.getAnnotations()"); }
-  public default <T extends java.lang.annotation.Annotation> T getDeclaredAnnotation(java.lang.Class<T> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AnnotatedElement.getDeclaredAnnotation(java.lang.Class<T>)"); }
-  public default <T extends java.lang.annotation.Annotation> T[] getDeclaredAnnotationsByType(java.lang.Class<T> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AnnotatedElement.getDeclaredAnnotationsByType(java.lang.Class<T>)"); }
-  public abstract java.lang.annotation.Annotation[] getDeclaredAnnotations() { throw new AbstractMethodError("java.lang.reflect.AnnotatedElement.getDeclaredAnnotations()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation> annotationClass) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default <T extends java.lang.annotation.Annotation> T[] getAnnotationsByType(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.annotation.Annotation[] getAnnotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default <T extends java.lang.annotation.Annotation> T getDeclaredAnnotation(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default <T extends java.lang.annotation.Annotation> T[] getDeclaredAnnotationsByType(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,15 +58,24 @@ class RootPaneContainer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.swing.JRootPane getRootPane() { throw new AbstractMethodError("javax.swing.RootPaneContainer.getRootPane()"); }
-  public abstract javax.swing.JLayeredPane getLayeredPane() { throw new AbstractMethodError("javax.swing.RootPaneContainer.getLayeredPane()"); }
-  public abstract java.awt.Container getContentPane() { throw new AbstractMethodError("javax.swing.RootPaneContainer.getContentPane()"); }
-  public abstract void setContentPane(java.awt.Container contentPane) { throw new AbstractMethodError("javax.swing.RootPaneContainer.setContentPane(java.awt.Container)"); }
-  public abstract void setLayeredPane(javax.swing.JLayeredPane layeredPane) { throw new AbstractMethodError("javax.swing.RootPaneContainer.setLayeredPane(javax.swing.JLayeredPane)"); }
-  public abstract java.awt.Component getGlassPane() { throw new AbstractMethodError("javax.swing.RootPaneContainer.getGlassPane()"); }
-  public abstract void setGlassPane(java.awt.Component glassPane) { throw new AbstractMethodError("javax.swing.RootPaneContainer.setGlassPane(java.awt.Component)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.JRootPane getRootPane() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.JLayeredPane getLayeredPane() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Container getContentPane() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setContentPane(java.awt.Container contentPane) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setLayeredPane(javax.swing.JLayeredPane layeredPane) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Component getGlassPane() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setGlassPane(java.awt.Component glassPane) { }
   < ---- END java signatures ---- >
 }

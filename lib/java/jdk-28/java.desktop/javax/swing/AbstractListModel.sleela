@@ -63,22 +63,32 @@ class AbstractListModel<E> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractListModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractListModel.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractListModel() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void addListDataListener(javax.swing.event.ListDataListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractListModel.addListDataListener(javax.swing.event.ListDataListener)"); }
-  public void removeListDataListener(javax.swing.event.ListDataListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractListModel.removeListDataListener(javax.swing.event.ListDataListener)"); }
-  public javax.swing.event.ListDataListener[] getListDataListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractListModel.getListDataListeners()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addListDataListener(javax.swing.event.ListDataListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeListDataListener(javax.swing.event.ListDataListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.ListDataListener[] getListDataListeners() { return null; }
   @JavaProtected
-  void fireContentsChanged(java.lang.Object source, int index0, int index1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractListModel.fireContentsChanged(java.lang.Object, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireContentsChanged(java.lang.Object source, int index0, int index1) { }
   @JavaProtected
-  void fireIntervalAdded(java.lang.Object source, int index0, int index1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractListModel.fireIntervalAdded(java.lang.Object, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireIntervalAdded(java.lang.Object source, int index0, int index1) { }
   @JavaProtected
-  void fireIntervalRemoved(java.lang.Object source, int index0, int index1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractListModel.fireIntervalRemoved(java.lang.Object, int, int)"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.AbstractListModel.getListeners(java.lang.Class<T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireIntervalRemoved(java.lang.Object source, int index0, int index1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   < ---- END java signatures ---- >
 }

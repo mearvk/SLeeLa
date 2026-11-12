@@ -58,7 +58,9 @@ class NotCompliantMBeanException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NotCompliantMBeanException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotCompliantMBeanException.<init>()"); }
-  public NotCompliantMBeanException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotCompliantMBeanException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotCompliantMBeanException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotCompliantMBeanException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

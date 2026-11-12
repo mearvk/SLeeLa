@@ -59,15 +59,21 @@ class CRL {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  CRL(java.lang.String type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CRL.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  CRL(java.lang.String type) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String toString() { throw new AbstractMethodError("java.security.cert.CRL.toString()"); }
-  public final java.lang.String getType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CRL.getType()"); }
-  public abstract boolean isRevoked(java.security.cert.Certificate cert) { throw new AbstractMethodError("java.security.cert.CRL.isRevoked(java.security.cert.Certificate)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isRevoked(java.security.cert.Certificate cert) { return false; }
   < ---- END java signatures ---- >
 }

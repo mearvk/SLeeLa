@@ -58,7 +58,9 @@ class UnrecoverableKeyException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnrecoverableKeyException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnrecoverableKeyException.<init>()"); }
-  public UnrecoverableKeyException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnrecoverableKeyException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnrecoverableKeyException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnrecoverableKeyException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

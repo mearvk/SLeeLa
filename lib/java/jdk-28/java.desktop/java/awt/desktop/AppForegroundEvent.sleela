@@ -58,6 +58,7 @@ class AppForegroundEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AppForegroundEvent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.desktop.AppForegroundEvent.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AppForegroundEvent() { }
   < ---- END java constructors ---- >
 }

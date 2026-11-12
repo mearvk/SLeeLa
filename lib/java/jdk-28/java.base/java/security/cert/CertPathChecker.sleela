@@ -58,11 +58,16 @@ class CertPathChecker {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void init(boolean forward) throws java.security.cert.CertPathValidatorException { throw new AbstractMethodError("java.security.cert.CertPathChecker.init(boolean)"); }
-  public abstract void check(java.security.cert.Certificate cert) throws java.security.cert.CertPathValidatorException { throw new AbstractMethodError("java.security.cert.CertPathChecker.check(java.security.cert.Certificate)"); }
-  public abstract boolean isForwardCheckingSupported() { throw new AbstractMethodError("java.security.cert.CertPathChecker.isForwardCheckingSupported()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertPathValidatorException")
+  public void init(boolean forward) { }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertPathValidatorException")
+  public void check(java.security.cert.Certificate cert) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isForwardCheckingSupported() { return false; }
   < ---- END java signatures ---- >
 }

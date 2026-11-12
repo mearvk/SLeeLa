@@ -58,11 +58,16 @@ class CSSImportRule {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract org.w3c.dom.css.CSSStyleSheet getStyleSheet() { throw new AbstractMethodError("org.w3c.dom.css.CSSImportRule.getStyleSheet()"); }
-  public abstract org.w3c.dom.stylesheets.MediaList getMedia() { throw new AbstractMethodError("org.w3c.dom.css.CSSImportRule.getMedia()"); }
-  public abstract java.lang.String getHref() { throw new AbstractMethodError("org.w3c.dom.css.CSSImportRule.getHref()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.css.CSSStyleSheet getStyleSheet() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.stylesheets.MediaList getMedia() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getHref() { return null; }
   < ---- END java signatures ---- >
 }

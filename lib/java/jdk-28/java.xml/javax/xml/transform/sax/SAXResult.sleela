@@ -62,19 +62,29 @@ class SAXResult {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SAXResult() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.sax.SAXResult.<init>()"); }
-  public SAXResult(org.xml.sax.ContentHandler handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.sax.SAXResult.<init>(org.xml.sax.ContentHandler)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SAXResult() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SAXResult(org.xml.sax.ContentHandler handler) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public org.xml.sax.ContentHandler getHandler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.sax.SAXResult.getHandler()"); }
-  public void setLexicalHandler(org.xml.sax.ext.LexicalHandler handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.sax.SAXResult.setLexicalHandler(org.xml.sax.ext.LexicalHandler)"); }
-  public org.xml.sax.ext.LexicalHandler getLexicalHandler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.sax.SAXResult.getLexicalHandler()"); }
-  public void setHandler(org.xml.sax.ContentHandler handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.sax.SAXResult.setHandler(org.xml.sax.ContentHandler)"); }
-  public void setSystemId(java.lang.String systemId) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.sax.SAXResult.setSystemId(java.lang.String)"); }
-  public java.lang.String getSystemId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.sax.SAXResult.getSystemId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public org.xml.sax.ContentHandler getHandler() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLexicalHandler(org.xml.sax.ext.LexicalHandler handler) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public org.xml.sax.ext.LexicalHandler getLexicalHandler() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHandler(org.xml.sax.ContentHandler handler) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSystemId(java.lang.String systemId) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSystemId() { return null; }
   < ---- END java signatures ---- >
 }

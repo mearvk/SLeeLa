@@ -59,23 +59,37 @@ class Validator {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Validator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.Validator.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Validator() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void reset() { throw new AbstractMethodError("javax.xml.validation.Validator.reset()"); }
-  public java.lang.Object getProperty(java.lang.String name) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.Validator.getProperty(java.lang.String)"); }
-  public void validate(javax.xml.transform.Source source) throws org.xml.sax.SAXException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.Validator.validate(javax.xml.transform.Source)"); }
-  public abstract void validate(javax.xml.transform.Source source, javax.xml.transform.Result result) throws org.xml.sax.SAXException, java.io.IOException { throw new AbstractMethodError("javax.xml.validation.Validator.validate(javax.xml.transform.Source, javax.xml.transform.Result)"); }
-  public void setProperty(java.lang.String name, java.lang.Object object) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.Validator.setProperty(java.lang.String, java.lang.Object)"); }
-  public abstract void setResourceResolver(org.w3c.dom.ls.LSResourceResolver resourceResolver) { throw new AbstractMethodError("javax.xml.validation.Validator.setResourceResolver(org.w3c.dom.ls.LSResourceResolver)"); }
-  public abstract org.w3c.dom.ls.LSResourceResolver getResourceResolver() { throw new AbstractMethodError("javax.xml.validation.Validator.getResourceResolver()"); }
-  public abstract org.xml.sax.ErrorHandler getErrorHandler() { throw new AbstractMethodError("javax.xml.validation.Validator.getErrorHandler()"); }
-  public abstract void setErrorHandler(org.xml.sax.ErrorHandler errorHandler) { throw new AbstractMethodError("javax.xml.validation.Validator.setErrorHandler(org.xml.sax.ErrorHandler)"); }
-  public boolean getFeature(java.lang.String name) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.Validator.getFeature(java.lang.String)"); }
-  public void setFeature(java.lang.String name, boolean value) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.Validator.setFeature(java.lang.String, boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void reset() { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public java.lang.Object getProperty(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException, java.io.IOException")
+  public void validate(javax.xml.transform.Source source) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException, java.io.IOException")
+  public void validate(javax.xml.transform.Source source, javax.xml.transform.Result result) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public void setProperty(java.lang.String name, java.lang.Object object) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setResourceResolver(org.w3c.dom.ls.LSResourceResolver resourceResolver) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.ls.LSResourceResolver getResourceResolver() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.xml.sax.ErrorHandler getErrorHandler() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setErrorHandler(org.xml.sax.ErrorHandler errorHandler) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public boolean getFeature(java.lang.String name) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public void setFeature(java.lang.String name, boolean value) { }
   < ---- END java signatures ---- >
 }

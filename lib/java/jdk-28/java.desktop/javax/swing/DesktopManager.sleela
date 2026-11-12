@@ -58,23 +58,40 @@ class DesktopManager {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void setBoundsForFrame(javax.swing.JComponent f, int newX, int newY, int newWidth, int newHeight) { throw new AbstractMethodError("javax.swing.DesktopManager.setBoundsForFrame(javax.swing.JComponent, int, int, int, int)"); }
-  public abstract void iconifyFrame(javax.swing.JInternalFrame f) { throw new AbstractMethodError("javax.swing.DesktopManager.iconifyFrame(javax.swing.JInternalFrame)"); }
-  public abstract void openFrame(javax.swing.JInternalFrame f) { throw new AbstractMethodError("javax.swing.DesktopManager.openFrame(javax.swing.JInternalFrame)"); }
-  public abstract void closeFrame(javax.swing.JInternalFrame f) { throw new AbstractMethodError("javax.swing.DesktopManager.closeFrame(javax.swing.JInternalFrame)"); }
-  public abstract void maximizeFrame(javax.swing.JInternalFrame f) { throw new AbstractMethodError("javax.swing.DesktopManager.maximizeFrame(javax.swing.JInternalFrame)"); }
-  public abstract void minimizeFrame(javax.swing.JInternalFrame f) { throw new AbstractMethodError("javax.swing.DesktopManager.minimizeFrame(javax.swing.JInternalFrame)"); }
-  public abstract void deiconifyFrame(javax.swing.JInternalFrame f) { throw new AbstractMethodError("javax.swing.DesktopManager.deiconifyFrame(javax.swing.JInternalFrame)"); }
-  public abstract void activateFrame(javax.swing.JInternalFrame f) { throw new AbstractMethodError("javax.swing.DesktopManager.activateFrame(javax.swing.JInternalFrame)"); }
-  public abstract void deactivateFrame(javax.swing.JInternalFrame f) { throw new AbstractMethodError("javax.swing.DesktopManager.deactivateFrame(javax.swing.JInternalFrame)"); }
-  public abstract void beginDraggingFrame(javax.swing.JComponent f) { throw new AbstractMethodError("javax.swing.DesktopManager.beginDraggingFrame(javax.swing.JComponent)"); }
-  public abstract void dragFrame(javax.swing.JComponent f, int newX, int newY) { throw new AbstractMethodError("javax.swing.DesktopManager.dragFrame(javax.swing.JComponent, int, int)"); }
-  public abstract void endDraggingFrame(javax.swing.JComponent f) { throw new AbstractMethodError("javax.swing.DesktopManager.endDraggingFrame(javax.swing.JComponent)"); }
-  public abstract void beginResizingFrame(javax.swing.JComponent f, int direction) { throw new AbstractMethodError("javax.swing.DesktopManager.beginResizingFrame(javax.swing.JComponent, int)"); }
-  public abstract void resizeFrame(javax.swing.JComponent f, int newX, int newY, int newWidth, int newHeight) { throw new AbstractMethodError("javax.swing.DesktopManager.resizeFrame(javax.swing.JComponent, int, int, int, int)"); }
-  public abstract void endResizingFrame(javax.swing.JComponent f) { throw new AbstractMethodError("javax.swing.DesktopManager.endResizingFrame(javax.swing.JComponent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void setBoundsForFrame(javax.swing.JComponent f, int newX, int newY, int newWidth, int newHeight) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void iconifyFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void openFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void closeFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void maximizeFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void minimizeFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void deiconifyFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void activateFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void deactivateFrame(javax.swing.JInternalFrame f) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void beginDraggingFrame(javax.swing.JComponent f) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void dragFrame(javax.swing.JComponent f, int newX, int newY) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void endDraggingFrame(javax.swing.JComponent f) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void beginResizingFrame(javax.swing.JComponent f, int direction) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void resizeFrame(javax.swing.JComponent f, int newX, int newY, int newWidth, int newHeight) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void endResizingFrame(javax.swing.JComponent f) { }
   < ---- END java signatures ---- >
 }

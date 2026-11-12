@@ -58,20 +58,34 @@ class Relation {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.List<javax.management.ObjectName> getRole(java.lang.String roleName) throws java.lang.IllegalArgumentException, javax.management.relation.RoleNotFoundException, javax.management.relation.RelationServiceNotRegisteredException { throw new AbstractMethodError("javax.management.relation.Relation.getRole(java.lang.String)"); }
-  public abstract javax.management.relation.RoleResult getRoles(java.lang.String[] roleNameArray) throws java.lang.IllegalArgumentException, javax.management.relation.RelationServiceNotRegisteredException { throw new AbstractMethodError("javax.management.relation.Relation.getRoles(java.lang.String[])"); }
-  public abstract java.lang.Integer getRoleCardinality(java.lang.String roleName) throws java.lang.IllegalArgumentException, javax.management.relation.RoleNotFoundException { throw new AbstractMethodError("javax.management.relation.Relation.getRoleCardinality(java.lang.String)"); }
-  public abstract javax.management.relation.RoleResult getAllRoles() throws javax.management.relation.RelationServiceNotRegisteredException { throw new AbstractMethodError("javax.management.relation.Relation.getAllRoles()"); }
-  public abstract javax.management.relation.RoleList retrieveAllRoles() { throw new AbstractMethodError("javax.management.relation.Relation.retrieveAllRoles()"); }
-  public abstract void setRole(javax.management.relation.Role role) throws java.lang.IllegalArgumentException, javax.management.relation.RoleNotFoundException, javax.management.relation.RelationTypeNotFoundException, javax.management.relation.InvalidRoleValueException, javax.management.relation.RelationServiceNotRegisteredException, javax.management.relation.RelationNotFoundException { throw new AbstractMethodError("javax.management.relation.Relation.setRole(javax.management.relation.Role)"); }
-  public abstract javax.management.relation.RoleResult setRoles(javax.management.relation.RoleList roleList) throws java.lang.IllegalArgumentException, javax.management.relation.RelationServiceNotRegisteredException, javax.management.relation.RelationTypeNotFoundException, javax.management.relation.RelationNotFoundException { throw new AbstractMethodError("javax.management.relation.Relation.setRoles(javax.management.relation.RoleList)"); }
-  public abstract void handleMBeanUnregistration(javax.management.ObjectName objectName, java.lang.String roleName) throws java.lang.IllegalArgumentException, javax.management.relation.RoleNotFoundException, javax.management.relation.InvalidRoleValueException, javax.management.relation.RelationServiceNotRegisteredException, javax.management.relation.RelationTypeNotFoundException, javax.management.relation.RelationNotFoundException { throw new AbstractMethodError("javax.management.relation.Relation.handleMBeanUnregistration(javax.management.ObjectName, java.lang.String)"); }
-  public abstract java.util.Map<javax.management.ObjectName, java.util.List<java.lang.String>> getReferencedMBeans() { throw new AbstractMethodError("javax.management.relation.Relation.getReferencedMBeans()"); }
-  public abstract java.lang.String getRelationTypeName() { throw new AbstractMethodError("javax.management.relation.Relation.getRelationTypeName()"); }
-  public abstract javax.management.ObjectName getRelationServiceName() { throw new AbstractMethodError("javax.management.relation.Relation.getRelationServiceName()"); }
-  public abstract java.lang.String getRelationId() { throw new AbstractMethodError("javax.management.relation.Relation.getRelationId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException, javax.management.relation.RoleNotFoundException, javax.management.relation.RelationServiceNotRegisteredException")
+  public java.util.List<javax.management.ObjectName> getRole(java.lang.String roleName) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException, javax.management.relation.RelationServiceNotRegisteredException")
+  public javax.management.relation.RoleResult getRoles(java.lang.String[] roleNameArray) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException, javax.management.relation.RoleNotFoundException")
+  public java.lang.Integer getRoleCardinality(java.lang.String roleName) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.management.relation.RelationServiceNotRegisteredException")
+  public javax.management.relation.RoleResult getAllRoles() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.relation.RoleList retrieveAllRoles() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException, javax.management.relation.RoleNotFoundException, javax.management.relation.RelationTypeNotFoundException, javax.management.relation.InvalidRoleValueException, javax.management.relation.RelationServiceNotRegisteredException, javax.management.relation.RelationNotFoundException")
+  public void setRole(javax.management.relation.Role role) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException, javax.management.relation.RelationServiceNotRegisteredException, javax.management.relation.RelationTypeNotFoundException, javax.management.relation.RelationNotFoundException")
+  public javax.management.relation.RoleResult setRoles(javax.management.relation.RoleList roleList) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException, javax.management.relation.RoleNotFoundException, javax.management.relation.InvalidRoleValueException, javax.management.relation.RelationServiceNotRegisteredException, javax.management.relation.RelationTypeNotFoundException, javax.management.relation.RelationNotFoundException")
+  public void handleMBeanUnregistration(javax.management.ObjectName objectName, java.lang.String roleName) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Map<javax.management.ObjectName, java.util.List<java.lang.String>> getReferencedMBeans() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getRelationTypeName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.ObjectName getRelationServiceName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getRelationId() { return null; }
   < ---- END java signatures ---- >
 }

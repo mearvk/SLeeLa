@@ -58,17 +58,25 @@ class ATR {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ATR(byte[] atr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ATR.<init>(byte[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ATR(byte[] atr) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ATR.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ATR.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ATR.hashCode()"); }
-  public byte[] getBytes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ATR.getBytes()"); }
-  public byte[] getHistoricalBytes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.ATR.getHistoricalBytes()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getBytes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getHistoricalBytes() { return null; }
   < ---- END java signatures ---- >
 }

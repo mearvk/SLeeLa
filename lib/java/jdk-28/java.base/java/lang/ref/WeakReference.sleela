@@ -58,7 +58,9 @@ class WeakReference<T> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public WeakReference(T referent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ref.WeakReference.<init>(T)"); }
-  public WeakReference(T referent, java.lang.ref.ReferenceQueue<? super T> q) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ref.WeakReference.<init>(T, java.lang.ref.ReferenceQueue<? super T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public WeakReference(T referent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public WeakReference(T referent, java.lang.ref.ReferenceQueue<? super T> q) { }
   < ---- END java constructors ---- >
 }

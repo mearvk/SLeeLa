@@ -58,24 +58,38 @@ class JCheckBoxMenuItem {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JCheckBoxMenuItem(javax.swing.Action a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JCheckBoxMenuItem.<init>(javax.swing.Action)"); }
-  public JCheckBoxMenuItem(java.lang.String text, javax.swing.Icon icon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JCheckBoxMenuItem.<init>(java.lang.String, javax.swing.Icon)"); }
-  public JCheckBoxMenuItem(java.lang.String text, boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JCheckBoxMenuItem.<init>(java.lang.String, boolean)"); }
-  public JCheckBoxMenuItem(java.lang.String text, javax.swing.Icon icon, boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JCheckBoxMenuItem.<init>(java.lang.String, javax.swing.Icon, boolean)"); }
-  public JCheckBoxMenuItem() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JCheckBoxMenuItem.<init>()"); }
-  public JCheckBoxMenuItem(java.lang.String text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JCheckBoxMenuItem.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JCheckBoxMenuItem(javax.swing.Action a) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JCheckBoxMenuItem(java.lang.String text, javax.swing.Icon icon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JCheckBoxMenuItem(java.lang.String text, boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JCheckBoxMenuItem(java.lang.String text, javax.swing.Icon icon, boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JCheckBoxMenuItem() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JCheckBoxMenuItem(java.lang.String text) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean getState() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JCheckBoxMenuItem.getState()"); }
-  public synchronized void setState(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JCheckBoxMenuItem.setState(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getState() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setState(boolean b) { }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JCheckBoxMenuItem.paramString()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JCheckBoxMenuItem.getUIClassID()"); }
-  public java.lang.Object[] getSelectedObjects() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JCheckBoxMenuItem.getSelectedObjects()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JCheckBoxMenuItem.getAccessibleContext()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] getSelectedObjects() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

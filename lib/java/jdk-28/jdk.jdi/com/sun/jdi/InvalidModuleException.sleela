@@ -58,7 +58,9 @@ class InvalidModuleException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidModuleException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InvalidModuleException.<init>()"); }
-  public InvalidModuleException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InvalidModuleException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidModuleException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidModuleException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

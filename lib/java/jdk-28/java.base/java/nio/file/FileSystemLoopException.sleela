@@ -58,6 +58,7 @@ class FileSystemLoopException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FileSystemLoopException(java.lang.String file) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.FileSystemLoopException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FileSystemLoopException(java.lang.String file) { }
   < ---- END java constructors ---- >
 }

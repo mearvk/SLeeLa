@@ -58,7 +58,9 @@ class TimeoutException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TimeoutException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeoutException.<init>()"); }
-  public TimeoutException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.TimeoutException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TimeoutException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TimeoutException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

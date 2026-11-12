@@ -58,7 +58,9 @@ class StackOverflowError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StackOverflowError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackOverflowError.<init>()"); }
-  public StackOverflowError(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackOverflowError.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StackOverflowError() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StackOverflowError(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

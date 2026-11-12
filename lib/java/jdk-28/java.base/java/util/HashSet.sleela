@@ -58,27 +58,45 @@ class HashSet<E> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public HashSet(int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.<init>(int)"); }
-  public HashSet(int initialCapacity, float loadFactor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.<init>(int, float)"); }
-  public HashSet(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.<init>(java.util.Collection<? extends E>)"); }
-  public HashSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashSet(int initialCapacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashSet(int initialCapacity, float loadFactor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashSet(java.util.Collection<? extends E> c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashSet() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.remove(java.lang.Object)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.size()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.clone()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.clear()"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.isEmpty()"); }
-  public boolean add(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.add(E)"); }
-  public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.toArray(T[])"); }
-  public java.lang.Object[] toArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.toArray()"); }
-  public java.util.Iterator<E> iterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.iterator()"); }
-  public boolean contains(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.contains(java.lang.Object)"); }
-  public java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.spliterator()"); }
-  public static <T> java.util.HashSet<T> newHashSet(int numElements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashSet.newHashSet(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean add(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> T[] toArray(T[] a) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] toArray() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Iterator<E> iterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Spliterator<E> spliterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.HashSet<T> newHashSet(int numElements) { return null; }
   < ---- END java signatures ---- >
 }

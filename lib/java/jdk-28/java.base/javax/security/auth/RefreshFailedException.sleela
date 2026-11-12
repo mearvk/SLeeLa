@@ -58,7 +58,9 @@ class RefreshFailedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RefreshFailedException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.RefreshFailedException.<init>()"); }
-  public RefreshFailedException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.RefreshFailedException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RefreshFailedException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RefreshFailedException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

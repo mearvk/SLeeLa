@@ -58,14 +58,22 @@ class XMLEventReader {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object getProperty(java.lang.String name) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.xml.stream.XMLEventReader.getProperty(java.lang.String)"); }
-  public abstract boolean hasNext() { throw new AbstractMethodError("javax.xml.stream.XMLEventReader.hasNext()"); }
-  public abstract javax.xml.stream.events.XMLEvent peek() throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLEventReader.peek()"); }
-  public abstract javax.xml.stream.events.XMLEvent nextTag() throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLEventReader.nextTag()"); }
-  public abstract java.lang.String getElementText() throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLEventReader.getElementText()"); }
-  public abstract javax.xml.stream.events.XMLEvent nextEvent() throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.XMLEventReader.nextEvent()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public java.lang.Object getProperty(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasNext() { return false; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public javax.xml.stream.events.XMLEvent peek() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public javax.xml.stream.events.XMLEvent nextTag() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public java.lang.String getElementText() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public javax.xml.stream.events.XMLEvent nextEvent() { return null; }
   < ---- END java signatures ---- >
 }

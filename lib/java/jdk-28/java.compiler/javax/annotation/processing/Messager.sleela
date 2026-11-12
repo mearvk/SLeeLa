@@ -58,18 +58,30 @@ class Messager {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void printMessage(javax.tools.Diagnostic.Kind kind, java.lang.CharSequence msg, javax.lang.model.element.Element e, javax.lang.model.element.AnnotationMirror a, javax.lang.model.element.AnnotationValue v) { throw new AbstractMethodError("javax.annotation.processing.Messager.printMessage(javax.tools.Diagnostic.Kind, java.lang.CharSequence, javax.lang.model.element.Element, javax.lang.model.element.AnnotationMirror, javax.lang.model.element.AnnotationValue)"); }
-  public abstract void printMessage(javax.tools.Diagnostic.Kind kind, java.lang.CharSequence msg, javax.lang.model.element.Element e, javax.lang.model.element.AnnotationMirror a) { throw new AbstractMethodError("javax.annotation.processing.Messager.printMessage(javax.tools.Diagnostic.Kind, java.lang.CharSequence, javax.lang.model.element.Element, javax.lang.model.element.AnnotationMirror)"); }
-  public abstract void printMessage(javax.tools.Diagnostic.Kind kind, java.lang.CharSequence msg, javax.lang.model.element.Element e) { throw new AbstractMethodError("javax.annotation.processing.Messager.printMessage(javax.tools.Diagnostic.Kind, java.lang.CharSequence, javax.lang.model.element.Element)"); }
-  public abstract void printMessage(javax.tools.Diagnostic.Kind kind, java.lang.CharSequence msg) { throw new AbstractMethodError("javax.annotation.processing.Messager.printMessage(javax.tools.Diagnostic.Kind, java.lang.CharSequence)"); }
-  public default void printError(java.lang.CharSequence msg, javax.lang.model.element.Element e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.Messager.printError(java.lang.CharSequence, javax.lang.model.element.Element)"); }
-  public default void printError(java.lang.CharSequence msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.Messager.printError(java.lang.CharSequence)"); }
-  public default void printWarning(java.lang.CharSequence msg, javax.lang.model.element.Element e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.Messager.printWarning(java.lang.CharSequence, javax.lang.model.element.Element)"); }
-  public default void printWarning(java.lang.CharSequence msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.Messager.printWarning(java.lang.CharSequence)"); }
-  public default void printNote(java.lang.CharSequence msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.Messager.printNote(java.lang.CharSequence)"); }
-  public default void printNote(java.lang.CharSequence msg, javax.lang.model.element.Element e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.Messager.printNote(java.lang.CharSequence, javax.lang.model.element.Element)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void printMessage(javax.tools.Diagnostic.Kind kind, java.lang.CharSequence msg, javax.lang.model.element.Element e, javax.lang.model.element.AnnotationMirror a, javax.lang.model.element.AnnotationValue v) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void printMessage(javax.tools.Diagnostic.Kind kind, java.lang.CharSequence msg, javax.lang.model.element.Element e, javax.lang.model.element.AnnotationMirror a) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void printMessage(javax.tools.Diagnostic.Kind kind, java.lang.CharSequence msg, javax.lang.model.element.Element e) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void printMessage(javax.tools.Diagnostic.Kind kind, java.lang.CharSequence msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void printError(java.lang.CharSequence msg, javax.lang.model.element.Element e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void printError(java.lang.CharSequence msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void printWarning(java.lang.CharSequence msg, javax.lang.model.element.Element e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void printWarning(java.lang.CharSequence msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void printNote(java.lang.CharSequence msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void printNote(java.lang.CharSequence msg, javax.lang.model.element.Element e) { }
   < ---- END java signatures ---- >
 }

@@ -80,43 +80,76 @@ class Frame {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Frame(java.lang.String title, java.awt.GraphicsConfiguration gc_) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.<init>(java.lang.String, java.awt.GraphicsConfiguration)"); }
-  public Frame(java.lang.String title) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.<init>(java.lang.String)"); }
-  public Frame(java.awt.GraphicsConfiguration gc_) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.<init>(java.awt.GraphicsConfiguration)"); }
-  public Frame() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Frame(java.lang.String title, java.awt.GraphicsConfiguration gc_) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Frame(java.lang.String title) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Frame(java.awt.GraphicsConfiguration gc_) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Frame() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove(java.awt.MenuComponent m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.remove(java.awt.MenuComponent)"); }
-  public synchronized int getState() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.getState()"); }
-  public synchronized void setState(int state) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.setState(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(java.awt.MenuComponent m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int getState() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setState(int state) { }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.paramString()"); }
-  public java.lang.String getTitle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.getTitle()"); }
-  public void setTitle(java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.setTitle(java.lang.String)"); }
-  public void setResizable(boolean resizable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.setResizable(boolean)"); }
-  public boolean isUndecorated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.isUndecorated()"); }
-  public boolean isResizable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.isResizable()"); }
-  public void setUndecorated(boolean undecorated) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.setUndecorated(boolean)"); }
-  public void setMenuBar(java.awt.MenuBar mb) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.setMenuBar(java.awt.MenuBar)"); }
-  public void setMaximizedBounds(java.awt.Rectangle bounds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.setMaximizedBounds(java.awt.Rectangle)"); }
-  public int getExtendedState() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.getExtendedState()"); }
-  public void setExtendedState(int state) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.setExtendedState(int)"); }
-  public java.awt.Image getIconImage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.getIconImage()"); }
-  public java.awt.MenuBar getMenuBar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.getMenuBar()"); }
-  public java.awt.Rectangle getMaximizedBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.getMaximizedBounds()"); }
-  public int getCursorType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.getCursorType()"); }
-  public static java.awt.Frame[] getFrames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.getFrames()"); }
-  public void setBackground(java.awt.Color bgColor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.setBackground(java.awt.Color)"); }
-  public void setOpacity(float opacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.setOpacity(float)"); }
-  public void setIconImage(java.awt.Image image) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.setIconImage(java.awt.Image)"); }
-  public void setShape(java.awt.Shape shape) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.setShape(java.awt.Shape)"); }
-  public void setCursor(int cursorType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.setCursor(int)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.getAccessibleContext()"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.addNotify()"); }
-  public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Frame.removeNotify()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getTitle() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTitle(java.lang.String title) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setResizable(boolean resizable) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isUndecorated() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isResizable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUndecorated(boolean undecorated) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMenuBar(java.awt.MenuBar mb) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximizedBounds(java.awt.Rectangle bounds) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getExtendedState() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setExtendedState(int state) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Image getIconImage() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.MenuBar getMenuBar() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getMaximizedBounds() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getCursorType() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Frame[] getFrames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBackground(java.awt.Color bgColor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setOpacity(float opacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIconImage(java.awt.Image image) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setShape(java.awt.Shape shape) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCursor(int cursorType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeNotify() { }
   < ---- END java signatures ---- >
 }

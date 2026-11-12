@@ -58,14 +58,22 @@ class X509KeyManager {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.security.cert.X509Certificate[] getCertificateChain(java.lang.String alias) { throw new AbstractMethodError("javax.net.ssl.X509KeyManager.getCertificateChain(java.lang.String)"); }
-  public abstract java.lang.String[] getClientAliases(java.lang.String keyType, java.security.Principal[] issuers) { throw new AbstractMethodError("javax.net.ssl.X509KeyManager.getClientAliases(java.lang.String, java.security.Principal[])"); }
-  public abstract java.lang.String chooseClientAlias(java.lang.String[] keyType, java.security.Principal[] issuers, java.net.Socket socket) { throw new AbstractMethodError("javax.net.ssl.X509KeyManager.chooseClientAlias(java.lang.String[], java.security.Principal[], java.net.Socket)"); }
-  public abstract java.lang.String[] getServerAliases(java.lang.String keyType, java.security.Principal[] issuers) { throw new AbstractMethodError("javax.net.ssl.X509KeyManager.getServerAliases(java.lang.String, java.security.Principal[])"); }
-  public abstract java.lang.String chooseServerAlias(java.lang.String keyType, java.security.Principal[] issuers, java.net.Socket socket) { throw new AbstractMethodError("javax.net.ssl.X509KeyManager.chooseServerAlias(java.lang.String, java.security.Principal[], java.net.Socket)"); }
-  public abstract java.security.PrivateKey getPrivateKey(java.lang.String alias) { throw new AbstractMethodError("javax.net.ssl.X509KeyManager.getPrivateKey(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.cert.X509Certificate[] getCertificateChain(java.lang.String alias) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getClientAliases(java.lang.String keyType, java.security.Principal[] issuers) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String chooseClientAlias(java.lang.String[] keyType, java.security.Principal[] issuers, java.net.Socket socket) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String[] getServerAliases(java.lang.String keyType, java.security.Principal[] issuers) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String chooseServerAlias(java.lang.String keyType, java.security.Principal[] issuers, java.net.Socket socket) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.PrivateKey getPrivateKey(java.lang.String alias) { return null; }
   < ---- END java signatures ---- >
 }

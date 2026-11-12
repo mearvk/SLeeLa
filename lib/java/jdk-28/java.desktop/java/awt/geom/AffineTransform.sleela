@@ -71,76 +71,143 @@ class AffineTransform {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AffineTransform(float m00, float m10, float m01, float m11, float m02, float m12) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.<init>(float, float, float, float, float, float)"); }
-  public AffineTransform(float[] flatmatrix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.<init>(float[])"); }
-  public AffineTransform(double m00, double m10, double m01, double m11, double m02, double m12) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.<init>(double, double, double, double, double, double)"); }
-  public AffineTransform(double[] flatmatrix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.<init>(double[])"); }
-  public AffineTransform() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.<init>()"); }
-  public AffineTransform(java.awt.geom.AffineTransform Tx) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.<init>(java.awt.geom.AffineTransform)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AffineTransform(float m00, float m10, float m01, float m11, float m02, float m12) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AffineTransform(float[] flatmatrix) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AffineTransform(double m00, double m10, double m01, double m11, double m02, double m12) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AffineTransform(double[] flatmatrix) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AffineTransform() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AffineTransform(java.awt.geom.AffineTransform Tx) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.clone()"); }
-  public void scale(double sx, double sy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.scale(double, double)"); }
-  public void transform(java.awt.geom.Point2D[] ptSrc, int srcOff, java.awt.geom.Point2D[] ptDst, int dstOff, int numPts) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.transform(java.awt.geom.Point2D[], int, java.awt.geom.Point2D[], int, int)"); }
-  public void transform(double[] srcPts, int srcOff, float[] dstPts, int dstOff, int numPts) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.transform(double[], int, float[], int, int)"); }
-  public void transform(float[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.transform(float[], int, double[], int, int)"); }
-  public void transform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.transform(double[], int, double[], int, int)"); }
-  public void transform(float[] srcPts, int srcOff, float[] dstPts, int dstOff, int numPts) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.transform(float[], int, float[], int, int)"); }
-  public java.awt.geom.Point2D transform(java.awt.geom.Point2D ptSrc, java.awt.geom.Point2D ptDst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.transform(java.awt.geom.Point2D, java.awt.geom.Point2D)"); }
-  public int getType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getType()"); }
-  public boolean isIdentity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.isIdentity()"); }
-  public void rotate(double vecx, double vecy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.rotate(double, double)"); }
-  public void rotate(double vecx, double vecy, double anchorx, double anchory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.rotate(double, double, double, double)"); }
-  public void rotate(double theta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.rotate(double)"); }
-  public void rotate(double theta, double anchorx, double anchory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.rotate(double, double, double)"); }
-  public void translate(double tx, double ty) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.translate(double, double)"); }
-  public void setToTranslation(double tx, double ty) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.setToTranslation(double, double)"); }
-  public void setToRotation(double vecx, double vecy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.setToRotation(double, double)"); }
-  public void setToRotation(double theta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.setToRotation(double)"); }
-  public void setToRotation(double vecx, double vecy, double anchorx, double anchory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.setToRotation(double, double, double, double)"); }
-  public void setToRotation(double theta, double anchorx, double anchory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.setToRotation(double, double, double)"); }
-  public void setToQuadrantRotation(int numquadrants, double anchorx, double anchory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.setToQuadrantRotation(int, double, double)"); }
-  public void setToQuadrantRotation(int numquadrants) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.setToQuadrantRotation(int)"); }
-  public void setToScale(double sx, double sy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.setToScale(double, double)"); }
-  public void setToShear(double shx, double shy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.setToShear(double, double)"); }
-  public static java.awt.geom.AffineTransform getTranslateInstance(double tx, double ty) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getTranslateInstance(double, double)"); }
-  public static java.awt.geom.AffineTransform getRotateInstance(double vecx, double vecy, double anchorx, double anchory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getRotateInstance(double, double, double, double)"); }
-  public static java.awt.geom.AffineTransform getRotateInstance(double vecx, double vecy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getRotateInstance(double, double)"); }
-  public static java.awt.geom.AffineTransform getRotateInstance(double theta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getRotateInstance(double)"); }
-  public static java.awt.geom.AffineTransform getRotateInstance(double theta, double anchorx, double anchory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getRotateInstance(double, double, double)"); }
-  public static java.awt.geom.AffineTransform getQuadrantRotateInstance(int numquadrants) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getQuadrantRotateInstance(int)"); }
-  public static java.awt.geom.AffineTransform getQuadrantRotateInstance(int numquadrants, double anchorx, double anchory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getQuadrantRotateInstance(int, double, double)"); }
-  public static java.awt.geom.AffineTransform getScaleInstance(double sx, double sy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getScaleInstance(double, double)"); }
-  public static java.awt.geom.AffineTransform getShearInstance(double shx, double shy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getShearInstance(double, double)"); }
-  public double getDeterminant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getDeterminant()"); }
-  public void getMatrix(double[] flatmatrix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getMatrix(double[])"); }
-  public double getScaleX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getScaleX()"); }
-  public double getScaleY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getScaleY()"); }
-  public double getShearX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getShearX()"); }
-  public double getShearY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getShearY()"); }
-  public double getTranslateX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getTranslateX()"); }
-  public double getTranslateY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.getTranslateY()"); }
-  public void quadrantRotate(int numquadrants, double anchorx, double anchory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.quadrantRotate(int, double, double)"); }
-  public void quadrantRotate(int numquadrants) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.quadrantRotate(int)"); }
-  public void shear(double shx, double shy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.shear(double, double)"); }
-  public void setToIdentity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.setToIdentity()"); }
-  public void setTransform(double m00, double m10, double m01, double m11, double m02, double m12) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.setTransform(double, double, double, double, double, double)"); }
-  public void setTransform(java.awt.geom.AffineTransform Tx) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.setTransform(java.awt.geom.AffineTransform)"); }
-  public void concatenate(java.awt.geom.AffineTransform Tx) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.concatenate(java.awt.geom.AffineTransform)"); }
-  public void preConcatenate(java.awt.geom.AffineTransform Tx) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.preConcatenate(java.awt.geom.AffineTransform)"); }
-  public java.awt.geom.AffineTransform createInverse() throws java.awt.geom.NoninvertibleTransformException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.createInverse()"); }
-  public void invert() throws java.awt.geom.NoninvertibleTransformException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.invert()"); }
-  public java.awt.geom.Point2D inverseTransform(java.awt.geom.Point2D ptSrc, java.awt.geom.Point2D ptDst) throws java.awt.geom.NoninvertibleTransformException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.inverseTransform(java.awt.geom.Point2D, java.awt.geom.Point2D)"); }
-  public void inverseTransform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) throws java.awt.geom.NoninvertibleTransformException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.inverseTransform(double[], int, double[], int, int)"); }
-  public void deltaTransform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.deltaTransform(double[], int, double[], int, int)"); }
-  public java.awt.geom.Point2D deltaTransform(java.awt.geom.Point2D ptSrc, java.awt.geom.Point2D ptDst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.deltaTransform(java.awt.geom.Point2D, java.awt.geom.Point2D)"); }
-  public java.awt.Shape createTransformedShape(java.awt.Shape pSrc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.AffineTransform.createTransformedShape(java.awt.Shape)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void scale(double sx, double sy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void transform(java.awt.geom.Point2D[] ptSrc, int srcOff, java.awt.geom.Point2D[] ptDst, int dstOff, int numPts) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void transform(double[] srcPts, int srcOff, float[] dstPts, int dstOff, int numPts) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void transform(float[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void transform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void transform(float[] srcPts, int srcOff, float[] dstPts, int dstOff, int numPts) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Point2D transform(java.awt.geom.Point2D ptSrc, java.awt.geom.Point2D ptDst) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getType() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isIdentity() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void rotate(double vecx, double vecy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void rotate(double vecx, double vecy, double anchorx, double anchory) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void rotate(double theta) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void rotate(double theta, double anchorx, double anchory) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void translate(double tx, double ty) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToTranslation(double tx, double ty) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToRotation(double vecx, double vecy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToRotation(double theta) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToRotation(double vecx, double vecy, double anchorx, double anchory) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToRotation(double theta, double anchorx, double anchory) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToQuadrantRotation(int numquadrants, double anchorx, double anchory) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToQuadrantRotation(int numquadrants) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToScale(double sx, double sy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToShear(double shx, double shy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.geom.AffineTransform getTranslateInstance(double tx, double ty) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.geom.AffineTransform getRotateInstance(double vecx, double vecy, double anchorx, double anchory) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.geom.AffineTransform getRotateInstance(double vecx, double vecy) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.geom.AffineTransform getRotateInstance(double theta) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.geom.AffineTransform getRotateInstance(double theta, double anchorx, double anchory) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.geom.AffineTransform getQuadrantRotateInstance(int numquadrants) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.geom.AffineTransform getQuadrantRotateInstance(int numquadrants, double anchorx, double anchory) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.geom.AffineTransform getScaleInstance(double sx, double sy) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.geom.AffineTransform getShearInstance(double shx, double shy) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getDeterminant() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void getMatrix(double[] flatmatrix) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getScaleX() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getScaleY() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getShearX() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getShearY() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getTranslateX() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getTranslateY() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void quadrantRotate(int numquadrants, double anchorx, double anchory) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void quadrantRotate(int numquadrants) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void shear(double shx, double shy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToIdentity() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTransform(double m00, double m10, double m01, double m11, double m02, double m12) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTransform(java.awt.geom.AffineTransform Tx) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void concatenate(java.awt.geom.AffineTransform Tx) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void preConcatenate(java.awt.geom.AffineTransform Tx) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.geom.NoninvertibleTransformException")
+  public java.awt.geom.AffineTransform createInverse() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.geom.NoninvertibleTransformException")
+  public void invert() { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.geom.NoninvertibleTransformException")
+  public java.awt.geom.Point2D inverseTransform(java.awt.geom.Point2D ptSrc, java.awt.geom.Point2D ptDst) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.geom.NoninvertibleTransformException")
+  public void inverseTransform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void deltaTransform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Point2D deltaTransform(java.awt.geom.Point2D ptSrc, java.awt.geom.Point2D ptDst) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Shape createTransformedShape(java.awt.Shape pSrc) { return null; }
   < ---- END java signatures ---- >
 }

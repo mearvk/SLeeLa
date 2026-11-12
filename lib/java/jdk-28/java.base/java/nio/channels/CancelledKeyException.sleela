@@ -58,6 +58,7 @@ class CancelledKeyException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CancelledKeyException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.CancelledKeyException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CancelledKeyException() { }
   < ---- END java constructors ---- >
 }

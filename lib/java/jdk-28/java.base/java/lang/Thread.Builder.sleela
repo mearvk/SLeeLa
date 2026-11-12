@@ -59,15 +59,24 @@ class Builder {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Thread.Builder name(java.lang.String name) { throw new AbstractMethodError("java.lang.Thread.Builder.name(java.lang.String)"); }
-  public abstract java.lang.Thread.Builder name(java.lang.String prefix, long start) { throw new AbstractMethodError("java.lang.Thread.Builder.name(java.lang.String, long)"); }
-  public abstract java.util.concurrent.ThreadFactory factory() { throw new AbstractMethodError("java.lang.Thread.Builder.factory()"); }
-  public abstract java.lang.Thread start(java.lang.Runnable task) { throw new AbstractMethodError("java.lang.Thread.Builder.start(java.lang.Runnable)"); }
-  public abstract java.lang.Thread.Builder uncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler ueh) { throw new AbstractMethodError("java.lang.Thread.Builder.uncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler)"); }
-  public abstract java.lang.Thread.Builder inheritInheritableThreadLocals(boolean inherit) { throw new AbstractMethodError("java.lang.Thread.Builder.inheritInheritableThreadLocals(boolean)"); }
-  public abstract java.lang.Thread unstarted(java.lang.Runnable task) { throw new AbstractMethodError("java.lang.Thread.Builder.unstarted(java.lang.Runnable)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Thread.Builder name(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Thread.Builder name(java.lang.String prefix, long start) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.ThreadFactory factory() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Thread start(java.lang.Runnable task) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Thread.Builder uncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler ueh) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Thread.Builder inheritInheritableThreadLocals(boolean inherit) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Thread unstarted(java.lang.Runnable task) { return null; }
   < ---- END java signatures ---- >
 }

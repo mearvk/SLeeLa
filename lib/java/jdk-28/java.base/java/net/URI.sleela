@@ -58,45 +58,81 @@ class URI {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public URI(java.lang.String scheme, java.lang.String authority, java.lang.String path, java.lang.String query, java.lang.String fragment) throws java.net.URISyntaxException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.<init>(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public URI(java.lang.String scheme, java.lang.String host, java.lang.String path, java.lang.String fragment) throws java.net.URISyntaxException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.<init>(java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public URI(java.lang.String scheme, java.lang.String ssp, java.lang.String fragment) throws java.net.URISyntaxException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.<init>(java.lang.String, java.lang.String, java.lang.String)"); }
-  public URI(java.lang.String str) throws java.net.URISyntaxException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.<init>(java.lang.String)"); }
-  public URI(java.lang.String scheme, java.lang.String userInfo, java.lang.String host, int port, java.lang.String path, java.lang.String query, java.lang.String fragment) throws java.net.URISyntaxException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.<init>(java.lang.String, java.lang.String, java.lang.String, int, java.lang.String, java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.net.URISyntaxException")
+  public URI(java.lang.String scheme, java.lang.String authority, java.lang.String path, java.lang.String query, java.lang.String fragment) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.URISyntaxException")
+  public URI(java.lang.String scheme, java.lang.String host, java.lang.String path, java.lang.String fragment) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.URISyntaxException")
+  public URI(java.lang.String scheme, java.lang.String ssp, java.lang.String fragment) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.URISyntaxException")
+  public URI(java.lang.String str) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.URISyntaxException")
+  public URI(java.lang.String scheme, java.lang.String userInfo, java.lang.String host, int port, java.lang.String path, java.lang.String query, java.lang.String fragment) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.hashCode()"); }
-  public int compareTo(java.net.URI that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.compareTo(java.net.URI)"); }
-  public boolean isAbsolute() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.isAbsolute()"); }
-  public java.net.URI resolve(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.resolve(java.lang.String)"); }
-  public java.net.URI resolve(java.net.URI uri) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.resolve(java.net.URI)"); }
-  public static java.net.URI create(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.create(java.lang.String)"); }
-  public java.lang.String getScheme() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getScheme()"); }
-  public boolean isOpaque() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.isOpaque()"); }
-  public java.lang.String getRawAuthority() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getRawAuthority()"); }
-  public java.lang.String getRawFragment() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getRawFragment()"); }
-  public java.lang.String getRawQuery() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getRawQuery()"); }
-  public java.lang.String getRawPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getRawPath()"); }
-  public java.lang.String getHost() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getHost()"); }
-  public int getPort() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getPort()"); }
-  public java.lang.String getAuthority() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getAuthority()"); }
-  public java.lang.String getQuery() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getQuery()"); }
-  public java.lang.String getPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getPath()"); }
-  public java.lang.String getUserInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getUserInfo()"); }
-  public java.net.URL toURL() throws java.net.MalformedURLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.toURL()"); }
-  public java.net.URI normalize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.normalize()"); }
-  public java.net.URI relativize(java.net.URI uri) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.relativize(java.net.URI)"); }
-  public java.lang.String getRawSchemeSpecificPart() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getRawSchemeSpecificPart()"); }
-  public java.net.URI parseServerAuthority() throws java.net.URISyntaxException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.parseServerAuthority()"); }
-  public java.lang.String getSchemeSpecificPart() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getSchemeSpecificPart()"); }
-  public java.lang.String getRawUserInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getRawUserInfo()"); }
-  public java.lang.String getFragment() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.getFragment()"); }
-  public java.lang.String toASCIIString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.URI.toASCIIString()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object ob) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.net.URI that) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAbsolute() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.URI resolve(java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.URI resolve(java.net.URI uri) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.URI create(java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getScheme() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isOpaque() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getRawAuthority() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getRawFragment() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getRawQuery() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getRawPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getHost() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getPort() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAuthority() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getQuery() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUserInfo() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.net.MalformedURLException")
+  public java.net.URL toURL() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.URI normalize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.URI relativize(java.net.URI uri) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getRawSchemeSpecificPart() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.net.URISyntaxException")
+  public java.net.URI parseServerAuthority() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSchemeSpecificPart() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getRawUserInfo() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getFragment() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toASCIIString() { return null; }
   < ---- END java signatures ---- >
 }

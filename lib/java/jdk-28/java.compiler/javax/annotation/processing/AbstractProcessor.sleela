@@ -63,20 +63,30 @@ class AbstractProcessor {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractProcessor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.AbstractProcessor.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractProcessor() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized void init(javax.annotation.processing.ProcessingEnvironment processingEnv) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.AbstractProcessor.init(javax.annotation.processing.ProcessingEnvironment)"); }
-  public abstract boolean process(java.util.Set<? extends javax.lang.model.element.TypeElement> annotations, javax.annotation.processing.RoundEnvironment roundEnv) { throw new AbstractMethodError("javax.annotation.processing.AbstractProcessor.process(java.util.Set<? extends javax.lang.model.element.TypeElement>, javax.annotation.processing.RoundEnvironment)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void init(javax.annotation.processing.ProcessingEnvironment processingEnv) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean process(java.util.Set<? extends javax.lang.model.element.TypeElement> annotations, javax.annotation.processing.RoundEnvironment roundEnv) { return false; }
   @JavaProtected
-  synchronized boolean isInitialized() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.AbstractProcessor.isInitialized()"); }
-  public java.util.Set<java.lang.String> getSupportedAnnotationTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.AbstractProcessor.getSupportedAnnotationTypes()"); }
-  public java.lang.Iterable<? extends javax.annotation.processing.Completion> getCompletions(javax.lang.model.element.Element element, javax.lang.model.element.AnnotationMirror annotation, javax.lang.model.element.ExecutableElement member, java.lang.String userText) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.AbstractProcessor.getCompletions(javax.lang.model.element.Element, javax.lang.model.element.AnnotationMirror, javax.lang.model.element.ExecutableElement, java.lang.String)"); }
-  public javax.lang.model.SourceVersion getSupportedSourceVersion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.AbstractProcessor.getSupportedSourceVersion()"); }
-  public java.util.Set<java.lang.String> getSupportedOptions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.annotation.processing.AbstractProcessor.getSupportedOptions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  synchronized boolean isInitialized() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.String> getSupportedAnnotationTypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Iterable<? extends javax.annotation.processing.Completion> getCompletions(javax.lang.model.element.Element element, javax.lang.model.element.AnnotationMirror annotation, javax.lang.model.element.ExecutableElement member, java.lang.String userText) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.lang.model.SourceVersion getSupportedSourceVersion() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.String> getSupportedOptions() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,31 +58,52 @@ class ScheduledThreadPoolExecutor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ScheduledThreadPoolExecutor(int corePoolSize, java.util.concurrent.ThreadFactory threadFactory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.<init>(int, java.util.concurrent.ThreadFactory)"); }
-  public ScheduledThreadPoolExecutor(int corePoolSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.<init>(int)"); }
-  public ScheduledThreadPoolExecutor(int corePoolSize, java.util.concurrent.ThreadFactory threadFactory, java.util.concurrent.RejectedExecutionHandler handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.<init>(int, java.util.concurrent.ThreadFactory, java.util.concurrent.RejectedExecutionHandler)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ScheduledThreadPoolExecutor(int corePoolSize, java.util.concurrent.ThreadFactory threadFactory) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ScheduledThreadPoolExecutor(int corePoolSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ScheduledThreadPoolExecutor(int corePoolSize, java.util.concurrent.ThreadFactory threadFactory, java.util.concurrent.RejectedExecutionHandler handler) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void shutdown() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.shutdown()"); }
-  public java.util.concurrent.BlockingQueue<java.lang.Runnable> getQueue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.getQueue()"); }
-  public void execute(java.lang.Runnable command) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.execute(java.lang.Runnable)"); }
-  public <V> java.util.concurrent.ScheduledFuture<V> schedule(java.util.concurrent.Callable<V> callable, long delay, java.util.concurrent.TimeUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.schedule(java.util.concurrent.Callable<V>, long, java.util.concurrent.TimeUnit)"); }
-  public java.util.concurrent.Future<?> submit(java.lang.Runnable task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.submit(java.lang.Runnable)"); }
-  public <T> java.util.concurrent.Future<T> submit(java.lang.Runnable task, T result) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.submit(java.lang.Runnable, T)"); }
-  public java.util.List<java.lang.Runnable> shutdownNow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.shutdownNow()"); }
-  public java.util.concurrent.ScheduledFuture<?> scheduleAtFixedRate(java.lang.Runnable command, long initialDelay, long period, java.util.concurrent.TimeUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.scheduleAtFixedRate(java.lang.Runnable, long, long, java.util.concurrent.TimeUnit)"); }
-  public java.util.concurrent.ScheduledFuture<?> scheduleWithFixedDelay(java.lang.Runnable command, long initialDelay, long delay, java.util.concurrent.TimeUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.scheduleWithFixedDelay(java.lang.Runnable, long, long, java.util.concurrent.TimeUnit)"); }
-  public boolean getExecuteExistingDelayedTasksAfterShutdownPolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.getExecuteExistingDelayedTasksAfterShutdownPolicy()"); }
-  public boolean getContinueExistingPeriodicTasksAfterShutdownPolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.getContinueExistingPeriodicTasksAfterShutdownPolicy()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void shutdown() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.BlockingQueue<java.lang.Runnable> getQueue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void execute(java.lang.Runnable command) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <V> java.util.concurrent.ScheduledFuture<V> schedule(java.util.concurrent.Callable<V> callable, long delay, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.Future<?> submit(java.lang.Runnable task) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> java.util.concurrent.Future<T> submit(java.lang.Runnable task, T result) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.lang.Runnable> shutdownNow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.ScheduledFuture<?> scheduleAtFixedRate(java.lang.Runnable command, long initialDelay, long period, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.ScheduledFuture<?> scheduleWithFixedDelay(java.lang.Runnable command, long initialDelay, long delay, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getExecuteExistingDelayedTasksAfterShutdownPolicy() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getContinueExistingPeriodicTasksAfterShutdownPolicy() { return false; }
   @JavaProtected
-  <V> java.util.concurrent.RunnableScheduledFuture<V> decorateTask(java.lang.Runnable runnable, java.util.concurrent.RunnableScheduledFuture<V> task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.decorateTask(java.lang.Runnable, java.util.concurrent.RunnableScheduledFuture<V>)"); }
-  public void setContinueExistingPeriodicTasksAfterShutdownPolicy(boolean value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.setContinueExistingPeriodicTasksAfterShutdownPolicy(boolean)"); }
-  public void setExecuteExistingDelayedTasksAfterShutdownPolicy(boolean value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.setExecuteExistingDelayedTasksAfterShutdownPolicy(boolean)"); }
-  public boolean getRemoveOnCancelPolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.getRemoveOnCancelPolicy()"); }
-  public void setRemoveOnCancelPolicy(boolean value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ScheduledThreadPoolExecutor.setRemoveOnCancelPolicy(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  <V> java.util.concurrent.RunnableScheduledFuture<V> decorateTask(java.lang.Runnable runnable, java.util.concurrent.RunnableScheduledFuture<V> task) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setContinueExistingPeriodicTasksAfterShutdownPolicy(boolean value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setExecuteExistingDelayedTasksAfterShutdownPolicy(boolean value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getRemoveOnCancelPolicy() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRemoveOnCancelPolicy(boolean value) { }
   < ---- END java signatures ---- >
 }

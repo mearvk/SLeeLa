@@ -58,6 +58,7 @@ class ShutdownChannelGroupException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ShutdownChannelGroupException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.ShutdownChannelGroupException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ShutdownChannelGroupException() { }
   < ---- END java constructors ---- >
 }

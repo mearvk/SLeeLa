@@ -62,63 +62,113 @@ class ForkJoinPool {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ForkJoinPool(int parallelism, java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory factory, java.lang.Thread.UncaughtExceptionHandler handler, boolean asyncMode, int corePoolSize, int maximumPoolSize, int minimumRunnable, java.util.function.Predicate<? super java.util.concurrent.ForkJoinPool> saturate, long keepAliveTime, java.util.concurrent.TimeUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.<init>(int, java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory, java.lang.Thread.UncaughtExceptionHandler, boolean, int, int, int, java.util.function.Predicate<? super java.util.concurrent.ForkJoinPool>, long, java.util.concurrent.TimeUnit)"); }
-  public ForkJoinPool() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.<init>()"); }
-  public ForkJoinPool(int parallelism) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.<init>(int)"); }
-  public ForkJoinPool(int parallelism, java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory factory, java.lang.Thread.UncaughtExceptionHandler handler, boolean asyncMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.<init>(int, java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory, java.lang.Thread.UncaughtExceptionHandler, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ForkJoinPool(int parallelism, java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory factory, java.lang.Thread.UncaughtExceptionHandler handler, boolean asyncMode, int corePoolSize, int maximumPoolSize, int minimumRunnable, java.util.function.Predicate<? super java.util.concurrent.ForkJoinPool> saturate, long keepAliveTime, java.util.concurrent.TimeUnit unit) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ForkJoinPool() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ForkJoinPool(int parallelism) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ForkJoinPool(int parallelism, java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory factory, java.lang.Thread.UncaughtExceptionHandler handler, boolean asyncMode) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void shutdown() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.shutdown()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.toString()"); }
-  public java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory getFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.getFactory()"); }
-  public boolean isTerminated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.isTerminated()"); }
-  public java.lang.Thread.UncaughtExceptionHandler getUncaughtExceptionHandler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.getUncaughtExceptionHandler()"); }
-  public void execute(java.util.concurrent.ForkJoinTask<?> task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.execute(java.util.concurrent.ForkJoinTask<?>)"); }
-  public <T> java.util.concurrent.ForkJoinTask<T> externalSubmit(java.util.concurrent.ForkJoinTask<T> task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.externalSubmit(java.util.concurrent.ForkJoinTask<T>)"); }
-  public long getQueuedTaskCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.getQueuedTaskCount()"); }
-  public <T> java.util.concurrent.ForkJoinTask<T> lazySubmit(java.util.concurrent.ForkJoinTask<T> task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.lazySubmit(java.util.concurrent.ForkJoinTask<T>)"); }
-  public <V> java.util.concurrent.ScheduledFuture<V> schedule(java.util.concurrent.Callable<V> callable, long delay, java.util.concurrent.TimeUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.schedule(java.util.concurrent.Callable<V>, long, java.util.concurrent.TimeUnit)"); }
-  public static int getCommonPoolParallelism() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.getCommonPoolParallelism()"); }
-  public boolean isShutdown() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.isShutdown()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void shutdown() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory getFactory() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isTerminated() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Thread.UncaughtExceptionHandler getUncaughtExceptionHandler() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void execute(java.util.concurrent.ForkJoinTask<?> task) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> java.util.concurrent.ForkJoinTask<T> externalSubmit(java.util.concurrent.ForkJoinTask<T> task) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getQueuedTaskCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> java.util.concurrent.ForkJoinTask<T> lazySubmit(java.util.concurrent.ForkJoinTask<T> task) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <V> java.util.concurrent.ScheduledFuture<V> schedule(java.util.concurrent.Callable<V> callable, long delay, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getCommonPoolParallelism() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isShutdown() { return false; }
   @JavaProtected
-  <T> java.util.concurrent.RunnableFuture<T> newTaskFor(java.lang.Runnable runnable, T value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.newTaskFor(java.lang.Runnable, T)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  <T> java.util.concurrent.RunnableFuture<T> newTaskFor(java.lang.Runnable runnable, T value) { return null; }
   @JavaProtected
-  <T> java.util.concurrent.RunnableFuture<T> newTaskFor(java.util.concurrent.Callable<T> callable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.newTaskFor(java.util.concurrent.Callable<T>)"); }
-  public java.util.concurrent.ForkJoinTask<?> submit(java.lang.Runnable task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.submit(java.lang.Runnable)"); }
-  public <T> java.util.concurrent.ForkJoinTask<T> submit(java.lang.Runnable task, T result) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.submit(java.lang.Runnable, T)"); }
-  public <T> T invokeAny(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks, long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.invokeAny(java.util.Collection<? extends java.util.concurrent.Callable<T>>, long, java.util.concurrent.TimeUnit)"); }
-  public <T> T invokeAny(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks) throws java.lang.InterruptedException, java.util.concurrent.ExecutionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.invokeAny(java.util.Collection<? extends java.util.concurrent.Callable<T>>)"); }
-  public <T> java.util.List<java.util.concurrent.Future<T>> invokeAll(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks, long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.invokeAll(java.util.Collection<? extends java.util.concurrent.Callable<T>>, long, java.util.concurrent.TimeUnit)"); }
-  public <T> java.util.List<java.util.concurrent.Future<T>> invokeAll(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.invokeAll(java.util.Collection<? extends java.util.concurrent.Callable<T>>)"); }
-  public boolean awaitTermination(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.awaitTermination(long, java.util.concurrent.TimeUnit)"); }
-  public java.util.List<java.lang.Runnable> shutdownNow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.shutdownNow()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  <T> java.util.concurrent.RunnableFuture<T> newTaskFor(java.util.concurrent.Callable<T> callable) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.ForkJoinTask<?> submit(java.lang.Runnable task) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> java.util.concurrent.ForkJoinTask<T> submit(java.lang.Runnable task, T result) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException")
+  public <T> T invokeAny(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks, long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException")
+  public <T> T invokeAny(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public <T> java.util.List<java.util.concurrent.Future<T>> invokeAll(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks, long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public <T> java.util.List<java.util.concurrent.Future<T>> invokeAll(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public boolean awaitTermination(long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.lang.Runnable> shutdownNow() { return null; }
   @JavaProtected
-  java.util.concurrent.ForkJoinTask<?> pollSubmission() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.pollSubmission()"); }
-  public void cancelDelayedTasksOnShutdown() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.cancelDelayedTasksOnShutdown()"); }
-  public int getParallelism() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.getParallelism()"); }
-  public static java.util.concurrent.ForkJoinPool commonPool() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.commonPool()"); }
-  public int setParallelism(int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.setParallelism(int)"); }
-  public <T> java.util.List<java.util.concurrent.Future<T>> invokeAllUninterruptibly(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.invokeAllUninterruptibly(java.util.Collection<? extends java.util.concurrent.Callable<T>>)"); }
-  public java.util.concurrent.ScheduledFuture<?> scheduleAtFixedRate(java.lang.Runnable command, long initialDelay, long period, java.util.concurrent.TimeUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.scheduleAtFixedRate(java.lang.Runnable, long, long, java.util.concurrent.TimeUnit)"); }
-  public java.util.concurrent.ScheduledFuture<?> scheduleWithFixedDelay(java.lang.Runnable command, long initialDelay, long delay, java.util.concurrent.TimeUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.scheduleWithFixedDelay(java.lang.Runnable, long, long, java.util.concurrent.TimeUnit)"); }
-  public <V> java.util.concurrent.ForkJoinTask<V> submitWithTimeout(java.util.concurrent.Callable<V> callable, long timeout, java.util.concurrent.TimeUnit unit, java.util.function.Consumer<? super java.util.concurrent.ForkJoinTask<V>> timeoutAction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.submitWithTimeout(java.util.concurrent.Callable<V>, long, java.util.concurrent.TimeUnit, java.util.function.Consumer<? super java.util.concurrent.ForkJoinTask<V>>)"); }
-  public int getPoolSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.getPoolSize()"); }
-  public boolean getAsyncMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.getAsyncMode()"); }
-  public int getRunningThreadCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.getRunningThreadCount()"); }
-  public int getActiveThreadCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.getActiveThreadCount()"); }
-  public boolean isQuiescent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.isQuiescent()"); }
-  public long getStealCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.getStealCount()"); }
-  public int getQueuedSubmissionCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.getQueuedSubmissionCount()"); }
-  public long getDelayedTaskCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.getDelayedTaskCount()"); }
-  public boolean hasQueuedSubmissions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.hasQueuedSubmissions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.util.concurrent.ForkJoinTask<?> pollSubmission() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void cancelDelayedTasksOnShutdown() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getParallelism() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.concurrent.ForkJoinPool commonPool() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int setParallelism(int size) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> java.util.List<java.util.concurrent.Future<T>> invokeAllUninterruptibly(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.ScheduledFuture<?> scheduleAtFixedRate(java.lang.Runnable command, long initialDelay, long period, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.ScheduledFuture<?> scheduleWithFixedDelay(java.lang.Runnable command, long initialDelay, long delay, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <V> java.util.concurrent.ForkJoinTask<V> submitWithTimeout(java.util.concurrent.Callable<V> callable, long timeout, java.util.concurrent.TimeUnit unit, java.util.function.Consumer<? super java.util.concurrent.ForkJoinTask<V>> timeoutAction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getPoolSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getAsyncMode() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRunningThreadCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getActiveThreadCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isQuiescent() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getStealCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getQueuedSubmissionCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getDelayedTaskCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasQueuedSubmissions() { return false; }
   @JavaProtected
-  int drainTasksTo(java.util.Collection<? super java.util.concurrent.ForkJoinTask<?>> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.drainTasksTo(java.util.Collection<? super java.util.concurrent.ForkJoinTask<?>>)"); }
-  public boolean isTerminating() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.isTerminating()"); }
-  public boolean awaitQuiescence(long timeout, java.util.concurrent.TimeUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.awaitQuiescence(long, java.util.concurrent.TimeUnit)"); }
-  public static void managedBlock(java.util.concurrent.ForkJoinPool.ManagedBlocker blocker) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ForkJoinPool.managedBlock(java.util.concurrent.ForkJoinPool.ManagedBlocker)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int drainTasksTo(java.util.Collection<? super java.util.concurrent.ForkJoinTask<?>> c) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isTerminating() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean awaitQuiescence(long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public static void managedBlock(java.util.concurrent.ForkJoinPool.ManagedBlocker blocker) { }
   < ---- END java signatures ---- >
 }

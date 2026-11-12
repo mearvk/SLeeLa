@@ -59,6 +59,7 @@ class ToolBarUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ToolBarUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.ToolBarUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ToolBarUI() { }
   < ---- END java constructors ---- >
 }

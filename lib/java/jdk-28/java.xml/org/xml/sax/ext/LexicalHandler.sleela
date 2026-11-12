@@ -58,15 +58,24 @@ class LexicalHandler {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void comment(char[] ch, int start, int length) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ext.LexicalHandler.comment(char[], int, int)"); }
-  public abstract void startDTD(java.lang.String name, java.lang.String publicId, java.lang.String systemId) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ext.LexicalHandler.startDTD(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract void endDTD() throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ext.LexicalHandler.endDTD()"); }
-  public abstract void startEntity(java.lang.String name) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ext.LexicalHandler.startEntity(java.lang.String)"); }
-  public abstract void endEntity(java.lang.String name) throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ext.LexicalHandler.endEntity(java.lang.String)"); }
-  public abstract void startCDATA() throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ext.LexicalHandler.startCDATA()"); }
-  public abstract void endCDATA() throws org.xml.sax.SAXException { throw new AbstractMethodError("org.xml.sax.ext.LexicalHandler.endCDATA()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void comment(char[] ch, int start, int length) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void startDTD(java.lang.String name, java.lang.String publicId, java.lang.String systemId) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void endDTD() { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void startEntity(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void endEntity(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void startCDATA() { }
+  @throwable("java.lang.AbstractMethodError, org.xml.sax.SAXException")
+  public void endCDATA() { }
   < ---- END java signatures ---- >
 }

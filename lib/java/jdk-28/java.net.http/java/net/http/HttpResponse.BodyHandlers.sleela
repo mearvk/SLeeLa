@@ -59,26 +59,46 @@ class BodyHandlers {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static java.net.http.HttpResponse.BodyHandler<java.lang.String> ofString(java.nio.charset.Charset charset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.ofString(java.nio.charset.Charset)"); }
-  public static java.net.http.HttpResponse.BodyHandler<java.lang.String> ofString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.ofString()"); }
-  public static java.net.http.HttpResponse.BodyHandler<java.io.InputStream> ofInputStream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.ofInputStream()"); }
-  public static java.net.http.HttpResponse.BodyHandler<byte[]> ofByteArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.ofByteArray()"); }
-  public static java.net.http.HttpResponse.BodyHandler<java.nio.file.Path> ofFile(java.nio.file.Path file, java.nio.file.OpenOption... openOptions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.ofFile(java.nio.file.Path, java.nio.file.OpenOption...)"); }
-  public static java.net.http.HttpResponse.BodyHandler<java.nio.file.Path> ofFile(java.nio.file.Path file) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.ofFile(java.nio.file.Path)"); }
-  public static <T> java.net.http.HttpResponse.BodyHandler<T> limiting(java.net.http.HttpResponse.BodyHandler<T> downstreamHandler, long capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.limiting(java.net.http.HttpResponse.BodyHandler<T>, long)"); }
-  public static <T> java.net.http.HttpResponse.BodyHandler<T> buffering(java.net.http.HttpResponse.BodyHandler<T> downstreamHandler, int bufferSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.buffering(java.net.http.HttpResponse.BodyHandler<T>, int)"); }
-  public static java.net.http.HttpResponse.BodyHandler<java.util.concurrent.Flow.Publisher<java.util.List<java.nio.ByteBuffer>>> ofPublisher() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.ofPublisher()"); }
-  public static java.net.http.HttpResponse.BodyHandler<java.lang.Void> ofByteArrayConsumer(java.util.function.Consumer<java.util.Optional<byte[]>> consumer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.ofByteArrayConsumer(java.util.function.Consumer<java.util.Optional<byte[]>>)"); }
-  public static java.net.http.HttpResponse.BodyHandler<java.util.stream.Stream<java.lang.String>> ofLines() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.ofLines()"); }
-  public static <U> java.net.http.HttpResponse.BodyHandler<U> replacing(U value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.replacing(U)"); }
-  public static java.net.http.HttpResponse.BodyHandler<java.lang.Void> discarding() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.discarding()"); }
-  public static <S extends java.util.concurrent.Flow.Subscriber<? super java.lang.String>, T> java.net.http.HttpResponse.BodyHandler<T> fromLineSubscriber(S subscriber, java.util.function.Function<? super S, ? extends T> finisher, java.lang.String lineSeparator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.fromLineSubscriber(S, java.util.function.Function<? super S, ? extends T>, java.lang.String)"); }
-  public static java.net.http.HttpResponse.BodyHandler<java.lang.Void> fromLineSubscriber(java.util.concurrent.Flow.Subscriber<? super java.lang.String> subscriber) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.fromLineSubscriber(java.util.concurrent.Flow.Subscriber<? super java.lang.String>)"); }
-  public static java.net.http.HttpResponse.BodyHandler<java.lang.Void> fromSubscriber(java.util.concurrent.Flow.Subscriber<? super java.util.List<java.nio.ByteBuffer>> subscriber) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.fromSubscriber(java.util.concurrent.Flow.Subscriber<? super java.util.List<java.nio.ByteBuffer>>)"); }
-  public static <S extends java.util.concurrent.Flow.Subscriber<? super java.util.List<java.nio.ByteBuffer>>, T> java.net.http.HttpResponse.BodyHandler<T> fromSubscriber(S subscriber, java.util.function.Function<? super S, ? extends T> finisher) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.fromSubscriber(S, java.util.function.Function<? super S, ? extends T>)"); }
-  public static java.net.http.HttpResponse.BodyHandler<java.nio.file.Path> ofFileDownload(java.nio.file.Path directory, java.nio.file.OpenOption... openOptions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.http.HttpResponse.BodyHandlers.ofFileDownload(java.nio.file.Path, java.nio.file.OpenOption...)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.http.HttpResponse.BodyHandler<java.lang.String> ofString(java.nio.charset.Charset charset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.http.HttpResponse.BodyHandler<java.lang.String> ofString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.http.HttpResponse.BodyHandler<java.io.InputStream> ofInputStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.http.HttpResponse.BodyHandler<byte[]> ofByteArray() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.http.HttpResponse.BodyHandler<java.nio.file.Path> ofFile(java.nio.file.Path file, java.nio.file.OpenOption... openOptions) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.http.HttpResponse.BodyHandler<java.nio.file.Path> ofFile(java.nio.file.Path file) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.net.http.HttpResponse.BodyHandler<T> limiting(java.net.http.HttpResponse.BodyHandler<T> downstreamHandler, long capacity) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.net.http.HttpResponse.BodyHandler<T> buffering(java.net.http.HttpResponse.BodyHandler<T> downstreamHandler, int bufferSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.http.HttpResponse.BodyHandler<java.util.concurrent.Flow.Publisher<java.util.List<java.nio.ByteBuffer>>> ofPublisher() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.http.HttpResponse.BodyHandler<java.lang.Void> ofByteArrayConsumer(java.util.function.Consumer<java.util.Optional<byte[]>> consumer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.http.HttpResponse.BodyHandler<java.util.stream.Stream<java.lang.String>> ofLines() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <U> java.net.http.HttpResponse.BodyHandler<U> replacing(U value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.http.HttpResponse.BodyHandler<java.lang.Void> discarding() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <S extends java.util.concurrent.Flow.Subscriber<? super java.lang.String>, T> java.net.http.HttpResponse.BodyHandler<T> fromLineSubscriber(S subscriber, java.util.function.Function<? super S, ? extends T> finisher, java.lang.String lineSeparator) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.http.HttpResponse.BodyHandler<java.lang.Void> fromLineSubscriber(java.util.concurrent.Flow.Subscriber<? super java.lang.String> subscriber) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.http.HttpResponse.BodyHandler<java.lang.Void> fromSubscriber(java.util.concurrent.Flow.Subscriber<? super java.util.List<java.nio.ByteBuffer>> subscriber) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <S extends java.util.concurrent.Flow.Subscriber<? super java.util.List<java.nio.ByteBuffer>>, T> java.net.http.HttpResponse.BodyHandler<T> fromSubscriber(S subscriber, java.util.function.Function<? super S, ? extends T> finisher) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.http.HttpResponse.BodyHandler<java.nio.file.Path> ofFileDownload(java.nio.file.Path directory, java.nio.file.OpenOption... openOptions) { return null; }
   < ---- END java signatures ---- >
 }

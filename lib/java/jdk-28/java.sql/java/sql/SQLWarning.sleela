@@ -58,21 +58,33 @@ class SQLWarning {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SQLWarning(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLWarning.<init>(java.lang.Throwable)"); }
-  public SQLWarning(java.lang.String reason, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLWarning.<init>(java.lang.String, java.lang.Throwable)"); }
-  public SQLWarning(java.lang.String reason, java.lang.String SQLState, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLWarning.<init>(java.lang.String, java.lang.String, java.lang.Throwable)"); }
-  public SQLWarning(java.lang.String reason, java.lang.String SQLState, int vendorCode, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLWarning.<init>(java.lang.String, java.lang.String, int, java.lang.Throwable)"); }
-  public SQLWarning(java.lang.String reason, java.lang.String SQLState, int vendorCode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLWarning.<init>(java.lang.String, java.lang.String, int)"); }
-  public SQLWarning(java.lang.String reason, java.lang.String SQLState) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLWarning.<init>(java.lang.String, java.lang.String)"); }
-  public SQLWarning(java.lang.String reason) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLWarning.<init>(java.lang.String)"); }
-  public SQLWarning() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLWarning.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLWarning(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLWarning(java.lang.String reason, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLWarning(java.lang.String reason, java.lang.String SQLState, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLWarning(java.lang.String reason, java.lang.String SQLState, int vendorCode, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLWarning(java.lang.String reason, java.lang.String SQLState, int vendorCode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLWarning(java.lang.String reason, java.lang.String SQLState) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLWarning(java.lang.String reason) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLWarning() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.sql.SQLWarning getNextWarning() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLWarning.getNextWarning()"); }
-  public void setNextWarning(java.sql.SQLWarning w) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLWarning.setNextWarning(java.sql.SQLWarning)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.sql.SQLWarning getNextWarning() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNextWarning(java.sql.SQLWarning w) { }
   < ---- END java signatures ---- >
 }

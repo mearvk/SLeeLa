@@ -59,29 +59,49 @@ class SAXParserFactory {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SAXParserFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SAXParserFactory() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.xml.parsers.SAXParserFactory newInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.newInstance()"); }
-  public static javax.xml.parsers.SAXParserFactory newInstance(java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.newInstance(java.lang.String, java.lang.ClassLoader)"); }
-  public javax.xml.validation.Schema getSchema() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.getSchema()"); }
-  public abstract javax.xml.parsers.SAXParser newSAXParser() throws javax.xml.parsers.ParserConfigurationException, org.xml.sax.SAXException { throw new AbstractMethodError("javax.xml.parsers.SAXParserFactory.newSAXParser()"); }
-  public static javax.xml.parsers.SAXParserFactory newDefaultInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.newDefaultInstance()"); }
-  public boolean isNamespaceAware() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.isNamespaceAware()"); }
-  public boolean isValidating() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.isValidating()"); }
-  public boolean isXIncludeAware() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.isXIncludeAware()"); }
-  public static javax.xml.parsers.SAXParserFactory newDefaultNSInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.newDefaultNSInstance()"); }
-  public static javax.xml.parsers.SAXParserFactory newNSInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.newNSInstance()"); }
-  public static javax.xml.parsers.SAXParserFactory newNSInstance(java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.newNSInstance(java.lang.String, java.lang.ClassLoader)"); }
-  public void setXIncludeAware(boolean state) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.setXIncludeAware(boolean)"); }
-  public void setValidating(boolean validating) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.setValidating(boolean)"); }
-  public abstract boolean getFeature(java.lang.String name) throws javax.xml.parsers.ParserConfigurationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new AbstractMethodError("javax.xml.parsers.SAXParserFactory.getFeature(java.lang.String)"); }
-  public void setNamespaceAware(boolean awareness) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.setNamespaceAware(boolean)"); }
-  public abstract void setFeature(java.lang.String name, boolean value) throws javax.xml.parsers.ParserConfigurationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new AbstractMethodError("javax.xml.parsers.SAXParserFactory.setFeature(java.lang.String, boolean)"); }
-  public void setSchema(javax.xml.validation.Schema schema) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.parsers.SAXParserFactory.setSchema(javax.xml.validation.Schema)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.parsers.SAXParserFactory newInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.parsers.SAXParserFactory newInstance(java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.validation.Schema getSchema() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.parsers.ParserConfigurationException, org.xml.sax.SAXException")
+  public javax.xml.parsers.SAXParser newSAXParser() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.parsers.SAXParserFactory newDefaultInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isNamespaceAware() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isValidating() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isXIncludeAware() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.parsers.SAXParserFactory newDefaultNSInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.parsers.SAXParserFactory newNSInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.parsers.SAXParserFactory newNSInstance(java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setXIncludeAware(boolean state) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValidating(boolean validating) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.parsers.ParserConfigurationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public boolean getFeature(java.lang.String name) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNamespaceAware(boolean awareness) { }
+  @throwable("java.lang.AbstractMethodError, javax.xml.parsers.ParserConfigurationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public void setFeature(java.lang.String name, boolean value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSchema(javax.xml.validation.Schema schema) { }
   < ---- END java signatures ---- >
 }

@@ -58,11 +58,16 @@ class Plugin {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("com.sun.source.util.Plugin.getName()"); }
-  public abstract void init(com.sun.source.util.JavacTask task, java.lang.String... args) { throw new AbstractMethodError("com.sun.source.util.Plugin.init(com.sun.source.util.JavacTask, java.lang.String...)"); }
-  public default boolean autoStart() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.Plugin.autoStart()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void init(com.sun.source.util.JavacTask task, java.lang.String... args) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean autoStart() { return false; }
   < ---- END java signatures ---- >
 }

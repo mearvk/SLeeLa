@@ -58,7 +58,9 @@ class InvalidMidiDataException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidMidiDataException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.InvalidMidiDataException.<init>()"); }
-  public InvalidMidiDataException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.InvalidMidiDataException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidMidiDataException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidMidiDataException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

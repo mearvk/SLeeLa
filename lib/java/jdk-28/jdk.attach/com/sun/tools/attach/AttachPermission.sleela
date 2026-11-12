@@ -58,7 +58,9 @@ class AttachPermission {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AttachPermission(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.AttachPermission.<init>(java.lang.String)"); }
-  public AttachPermission(java.lang.String name, java.lang.String actions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.AttachPermission.<init>(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttachPermission(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttachPermission(java.lang.String name, java.lang.String actions) { }
   < ---- END java constructors ---- >
 }

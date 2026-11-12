@@ -58,34 +58,59 @@ class VariableHeightLayoutCache {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public VariableHeightLayoutCache() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public VariableHeightLayoutCache() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Rectangle getBounds(javax.swing.tree.TreePath path, java.awt.Rectangle placeIn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.getBounds(javax.swing.tree.TreePath, java.awt.Rectangle)"); }
-  public boolean isExpanded(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.isExpanded(javax.swing.tree.TreePath)"); }
-  public int getPreferredWidth(java.awt.Rectangle bounds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.getPreferredWidth(java.awt.Rectangle)"); }
-  public void treeNodesChanged(javax.swing.event.TreeModelEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.treeNodesChanged(javax.swing.event.TreeModelEvent)"); }
-  public void treeNodesInserted(javax.swing.event.TreeModelEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.treeNodesInserted(javax.swing.event.TreeModelEvent)"); }
-  public void treeNodesRemoved(javax.swing.event.TreeModelEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.treeNodesRemoved(javax.swing.event.TreeModelEvent)"); }
-  public void treeStructureChanged(javax.swing.event.TreeModelEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.treeStructureChanged(javax.swing.event.TreeModelEvent)"); }
-  public int getRowForPath(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.getRowForPath(javax.swing.tree.TreePath)"); }
-  public void setExpandedState(javax.swing.tree.TreePath path, boolean isExpanded) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.setExpandedState(javax.swing.tree.TreePath, boolean)"); }
-  public void setRowHeight(int rowHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.setRowHeight(int)"); }
-  public void setRootVisible(boolean rootVisible) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.setRootVisible(boolean)"); }
-  public javax.swing.tree.TreePath getPathForRow(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.getPathForRow(int)"); }
-  public int getRowCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.getRowCount()"); }
-  public void setModel(javax.swing.tree.TreeModel newModel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.setModel(javax.swing.tree.TreeModel)"); }
-  public void invalidateSizes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.invalidateSizes()"); }
-  public javax.swing.tree.TreePath getPathClosestTo(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.getPathClosestTo(int, int)"); }
-  public java.util.Enumeration<javax.swing.tree.TreePath> getVisiblePathsFrom(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.getVisiblePathsFrom(javax.swing.tree.TreePath)"); }
-  public boolean getExpandedState(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.getExpandedState(javax.swing.tree.TreePath)"); }
-  public void setNodeDimensions(javax.swing.tree.AbstractLayoutCache.NodeDimensions nd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.setNodeDimensions(javax.swing.tree.AbstractLayoutCache.NodeDimensions)"); }
-  public int getPreferredHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.getPreferredHeight()"); }
-  public void invalidatePathBounds(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.invalidatePathBounds(javax.swing.tree.TreePath)"); }
-  public int getVisibleChildCount(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.tree.VariableHeightLayoutCache.getVisibleChildCount(javax.swing.tree.TreePath)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getBounds(javax.swing.tree.TreePath path, java.awt.Rectangle placeIn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isExpanded(javax.swing.tree.TreePath path) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getPreferredWidth(java.awt.Rectangle bounds) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void treeNodesChanged(javax.swing.event.TreeModelEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void treeNodesInserted(javax.swing.event.TreeModelEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void treeNodesRemoved(javax.swing.event.TreeModelEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void treeStructureChanged(javax.swing.event.TreeModelEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRowForPath(javax.swing.tree.TreePath path) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setExpandedState(javax.swing.tree.TreePath path, boolean isExpanded) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRowHeight(int rowHeight) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRootVisible(boolean rootVisible) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath getPathForRow(int row) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRowCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setModel(javax.swing.tree.TreeModel newModel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void invalidateSizes() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath getPathClosestTo(int x, int y) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Enumeration<javax.swing.tree.TreePath> getVisiblePathsFrom(javax.swing.tree.TreePath path) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getExpandedState(javax.swing.tree.TreePath path) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNodeDimensions(javax.swing.tree.AbstractLayoutCache.NodeDimensions nd) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getPreferredHeight() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void invalidatePathBounds(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVisibleChildCount(javax.swing.tree.TreePath path) { return 0; }
   < ---- END java signatures ---- >
 }

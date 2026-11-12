@@ -58,7 +58,9 @@ class InstanceNotFoundException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InstanceNotFoundException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.InstanceNotFoundException.<init>()"); }
-  public InstanceNotFoundException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.InstanceNotFoundException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InstanceNotFoundException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InstanceNotFoundException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

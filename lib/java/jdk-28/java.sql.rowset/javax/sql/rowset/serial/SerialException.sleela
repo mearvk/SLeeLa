@@ -58,7 +58,9 @@ class SerialException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SerialException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialException.<init>()"); }
-  public SerialException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SerialException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SerialException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

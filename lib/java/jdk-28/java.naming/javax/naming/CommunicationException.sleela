@@ -58,7 +58,9 @@ class CommunicationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CommunicationException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.CommunicationException.<init>(java.lang.String)"); }
-  public CommunicationException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.CommunicationException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CommunicationException(java.lang.String explanation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CommunicationException() { }
   < ---- END java constructors ---- >
 }

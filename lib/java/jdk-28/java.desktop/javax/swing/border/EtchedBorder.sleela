@@ -67,23 +67,37 @@ class EtchedBorder {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public EtchedBorder(int etchType, java.awt.Color highlight, java.awt.Color shadow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.EtchedBorder.<init>(int, java.awt.Color, java.awt.Color)"); }
-  public EtchedBorder(java.awt.Color highlight, java.awt.Color shadow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.EtchedBorder.<init>(java.awt.Color, java.awt.Color)"); }
-  public EtchedBorder(int etchType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.EtchedBorder.<init>(int)"); }
-  public EtchedBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.EtchedBorder.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EtchedBorder(int etchType, java.awt.Color highlight, java.awt.Color shadow) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EtchedBorder(java.awt.Color highlight, java.awt.Color shadow) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EtchedBorder(int etchType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EtchedBorder() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Color getHighlightColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.EtchedBorder.getHighlightColor()"); }
-  public java.awt.Color getHighlightColor(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.EtchedBorder.getHighlightColor(java.awt.Component)"); }
-  public java.awt.Color getShadowColor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.EtchedBorder.getShadowColor()"); }
-  public java.awt.Color getShadowColor(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.EtchedBorder.getShadowColor(java.awt.Component)"); }
-  public int getEtchType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.EtchedBorder.getEtchType()"); }
-  public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.EtchedBorder.paintBorder(java.awt.Component, java.awt.Graphics, int, int, int, int)"); }
-  public java.awt.Insets getBorderInsets(java.awt.Component c, java.awt.Insets insets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.EtchedBorder.getBorderInsets(java.awt.Component, java.awt.Insets)"); }
-  public boolean isBorderOpaque() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.border.EtchedBorder.isBorderOpaque()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getHighlightColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getHighlightColor(java.awt.Component c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getShadowColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getShadowColor(java.awt.Component c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getEtchType() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getBorderInsets(java.awt.Component c, java.awt.Insets insets) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBorderOpaque() { return false; }
   < ---- END java signatures ---- >
 }

@@ -58,6 +58,7 @@ class RasterFormatException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RasterFormatException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.RasterFormatException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RasterFormatException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

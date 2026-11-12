@@ -65,31 +65,53 @@ class MediaTracker {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MediaTracker(java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.<init>(java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MediaTracker(java.awt.Component comp) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean checkAll(boolean load) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.checkAll(boolean)"); }
-  public boolean checkAll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.checkAll()"); }
-  public void addImage(java.awt.Image image, int id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.addImage(java.awt.Image, int)"); }
-  public synchronized void addImage(java.awt.Image image, int id, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.addImage(java.awt.Image, int, int, int)"); }
-  public void waitForAll() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.waitForAll()"); }
-  public synchronized boolean waitForAll(long ms) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.waitForAll(long)"); }
-  public int statusAll(boolean load) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.statusAll(boolean)"); }
-  public boolean checkID(int id, boolean load) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.checkID(int, boolean)"); }
-  public boolean checkID(int id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.checkID(int)"); }
-  public int statusID(int id, boolean load) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.statusID(int, boolean)"); }
-  public synchronized boolean isErrorAny() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.isErrorAny()"); }
-  public synchronized java.lang.Object[] getErrorsAny() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.getErrorsAny()"); }
-  public synchronized boolean isErrorID(int id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.isErrorID(int)"); }
-  public synchronized java.lang.Object[] getErrorsID(int id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.getErrorsID(int)"); }
-  public synchronized void removeImage(java.awt.Image image, int id, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.removeImage(java.awt.Image, int, int, int)"); }
-  public synchronized void removeImage(java.awt.Image image, int id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.removeImage(java.awt.Image, int)"); }
-  public synchronized void removeImage(java.awt.Image image) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.removeImage(java.awt.Image)"); }
-  public synchronized boolean waitForID(int id, long ms) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.waitForID(int, long)"); }
-  public void waitForID(int id) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.MediaTracker.waitForID(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean checkAll(boolean load) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean checkAll() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addImage(java.awt.Image image, int id) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addImage(java.awt.Image image, int id, int w, int h) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void waitForAll() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public synchronized boolean waitForAll(long ms) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int statusAll(boolean load) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean checkID(int id, boolean load) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean checkID(int id) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int statusID(int id, boolean load) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean isErrorAny() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Object[] getErrorsAny() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean isErrorID(int id) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Object[] getErrorsID(int id) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeImage(java.awt.Image image, int id, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeImage(java.awt.Image image, int id) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeImage(java.awt.Image image) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public synchronized boolean waitForID(int id, long ms) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void waitForID(int id) { }
   < ---- END java signatures ---- >
 }

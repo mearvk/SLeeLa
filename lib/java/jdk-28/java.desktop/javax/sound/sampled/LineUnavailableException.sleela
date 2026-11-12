@@ -58,7 +58,9 @@ class LineUnavailableException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LineUnavailableException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.LineUnavailableException.<init>()"); }
-  public LineUnavailableException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.LineUnavailableException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LineUnavailableException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LineUnavailableException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

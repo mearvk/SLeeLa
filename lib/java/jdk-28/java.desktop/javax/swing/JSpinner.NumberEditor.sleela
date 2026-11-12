@@ -59,16 +59,23 @@ class NumberEditor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NumberEditor(javax.swing.JSpinner spinner, java.lang.String decimalFormatPattern) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.NumberEditor.<init>(javax.swing.JSpinner, java.lang.String)"); }
-  public NumberEditor(javax.swing.JSpinner spinner) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.NumberEditor.<init>(javax.swing.JSpinner)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NumberEditor(javax.swing.JSpinner spinner, java.lang.String decimalFormatPattern) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NumberEditor(javax.swing.JSpinner spinner) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.text.DecimalFormat getFormat() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.NumberEditor.getFormat()"); }
-  public void setComponentOrientation(java.awt.ComponentOrientation o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.NumberEditor.setComponentOrientation(java.awt.ComponentOrientation)"); }
-  public javax.swing.SpinnerNumberModel getModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.NumberEditor.getModel()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.DecimalFormat getFormat() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setComponentOrientation(java.awt.ComponentOrientation o) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.SpinnerNumberModel getModel() { return null; }
   < ---- END java signatures ---- >
 }

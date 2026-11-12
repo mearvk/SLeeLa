@@ -58,16 +58,23 @@ class XPathType {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public XPathType(java.lang.String expression, javax.xml.crypto.dsig.spec.XPathType.Filter filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.spec.XPathType.<init>(java.lang.String, javax.xml.crypto.dsig.spec.XPathType.Filter)"); }
-  public XPathType(java.lang.String expression, javax.xml.crypto.dsig.spec.XPathType.Filter filter, java.util.Map<java.lang.String, java.lang.String> namespaceMap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.spec.XPathType.<init>(java.lang.String, javax.xml.crypto.dsig.spec.XPathType.Filter, java.util.Map<java.lang.String, java.lang.String>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public XPathType(java.lang.String expression, javax.xml.crypto.dsig.spec.XPathType.Filter filter) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public XPathType(java.lang.String expression, javax.xml.crypto.dsig.spec.XPathType.Filter filter, java.util.Map<java.lang.String, java.lang.String> namespaceMap) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.xml.crypto.dsig.spec.XPathType.Filter getFilter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.spec.XPathType.getFilter()"); }
-  public java.lang.String getExpression() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.spec.XPathType.getExpression()"); }
-  public java.util.Map<java.lang.String, java.lang.String> getNamespaceMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.spec.XPathType.getNamespaceMap()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.crypto.dsig.spec.XPathType.Filter getFilter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getExpression() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Map<java.lang.String, java.lang.String> getNamespaceMap() { return null; }
   < ---- END java signatures ---- >
 }

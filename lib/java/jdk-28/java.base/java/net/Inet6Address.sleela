@@ -58,28 +58,50 @@ class Inet6Address {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.hashCode()"); }
-  public byte[] getAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.getAddress()"); }
-  public java.lang.String getHostAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.getHostAddress()"); }
-  public boolean isLinkLocalAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.isLinkLocalAddress()"); }
-  public int getScopeId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.getScopeId()"); }
-  public static java.net.InetAddress ofLiteral(java.lang.String ipv6AddressLiteral) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.ofLiteral(java.lang.String)"); }
-  public boolean isMulticastAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.isMulticastAddress()"); }
-  public boolean isAnyLocalAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.isAnyLocalAddress()"); }
-  public boolean isLoopbackAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.isLoopbackAddress()"); }
-  public boolean isSiteLocalAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.isSiteLocalAddress()"); }
-  public boolean isMCGlobal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.isMCGlobal()"); }
-  public boolean isMCNodeLocal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.isMCNodeLocal()"); }
-  public boolean isMCLinkLocal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.isMCLinkLocal()"); }
-  public boolean isMCSiteLocal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.isMCSiteLocal()"); }
-  public boolean isMCOrgLocal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.isMCOrgLocal()"); }
-  public static java.net.Inet6Address getByAddress(java.lang.String host, byte[] addr, int scope_id) throws java.net.UnknownHostException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.getByAddress(java.lang.String, byte[], int)"); }
-  public static java.net.Inet6Address getByAddress(java.lang.String host, byte[] addr, java.net.NetworkInterface nif) throws java.net.UnknownHostException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.getByAddress(java.lang.String, byte[], java.net.NetworkInterface)"); }
-  public boolean isIPv4CompatibleAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.isIPv4CompatibleAddress()"); }
-  public java.net.NetworkInterface getScopedInterface() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.Inet6Address.getScopedInterface()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getAddress() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getHostAddress() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLinkLocalAddress() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getScopeId() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.net.InetAddress ofLiteral(java.lang.String ipv6AddressLiteral) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMulticastAddress() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAnyLocalAddress() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLoopbackAddress() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSiteLocalAddress() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMCGlobal() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMCNodeLocal() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMCLinkLocal() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMCSiteLocal() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMCOrgLocal() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.net.UnknownHostException")
+  public static java.net.Inet6Address getByAddress(java.lang.String host, byte[] addr, int scope_id) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.net.UnknownHostException")
+  public static java.net.Inet6Address getByAddress(java.lang.String host, byte[] addr, java.net.NetworkInterface nif) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isIPv4CompatibleAddress() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.NetworkInterface getScopedInterface() { return null; }
   < ---- END java signatures ---- >
 }

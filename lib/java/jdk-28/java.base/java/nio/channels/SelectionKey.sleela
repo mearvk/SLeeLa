@@ -66,27 +66,45 @@ class SelectionKey {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SelectionKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.SelectionKey.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SelectionKey() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void cancel() { throw new AbstractMethodError("java.nio.channels.SelectionKey.cancel()"); }
-  public final java.lang.Object attachment() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.SelectionKey.attachment()"); }
-  public final java.lang.Object attach(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.SelectionKey.attach(java.lang.Object)"); }
-  public abstract java.nio.channels.SelectableChannel channel() { throw new AbstractMethodError("java.nio.channels.SelectionKey.channel()"); }
-  public final boolean isWritable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.SelectionKey.isWritable()"); }
-  public abstract java.nio.channels.Selector selector() { throw new AbstractMethodError("java.nio.channels.SelectionKey.selector()"); }
-  public abstract boolean isValid() { throw new AbstractMethodError("java.nio.channels.SelectionKey.isValid()"); }
-  public abstract int interestOps() { throw new AbstractMethodError("java.nio.channels.SelectionKey.interestOps()"); }
-  public abstract java.nio.channels.SelectionKey interestOps(int ops) { throw new AbstractMethodError("java.nio.channels.SelectionKey.interestOps(int)"); }
-  public final boolean isReadable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.SelectionKey.isReadable()"); }
-  public abstract int readyOps() { throw new AbstractMethodError("java.nio.channels.SelectionKey.readyOps()"); }
-  public int interestOpsOr(int ops) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.SelectionKey.interestOpsOr(int)"); }
-  public int interestOpsAnd(int ops) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.SelectionKey.interestOpsAnd(int)"); }
-  public final boolean isConnectable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.SelectionKey.isConnectable()"); }
-  public final boolean isAcceptable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.SelectionKey.isAcceptable()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void cancel() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Object attachment() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Object attach(java.lang.Object ob) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.channels.SelectableChannel channel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isWritable() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.channels.Selector selector() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isValid() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int interestOps() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.channels.SelectionKey interestOps(int ops) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isReadable() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int readyOps() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int interestOpsOr(int ops) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int interestOpsAnd(int ops) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isConnectable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isAcceptable() { return false; }
   < ---- END java signatures ---- >
 }

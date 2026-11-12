@@ -58,45 +58,78 @@ class JMenuBar {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JMenuBar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JMenuBar() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.swing.JMenu add(javax.swing.JMenu c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.add(javax.swing.JMenu)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JMenu add(javax.swing.JMenu c) { return null; }
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.paramString()"); }
-  public java.awt.Component getComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.getComponent()"); }
-  public void processKeyEvent(java.awt.event.KeyEvent e, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.processKeyEvent(java.awt.event.KeyEvent, javax.swing.MenuElement[], javax.swing.MenuSelectionManager)"); }
-  public void processMouseEvent(java.awt.event.MouseEvent event, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.processMouseEvent(java.awt.event.MouseEvent, javax.swing.MenuElement[], javax.swing.MenuSelectionManager)"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.updateUI()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void processKeyEvent(java.awt.event.KeyEvent e, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void processMouseEvent(java.awt.event.MouseEvent event, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
   @JavaProtected
-  void paintBorder(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.paintBorder(java.awt.Graphics)"); }
-  public void setSelectionModel(javax.swing.SingleSelectionModel model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.setSelectionModel(javax.swing.SingleSelectionModel)"); }
-  public void setUI(javax.swing.plaf.MenuBarUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.setUI(javax.swing.plaf.MenuBarUI)"); }
-  public javax.swing.plaf.MenuBarUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.getUI()"); }
-  public java.awt.Component getComponentAtIndex(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.getComponentAtIndex(int)"); }
-  public javax.swing.SingleSelectionModel getSelectionModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.getSelectionModel()"); }
-  public boolean isSelected() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.isSelected()"); }
-  public boolean isBorderPainted() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.isBorderPainted()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintBorder(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionModel(javax.swing.SingleSelectionModel model) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.MenuBarUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.MenuBarUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponentAtIndex(int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.SingleSelectionModel getSelectionModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSelected() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBorderPainted() { return false; }
   @JavaProtected
-  boolean processKeyBinding(javax.swing.KeyStroke ks, java.awt.event.KeyEvent e, int condition, boolean pressed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.processKeyBinding(javax.swing.KeyStroke, java.awt.event.KeyEvent, int, boolean)"); }
-  public javax.swing.MenuElement[] getSubElements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.getSubElements()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.getUIClassID()"); }
-  public javax.swing.JMenu getMenu(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.getMenu(int)"); }
-  public int getMenuCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.getMenuCount()"); }
-  public void setHelpMenu(javax.swing.JMenu menu) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.setHelpMenu(javax.swing.JMenu)"); }
-  public javax.swing.JMenu getHelpMenu() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.getHelpMenu()"); }
-  public void setSelected(java.awt.Component sel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.setSelected(java.awt.Component)"); }
-  public void setBorderPainted(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.setBorderPainted(boolean)"); }
-  public void setMargin(java.awt.Insets m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.setMargin(java.awt.Insets)"); }
-  public java.awt.Insets getMargin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.getMargin()"); }
-  public void menuSelectionChanged(boolean isIncluded) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.menuSelectionChanged(boolean)"); }
-  public int getComponentIndex(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.getComponentIndex(java.awt.Component)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.getAccessibleContext()"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.addNotify()"); }
-  public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JMenuBar.removeNotify()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean processKeyBinding(javax.swing.KeyStroke ks, java.awt.event.KeyEvent e, int condition, boolean pressed) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.MenuElement[] getSubElements() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JMenu getMenu(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMenuCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHelpMenu(javax.swing.JMenu menu) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JMenu getHelpMenu() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelected(java.awt.Component sel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBorderPainted(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMargin(java.awt.Insets m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getMargin() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void menuSelectionChanged(boolean isIncluded) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getComponentIndex(java.awt.Component c) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeNotify() { }
   < ---- END java signatures ---- >
 }

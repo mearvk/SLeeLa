@@ -59,6 +59,7 @@ class TableUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  TableUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.TableUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TableUI() { }
   < ---- END java constructors ---- >
 }

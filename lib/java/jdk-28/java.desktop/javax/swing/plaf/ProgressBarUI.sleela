@@ -59,6 +59,7 @@ class ProgressBarUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ProgressBarUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.ProgressBarUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ProgressBarUI() { }
   < ---- END java constructors ---- >
 }

@@ -59,11 +59,17 @@ class TitledBorderUIResource {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TitledBorderUIResource(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition, java.awt.Font titleFont, java.awt.Color titleColor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.TitledBorderUIResource.<init>(javax.swing.border.Border, java.lang.String, int, int, java.awt.Font, java.awt.Color)"); }
-  public TitledBorderUIResource(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition, java.awt.Font titleFont) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.TitledBorderUIResource.<init>(javax.swing.border.Border, java.lang.String, int, int, java.awt.Font)"); }
-  public TitledBorderUIResource(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.TitledBorderUIResource.<init>(javax.swing.border.Border, java.lang.String, int, int)"); }
-  public TitledBorderUIResource(javax.swing.border.Border border, java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.TitledBorderUIResource.<init>(javax.swing.border.Border, java.lang.String)"); }
-  public TitledBorderUIResource(javax.swing.border.Border border) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.TitledBorderUIResource.<init>(javax.swing.border.Border)"); }
-  public TitledBorderUIResource(java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.TitledBorderUIResource.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TitledBorderUIResource(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition, java.awt.Font titleFont, java.awt.Color titleColor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TitledBorderUIResource(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition, java.awt.Font titleFont) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TitledBorderUIResource(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TitledBorderUIResource(javax.swing.border.Border border, java.lang.String title) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TitledBorderUIResource(javax.swing.border.Border border) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TitledBorderUIResource(java.lang.String title) { }
   < ---- END java constructors ---- >
 }

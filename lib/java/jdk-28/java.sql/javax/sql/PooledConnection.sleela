@@ -58,13 +58,20 @@ class PooledConnection {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.sql.Connection getConnection() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.PooledConnection.getConnection()"); }
-  public abstract void addConnectionEventListener(javax.sql.ConnectionEventListener listener) { throw new AbstractMethodError("javax.sql.PooledConnection.addConnectionEventListener(javax.sql.ConnectionEventListener)"); }
-  public abstract void removeConnectionEventListener(javax.sql.ConnectionEventListener listener) { throw new AbstractMethodError("javax.sql.PooledConnection.removeConnectionEventListener(javax.sql.ConnectionEventListener)"); }
-  public abstract void addStatementEventListener(javax.sql.StatementEventListener listener) { throw new AbstractMethodError("javax.sql.PooledConnection.addStatementEventListener(javax.sql.StatementEventListener)"); }
-  public abstract void removeStatementEventListener(javax.sql.StatementEventListener listener) { throw new AbstractMethodError("javax.sql.PooledConnection.removeStatementEventListener(javax.sql.StatementEventListener)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.Connection getConnection() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void addConnectionEventListener(javax.sql.ConnectionEventListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeConnectionEventListener(javax.sql.ConnectionEventListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addStatementEventListener(javax.sql.StatementEventListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeStatementEventListener(javax.sql.StatementEventListener listener) { }
   < ---- END java signatures ---- >
 }

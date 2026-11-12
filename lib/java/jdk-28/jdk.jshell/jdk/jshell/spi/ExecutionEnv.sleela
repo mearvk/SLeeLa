@@ -58,14 +58,22 @@ class ExecutionEnv {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default java.util.Optional<jdk.jshell.JShellConsole> console() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jshell.spi.ExecutionEnv.console()"); }
-  public abstract java.io.InputStream userIn() { throw new AbstractMethodError("jdk.jshell.spi.ExecutionEnv.userIn()"); }
-  public abstract java.io.PrintStream userOut() { throw new AbstractMethodError("jdk.jshell.spi.ExecutionEnv.userOut()"); }
-  public abstract java.io.PrintStream userErr() { throw new AbstractMethodError("jdk.jshell.spi.ExecutionEnv.userErr()"); }
-  public abstract java.util.List<java.lang.String> extraRemoteVMOptions() { throw new AbstractMethodError("jdk.jshell.spi.ExecutionEnv.extraRemoteVMOptions()"); }
-  public abstract void closeDown() { throw new AbstractMethodError("jdk.jshell.spi.ExecutionEnv.closeDown()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Optional<jdk.jshell.JShellConsole> console() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.InputStream userIn() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.PrintStream userOut() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.io.PrintStream userErr() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.String> extraRemoteVMOptions() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void closeDown() { }
   < ---- END java signatures ---- >
 }

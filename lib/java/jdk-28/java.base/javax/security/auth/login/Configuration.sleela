@@ -59,22 +59,35 @@ class Configuration {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Configuration() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.Configuration.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Configuration() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.security.auth.login.Configuration getInstance(java.lang.String type, javax.security.auth.login.Configuration.Parameters params) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.Configuration.getInstance(java.lang.String, javax.security.auth.login.Configuration.Parameters)"); }
-  public static javax.security.auth.login.Configuration getInstance(java.lang.String type, javax.security.auth.login.Configuration.Parameters params, java.lang.String provider) throws java.security.NoSuchProviderException, java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.Configuration.getInstance(java.lang.String, javax.security.auth.login.Configuration.Parameters, java.lang.String)"); }
-  public static javax.security.auth.login.Configuration getInstance(java.lang.String type, javax.security.auth.login.Configuration.Parameters params, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.Configuration.getInstance(java.lang.String, javax.security.auth.login.Configuration.Parameters, java.security.Provider)"); }
-  public java.lang.String getType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.Configuration.getType()"); }
-  public javax.security.auth.login.Configuration.Parameters getParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.Configuration.getParameters()"); }
-  public java.security.Provider getProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.Configuration.getProvider()"); }
-  public static javax.security.auth.login.Configuration getConfiguration() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.Configuration.getConfiguration()"); }
-  public static void setConfiguration(javax.security.auth.login.Configuration configuration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.Configuration.setConfiguration(javax.security.auth.login.Configuration)"); }
-  public abstract javax.security.auth.login.AppConfigurationEntry[] getAppConfigurationEntry(java.lang.String name) { throw new AbstractMethodError("javax.security.auth.login.Configuration.getAppConfigurationEntry(java.lang.String)"); }
-  public void refresh() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.Configuration.refresh()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static javax.security.auth.login.Configuration getInstance(java.lang.String type, javax.security.auth.login.Configuration.Parameters params) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchProviderException, java.security.NoSuchAlgorithmException")
+  public static javax.security.auth.login.Configuration getInstance(java.lang.String type, javax.security.auth.login.Configuration.Parameters params, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static javax.security.auth.login.Configuration getInstance(java.lang.String type, javax.security.auth.login.Configuration.Parameters params, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.security.auth.login.Configuration.Parameters getParameters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.Provider getProvider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.security.auth.login.Configuration getConfiguration() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setConfiguration(javax.security.auth.login.Configuration configuration) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.security.auth.login.AppConfigurationEntry[] getAppConfigurationEntry(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void refresh() { }
   < ---- END java signatures ---- >
 }

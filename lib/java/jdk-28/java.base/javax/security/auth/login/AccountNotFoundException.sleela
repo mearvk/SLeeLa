@@ -58,7 +58,9 @@ class AccountNotFoundException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AccountNotFoundException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.AccountNotFoundException.<init>()"); }
-  public AccountNotFoundException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.login.AccountNotFoundException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AccountNotFoundException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AccountNotFoundException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

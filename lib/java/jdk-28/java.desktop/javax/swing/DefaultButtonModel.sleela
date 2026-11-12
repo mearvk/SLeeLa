@@ -73,45 +73,78 @@ class DefaultButtonModel {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultButtonModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultButtonModel() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean isEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.isEnabled()"); }
-  public void setGroup(javax.swing.ButtonGroup group) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.setGroup(javax.swing.ButtonGroup)"); }
-  public void setEnabled(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.setEnabled(boolean)"); }
-  public boolean isSelected() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.isSelected()"); }
-  public void setSelected(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.setSelected(boolean)"); }
-  public void addActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.addActionListener(java.awt.event.ActionListener)"); }
-  public void setActionCommand(java.lang.String actionCommand) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.setActionCommand(java.lang.String)"); }
-  public void removeActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.removeActionListener(java.awt.event.ActionListener)"); }
-  public java.awt.event.ActionListener[] getActionListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.getActionListeners()"); }
-  public void addItemListener(java.awt.event.ItemListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.addItemListener(java.awt.event.ItemListener)"); }
-  public java.lang.Object[] getSelectedObjects() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.getSelectedObjects()"); }
-  public void removeItemListener(java.awt.event.ItemListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.removeItemListener(java.awt.event.ItemListener)"); }
-  public java.awt.event.ItemListener[] getItemListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.getItemListeners()"); }
-  public java.lang.String getActionCommand() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.getActionCommand()"); }
-  public int getMnemonic() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.getMnemonic()"); }
-  public void setArmed(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.setArmed(boolean)"); }
-  public void setPressed(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.setPressed(boolean)"); }
-  public boolean isPressed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.isPressed()"); }
-  public void setRollover(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.setRollover(boolean)"); }
-  public void setMnemonic(int key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.setMnemonic(int)"); }
-  public javax.swing.ButtonGroup getGroup() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.getGroup()"); }
-  public void removeChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.removeChangeListener(javax.swing.event.ChangeListener)"); }
-  public void addChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.addChangeListener(javax.swing.event.ChangeListener)"); }
-  public boolean isRollover() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.isRollover()"); }
-  public boolean isArmed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.isArmed()"); }
-  public javax.swing.event.ChangeListener[] getChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.getChangeListeners()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setGroup(javax.swing.ButtonGroup group) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEnabled(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSelected() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelected(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setActionCommand(java.lang.String actionCommand) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.event.ActionListener[] getActionListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addItemListener(java.awt.event.ItemListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] getSelectedObjects() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeItemListener(java.awt.event.ItemListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.event.ItemListener[] getItemListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getActionCommand() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMnemonic() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setArmed(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPressed(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPressed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRollover(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMnemonic(int key) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.ButtonGroup getGroup() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeChangeListener(javax.swing.event.ChangeListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addChangeListener(javax.swing.event.ChangeListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRollover() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isArmed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.ChangeListener[] getChangeListeners() { return null; }
   @JavaProtected
-  void fireStateChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.fireStateChanged()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireStateChanged() { }
   @JavaProtected
-  void fireActionPerformed(java.awt.event.ActionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.fireActionPerformed(java.awt.event.ActionEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireActionPerformed(java.awt.event.ActionEvent e) { }
   @JavaProtected
-  void fireItemStateChanged(java.awt.event.ItemEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.fireItemStateChanged(java.awt.event.ItemEvent)"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultButtonModel.getListeners(java.lang.Class<T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireItemStateChanged(java.awt.event.ItemEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   < ---- END java signatures ---- >
 }

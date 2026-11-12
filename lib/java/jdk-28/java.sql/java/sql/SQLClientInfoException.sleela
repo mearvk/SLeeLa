@@ -58,21 +58,33 @@ class SQLClientInfoException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SQLClientInfoException(java.lang.String reason, java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLClientInfoException.<init>(java.lang.String, java.util.Map<java.lang.String, java.sql.ClientInfoStatus>, java.lang.Throwable)"); }
-  public SQLClientInfoException(java.lang.String reason, java.lang.String SQLState, java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLClientInfoException.<init>(java.lang.String, java.lang.String, java.util.Map<java.lang.String, java.sql.ClientInfoStatus>)"); }
-  public SQLClientInfoException(java.lang.String reason, java.lang.String SQLState, java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLClientInfoException.<init>(java.lang.String, java.lang.String, java.util.Map<java.lang.String, java.sql.ClientInfoStatus>, java.lang.Throwable)"); }
-  public SQLClientInfoException(java.lang.String reason, java.lang.String SQLState, int vendorCode, java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLClientInfoException.<init>(java.lang.String, java.lang.String, int, java.util.Map<java.lang.String, java.sql.ClientInfoStatus>)"); }
-  public SQLClientInfoException(java.lang.String reason, java.lang.String SQLState, int vendorCode, java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLClientInfoException.<init>(java.lang.String, java.lang.String, int, java.util.Map<java.lang.String, java.sql.ClientInfoStatus>, java.lang.Throwable)"); }
-  public SQLClientInfoException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLClientInfoException.<init>()"); }
-  public SQLClientInfoException(java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLClientInfoException.<init>(java.util.Map<java.lang.String, java.sql.ClientInfoStatus>)"); }
-  public SQLClientInfoException(java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLClientInfoException.<init>(java.util.Map<java.lang.String, java.sql.ClientInfoStatus>, java.lang.Throwable)"); }
-  public SQLClientInfoException(java.lang.String reason, java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLClientInfoException.<init>(java.lang.String, java.util.Map<java.lang.String, java.sql.ClientInfoStatus>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLClientInfoException(java.lang.String reason, java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLClientInfoException(java.lang.String reason, java.lang.String SQLState, java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLClientInfoException(java.lang.String reason, java.lang.String SQLState, java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLClientInfoException(java.lang.String reason, java.lang.String SQLState, int vendorCode, java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLClientInfoException(java.lang.String reason, java.lang.String SQLState, int vendorCode, java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLClientInfoException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLClientInfoException(java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLClientInfoException(java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SQLClientInfoException(java.lang.String reason, java.util.Map<java.lang.String, java.sql.ClientInfoStatus> failedProperties) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.Map<java.lang.String, java.sql.ClientInfoStatus> getFailedProperties() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLClientInfoException.getFailedProperties()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Map<java.lang.String, java.sql.ClientInfoStatus> getFailedProperties() { return null; }
   < ---- END java signatures ---- >
 }

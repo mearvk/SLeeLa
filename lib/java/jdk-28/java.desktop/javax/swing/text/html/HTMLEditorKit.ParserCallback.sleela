@@ -63,20 +63,31 @@ class ParserCallback {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ParserCallback() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.ParserCallback.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ParserCallback() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void flush() throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.ParserCallback.flush()"); }
-  public void handleText(char[] data, int pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.ParserCallback.handleText(char[], int)"); }
-  public void handleComment(char[] data, int pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.ParserCallback.handleComment(char[], int)"); }
-  public void handleStartTag(javax.swing.text.html.HTML.Tag t, javax.swing.text.MutableAttributeSet a, int pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.ParserCallback.handleStartTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, int)"); }
-  public void handleEndTag(javax.swing.text.html.HTML.Tag t, int pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.ParserCallback.handleEndTag(javax.swing.text.html.HTML.Tag, int)"); }
-  public void handleSimpleTag(javax.swing.text.html.HTML.Tag t, javax.swing.text.MutableAttributeSet a, int pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.ParserCallback.handleSimpleTag(javax.swing.text.html.HTML.Tag, javax.swing.text.MutableAttributeSet, int)"); }
-  public void handleError(java.lang.String errorMsg, int pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.ParserCallback.handleError(java.lang.String, int)"); }
-  public void handleEndOfLineString(java.lang.String eol) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLEditorKit.ParserCallback.handleEndOfLineString(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public void flush() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void handleText(char[] data, int pos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void handleComment(char[] data, int pos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void handleStartTag(javax.swing.text.html.HTML.Tag t, javax.swing.text.MutableAttributeSet a, int pos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void handleEndTag(javax.swing.text.html.HTML.Tag t, int pos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void handleSimpleTag(javax.swing.text.html.HTML.Tag t, javax.swing.text.MutableAttributeSet a, int pos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void handleError(java.lang.String errorMsg, int pos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void handleEndOfLineString(java.lang.String eol) { }
   < ---- END java signatures ---- >
 }

@@ -58,27 +58,38 @@ class TableView {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TableView(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TableView.<init>(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TableView(javax.swing.text.Element elem) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void replace(int offset, int length, javax.swing.text.View[] views) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TableView.replace(int, int, javax.swing.text.View[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void replace(int offset, int length, javax.swing.text.View[] views) { }
   @JavaProtected
-  void layoutColumns(int targetSpan, int[] offsets, int[] spans, javax.swing.SizeRequirements[] reqs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TableView.layoutColumns(int, int[], int[], javax.swing.SizeRequirements[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void layoutColumns(int targetSpan, int[] offsets, int[] spans, javax.swing.SizeRequirements[] reqs) { }
   @JavaProtected
-  javax.swing.text.TableView.TableRow createTableRow(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TableView.createTableRow(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.TableView.TableRow createTableRow(javax.swing.text.Element elem) { return null; }
   @JavaProtected
-  javax.swing.text.TableView.TableCell createTableCell(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TableView.createTableCell(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.TableView.TableCell createTableCell(javax.swing.text.Element elem) { return null; }
   @JavaProtected
-  javax.swing.SizeRequirements calculateMinorAxisRequirements(int axis, javax.swing.SizeRequirements r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TableView.calculateMinorAxisRequirements(int, javax.swing.SizeRequirements)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.SizeRequirements calculateMinorAxisRequirements(int axis, javax.swing.SizeRequirements r) { return null; }
   @JavaProtected
-  void forwardUpdate(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TableView.forwardUpdate(javax.swing.event.DocumentEvent.ElementChange, javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void forwardUpdate(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
   @JavaProtected
-  void layoutMinorAxis(int targetSpan, int axis, int[] offsets, int[] spans) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TableView.layoutMinorAxis(int, int, int[], int[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void layoutMinorAxis(int targetSpan, int axis, int[] offsets, int[] spans) { }
   @JavaProtected
-  javax.swing.text.View getViewAtPosition(int pos, java.awt.Rectangle a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TableView.getViewAtPosition(int, java.awt.Rectangle)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.View getViewAtPosition(int pos, java.awt.Rectangle a) { return null; }
   < ---- END java signatures ---- >
 }

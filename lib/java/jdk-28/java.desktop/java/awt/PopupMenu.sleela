@@ -58,17 +58,25 @@ class PopupMenu {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PopupMenu() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PopupMenu.<init>()"); }
-  public PopupMenu(java.lang.String label) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PopupMenu.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public PopupMenu() { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public PopupMenu(java.lang.String label) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.MenuContainer getParent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PopupMenu.getParent()"); }
-  public void show(java.awt.Component origin, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PopupMenu.show(java.awt.Component, int, int)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PopupMenu.getAccessibleContext()"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.PopupMenu.addNotify()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.MenuContainer getParent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void show(java.awt.Component origin, int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
   < ---- END java signatures ---- >
 }

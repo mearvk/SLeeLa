@@ -58,66 +58,123 @@ class LinkedBlockingDeque<E> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LinkedBlockingDeque(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.<init>(java.util.Collection<? extends E>)"); }
-  public LinkedBlockingDeque(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.<init>(int)"); }
-  public LinkedBlockingDeque() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkedBlockingDeque(java.util.Collection<? extends E> c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkedBlockingDeque(int capacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkedBlockingDeque() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.remove(java.lang.Object)"); }
-  public E remove() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.remove()"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.size()"); }
-  public void put(E e) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.put(E)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.toString()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.clear()"); }
-  public boolean add(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.add(E)"); }
-  public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.toArray(T[])"); }
-  public java.lang.Object[] toArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.toArray()"); }
-  public java.util.Iterator<E> iterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.iterator()"); }
-  public boolean contains(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.contains(java.lang.Object)"); }
-  public java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.spliterator()"); }
-  public boolean addAll(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.addAll(java.util.Collection<? extends E>)"); }
-  public void forEach(java.util.function.Consumer<? super E> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.forEach(java.util.function.Consumer<? super E>)"); }
-  public E peek() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.peek()"); }
-  public boolean removeIf(java.util.function.Predicate<? super E> filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.removeIf(java.util.function.Predicate<? super E>)"); }
-  public E getFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.getFirst()"); }
-  public E getLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.getLast()"); }
-  public E element() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.element()"); }
-  public void addFirst(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.addFirst(E)"); }
-  public void addLast(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.addLast(E)"); }
-  public E removeFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.removeFirst()"); }
-  public E removeLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.removeLast()"); }
-  public boolean removeAll(java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.removeAll(java.util.Collection<?>)"); }
-  public boolean retainAll(java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.retainAll(java.util.Collection<?>)"); }
-  public E poll(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.poll(long, java.util.concurrent.TimeUnit)"); }
-  public E poll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.poll()"); }
-  public boolean offer(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.offer(E)"); }
-  public boolean offer(E e, long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.offer(E, long, java.util.concurrent.TimeUnit)"); }
-  public void push(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.push(E)"); }
-  public E pop() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.pop()"); }
-  public E pollFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.pollFirst()"); }
-  public E pollFirst(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.pollFirst(long, java.util.concurrent.TimeUnit)"); }
-  public E pollLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.pollLast()"); }
-  public E pollLast(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.pollLast(long, java.util.concurrent.TimeUnit)"); }
-  public boolean offerLast(E e, long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.offerLast(E, long, java.util.concurrent.TimeUnit)"); }
-  public boolean offerLast(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.offerLast(E)"); }
-  public E peekFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.peekFirst()"); }
-  public boolean removeFirstOccurrence(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.removeFirstOccurrence(java.lang.Object)"); }
-  public boolean offerFirst(E e, long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.offerFirst(E, long, java.util.concurrent.TimeUnit)"); }
-  public boolean offerFirst(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.offerFirst(E)"); }
-  public E peekLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.peekLast()"); }
-  public boolean removeLastOccurrence(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.removeLastOccurrence(java.lang.Object)"); }
-  public java.util.Iterator<E> descendingIterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.descendingIterator()"); }
-  public void putFirst(E e) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.putFirst(E)"); }
-  public void putLast(E e) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.putLast(E)"); }
-  public E take() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.take()"); }
-  public int drainTo(java.util.Collection<? super E> c, int maxElements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.drainTo(java.util.Collection<? super E>, int)"); }
-  public int drainTo(java.util.Collection<? super E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.drainTo(java.util.Collection<? super E>)"); }
-  public int remainingCapacity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.remainingCapacity()"); }
-  public E takeFirst() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.takeFirst()"); }
-  public E takeLast() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedBlockingDeque.takeLast()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E remove() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void put(E e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean add(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> T[] toArray(T[] a) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] toArray() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Iterator<E> iterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Spliterator<E> spliterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean addAll(java.util.Collection<? extends E> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEach(java.util.function.Consumer<? super E> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E peek() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean removeIf(java.util.function.Predicate<? super E> filter) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E getFirst() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E getLast() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E element() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addFirst(E e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addLast(E e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E removeFirst() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E removeLast() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean removeAll(java.util.Collection<?> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean retainAll(java.util.Collection<?> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public E poll(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E poll() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean offer(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public boolean offer(E e, long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void push(E e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E pop() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E pollFirst() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public E pollFirst(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E pollLast() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public E pollLast(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public boolean offerLast(E e, long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean offerLast(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E peekFirst() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean removeFirstOccurrence(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public boolean offerFirst(E e, long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean offerFirst(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E peekLast() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean removeLastOccurrence(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Iterator<E> descendingIterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void putFirst(E e) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void putLast(E e) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public E take() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int drainTo(java.util.Collection<? super E> c, int maxElements) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int drainTo(java.util.Collection<? super E> c) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int remainingCapacity() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public E takeFirst() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public E takeLast() { return null; }
   < ---- END java signatures ---- >
 }

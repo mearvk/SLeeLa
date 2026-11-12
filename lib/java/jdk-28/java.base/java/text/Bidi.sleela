@@ -65,29 +65,49 @@ class Bidi {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Bidi(char[] text, int textStart, byte[] embeddings, int embStart, int paragraphLength, int flags) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.<init>(char[], int, byte[], int, int, int)"); }
-  public Bidi(java.text.AttributedCharacterIterator paragraph) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.<init>(java.text.AttributedCharacterIterator)"); }
-  public Bidi(java.lang.String paragraph, int flags) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.<init>(java.lang.String, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Bidi(char[] text, int textStart, byte[] embeddings, int embStart, int paragraphLength, int flags) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Bidi(java.text.AttributedCharacterIterator paragraph) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Bidi(java.lang.String paragraph, int flags) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.toString()"); }
-  public int getLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.getLength()"); }
-  public int getRunStart(int run) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.getRunStart(int)"); }
-  public int getRunLimit(int run) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.getRunLimit(int)"); }
-  public boolean isMixed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.isMixed()"); }
-  public boolean isLeftToRight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.isLeftToRight()"); }
-  public boolean isRightToLeft() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.isRightToLeft()"); }
-  public boolean baseIsLeftToRight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.baseIsLeftToRight()"); }
-  public int getLevelAt(int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.getLevelAt(int)"); }
-  public int getRunLevel(int run) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.getRunLevel(int)"); }
-  public static boolean requiresBidi(char[] text, int start, int limit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.requiresBidi(char[], int, int)"); }
-  public static void reorderVisually(byte[] levels, int levelStart, java.lang.Object[] objects, int objectStart, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.reorderVisually(byte[], int, java.lang.Object[], int, int)"); }
-  public java.text.Bidi createLineBidi(int lineStart, int lineLimit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.createLineBidi(int, int)"); }
-  public int getBaseLevel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.getBaseLevel()"); }
-  public int getRunCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Bidi.getRunCount()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLength() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRunStart(int run) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRunLimit(int run) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMixed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLeftToRight() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRightToLeft() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean baseIsLeftToRight() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLevelAt(int offset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRunLevel(int run) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean requiresBidi(char[] text, int start, int limit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void reorderVisually(byte[] levels, int levelStart, java.lang.Object[] objects, int objectStart, int count) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.Bidi createLineBidi(int lineStart, int lineLimit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBaseLevel() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRunCount() { return 0; }
   < ---- END java signatures ---- >
 }

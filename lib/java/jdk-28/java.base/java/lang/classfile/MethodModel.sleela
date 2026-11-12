@@ -58,14 +58,22 @@ class MethodModel {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.Optional<java.lang.classfile.ClassModel> parent() { throw new AbstractMethodError("java.lang.classfile.MethodModel.parent()"); }
-  public abstract java.lang.classfile.AccessFlags flags() { throw new AbstractMethodError("java.lang.classfile.MethodModel.flags()"); }
-  public abstract java.lang.classfile.constantpool.Utf8Entry methodName() { throw new AbstractMethodError("java.lang.classfile.MethodModel.methodName()"); }
-  public abstract java.util.Optional<java.lang.classfile.CodeModel> code() { throw new AbstractMethodError("java.lang.classfile.MethodModel.code()"); }
-  public abstract java.lang.classfile.constantpool.Utf8Entry methodType() { throw new AbstractMethodError("java.lang.classfile.MethodModel.methodType()"); }
-  public default java.lang.constant.MethodTypeDesc methodTypeSymbol() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.MethodModel.methodTypeSymbol()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Optional<java.lang.classfile.ClassModel> parent() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.AccessFlags flags() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.Utf8Entry methodName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Optional<java.lang.classfile.CodeModel> code() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.Utf8Entry methodType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.constant.MethodTypeDesc methodTypeSymbol() { return null; }
   < ---- END java signatures ---- >
 }

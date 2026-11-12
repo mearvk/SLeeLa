@@ -58,24 +58,42 @@ class ProcessHandle {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.Optional<java.lang.ProcessHandle> parent() { throw new AbstractMethodError("java.lang.ProcessHandle.parent()"); }
-  public abstract boolean equals(java.lang.Object other) { throw new AbstractMethodError("java.lang.ProcessHandle.equals(java.lang.Object)"); }
-  public abstract int hashCode() { throw new AbstractMethodError("java.lang.ProcessHandle.hashCode()"); }
-  public abstract int compareTo(java.lang.ProcessHandle other) { throw new AbstractMethodError("java.lang.ProcessHandle.compareTo(java.lang.ProcessHandle)"); }
-  public static java.util.Optional<java.lang.ProcessHandle> of(long pid) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ProcessHandle.of(long)"); }
-  public abstract java.lang.ProcessHandle.Info info() { throw new AbstractMethodError("java.lang.ProcessHandle.info()"); }
-  public static java.lang.ProcessHandle current() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ProcessHandle.current()"); }
-  public abstract boolean isAlive() { throw new AbstractMethodError("java.lang.ProcessHandle.isAlive()"); }
-  public abstract boolean destroy() { throw new AbstractMethodError("java.lang.ProcessHandle.destroy()"); }
-  public abstract long pid() { throw new AbstractMethodError("java.lang.ProcessHandle.pid()"); }
-  public abstract java.util.stream.Stream<java.lang.ProcessHandle> children() { throw new AbstractMethodError("java.lang.ProcessHandle.children()"); }
-  public abstract java.util.concurrent.CompletableFuture<java.lang.ProcessHandle> onExit() { throw new AbstractMethodError("java.lang.ProcessHandle.onExit()"); }
-  public abstract java.util.stream.Stream<java.lang.ProcessHandle> descendants() { throw new AbstractMethodError("java.lang.ProcessHandle.descendants()"); }
-  public abstract boolean destroyForcibly() { throw new AbstractMethodError("java.lang.ProcessHandle.destroyForcibly()"); }
-  public abstract boolean supportsNormalTermination() { throw new AbstractMethodError("java.lang.ProcessHandle.supportsNormalTermination()"); }
-  public static java.util.stream.Stream<java.lang.ProcessHandle> allProcesses() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ProcessHandle.allProcesses()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Optional<java.lang.ProcessHandle> parent() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object other) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int compareTo(java.lang.ProcessHandle other) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Optional<java.lang.ProcessHandle> of(long pid) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.ProcessHandle.Info info() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.ProcessHandle current() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isAlive() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean destroy() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public long pid() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.Stream<java.lang.ProcessHandle> children() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.CompletableFuture<java.lang.ProcessHandle> onExit() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.stream.Stream<java.lang.ProcessHandle> descendants() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean destroyForcibly() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean supportsNormalTermination() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.Stream<java.lang.ProcessHandle> allProcesses() { return null; }
   < ---- END java signatures ---- >
 }

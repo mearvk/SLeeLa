@@ -58,6 +58,7 @@ class AppHiddenEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AppHiddenEvent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.desktop.AppHiddenEvent.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AppHiddenEvent() { }
   < ---- END java constructors ---- >
 }

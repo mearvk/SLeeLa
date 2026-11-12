@@ -58,52 +58,91 @@ class ThreadPoolExecutor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, java.util.concurrent.TimeUnit unit, java.util.concurrent.BlockingQueue<java.lang.Runnable> workQueue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.<init>(int, int, long, java.util.concurrent.TimeUnit, java.util.concurrent.BlockingQueue<java.lang.Runnable>)"); }
-  public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, java.util.concurrent.TimeUnit unit, java.util.concurrent.BlockingQueue<java.lang.Runnable> workQueue, java.util.concurrent.RejectedExecutionHandler handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.<init>(int, int, long, java.util.concurrent.TimeUnit, java.util.concurrent.BlockingQueue<java.lang.Runnable>, java.util.concurrent.RejectedExecutionHandler)"); }
-  public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, java.util.concurrent.TimeUnit unit, java.util.concurrent.BlockingQueue<java.lang.Runnable> workQueue, java.util.concurrent.ThreadFactory threadFactory, java.util.concurrent.RejectedExecutionHandler handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.<init>(int, int, long, java.util.concurrent.TimeUnit, java.util.concurrent.BlockingQueue<java.lang.Runnable>, java.util.concurrent.ThreadFactory, java.util.concurrent.RejectedExecutionHandler)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, java.util.concurrent.TimeUnit unit, java.util.concurrent.BlockingQueue<java.lang.Runnable> workQueue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, java.util.concurrent.TimeUnit unit, java.util.concurrent.BlockingQueue<java.lang.Runnable> workQueue, java.util.concurrent.RejectedExecutionHandler handler) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, java.util.concurrent.TimeUnit unit, java.util.concurrent.BlockingQueue<java.lang.Runnable> workQueue, java.util.concurrent.ThreadFactory threadFactory, java.util.concurrent.RejectedExecutionHandler handler) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean remove(java.lang.Runnable task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.remove(java.lang.Runnable)"); }
-  public void shutdown() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.shutdown()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Runnable task) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void shutdown() { }
   @JavaProtected
-  void finalize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.finalize()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.toString()"); }
-  public java.util.concurrent.BlockingQueue<java.lang.Runnable> getQueue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.getQueue()"); }
-  public boolean isTerminated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.isTerminated()"); }
-  public void execute(java.lang.Runnable command) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.execute(java.lang.Runnable)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void finalize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.BlockingQueue<java.lang.Runnable> getQueue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isTerminated() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void execute(java.lang.Runnable command) { }
   @JavaProtected
-  void terminated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.terminated()"); }
-  public boolean isShutdown() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.isShutdown()"); }
-  public boolean awaitTermination(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.awaitTermination(long, java.util.concurrent.TimeUnit)"); }
-  public java.util.List<java.lang.Runnable> shutdownNow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.shutdownNow()"); }
-  public int getPoolSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.getPoolSize()"); }
-  public boolean isTerminating() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.isTerminating()"); }
-  public void purge() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.purge()"); }
-  public void allowCoreThreadTimeOut(boolean value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.allowCoreThreadTimeOut(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void terminated() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isShutdown() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public boolean awaitTermination(long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.lang.Runnable> shutdownNow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getPoolSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isTerminating() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void purge() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void allowCoreThreadTimeOut(boolean value) { }
   @JavaProtected
-  void beforeExecute(java.lang.Thread t, java.lang.Runnable r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.beforeExecute(java.lang.Thread, java.lang.Runnable)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void beforeExecute(java.lang.Thread t, java.lang.Runnable r) { }
   @JavaProtected
-  void afterExecute(java.lang.Runnable r, java.lang.Throwable t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.afterExecute(java.lang.Runnable, java.lang.Throwable)"); }
-  public boolean allowsCoreThreadTimeOut() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.allowsCoreThreadTimeOut()"); }
-  public void setThreadFactory(java.util.concurrent.ThreadFactory threadFactory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.setThreadFactory(java.util.concurrent.ThreadFactory)"); }
-  public java.util.concurrent.ThreadFactory getThreadFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.getThreadFactory()"); }
-  public void setRejectedExecutionHandler(java.util.concurrent.RejectedExecutionHandler handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.setRejectedExecutionHandler(java.util.concurrent.RejectedExecutionHandler)"); }
-  public java.util.concurrent.RejectedExecutionHandler getRejectedExecutionHandler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.getRejectedExecutionHandler()"); }
-  public void setCorePoolSize(int corePoolSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.setCorePoolSize(int)"); }
-  public int getCorePoolSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.getCorePoolSize()"); }
-  public boolean prestartCoreThread() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.prestartCoreThread()"); }
-  public int prestartAllCoreThreads() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.prestartAllCoreThreads()"); }
-  public void setMaximumPoolSize(int maximumPoolSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.setMaximumPoolSize(int)"); }
-  public int getMaximumPoolSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.getMaximumPoolSize()"); }
-  public void setKeepAliveTime(long time, java.util.concurrent.TimeUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.setKeepAliveTime(long, java.util.concurrent.TimeUnit)"); }
-  public long getKeepAliveTime(java.util.concurrent.TimeUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.getKeepAliveTime(java.util.concurrent.TimeUnit)"); }
-  public int getActiveCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.getActiveCount()"); }
-  public int getLargestPoolSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.getLargestPoolSize()"); }
-  public long getTaskCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.getTaskCount()"); }
-  public long getCompletedTaskCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ThreadPoolExecutor.getCompletedTaskCount()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void afterExecute(java.lang.Runnable r, java.lang.Throwable t) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean allowsCoreThreadTimeOut() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setThreadFactory(java.util.concurrent.ThreadFactory threadFactory) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.ThreadFactory getThreadFactory() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRejectedExecutionHandler(java.util.concurrent.RejectedExecutionHandler handler) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.concurrent.RejectedExecutionHandler getRejectedExecutionHandler() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCorePoolSize(int corePoolSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getCorePoolSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean prestartCoreThread() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int prestartAllCoreThreads() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximumPoolSize(int maximumPoolSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaximumPoolSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setKeepAliveTime(long time, java.util.concurrent.TimeUnit unit) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getKeepAliveTime(java.util.concurrent.TimeUnit unit) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getActiveCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLargestPoolSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getTaskCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getCompletedTaskCount() { return 0; }
   < ---- END java signatures ---- >
 }

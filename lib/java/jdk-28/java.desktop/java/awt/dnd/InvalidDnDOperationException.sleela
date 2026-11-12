@@ -58,7 +58,9 @@ class InvalidDnDOperationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidDnDOperationException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.InvalidDnDOperationException.<init>()"); }
-  public InvalidDnDOperationException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.InvalidDnDOperationException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidDnDOperationException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidDnDOperationException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

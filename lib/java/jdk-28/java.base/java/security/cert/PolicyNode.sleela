@@ -58,15 +58,24 @@ class PolicyNode {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.security.cert.PolicyNode getParent() { throw new AbstractMethodError("java.security.cert.PolicyNode.getParent()"); }
-  public abstract java.util.Iterator<? extends java.security.cert.PolicyNode> getChildren() { throw new AbstractMethodError("java.security.cert.PolicyNode.getChildren()"); }
-  public abstract boolean isCritical() { throw new AbstractMethodError("java.security.cert.PolicyNode.isCritical()"); }
-  public abstract int getDepth() { throw new AbstractMethodError("java.security.cert.PolicyNode.getDepth()"); }
-  public abstract java.lang.String getValidPolicy() { throw new AbstractMethodError("java.security.cert.PolicyNode.getValidPolicy()"); }
-  public abstract java.util.Set<? extends java.security.cert.PolicyQualifierInfo> getPolicyQualifiers() { throw new AbstractMethodError("java.security.cert.PolicyNode.getPolicyQualifiers()"); }
-  public abstract java.util.Set<java.lang.String> getExpectedPolicies() { throw new AbstractMethodError("java.security.cert.PolicyNode.getExpectedPolicies()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.cert.PolicyNode getParent() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Iterator<? extends java.security.cert.PolicyNode> getChildren() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isCritical() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getDepth() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getValidPolicy() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<? extends java.security.cert.PolicyQualifierInfo> getPolicyQualifiers() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<java.lang.String> getExpectedPolicies() { return null; }
   < ---- END java signatures ---- >
 }

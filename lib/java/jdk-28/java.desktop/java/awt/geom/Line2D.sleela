@@ -59,48 +59,87 @@ class Line2D {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Line2D() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Line2D() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.clone()"); }
-  public boolean contains(double x, double y, double w, double h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.contains(double, double, double, double)"); }
-  public boolean contains(java.awt.geom.Rectangle2D r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.contains(java.awt.geom.Rectangle2D)"); }
-  public boolean contains(double x, double y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.contains(double, double)"); }
-  public java.awt.Rectangle getBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.getBounds()"); }
-  public boolean intersects(java.awt.geom.Rectangle2D r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.intersects(java.awt.geom.Rectangle2D)"); }
-  public boolean intersects(double x, double y, double w, double h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.intersects(double, double, double, double)"); }
-  public abstract void setLine(double x1, double y1, double x2, double y2) { throw new AbstractMethodError("java.awt.geom.Line2D.setLine(double, double, double, double)"); }
-  public void setLine(java.awt.geom.Line2D l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.setLine(java.awt.geom.Line2D)"); }
-  public void setLine(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.setLine(java.awt.geom.Point2D, java.awt.geom.Point2D)"); }
-  public abstract double getX1() { throw new AbstractMethodError("java.awt.geom.Line2D.getX1()"); }
-  public abstract double getY1() { throw new AbstractMethodError("java.awt.geom.Line2D.getY1()"); }
-  public abstract double getX2() { throw new AbstractMethodError("java.awt.geom.Line2D.getX2()"); }
-  public abstract double getY2() { throw new AbstractMethodError("java.awt.geom.Line2D.getY2()"); }
-  public boolean intersectsLine(java.awt.geom.Line2D l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.intersectsLine(java.awt.geom.Line2D)"); }
-  public boolean intersectsLine(double x1, double y1, double x2, double y2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.intersectsLine(double, double, double, double)"); }
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.getPathIterator(java.awt.geom.AffineTransform, double)"); }
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.getPathIterator(java.awt.geom.AffineTransform)"); }
-  public int relativeCCW(java.awt.geom.Point2D p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.relativeCCW(java.awt.geom.Point2D)"); }
-  public int relativeCCW(double px, double py) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.relativeCCW(double, double)"); }
-  public static int relativeCCW(double x1, double y1, double x2, double y2, double px, double py) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.relativeCCW(double, double, double, double, double, double)"); }
-  public double ptSegDistSq(double px, double py) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.ptSegDistSq(double, double)"); }
-  public static double ptSegDistSq(double x1, double y1, double x2, double y2, double px, double py) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.ptSegDistSq(double, double, double, double, double, double)"); }
-  public double ptSegDistSq(java.awt.geom.Point2D pt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.ptSegDistSq(java.awt.geom.Point2D)"); }
-  public abstract java.awt.geom.Point2D getP1() { throw new AbstractMethodError("java.awt.geom.Line2D.getP1()"); }
-  public abstract java.awt.geom.Point2D getP2() { throw new AbstractMethodError("java.awt.geom.Line2D.getP2()"); }
-  public static boolean linesIntersect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.linesIntersect(double, double, double, double, double, double, double, double)"); }
-  public double ptSegDist(double px, double py) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.ptSegDist(double, double)"); }
-  public static double ptSegDist(double x1, double y1, double x2, double y2, double px, double py) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.ptSegDist(double, double, double, double, double, double)"); }
-  public double ptSegDist(java.awt.geom.Point2D pt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.ptSegDist(java.awt.geom.Point2D)"); }
-  public double ptLineDistSq(double px, double py) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.ptLineDistSq(double, double)"); }
-  public double ptLineDistSq(java.awt.geom.Point2D pt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.ptLineDistSq(java.awt.geom.Point2D)"); }
-  public static double ptLineDistSq(double x1, double y1, double x2, double y2, double px, double py) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.ptLineDistSq(double, double, double, double, double, double)"); }
-  public static double ptLineDist(double x1, double y1, double x2, double y2, double px, double py) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.ptLineDist(double, double, double, double, double, double)"); }
-  public double ptLineDist(double px, double py) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.ptLineDist(double, double)"); }
-  public double ptLineDist(java.awt.geom.Point2D pt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Line2D.ptLineDist(java.awt.geom.Point2D)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(double x, double y, double w, double h) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.awt.geom.Rectangle2D r) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(double x, double y) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getBounds() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean intersects(java.awt.geom.Rectangle2D r) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean intersects(double x, double y, double w, double h) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setLine(double x1, double y1, double x2, double y2) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLine(java.awt.geom.Line2D l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLine(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2) { }
+  @throwable("java.lang.AbstractMethodError")
+  public double getX1() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public double getY1() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public double getX2() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public double getY2() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean intersectsLine(java.awt.geom.Line2D l) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean intersectsLine(double x1, double y1, double x2, double y2) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int relativeCCW(java.awt.geom.Point2D p) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int relativeCCW(double px, double py) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int relativeCCW(double x1, double y1, double x2, double y2, double px, double py) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double ptSegDistSq(double px, double py) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double ptSegDistSq(double x1, double y1, double x2, double y2, double px, double py) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double ptSegDistSq(java.awt.geom.Point2D pt) { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.geom.Point2D getP1() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.geom.Point2D getP2() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean linesIntersect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double ptSegDist(double px, double py) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double ptSegDist(double x1, double y1, double x2, double y2, double px, double py) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double ptSegDist(java.awt.geom.Point2D pt) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double ptLineDistSq(double px, double py) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double ptLineDistSq(java.awt.geom.Point2D pt) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double ptLineDistSq(double x1, double y1, double x2, double y2, double px, double py) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static double ptLineDist(double x1, double y1, double x2, double y2, double px, double py) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double ptLineDist(double px, double py) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double ptLineDist(java.awt.geom.Point2D pt) { return 0.0; }
   < ---- END java signatures ---- >
 }

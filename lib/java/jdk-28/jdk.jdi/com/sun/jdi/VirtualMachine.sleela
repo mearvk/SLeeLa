@@ -68,62 +68,118 @@ class VirtualMachine {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String name() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.name()"); }
-  public abstract void exit(int exitCode) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.exit(int)"); }
-  public abstract java.lang.String version() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.version()"); }
-  public default java.util.List<com.sun.jdi.ModuleReference> allModules() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.VirtualMachine.allModules()"); }
-  public abstract java.lang.String description() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.description()"); }
-  public abstract java.lang.Process process() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.process()"); }
-  public abstract void dispose() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.dispose()"); }
-  public abstract com.sun.jdi.event.EventQueue eventQueue() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.eventQueue()"); }
-  public abstract void redefineClasses(java.util.Map<? extends com.sun.jdi.ReferenceType, byte[]> classToBytes) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.redefineClasses(java.util.Map<? extends com.sun.jdi.ReferenceType, byte[]>)"); }
-  public abstract void suspend() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.suspend()"); }
-  public abstract void resume() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.resume()"); }
-  public abstract java.util.List<com.sun.jdi.ReferenceType> classesByName(java.lang.String className) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.classesByName(java.lang.String)"); }
-  public abstract java.util.List<com.sun.jdi.ReferenceType> allClasses() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.allClasses()"); }
-  public abstract java.util.List<com.sun.jdi.ThreadReference> allThreads() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.allThreads()"); }
-  public abstract java.util.List<com.sun.jdi.ThreadGroupReference> topLevelThreadGroups() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.topLevelThreadGroups()"); }
-  public abstract com.sun.jdi.request.EventRequestManager eventRequestManager() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.eventRequestManager()"); }
-  public abstract com.sun.jdi.LongValue mirrorOf(long value) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.mirrorOf(long)"); }
-  public abstract com.sun.jdi.StringReference mirrorOf(java.lang.String value) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.mirrorOf(java.lang.String)"); }
-  public abstract com.sun.jdi.ShortValue mirrorOf(short value) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.mirrorOf(short)"); }
-  public abstract com.sun.jdi.BooleanValue mirrorOf(boolean value) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.mirrorOf(boolean)"); }
-  public abstract com.sun.jdi.CharValue mirrorOf(char value) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.mirrorOf(char)"); }
-  public abstract com.sun.jdi.ByteValue mirrorOf(byte value) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.mirrorOf(byte)"); }
-  public abstract com.sun.jdi.DoubleValue mirrorOf(double value) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.mirrorOf(double)"); }
-  public abstract com.sun.jdi.FloatValue mirrorOf(float value) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.mirrorOf(float)"); }
-  public abstract com.sun.jdi.IntegerValue mirrorOf(int value) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.mirrorOf(int)"); }
-  public abstract com.sun.jdi.VoidValue mirrorOfVoid() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.mirrorOfVoid()"); }
-  public abstract boolean canWatchFieldModification() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canWatchFieldModification()"); }
-  public abstract boolean canWatchFieldAccess() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canWatchFieldAccess()"); }
-  public abstract boolean canGetBytecodes() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canGetBytecodes()"); }
-  public abstract boolean canGetSyntheticAttribute() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canGetSyntheticAttribute()"); }
-  public abstract boolean canGetOwnedMonitorInfo() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canGetOwnedMonitorInfo()"); }
-  public abstract boolean canGetCurrentContendedMonitor() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canGetCurrentContendedMonitor()"); }
-  public abstract boolean canGetMonitorInfo() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canGetMonitorInfo()"); }
-  public abstract boolean canUseInstanceFilters() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canUseInstanceFilters()"); }
-  public abstract boolean canRedefineClasses() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canRedefineClasses()"); }
-  public abstract boolean canAddMethod() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canAddMethod()"); }
-  public abstract boolean canUnrestrictedlyRedefineClasses() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canUnrestrictedlyRedefineClasses()"); }
-  public abstract boolean canPopFrames() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canPopFrames()"); }
-  public abstract boolean canGetSourceDebugExtension() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canGetSourceDebugExtension()"); }
-  public abstract boolean canRequestVMDeathEvent() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canRequestVMDeathEvent()"); }
-  public abstract boolean canGetMethodReturnValues() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canGetMethodReturnValues()"); }
-  public abstract boolean canGetInstanceInfo() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canGetInstanceInfo()"); }
-  public abstract boolean canUseSourceNameFilters() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canUseSourceNameFilters()"); }
-  public abstract boolean canForceEarlyReturn() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canForceEarlyReturn()"); }
-  public abstract boolean canBeModified() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canBeModified()"); }
-  public abstract boolean canRequestMonitorEvents() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canRequestMonitorEvents()"); }
-  public abstract boolean canGetMonitorFrameInfo() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canGetMonitorFrameInfo()"); }
-  public abstract boolean canGetClassFileVersion() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canGetClassFileVersion()"); }
-  public abstract boolean canGetConstantPool() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.canGetConstantPool()"); }
-  public default boolean canGetModuleInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.VirtualMachine.canGetModuleInfo()"); }
-  public abstract void setDefaultStratum(java.lang.String stratum) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.setDefaultStratum(java.lang.String)"); }
-  public abstract java.lang.String getDefaultStratum() { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.getDefaultStratum()"); }
-  public abstract long[] instanceCounts(java.util.List<? extends com.sun.jdi.ReferenceType> refTypes) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.instanceCounts(java.util.List<? extends com.sun.jdi.ReferenceType>)"); }
-  public abstract void setDebugTraceMode(int traceFlags) { throw new AbstractMethodError("com.sun.jdi.VirtualMachine.setDebugTraceMode(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String name() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void exit(int exitCode) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String version() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.List<com.sun.jdi.ModuleReference> allModules() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String description() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Process process() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void dispose() { }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.event.EventQueue eventQueue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void redefineClasses(java.util.Map<? extends com.sun.jdi.ReferenceType, byte[]> classToBytes) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void suspend() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void resume() { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.ReferenceType> classesByName(java.lang.String className) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.ReferenceType> allClasses() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.ThreadReference> allThreads() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.ThreadGroupReference> topLevelThreadGroups() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.EventRequestManager eventRequestManager() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.LongValue mirrorOf(long value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.StringReference mirrorOf(java.lang.String value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.ShortValue mirrorOf(short value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.BooleanValue mirrorOf(boolean value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.CharValue mirrorOf(char value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.ByteValue mirrorOf(byte value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.DoubleValue mirrorOf(double value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.FloatValue mirrorOf(float value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.IntegerValue mirrorOf(int value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.VoidValue mirrorOfVoid() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canWatchFieldModification() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canWatchFieldAccess() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canGetBytecodes() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canGetSyntheticAttribute() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canGetOwnedMonitorInfo() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canGetCurrentContendedMonitor() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canGetMonitorInfo() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canUseInstanceFilters() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canRedefineClasses() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canAddMethod() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canUnrestrictedlyRedefineClasses() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canPopFrames() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canGetSourceDebugExtension() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canRequestVMDeathEvent() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canGetMethodReturnValues() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canGetInstanceInfo() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canUseSourceNameFilters() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canForceEarlyReturn() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canBeModified() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canRequestMonitorEvents() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canGetMonitorFrameInfo() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canGetClassFileVersion() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canGetConstantPool() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean canGetModuleInfo() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDefaultStratum(java.lang.String stratum) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDefaultStratum() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long[] instanceCounts(java.util.List<? extends com.sun.jdi.ReferenceType> refTypes) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDebugTraceMode(int traceFlags) { }
   < ---- END java signatures ---- >
 }

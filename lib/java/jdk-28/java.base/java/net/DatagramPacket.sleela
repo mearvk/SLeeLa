@@ -58,29 +58,49 @@ class DatagramPacket {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DatagramPacket(byte[] buf, int length, java.net.SocketAddress address) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.<init>(byte[], int, java.net.SocketAddress)"); }
-  public DatagramPacket(byte[] buf, int length, java.net.InetAddress address, int port) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.<init>(byte[], int, java.net.InetAddress, int)"); }
-  public DatagramPacket(byte[] buf, int offset, int length, java.net.SocketAddress address) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.<init>(byte[], int, int, java.net.SocketAddress)"); }
-  public DatagramPacket(byte[] buf, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.<init>(byte[], int, int)"); }
-  public DatagramPacket(byte[] buf, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.<init>(byte[], int)"); }
-  public DatagramPacket(byte[] buf, int offset, int length, java.net.InetAddress address, int port) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.<init>(byte[], int, int, java.net.InetAddress, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DatagramPacket(byte[] buf, int length, java.net.SocketAddress address) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DatagramPacket(byte[] buf, int length, java.net.InetAddress address, int port) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DatagramPacket(byte[] buf, int offset, int length, java.net.SocketAddress address) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DatagramPacket(byte[] buf, int offset, int length) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DatagramPacket(byte[] buf, int length) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DatagramPacket(byte[] buf, int offset, int length, java.net.InetAddress address, int port) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized int getLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.getLength()"); }
-  public synchronized void setLength(int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.setLength(int)"); }
-  public synchronized java.net.InetAddress getAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.getAddress()"); }
-  public synchronized int getPort() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.getPort()"); }
-  public synchronized int getOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.getOffset()"); }
-  public synchronized byte[] getData() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.getData()"); }
-  public synchronized void setData(byte[] buf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.setData(byte[])"); }
-  public synchronized void setData(byte[] buf, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.setData(byte[], int, int)"); }
-  public synchronized void setAddress(java.net.InetAddress iaddr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.setAddress(java.net.InetAddress)"); }
-  public synchronized void setPort(int iport) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.setPort(int)"); }
-  public synchronized void setSocketAddress(java.net.SocketAddress address) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.setSocketAddress(java.net.SocketAddress)"); }
-  public synchronized java.net.SocketAddress getSocketAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramPacket.getSocketAddress()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int getLength() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setLength(int length) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.net.InetAddress getAddress() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int getPort() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int getOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized byte[] getData() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setData(byte[] buf) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setData(byte[] buf, int offset, int length) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setAddress(java.net.InetAddress iaddr) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setPort(int iport) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setSocketAddress(java.net.SocketAddress address) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.net.SocketAddress getSocketAddress() { return null; }
   < ---- END java signatures ---- >
 }

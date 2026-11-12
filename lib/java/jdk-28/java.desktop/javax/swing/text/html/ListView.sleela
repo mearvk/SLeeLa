@@ -58,18 +58,25 @@ class ListView {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ListView(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.ListView.<init>(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ListView(javax.swing.text.Element elem) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public float getAlignment(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.ListView.getAlignment(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getAlignment(int axis) { return 0.0; }
   @JavaProtected
-  void setPropertiesFromAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.ListView.setPropertiesFromAttributes()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setPropertiesFromAttributes() { }
   @JavaProtected
-  void paintChild(java.awt.Graphics g, java.awt.Rectangle alloc, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.ListView.paintChild(java.awt.Graphics, java.awt.Rectangle, int)"); }
-  public void paint(java.awt.Graphics g, java.awt.Shape allocation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.ListView.paint(java.awt.Graphics, java.awt.Shape)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintChild(java.awt.Graphics g, java.awt.Rectangle alloc, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, java.awt.Shape allocation) { }
   < ---- END java signatures ---- >
 }

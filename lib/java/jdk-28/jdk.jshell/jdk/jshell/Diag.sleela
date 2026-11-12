@@ -62,14 +62,22 @@ class Diag {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getMessage(java.util.Locale locale) { throw new AbstractMethodError("jdk.jshell.Diag.getMessage(java.util.Locale)"); }
-  public abstract boolean isError() { throw new AbstractMethodError("jdk.jshell.Diag.isError()"); }
-  public abstract long getPosition() { throw new AbstractMethodError("jdk.jshell.Diag.getPosition()"); }
-  public abstract long getStartPosition() { throw new AbstractMethodError("jdk.jshell.Diag.getStartPosition()"); }
-  public abstract long getEndPosition() { throw new AbstractMethodError("jdk.jshell.Diag.getEndPosition()"); }
-  public abstract java.lang.String getCode() { throw new AbstractMethodError("jdk.jshell.Diag.getCode()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getMessage(java.util.Locale locale) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isError() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getPosition() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getStartPosition() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getEndPosition() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCode() { return null; }
   < ---- END java signatures ---- >
 }

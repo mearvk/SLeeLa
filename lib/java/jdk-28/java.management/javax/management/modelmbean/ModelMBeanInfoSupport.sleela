@@ -58,27 +58,45 @@ class ModelMBeanInfoSupport {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ModelMBeanInfoSupport(java.lang.String className, java.lang.String description, javax.management.modelmbean.ModelMBeanAttributeInfo[] attributes, javax.management.modelmbean.ModelMBeanConstructorInfo[] constructors, javax.management.modelmbean.ModelMBeanOperationInfo[] operations, javax.management.modelmbean.ModelMBeanNotificationInfo[] notifications, javax.management.Descriptor mbeandescriptor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.<init>(java.lang.String, java.lang.String, javax.management.modelmbean.ModelMBeanAttributeInfo[], javax.management.modelmbean.ModelMBeanConstructorInfo[], javax.management.modelmbean.ModelMBeanOperationInfo[], javax.management.modelmbean.ModelMBeanNotificationInfo[], javax.management.Descriptor)"); }
-  public ModelMBeanInfoSupport(java.lang.String className, java.lang.String description, javax.management.modelmbean.ModelMBeanAttributeInfo[] attributes, javax.management.modelmbean.ModelMBeanConstructorInfo[] constructors, javax.management.modelmbean.ModelMBeanOperationInfo[] operations, javax.management.modelmbean.ModelMBeanNotificationInfo[] notifications) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.<init>(java.lang.String, java.lang.String, javax.management.modelmbean.ModelMBeanAttributeInfo[], javax.management.modelmbean.ModelMBeanConstructorInfo[], javax.management.modelmbean.ModelMBeanOperationInfo[], javax.management.modelmbean.ModelMBeanNotificationInfo[])"); }
-  public ModelMBeanInfoSupport(javax.management.modelmbean.ModelMBeanInfo mbi) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.<init>(javax.management.modelmbean.ModelMBeanInfo)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ModelMBeanInfoSupport(java.lang.String className, java.lang.String description, javax.management.modelmbean.ModelMBeanAttributeInfo[] attributes, javax.management.modelmbean.ModelMBeanConstructorInfo[] constructors, javax.management.modelmbean.ModelMBeanOperationInfo[] operations, javax.management.modelmbean.ModelMBeanNotificationInfo[] notifications, javax.management.Descriptor mbeandescriptor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ModelMBeanInfoSupport(java.lang.String className, java.lang.String description, javax.management.modelmbean.ModelMBeanAttributeInfo[] attributes, javax.management.modelmbean.ModelMBeanConstructorInfo[] constructors, javax.management.modelmbean.ModelMBeanOperationInfo[] operations, javax.management.modelmbean.ModelMBeanNotificationInfo[] notifications) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ModelMBeanInfoSupport(javax.management.modelmbean.ModelMBeanInfo mbi) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.clone()"); }
-  public javax.management.Descriptor getDescriptor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.getDescriptor()"); }
-  public javax.management.Descriptor getDescriptor(java.lang.String inDescriptorName, java.lang.String inDescriptorType) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.getDescriptor(java.lang.String, java.lang.String)"); }
-  public javax.management.Descriptor getDescriptor(java.lang.String inDescriptorName) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.getDescriptor(java.lang.String)"); }
-  public javax.management.modelmbean.ModelMBeanConstructorInfo getConstructor(java.lang.String inName) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.getConstructor(java.lang.String)"); }
-  public javax.management.modelmbean.ModelMBeanAttributeInfo getAttribute(java.lang.String inName) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.getAttribute(java.lang.String)"); }
-  public void setDescriptor(javax.management.Descriptor inDescriptor, java.lang.String inDescriptorType) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.setDescriptor(javax.management.Descriptor, java.lang.String)"); }
-  public javax.management.Descriptor[] getDescriptors(java.lang.String inDescriptorType) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.getDescriptors(java.lang.String)"); }
-  public void setDescriptors(javax.management.Descriptor[] inDescriptors) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.setDescriptors(javax.management.Descriptor[])"); }
-  public javax.management.Descriptor getMBeanDescriptor() throws javax.management.MBeanException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.getMBeanDescriptor()"); }
-  public void setMBeanDescriptor(javax.management.Descriptor inMBeanDescriptor) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.setMBeanDescriptor(javax.management.Descriptor)"); }
-  public javax.management.modelmbean.ModelMBeanOperationInfo getOperation(java.lang.String inName) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.getOperation(java.lang.String)"); }
-  public javax.management.modelmbean.ModelMBeanNotificationInfo getNotification(java.lang.String inName) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.ModelMBeanInfoSupport.getNotification(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.Descriptor getDescriptor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public javax.management.Descriptor getDescriptor(java.lang.String inDescriptorName, java.lang.String inDescriptorType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public javax.management.Descriptor getDescriptor(java.lang.String inDescriptorName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public javax.management.modelmbean.ModelMBeanConstructorInfo getConstructor(java.lang.String inName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public javax.management.modelmbean.ModelMBeanAttributeInfo getAttribute(java.lang.String inName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public void setDescriptor(javax.management.Descriptor inDescriptor, java.lang.String inDescriptorType) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public javax.management.Descriptor[] getDescriptors(java.lang.String inDescriptorType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public void setDescriptors(javax.management.Descriptor[] inDescriptors) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException")
+  public javax.management.Descriptor getMBeanDescriptor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public void setMBeanDescriptor(javax.management.Descriptor inMBeanDescriptor) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public javax.management.modelmbean.ModelMBeanOperationInfo getOperation(java.lang.String inName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public javax.management.modelmbean.ModelMBeanNotificationInfo getNotification(java.lang.String inName) { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,17 +58,25 @@ class StringValueExp {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StringValueExp() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.StringValueExp.<init>()"); }
-  public StringValueExp(java.lang.String val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.StringValueExp.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringValueExp() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StringValueExp(java.lang.String val) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.StringValueExp.toString()"); }
-  public java.lang.String getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.StringValueExp.getValue()"); }
-  public javax.management.ValueExp apply(javax.management.ObjectName name) throws javax.management.BadStringOperationException, javax.management.BadBinaryOpValueExpException, javax.management.BadAttributeValueExpException, javax.management.InvalidApplicationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.StringValueExp.apply(javax.management.ObjectName)"); }
-  public void setMBeanServer(javax.management.MBeanServer s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.StringValueExp.setMBeanServer(javax.management.MBeanServer)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.BadStringOperationException, javax.management.BadBinaryOpValueExpException, javax.management.BadAttributeValueExpException, javax.management.InvalidApplicationException")
+  public javax.management.ValueExp apply(javax.management.ObjectName name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMBeanServer(javax.management.MBeanServer s) { }
   < ---- END java signatures ---- >
 }

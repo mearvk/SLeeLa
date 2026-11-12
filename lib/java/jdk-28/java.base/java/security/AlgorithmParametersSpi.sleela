@@ -58,26 +58,36 @@ class AlgorithmParametersSpi {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AlgorithmParametersSpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.AlgorithmParametersSpi.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AlgorithmParametersSpi() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  abstract void engineInit(byte[] params, java.lang.String format) throws java.io.IOException { throw new AbstractMethodError("java.security.AlgorithmParametersSpi.engineInit(byte[], java.lang.String)"); }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  void engineInit(byte[] params, java.lang.String format) { }
   @JavaProtected
-  abstract void engineInit(byte[] params) throws java.io.IOException { throw new AbstractMethodError("java.security.AlgorithmParametersSpi.engineInit(byte[])"); }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  void engineInit(byte[] params) { }
   @JavaProtected
-  abstract void engineInit(java.security.spec.AlgorithmParameterSpec paramSpec) throws java.security.spec.InvalidParameterSpecException { throw new AbstractMethodError("java.security.AlgorithmParametersSpi.engineInit(java.security.spec.AlgorithmParameterSpec)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.spec.InvalidParameterSpecException")
+  void engineInit(java.security.spec.AlgorithmParameterSpec paramSpec) { }
   @JavaProtected
-  abstract <T extends java.security.spec.AlgorithmParameterSpec> T engineGetParameterSpec(java.lang.Class<T> paramSpec) throws java.security.spec.InvalidParameterSpecException { throw new AbstractMethodError("java.security.AlgorithmParametersSpi.engineGetParameterSpec(java.lang.Class<T>)"); }
+  @throwable("java.lang.AbstractMethodError, java.security.spec.InvalidParameterSpecException")
+  <T extends java.security.spec.AlgorithmParameterSpec> T engineGetParameterSpec(java.lang.Class<T> paramSpec) { return null; }
   @JavaProtected
-  abstract byte[] engineGetEncoded() throws java.io.IOException { throw new AbstractMethodError("java.security.AlgorithmParametersSpi.engineGetEncoded()"); }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  byte[] engineGetEncoded() { return null; }
   @JavaProtected
-  abstract byte[] engineGetEncoded(java.lang.String format) throws java.io.IOException { throw new AbstractMethodError("java.security.AlgorithmParametersSpi.engineGetEncoded(java.lang.String)"); }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  byte[] engineGetEncoded(java.lang.String format) { return null; }
   @JavaProtected
-  abstract java.lang.String engineToString() { throw new AbstractMethodError("java.security.AlgorithmParametersSpi.engineToString()"); }
+  @throwable("java.lang.AbstractMethodError")
+  java.lang.String engineToString() { return null; }
   < ---- END java signatures ---- >
 }

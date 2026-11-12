@@ -58,24 +58,39 @@ class ScriptEngineManager {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ScriptEngineManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptEngineManager.<init>()"); }
-  public ScriptEngineManager(java.lang.ClassLoader loader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptEngineManager.<init>(java.lang.ClassLoader)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ScriptEngineManager() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ScriptEngineManager(java.lang.ClassLoader loader) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object get(java.lang.String key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptEngineManager.get(java.lang.String)"); }
-  public void put(java.lang.String key, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptEngineManager.put(java.lang.String, java.lang.Object)"); }
-  public void setBindings(javax.script.Bindings bindings) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptEngineManager.setBindings(javax.script.Bindings)"); }
-  public javax.script.Bindings getBindings() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptEngineManager.getBindings()"); }
-  public javax.script.ScriptEngine getEngineByName(java.lang.String shortName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptEngineManager.getEngineByName(java.lang.String)"); }
-  public javax.script.ScriptEngine getEngineByExtension(java.lang.String extension) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptEngineManager.getEngineByExtension(java.lang.String)"); }
-  public javax.script.ScriptEngine getEngineByMimeType(java.lang.String mimeType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptEngineManager.getEngineByMimeType(java.lang.String)"); }
-  public java.util.List<javax.script.ScriptEngineFactory> getEngineFactories() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptEngineManager.getEngineFactories()"); }
-  public void registerEngineName(java.lang.String name, javax.script.ScriptEngineFactory factory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptEngineManager.registerEngineName(java.lang.String, javax.script.ScriptEngineFactory)"); }
-  public void registerEngineMimeType(java.lang.String type, javax.script.ScriptEngineFactory factory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptEngineManager.registerEngineMimeType(java.lang.String, javax.script.ScriptEngineFactory)"); }
-  public void registerEngineExtension(java.lang.String extension, javax.script.ScriptEngineFactory factory) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.script.ScriptEngineManager.registerEngineExtension(java.lang.String, javax.script.ScriptEngineFactory)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object get(java.lang.String key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void put(java.lang.String key, java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBindings(javax.script.Bindings bindings) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.script.Bindings getBindings() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.script.ScriptEngine getEngineByName(java.lang.String shortName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.script.ScriptEngine getEngineByExtension(java.lang.String extension) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.script.ScriptEngine getEngineByMimeType(java.lang.String mimeType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<javax.script.ScriptEngineFactory> getEngineFactories() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void registerEngineName(java.lang.String name, javax.script.ScriptEngineFactory factory) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void registerEngineMimeType(java.lang.String type, javax.script.ScriptEngineFactory factory) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void registerEngineExtension(java.lang.String extension, javax.script.ScriptEngineFactory factory) { }
   < ---- END java signatures ---- >
 }

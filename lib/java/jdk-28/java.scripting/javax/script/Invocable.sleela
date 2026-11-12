@@ -58,12 +58,18 @@ class Invocable {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract <T> T getInterface(java.lang.Object thiz, java.lang.Class<T> clasz) { throw new AbstractMethodError("javax.script.Invocable.getInterface(java.lang.Object, java.lang.Class<T>)"); }
-  public abstract <T> T getInterface(java.lang.Class<T> clasz) { throw new AbstractMethodError("javax.script.Invocable.getInterface(java.lang.Class<T>)"); }
-  public abstract java.lang.Object invokeMethod(java.lang.Object thiz, java.lang.String name, java.lang.Object... args) throws javax.script.ScriptException, java.lang.NoSuchMethodException { throw new AbstractMethodError("javax.script.Invocable.invokeMethod(java.lang.Object, java.lang.String, java.lang.Object...)"); }
-  public abstract java.lang.Object invokeFunction(java.lang.String name, java.lang.Object... args) throws javax.script.ScriptException, java.lang.NoSuchMethodException { throw new AbstractMethodError("javax.script.Invocable.invokeFunction(java.lang.String, java.lang.Object...)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public <T> T getInterface(java.lang.Object thiz, java.lang.Class<T> clasz) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <T> T getInterface(java.lang.Class<T> clasz) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.script.ScriptException, java.lang.NoSuchMethodException")
+  public java.lang.Object invokeMethod(java.lang.Object thiz, java.lang.String name, java.lang.Object... args) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.script.ScriptException, java.lang.NoSuchMethodException")
+  public java.lang.Object invokeFunction(java.lang.String name, java.lang.Object... args) { return null; }
   < ---- END java signatures ---- >
 }

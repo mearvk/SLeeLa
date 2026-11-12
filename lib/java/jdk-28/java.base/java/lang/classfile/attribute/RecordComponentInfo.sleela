@@ -58,15 +58,24 @@ class RecordComponentInfo {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.classfile.constantpool.Utf8Entry name() { throw new AbstractMethodError("java.lang.classfile.attribute.RecordComponentInfo.name()"); }
-  public static java.lang.classfile.attribute.RecordComponentInfo of(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, java.lang.classfile.Attribute<?>... attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.RecordComponentInfo.of(java.lang.classfile.constantpool.Utf8Entry, java.lang.classfile.constantpool.Utf8Entry, java.lang.classfile.Attribute<?>...)"); }
-  public static java.lang.classfile.attribute.RecordComponentInfo of(java.lang.String name, java.lang.constant.ClassDesc descriptor, java.util.List<java.lang.classfile.Attribute<?>> attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.RecordComponentInfo.of(java.lang.String, java.lang.constant.ClassDesc, java.util.List<java.lang.classfile.Attribute<?>>)"); }
-  public static java.lang.classfile.attribute.RecordComponentInfo of(java.lang.String name, java.lang.constant.ClassDesc descriptor, java.lang.classfile.Attribute<?>... attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.RecordComponentInfo.of(java.lang.String, java.lang.constant.ClassDesc, java.lang.classfile.Attribute<?>...)"); }
-  public static java.lang.classfile.attribute.RecordComponentInfo of(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, java.util.List<java.lang.classfile.Attribute<?>> attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.RecordComponentInfo.of(java.lang.classfile.constantpool.Utf8Entry, java.lang.classfile.constantpool.Utf8Entry, java.util.List<java.lang.classfile.Attribute<?>>)"); }
-  public abstract java.lang.classfile.constantpool.Utf8Entry descriptor() { throw new AbstractMethodError("java.lang.classfile.attribute.RecordComponentInfo.descriptor()"); }
-  public default java.lang.constant.ClassDesc descriptorSymbol() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.RecordComponentInfo.descriptorSymbol()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.Utf8Entry name() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.RecordComponentInfo of(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, java.lang.classfile.Attribute<?>... attributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.RecordComponentInfo of(java.lang.String name, java.lang.constant.ClassDesc descriptor, java.util.List<java.lang.classfile.Attribute<?>> attributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.RecordComponentInfo of(java.lang.String name, java.lang.constant.ClassDesc descriptor, java.lang.classfile.Attribute<?>... attributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.RecordComponentInfo of(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, java.util.List<java.lang.classfile.Attribute<?>> attributes) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.Utf8Entry descriptor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.constant.ClassDesc descriptorSymbol() { return null; }
   < ---- END java signatures ---- >
 }

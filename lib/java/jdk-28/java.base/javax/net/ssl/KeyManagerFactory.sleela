@@ -59,21 +59,33 @@ class KeyManagerFactory {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  KeyManagerFactory(javax.net.ssl.KeyManagerFactorySpi factorySpi, java.security.Provider provider, java.lang.String algorithm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.KeyManagerFactory.<init>(javax.net.ssl.KeyManagerFactorySpi, java.security.Provider, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  KeyManagerFactory(javax.net.ssl.KeyManagerFactorySpi factorySpi, java.security.Provider provider, java.lang.String algorithm) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static final javax.net.ssl.KeyManagerFactory getInstance(java.lang.String algorithm, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.KeyManagerFactory.getInstance(java.lang.String, java.lang.String)"); }
-  public static final javax.net.ssl.KeyManagerFactory getInstance(java.lang.String algorithm) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.KeyManagerFactory.getInstance(java.lang.String)"); }
-  public static final javax.net.ssl.KeyManagerFactory getInstance(java.lang.String algorithm, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.KeyManagerFactory.getInstance(java.lang.String, java.security.Provider)"); }
-  public final void init(java.security.KeyStore ks, char[] password) throws java.security.KeyStoreException, java.security.NoSuchAlgorithmException, java.security.UnrecoverableKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.KeyManagerFactory.init(java.security.KeyStore, char[])"); }
-  public final void init(javax.net.ssl.ManagerFactoryParameters spec) throws java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.KeyManagerFactory.init(javax.net.ssl.ManagerFactoryParameters)"); }
-  public final java.security.Provider getProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.KeyManagerFactory.getProvider()"); }
-  public final java.lang.String getAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.KeyManagerFactory.getAlgorithm()"); }
-  public static final java.lang.String getDefaultAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.KeyManagerFactory.getDefaultAlgorithm()"); }
-  public final javax.net.ssl.KeyManager[] getKeyManagers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.KeyManagerFactory.getKeyManagers()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException")
+  public static final javax.net.ssl.KeyManagerFactory getInstance(java.lang.String algorithm, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static final javax.net.ssl.KeyManagerFactory getInstance(java.lang.String algorithm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static final javax.net.ssl.KeyManagerFactory getInstance(java.lang.String algorithm, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.KeyStoreException, java.security.NoSuchAlgorithmException, java.security.UnrecoverableKeyException")
+  public final void init(java.security.KeyStore ks, char[] password) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidAlgorithmParameterException")
+  public final void init(javax.net.ssl.ManagerFactoryParameters spec) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.Provider getProvider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final java.lang.String getDefaultAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.net.ssl.KeyManager[] getKeyManagers() { return null; }
   < ---- END java signatures ---- >
 }

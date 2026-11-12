@@ -58,7 +58,9 @@ class NoInitialContextException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NoInitialContextException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.NoInitialContextException.<init>()"); }
-  public NoInitialContextException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.NoInitialContextException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoInitialContextException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoInitialContextException(java.lang.String explanation) { }
   < ---- END java constructors ---- >
 }

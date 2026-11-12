@@ -59,17 +59,24 @@ class AuthProvider {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AuthProvider(java.lang.String name, double version, java.lang.String info) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.AuthProvider.<init>(java.lang.String, double, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AuthProvider(java.lang.String name, double version, java.lang.String info) { }
   @JavaProtected
-  AuthProvider(java.lang.String name, java.lang.String versionStr, java.lang.String info) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.AuthProvider.<init>(java.lang.String, java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AuthProvider(java.lang.String name, java.lang.String versionStr, java.lang.String info) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void login(javax.security.auth.Subject subject, javax.security.auth.callback.CallbackHandler handler) throws javax.security.auth.login.LoginException { throw new AbstractMethodError("java.security.AuthProvider.login(javax.security.auth.Subject, javax.security.auth.callback.CallbackHandler)"); }
-  public abstract void logout() throws javax.security.auth.login.LoginException { throw new AbstractMethodError("java.security.AuthProvider.logout()"); }
-  public abstract void setCallbackHandler(javax.security.auth.callback.CallbackHandler handler) { throw new AbstractMethodError("java.security.AuthProvider.setCallbackHandler(javax.security.auth.callback.CallbackHandler)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.security.auth.login.LoginException")
+  public void login(javax.security.auth.Subject subject, javax.security.auth.callback.CallbackHandler handler) { }
+  @throwable("java.lang.AbstractMethodError, javax.security.auth.login.LoginException")
+  public void logout() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCallbackHandler(javax.security.auth.callback.CallbackHandler handler) { }
   < ---- END java signatures ---- >
 }

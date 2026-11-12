@@ -58,8 +58,11 @@ class AuthenticationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AuthenticationException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.sasl.AuthenticationException.<init>()"); }
-  public AuthenticationException(java.lang.String detail) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.sasl.AuthenticationException.<init>(java.lang.String)"); }
-  public AuthenticationException(java.lang.String detail, java.lang.Throwable ex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.sasl.AuthenticationException.<init>(java.lang.String, java.lang.Throwable)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AuthenticationException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AuthenticationException(java.lang.String detail) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AuthenticationException(java.lang.String detail, java.lang.Throwable ex) { }
   < ---- END java constructors ---- >
 }

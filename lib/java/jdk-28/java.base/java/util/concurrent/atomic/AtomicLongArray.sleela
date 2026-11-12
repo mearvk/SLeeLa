@@ -58,44 +58,79 @@ class AtomicLongArray {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AtomicLongArray(int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.<init>(int)"); }
-  public AtomicLongArray(long[] array) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.<init>(long[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AtomicLongArray(int length) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AtomicLongArray(long[] array) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final long get(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.get(int)"); }
-  public final int length() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.length()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.toString()"); }
-  public final void set(int i, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.set(int, long)"); }
-  public final long getOpaque(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getOpaque(int)"); }
-  public final void setOpaque(int i, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.setOpaque(int, long)"); }
-  public final long getAcquire(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAcquire(int)"); }
-  public final void setRelease(int i, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.setRelease(int, long)"); }
-  public final boolean compareAndSet(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.compareAndSet(int, long, long)"); }
-  public final long compareAndExchange(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.compareAndExchange(int, long, long)"); }
-  public final long compareAndExchangeAcquire(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.compareAndExchangeAcquire(int, long, long)"); }
-  public final long compareAndExchangeRelease(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.compareAndExchangeRelease(int, long, long)"); }
-  public final boolean weakCompareAndSetPlain(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.weakCompareAndSetPlain(int, long, long)"); }
-  public final boolean weakCompareAndSet(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.weakCompareAndSet(int, long, long)"); }
-  public final boolean weakCompareAndSetAcquire(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.weakCompareAndSetAcquire(int, long, long)"); }
-  public final boolean weakCompareAndSetRelease(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.weakCompareAndSetRelease(int, long, long)"); }
-  public final long getAndSet(int i, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAndSet(int, long)"); }
-  public final long getAndAdd(int i, long delta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAndAdd(int, long)"); }
-  public final long incrementAndGet(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.incrementAndGet(int)"); }
-  public final boolean weakCompareAndSetVolatile(int i, long expectedValue, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.weakCompareAndSetVolatile(int, long, long)"); }
-  public final void lazySet(int i, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.lazySet(int, long)"); }
-  public final long getAndIncrement(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAndIncrement(int)"); }
-  public final long getAndDecrement(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAndDecrement(int)"); }
-  public final long decrementAndGet(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.decrementAndGet(int)"); }
-  public long addAndGet(int i, long delta) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.addAndGet(int, long)"); }
-  public final long getAndUpdate(int i, java.util.function.LongUnaryOperator updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAndUpdate(int, java.util.function.LongUnaryOperator)"); }
-  public final long updateAndGet(int i, java.util.function.LongUnaryOperator updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.updateAndGet(int, java.util.function.LongUnaryOperator)"); }
-  public final long getAndAccumulate(int i, long x, java.util.function.LongBinaryOperator accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getAndAccumulate(int, long, java.util.function.LongBinaryOperator)"); }
-  public final long accumulateAndGet(int i, long x, java.util.function.LongBinaryOperator accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.accumulateAndGet(int, long, java.util.function.LongBinaryOperator)"); }
-  public final long getPlain(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.getPlain(int)"); }
-  public final void setPlain(int i, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicLongArray.setPlain(int, long)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long get(int i) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int length() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void set(int i, long newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getOpaque(int i) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setOpaque(int i, long newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAcquire(int i) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setRelease(int i, long newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean compareAndSet(int i, long expectedValue, long newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long compareAndExchange(int i, long expectedValue, long newValue) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long compareAndExchangeAcquire(int i, long expectedValue, long newValue) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long compareAndExchangeRelease(int i, long expectedValue, long newValue) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetPlain(int i, long expectedValue, long newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSet(int i, long expectedValue, long newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetAcquire(int i, long expectedValue, long newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetRelease(int i, long expectedValue, long newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAndSet(int i, long newValue) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAndAdd(int i, long delta) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long incrementAndGet(int i) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetVolatile(int i, long expectedValue, long newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void lazySet(int i, long newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAndIncrement(int i) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAndDecrement(int i) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long decrementAndGet(int i) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long addAndGet(int i, long delta) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAndUpdate(int i, java.util.function.LongUnaryOperator updateFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long updateAndGet(int i, java.util.function.LongUnaryOperator updateFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getAndAccumulate(int i, long x, java.util.function.LongBinaryOperator accumulatorFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long accumulateAndGet(int i, long x, java.util.function.LongBinaryOperator accumulatorFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getPlain(int i) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setPlain(int i, long newValue) { }
   < ---- END java signatures ---- >
 }

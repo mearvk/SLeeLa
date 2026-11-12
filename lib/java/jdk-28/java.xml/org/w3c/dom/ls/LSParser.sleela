@@ -66,17 +66,28 @@ class LSParser {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract org.w3c.dom.Document parse(org.w3c.dom.ls.LSInput input) throws org.w3c.dom.DOMException, org.w3c.dom.ls.LSException { throw new AbstractMethodError("org.w3c.dom.ls.LSParser.parse(org.w3c.dom.ls.LSInput)"); }
-  public abstract org.w3c.dom.ls.LSParserFilter getFilter() { throw new AbstractMethodError("org.w3c.dom.ls.LSParser.getFilter()"); }
-  public abstract void setFilter(org.w3c.dom.ls.LSParserFilter filter) { throw new AbstractMethodError("org.w3c.dom.ls.LSParser.setFilter(org.w3c.dom.ls.LSParserFilter)"); }
-  public abstract void abort() { throw new AbstractMethodError("org.w3c.dom.ls.LSParser.abort()"); }
-  public abstract boolean getAsync() { throw new AbstractMethodError("org.w3c.dom.ls.LSParser.getAsync()"); }
-  public abstract boolean getBusy() { throw new AbstractMethodError("org.w3c.dom.ls.LSParser.getBusy()"); }
-  public abstract org.w3c.dom.Node parseWithContext(org.w3c.dom.ls.LSInput input, org.w3c.dom.Node contextArg, short action) throws org.w3c.dom.DOMException, org.w3c.dom.ls.LSException { throw new AbstractMethodError("org.w3c.dom.ls.LSParser.parseWithContext(org.w3c.dom.ls.LSInput, org.w3c.dom.Node, short)"); }
-  public abstract org.w3c.dom.DOMConfiguration getDomConfig() { throw new AbstractMethodError("org.w3c.dom.ls.LSParser.getDomConfig()"); }
-  public abstract org.w3c.dom.Document parseURI(java.lang.String uri) throws org.w3c.dom.DOMException, org.w3c.dom.ls.LSException { throw new AbstractMethodError("org.w3c.dom.ls.LSParser.parseURI(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException, org.w3c.dom.ls.LSException")
+  public org.w3c.dom.Document parse(org.w3c.dom.ls.LSInput input) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.ls.LSParserFilter getFilter() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setFilter(org.w3c.dom.ls.LSParserFilter filter) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void abort() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getAsync() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getBusy() { return false; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException, org.w3c.dom.ls.LSException")
+  public org.w3c.dom.Node parseWithContext(org.w3c.dom.ls.LSInput input, org.w3c.dom.Node contextArg, short action) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.DOMConfiguration getDomConfig() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException, org.w3c.dom.ls.LSException")
+  public org.w3c.dom.Document parseURI(java.lang.String uri) { return null; }
   < ---- END java signatures ---- >
 }

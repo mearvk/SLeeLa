@@ -58,19 +58,29 @@ class RenderableImageProducer {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RenderableImageProducer(java.awt.image.renderable.RenderableImage rdblImage, java.awt.image.renderable.RenderContext rc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageProducer.<init>(java.awt.image.renderable.RenderableImage, java.awt.image.renderable.RenderContext)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RenderableImageProducer(java.awt.image.renderable.RenderableImage rdblImage, java.awt.image.renderable.RenderContext rc) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void run() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageProducer.run()"); }
-  public synchronized void addConsumer(java.awt.image.ImageConsumer ic) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageProducer.addConsumer(java.awt.image.ImageConsumer)"); }
-  public synchronized boolean isConsumer(java.awt.image.ImageConsumer ic) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageProducer.isConsumer(java.awt.image.ImageConsumer)"); }
-  public synchronized void removeConsumer(java.awt.image.ImageConsumer ic) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageProducer.removeConsumer(java.awt.image.ImageConsumer)"); }
-  public synchronized void startProduction(java.awt.image.ImageConsumer ic) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageProducer.startProduction(java.awt.image.ImageConsumer)"); }
-  public void requestTopDownLeftRightResend(java.awt.image.ImageConsumer ic) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageProducer.requestTopDownLeftRightResend(java.awt.image.ImageConsumer)"); }
-  public synchronized void setRenderContext(java.awt.image.renderable.RenderContext rc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageProducer.setRenderContext(java.awt.image.renderable.RenderContext)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void run() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addConsumer(java.awt.image.ImageConsumer ic) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean isConsumer(java.awt.image.ImageConsumer ic) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeConsumer(java.awt.image.ImageConsumer ic) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void startProduction(java.awt.image.ImageConsumer ic) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void requestTopDownLeftRightResend(java.awt.image.ImageConsumer ic) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setRenderContext(java.awt.image.renderable.RenderContext rc) { }
   < ---- END java signatures ---- >
 }

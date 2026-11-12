@@ -63,23 +63,36 @@ class DeflaterOutputStream {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DeflaterOutputStream(java.io.OutputStream out) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.DeflaterOutputStream.<init>(java.io.OutputStream)"); }
-  public DeflaterOutputStream(java.io.OutputStream out, boolean syncFlush) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.DeflaterOutputStream.<init>(java.io.OutputStream, boolean)"); }
-  public DeflaterOutputStream(java.io.OutputStream out, java.util.zip.Deflater def) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.DeflaterOutputStream.<init>(java.io.OutputStream, java.util.zip.Deflater)"); }
-  public DeflaterOutputStream(java.io.OutputStream out, java.util.zip.Deflater def, int size, boolean syncFlush) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.DeflaterOutputStream.<init>(java.io.OutputStream, java.util.zip.Deflater, int, boolean)"); }
-  public DeflaterOutputStream(java.io.OutputStream out, java.util.zip.Deflater def, int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.DeflaterOutputStream.<init>(java.io.OutputStream, java.util.zip.Deflater, int)"); }
-  public DeflaterOutputStream(java.io.OutputStream out, java.util.zip.Deflater def, boolean syncFlush) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.DeflaterOutputStream.<init>(java.io.OutputStream, java.util.zip.Deflater, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DeflaterOutputStream(java.io.OutputStream out) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DeflaterOutputStream(java.io.OutputStream out, boolean syncFlush) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DeflaterOutputStream(java.io.OutputStream out, java.util.zip.Deflater def) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DeflaterOutputStream(java.io.OutputStream out, java.util.zip.Deflater def, int size, boolean syncFlush) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DeflaterOutputStream(java.io.OutputStream out, java.util.zip.Deflater def, int size) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DeflaterOutputStream(java.io.OutputStream out, java.util.zip.Deflater def, boolean syncFlush) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void flush() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.DeflaterOutputStream.flush()"); }
-  public void write(int b) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.DeflaterOutputStream.write(int)"); }
-  public void write(byte[] b, int off, int len) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.DeflaterOutputStream.write(byte[], int, int)"); }
-  public void finish() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.DeflaterOutputStream.finish()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void flush() { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void write(int b) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void write(byte[] b, int off, int len) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void finish() { }
   @JavaProtected
-  void deflate() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.DeflaterOutputStream.deflate()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void deflate() { }
   < ---- END java signatures ---- >
 }

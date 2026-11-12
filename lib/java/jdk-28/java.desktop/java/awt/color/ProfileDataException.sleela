@@ -58,6 +58,7 @@ class ProfileDataException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ProfileDataException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ProfileDataException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ProfileDataException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

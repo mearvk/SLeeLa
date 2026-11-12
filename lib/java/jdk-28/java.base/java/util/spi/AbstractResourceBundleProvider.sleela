@@ -59,17 +59,23 @@ class AbstractResourceBundleProvider {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractResourceBundleProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.spi.AbstractResourceBundleProvider.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractResourceBundleProvider() { }
   @JavaProtected
-  AbstractResourceBundleProvider(java.lang.String... formats) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.spi.AbstractResourceBundleProvider.<init>(java.lang.String...)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractResourceBundleProvider(java.lang.String... formats) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.ResourceBundle getBundle(java.lang.String baseName, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.spi.AbstractResourceBundleProvider.getBundle(java.lang.String, java.util.Locale)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.ResourceBundle getBundle(java.lang.String baseName, java.util.Locale locale) { return null; }
   @JavaProtected
-  java.lang.String toBundleName(java.lang.String baseName, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.spi.AbstractResourceBundleProvider.toBundleName(java.lang.String, java.util.Locale)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String toBundleName(java.lang.String baseName, java.util.Locale locale) { return null; }
   < ---- END java signatures ---- >
 }

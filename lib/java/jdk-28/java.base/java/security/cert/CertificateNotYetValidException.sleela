@@ -58,7 +58,9 @@ class CertificateNotYetValidException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CertificateNotYetValidException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateNotYetValidException.<init>()"); }
-  public CertificateNotYetValidException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateNotYetValidException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CertificateNotYetValidException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CertificateNotYetValidException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

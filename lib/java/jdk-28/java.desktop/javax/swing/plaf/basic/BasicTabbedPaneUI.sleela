@@ -88,166 +88,252 @@ class BasicTabbedPaneUI {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicTabbedPaneUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicTabbedPaneUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void installListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.installListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListeners() { }
   @JavaProtected
-  void paintText(java.awt.Graphics g, int tabPlacement, java.awt.Font font, java.awt.FontMetrics metrics, int tabIndex, java.lang.String title, java.awt.Rectangle textRect, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.paintText(java.awt.Graphics, int, java.awt.Font, java.awt.FontMetrics, int, java.lang.String, java.awt.Rectangle, boolean)"); }
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getMinimumSize(javax.swing.JComponent)"); }
-  public void installUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.installUI(javax.swing.JComponent)"); }
-  public void uninstallUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.uninstallUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintText(java.awt.Graphics g, int tabPlacement, java.awt.Font font, java.awt.FontMetrics metrics, int tabIndex, java.lang.String title, java.awt.Rectangle textRect, boolean isSelected) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(javax.swing.JComponent c) { }
   @JavaProtected
-  java.awt.event.MouseListener createMouseListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.createMouseListener()"); }
-  public int getTabRunCount(javax.swing.JTabbedPane pane) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getTabRunCount(javax.swing.JTabbedPane)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.MouseListener createMouseListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTabRunCount(javax.swing.JTabbedPane pane) { return 0; }
   @JavaProtected
-  java.awt.Rectangle getTabBounds(int tabIndex, java.awt.Rectangle dest) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getTabBounds(int, java.awt.Rectangle)"); }
-  public java.awt.Rectangle getTabBounds(javax.swing.JTabbedPane pane, int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getTabBounds(javax.swing.JTabbedPane, int)"); }
-  public int tabForCoordinate(javax.swing.JTabbedPane pane, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.tabForCoordinate(javax.swing.JTabbedPane, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Rectangle getTabBounds(int tabIndex, java.awt.Rectangle dest) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getTabBounds(javax.swing.JTabbedPane pane, int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int tabForCoordinate(javax.swing.JTabbedPane pane, int x, int y) { return 0; }
   @JavaProtected
-  void setRolloverTab(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.setRolloverTab(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setRolloverTab(int index) { }
   @JavaProtected
-  java.awt.Insets getTabAreaInsets(int tabPlacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getTabAreaInsets(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Insets getTabAreaInsets(int tabPlacement) { return null; }
   @JavaProtected
-  int getBaselineOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getBaselineOffset()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getBaselineOffset() { return 0; }
   @JavaProtected
-  java.awt.Insets getTabInsets(int tabPlacement, int tabIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getTabInsets(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Insets getTabInsets(int tabPlacement, int tabIndex) { return null; }
   @JavaProtected
-  javax.swing.text.View getTextViewForTab(int tabIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getTextViewForTab(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.View getTextViewForTab(int tabIndex) { return null; }
   @JavaProtected
-  int calculateMaxTabHeight(int tabPlacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.calculateMaxTabHeight(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int calculateMaxTabHeight(int tabPlacement) { return 0; }
   @JavaProtected
-  int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.calculateTabHeight(int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) { return 0; }
   @JavaProtected
-  void paintContentBorder(java.awt.Graphics g, int tabPlacement, int selectedIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.paintContentBorder(java.awt.Graphics, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintContentBorder(java.awt.Graphics g, int tabPlacement, int selectedIndex) { }
   @JavaProtected
-  void paintTabArea(java.awt.Graphics g, int tabPlacement, int selectedIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.paintTabArea(java.awt.Graphics, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintTabArea(java.awt.Graphics g, int tabPlacement, int selectedIndex) { }
   @JavaProtected
-  void paintTab(java.awt.Graphics g, int tabPlacement, java.awt.Rectangle[] rects, int tabIndex, java.awt.Rectangle iconRect, java.awt.Rectangle textRect) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.paintTab(java.awt.Graphics, int, java.awt.Rectangle[], int, java.awt.Rectangle, java.awt.Rectangle)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintTab(java.awt.Graphics g, int tabPlacement, java.awt.Rectangle[] rects, int tabIndex, java.awt.Rectangle iconRect, java.awt.Rectangle textRect) { }
   @JavaProtected
-  void paintTabBackground(java.awt.Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.paintTabBackground(java.awt.Graphics, int, int, int, int, int, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintTabBackground(java.awt.Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) { }
   @JavaProtected
-  void paintTabBorder(java.awt.Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.paintTabBorder(java.awt.Graphics, int, int, int, int, int, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintTabBorder(java.awt.Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) { }
   @JavaProtected
-  javax.swing.Icon getIconForTab(int tabIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getIconForTab(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.Icon getIconForTab(int tabIndex) { return null; }
   @JavaProtected
-  void layoutLabel(int tabPlacement, java.awt.FontMetrics metrics, int tabIndex, java.lang.String title, javax.swing.Icon icon, java.awt.Rectangle tabRect, java.awt.Rectangle iconRect, java.awt.Rectangle textRect, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.layoutLabel(int, java.awt.FontMetrics, int, java.lang.String, javax.swing.Icon, java.awt.Rectangle, java.awt.Rectangle, java.awt.Rectangle, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void layoutLabel(int tabPlacement, java.awt.FontMetrics metrics, int tabIndex, java.lang.String title, javax.swing.Icon icon, java.awt.Rectangle tabRect, java.awt.Rectangle iconRect, java.awt.Rectangle textRect, boolean isSelected) { }
   @JavaProtected
-  void paintFocusIndicator(java.awt.Graphics g, int tabPlacement, java.awt.Rectangle[] rects, int tabIndex, java.awt.Rectangle iconRect, java.awt.Rectangle textRect, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.paintFocusIndicator(java.awt.Graphics, int, java.awt.Rectangle[], int, java.awt.Rectangle, java.awt.Rectangle, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintFocusIndicator(java.awt.Graphics g, int tabPlacement, java.awt.Rectangle[] rects, int tabIndex, java.awt.Rectangle iconRect, java.awt.Rectangle textRect, boolean isSelected) { }
   @JavaProtected
-  int getTabLabelShiftX(int tabPlacement, int tabIndex, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getTabLabelShiftX(int, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getTabLabelShiftX(int tabPlacement, int tabIndex, boolean isSelected) { return 0; }
   @JavaProtected
-  int getTabLabelShiftY(int tabPlacement, int tabIndex, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getTabLabelShiftY(int, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getTabLabelShiftY(int tabPlacement, int tabIndex, boolean isSelected) { return 0; }
   @JavaProtected
-  int calculateTabAreaWidth(int tabPlacement, int vertRunCount, int maxTabWidth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.calculateTabAreaWidth(int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int calculateTabAreaWidth(int tabPlacement, int vertRunCount, int maxTabWidth) { return 0; }
   @JavaProtected
-  int calculateTabAreaHeight(int tabPlacement, int horizRunCount, int maxTabHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.calculateTabAreaHeight(int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int calculateTabAreaHeight(int tabPlacement, int horizRunCount, int maxTabHeight) { return 0; }
   @JavaProtected
-  void paintContentBorderTopEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.paintContentBorderTopEdge(java.awt.Graphics, int, int, int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintContentBorderTopEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
   @JavaProtected
-  void paintContentBorderLeftEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.paintContentBorderLeftEdge(java.awt.Graphics, int, int, int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintContentBorderLeftEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
   @JavaProtected
-  void paintContentBorderBottomEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.paintContentBorderBottomEdge(java.awt.Graphics, int, int, int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintContentBorderBottomEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
   @JavaProtected
-  void paintContentBorderRightEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.paintContentBorderRightEdge(java.awt.Graphics, int, int, int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintContentBorderRightEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
   @JavaProtected
-  int lastTabInRun(int tabCount, int run) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.lastTabInRun(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int lastTabInRun(int tabCount, int run) { return 0; }
   @JavaProtected
-  int calculateTabWidth(int tabPlacement, int tabIndex, java.awt.FontMetrics metrics) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.calculateTabWidth(int, int, java.awt.FontMetrics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int calculateTabWidth(int tabPlacement, int tabIndex, java.awt.FontMetrics metrics) { return 0; }
   @JavaProtected
-  int getTabRunOverlay(int tabPlacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getTabRunOverlay(int)"); }
-  protected static void rotateInsets(java.awt.Insets topInsets, java.awt.Insets targetInsets, int targetPlacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.rotateInsets(java.awt.Insets, java.awt.Insets, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getTabRunOverlay(int tabPlacement) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static void rotateInsets(java.awt.Insets topInsets, java.awt.Insets targetInsets, int targetPlacement) { }
   @JavaProtected
-  int getFocusIndex() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getFocusIndex()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getFocusIndex() { return 0; }
   @JavaProtected
-  void selectNextTab(int current) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.selectNextTab(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void selectNextTab(int current) { }
   @JavaProtected
-  void selectPreviousTab(int current) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.selectPreviousTab(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void selectPreviousTab(int current) { }
   @JavaProtected
-  void selectPreviousTabInRun(int current) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.selectPreviousTabInRun(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void selectPreviousTabInRun(int current) { }
   @JavaProtected
-  void selectNextTabInRun(int current) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.selectNextTabInRun(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void selectNextTabInRun(int current) { }
   @JavaProtected
-  int getTabRunOffset(int tabPlacement, int tabCount, int tabIndex, boolean forward) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getTabRunOffset(int, int, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getTabRunOffset(int tabPlacement, int tabCount, int tabIndex, boolean forward) { return 0; }
   @JavaProtected
-  void selectAdjacentRunTab(int tabPlacement, int tabIndex, int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.selectAdjacentRunTab(int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void selectAdjacentRunTab(int tabPlacement, int tabIndex, int offset) { }
   @JavaProtected
-  int getNextTabIndexInRun(int tabCount, int base) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getNextTabIndexInRun(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getNextTabIndexInRun(int tabCount, int base) { return 0; }
   @JavaProtected
-  int getPreviousTabIndexInRun(int tabCount, int base) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getPreviousTabIndexInRun(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getPreviousTabIndexInRun(int tabCount, int base) { return 0; }
   @JavaProtected
-  int getNextTabIndex(int base) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getNextTabIndex(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getNextTabIndex(int base) { return 0; }
   @JavaProtected
-  int getPreviousTabIndex(int base) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getPreviousTabIndex(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getPreviousTabIndex(int base) { return 0; }
   @JavaProtected
-  int getRunForTab(int tabCount, int tabIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getRunForTab(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getRunForTab(int tabCount, int tabIndex) { return 0; }
   @JavaProtected
-  int getNextTabRun(int baseRun) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getNextTabRun(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getNextTabRun(int baseRun) { return 0; }
   @JavaProtected
-  java.awt.Component getVisibleComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getVisibleComponent()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Component getVisibleComponent() { return null; }
   @JavaProtected
-  javax.swing.JButton createScrollButton(int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.createScrollButton(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.JButton createScrollButton(int direction) { return null; }
   @JavaProtected
-  int getRolloverTab() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getRolloverTab()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getRolloverTab() { return 0; }
   @JavaProtected
-  void setVisibleComponent(java.awt.Component component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.setVisibleComponent(java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setVisibleComponent(java.awt.Component component) { }
   @JavaProtected
-  void assureRectsCreated(int tabCount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.assureRectsCreated(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void assureRectsCreated(int tabCount) { }
   @JavaProtected
-  void expandTabRunsArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.expandTabRunsArray()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void expandTabRunsArray() { }
   @JavaProtected
-  int getTabRunIndent(int tabPlacement, int run) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getTabRunIndent(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getTabRunIndent(int tabPlacement, int run) { return 0; }
   @JavaProtected
-  boolean shouldPadTabRun(int tabPlacement, int run) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.shouldPadTabRun(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean shouldPadTabRun(int tabPlacement, int run) { return false; }
   @JavaProtected
-  boolean shouldRotateTabRuns(int tabPlacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.shouldRotateTabRuns(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean shouldRotateTabRuns(int tabPlacement) { return false; }
   @JavaProtected
-  int calculateMaxTabWidth(int tabPlacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.calculateMaxTabWidth(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int calculateMaxTabWidth(int tabPlacement) { return 0; }
   @JavaProtected
-  java.awt.Insets getSelectedTabPadInsets(int tabPlacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getSelectedTabPadInsets(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Insets getSelectedTabPadInsets(int tabPlacement) { return null; }
   @JavaProtected
-  java.awt.Insets getContentBorderInsets(int tabPlacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getContentBorderInsets(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Insets getContentBorderInsets(int tabPlacement) { return null; }
   @JavaProtected
-  void navigateSelectedTab(int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.navigateSelectedTab(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void navigateSelectedTab(int direction) { }
   @JavaProtected
-  int getPreviousTabRun(int baseRun) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getPreviousTabRun(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getPreviousTabRun(int baseRun) { return 0; }
   @JavaProtected
-  java.awt.LayoutManager createLayoutManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.createLayoutManager()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.LayoutManager createLayoutManager() { return null; }
   @JavaProtected
-  int getBaseline(int tab) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getBaseline(int)"); }
-  public int getBaseline(javax.swing.JComponent c, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getBaseline(javax.swing.JComponent, int, int)"); }
-  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getBaselineResizeBehavior(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getBaseline(int tab) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBaseline(javax.swing.JComponent c, int width, int height) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  java.awt.FontMetrics getFontMetrics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getFontMetrics()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.FontMetrics getFontMetrics() { return null; }
   @JavaProtected
-  void paintIcon(java.awt.Graphics g, int tabPlacement, int tabIndex, javax.swing.Icon icon, java.awt.Rectangle iconRect, boolean isSelected) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.paintIcon(java.awt.Graphics, int, int, javax.swing.Icon, java.awt.Rectangle, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintIcon(java.awt.Graphics g, int tabPlacement, int tabIndex, javax.swing.Icon icon, java.awt.Rectangle iconRect, boolean isSelected) { }
   @JavaProtected
-  javax.swing.event.ChangeListener createChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.createChangeListener()"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.event.ChangeListener createChangeListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void installKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.installKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installKeyboardActions() { }
   @JavaProtected
-  void uninstallKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.uninstallKeyboardActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallKeyboardActions() { }
   @JavaProtected
-  void installDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.installDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults() { }
   @JavaProtected
-  void uninstallListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.uninstallListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallListeners() { }
   @JavaProtected
-  void uninstallDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.uninstallDefaults()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults() { }
   @JavaProtected
-  void installComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.installComponents()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installComponents() { }
   @JavaProtected
-  java.beans.PropertyChangeListener createPropertyChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.createPropertyChangeListener()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
   @JavaProtected
-  void uninstallComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.uninstallComponents()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallComponents() { }
   @JavaProtected
-  java.awt.event.FocusListener createFocusListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.createFocusListener()"); }
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.getMaximumSize(javax.swing.JComponent)"); }
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicTabbedPaneUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.event.FocusListener createFocusListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
   < ---- END java signatures ---- >
 }

@@ -59,26 +59,42 @@ class FloatControl {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  FloatControl(javax.sound.sampled.FloatControl.Type type, float minimum, float maximum, float precision, int updatePeriod, float initialValue, java.lang.String units, java.lang.String minLabel, java.lang.String midLabel, java.lang.String maxLabel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.<init>(javax.sound.sampled.FloatControl.Type, float, float, float, int, float, java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  FloatControl(javax.sound.sampled.FloatControl.Type type, float minimum, float maximum, float precision, int updatePeriod, float initialValue, java.lang.String units, java.lang.String minLabel, java.lang.String midLabel, java.lang.String maxLabel) { }
   @JavaProtected
-  FloatControl(javax.sound.sampled.FloatControl.Type type, float minimum, float maximum, float precision, int updatePeriod, float initialValue, java.lang.String units) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.<init>(javax.sound.sampled.FloatControl.Type, float, float, float, int, float, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  FloatControl(javax.sound.sampled.FloatControl.Type type, float minimum, float maximum, float precision, int updatePeriod, float initialValue, java.lang.String units) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.toString()"); }
-  public float getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.getValue()"); }
-  public void setValue(float newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.setValue(float)"); }
-  public void shift(float from, float to, int microseconds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.shift(float, float, int)"); }
-  public float getMaximum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.getMaximum()"); }
-  public java.lang.String getUnits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.getUnits()"); }
-  public float getMinimum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.getMinimum()"); }
-  public float getPrecision() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.getPrecision()"); }
-  public java.lang.String getMinLabel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.getMinLabel()"); }
-  public java.lang.String getMidLabel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.getMidLabel()"); }
-  public java.lang.String getMaxLabel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.getMaxLabel()"); }
-  public int getUpdatePeriod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.FloatControl.getUpdatePeriod()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getValue() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValue(float newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void shift(float from, float to, int microseconds) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMaximum() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUnits() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMinimum() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getPrecision() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getMinLabel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getMidLabel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getMaxLabel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getUpdatePeriod() { return 0; }
   < ---- END java signatures ---- >
 }

@@ -58,22 +58,34 @@ class Encoder {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Encoder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Encoder.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Encoder() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object remove(java.lang.Object oldInstance) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Encoder.remove(java.lang.Object)"); }
-  public java.lang.Object get(java.lang.Object oldInstance) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Encoder.get(java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object remove(java.lang.Object oldInstance) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object get(java.lang.Object oldInstance) { return null; }
   @JavaProtected
-  void writeObject(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Encoder.writeObject(java.lang.Object)"); }
-  public java.beans.ExceptionListener getExceptionListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Encoder.getExceptionListener()"); }
-  public void writeExpression(java.beans.Expression oldExp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Encoder.writeExpression(java.beans.Expression)"); }
-  public void writeStatement(java.beans.Statement oldStm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Encoder.writeStatement(java.beans.Statement)"); }
-  public java.beans.PersistenceDelegate getPersistenceDelegate(java.lang.Class<?> type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Encoder.getPersistenceDelegate(java.lang.Class<?>)"); }
-  public void setExceptionListener(java.beans.ExceptionListener exceptionListener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Encoder.setExceptionListener(java.beans.ExceptionListener)"); }
-  public void setPersistenceDelegate(java.lang.Class<?> type, java.beans.PersistenceDelegate delegate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Encoder.setPersistenceDelegate(java.lang.Class<?>, java.beans.PersistenceDelegate)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void writeObject(java.lang.Object o) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.ExceptionListener getExceptionListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void writeExpression(java.beans.Expression oldExp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void writeStatement(java.beans.Statement oldStm) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.PersistenceDelegate getPersistenceDelegate(java.lang.Class<?> type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setExceptionListener(java.beans.ExceptionListener exceptionListener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPersistenceDelegate(java.lang.Class<?> type, java.beans.PersistenceDelegate delegate) { }
   < ---- END java signatures ---- >
 }

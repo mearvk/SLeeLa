@@ -58,7 +58,9 @@ class AuthenticationNotSupportedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AuthenticationNotSupportedException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.AuthenticationNotSupportedException.<init>(java.lang.String)"); }
-  public AuthenticationNotSupportedException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.AuthenticationNotSupportedException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AuthenticationNotSupportedException(java.lang.String explanation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AuthenticationNotSupportedException() { }
   < ---- END java constructors ---- >
 }

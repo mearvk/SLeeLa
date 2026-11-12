@@ -70,26 +70,43 @@ class SpringLayout {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SpringLayout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SpringLayout() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void putConstraint(java.lang.String e1, java.awt.Component c1, int pad, java.lang.String e2, java.awt.Component c2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.putConstraint(java.lang.String, java.awt.Component, int, java.lang.String, java.awt.Component)"); }
-  public void putConstraint(java.lang.String e1, java.awt.Component c1, javax.swing.Spring s, java.lang.String e2, java.awt.Component c2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.putConstraint(java.lang.String, java.awt.Component, javax.swing.Spring, java.lang.String, java.awt.Component)"); }
-  public javax.swing.Spring getConstraint(java.lang.String edgeName, java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.getConstraint(java.lang.String, java.awt.Component)"); }
-  public javax.swing.SpringLayout.Constraints getConstraints(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.getConstraints(java.awt.Component)"); }
-  public void removeLayoutComponent(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.removeLayoutComponent(java.awt.Component)"); }
-  public void addLayoutComponent(java.awt.Component component, java.lang.Object constraints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.addLayoutComponent(java.awt.Component, java.lang.Object)"); }
-  public void addLayoutComponent(java.lang.String name, java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.addLayoutComponent(java.lang.String, java.awt.Component)"); }
-  public void layoutContainer(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.layoutContainer(java.awt.Container)"); }
-  public void invalidateLayout(java.awt.Container p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.invalidateLayout(java.awt.Container)"); }
-  public java.awt.Dimension preferredLayoutSize(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.preferredLayoutSize(java.awt.Container)"); }
-  public java.awt.Dimension minimumLayoutSize(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.minimumLayoutSize(java.awt.Container)"); }
-  public java.awt.Dimension maximumLayoutSize(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.maximumLayoutSize(java.awt.Container)"); }
-  public float getLayoutAlignmentX(java.awt.Container p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.getLayoutAlignmentX(java.awt.Container)"); }
-  public float getLayoutAlignmentY(java.awt.Container p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.getLayoutAlignmentY(java.awt.Container)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void putConstraint(java.lang.String e1, java.awt.Component c1, int pad, java.lang.String e2, java.awt.Component c2) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void putConstraint(java.lang.String e1, java.awt.Component c1, javax.swing.Spring s, java.lang.String e2, java.awt.Component c2) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Spring getConstraint(java.lang.String edgeName, java.awt.Component c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.SpringLayout.Constraints getConstraints(java.awt.Component c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeLayoutComponent(java.awt.Component c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addLayoutComponent(java.awt.Component component, java.lang.Object constraints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addLayoutComponent(java.lang.String name, java.awt.Component c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void layoutContainer(java.awt.Container parent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void invalidateLayout(java.awt.Container p) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension preferredLayoutSize(java.awt.Container parent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension minimumLayoutSize(java.awt.Container parent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension maximumLayoutSize(java.awt.Container parent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getLayoutAlignmentX(java.awt.Container p) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getLayoutAlignmentY(java.awt.Container p) { return 0.0; }
   < ---- END java signatures ---- >
 }

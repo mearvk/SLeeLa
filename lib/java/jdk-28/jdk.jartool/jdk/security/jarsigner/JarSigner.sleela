@@ -58,14 +58,22 @@ class JarSigner {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getProperty(java.lang.String key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.getProperty(java.lang.String)"); }
-  public void sign(java.util.zip.ZipFile file, java.io.OutputStream os) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.sign(java.util.zip.ZipFile, java.io.OutputStream)"); }
-  public java.lang.String getDigestAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.getDigestAlgorithm()"); }
-  public java.lang.String getSignatureAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.getSignatureAlgorithm()"); }
-  public java.net.URI getTsa() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.getTsa()"); }
-  public java.lang.String getSignerName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.security.jarsigner.JarSigner.getSignerName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getProperty(java.lang.String key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void sign(java.util.zip.ZipFile file, java.io.OutputStream os) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDigestAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSignatureAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.URI getTsa() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSignerName() { return null; }
   < ---- END java signatures ---- >
 }

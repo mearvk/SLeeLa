@@ -58,7 +58,9 @@ class InconsistentDebugInfoException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InconsistentDebugInfoException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InconsistentDebugInfoException.<init>()"); }
-  public InconsistentDebugInfoException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InconsistentDebugInfoException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InconsistentDebugInfoException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InconsistentDebugInfoException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

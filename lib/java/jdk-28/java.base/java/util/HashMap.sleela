@@ -58,40 +58,71 @@ class HashMap<K, V> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public HashMap(int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.<init>(int)"); }
-  public HashMap(int initialCapacity, float loadFactor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.<init>(int, float)"); }
-  public HashMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.<init>()"); }
-  public HashMap(java.util.Map<? extends K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.<init>(java.util.Map<? extends K, ? extends V>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashMap(int initialCapacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashMap(int initialCapacity, float loadFactor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashMap() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashMap(java.util.Map<? extends K, ? extends V> m) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public V remove(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.remove(java.lang.Object)"); }
-  public boolean remove(java.lang.Object key, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.remove(java.lang.Object, java.lang.Object)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.size()"); }
-  public V get(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.get(java.lang.Object)"); }
-  public V put(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.put(K, V)"); }
-  public java.util.Collection<V> values() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.values()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.clone()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.clear()"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.isEmpty()"); }
-  public V replace(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.replace(K, V)"); }
-  public boolean replace(K key, V oldValue, V newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.replace(K, V, V)"); }
-  public void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
-  public V merge(K key, V value, java.util.function.BiFunction<? super V, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.merge(K, V, java.util.function.BiFunction<? super V, ? super V, ? extends V>)"); }
-  public static <K, V> java.util.HashMap<K, V> newHashMap(int numMappings) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.newHashMap(int)"); }
-  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.entrySet()"); }
-  public void putAll(java.util.Map<? extends K, ? extends V> m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.putAll(java.util.Map<? extends K, ? extends V>)"); }
-  public V putIfAbsent(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.putIfAbsent(K, V)"); }
-  public V compute(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.compute(K, java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
-  public V computeIfAbsent(K key, java.util.function.Function<? super K, ? extends V> mappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.computeIfAbsent(K, java.util.function.Function<? super K, ? extends V>)"); }
-  public void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.forEach(java.util.function.BiConsumer<? super K, ? super V>)"); }
-  public java.util.Set<K> keySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.keySet()"); }
-  public boolean containsValue(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.containsValue(java.lang.Object)"); }
-  public boolean containsKey(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.containsKey(java.lang.Object)"); }
-  public V getOrDefault(java.lang.Object key, V defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.getOrDefault(java.lang.Object, V)"); }
-  public V computeIfPresent(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HashMap.computeIfPresent(K, java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public V remove(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Object key, java.lang.Object value) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V get(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V put(K key, V value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Collection<V> values() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V replace(K key, V value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean replace(K key, V oldValue, V newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V merge(K key, V value, java.util.function.BiFunction<? super V, ? super V, ? extends V> remappingFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.HashMap<K, V> newHashMap(int numMappings) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void putAll(java.util.Map<? extends K, ? extends V> m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V putIfAbsent(K key, V value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V compute(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V computeIfAbsent(K key, java.util.function.Function<? super K, ? extends V> mappingFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<K> keySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsValue(java.lang.Object value) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsKey(java.lang.Object key) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V getOrDefault(java.lang.Object key, V defaultValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V computeIfPresent(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { return null; }
   < ---- END java signatures ---- >
 }

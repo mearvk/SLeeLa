@@ -58,24 +58,42 @@ class HTMLAreaElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getTarget() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.getTarget()"); }
-  public abstract void setTarget(java.lang.String target) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.setTarget(java.lang.String)"); }
-  public abstract java.lang.String getShape() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.getShape()"); }
-  public abstract void setShape(java.lang.String shape) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.setShape(java.lang.String)"); }
-  public abstract int getTabIndex() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.getTabIndex()"); }
-  public abstract java.lang.String getHref() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.getHref()"); }
-  public abstract java.lang.String getAccessKey() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.getAccessKey()"); }
-  public abstract void setAccessKey(java.lang.String accessKey) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.setAccessKey(java.lang.String)"); }
-  public abstract java.lang.String getCoords() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.getCoords()"); }
-  public abstract void setCoords(java.lang.String coords) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.setCoords(java.lang.String)"); }
-  public abstract void setHref(java.lang.String href) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.setHref(java.lang.String)"); }
-  public abstract void setTabIndex(int tabIndex) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.setTabIndex(int)"); }
-  public abstract java.lang.String getAlt() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.getAlt()"); }
-  public abstract void setAlt(java.lang.String alt) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.setAlt(java.lang.String)"); }
-  public abstract boolean getNoHref() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.getNoHref()"); }
-  public abstract void setNoHref(boolean noHref) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAreaElement.setNoHref(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getTarget() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTarget(java.lang.String target) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getShape() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setShape(java.lang.String shape) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getTabIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getHref() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAccessKey() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAccessKey(java.lang.String accessKey) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCoords() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCoords(java.lang.String coords) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHref(java.lang.String href) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setTabIndex(int tabIndex) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAlt() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAlt(java.lang.String alt) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getNoHref() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setNoHref(boolean noHref) { }
   < ---- END java signatures ---- >
 }

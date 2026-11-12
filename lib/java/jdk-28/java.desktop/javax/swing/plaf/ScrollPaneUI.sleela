@@ -59,6 +59,7 @@ class ScrollPaneUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ScrollPaneUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.ScrollPaneUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ScrollPaneUI() { }
   < ---- END java constructors ---- >
 }

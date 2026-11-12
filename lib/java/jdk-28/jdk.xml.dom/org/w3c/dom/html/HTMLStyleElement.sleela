@@ -58,14 +58,22 @@ class HTMLStyleElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getType() { throw new AbstractMethodError("org.w3c.dom.html.HTMLStyleElement.getType()"); }
-  public abstract void setType(java.lang.String type) { throw new AbstractMethodError("org.w3c.dom.html.HTMLStyleElement.setType(java.lang.String)"); }
-  public abstract void setMedia(java.lang.String media) { throw new AbstractMethodError("org.w3c.dom.html.HTMLStyleElement.setMedia(java.lang.String)"); }
-  public abstract java.lang.String getMedia() { throw new AbstractMethodError("org.w3c.dom.html.HTMLStyleElement.getMedia()"); }
-  public abstract boolean getDisabled() { throw new AbstractMethodError("org.w3c.dom.html.HTMLStyleElement.getDisabled()"); }
-  public abstract void setDisabled(boolean disabled) { throw new AbstractMethodError("org.w3c.dom.html.HTMLStyleElement.setDisabled(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setType(java.lang.String type) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMedia(java.lang.String media) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getMedia() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getDisabled() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDisabled(boolean disabled) { }
   < ---- END java signatures ---- >
 }

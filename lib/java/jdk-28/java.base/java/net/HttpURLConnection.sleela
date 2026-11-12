@@ -106,31 +106,53 @@ class HttpURLConnection {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  HttpURLConnection(java.net.URL u) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.<init>(java.net.URL)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  HttpURLConnection(java.net.URL u) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.io.InputStream getErrorStream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.getErrorStream()"); }
-  public void setRequestMethod(java.lang.String method) throws java.net.ProtocolException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.setRequestMethod(java.lang.String)"); }
-  public int getResponseCode() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.getResponseCode()"); }
-  public abstract void disconnect() { throw new AbstractMethodError("java.net.HttpURLConnection.disconnect()"); }
-  public void setAuthenticator(java.net.Authenticator auth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.setAuthenticator(java.net.Authenticator)"); }
-  public void setFixedLengthStreamingMode(long contentLength) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.setFixedLengthStreamingMode(long)"); }
-  public void setFixedLengthStreamingMode(int contentLength) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.setFixedLengthStreamingMode(int)"); }
-  public void setChunkedStreamingMode(int chunklen) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.setChunkedStreamingMode(int)"); }
-  public static void setFollowRedirects(boolean set) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.setFollowRedirects(boolean)"); }
-  public static boolean getFollowRedirects() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.getFollowRedirects()"); }
-  public void setInstanceFollowRedirects(boolean followRedirects) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.setInstanceFollowRedirects(boolean)"); }
-  public boolean getInstanceFollowRedirects() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.getInstanceFollowRedirects()"); }
-  public java.lang.String getRequestMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.getRequestMethod()"); }
-  public java.lang.String getResponseMessage() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.getResponseMessage()"); }
-  public abstract boolean usingProxy() { throw new AbstractMethodError("java.net.HttpURLConnection.usingProxy()"); }
-  public java.lang.String getHeaderField(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.getHeaderField(int)"); }
-  public java.lang.String getHeaderFieldKey(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.getHeaderFieldKey(int)"); }
-  public long getHeaderFieldDate(java.lang.String name, long defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.getHeaderFieldDate(java.lang.String, long)"); }
-  public java.security.Permission getPermission() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.HttpURLConnection.getPermission()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.InputStream getErrorStream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.net.ProtocolException")
+  public void setRequestMethod(java.lang.String method) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public int getResponseCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void disconnect() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAuthenticator(java.net.Authenticator auth) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFixedLengthStreamingMode(long contentLength) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFixedLengthStreamingMode(int contentLength) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setChunkedStreamingMode(int chunklen) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setFollowRedirects(boolean set) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean getFollowRedirects() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInstanceFollowRedirects(boolean followRedirects) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getInstanceFollowRedirects() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getRequestMethod() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.lang.String getResponseMessage() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean usingProxy() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getHeaderField(int n) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getHeaderFieldKey(int n) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getHeaderFieldDate(java.lang.String name, long defaultValue) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.security.Permission getPermission() { return null; }
   < ---- END java signatures ---- >
 }

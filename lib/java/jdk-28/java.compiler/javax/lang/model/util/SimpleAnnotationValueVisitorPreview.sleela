@@ -59,8 +59,10 @@ class SimpleAnnotationValueVisitorPreview<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SimpleAnnotationValueVisitorPreview() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitorPreview.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleAnnotationValueVisitorPreview() { }
   @JavaProtected
-  SimpleAnnotationValueVisitorPreview(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitorPreview.<init>(R)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleAnnotationValueVisitorPreview(R defaultValue) { }
   < ---- END java constructors ---- >
 }

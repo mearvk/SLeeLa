@@ -58,33 +58,60 @@ class Method {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract com.sun.jdi.Type returnType() throws com.sun.jdi.ClassNotLoadedException { throw new AbstractMethodError("com.sun.jdi.Method.returnType()"); }
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("com.sun.jdi.Method.equals(java.lang.Object)"); }
-  public abstract int hashCode() { throw new AbstractMethodError("com.sun.jdi.Method.hashCode()"); }
-  public abstract boolean isConstructor() { throw new AbstractMethodError("com.sun.jdi.Method.isConstructor()"); }
-  public abstract com.sun.jdi.Location location() { throw new AbstractMethodError("com.sun.jdi.Method.location()"); }
-  public abstract boolean isVarArgs() { throw new AbstractMethodError("com.sun.jdi.Method.isVarArgs()"); }
-  public default boolean isDefault() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.Method.isDefault()"); }
-  public abstract boolean isBridge() { throw new AbstractMethodError("com.sun.jdi.Method.isBridge()"); }
-  public abstract boolean isAbstract() { throw new AbstractMethodError("com.sun.jdi.Method.isAbstract()"); }
-  public abstract java.util.List<com.sun.jdi.LocalVariable> arguments() throws com.sun.jdi.AbsentInformationException { throw new AbstractMethodError("com.sun.jdi.Method.arguments()"); }
-  public abstract boolean isNative() { throw new AbstractMethodError("com.sun.jdi.Method.isNative()"); }
-  public abstract boolean isSynchronized() { throw new AbstractMethodError("com.sun.jdi.Method.isSynchronized()"); }
-  public abstract java.util.List<com.sun.jdi.Location> allLineLocations(java.lang.String stratum, java.lang.String sourceName) throws com.sun.jdi.AbsentInformationException { throw new AbstractMethodError("com.sun.jdi.Method.allLineLocations(java.lang.String, java.lang.String)"); }
-  public abstract java.util.List<com.sun.jdi.Location> allLineLocations() throws com.sun.jdi.AbsentInformationException { throw new AbstractMethodError("com.sun.jdi.Method.allLineLocations()"); }
-  public abstract java.util.List<com.sun.jdi.Location> locationsOfLine(int lineNumber) throws com.sun.jdi.AbsentInformationException { throw new AbstractMethodError("com.sun.jdi.Method.locationsOfLine(int)"); }
-  public abstract java.util.List<com.sun.jdi.Location> locationsOfLine(java.lang.String stratum, java.lang.String sourceName, int lineNumber) throws com.sun.jdi.AbsentInformationException { throw new AbstractMethodError("com.sun.jdi.Method.locationsOfLine(java.lang.String, java.lang.String, int)"); }
-  public abstract java.lang.String returnTypeName() { throw new AbstractMethodError("com.sun.jdi.Method.returnTypeName()"); }
-  public abstract java.util.List<java.lang.String> argumentTypeNames() { throw new AbstractMethodError("com.sun.jdi.Method.argumentTypeNames()"); }
-  public abstract java.util.List<com.sun.jdi.Type> argumentTypes() throws com.sun.jdi.ClassNotLoadedException { throw new AbstractMethodError("com.sun.jdi.Method.argumentTypes()"); }
-  public abstract boolean isStaticInitializer() { throw new AbstractMethodError("com.sun.jdi.Method.isStaticInitializer()"); }
-  public abstract boolean isObsolete() { throw new AbstractMethodError("com.sun.jdi.Method.isObsolete()"); }
-  public abstract com.sun.jdi.Location locationOfCodeIndex(long codeIndex) { throw new AbstractMethodError("com.sun.jdi.Method.locationOfCodeIndex(long)"); }
-  public abstract java.util.List<com.sun.jdi.LocalVariable> variables() throws com.sun.jdi.AbsentInformationException { throw new AbstractMethodError("com.sun.jdi.Method.variables()"); }
-  public abstract java.util.List<com.sun.jdi.LocalVariable> variablesByName(java.lang.String name) throws com.sun.jdi.AbsentInformationException { throw new AbstractMethodError("com.sun.jdi.Method.variablesByName(java.lang.String)"); }
-  public abstract byte[] bytecodes() { throw new AbstractMethodError("com.sun.jdi.Method.bytecodes()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.ClassNotLoadedException")
+  public com.sun.jdi.Type returnType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isConstructor() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.Location location() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isVarArgs() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isDefault() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isBridge() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isAbstract() { return false; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.AbsentInformationException")
+  public java.util.List<com.sun.jdi.LocalVariable> arguments() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isNative() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSynchronized() { return false; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.AbsentInformationException")
+  public java.util.List<com.sun.jdi.Location> allLineLocations(java.lang.String stratum, java.lang.String sourceName) { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.AbsentInformationException")
+  public java.util.List<com.sun.jdi.Location> allLineLocations() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.AbsentInformationException")
+  public java.util.List<com.sun.jdi.Location> locationsOfLine(int lineNumber) { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.AbsentInformationException")
+  public java.util.List<com.sun.jdi.Location> locationsOfLine(java.lang.String stratum, java.lang.String sourceName, int lineNumber) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String returnTypeName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.String> argumentTypeNames() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.ClassNotLoadedException")
+  public java.util.List<com.sun.jdi.Type> argumentTypes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isStaticInitializer() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isObsolete() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.Location locationOfCodeIndex(long codeIndex) { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.AbsentInformationException")
+  public java.util.List<com.sun.jdi.LocalVariable> variables() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.AbsentInformationException")
+  public java.util.List<com.sun.jdi.LocalVariable> variablesByName(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] bytecodes() { return null; }
   < ---- END java signatures ---- >
 }

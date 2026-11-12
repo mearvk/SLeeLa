@@ -58,7 +58,9 @@ class DestroyFailedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DestroyFailedException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.DestroyFailedException.<init>()"); }
-  public DestroyFailedException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.DestroyFailedException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DestroyFailedException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DestroyFailedException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

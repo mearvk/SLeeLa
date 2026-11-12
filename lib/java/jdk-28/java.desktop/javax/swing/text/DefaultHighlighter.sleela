@@ -62,23 +62,37 @@ class DefaultHighlighter {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultHighlighter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultHighlighter() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void install(javax.swing.text.JTextComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.install(javax.swing.text.JTextComponent)"); }
-  public void deinstall(javax.swing.text.JTextComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.deinstall(javax.swing.text.JTextComponent)"); }
-  public void paintLayeredHighlights(java.awt.Graphics g, int p0, int p1, java.awt.Shape viewBounds, javax.swing.text.JTextComponent editor, javax.swing.text.View view) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.paintLayeredHighlights(java.awt.Graphics, int, int, java.awt.Shape, javax.swing.text.JTextComponent, javax.swing.text.View)"); }
-  public javax.swing.text.Highlighter.Highlight[] getHighlights() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.getHighlights()"); }
-  public java.lang.Object addHighlight(int p0, int p1, javax.swing.text.Highlighter.HighlightPainter p) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.addHighlight(int, int, javax.swing.text.Highlighter.HighlightPainter)"); }
-  public void removeHighlight(java.lang.Object tag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.removeHighlight(java.lang.Object)"); }
-  public void removeAllHighlights() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.removeAllHighlights()"); }
-  public void changeHighlight(java.lang.Object tag, int p0, int p1) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.changeHighlight(java.lang.Object, int, int)"); }
-  public boolean getDrawsLayeredHighlights() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.getDrawsLayeredHighlights()"); }
-  public void setDrawsLayeredHighlights(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.setDrawsLayeredHighlights(boolean)"); }
-  public void paint(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultHighlighter.paint(java.awt.Graphics)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void install(javax.swing.text.JTextComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void deinstall(javax.swing.text.JTextComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintLayeredHighlights(java.awt.Graphics g, int p0, int p1, java.awt.Shape viewBounds, javax.swing.text.JTextComponent editor, javax.swing.text.View view) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Highlighter.Highlight[] getHighlights() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public java.lang.Object addHighlight(int p0, int p1, javax.swing.text.Highlighter.HighlightPainter p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeHighlight(java.lang.Object tag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAllHighlights() { }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public void changeHighlight(java.lang.Object tag, int p0, int p1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getDrawsLayeredHighlights() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDrawsLayeredHighlights(boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g) { }
   < ---- END java signatures ---- >
 }

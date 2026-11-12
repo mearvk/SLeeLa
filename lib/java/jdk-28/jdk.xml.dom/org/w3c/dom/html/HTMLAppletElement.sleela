@@ -58,30 +58,54 @@ class HTMLAppletElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.getName()"); }
-  public abstract void setName(java.lang.String name) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.setName(java.lang.String)"); }
-  public abstract void setArchive(java.lang.String archive) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.setArchive(java.lang.String)"); }
-  public abstract java.lang.String getObject() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.getObject()"); }
-  public abstract void setWidth(java.lang.String width) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.setWidth(java.lang.String)"); }
-  public abstract java.lang.String getCodeBase() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.getCodeBase()"); }
-  public abstract java.lang.String getHeight() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.getHeight()"); }
-  public abstract void setHeight(java.lang.String height) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.setHeight(java.lang.String)"); }
-  public abstract java.lang.String getWidth() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.getWidth()"); }
-  public abstract void setObject(java.lang.String object) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.setObject(java.lang.String)"); }
-  public abstract java.lang.String getAlign() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.getAlign()"); }
-  public abstract void setAlign(java.lang.String align) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.setAlign(java.lang.String)"); }
-  public abstract java.lang.String getAlt() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.getAlt()"); }
-  public abstract void setAlt(java.lang.String alt) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.setAlt(java.lang.String)"); }
-  public abstract java.lang.String getArchive() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.getArchive()"); }
-  public abstract void setCode(java.lang.String code) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.setCode(java.lang.String)"); }
-  public abstract void setCodeBase(java.lang.String codeBase) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.setCodeBase(java.lang.String)"); }
-  public abstract java.lang.String getHspace() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.getHspace()"); }
-  public abstract void setHspace(java.lang.String hspace) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.setHspace(java.lang.String)"); }
-  public abstract java.lang.String getVspace() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.getVspace()"); }
-  public abstract void setVspace(java.lang.String vspace) { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.setVspace(java.lang.String)"); }
-  public abstract java.lang.String getCode() { throw new AbstractMethodError("org.w3c.dom.html.HTMLAppletElement.getCode()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setName(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setArchive(java.lang.String archive) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getObject() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setWidth(java.lang.String width) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCodeBase() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getHeight() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHeight(java.lang.String height) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getWidth() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setObject(java.lang.String object) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAlign() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAlign(java.lang.String align) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAlt() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAlt(java.lang.String alt) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getArchive() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCode(java.lang.String code) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCodeBase(java.lang.String codeBase) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getHspace() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHspace(java.lang.String hspace) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getVspace() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setVspace(java.lang.String vspace) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCode() { return null; }
   < ---- END java signatures ---- >
 }

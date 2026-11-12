@@ -58,41 +58,76 @@ class RandomGenerator {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static java.util.random.RandomGenerator of(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.of(java.lang.String)"); }
-  public static java.util.random.RandomGenerator getDefault() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.getDefault()"); }
-  public default double nextDouble(double bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextDouble(double)"); }
-  public default double nextDouble() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextDouble()"); }
-  public default double nextDouble(double origin, double bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextDouble(double, double)"); }
-  public default int nextInt() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextInt()"); }
-  public default int nextInt(int origin, int bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextInt(int, int)"); }
-  public default int nextInt(int bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextInt(int)"); }
-  public default void nextBytes(byte[] bytes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextBytes(byte[])"); }
-  public default java.util.stream.LongStream longs(long streamSize, long randomNumberOrigin, long randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.longs(long, long, long)"); }
-  public default java.util.stream.LongStream longs(long streamSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.longs(long)"); }
-  public default java.util.stream.LongStream longs(long randomNumberOrigin, long randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.longs(long, long)"); }
-  public default java.util.stream.LongStream longs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.longs()"); }
-  public default java.util.stream.IntStream ints() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.ints()"); }
-  public default java.util.stream.IntStream ints(int randomNumberOrigin, int randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.ints(int, int)"); }
-  public default java.util.stream.IntStream ints(long streamSize, int randomNumberOrigin, int randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.ints(long, int, int)"); }
-  public default java.util.stream.IntStream ints(long streamSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.ints(long)"); }
-  public default java.util.stream.DoubleStream doubles() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.doubles()"); }
-  public default java.util.stream.DoubleStream doubles(long streamSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.doubles(long)"); }
-  public default java.util.stream.DoubleStream doubles(double randomNumberOrigin, double randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.doubles(double, double)"); }
-  public default java.util.stream.DoubleStream doubles(long streamSize, double randomNumberOrigin, double randomNumberBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.doubles(long, double, double)"); }
-  public default long nextLong(long origin, long bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextLong(long, long)"); }
-  public default long nextLong(long bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextLong(long)"); }
-  public abstract long nextLong() { throw new AbstractMethodError("java.util.random.RandomGenerator.nextLong()"); }
-  public default boolean nextBoolean() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextBoolean()"); }
-  public default float nextFloat() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextFloat()"); }
-  public default float nextFloat(float bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextFloat(float)"); }
-  public default float nextFloat(float origin, float bound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextFloat(float, float)"); }
-  public default double nextGaussian(double mean, double stddev) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextGaussian(double, double)"); }
-  public default double nextGaussian() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextGaussian()"); }
-  public default boolean isDeprecated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.isDeprecated()"); }
-  public default java.util.stream.DoubleStream equiDoubles(double left, double right, boolean isLeftIncluded, boolean isRightIncluded) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.equiDoubles(double, double, boolean, boolean)"); }
-  public default double nextExponential() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGenerator.nextExponential()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.random.RandomGenerator of(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.random.RandomGenerator getDefault() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default double nextDouble(double bound) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default double nextDouble() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default double nextDouble(double origin, double bound) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default int nextInt() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default int nextInt(int origin, int bound) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default int nextInt(int bound) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void nextBytes(byte[] bytes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.LongStream longs(long streamSize, long randomNumberOrigin, long randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.LongStream longs(long streamSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.LongStream longs(long randomNumberOrigin, long randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.LongStream longs() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.IntStream ints() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.IntStream ints(int randomNumberOrigin, int randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.IntStream ints(long streamSize, int randomNumberOrigin, int randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.IntStream ints(long streamSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.DoubleStream doubles() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.DoubleStream doubles(long streamSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.DoubleStream doubles(double randomNumberOrigin, double randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.DoubleStream doubles(long streamSize, double randomNumberOrigin, double randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default long nextLong(long origin, long bound) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default long nextLong(long bound) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long nextLong() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean nextBoolean() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default float nextFloat() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default float nextFloat(float bound) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default float nextFloat(float origin, float bound) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default double nextGaussian(double mean, double stddev) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default double nextGaussian() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isDeprecated() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.stream.DoubleStream equiDoubles(double left, double right, boolean isLeftIncluded, boolean isRightIncluded) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default double nextExponential() { return 0.0; }
   < ---- END java signatures ---- >
 }

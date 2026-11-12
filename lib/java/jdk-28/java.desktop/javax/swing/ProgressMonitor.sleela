@@ -62,25 +62,41 @@ class ProgressMonitor {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ProgressMonitor(java.awt.Component parentComponent, java.lang.Object message, java.lang.String note, int min, int max) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.<init>(java.awt.Component, java.lang.Object, java.lang.String, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ProgressMonitor(java.awt.Component parentComponent, java.lang.Object message, java.lang.String note, int min, int max) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int getMaximum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.getMaximum()"); }
-  public int getMinimum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.getMinimum()"); }
-  public boolean isCanceled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.isCanceled()"); }
-  public void setMillisToDecideToPopup(int millisToDecideToPopup) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.setMillisToDecideToPopup(int)"); }
-  public int getMillisToDecideToPopup() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.getMillisToDecideToPopup()"); }
-  public void setMillisToPopup(int millisToPopup) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.setMillisToPopup(int)"); }
-  public int getMillisToPopup() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.getMillisToPopup()"); }
-  public void setNote(java.lang.String note) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.setNote(java.lang.String)"); }
-  public java.lang.String getNote() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.getNote()"); }
-  public void setProgress(int nv) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.setProgress(int)"); }
-  public void setMinimum(int m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.setMinimum(int)"); }
-  public void setMaximum(int m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.setMaximum(int)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.ProgressMonitor.getAccessibleContext()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaximum() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinimum() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCanceled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMillisToDecideToPopup(int millisToDecideToPopup) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMillisToDecideToPopup() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMillisToPopup(int millisToPopup) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMillisToPopup() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNote(java.lang.String note) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getNote() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setProgress(int nv) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinimum(int m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximum(int m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

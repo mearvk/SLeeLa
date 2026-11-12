@@ -58,36 +58,63 @@ class TabularDataSupport {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TabularDataSupport(javax.management.openmbean.TabularType tabularType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.<init>(javax.management.openmbean.TabularType)"); }
-  public TabularDataSupport(javax.management.openmbean.TabularType tabularType, int initialCapacity, float loadFactor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.<init>(javax.management.openmbean.TabularType, int, float)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TabularDataSupport(javax.management.openmbean.TabularType tabularType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TabularDataSupport(javax.management.openmbean.TabularType tabularType, int initialCapacity, float loadFactor) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.management.openmbean.CompositeData remove(java.lang.Object[] key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.remove(java.lang.Object[])"); }
-  public java.lang.Object remove(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.remove(java.lang.Object)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.size()"); }
-  public javax.management.openmbean.CompositeData get(java.lang.Object[] key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.get(java.lang.Object[])"); }
-  public java.lang.Object get(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.get(java.lang.Object)"); }
-  public java.lang.Object put(java.lang.Object key, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.put(java.lang.Object, java.lang.Object)"); }
-  public void put(javax.management.openmbean.CompositeData value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.put(javax.management.openmbean.CompositeData)"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.toString()"); }
-  public java.util.Collection<java.lang.Object> values() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.values()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.clone()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.clear()"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.isEmpty()"); }
-  public java.util.Set<java.util.Map.Entry<java.lang.Object, java.lang.Object>> entrySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.entrySet()"); }
-  public void putAll(javax.management.openmbean.CompositeData[] values) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.putAll(javax.management.openmbean.CompositeData[])"); }
-  public void putAll(java.util.Map<?, ?> t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.putAll(java.util.Map<?, ?>)"); }
-  public java.util.Set<java.lang.Object> keySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.keySet()"); }
-  public boolean containsValue(javax.management.openmbean.CompositeData value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.containsValue(javax.management.openmbean.CompositeData)"); }
-  public boolean containsKey(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.containsKey(java.lang.Object)"); }
-  public boolean containsKey(java.lang.Object[] key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.containsKey(java.lang.Object[])"); }
-  public javax.management.openmbean.TabularType getTabularType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.getTabularType()"); }
-  public java.lang.Object[] calculateIndex(javax.management.openmbean.CompositeData value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.TabularDataSupport.calculateIndex(javax.management.openmbean.CompositeData)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.openmbean.CompositeData remove(java.lang.Object[] key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object remove(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.openmbean.CompositeData get(java.lang.Object[] key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object get(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object put(java.lang.Object key, java.lang.Object value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void put(javax.management.openmbean.CompositeData value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Collection<java.lang.Object> values() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.util.Map.Entry<java.lang.Object, java.lang.Object>> entrySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void putAll(javax.management.openmbean.CompositeData[] values) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void putAll(java.util.Map<?, ?> t) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.lang.Object> keySet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsValue(javax.management.openmbean.CompositeData value) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsKey(java.lang.Object key) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean containsKey(java.lang.Object[] key) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.openmbean.TabularType getTabularType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] calculateIndex(javax.management.openmbean.CompositeData value) { return null; }
   < ---- END java signatures ---- >
 }

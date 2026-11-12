@@ -58,25 +58,44 @@ class RecordedObject {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.toString()"); }
-  public final jdk.jfr.consumer.RecordedClass getClass(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getClass(java.lang.String)"); }
-  public final boolean getBoolean(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getBoolean(java.lang.String)"); }
-  public final byte getByte(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getByte(java.lang.String)"); }
-  public final short getShort(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getShort(java.lang.String)"); }
-  public final char getChar(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getChar(java.lang.String)"); }
-  public final int getInt(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getInt(java.lang.String)"); }
-  public final long getLong(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getLong(java.lang.String)"); }
-  public final float getFloat(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getFloat(java.lang.String)"); }
-  public final double getDouble(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getDouble(java.lang.String)"); }
-  public final <T> T getValue(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getValue(java.lang.String)"); }
-  public java.util.List<jdk.jfr.ValueDescriptor> getFields() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getFields()"); }
-  public final java.lang.String getString(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getString(java.lang.String)"); }
-  public final java.time.Duration getDuration(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getDuration(java.lang.String)"); }
-  public final java.time.Instant getInstant(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getInstant(java.lang.String)"); }
-  public final jdk.jfr.consumer.RecordedThread getThread(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.getThread(java.lang.String)"); }
-  public boolean hasField(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.consumer.RecordedObject.hasField(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final jdk.jfr.consumer.RecordedClass getClass(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean getBoolean(java.lang.String name) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final byte getByte(java.lang.String name) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final short getShort(java.lang.String name) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final char getChar(java.lang.String name) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getInt(java.lang.String name) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long getLong(java.lang.String name) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final float getFloat(java.lang.String name) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final double getDouble(java.lang.String name) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final <T> T getValue(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<jdk.jfr.ValueDescriptor> getFields() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getString(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.time.Duration getDuration(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.time.Instant getInstant(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final jdk.jfr.consumer.RecordedThread getThread(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasField(java.lang.String name) { return false; }
   < ---- END java signatures ---- >
 }

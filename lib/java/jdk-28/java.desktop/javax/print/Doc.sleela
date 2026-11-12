@@ -58,13 +58,20 @@ class Doc {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.print.attribute.DocAttributeSet getAttributes() { throw new AbstractMethodError("javax.print.Doc.getAttributes()"); }
-  public abstract javax.print.DocFlavor getDocFlavor() { throw new AbstractMethodError("javax.print.Doc.getDocFlavor()"); }
-  public abstract java.lang.Object getPrintData() throws java.io.IOException { throw new AbstractMethodError("javax.print.Doc.getPrintData()"); }
-  public abstract java.io.InputStream getStreamForBytes() throws java.io.IOException { throw new AbstractMethodError("javax.print.Doc.getStreamForBytes()"); }
-  public abstract java.io.Reader getReaderForText() throws java.io.IOException { throw new AbstractMethodError("javax.print.Doc.getReaderForText()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.attribute.DocAttributeSet getAttributes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.DocFlavor getDocFlavor() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.lang.Object getPrintData() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.io.InputStream getStreamForBytes() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.io.Reader getReaderForText() { return null; }
   < ---- END java signatures ---- >
 }

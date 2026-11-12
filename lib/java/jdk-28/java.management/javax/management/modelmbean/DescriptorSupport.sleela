@@ -58,30 +58,51 @@ class DescriptorSupport {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DescriptorSupport(java.lang.String... fields) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.<init>(java.lang.String...)"); }
-  public DescriptorSupport(java.lang.String[] fieldNames, java.lang.Object[] fieldValues) throws javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.<init>(java.lang.String[], java.lang.Object[])"); }
-  public DescriptorSupport(java.lang.String inStr) throws javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.modelmbean.XMLParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.<init>(java.lang.String)"); }
-  public DescriptorSupport() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.<init>()"); }
-  public DescriptorSupport(int initNumFields) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.<init>(int)"); }
-  public DescriptorSupport(javax.management.modelmbean.DescriptorSupport inDescr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.<init>(javax.management.modelmbean.DescriptorSupport)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DescriptorSupport(java.lang.String... fields) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.RuntimeOperationsException")
+  public DescriptorSupport(java.lang.String[] fieldNames, java.lang.Object[] fieldValues) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.modelmbean.XMLParseException")
+  public DescriptorSupport(java.lang.String inStr) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DescriptorSupport() { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public DescriptorSupport(int initNumFields) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DescriptorSupport(javax.management.modelmbean.DescriptorSupport inDescr) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.equals(java.lang.Object)"); }
-  public synchronized java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.toString()"); }
-  public synchronized int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.hashCode()"); }
-  public synchronized java.lang.Object clone() throws javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.clone()"); }
-  public synchronized java.lang.String[] getFields() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.getFields()"); }
-  public synchronized boolean isValid() throws javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.isValid()"); }
-  public synchronized void setFields(java.lang.String[] fieldNames, java.lang.Object[] fieldValues) throws javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.setFields(java.lang.String[], java.lang.Object[])"); }
-  public synchronized java.lang.Object getFieldValue(java.lang.String fieldName) throws javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.getFieldValue(java.lang.String)"); }
-  public synchronized void setField(java.lang.String fieldName, java.lang.Object fieldValue) throws javax.management.RuntimeOperationsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.setField(java.lang.String, java.lang.Object)"); }
-  public synchronized java.lang.String[] getFieldNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.getFieldNames()"); }
-  public synchronized java.lang.Object[] getFieldValues(java.lang.String... fieldNames) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.getFieldValues(java.lang.String...)"); }
-  public synchronized void removeField(java.lang.String fieldName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.removeField(java.lang.String)"); }
-  public synchronized java.lang.String toXMLString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.DescriptorSupport.toXMLString()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.RuntimeOperationsException")
+  public synchronized java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String[] getFields() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.RuntimeOperationsException")
+  public synchronized boolean isValid() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.RuntimeOperationsException")
+  public synchronized void setFields(java.lang.String[] fieldNames, java.lang.Object[] fieldValues) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.RuntimeOperationsException")
+  public synchronized java.lang.Object getFieldValue(java.lang.String fieldName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.RuntimeOperationsException")
+  public synchronized void setField(java.lang.String fieldName, java.lang.Object fieldValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String[] getFieldNames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Object[] getFieldValues(java.lang.String... fieldNames) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeField(java.lang.String fieldName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String toXMLString() { return null; }
   < ---- END java signatures ---- >
 }

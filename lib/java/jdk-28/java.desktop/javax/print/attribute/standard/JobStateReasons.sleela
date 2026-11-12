@@ -58,18 +58,27 @@ class JobStateReasons {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JobStateReasons() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.JobStateReasons.<init>()"); }
-  public JobStateReasons(java.util.Collection<javax.print.attribute.standard.JobStateReason> collection) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.JobStateReasons.<init>(java.util.Collection<javax.print.attribute.standard.JobStateReason>)"); }
-  public JobStateReasons(int initialCapacity, float loadFactor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.JobStateReasons.<init>(int, float)"); }
-  public JobStateReasons(int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.JobStateReasons.<init>(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JobStateReasons() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JobStateReasons(java.util.Collection<javax.print.attribute.standard.JobStateReason> collection) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JobStateReasons(int initialCapacity, float loadFactor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JobStateReasons(int initialCapacity) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.JobStateReasons.getName()"); }
-  public boolean add(javax.print.attribute.standard.JobStateReason o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.JobStateReasons.add(javax.print.attribute.standard.JobStateReason)"); }
-  public final java.lang.Class<? extends javax.print.attribute.Attribute> getCategory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.JobStateReasons.getCategory()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean add(javax.print.attribute.standard.JobStateReason o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Class<? extends javax.print.attribute.Attribute> getCategory() { return null; }
   < ---- END java signatures ---- >
 }

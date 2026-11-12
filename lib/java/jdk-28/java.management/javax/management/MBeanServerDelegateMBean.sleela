@@ -58,15 +58,24 @@ class MBeanServerDelegateMBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getSpecificationVersion() { throw new AbstractMethodError("javax.management.MBeanServerDelegateMBean.getSpecificationVersion()"); }
-  public abstract java.lang.String getSpecificationVendor() { throw new AbstractMethodError("javax.management.MBeanServerDelegateMBean.getSpecificationVendor()"); }
-  public abstract java.lang.String getImplementationVersion() { throw new AbstractMethodError("javax.management.MBeanServerDelegateMBean.getImplementationVersion()"); }
-  public abstract java.lang.String getImplementationVendor() { throw new AbstractMethodError("javax.management.MBeanServerDelegateMBean.getImplementationVendor()"); }
-  public abstract java.lang.String getMBeanServerId() { throw new AbstractMethodError("javax.management.MBeanServerDelegateMBean.getMBeanServerId()"); }
-  public abstract java.lang.String getSpecificationName() { throw new AbstractMethodError("javax.management.MBeanServerDelegateMBean.getSpecificationName()"); }
-  public abstract java.lang.String getImplementationName() { throw new AbstractMethodError("javax.management.MBeanServerDelegateMBean.getImplementationName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSpecificationVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSpecificationVendor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getImplementationVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getImplementationVendor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getMBeanServerId() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSpecificationName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getImplementationName() { return null; }
   < ---- END java signatures ---- >
 }

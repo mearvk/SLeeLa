@@ -58,17 +58,28 @@ class KEM {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.crypto.KEM getInstance(java.lang.String algorithm, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.getInstance(java.lang.String, java.security.Provider)"); }
-  public static javax.crypto.KEM getInstance(java.lang.String algorithm, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.getInstance(java.lang.String, java.lang.String)"); }
-  public static javax.crypto.KEM getInstance(java.lang.String algorithm) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.getInstance(java.lang.String)"); }
-  public java.lang.String getAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.getAlgorithm()"); }
-  public javax.crypto.KEM.Encapsulator newEncapsulator(java.security.PublicKey publicKey, java.security.SecureRandom secureRandom) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.newEncapsulator(java.security.PublicKey, java.security.SecureRandom)"); }
-  public javax.crypto.KEM.Encapsulator newEncapsulator(java.security.PublicKey publicKey) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.newEncapsulator(java.security.PublicKey)"); }
-  public javax.crypto.KEM.Encapsulator newEncapsulator(java.security.PublicKey publicKey, java.security.spec.AlgorithmParameterSpec spec, java.security.SecureRandom secureRandom) throws java.security.InvalidAlgorithmParameterException, java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.newEncapsulator(java.security.PublicKey, java.security.spec.AlgorithmParameterSpec, java.security.SecureRandom)"); }
-  public javax.crypto.KEM.Decapsulator newDecapsulator(java.security.PrivateKey privateKey, java.security.spec.AlgorithmParameterSpec spec) throws java.security.InvalidAlgorithmParameterException, java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.newDecapsulator(java.security.PrivateKey, java.security.spec.AlgorithmParameterSpec)"); }
-  public javax.crypto.KEM.Decapsulator newDecapsulator(java.security.PrivateKey privateKey) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KEM.newDecapsulator(java.security.PrivateKey)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static javax.crypto.KEM getInstance(java.lang.String algorithm, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException")
+  public static javax.crypto.KEM getInstance(java.lang.String algorithm, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static javax.crypto.KEM getInstance(java.lang.String algorithm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException")
+  public javax.crypto.KEM.Encapsulator newEncapsulator(java.security.PublicKey publicKey, java.security.SecureRandom secureRandom) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException")
+  public javax.crypto.KEM.Encapsulator newEncapsulator(java.security.PublicKey publicKey) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidAlgorithmParameterException, java.security.InvalidKeyException")
+  public javax.crypto.KEM.Encapsulator newEncapsulator(java.security.PublicKey publicKey, java.security.spec.AlgorithmParameterSpec spec, java.security.SecureRandom secureRandom) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidAlgorithmParameterException, java.security.InvalidKeyException")
+  public javax.crypto.KEM.Decapsulator newDecapsulator(java.security.PrivateKey privateKey, java.security.spec.AlgorithmParameterSpec spec) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException")
+  public javax.crypto.KEM.Decapsulator newDecapsulator(java.security.PrivateKey privateKey) { return null; }
   < ---- END java signatures ---- >
 }

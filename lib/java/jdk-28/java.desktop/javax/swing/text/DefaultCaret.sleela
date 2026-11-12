@@ -67,65 +67,113 @@ class DefaultCaret {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultCaret() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultCaret() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.toString()"); }
-  public boolean isActive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.isActive()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isActive() { return false; }
   @JavaProtected
-  final javax.swing.text.JTextComponent getComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.getComponent()"); }
-  public void setVisible(boolean e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.setVisible(boolean)"); }
-  public void install(javax.swing.text.JTextComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.install(javax.swing.text.JTextComponent)"); }
-  public int getMark() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.getMark()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final javax.swing.text.JTextComponent getComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVisible(boolean e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void install(javax.swing.text.JTextComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMark() { return 0; }
   @JavaProtected
-  final synchronized void repaint() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.repaint()"); }
-  public void focusGained(java.awt.event.FocusEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.focusGained(java.awt.event.FocusEvent)"); }
-  public void focusLost(java.awt.event.FocusEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.focusLost(java.awt.event.FocusEvent)"); }
-  public void mousePressed(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.mousePressed(java.awt.event.MouseEvent)"); }
-  public void mouseReleased(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.mouseReleased(java.awt.event.MouseEvent)"); }
-  public void mouseClicked(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.mouseClicked(java.awt.event.MouseEvent)"); }
-  public void mouseExited(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.mouseExited(java.awt.event.MouseEvent)"); }
-  public void mouseEntered(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.mouseEntered(java.awt.event.MouseEvent)"); }
-  public void mouseMoved(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.mouseMoved(java.awt.event.MouseEvent)"); }
-  public void mouseDragged(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.mouseDragged(java.awt.event.MouseEvent)"); }
-  public java.awt.Point getMagicCaretPosition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.getMagicCaretPosition()"); }
-  public void deinstall(javax.swing.text.JTextComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.deinstall(javax.swing.text.JTextComponent)"); }
-  public void setDot(int dot) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.setDot(int)"); }
-  public void setDot(int dot, javax.swing.text.Position.Bias dotBias) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.setDot(int, javax.swing.text.Position.Bias)"); }
-  public void moveDot(int dot, javax.swing.text.Position.Bias dotBias) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.moveDot(int, javax.swing.text.Position.Bias)"); }
-  public void moveDot(int dot) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.moveDot(int)"); }
-  public int getDot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.getDot()"); }
-  public javax.swing.text.Position.Bias getMarkBias() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.getMarkBias()"); }
-  public javax.swing.text.Position.Bias getDotBias() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.getDotBias()"); }
-  public int getBlinkRate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.getBlinkRate()"); }
-  public void setBlinkRate(int rate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.setBlinkRate(int)"); }
-  public void removeChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.removeChangeListener(javax.swing.event.ChangeListener)"); }
-  public void addChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.addChangeListener(javax.swing.event.ChangeListener)"); }
-  public javax.swing.event.ChangeListener[] getChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.getChangeListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final synchronized void repaint() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void focusGained(java.awt.event.FocusEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void focusLost(java.awt.event.FocusEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mousePressed(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseReleased(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseClicked(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseExited(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseEntered(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseMoved(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void mouseDragged(java.awt.event.MouseEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Point getMagicCaretPosition() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void deinstall(javax.swing.text.JTextComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDot(int dot) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDot(int dot, javax.swing.text.Position.Bias dotBias) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void moveDot(int dot, javax.swing.text.Position.Bias dotBias) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void moveDot(int dot) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDot() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Position.Bias getMarkBias() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Position.Bias getDotBias() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBlinkRate() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setBlinkRate(int rate) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeChangeListener(javax.swing.event.ChangeListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addChangeListener(javax.swing.event.ChangeListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.ChangeListener[] getChangeListeners() { return null; }
   @JavaProtected
-  void fireStateChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.fireStateChanged()"); }
-  public boolean isSelectionVisible() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.isSelectionVisible()"); }
-  public void setSelectionVisible(boolean vis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.setSelectionVisible(boolean)"); }
-  public void setMagicCaretPosition(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.setMagicCaretPosition(java.awt.Point)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireStateChanged() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSelectionVisible() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionVisible(boolean vis) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMagicCaretPosition(java.awt.Point p) { }
   @JavaProtected
-  void moveCaret(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.moveCaret(java.awt.event.MouseEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void moveCaret(java.awt.event.MouseEvent e) { }
   @JavaProtected
-  void positionCaret(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.positionCaret(java.awt.event.MouseEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void positionCaret(java.awt.event.MouseEvent e) { }
   @JavaProtected
-  synchronized void damage(java.awt.Rectangle r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.damage(java.awt.Rectangle)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  synchronized void damage(java.awt.Rectangle r) { }
   @JavaProtected
-  javax.swing.text.Highlighter.HighlightPainter getSelectionPainter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.getSelectionPainter()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.Highlighter.HighlightPainter getSelectionPainter() { return null; }
   @JavaProtected
-  void adjustVisibility(java.awt.Rectangle nloc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.adjustVisibility(java.awt.Rectangle)"); }
-  public void setUpdatePolicy(int policy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.setUpdatePolicy(int)"); }
-  public int getUpdatePolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.getUpdatePolicy()"); }
-  public boolean isVisible() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.isVisible()"); }
-  public void paint(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.paint(java.awt.Graphics)"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DefaultCaret.getListeners(java.lang.Class<T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void adjustVisibility(java.awt.Rectangle nloc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUpdatePolicy(int policy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getUpdatePolicy() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isVisible() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paint(java.awt.Graphics g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   < ---- END java signatures ---- >
 }

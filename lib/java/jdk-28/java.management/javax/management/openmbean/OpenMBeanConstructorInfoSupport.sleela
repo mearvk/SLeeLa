@@ -58,16 +58,23 @@ class OpenMBeanConstructorInfoSupport {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public OpenMBeanConstructorInfoSupport(java.lang.String name, java.lang.String description, javax.management.openmbean.OpenMBeanParameterInfo[] signature) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.OpenMBeanConstructorInfoSupport.<init>(java.lang.String, java.lang.String, javax.management.openmbean.OpenMBeanParameterInfo[])"); }
-  public OpenMBeanConstructorInfoSupport(java.lang.String name, java.lang.String description, javax.management.openmbean.OpenMBeanParameterInfo[] signature, javax.management.Descriptor descriptor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.OpenMBeanConstructorInfoSupport.<init>(java.lang.String, java.lang.String, javax.management.openmbean.OpenMBeanParameterInfo[], javax.management.Descriptor)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OpenMBeanConstructorInfoSupport(java.lang.String name, java.lang.String description, javax.management.openmbean.OpenMBeanParameterInfo[] signature) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OpenMBeanConstructorInfoSupport(java.lang.String name, java.lang.String description, javax.management.openmbean.OpenMBeanParameterInfo[] signature, javax.management.Descriptor descriptor) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.OpenMBeanConstructorInfoSupport.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.OpenMBeanConstructorInfoSupport.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.OpenMBeanConstructorInfoSupport.hashCode()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
   < ---- END java signatures ---- >
 }

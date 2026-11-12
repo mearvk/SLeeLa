@@ -71,22 +71,34 @@ class Level {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Level(java.lang.String name, int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Level.<init>(java.lang.String, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Level(java.lang.String name, int value) { }
   @JavaProtected
-  Level(java.lang.String name, int value, java.lang.String resourceBundleName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Level.<init>(java.lang.String, int, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Level(java.lang.String name, int value, java.lang.String resourceBundleName) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Level.getName()"); }
-  public boolean equals(java.lang.Object ox) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Level.equals(java.lang.Object)"); }
-  public final java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Level.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Level.hashCode()"); }
-  public final int intValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Level.intValue()"); }
-  public static synchronized java.util.logging.Level parse(java.lang.String name) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Level.parse(java.lang.String)"); }
-  public java.lang.String getResourceBundleName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Level.getResourceBundleName()"); }
-  public java.lang.String getLocalizedName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Level.getLocalizedName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object ox) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int intValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public static synchronized java.util.logging.Level parse(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getResourceBundleName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLocalizedName() { return null; }
   < ---- END java signatures ---- >
 }

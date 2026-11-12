@@ -65,87 +65,149 @@ class KeyboardFocusManager {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public KeyboardFocusManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public KeyboardFocusManager() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object)"); }
-  public synchronized java.awt.FocusTraversalPolicy getDefaultFocusTraversalPolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getDefaultFocusTraversalPolicy()"); }
-  public abstract boolean postProcessKeyEvent(java.awt.event.KeyEvent e) { throw new AbstractMethodError("java.awt.KeyboardFocusManager.postProcessKeyEvent(java.awt.event.KeyEvent)"); }
-  public void addPropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.addPropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)"); }
-  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.addPropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public abstract void processKeyEvent(java.awt.Component focusedComponent, java.awt.event.KeyEvent e) { throw new AbstractMethodError("java.awt.KeyboardFocusManager.processKeyEvent(java.awt.Component, java.awt.event.KeyEvent)"); }
-  public synchronized java.beans.PropertyChangeListener[] getPropertyChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getPropertyChangeListeners()"); }
-  public synchronized java.beans.PropertyChangeListener[] getPropertyChangeListeners(java.lang.String propertyName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getPropertyChangeListeners(java.lang.String)"); }
-  public java.awt.Component getPermanentFocusOwner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getPermanentFocusOwner()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.FocusTraversalPolicy getDefaultFocusTraversalPolicy() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean postProcessKeyEvent(java.awt.event.KeyEvent e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addPropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void processKeyEvent(java.awt.Component focusedComponent, java.awt.event.KeyEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.beans.PropertyChangeListener[] getPropertyChangeListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.beans.PropertyChangeListener[] getPropertyChangeListeners(java.lang.String propertyName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getPermanentFocusOwner() { return null; }
   @JavaProtected
-  void setGlobalPermanentFocusOwner(java.awt.Component permanentFocusOwner) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.setGlobalPermanentFocusOwner(java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setGlobalPermanentFocusOwner(java.awt.Component permanentFocusOwner) { }
   @JavaProtected
-  abstract void discardKeyEvents(java.awt.Component comp) { throw new AbstractMethodError("java.awt.KeyboardFocusManager.discardKeyEvents(java.awt.Component)"); }
-  public java.util.Set<java.awt.AWTKeyStroke> getDefaultFocusTraversalKeys(int id) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getDefaultFocusTraversalKeys(int)"); }
-  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.removePropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public void removePropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.removePropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)"); }
+  @throwable("java.lang.AbstractMethodError")
+  void discardKeyEvents(java.awt.Component comp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.awt.AWTKeyStroke> getDefaultFocusTraversalKeys(int id) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removePropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { }
   @JavaProtected
-  void fireVetoableChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) throws java.beans.PropertyVetoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.fireVetoableChange(java.lang.String, java.lang.Object, java.lang.Object)"); }
-  public void clearGlobalFocusOwner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.clearGlobalFocusOwner()"); }
-  public void setGlobalCurrentFocusCycleRoot(java.awt.Container newFocusCycleRoot) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.setGlobalCurrentFocusCycleRoot(java.awt.Container)"); }
-  public void addVetoableChangeListener(java.beans.VetoableChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.addVetoableChangeListener(java.beans.VetoableChangeListener)"); }
-  public void addVetoableChangeListener(java.lang.String propertyName, java.beans.VetoableChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.addVetoableChangeListener(java.lang.String, java.beans.VetoableChangeListener)"); }
-  public void removeVetoableChangeListener(java.lang.String propertyName, java.beans.VetoableChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.removeVetoableChangeListener(java.lang.String, java.beans.VetoableChangeListener)"); }
-  public void removeVetoableChangeListener(java.beans.VetoableChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.removeVetoableChangeListener(java.beans.VetoableChangeListener)"); }
-  public synchronized java.beans.VetoableChangeListener[] getVetoableChangeListeners(java.lang.String propertyName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getVetoableChangeListeners(java.lang.String)"); }
-  public synchronized java.beans.VetoableChangeListener[] getVetoableChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getVetoableChangeListeners()"); }
-  public static void setCurrentKeyboardFocusManager(java.awt.KeyboardFocusManager newManager) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.setCurrentKeyboardFocusManager(java.awt.KeyboardFocusManager)"); }
-  public void clearFocusOwner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.clearFocusOwner()"); }
-  public void setDefaultFocusTraversalPolicy(java.awt.FocusTraversalPolicy defaultPolicy) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.setDefaultFocusTraversalPolicy(java.awt.FocusTraversalPolicy)"); }
-  public void setDefaultFocusTraversalKeys(int id, java.util.Set<? extends java.awt.AWTKeyStroke> keystrokes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.setDefaultFocusTraversalKeys(int, java.util.Set<? extends java.awt.AWTKeyStroke>)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  void fireVetoableChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clearGlobalFocusOwner() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setGlobalCurrentFocusCycleRoot(java.awt.Container newFocusCycleRoot) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addVetoableChangeListener(java.beans.VetoableChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addVetoableChangeListener(java.lang.String propertyName, java.beans.VetoableChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeVetoableChangeListener(java.lang.String propertyName, java.beans.VetoableChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeVetoableChangeListener(java.beans.VetoableChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.beans.VetoableChangeListener[] getVetoableChangeListeners(java.lang.String propertyName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.beans.VetoableChangeListener[] getVetoableChangeListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setCurrentKeyboardFocusManager(java.awt.KeyboardFocusManager newManager) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clearFocusOwner() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultFocusTraversalPolicy(java.awt.FocusTraversalPolicy defaultPolicy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultFocusTraversalKeys(int id, java.util.Set<? extends java.awt.AWTKeyStroke> keystrokes) { }
   @JavaProtected
-  java.awt.Container getGlobalCurrentFocusCycleRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getGlobalCurrentFocusCycleRoot()"); }
-  public void addKeyEventDispatcher(java.awt.KeyEventDispatcher dispatcher) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.addKeyEventDispatcher(java.awt.KeyEventDispatcher)"); }
-  public void removeKeyEventDispatcher(java.awt.KeyEventDispatcher dispatcher) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.removeKeyEventDispatcher(java.awt.KeyEventDispatcher)"); }
-  public void addKeyEventPostProcessor(java.awt.KeyEventPostProcessor processor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.addKeyEventPostProcessor(java.awt.KeyEventPostProcessor)"); }
-  public void removeKeyEventPostProcessor(java.awt.KeyEventPostProcessor processor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.removeKeyEventPostProcessor(java.awt.KeyEventPostProcessor)"); }
-  public java.awt.Window getActiveWindow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getActiveWindow()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Container getGlobalCurrentFocusCycleRoot() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addKeyEventDispatcher(java.awt.KeyEventDispatcher dispatcher) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeKeyEventDispatcher(java.awt.KeyEventDispatcher dispatcher) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addKeyEventPostProcessor(java.awt.KeyEventPostProcessor processor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeKeyEventPostProcessor(java.awt.KeyEventPostProcessor processor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Window getActiveWindow() { return null; }
   @JavaProtected
-  java.awt.Window getGlobalFocusedWindow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getGlobalFocusedWindow()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Window getGlobalFocusedWindow() { return null; }
   @JavaProtected
-  void setGlobalFocusOwner(java.awt.Component focusOwner) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.setGlobalFocusOwner(java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setGlobalFocusOwner(java.awt.Component focusOwner) { }
   @JavaProtected
-  void setGlobalFocusedWindow(java.awt.Window focusedWindow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.setGlobalFocusedWindow(java.awt.Window)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setGlobalFocusedWindow(java.awt.Window focusedWindow) { }
   @JavaProtected
-  java.awt.Window getGlobalActiveWindow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getGlobalActiveWindow()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Window getGlobalActiveWindow() { return null; }
   @JavaProtected
-  void setGlobalActiveWindow(java.awt.Window activeWindow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.setGlobalActiveWindow(java.awt.Window)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setGlobalActiveWindow(java.awt.Window activeWindow) { }
   @JavaProtected
-  java.awt.Component getGlobalFocusOwner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getGlobalFocusOwner()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Component getGlobalFocusOwner() { return null; }
   @JavaProtected
-  java.awt.Component getGlobalPermanentFocusOwner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getGlobalPermanentFocusOwner()"); }
-  public final void redispatchEvent(java.awt.Component target, java.awt.AWTEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.redispatchEvent(java.awt.Component, java.awt.AWTEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Component getGlobalPermanentFocusOwner() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void redispatchEvent(java.awt.Component target, java.awt.AWTEvent e) { }
   @JavaProtected
-  java.util.List<java.awt.KeyEventPostProcessor> getKeyEventPostProcessors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getKeyEventPostProcessors()"); }
-  public java.awt.Window getFocusedWindow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getFocusedWindow()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.util.List<java.awt.KeyEventPostProcessor> getKeyEventPostProcessors() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Window getFocusedWindow() { return null; }
   @JavaProtected
-  synchronized java.util.List<java.awt.KeyEventDispatcher> getKeyEventDispatchers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getKeyEventDispatchers()"); }
-  public abstract boolean dispatchKeyEvent(java.awt.event.KeyEvent e) { throw new AbstractMethodError("java.awt.KeyboardFocusManager.dispatchKeyEvent(java.awt.event.KeyEvent)"); }
-  public abstract void focusNextComponent(java.awt.Component aComponent) { throw new AbstractMethodError("java.awt.KeyboardFocusManager.focusNextComponent(java.awt.Component)"); }
-  public final void focusNextComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.focusNextComponent()"); }
-  public abstract void focusPreviousComponent(java.awt.Component aComponent) { throw new AbstractMethodError("java.awt.KeyboardFocusManager.focusPreviousComponent(java.awt.Component)"); }
-  public final void focusPreviousComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.focusPreviousComponent()"); }
-  public abstract void upFocusCycle(java.awt.Component aComponent) { throw new AbstractMethodError("java.awt.KeyboardFocusManager.upFocusCycle(java.awt.Component)"); }
-  public final void upFocusCycle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.upFocusCycle()"); }
-  public final void downFocusCycle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.downFocusCycle()"); }
-  public abstract void downFocusCycle(java.awt.Container aContainer) { throw new AbstractMethodError("java.awt.KeyboardFocusManager.downFocusCycle(java.awt.Container)"); }
-  public abstract boolean dispatchEvent(java.awt.AWTEvent e) { throw new AbstractMethodError("java.awt.KeyboardFocusManager.dispatchEvent(java.awt.AWTEvent)"); }
-  public static java.awt.KeyboardFocusManager getCurrentKeyboardFocusManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager()"); }
-  public java.awt.Component getFocusOwner() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getFocusOwner()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  synchronized java.util.List<java.awt.KeyEventDispatcher> getKeyEventDispatchers() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean dispatchKeyEvent(java.awt.event.KeyEvent e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void focusNextComponent(java.awt.Component aComponent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void focusNextComponent() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void focusPreviousComponent(java.awt.Component aComponent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void focusPreviousComponent() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void upFocusCycle(java.awt.Component aComponent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void upFocusCycle() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void downFocusCycle() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void downFocusCycle(java.awt.Container aContainer) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean dispatchEvent(java.awt.AWTEvent e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.KeyboardFocusManager getCurrentKeyboardFocusManager() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getFocusOwner() { return null; }
   @JavaProtected
-  abstract void enqueueKeyEvents(long after, java.awt.Component untilFocused) { throw new AbstractMethodError("java.awt.KeyboardFocusManager.enqueueKeyEvents(long, java.awt.Component)"); }
+  @throwable("java.lang.AbstractMethodError")
+  void enqueueKeyEvents(long after, java.awt.Component untilFocused) { }
   @JavaProtected
-  abstract void dequeueKeyEvents(long after, java.awt.Component untilFocused) { throw new AbstractMethodError("java.awt.KeyboardFocusManager.dequeueKeyEvents(long, java.awt.Component)"); }
-  public java.awt.Container getCurrentFocusCycleRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.KeyboardFocusManager.getCurrentFocusCycleRoot()"); }
+  @throwable("java.lang.AbstractMethodError")
+  void dequeueKeyEvents(long after, java.awt.Component untilFocused) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Container getCurrentFocusCycleRoot() { return null; }
   < ---- END java signatures ---- >
 }

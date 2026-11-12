@@ -59,8 +59,10 @@ class SimpleTypeVisitorPreview<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SimpleTypeVisitorPreview() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitorPreview.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleTypeVisitorPreview() { }
   @JavaProtected
-  SimpleTypeVisitorPreview(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleTypeVisitorPreview.<init>(R)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleTypeVisitorPreview(R defaultValue) { }
   < ---- END java constructors ---- >
 }

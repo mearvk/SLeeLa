@@ -58,25 +58,41 @@ class RenderableImageOp {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RenderableImageOp(java.awt.image.renderable.ContextualRenderedImageFactory CRIF, java.awt.image.renderable.ParameterBlock paramBlock) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.<init>(java.awt.image.renderable.ContextualRenderedImageFactory, java.awt.image.renderable.ParameterBlock)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RenderableImageOp(java.awt.image.renderable.ContextualRenderedImageFactory CRIF, java.awt.image.renderable.ParameterBlock paramBlock) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object getProperty(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.getProperty(java.lang.String)"); }
-  public boolean isDynamic() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.isDynamic()"); }
-  public float getHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.getHeight()"); }
-  public float getMinX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.getMinX()"); }
-  public float getMinY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.getMinY()"); }
-  public java.util.Vector<java.awt.image.renderable.RenderableImage> getSources() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.getSources()"); }
-  public java.lang.String[] getPropertyNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.getPropertyNames()"); }
-  public java.awt.image.RenderedImage createScaledRendering(int w, int h, java.awt.RenderingHints hints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.createScaledRendering(int, int, java.awt.RenderingHints)"); }
-  public java.awt.image.RenderedImage createDefaultRendering() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.createDefaultRendering()"); }
-  public java.awt.image.RenderedImage createRendering(java.awt.image.renderable.RenderContext renderContext) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.createRendering(java.awt.image.renderable.RenderContext)"); }
-  public float getWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.getWidth()"); }
-  public java.awt.image.renderable.ParameterBlock setParameterBlock(java.awt.image.renderable.ParameterBlock paramBlock) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.setParameterBlock(java.awt.image.renderable.ParameterBlock)"); }
-  public java.awt.image.renderable.ParameterBlock getParameterBlock() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.renderable.RenderableImageOp.getParameterBlock()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getProperty(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDynamic() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getHeight() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMinX() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getMinY() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Vector<java.awt.image.renderable.RenderableImage> getSources() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getPropertyNames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.RenderedImage createScaledRendering(int w, int h, java.awt.RenderingHints hints) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.RenderedImage createDefaultRendering() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.RenderedImage createRendering(java.awt.image.renderable.RenderContext renderContext) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getWidth() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock setParameterBlock(java.awt.image.renderable.ParameterBlock paramBlock) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.renderable.ParameterBlock getParameterBlock() { return null; }
   < ---- END java signatures ---- >
 }

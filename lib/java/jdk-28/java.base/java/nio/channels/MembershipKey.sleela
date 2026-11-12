@@ -59,20 +59,31 @@ class MembershipKey {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  MembershipKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.MembershipKey.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  MembershipKey() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.net.InetAddress group() { throw new AbstractMethodError("java.nio.channels.MembershipKey.group()"); }
-  public abstract java.nio.channels.MembershipKey unblock(java.net.InetAddress source) { throw new AbstractMethodError("java.nio.channels.MembershipKey.unblock(java.net.InetAddress)"); }
-  public abstract java.nio.channels.MembershipKey block(java.net.InetAddress source) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.MembershipKey.block(java.net.InetAddress)"); }
-  public abstract java.nio.channels.MulticastChannel channel() { throw new AbstractMethodError("java.nio.channels.MembershipKey.channel()"); }
-  public abstract boolean isValid() { throw new AbstractMethodError("java.nio.channels.MembershipKey.isValid()"); }
-  public abstract void drop() { throw new AbstractMethodError("java.nio.channels.MembershipKey.drop()"); }
-  public abstract java.net.NetworkInterface networkInterface() { throw new AbstractMethodError("java.nio.channels.MembershipKey.networkInterface()"); }
-  public abstract java.net.InetAddress sourceAddress() { throw new AbstractMethodError("java.nio.channels.MembershipKey.sourceAddress()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.InetAddress group() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.channels.MembershipKey unblock(java.net.InetAddress source) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.channels.MembershipKey block(java.net.InetAddress source) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.channels.MulticastChannel channel() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isValid() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void drop() { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.NetworkInterface networkInterface() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.InetAddress sourceAddress() { return null; }
   < ---- END java signatures ---- >
 }

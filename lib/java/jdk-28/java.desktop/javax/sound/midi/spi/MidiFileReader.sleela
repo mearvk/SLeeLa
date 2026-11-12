@@ -59,14 +59,19 @@ class MidiFileReader {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  MidiFileReader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.spi.MidiFileReader.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  MidiFileReader() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.sound.midi.MidiFileFormat getMidiFileFormat(java.io.File file) throws javax.sound.midi.InvalidMidiDataException, java.io.IOException { throw new AbstractMethodError("javax.sound.midi.spi.MidiFileReader.getMidiFileFormat(java.io.File)"); }
-  public abstract javax.sound.midi.Sequence getSequence(java.io.File file) throws javax.sound.midi.InvalidMidiDataException, java.io.IOException { throw new AbstractMethodError("javax.sound.midi.spi.MidiFileReader.getSequence(java.io.File)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.sound.midi.InvalidMidiDataException, java.io.IOException")
+  public javax.sound.midi.MidiFileFormat getMidiFileFormat(java.io.File file) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.sound.midi.InvalidMidiDataException, java.io.IOException")
+  public javax.sound.midi.Sequence getSequence(java.io.File file) { return null; }
   < ---- END java signatures ---- >
 }

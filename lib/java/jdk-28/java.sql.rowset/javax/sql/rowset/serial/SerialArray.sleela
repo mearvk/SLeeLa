@@ -58,27 +58,45 @@ class SerialArray {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SerialArray(java.sql.Array array, java.util.Map<java.lang.String, java.lang.Class<?>> map) throws javax.sql.rowset.serial.SerialException, java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.<init>(java.sql.Array, java.util.Map<java.lang.String, java.lang.Class<?>>)"); }
-  public SerialArray(java.sql.Array array) throws javax.sql.rowset.serial.SerialException, java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.<init>(java.sql.Array)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException, java.sql.SQLException")
+  public SerialArray(java.sql.Array array, java.util.Map<java.lang.String, java.lang.Class<?>> map) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException, java.sql.SQLException")
+  public SerialArray(java.sql.Array array) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.clone()"); }
-  public java.lang.Object getArray(long index, int count) throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.getArray(long, int)"); }
-  public java.lang.Object getArray() throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.getArray()"); }
-  public java.lang.Object getArray(long index, int count, java.util.Map<java.lang.String, java.lang.Class<?>> map) throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.getArray(long, int, java.util.Map<java.lang.String, java.lang.Class<?>>)"); }
-  public java.lang.Object getArray(java.util.Map<java.lang.String, java.lang.Class<?>> map) throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.getArray(java.util.Map<java.lang.String, java.lang.Class<?>>)"); }
-  public void free() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.free()"); }
-  public java.lang.String getBaseTypeName() throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.getBaseTypeName()"); }
-  public java.sql.ResultSet getResultSet(long index, int count) throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.getResultSet(long, int)"); }
-  public java.sql.ResultSet getResultSet() throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.getResultSet()"); }
-  public java.sql.ResultSet getResultSet(java.util.Map<java.lang.String, java.lang.Class<?>> map) throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.getResultSet(java.util.Map<java.lang.String, java.lang.Class<?>>)"); }
-  public java.sql.ResultSet getResultSet(long index, int count, java.util.Map<java.lang.String, java.lang.Class<?>> map) throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.getResultSet(long, int, java.util.Map<java.lang.String, java.lang.Class<?>>)"); }
-  public int getBaseType() throws javax.sql.rowset.serial.SerialException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.serial.SerialArray.getBaseType()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public java.lang.Object getArray(long index, int count) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public java.lang.Object getArray() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public java.lang.Object getArray(long index, int count, java.util.Map<java.lang.String, java.lang.Class<?>> map) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public java.lang.Object getArray(java.util.Map<java.lang.String, java.lang.Class<?>> map) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public void free() { }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public java.lang.String getBaseTypeName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public java.sql.ResultSet getResultSet(long index, int count) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public java.sql.ResultSet getResultSet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public java.sql.ResultSet getResultSet(java.util.Map<java.lang.String, java.lang.Class<?>> map) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public java.sql.ResultSet getResultSet(long index, int count, java.util.Map<java.lang.String, java.lang.Class<?>> map) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.serial.SerialException")
+  public int getBaseType() { return 0; }
   < ---- END java signatures ---- >
 }

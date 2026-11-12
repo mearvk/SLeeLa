@@ -58,37 +58,68 @@ class HTMLTableCellElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getScope() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getScope()"); }
-  public abstract void setWidth(java.lang.String width) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setWidth(java.lang.String)"); }
-  public abstract java.lang.String getHeight() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getHeight()"); }
-  public abstract void setHeight(java.lang.String height) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setHeight(java.lang.String)"); }
-  public abstract int getRowSpan() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getRowSpan()"); }
-  public abstract void setAxis(java.lang.String axis) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setAxis(java.lang.String)"); }
-  public abstract java.lang.String getBgColor() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getBgColor()"); }
-  public abstract java.lang.String getWidth() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getWidth()"); }
-  public abstract java.lang.String getHeaders() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getHeaders()"); }
-  public abstract java.lang.String getAlign() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getAlign()"); }
-  public abstract void setAlign(java.lang.String align) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setAlign(java.lang.String)"); }
-  public abstract void setBgColor(java.lang.String bgColor) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setBgColor(java.lang.String)"); }
-  public abstract int getCellIndex() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getCellIndex()"); }
-  public abstract java.lang.String getAbbr() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getAbbr()"); }
-  public abstract void setAbbr(java.lang.String abbr) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setAbbr(java.lang.String)"); }
-  public abstract java.lang.String getCh() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getCh()"); }
-  public abstract void setCh(java.lang.String ch) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setCh(java.lang.String)"); }
-  public abstract java.lang.String getChOff() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getChOff()"); }
-  public abstract void setChOff(java.lang.String chOff) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setChOff(java.lang.String)"); }
-  public abstract int getColSpan() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getColSpan()"); }
-  public abstract void setColSpan(int colSpan) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setColSpan(int)"); }
-  public abstract void setHeaders(java.lang.String headers) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setHeaders(java.lang.String)"); }
-  public abstract boolean getNoWrap() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getNoWrap()"); }
-  public abstract void setNoWrap(boolean noWrap) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setNoWrap(boolean)"); }
-  public abstract void setRowSpan(int rowSpan) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setRowSpan(int)"); }
-  public abstract void setScope(java.lang.String scope) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setScope(java.lang.String)"); }
-  public abstract java.lang.String getVAlign() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getVAlign()"); }
-  public abstract void setVAlign(java.lang.String vAlign) { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.setVAlign(java.lang.String)"); }
-  public abstract java.lang.String getAxis() { throw new AbstractMethodError("org.w3c.dom.html.HTMLTableCellElement.getAxis()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getScope() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setWidth(java.lang.String width) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getHeight() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHeight(java.lang.String height) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getRowSpan() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAxis(java.lang.String axis) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getBgColor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getWidth() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getHeaders() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAlign() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAlign(java.lang.String align) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBgColor(java.lang.String bgColor) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getCellIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAbbr() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setAbbr(java.lang.String abbr) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCh() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCh(java.lang.String ch) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getChOff() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setChOff(java.lang.String chOff) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getColSpan() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setColSpan(int colSpan) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHeaders(java.lang.String headers) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getNoWrap() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setNoWrap(boolean noWrap) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setRowSpan(int rowSpan) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setScope(java.lang.String scope) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getVAlign() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setVAlign(java.lang.String vAlign) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAxis() { return null; }
   < ---- END java signatures ---- >
 }

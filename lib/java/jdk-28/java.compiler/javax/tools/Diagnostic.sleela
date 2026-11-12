@@ -62,17 +62,28 @@ class Diagnostic<S> {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getMessage(java.util.Locale locale) { throw new AbstractMethodError("javax.tools.Diagnostic.getMessage(java.util.Locale)"); }
-  public abstract long getLineNumber() { throw new AbstractMethodError("javax.tools.Diagnostic.getLineNumber()"); }
-  public abstract long getPosition() { throw new AbstractMethodError("javax.tools.Diagnostic.getPosition()"); }
-  public abstract long getStartPosition() { throw new AbstractMethodError("javax.tools.Diagnostic.getStartPosition()"); }
-  public abstract javax.tools.Diagnostic.Kind getKind() { throw new AbstractMethodError("javax.tools.Diagnostic.getKind()"); }
-  public abstract S getSource() { throw new AbstractMethodError("javax.tools.Diagnostic.getSource()"); }
-  public abstract long getEndPosition() { throw new AbstractMethodError("javax.tools.Diagnostic.getEndPosition()"); }
-  public abstract long getColumnNumber() { throw new AbstractMethodError("javax.tools.Diagnostic.getColumnNumber()"); }
-  public abstract java.lang.String getCode() { throw new AbstractMethodError("javax.tools.Diagnostic.getCode()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getMessage(java.util.Locale locale) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getLineNumber() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getPosition() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getStartPosition() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.tools.Diagnostic.Kind getKind() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public S getSource() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getEndPosition() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getColumnNumber() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCode() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,11 +58,16 @@ class ImportTree {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean isStatic() { throw new AbstractMethodError("com.sun.source.tree.ImportTree.isStatic()"); }
-  public abstract com.sun.source.tree.Tree getQualifiedIdentifier() { throw new AbstractMethodError("com.sun.source.tree.ImportTree.getQualifiedIdentifier()"); }
-  public abstract boolean isModule() { throw new AbstractMethodError("com.sun.source.tree.ImportTree.isModule()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isStatic() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.tree.Tree getQualifiedIdentifier() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isModule() { return false; }
   < ---- END java signatures ---- >
 }

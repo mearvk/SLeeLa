@@ -58,21 +58,32 @@ class ContainerOrderFocusTraversalPolicy {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ContainerOrderFocusTraversalPolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ContainerOrderFocusTraversalPolicy.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ContainerOrderFocusTraversalPolicy() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  boolean accept(java.awt.Component aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ContainerOrderFocusTraversalPolicy.accept(java.awt.Component)"); }
-  public java.awt.Component getDefaultComponent(java.awt.Container aContainer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ContainerOrderFocusTraversalPolicy.getDefaultComponent(java.awt.Container)"); }
-  public java.awt.Component getComponentAfter(java.awt.Container aContainer, java.awt.Component aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ContainerOrderFocusTraversalPolicy.getComponentAfter(java.awt.Container, java.awt.Component)"); }
-  public java.awt.Component getComponentBefore(java.awt.Container aContainer, java.awt.Component aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ContainerOrderFocusTraversalPolicy.getComponentBefore(java.awt.Container, java.awt.Component)"); }
-  public java.awt.Component getFirstComponent(java.awt.Container aContainer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ContainerOrderFocusTraversalPolicy.getFirstComponent(java.awt.Container)"); }
-  public java.awt.Component getLastComponent(java.awt.Container aContainer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ContainerOrderFocusTraversalPolicy.getLastComponent(java.awt.Container)"); }
-  public boolean getImplicitDownCycleTraversal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ContainerOrderFocusTraversalPolicy.getImplicitDownCycleTraversal()"); }
-  public void setImplicitDownCycleTraversal(boolean implicitDownCycleTraversal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.ContainerOrderFocusTraversalPolicy.setImplicitDownCycleTraversal(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean accept(java.awt.Component aComponent) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getDefaultComponent(java.awt.Container aContainer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponentAfter(java.awt.Container aContainer, java.awt.Component aComponent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getComponentBefore(java.awt.Container aContainer, java.awt.Component aComponent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getFirstComponent(java.awt.Container aContainer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Component getLastComponent(java.awt.Container aContainer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getImplicitDownCycleTraversal() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setImplicitDownCycleTraversal(boolean implicitDownCycleTraversal) { }
   < ---- END java signatures ---- >
 }

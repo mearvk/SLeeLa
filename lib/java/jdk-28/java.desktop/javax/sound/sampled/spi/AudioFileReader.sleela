@@ -59,14 +59,19 @@ class AudioFileReader {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AudioFileReader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.spi.AudioFileReader.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AudioFileReader() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.sound.sampled.AudioInputStream getAudioInputStream(java.io.File file) throws javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException { throw new AbstractMethodError("javax.sound.sampled.spi.AudioFileReader.getAudioInputStream(java.io.File)"); }
-  public abstract javax.sound.sampled.AudioFileFormat getAudioFileFormat(java.net.URL url) throws javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException { throw new AbstractMethodError("javax.sound.sampled.spi.AudioFileReader.getAudioFileFormat(java.net.URL)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException")
+  public javax.sound.sampled.AudioInputStream getAudioInputStream(java.io.File file) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException")
+  public javax.sound.sampled.AudioFileFormat getAudioFileFormat(java.net.URL url) { return null; }
   < ---- END java signatures ---- >
 }

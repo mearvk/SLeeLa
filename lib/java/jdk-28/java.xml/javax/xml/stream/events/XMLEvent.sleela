@@ -58,24 +58,42 @@ class XMLEvent {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.xml.stream.Location getLocation() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.getLocation()"); }
-  public abstract boolean isAttribute() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.isAttribute()"); }
-  public abstract int getEventType() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.getEventType()"); }
-  public abstract boolean isStartElement() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.isStartElement()"); }
-  public abstract boolean isNamespace() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.isNamespace()"); }
-  public abstract boolean isEndElement() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.isEndElement()"); }
-  public abstract boolean isEntityReference() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.isEntityReference()"); }
-  public abstract boolean isProcessingInstruction() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.isProcessingInstruction()"); }
-  public abstract boolean isCharacters() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.isCharacters()"); }
-  public abstract boolean isStartDocument() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.isStartDocument()"); }
-  public abstract boolean isEndDocument() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.isEndDocument()"); }
-  public abstract javax.xml.stream.events.StartElement asStartElement() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.asStartElement()"); }
-  public abstract javax.xml.stream.events.EndElement asEndElement() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.asEndElement()"); }
-  public abstract javax.xml.stream.events.Characters asCharacters() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.asCharacters()"); }
-  public abstract javax.xml.namespace.QName getSchemaType() { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.getSchemaType()"); }
-  public abstract void writeAsEncodedUnicode(java.io.Writer writer) throws javax.xml.stream.XMLStreamException { throw new AbstractMethodError("javax.xml.stream.events.XMLEvent.writeAsEncodedUnicode(java.io.Writer)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.stream.Location getLocation() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isAttribute() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getEventType() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isStartElement() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isNamespace() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isEndElement() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isEntityReference() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isProcessingInstruction() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isCharacters() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isStartDocument() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isEndDocument() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.stream.events.StartElement asStartElement() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.stream.events.EndElement asEndElement() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.stream.events.Characters asCharacters() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.namespace.QName getSchemaType() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
+  public void writeAsEncodedUnicode(java.io.Writer writer) { }
   < ---- END java signatures ---- >
 }

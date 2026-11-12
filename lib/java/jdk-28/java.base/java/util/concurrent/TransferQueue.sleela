@@ -58,13 +58,20 @@ class TransferQueue<E> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void transfer(E e) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.TransferQueue.transfer(E)"); }
-  public abstract boolean tryTransfer(E e, long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.TransferQueue.tryTransfer(E, long, java.util.concurrent.TimeUnit)"); }
-  public abstract boolean tryTransfer(E e) { throw new AbstractMethodError("java.util.concurrent.TransferQueue.tryTransfer(E)"); }
-  public abstract boolean hasWaitingConsumer() { throw new AbstractMethodError("java.util.concurrent.TransferQueue.hasWaitingConsumer()"); }
-  public abstract int getWaitingConsumerCount() { throw new AbstractMethodError("java.util.concurrent.TransferQueue.getWaitingConsumerCount()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public void transfer(E e) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public boolean tryTransfer(E e, long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean tryTransfer(E e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasWaitingConsumer() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getWaitingConsumerCount() { return 0; }
   < ---- END java signatures ---- >
 }

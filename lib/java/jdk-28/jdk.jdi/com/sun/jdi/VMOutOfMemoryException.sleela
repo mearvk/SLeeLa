@@ -58,7 +58,9 @@ class VMOutOfMemoryException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public VMOutOfMemoryException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.VMOutOfMemoryException.<init>()"); }
-  public VMOutOfMemoryException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.VMOutOfMemoryException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public VMOutOfMemoryException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public VMOutOfMemoryException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

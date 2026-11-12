@@ -58,17 +58,24 @@ class LayoutQueue {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LayoutQueue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LayoutQueue.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LayoutQueue() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.swing.text.LayoutQueue getDefaultQueue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LayoutQueue.getDefaultQueue()"); }
-  public synchronized void addTask(java.lang.Runnable task) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LayoutQueue.addTask(java.lang.Runnable)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.text.LayoutQueue getDefaultQueue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addTask(java.lang.Runnable task) { }
   @JavaProtected
-  synchronized java.lang.Runnable waitForWork() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LayoutQueue.waitForWork()"); }
-  public static void setDefaultQueue(javax.swing.text.LayoutQueue q) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LayoutQueue.setDefaultQueue(javax.swing.text.LayoutQueue)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  synchronized java.lang.Runnable waitForWork() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setDefaultQueue(javax.swing.text.LayoutQueue q) { }
   < ---- END java signatures ---- >
 }

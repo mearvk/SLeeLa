@@ -58,7 +58,9 @@ class InvalidKeyException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidKeyException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.InvalidKeyException.<init>()"); }
-  public InvalidKeyException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.InvalidKeyException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidKeyException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidKeyException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

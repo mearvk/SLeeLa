@@ -58,14 +58,22 @@ class CharacterRangeInfo {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int flags() { throw new AbstractMethodError("java.lang.classfile.attribute.CharacterRangeInfo.flags()"); }
-  public static java.lang.classfile.attribute.CharacterRangeInfo of(int startPc, int endPc, int characterRangeStart, int characterRangeEnd, int flags) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.CharacterRangeInfo.of(int, int, int, int, int)"); }
-  public abstract int startPc() { throw new AbstractMethodError("java.lang.classfile.attribute.CharacterRangeInfo.startPc()"); }
-  public abstract int endPc() { throw new AbstractMethodError("java.lang.classfile.attribute.CharacterRangeInfo.endPc()"); }
-  public abstract int characterRangeStart() { throw new AbstractMethodError("java.lang.classfile.attribute.CharacterRangeInfo.characterRangeStart()"); }
-  public abstract int characterRangeEnd() { throw new AbstractMethodError("java.lang.classfile.attribute.CharacterRangeInfo.characterRangeEnd()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int flags() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.CharacterRangeInfo of(int startPc, int endPc, int characterRangeStart, int characterRangeEnd, int flags) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int startPc() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int endPc() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int characterRangeStart() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int characterRangeEnd() { return 0; }
   < ---- END java signatures ---- >
 }

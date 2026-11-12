@@ -72,19 +72,29 @@ class TabStop {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TabStop(float pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TabStop.<init>(float)"); }
-  public TabStop(float pos, int align, int leader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TabStop.<init>(float, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TabStop(float pos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TabStop(float pos, int align, int leader) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TabStop.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TabStop.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TabStop.hashCode()"); }
-  public float getPosition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TabStop.getPosition()"); }
-  public int getAlignment() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TabStop.getAlignment()"); }
-  public int getLeader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TabStop.getLeader()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getPosition() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAlignment() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLeader() { return 0; }
   < ---- END java signatures ---- >
 }

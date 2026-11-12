@@ -59,15 +59,21 @@ class HttpServerProvider {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  HttpServerProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.spi.HttpServerProvider.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  HttpServerProvider() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static com.sun.net.httpserver.spi.HttpServerProvider provider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.spi.HttpServerProvider.provider()"); }
-  public abstract com.sun.net.httpserver.HttpServer createHttpServer(java.net.InetSocketAddress addr, int backlog) throws java.io.IOException { throw new AbstractMethodError("com.sun.net.httpserver.spi.HttpServerProvider.createHttpServer(java.net.InetSocketAddress, int)"); }
-  public abstract com.sun.net.httpserver.HttpsServer createHttpsServer(java.net.InetSocketAddress addr, int backlog) throws java.io.IOException { throw new AbstractMethodError("com.sun.net.httpserver.spi.HttpServerProvider.createHttpsServer(java.net.InetSocketAddress, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static com.sun.net.httpserver.spi.HttpServerProvider provider() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public com.sun.net.httpserver.HttpServer createHttpServer(java.net.InetSocketAddress addr, int backlog) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public com.sun.net.httpserver.HttpsServer createHttpsServer(java.net.InetSocketAddress addr, int backlog) { return null; }
   < ---- END java signatures ---- >
 }

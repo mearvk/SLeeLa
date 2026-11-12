@@ -58,48 +58,85 @@ class PrintStream {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PrintStream(java.lang.String fileName, java.lang.String csn) throws java.io.FileNotFoundException, java.io.UnsupportedEncodingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.<init>(java.lang.String, java.lang.String)"); }
-  public PrintStream(java.lang.String fileName) throws java.io.FileNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.<init>(java.lang.String)"); }
-  public PrintStream(java.io.OutputStream out, boolean autoFlush, java.nio.charset.Charset charset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.<init>(java.io.OutputStream, boolean, java.nio.charset.Charset)"); }
-  public PrintStream(java.io.OutputStream out, boolean autoFlush, java.lang.String encoding) throws java.io.UnsupportedEncodingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.<init>(java.io.OutputStream, boolean, java.lang.String)"); }
-  public PrintStream(java.lang.String fileName, java.nio.charset.Charset charset) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.<init>(java.lang.String, java.nio.charset.Charset)"); }
-  public PrintStream(java.io.File file, java.lang.String csn) throws java.io.FileNotFoundException, java.io.UnsupportedEncodingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.<init>(java.io.File, java.lang.String)"); }
-  public PrintStream(java.io.File file, java.nio.charset.Charset charset) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.<init>(java.io.File, java.nio.charset.Charset)"); }
-  public PrintStream(java.io.File file) throws java.io.FileNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.<init>(java.io.File)"); }
-  public PrintStream(java.io.OutputStream out, boolean autoFlush) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.<init>(java.io.OutputStream, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.FileNotFoundException, java.io.UnsupportedEncodingException")
+  public PrintStream(java.lang.String fileName, java.lang.String csn) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.FileNotFoundException")
+  public PrintStream(java.lang.String fileName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PrintStream(java.io.OutputStream out, boolean autoFlush, java.nio.charset.Charset charset) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.UnsupportedEncodingException")
+  public PrintStream(java.io.OutputStream out, boolean autoFlush, java.lang.String encoding) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public PrintStream(java.lang.String fileName, java.nio.charset.Charset charset) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.FileNotFoundException, java.io.UnsupportedEncodingException")
+  public PrintStream(java.io.File file, java.lang.String csn) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public PrintStream(java.io.File file, java.nio.charset.Charset charset) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.FileNotFoundException")
+  public PrintStream(java.io.File file) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PrintStream(java.io.OutputStream out, boolean autoFlush) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void println(java.lang.String x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.println(java.lang.String)"); }
-  public void println(java.lang.Object x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.println(java.lang.Object)"); }
-  public void println(float x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.println(float)"); }
-  public void println(double x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.println(double)"); }
-  public void println(char[] x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.println(char[])"); }
-  public void println(boolean x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.println(boolean)"); }
-  public void println() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.println()"); }
-  public void println(char x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.println(char)"); }
-  public void println(int x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.println(int)"); }
-  public void println(long x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.println(long)"); }
-  public java.io.PrintStream append(java.lang.CharSequence csq) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.append(java.lang.CharSequence)"); }
-  public java.io.PrintStream append(java.lang.CharSequence csq, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.append(java.lang.CharSequence, int, int)"); }
-  public java.io.PrintStream append(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.append(char)"); }
-  public void flush() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.flush()"); }
-  public java.io.PrintStream format(java.lang.String format, java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.format(java.lang.String, java.lang.Object...)"); }
-  public java.io.PrintStream format(java.util.Locale l, java.lang.String format, java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.format(java.util.Locale, java.lang.String, java.lang.Object...)"); }
-  public java.nio.charset.Charset charset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.charset()"); }
-  public void write(int b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.write(int)"); }
-  public void write(byte[] buf, int off, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.write(byte[], int, int)"); }
-  public void write(byte[] buf) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.write(byte[])"); }
-  public java.io.PrintStream printf(java.lang.String format, java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.printf(java.lang.String, java.lang.Object...)"); }
-  public java.io.PrintStream printf(java.util.Locale l, java.lang.String format, java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.printf(java.util.Locale, java.lang.String, java.lang.Object...)"); }
-  public void writeBytes(byte[] buf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.writeBytes(byte[])"); }
-  public boolean checkError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.checkError()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void println(java.lang.String x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void println(java.lang.Object x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void println(float x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void println(double x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void println(char[] x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void println(boolean x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void println() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void println(char x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void println(int x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void println(long x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.PrintStream append(java.lang.CharSequence csq) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.PrintStream append(java.lang.CharSequence csq, int start, int end) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.PrintStream append(char c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void flush() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.PrintStream format(java.lang.String format, java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.PrintStream format(java.util.Locale l, java.lang.String format, java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.charset.Charset charset() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void write(int b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void write(byte[] buf, int off, int len) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void write(byte[] buf) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.PrintStream printf(java.lang.String format, java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.PrintStream printf(java.util.Locale l, java.lang.String format, java.lang.Object... args) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void writeBytes(byte[] buf) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean checkError() { return false; }
   @JavaProtected
-  void setError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.setError()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setError() { }
   @JavaProtected
-  void clearError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.PrintStream.clearError()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void clearError() { }
   < ---- END java signatures ---- >
 }

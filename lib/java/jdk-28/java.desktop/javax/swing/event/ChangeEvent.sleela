@@ -58,6 +58,7 @@ class ChangeEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ChangeEvent(java.lang.Object source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.ChangeEvent.<init>(java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ChangeEvent(java.lang.Object source) { }
   < ---- END java constructors ---- >
 }

@@ -58,32 +58,58 @@ class SegmentAllocator {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default java.lang.foreign.MemorySegment allocate(java.lang.foreign.MemoryLayout layout) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocate(java.lang.foreign.MemoryLayout)"); }
-  public default java.lang.foreign.MemorySegment allocate(java.lang.foreign.MemoryLayout elementLayout, long count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocate(java.lang.foreign.MemoryLayout, long)"); }
-  public default java.lang.foreign.MemorySegment allocate(long byteSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocate(long)"); }
-  public abstract java.lang.foreign.MemorySegment allocate(long byteSize, long byteAlignment) { throw new AbstractMethodError("java.lang.foreign.SegmentAllocator.allocate(long, long)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfChar elementLayout, char... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfChar, char...)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfInt elementLayout, int... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfInt, int...)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfShort elementLayout, short... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfShort, short...)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfByte elementLayout, byte... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfByte, byte...)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfFloat elementLayout, float... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfFloat, float...)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfLong elementLayout, long... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfLong, long...)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfDouble elementLayout, double... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfDouble, double...)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfInt layout, int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfInt, int)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfShort layout, short value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfShort, short)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfChar layout, char value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfChar, char)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfByte layout, byte value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfByte, byte)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.String str, java.nio.charset.Charset charset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.String, java.nio.charset.Charset)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.String)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout elementLayout, java.lang.foreign.MemorySegment source, java.lang.foreign.ValueLayout sourceElementLayout, long sourceOffset, long elementCount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout, java.lang.foreign.MemorySegment, java.lang.foreign.ValueLayout, long, long)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.AddressLayout layout, java.lang.foreign.MemorySegment value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.AddressLayout, java.lang.foreign.MemorySegment)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfDouble layout, double value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfDouble, double)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfLong layout, long value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfLong, long)"); }
-  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfFloat layout, float value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.allocateFrom(java.lang.foreign.ValueLayout.OfFloat, float)"); }
-  public static java.lang.foreign.SegmentAllocator slicingAllocator(java.lang.foreign.MemorySegment segment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.slicingAllocator(java.lang.foreign.MemorySegment)"); }
-  public static java.lang.foreign.SegmentAllocator prefixAllocator(java.lang.foreign.MemorySegment segment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.foreign.SegmentAllocator.prefixAllocator(java.lang.foreign.MemorySegment)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocate(java.lang.foreign.MemoryLayout layout) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocate(java.lang.foreign.MemoryLayout elementLayout, long count) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocate(long byteSize) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.foreign.MemorySegment allocate(long byteSize, long byteAlignment) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfChar elementLayout, char... elements) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfInt elementLayout, int... elements) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfShort elementLayout, short... elements) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfByte elementLayout, byte... elements) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfFloat elementLayout, float... elements) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfLong elementLayout, long... elements) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfDouble elementLayout, double... elements) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfInt layout, int value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfShort layout, short value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfChar layout, char value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfByte layout, byte value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.String str, java.nio.charset.Charset charset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout elementLayout, java.lang.foreign.MemorySegment source, java.lang.foreign.ValueLayout sourceElementLayout, long sourceOffset, long elementCount) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.AddressLayout layout, java.lang.foreign.MemorySegment value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfDouble layout, double value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfLong layout, long value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.foreign.MemorySegment allocateFrom(java.lang.foreign.ValueLayout.OfFloat layout, float value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.foreign.SegmentAllocator slicingAllocator(java.lang.foreign.MemorySegment segment) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.foreign.SegmentAllocator prefixAllocator(java.lang.foreign.MemorySegment segment) { return null; }
   < ---- END java signatures ---- >
 }

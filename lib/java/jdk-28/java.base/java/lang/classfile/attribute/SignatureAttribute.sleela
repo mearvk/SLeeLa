@@ -58,13 +58,20 @@ class SignatureAttribute {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.classfile.constantpool.Utf8Entry signature() { throw new AbstractMethodError("java.lang.classfile.attribute.SignatureAttribute.signature()"); }
-  public static java.lang.classfile.attribute.SignatureAttribute of(java.lang.classfile.ClassSignature classSignature) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.SignatureAttribute.of(java.lang.classfile.ClassSignature)"); }
-  public default java.lang.classfile.ClassSignature asClassSignature() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.SignatureAttribute.asClassSignature()"); }
-  public default java.lang.classfile.MethodSignature asMethodSignature() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.SignatureAttribute.asMethodSignature()"); }
-  public default java.lang.classfile.Signature asTypeSignature() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.attribute.SignatureAttribute.asTypeSignature()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.Utf8Entry signature() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.attribute.SignatureAttribute of(java.lang.classfile.ClassSignature classSignature) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassSignature asClassSignature() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.MethodSignature asMethodSignature() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.Signature asTypeSignature() { return null; }
   < ---- END java signatures ---- >
 }

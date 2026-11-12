@@ -58,43 +58,80 @@ class EventRequestManager {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.List<com.sun.jdi.request.MonitorContendedEnterRequest> monitorContendedEnterRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.monitorContendedEnterRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.ModificationWatchpointRequest> modificationWatchpointRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.modificationWatchpointRequests()"); }
-  public abstract com.sun.jdi.request.ClassPrepareRequest createClassPrepareRequest() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createClassPrepareRequest()"); }
-  public abstract com.sun.jdi.request.ClassUnloadRequest createClassUnloadRequest() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createClassUnloadRequest()"); }
-  public abstract com.sun.jdi.request.ThreadStartRequest createThreadStartRequest() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createThreadStartRequest()"); }
-  public abstract com.sun.jdi.request.ThreadDeathRequest createThreadDeathRequest() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createThreadDeathRequest()"); }
-  public abstract com.sun.jdi.request.ExceptionRequest createExceptionRequest(com.sun.jdi.ReferenceType refType, boolean notifyCaught, boolean notifyUncaught) { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createExceptionRequest(com.sun.jdi.ReferenceType, boolean, boolean)"); }
-  public abstract com.sun.jdi.request.MethodEntryRequest createMethodEntryRequest() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createMethodEntryRequest()"); }
-  public abstract com.sun.jdi.request.MethodExitRequest createMethodExitRequest() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createMethodExitRequest()"); }
-  public abstract com.sun.jdi.request.MonitorContendedEnterRequest createMonitorContendedEnterRequest() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createMonitorContendedEnterRequest()"); }
-  public abstract com.sun.jdi.request.MonitorContendedEnteredRequest createMonitorContendedEnteredRequest() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createMonitorContendedEnteredRequest()"); }
-  public abstract com.sun.jdi.request.MonitorWaitRequest createMonitorWaitRequest() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createMonitorWaitRequest()"); }
-  public abstract com.sun.jdi.request.MonitorWaitedRequest createMonitorWaitedRequest() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createMonitorWaitedRequest()"); }
-  public abstract com.sun.jdi.request.StepRequest createStepRequest(com.sun.jdi.ThreadReference thread, int size, int depth) { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createStepRequest(com.sun.jdi.ThreadReference, int, int)"); }
-  public abstract com.sun.jdi.request.BreakpointRequest createBreakpointRequest(com.sun.jdi.Location location) { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createBreakpointRequest(com.sun.jdi.Location)"); }
-  public abstract com.sun.jdi.request.AccessWatchpointRequest createAccessWatchpointRequest(com.sun.jdi.Field field) { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createAccessWatchpointRequest(com.sun.jdi.Field)"); }
-  public abstract com.sun.jdi.request.ModificationWatchpointRequest createModificationWatchpointRequest(com.sun.jdi.Field field) { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createModificationWatchpointRequest(com.sun.jdi.Field)"); }
-  public abstract com.sun.jdi.request.VMDeathRequest createVMDeathRequest() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.createVMDeathRequest()"); }
-  public abstract void deleteEventRequest(com.sun.jdi.request.EventRequest eventRequest) { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.deleteEventRequest(com.sun.jdi.request.EventRequest)"); }
-  public abstract void deleteEventRequests(java.util.List<? extends com.sun.jdi.request.EventRequest> eventRequests) { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.deleteEventRequests(java.util.List<? extends com.sun.jdi.request.EventRequest>)"); }
-  public abstract void deleteAllBreakpoints() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.deleteAllBreakpoints()"); }
-  public abstract java.util.List<com.sun.jdi.request.StepRequest> stepRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.stepRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.ClassPrepareRequest> classPrepareRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.classPrepareRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.ClassUnloadRequest> classUnloadRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.classUnloadRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.ThreadStartRequest> threadStartRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.threadStartRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.ThreadDeathRequest> threadDeathRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.threadDeathRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.ExceptionRequest> exceptionRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.exceptionRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.BreakpointRequest> breakpointRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.breakpointRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.AccessWatchpointRequest> accessWatchpointRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.accessWatchpointRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.MethodEntryRequest> methodEntryRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.methodEntryRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.MethodExitRequest> methodExitRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.methodExitRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.MonitorContendedEnteredRequest> monitorContendedEnteredRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.monitorContendedEnteredRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.MonitorWaitRequest> monitorWaitRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.monitorWaitRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.MonitorWaitedRequest> monitorWaitedRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.monitorWaitedRequests()"); }
-  public abstract java.util.List<com.sun.jdi.request.VMDeathRequest> vmDeathRequests() { throw new AbstractMethodError("com.sun.jdi.request.EventRequestManager.vmDeathRequests()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.MonitorContendedEnterRequest> monitorContendedEnterRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.ModificationWatchpointRequest> modificationWatchpointRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.ClassPrepareRequest createClassPrepareRequest() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.ClassUnloadRequest createClassUnloadRequest() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.ThreadStartRequest createThreadStartRequest() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.ThreadDeathRequest createThreadDeathRequest() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.ExceptionRequest createExceptionRequest(com.sun.jdi.ReferenceType refType, boolean notifyCaught, boolean notifyUncaught) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.MethodEntryRequest createMethodEntryRequest() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.MethodExitRequest createMethodExitRequest() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.MonitorContendedEnterRequest createMonitorContendedEnterRequest() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.MonitorContendedEnteredRequest createMonitorContendedEnteredRequest() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.MonitorWaitRequest createMonitorWaitRequest() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.MonitorWaitedRequest createMonitorWaitedRequest() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.StepRequest createStepRequest(com.sun.jdi.ThreadReference thread, int size, int depth) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.BreakpointRequest createBreakpointRequest(com.sun.jdi.Location location) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.AccessWatchpointRequest createAccessWatchpointRequest(com.sun.jdi.Field field) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.ModificationWatchpointRequest createModificationWatchpointRequest(com.sun.jdi.Field field) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.request.VMDeathRequest createVMDeathRequest() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void deleteEventRequest(com.sun.jdi.request.EventRequest eventRequest) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void deleteEventRequests(java.util.List<? extends com.sun.jdi.request.EventRequest> eventRequests) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void deleteAllBreakpoints() { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.StepRequest> stepRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.ClassPrepareRequest> classPrepareRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.ClassUnloadRequest> classUnloadRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.ThreadStartRequest> threadStartRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.ThreadDeathRequest> threadDeathRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.ExceptionRequest> exceptionRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.BreakpointRequest> breakpointRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.AccessWatchpointRequest> accessWatchpointRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.MethodEntryRequest> methodEntryRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.MethodExitRequest> methodExitRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.MonitorContendedEnteredRequest> monitorContendedEnteredRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.MonitorWaitRequest> monitorWaitRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.MonitorWaitedRequest> monitorWaitedRequests() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.request.VMDeathRequest> vmDeathRequests() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,10 +58,14 @@ class InetAddressResolver {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String lookupByAddress(byte[] addr) throws java.net.UnknownHostException { throw new AbstractMethodError("java.net.spi.InetAddressResolver.lookupByAddress(byte[])"); }
-  public abstract java.util.stream.Stream<java.net.InetAddress> lookupByName(java.lang.String host, java.net.spi.InetAddressResolver.LookupPolicy lookupPolicy) throws java.net.UnknownHostException { throw new AbstractMethodError("java.net.spi.InetAddressResolver.lookupByName(java.lang.String, java.net.spi.InetAddressResolver.LookupPolicy)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.net.UnknownHostException")
+  public java.lang.String lookupByAddress(byte[] addr) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.net.UnknownHostException")
+  public java.util.stream.Stream<java.net.InetAddress> lookupByName(java.lang.String host, java.net.spi.InetAddressResolver.LookupPolicy lookupPolicy) { return null; }
   < ---- END java signatures ---- >
 }

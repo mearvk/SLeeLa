@@ -58,21 +58,33 @@ class LineBreakMeasurer {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LineBreakMeasurer(java.text.AttributedCharacterIterator text, java.awt.font.FontRenderContext frc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.LineBreakMeasurer.<init>(java.text.AttributedCharacterIterator, java.awt.font.FontRenderContext)"); }
-  public LineBreakMeasurer(java.text.AttributedCharacterIterator text, java.text.BreakIterator breakIter, java.awt.font.FontRenderContext frc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.LineBreakMeasurer.<init>(java.text.AttributedCharacterIterator, java.text.BreakIterator, java.awt.font.FontRenderContext)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LineBreakMeasurer(java.text.AttributedCharacterIterator text, java.awt.font.FontRenderContext frc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LineBreakMeasurer(java.text.AttributedCharacterIterator text, java.text.BreakIterator breakIter, java.awt.font.FontRenderContext frc) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int getPosition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.LineBreakMeasurer.getPosition()"); }
-  public int nextOffset(float wrappingWidth, int offsetLimit, boolean requireNextWord) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.LineBreakMeasurer.nextOffset(float, int, boolean)"); }
-  public int nextOffset(float wrappingWidth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.LineBreakMeasurer.nextOffset(float)"); }
-  public java.awt.font.TextLayout nextLayout(float wrappingWidth, int offsetLimit, boolean requireNextWord) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.LineBreakMeasurer.nextLayout(float, int, boolean)"); }
-  public java.awt.font.TextLayout nextLayout(float wrappingWidth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.LineBreakMeasurer.nextLayout(float)"); }
-  public void insertChar(java.text.AttributedCharacterIterator newParagraph, int insertPos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.LineBreakMeasurer.insertChar(java.text.AttributedCharacterIterator, int)"); }
-  public void deleteChar(java.text.AttributedCharacterIterator newParagraph, int deletePos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.LineBreakMeasurer.deleteChar(java.text.AttributedCharacterIterator, int)"); }
-  public void setPosition(int newPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.LineBreakMeasurer.setPosition(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getPosition() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int nextOffset(float wrappingWidth, int offsetLimit, boolean requireNextWord) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int nextOffset(float wrappingWidth) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.TextLayout nextLayout(float wrappingWidth, int offsetLimit, boolean requireNextWord) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.TextLayout nextLayout(float wrappingWidth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertChar(java.text.AttributedCharacterIterator newParagraph, int insertPos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void deleteChar(java.text.AttributedCharacterIterator newParagraph, int deletePos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPosition(int newPosition) { }
   < ---- END java signatures ---- >
 }

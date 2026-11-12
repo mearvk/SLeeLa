@@ -59,17 +59,24 @@ class ElementKindVisitor14<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ElementKindVisitor14() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.ElementKindVisitor14.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ElementKindVisitor14() { }
   @JavaProtected
-  ElementKindVisitor14(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.ElementKindVisitor14.<init>(R)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ElementKindVisitor14(R defaultValue) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public R visitVariableAsBindingVariable(javax.lang.model.element.VariableElement e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.ElementKindVisitor14.visitVariableAsBindingVariable(javax.lang.model.element.VariableElement, P)"); }
-  public R visitRecordComponent(javax.lang.model.element.RecordComponentElement e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.ElementKindVisitor14.visitRecordComponent(javax.lang.model.element.RecordComponentElement, P)"); }
-  public R visitTypeAsRecord(javax.lang.model.element.TypeElement e, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.ElementKindVisitor14.visitTypeAsRecord(javax.lang.model.element.TypeElement, P)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitVariableAsBindingVariable(javax.lang.model.element.VariableElement e, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitRecordComponent(javax.lang.model.element.RecordComponentElement e, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitTypeAsRecord(javax.lang.model.element.TypeElement e, P p) { return null; }
   < ---- END java signatures ---- >
 }

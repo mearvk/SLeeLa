@@ -58,13 +58,20 @@ class LayoutManager {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void removeLayoutComponent(java.awt.Component comp) { throw new AbstractMethodError("java.awt.LayoutManager.removeLayoutComponent(java.awt.Component)"); }
-  public abstract void addLayoutComponent(java.lang.String name, java.awt.Component comp) { throw new AbstractMethodError("java.awt.LayoutManager.addLayoutComponent(java.lang.String, java.awt.Component)"); }
-  public abstract void layoutContainer(java.awt.Container parent) { throw new AbstractMethodError("java.awt.LayoutManager.layoutContainer(java.awt.Container)"); }
-  public abstract java.awt.Dimension preferredLayoutSize(java.awt.Container parent) { throw new AbstractMethodError("java.awt.LayoutManager.preferredLayoutSize(java.awt.Container)"); }
-  public abstract java.awt.Dimension minimumLayoutSize(java.awt.Container parent) { throw new AbstractMethodError("java.awt.LayoutManager.minimumLayoutSize(java.awt.Container)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void removeLayoutComponent(java.awt.Component comp) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addLayoutComponent(java.lang.String name, java.awt.Component comp) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void layoutContainer(java.awt.Container parent) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Dimension preferredLayoutSize(java.awt.Container parent) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Dimension minimumLayoutSize(java.awt.Container parent) { return null; }
   < ---- END java signatures ---- >
 }

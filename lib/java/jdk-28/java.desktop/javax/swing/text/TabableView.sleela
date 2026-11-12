@@ -58,10 +58,14 @@ class TabableView {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract float getPartialSpan(int p0, int p1) { throw new AbstractMethodError("javax.swing.text.TabableView.getPartialSpan(int, int)"); }
-  public abstract float getTabbedSpan(float x, javax.swing.text.TabExpander e) { throw new AbstractMethodError("javax.swing.text.TabableView.getTabbedSpan(float, javax.swing.text.TabExpander)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public float getPartialSpan(int p0, int p1) { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getTabbedSpan(float x, javax.swing.text.TabExpander e) { return 0.0; }
   < ---- END java signatures ---- >
 }

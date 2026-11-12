@@ -58,16 +58,26 @@ class LSSerializer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean write(org.w3c.dom.Node nodeArg, org.w3c.dom.ls.LSOutput destination) throws org.w3c.dom.ls.LSException { throw new AbstractMethodError("org.w3c.dom.ls.LSSerializer.write(org.w3c.dom.Node, org.w3c.dom.ls.LSOutput)"); }
-  public abstract org.w3c.dom.ls.LSSerializerFilter getFilter() { throw new AbstractMethodError("org.w3c.dom.ls.LSSerializer.getFilter()"); }
-  public abstract void setFilter(org.w3c.dom.ls.LSSerializerFilter filter) { throw new AbstractMethodError("org.w3c.dom.ls.LSSerializer.setFilter(org.w3c.dom.ls.LSSerializerFilter)"); }
-  public abstract java.lang.String getNewLine() { throw new AbstractMethodError("org.w3c.dom.ls.LSSerializer.getNewLine()"); }
-  public abstract void setNewLine(java.lang.String newLine) { throw new AbstractMethodError("org.w3c.dom.ls.LSSerializer.setNewLine(java.lang.String)"); }
-  public abstract boolean writeToURI(org.w3c.dom.Node nodeArg, java.lang.String uri) throws org.w3c.dom.ls.LSException { throw new AbstractMethodError("org.w3c.dom.ls.LSSerializer.writeToURI(org.w3c.dom.Node, java.lang.String)"); }
-  public abstract java.lang.String writeToString(org.w3c.dom.Node nodeArg) throws org.w3c.dom.DOMException, org.w3c.dom.ls.LSException { throw new AbstractMethodError("org.w3c.dom.ls.LSSerializer.writeToString(org.w3c.dom.Node)"); }
-  public abstract org.w3c.dom.DOMConfiguration getDomConfig() { throw new AbstractMethodError("org.w3c.dom.ls.LSSerializer.getDomConfig()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.ls.LSException")
+  public boolean write(org.w3c.dom.Node nodeArg, org.w3c.dom.ls.LSOutput destination) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.ls.LSSerializerFilter getFilter() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setFilter(org.w3c.dom.ls.LSSerializerFilter filter) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getNewLine() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setNewLine(java.lang.String newLine) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.ls.LSException")
+  public boolean writeToURI(org.w3c.dom.Node nodeArg, java.lang.String uri) { return false; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException, org.w3c.dom.ls.LSException")
+  public java.lang.String writeToString(org.w3c.dom.Node nodeArg) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.DOMConfiguration getDomConfig() { return null; }
   < ---- END java signatures ---- >
 }

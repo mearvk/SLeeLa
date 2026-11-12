@@ -58,7 +58,9 @@ class InstanceAlreadyExistsException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InstanceAlreadyExistsException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.InstanceAlreadyExistsException.<init>()"); }
-  public InstanceAlreadyExistsException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.InstanceAlreadyExistsException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InstanceAlreadyExistsException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InstanceAlreadyExistsException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

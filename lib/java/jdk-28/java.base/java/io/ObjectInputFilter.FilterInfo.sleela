@@ -59,13 +59,20 @@ class FilterInfo {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract long depth() { throw new AbstractMethodError("java.io.ObjectInputFilter.FilterInfo.depth()"); }
-  public abstract long arrayLength() { throw new AbstractMethodError("java.io.ObjectInputFilter.FilterInfo.arrayLength()"); }
-  public abstract java.lang.Class<?> serialClass() { throw new AbstractMethodError("java.io.ObjectInputFilter.FilterInfo.serialClass()"); }
-  public abstract long references() { throw new AbstractMethodError("java.io.ObjectInputFilter.FilterInfo.references()"); }
-  public abstract long streamBytes() { throw new AbstractMethodError("java.io.ObjectInputFilter.FilterInfo.streamBytes()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public long depth() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long arrayLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Class<?> serialClass() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long references() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long streamBytes() { return 0; }
   < ---- END java signatures ---- >
 }

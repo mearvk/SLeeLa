@@ -58,7 +58,9 @@ class InvalidAttributeValueException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidAttributeValueException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.InvalidAttributeValueException.<init>()"); }
-  public InvalidAttributeValueException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.InvalidAttributeValueException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidAttributeValueException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidAttributeValueException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

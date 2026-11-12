@@ -58,26 +58,40 @@ class DefaultKeyboardFocusManager {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultKeyboardFocusManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.DefaultKeyboardFocusManager.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultKeyboardFocusManager() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean postProcessKeyEvent(java.awt.event.KeyEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.DefaultKeyboardFocusManager.postProcessKeyEvent(java.awt.event.KeyEvent)"); }
-  public void processKeyEvent(java.awt.Component focusedComponent, java.awt.event.KeyEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.DefaultKeyboardFocusManager.processKeyEvent(java.awt.Component, java.awt.event.KeyEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean postProcessKeyEvent(java.awt.event.KeyEvent e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void processKeyEvent(java.awt.Component focusedComponent, java.awt.event.KeyEvent e) { }
   @JavaProtected
-  synchronized void discardKeyEvents(java.awt.Component comp) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.DefaultKeyboardFocusManager.discardKeyEvents(java.awt.Component)"); }
-  public boolean dispatchKeyEvent(java.awt.event.KeyEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.DefaultKeyboardFocusManager.dispatchKeyEvent(java.awt.event.KeyEvent)"); }
-  public void focusNextComponent(java.awt.Component aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.DefaultKeyboardFocusManager.focusNextComponent(java.awt.Component)"); }
-  public void focusPreviousComponent(java.awt.Component aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.DefaultKeyboardFocusManager.focusPreviousComponent(java.awt.Component)"); }
-  public void upFocusCycle(java.awt.Component aComponent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.DefaultKeyboardFocusManager.upFocusCycle(java.awt.Component)"); }
-  public void downFocusCycle(java.awt.Container aContainer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.DefaultKeyboardFocusManager.downFocusCycle(java.awt.Container)"); }
-  public boolean dispatchEvent(java.awt.AWTEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.DefaultKeyboardFocusManager.dispatchEvent(java.awt.AWTEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  synchronized void discardKeyEvents(java.awt.Component comp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean dispatchKeyEvent(java.awt.event.KeyEvent e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void focusNextComponent(java.awt.Component aComponent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void focusPreviousComponent(java.awt.Component aComponent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void upFocusCycle(java.awt.Component aComponent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void downFocusCycle(java.awt.Container aContainer) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean dispatchEvent(java.awt.AWTEvent e) { return false; }
   @JavaProtected
-  synchronized void enqueueKeyEvents(long after, java.awt.Component untilFocused) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.DefaultKeyboardFocusManager.enqueueKeyEvents(long, java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  synchronized void enqueueKeyEvents(long after, java.awt.Component untilFocused) { }
   @JavaProtected
-  synchronized void dequeueKeyEvents(long after, java.awt.Component untilFocused) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.DefaultKeyboardFocusManager.dequeueKeyEvents(long, java.awt.Component)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  synchronized void dequeueKeyEvents(long after, java.awt.Component untilFocused) { }
   < ---- END java signatures ---- >
 }

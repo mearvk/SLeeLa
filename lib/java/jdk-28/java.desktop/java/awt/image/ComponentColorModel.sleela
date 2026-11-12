@@ -58,41 +58,73 @@ class ComponentColorModel {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ComponentColorModel(java.awt.color.ColorSpace colorSpace, int[] bits, boolean hasAlpha, boolean isAlphaPremultiplied, int transparency, int transferType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.<init>(java.awt.color.ColorSpace, int[], boolean, boolean, int, int)"); }
-  public ComponentColorModel(java.awt.color.ColorSpace colorSpace, boolean hasAlpha, boolean isAlphaPremultiplied, int transparency, int transferType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.<init>(java.awt.color.ColorSpace, boolean, boolean, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ComponentColorModel(java.awt.color.ColorSpace colorSpace, int[] bits, boolean hasAlpha, boolean isAlphaPremultiplied, int transparency, int transferType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ComponentColorModel(java.awt.color.ColorSpace colorSpace, boolean hasAlpha, boolean isAlphaPremultiplied, int transparency, int transferType) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.hashCode()"); }
-  public int[] getComponents(java.lang.Object pixel, int[] components, int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getComponents(java.lang.Object, int[], int)"); }
-  public int[] getComponents(int pixel, int[] components, int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getComponents(int, int[], int)"); }
-  public int getAlpha(java.lang.Object inData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getAlpha(java.lang.Object)"); }
-  public int getAlpha(int pixel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getAlpha(int)"); }
-  public int getRed(int pixel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getRed(int)"); }
-  public int getRed(java.lang.Object inData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getRed(java.lang.Object)"); }
-  public int getGreen(java.lang.Object inData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getGreen(java.lang.Object)"); }
-  public int getGreen(int pixel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getGreen(int)"); }
-  public int getBlue(java.lang.Object inData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getBlue(java.lang.Object)"); }
-  public int getBlue(int pixel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getBlue(int)"); }
-  public int[] getUnnormalizedComponents(float[] normComponents, int normOffset, int[] components, int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getUnnormalizedComponents(float[], int, int[], int)"); }
-  public int getDataElement(float[] normComponents, int normOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getDataElement(float[], int)"); }
-  public int getDataElement(int[] components, int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getDataElement(int[], int)"); }
-  public java.lang.Object getDataElements(int rgb, java.lang.Object pixel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getDataElements(int, java.lang.Object)"); }
-  public java.lang.Object getDataElements(float[] normComponents, int normOffset, java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getDataElements(float[], int, java.lang.Object)"); }
-  public java.lang.Object getDataElements(int[] components, int offset, java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getDataElements(int[], int, java.lang.Object)"); }
-  public float[] getNormalizedComponents(java.lang.Object pixel, float[] normComponents, int normOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getNormalizedComponents(java.lang.Object, float[], int)"); }
-  public float[] getNormalizedComponents(int[] components, int offset, float[] normComponents, int normOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getNormalizedComponents(int[], int, float[], int)"); }
-  public int getRGB(java.lang.Object inData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getRGB(java.lang.Object)"); }
-  public int getRGB(int pixel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getRGB(int)"); }
-  public java.awt.image.ColorModel coerceData(java.awt.image.WritableRaster raster, boolean isAlphaPremultiplied) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.coerceData(java.awt.image.WritableRaster, boolean)"); }
-  public boolean isCompatibleRaster(java.awt.image.Raster raster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.isCompatibleRaster(java.awt.image.Raster)"); }
-  public java.awt.image.WritableRaster createCompatibleWritableRaster(int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.createCompatibleWritableRaster(int, int)"); }
-  public java.awt.image.SampleModel createCompatibleSampleModel(int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.createCompatibleSampleModel(int, int)"); }
-  public boolean isCompatibleSampleModel(java.awt.image.SampleModel sm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.isCompatibleSampleModel(java.awt.image.SampleModel)"); }
-  public java.awt.image.WritableRaster getAlphaRaster(java.awt.image.WritableRaster raster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.ComponentColorModel.getAlphaRaster(java.awt.image.WritableRaster)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getComponents(java.lang.Object pixel, int[] components, int offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getComponents(int pixel, int[] components, int offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAlpha(java.lang.Object inData) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAlpha(int pixel) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRed(int pixel) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRed(java.lang.Object inData) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getGreen(java.lang.Object inData) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getGreen(int pixel) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBlue(java.lang.Object inData) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBlue(int pixel) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getUnnormalizedComponents(float[] normComponents, int normOffset, int[] components, int offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDataElement(float[] normComponents, int normOffset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDataElement(int[] components, int offset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getDataElements(int rgb, java.lang.Object pixel) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getDataElements(float[] normComponents, int normOffset, java.lang.Object obj) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getDataElements(int[] components, int offset, java.lang.Object obj) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getNormalizedComponents(java.lang.Object pixel, float[] normComponents, int normOffset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getNormalizedComponents(int[] components, int offset, float[] normComponents, int normOffset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRGB(java.lang.Object inData) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRGB(int pixel) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.ColorModel coerceData(java.awt.image.WritableRaster raster, boolean isAlphaPremultiplied) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCompatibleRaster(java.awt.image.Raster raster) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.WritableRaster createCompatibleWritableRaster(int w, int h) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.SampleModel createCompatibleSampleModel(int w, int h) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCompatibleSampleModel(java.awt.image.SampleModel sm) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.WritableRaster getAlphaRaster(java.awt.image.WritableRaster raster) { return null; }
   < ---- END java signatures ---- >
 }

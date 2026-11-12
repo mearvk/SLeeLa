@@ -58,28 +58,45 @@ class CheckboxMenuItem {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CheckboxMenuItem(java.lang.String label, boolean state) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.<init>(java.lang.String, boolean)"); }
-  public CheckboxMenuItem(java.lang.String label) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.<init>(java.lang.String)"); }
-  public CheckboxMenuItem() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public CheckboxMenuItem(java.lang.String label, boolean state) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public CheckboxMenuItem(java.lang.String label) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public CheckboxMenuItem() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean getState() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.getState()"); }
-  public synchronized void setState(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.setState(boolean)"); }
-  public java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.paramString()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getState() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setState(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String paramString() { return null; }
   @JavaProtected
-  void processItemEvent(java.awt.event.ItemEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.processItemEvent(java.awt.event.ItemEvent)"); }
-  public synchronized void addItemListener(java.awt.event.ItemListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.addItemListener(java.awt.event.ItemListener)"); }
-  public synchronized java.lang.Object[] getSelectedObjects() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.getSelectedObjects()"); }
-  public synchronized void removeItemListener(java.awt.event.ItemListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.removeItemListener(java.awt.event.ItemListener)"); }
-  public synchronized java.awt.event.ItemListener[] getItemListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.getItemListeners()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.getAccessibleContext()"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.addNotify()"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.getListeners(java.lang.Class<T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processItemEvent(java.awt.event.ItemEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addItemListener(java.awt.event.ItemListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Object[] getSelectedObjects() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeItemListener(java.awt.event.ItemListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.event.ItemListener[] getItemListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   @JavaProtected
-  void processEvent(java.awt.AWTEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.CheckboxMenuItem.processEvent(java.awt.AWTEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processEvent(java.awt.AWTEvent e) { }
   < ---- END java signatures ---- >
 }

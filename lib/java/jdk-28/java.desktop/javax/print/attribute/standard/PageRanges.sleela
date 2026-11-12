@@ -58,18 +58,27 @@ class PageRanges {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PageRanges(int member) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PageRanges.<init>(int)"); }
-  public PageRanges(int lowerBound, int upperBound) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PageRanges.<init>(int, int)"); }
-  public PageRanges(int[][] members) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PageRanges.<init>(int[][])"); }
-  public PageRanges(java.lang.String members) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PageRanges.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PageRanges(int member) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PageRanges(int lowerBound, int upperBound) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PageRanges(int[][] members) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PageRanges(java.lang.String members) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PageRanges.getName()"); }
-  public boolean equals(java.lang.Object object) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PageRanges.equals(java.lang.Object)"); }
-  public final java.lang.Class<? extends javax.print.attribute.Attribute> getCategory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.standard.PageRanges.getCategory()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object object) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Class<? extends javax.print.attribute.Attribute> getCategory() { return null; }
   < ---- END java signatures ---- >
 }

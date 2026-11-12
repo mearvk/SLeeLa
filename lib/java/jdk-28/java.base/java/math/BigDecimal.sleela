@@ -73,87 +73,165 @@ class BigDecimal {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BigDecimal(java.math.BigInteger unscaledVal, int scale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(java.math.BigInteger, int)"); }
-  public BigDecimal(java.math.BigInteger val, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(java.math.BigInteger, java.math.MathContext)"); }
-  public BigDecimal(java.math.BigInteger val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(java.math.BigInteger)"); }
-  public BigDecimal(long val, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(long, java.math.MathContext)"); }
-  public BigDecimal(double val, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(double, java.math.MathContext)"); }
-  public BigDecimal(long val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(long)"); }
-  public BigDecimal(int val, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(int, java.math.MathContext)"); }
-  public BigDecimal(int val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(int)"); }
-  public BigDecimal(java.math.BigInteger unscaledVal, int scale, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(java.math.BigInteger, int, java.math.MathContext)"); }
-  public BigDecimal(char[] in) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(char[])"); }
-  public BigDecimal(char[] in, int offset, int len, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(char[], int, int, java.math.MathContext)"); }
-  public BigDecimal(char[] in, int offset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(char[], int, int)"); }
-  public BigDecimal(double val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(double)"); }
-  public BigDecimal(java.lang.String val, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(java.lang.String, java.math.MathContext)"); }
-  public BigDecimal(java.lang.String val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(java.lang.String)"); }
-  public BigDecimal(char[] in, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.<init>(char[], java.math.MathContext)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(java.math.BigInteger unscaledVal, int scale) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(java.math.BigInteger val, java.math.MathContext mc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(java.math.BigInteger val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(long val, java.math.MathContext mc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(double val, java.math.MathContext mc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(long val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(int val, java.math.MathContext mc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(int val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(java.math.BigInteger unscaledVal, int scale, java.math.MathContext mc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(char[] in) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(char[] in, int offset, int len, java.math.MathContext mc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(char[] in, int offset, int len) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(double val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(java.lang.String val, java.math.MathContext mc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(java.lang.String val) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BigDecimal(char[] in, java.math.MathContext mc) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.hashCode()"); }
-  public java.math.BigDecimal abs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.abs()"); }
-  public java.math.BigDecimal abs(java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.abs(java.math.MathContext)"); }
-  public java.math.BigDecimal sqrt(java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.sqrt(java.math.MathContext)"); }
-  public java.math.BigDecimal pow(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.pow(int)"); }
-  public java.math.BigDecimal pow(int n, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.pow(int, java.math.MathContext)"); }
-  public java.math.BigDecimal min(java.math.BigDecimal val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.min(java.math.BigDecimal)"); }
-  public java.math.BigDecimal max(java.math.BigDecimal val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.max(java.math.BigDecimal)"); }
-  public java.math.BigDecimal round(java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.round(java.math.MathContext)"); }
-  public int signum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.signum()"); }
-  public int compareTo(java.math.BigDecimal val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.compareTo(java.math.BigDecimal)"); }
-  public int intValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.intValue()"); }
-  public long longValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.longValue()"); }
-  public float floatValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.floatValue()"); }
-  public double doubleValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.doubleValue()"); }
-  public static java.math.BigDecimal valueOf(long unscaledVal, int scale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.valueOf(long, int)"); }
-  public static java.math.BigDecimal valueOf(long val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.valueOf(long)"); }
-  public static java.math.BigDecimal valueOf(double val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.valueOf(double)"); }
-  public int scale() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.scale()"); }
-  public java.math.BigDecimal add(java.math.BigDecimal augend, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.add(java.math.BigDecimal, java.math.MathContext)"); }
-  public java.math.BigDecimal add(java.math.BigDecimal augend) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.add(java.math.BigDecimal)"); }
-  public java.math.BigDecimal multiply(java.math.BigDecimal multiplicand) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.multiply(java.math.BigDecimal)"); }
-  public java.math.BigDecimal multiply(java.math.BigDecimal multiplicand, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.multiply(java.math.BigDecimal, java.math.MathContext)"); }
-  public java.math.BigDecimal ulp() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.ulp()"); }
-  public java.math.BigDecimal negate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.negate()"); }
-  public java.math.BigDecimal negate(java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.negate(java.math.MathContext)"); }
-  public java.math.BigDecimal remainder(java.math.BigDecimal divisor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.remainder(java.math.BigDecimal)"); }
-  public java.math.BigDecimal remainder(java.math.BigDecimal divisor, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.remainder(java.math.BigDecimal, java.math.MathContext)"); }
-  public java.math.BigDecimal subtract(java.math.BigDecimal subtrahend, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.subtract(java.math.BigDecimal, java.math.MathContext)"); }
-  public java.math.BigDecimal subtract(java.math.BigDecimal subtrahend) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.subtract(java.math.BigDecimal)"); }
-  public java.math.BigInteger toBigInteger() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.toBigInteger()"); }
-  public java.math.BigDecimal divide(java.math.BigDecimal divisor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.divide(java.math.BigDecimal)"); }
-  public java.math.BigDecimal divide(java.math.BigDecimal divisor, java.math.RoundingMode roundingMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.divide(java.math.BigDecimal, java.math.RoundingMode)"); }
-  public java.math.BigDecimal divide(java.math.BigDecimal divisor, int roundingMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.divide(java.math.BigDecimal, int)"); }
-  public java.math.BigDecimal divide(java.math.BigDecimal divisor, int scale, java.math.RoundingMode roundingMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.divide(java.math.BigDecimal, int, java.math.RoundingMode)"); }
-  public java.math.BigDecimal divide(java.math.BigDecimal divisor, int scale, int roundingMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.divide(java.math.BigDecimal, int, int)"); }
-  public java.math.BigDecimal[] divideAndRemainder(java.math.BigDecimal divisor, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.divideAndRemainder(java.math.BigDecimal, java.math.MathContext)"); }
-  public java.math.BigDecimal[] divideAndRemainder(java.math.BigDecimal divisor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.divideAndRemainder(java.math.BigDecimal)"); }
-  public long longValueExact() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.longValueExact()"); }
-  public int intValueExact() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.intValueExact()"); }
-  public short shortValueExact() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.shortValueExact()"); }
-  public byte byteValueExact() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.byteValueExact()"); }
-  public java.math.BigDecimal scaleByPowerOfTen(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.scaleByPowerOfTen(int)"); }
-  public java.math.BigDecimal plus(java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.plus(java.math.MathContext)"); }
-  public java.math.BigDecimal plus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.plus()"); }
-  public java.math.BigDecimal divideToIntegralValue(java.math.BigDecimal divisor, java.math.MathContext mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.divideToIntegralValue(java.math.BigDecimal, java.math.MathContext)"); }
-  public java.math.BigDecimal divideToIntegralValue(java.math.BigDecimal divisor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.divideToIntegralValue(java.math.BigDecimal)"); }
-  public java.math.BigDecimal movePointRight(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.movePointRight(int)"); }
-  public java.math.BigInteger toBigIntegerExact() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.toBigIntegerExact()"); }
-  public int precision() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.precision()"); }
-  public java.math.BigInteger unscaledValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.unscaledValue()"); }
-  public java.math.BigDecimal setScale(int newScale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.setScale(int)"); }
-  public java.math.BigDecimal setScale(int newScale, java.math.RoundingMode roundingMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.setScale(int, java.math.RoundingMode)"); }
-  public java.math.BigDecimal setScale(int newScale, int roundingMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.setScale(int, int)"); }
-  public java.math.BigDecimal stripTrailingZeros() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.stripTrailingZeros()"); }
-  public java.math.BigDecimal movePointLeft(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.movePointLeft(int)"); }
-  public java.lang.String toEngineeringString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.toEngineeringString()"); }
-  public java.lang.String toPlainString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigDecimal.toPlainString()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object x) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal abs() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal abs(java.math.MathContext mc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal sqrt(java.math.MathContext mc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal pow(int n) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal pow(int n, java.math.MathContext mc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal min(java.math.BigDecimal val) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal max(java.math.BigDecimal val) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal round(java.math.MathContext mc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int signum() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.math.BigDecimal val) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int intValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long longValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float floatValue() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double doubleValue() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.math.BigDecimal valueOf(long unscaledVal, int scale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.math.BigDecimal valueOf(long val) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.math.BigDecimal valueOf(double val) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int scale() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal add(java.math.BigDecimal augend, java.math.MathContext mc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal add(java.math.BigDecimal augend) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal multiply(java.math.BigDecimal multiplicand) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal multiply(java.math.BigDecimal multiplicand, java.math.MathContext mc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal ulp() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal negate() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal negate(java.math.MathContext mc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal remainder(java.math.BigDecimal divisor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal remainder(java.math.BigDecimal divisor, java.math.MathContext mc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal subtract(java.math.BigDecimal subtrahend, java.math.MathContext mc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal subtract(java.math.BigDecimal subtrahend) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger toBigInteger() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal divide(java.math.BigDecimal divisor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal divide(java.math.BigDecimal divisor, java.math.RoundingMode roundingMode) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal divide(java.math.BigDecimal divisor, int roundingMode) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal divide(java.math.BigDecimal divisor, int scale, java.math.RoundingMode roundingMode) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal divide(java.math.BigDecimal divisor, int scale, int roundingMode) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal[] divideAndRemainder(java.math.BigDecimal divisor, java.math.MathContext mc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal[] divideAndRemainder(java.math.BigDecimal divisor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long longValueExact() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int intValueExact() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public short shortValueExact() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte byteValueExact() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal scaleByPowerOfTen(int n) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal plus(java.math.MathContext mc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal plus() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal divideToIntegralValue(java.math.BigDecimal divisor, java.math.MathContext mc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal divideToIntegralValue(java.math.BigDecimal divisor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal movePointRight(int n) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger toBigIntegerExact() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int precision() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger unscaledValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal setScale(int newScale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal setScale(int newScale, java.math.RoundingMode roundingMode) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal setScale(int newScale, int roundingMode) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal stripTrailingZeros() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigDecimal movePointLeft(int n) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toEngineeringString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toPlainString() { return null; }
   < ---- END java signatures ---- >
 }

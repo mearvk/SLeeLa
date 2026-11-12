@@ -63,19 +63,29 @@ class FilterReader {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  FilterReader(java.io.Reader in) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.FilterReader.<init>(java.io.Reader)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  FilterReader(java.io.Reader in) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void reset() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.FilterReader.reset()"); }
-  public void mark(int readAheadLimit) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.FilterReader.mark(int)"); }
-  public int read() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.FilterReader.read()"); }
-  public int read(char[] cbuf, int off, int len) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.FilterReader.read(char[], int, int)"); }
-  public long skip(long n) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.FilterReader.skip(long)"); }
-  public boolean markSupported() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.FilterReader.markSupported()"); }
-  public boolean ready() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.FilterReader.ready()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void reset() { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void mark(int readAheadLimit) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public int read() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public int read(char[] cbuf, int off, int len) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public long skip(long n) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean markSupported() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public boolean ready() { return false; }
   < ---- END java signatures ---- >
 }

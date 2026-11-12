@@ -69,16 +69,26 @@ class Spliterator<T> {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default void forEachRemaining(java.util.function.Consumer<? super T> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Spliterator.forEachRemaining(java.util.function.Consumer<? super T>)"); }
-  public abstract int characteristics() { throw new AbstractMethodError("java.util.Spliterator.characteristics()"); }
-  public default boolean hasCharacteristics(int characteristics) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Spliterator.hasCharacteristics(int)"); }
-  public abstract java.util.Spliterator<T> trySplit() { throw new AbstractMethodError("java.util.Spliterator.trySplit()"); }
-  public abstract boolean tryAdvance(java.util.function.Consumer<? super T> action) { throw new AbstractMethodError("java.util.Spliterator.tryAdvance(java.util.function.Consumer<? super T>)"); }
-  public abstract long estimateSize() { throw new AbstractMethodError("java.util.Spliterator.estimateSize()"); }
-  public default java.util.Comparator<? super T> getComparator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Spliterator.getComparator()"); }
-  public default long getExactSizeIfKnown() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Spliterator.getExactSizeIfKnown()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void forEachRemaining(java.util.function.Consumer<? super T> action) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int characteristics() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean hasCharacteristics(int characteristics) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Spliterator<T> trySplit() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean tryAdvance(java.util.function.Consumer<? super T> action) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public long estimateSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Comparator<? super T> getComparator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default long getExactSizeIfKnown() { return 0; }
   < ---- END java signatures ---- >
 }

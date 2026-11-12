@@ -59,23 +59,37 @@ class LineMetrics {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  LineMetrics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.LineMetrics.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  LineMetrics() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract float getHeight() { throw new AbstractMethodError("java.awt.font.LineMetrics.getHeight()"); }
-  public abstract float getAscent() { throw new AbstractMethodError("java.awt.font.LineMetrics.getAscent()"); }
-  public abstract float getDescent() { throw new AbstractMethodError("java.awt.font.LineMetrics.getDescent()"); }
-  public abstract float getLeading() { throw new AbstractMethodError("java.awt.font.LineMetrics.getLeading()"); }
-  public abstract int getNumChars() { throw new AbstractMethodError("java.awt.font.LineMetrics.getNumChars()"); }
-  public abstract int getBaselineIndex() { throw new AbstractMethodError("java.awt.font.LineMetrics.getBaselineIndex()"); }
-  public abstract float[] getBaselineOffsets() { throw new AbstractMethodError("java.awt.font.LineMetrics.getBaselineOffsets()"); }
-  public abstract float getStrikethroughOffset() { throw new AbstractMethodError("java.awt.font.LineMetrics.getStrikethroughOffset()"); }
-  public abstract float getStrikethroughThickness() { throw new AbstractMethodError("java.awt.font.LineMetrics.getStrikethroughThickness()"); }
-  public abstract float getUnderlineOffset() { throw new AbstractMethodError("java.awt.font.LineMetrics.getUnderlineOffset()"); }
-  public abstract float getUnderlineThickness() { throw new AbstractMethodError("java.awt.font.LineMetrics.getUnderlineThickness()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public float getHeight() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getAscent() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getDescent() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getLeading() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getNumChars() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getBaselineIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float[] getBaselineOffsets() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getStrikethroughOffset() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getStrikethroughThickness() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getUnderlineOffset() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float getUnderlineThickness() { return 0.0; }
   < ---- END java signatures ---- >
 }

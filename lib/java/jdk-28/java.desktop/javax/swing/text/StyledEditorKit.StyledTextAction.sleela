@@ -59,22 +59,30 @@ class StyledTextAction {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StyledTextAction(java.lang.String nm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.StyledTextAction.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StyledTextAction(java.lang.String nm) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  final void setCharacterAttributes(javax.swing.JEditorPane editor, javax.swing.text.AttributeSet attr, boolean replace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.StyledTextAction.setCharacterAttributes(javax.swing.JEditorPane, javax.swing.text.AttributeSet, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void setCharacterAttributes(javax.swing.JEditorPane editor, javax.swing.text.AttributeSet attr, boolean replace) { }
   @JavaProtected
-  final javax.swing.text.StyledDocument getStyledDocument(javax.swing.JEditorPane e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.StyledTextAction.getStyledDocument(javax.swing.JEditorPane)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final javax.swing.text.StyledDocument getStyledDocument(javax.swing.JEditorPane e) { return null; }
   @JavaProtected
-  final void setParagraphAttributes(javax.swing.JEditorPane editor, javax.swing.text.AttributeSet attr, boolean replace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.StyledTextAction.setParagraphAttributes(javax.swing.JEditorPane, javax.swing.text.AttributeSet, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void setParagraphAttributes(javax.swing.JEditorPane editor, javax.swing.text.AttributeSet attr, boolean replace) { }
   @JavaProtected
-  final javax.swing.text.StyledEditorKit getStyledEditorKit(javax.swing.JEditorPane e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.StyledTextAction.getStyledEditorKit(javax.swing.JEditorPane)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final javax.swing.text.StyledEditorKit getStyledEditorKit(javax.swing.JEditorPane e) { return null; }
   @JavaProtected
-  final javax.swing.JEditorPane getEditor(java.awt.event.ActionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.StyledEditorKit.StyledTextAction.getEditor(java.awt.event.ActionEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final javax.swing.JEditorPane getEditor(java.awt.event.ActionEvent e) { return null; }
   < ---- END java signatures ---- >
 }

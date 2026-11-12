@@ -58,10 +58,14 @@ class Resolver {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.naming.spi.ResolveResult resolveToClass(javax.naming.Name name, java.lang.Class<? extends javax.naming.Context> contextType) throws javax.naming.NamingException { throw new AbstractMethodError("javax.naming.spi.Resolver.resolveToClass(javax.naming.Name, java.lang.Class<? extends javax.naming.Context>)"); }
-  public abstract javax.naming.spi.ResolveResult resolveToClass(java.lang.String name, java.lang.Class<? extends javax.naming.Context> contextType) throws javax.naming.NamingException { throw new AbstractMethodError("javax.naming.spi.Resolver.resolveToClass(java.lang.String, java.lang.Class<? extends javax.naming.Context>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
+  public javax.naming.spi.ResolveResult resolveToClass(javax.naming.Name name, java.lang.Class<? extends javax.naming.Context> contextType) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
+  public javax.naming.spi.ResolveResult resolveToClass(java.lang.String name, java.lang.Class<? extends javax.naming.Context> contextType) { return null; }
   < ---- END java signatures ---- >
 }

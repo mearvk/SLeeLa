@@ -58,7 +58,9 @@ class OpenDataException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public OpenDataException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.OpenDataException.<init>()"); }
-  public OpenDataException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.openmbean.OpenDataException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OpenDataException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OpenDataException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

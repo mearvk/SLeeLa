@@ -58,7 +58,9 @@ class MalformedLinkException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MalformedLinkException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.MalformedLinkException.<init>(java.lang.String)"); }
-  public MalformedLinkException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.MalformedLinkException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MalformedLinkException(java.lang.String explanation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MalformedLinkException() { }
   < ---- END java constructors ---- >
 }

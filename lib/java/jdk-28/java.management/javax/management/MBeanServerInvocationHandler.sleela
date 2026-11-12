@@ -58,17 +58,25 @@ class MBeanServerInvocationHandler {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MBeanServerInvocationHandler(javax.management.MBeanServerConnection connection, javax.management.ObjectName objectName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerInvocationHandler.<init>(javax.management.MBeanServerConnection, javax.management.ObjectName)"); }
-  public MBeanServerInvocationHandler(javax.management.MBeanServerConnection connection, javax.management.ObjectName objectName, boolean isMXBean) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerInvocationHandler.<init>(javax.management.MBeanServerConnection, javax.management.ObjectName, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MBeanServerInvocationHandler(javax.management.MBeanServerConnection connection, javax.management.ObjectName objectName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MBeanServerInvocationHandler(javax.management.MBeanServerConnection connection, javax.management.ObjectName objectName, boolean isMXBean) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static <T> T newProxyInstance(javax.management.MBeanServerConnection connection, javax.management.ObjectName objectName, java.lang.Class<T> interfaceClass, boolean notificationBroadcaster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerInvocationHandler.newProxyInstance(javax.management.MBeanServerConnection, javax.management.ObjectName, java.lang.Class<T>, boolean)"); }
-  public boolean isMXBean() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerInvocationHandler.isMXBean()"); }
-  public javax.management.MBeanServerConnection getMBeanServerConnection() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerInvocationHandler.getMBeanServerConnection()"); }
-  public javax.management.ObjectName getObjectName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanServerInvocationHandler.getObjectName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> T newProxyInstance(javax.management.MBeanServerConnection connection, javax.management.ObjectName objectName, java.lang.Class<T> interfaceClass, boolean notificationBroadcaster) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMXBean() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.MBeanServerConnection getMBeanServerConnection() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.management.ObjectName getObjectName() { return null; }
   < ---- END java signatures ---- >
 }

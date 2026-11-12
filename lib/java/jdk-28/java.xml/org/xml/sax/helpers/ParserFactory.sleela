@@ -58,10 +58,14 @@ class ParserFactory {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static org.xml.sax.Parser makeParser() throws java.lang.ClassNotFoundException, java.lang.IllegalAccessException, java.lang.InstantiationException, java.lang.NullPointerException, java.lang.ClassCastException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.ParserFactory.makeParser()"); }
-  public static org.xml.sax.Parser makeParser(java.lang.String className) throws java.lang.ClassNotFoundException, java.lang.IllegalAccessException, java.lang.InstantiationException, java.lang.ClassCastException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.ParserFactory.makeParser(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException, java.lang.IllegalAccessException, java.lang.InstantiationException, java.lang.NullPointerException, java.lang.ClassCastException")
+  public static org.xml.sax.Parser makeParser() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException, java.lang.IllegalAccessException, java.lang.InstantiationException, java.lang.ClassCastException")
+  public static org.xml.sax.Parser makeParser(java.lang.String className) { return null; }
   < ---- END java signatures ---- >
 }

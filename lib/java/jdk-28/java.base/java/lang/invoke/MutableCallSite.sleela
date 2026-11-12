@@ -58,16 +58,23 @@ class MutableCallSite {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MutableCallSite(java.lang.invoke.MethodType type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MutableCallSite.<init>(java.lang.invoke.MethodType)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MutableCallSite(java.lang.invoke.MethodType type) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.lang.invoke.MethodHandle getTarget() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MutableCallSite.getTarget()"); }
-  public final java.lang.invoke.MethodHandle dynamicInvoker() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MutableCallSite.dynamicInvoker()"); }
-  public void setTarget(java.lang.invoke.MethodHandle newTarget) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MutableCallSite.setTarget(java.lang.invoke.MethodHandle)"); }
-  public static void syncAll(java.lang.invoke.MutableCallSite[] sites) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.invoke.MutableCallSite.syncAll(java.lang.invoke.MutableCallSite[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.invoke.MethodHandle getTarget() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.invoke.MethodHandle dynamicInvoker() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTarget(java.lang.invoke.MethodHandle newTarget) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void syncAll(java.lang.invoke.MutableCallSite[] sites) { }
   < ---- END java signatures ---- >
 }

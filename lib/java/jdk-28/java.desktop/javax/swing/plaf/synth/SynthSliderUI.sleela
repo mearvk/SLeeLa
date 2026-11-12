@@ -59,53 +59,82 @@ class SynthSliderUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SynthSliderUI(javax.swing.JSlider c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.<init>(javax.swing.JSlider)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SynthSliderUI(javax.swing.JSlider c) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void update(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.update(java.awt.Graphics, javax.swing.JComponent)"); }
-  public javax.swing.plaf.synth.SynthContext getContext(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.getContext(javax.swing.JComponent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void update(java.awt.Graphics g, javax.swing.JComponent c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.synth.SynthContext getContext(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void installListeners(javax.swing.JSlider slider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.installListeners(javax.swing.JSlider)"); }
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.getPreferredSize(javax.swing.JComponent)"); }
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.getMinimumSize(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListeners(javax.swing.JSlider slider) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  javax.swing.plaf.basic.BasicSliderUI.TrackListener createTrackListener(javax.swing.JSlider s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.createTrackListener(javax.swing.JSlider)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.plaf.basic.BasicSliderUI.TrackListener createTrackListener(javax.swing.JSlider s) { return null; }
   @JavaProtected
-  void paintThumb(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, java.awt.Rectangle thumbBounds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.paintThumb(javax.swing.plaf.synth.SynthContext, java.awt.Graphics, java.awt.Rectangle)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintThumb(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, java.awt.Rectangle thumbBounds) { }
   @JavaProtected
-  void calculateGeometry() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.calculateGeometry()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void calculateGeometry() { }
   @JavaProtected
-  java.awt.Dimension getThumbSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.getThumbSize()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Dimension getThumbSize() { return null; }
   @JavaProtected
-  int yPositionForValue(int value, int trackY, int trackHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.yPositionForValue(int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int yPositionForValue(int value, int trackY, int trackHeight) { return 0; }
   @JavaProtected
-  void recalculateIfInsetsChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.recalculateIfInsetsChanged()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void recalculateIfInsetsChanged() { }
   @JavaProtected
-  void calculateThumbLocation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.calculateThumbLocation()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void calculateThumbLocation() { }
   @JavaProtected
-  int xPositionForValue(int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.xPositionForValue(int)"); }
-  public void setThumbLocation(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.setThumbLocation(int, int)"); }
-  public int valueForYPosition(int yPos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.valueForYPosition(int)"); }
-  public int valueForXPosition(int xPos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.valueForXPosition(int)"); }
-  public void paintBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.paintBorder(javax.swing.plaf.synth.SynthContext, java.awt.Graphics, int, int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int xPositionForValue(int value) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setThumbLocation(int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int valueForYPosition(int yPos) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int valueForXPosition(int xPos) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
   @JavaProtected
-  void layout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.layout()"); }
-  public void propertyChange(java.beans.PropertyChangeEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.propertyChange(java.beans.PropertyChangeEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void layout() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void propertyChange(java.beans.PropertyChangeEvent e) { }
   @JavaProtected
-  void paintTrack(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, java.awt.Rectangle trackBounds) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.paintTrack(javax.swing.plaf.synth.SynthContext, java.awt.Graphics, java.awt.Rectangle)"); }
-  public int getBaseline(javax.swing.JComponent c, int width, int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.getBaseline(javax.swing.JComponent, int, int)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintTrack(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, java.awt.Rectangle trackBounds) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getBaseline(javax.swing.JComponent c, int width, int height) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void installDefaults(javax.swing.JSlider slider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.installDefaults(javax.swing.JSlider)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults(javax.swing.JSlider slider) { }
   @JavaProtected
-  void uninstallListeners(javax.swing.JSlider slider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.uninstallListeners(javax.swing.JSlider)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallListeners(javax.swing.JSlider slider) { }
   @JavaProtected
-  void uninstallDefaults(javax.swing.JSlider slider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.uninstallDefaults(javax.swing.JSlider)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults(javax.swing.JSlider slider) { }
   @JavaProtected
-  void paint(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.synth.SynthSliderUI.paint(javax.swing.plaf.synth.SynthContext, java.awt.Graphics)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paint(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g) { }
   < ---- END java signatures ---- >
 }

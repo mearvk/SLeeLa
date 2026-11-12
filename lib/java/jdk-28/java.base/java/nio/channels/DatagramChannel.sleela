@@ -59,31 +59,53 @@ class DatagramChannel {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  DatagramChannel(java.nio.channels.spi.SelectorProvider provider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.DatagramChannel.<init>(java.nio.channels.spi.SelectorProvider)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  DatagramChannel(java.nio.channels.spi.SelectorProvider provider) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final long write(java.nio.ByteBuffer[] srcs) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.DatagramChannel.write(java.nio.ByteBuffer[])"); }
-  public abstract long write(java.nio.ByteBuffer[] srcs, int offset, int length) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.DatagramChannel.write(java.nio.ByteBuffer[], int, int)"); }
-  public abstract int write(java.nio.ByteBuffer src) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.DatagramChannel.write(java.nio.ByteBuffer)"); }
-  public static java.nio.channels.DatagramChannel open(java.net.ProtocolFamily family) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.DatagramChannel.open(java.net.ProtocolFamily)"); }
-  public static java.nio.channels.DatagramChannel open() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.DatagramChannel.open()"); }
-  public abstract long read(java.nio.ByteBuffer[] dsts, int offset, int length) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.DatagramChannel.read(java.nio.ByteBuffer[], int, int)"); }
-  public abstract int read(java.nio.ByteBuffer dst) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.DatagramChannel.read(java.nio.ByteBuffer)"); }
-  public final long read(java.nio.ByteBuffer[] dsts) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.DatagramChannel.read(java.nio.ByteBuffer[])"); }
-  public abstract java.nio.channels.DatagramChannel bind(java.net.SocketAddress local) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.DatagramChannel.bind(java.net.SocketAddress)"); }
-  public abstract java.net.SocketAddress getLocalAddress() throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.DatagramChannel.getLocalAddress()"); }
-  public abstract <T> java.nio.channels.DatagramChannel setOption(java.net.SocketOption<T> name, T value) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.DatagramChannel.setOption(java.net.SocketOption<T>, T)"); }
-  public final int validOps() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.DatagramChannel.validOps()"); }
-  public abstract java.nio.channels.DatagramChannel connect(java.net.SocketAddress remote) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.DatagramChannel.connect(java.net.SocketAddress)"); }
-  public abstract boolean isConnected() { throw new AbstractMethodError("java.nio.channels.DatagramChannel.isConnected()"); }
-  public abstract java.net.DatagramSocket socket() { throw new AbstractMethodError("java.nio.channels.DatagramChannel.socket()"); }
-  public abstract java.net.SocketAddress getRemoteAddress() throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.DatagramChannel.getRemoteAddress()"); }
-  public abstract java.nio.channels.DatagramChannel disconnect() throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.DatagramChannel.disconnect()"); }
-  public abstract int send(java.nio.ByteBuffer src, java.net.SocketAddress target) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.DatagramChannel.send(java.nio.ByteBuffer, java.net.SocketAddress)"); }
-  public abstract java.net.SocketAddress receive(java.nio.ByteBuffer dst) throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.DatagramChannel.receive(java.nio.ByteBuffer)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public final long write(java.nio.ByteBuffer[] srcs) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public long write(java.nio.ByteBuffer[] srcs, int offset, int length) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public int write(java.nio.ByteBuffer src) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static java.nio.channels.DatagramChannel open(java.net.ProtocolFamily family) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static java.nio.channels.DatagramChannel open() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public long read(java.nio.ByteBuffer[] dsts, int offset, int length) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public int read(java.nio.ByteBuffer dst) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public final long read(java.nio.ByteBuffer[] dsts) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.channels.DatagramChannel bind(java.net.SocketAddress local) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.net.SocketAddress getLocalAddress() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public <T> java.nio.channels.DatagramChannel setOption(java.net.SocketOption<T> name, T value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int validOps() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.channels.DatagramChannel connect(java.net.SocketAddress remote) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isConnected() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.DatagramSocket socket() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.net.SocketAddress getRemoteAddress() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.channels.DatagramChannel disconnect() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public int send(java.nio.ByteBuffer src, java.net.SocketAddress target) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.net.SocketAddress receive(java.nio.ByteBuffer dst) { return null; }
   < ---- END java signatures ---- >
 }

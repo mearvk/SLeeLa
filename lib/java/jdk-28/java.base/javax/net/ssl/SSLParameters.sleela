@@ -58,42 +58,75 @@ class SSLParameters {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SSLParameters(java.lang.String[] cipherSuites, java.lang.String[] protocols) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.<init>(java.lang.String[], java.lang.String[])"); }
-  public SSLParameters(java.lang.String[] cipherSuites) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.<init>(java.lang.String[])"); }
-  public SSLParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SSLParameters(java.lang.String[] cipherSuites, java.lang.String[] protocols) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SSLParameters(java.lang.String[] cipherSuites) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SSLParameters() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void setCipherSuites(java.lang.String[] cipherSuites) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setCipherSuites(java.lang.String[])"); }
-  public void setProtocols(java.lang.String[] protocols) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setProtocols(java.lang.String[])"); }
-  public boolean getNeedClientAuth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getNeedClientAuth()"); }
-  public void setNeedClientAuth(boolean needClientAuth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setNeedClientAuth(boolean)"); }
-  public boolean getWantClientAuth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getWantClientAuth()"); }
-  public void setWantClientAuth(boolean wantClientAuth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setWantClientAuth(boolean)"); }
-  public java.lang.String[] getCipherSuites() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getCipherSuites()"); }
-  public java.lang.String[] getProtocols() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getProtocols()"); }
-  public java.security.AlgorithmConstraints getAlgorithmConstraints() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getAlgorithmConstraints()"); }
-  public void setAlgorithmConstraints(java.security.AlgorithmConstraints constraints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setAlgorithmConstraints(java.security.AlgorithmConstraints)"); }
-  public java.lang.String getEndpointIdentificationAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getEndpointIdentificationAlgorithm()"); }
-  public void setEndpointIdentificationAlgorithm(java.lang.String algorithm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setEndpointIdentificationAlgorithm(java.lang.String)"); }
-  public final void setServerNames(java.util.List<javax.net.ssl.SNIServerName> serverNames) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setServerNames(java.util.List<javax.net.ssl.SNIServerName>)"); }
-  public final java.util.List<javax.net.ssl.SNIServerName> getServerNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getServerNames()"); }
-  public final void setSNIMatchers(java.util.Collection<javax.net.ssl.SNIMatcher> matchers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setSNIMatchers(java.util.Collection<javax.net.ssl.SNIMatcher>)"); }
-  public final java.util.Collection<javax.net.ssl.SNIMatcher> getSNIMatchers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getSNIMatchers()"); }
-  public final void setUseCipherSuitesOrder(boolean honorOrder) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setUseCipherSuitesOrder(boolean)"); }
-  public final boolean getUseCipherSuitesOrder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getUseCipherSuitesOrder()"); }
-  public void setEnableRetransmissions(boolean enableRetransmissions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setEnableRetransmissions(boolean)"); }
-  public boolean getEnableRetransmissions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getEnableRetransmissions()"); }
-  public void setMaximumPacketSize(int maximumPacketSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setMaximumPacketSize(int)"); }
-  public int getMaximumPacketSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getMaximumPacketSize()"); }
-  public java.lang.String[] getApplicationProtocols() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getApplicationProtocols()"); }
-  public void setApplicationProtocols(java.lang.String[] protocols) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setApplicationProtocols(java.lang.String[])"); }
-  public java.lang.String[] getSignatureSchemes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getSignatureSchemes()"); }
-  public void setSignatureSchemes(java.lang.String[] signatureSchemes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setSignatureSchemes(java.lang.String[])"); }
-  public java.lang.String[] getNamedGroups() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.getNamedGroups()"); }
-  public void setNamedGroups(java.lang.String[] namedGroups) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLParameters.setNamedGroups(java.lang.String[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCipherSuites(java.lang.String[] cipherSuites) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setProtocols(java.lang.String[] protocols) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getNeedClientAuth() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNeedClientAuth(boolean needClientAuth) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getWantClientAuth() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setWantClientAuth(boolean wantClientAuth) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getCipherSuites() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getProtocols() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.AlgorithmConstraints getAlgorithmConstraints() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAlgorithmConstraints(java.security.AlgorithmConstraints constraints) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getEndpointIdentificationAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEndpointIdentificationAlgorithm(java.lang.String algorithm) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setServerNames(java.util.List<javax.net.ssl.SNIServerName> serverNames) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.List<javax.net.ssl.SNIServerName> getServerNames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setSNIMatchers(java.util.Collection<javax.net.ssl.SNIMatcher> matchers) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.Collection<javax.net.ssl.SNIMatcher> getSNIMatchers() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setUseCipherSuitesOrder(boolean honorOrder) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean getUseCipherSuitesOrder() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEnableRetransmissions(boolean enableRetransmissions) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getEnableRetransmissions() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximumPacketSize(int maximumPacketSize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaximumPacketSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getApplicationProtocols() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setApplicationProtocols(java.lang.String[] protocols) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getSignatureSchemes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSignatureSchemes(java.lang.String[] signatureSchemes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getNamedGroups() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNamedGroups(java.lang.String[] namedGroups) { }
   < ---- END java signatures ---- >
 }

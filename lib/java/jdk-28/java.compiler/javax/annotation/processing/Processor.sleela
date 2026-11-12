@@ -58,14 +58,22 @@ class Processor {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void init(javax.annotation.processing.ProcessingEnvironment processingEnv) { throw new AbstractMethodError("javax.annotation.processing.Processor.init(javax.annotation.processing.ProcessingEnvironment)"); }
-  public abstract boolean process(java.util.Set<? extends javax.lang.model.element.TypeElement> annotations, javax.annotation.processing.RoundEnvironment roundEnv) { throw new AbstractMethodError("javax.annotation.processing.Processor.process(java.util.Set<? extends javax.lang.model.element.TypeElement>, javax.annotation.processing.RoundEnvironment)"); }
-  public abstract java.util.Set<java.lang.String> getSupportedAnnotationTypes() { throw new AbstractMethodError("javax.annotation.processing.Processor.getSupportedAnnotationTypes()"); }
-  public abstract java.lang.Iterable<? extends javax.annotation.processing.Completion> getCompletions(javax.lang.model.element.Element element, javax.lang.model.element.AnnotationMirror annotation, javax.lang.model.element.ExecutableElement member, java.lang.String userText) { throw new AbstractMethodError("javax.annotation.processing.Processor.getCompletions(javax.lang.model.element.Element, javax.lang.model.element.AnnotationMirror, javax.lang.model.element.ExecutableElement, java.lang.String)"); }
-  public abstract javax.lang.model.SourceVersion getSupportedSourceVersion() { throw new AbstractMethodError("javax.annotation.processing.Processor.getSupportedSourceVersion()"); }
-  public abstract java.util.Set<java.lang.String> getSupportedOptions() { throw new AbstractMethodError("javax.annotation.processing.Processor.getSupportedOptions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void init(javax.annotation.processing.ProcessingEnvironment processingEnv) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean process(java.util.Set<? extends javax.lang.model.element.TypeElement> annotations, javax.annotation.processing.RoundEnvironment roundEnv) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<java.lang.String> getSupportedAnnotationTypes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Iterable<? extends javax.annotation.processing.Completion> getCompletions(javax.lang.model.element.Element element, javax.lang.model.element.AnnotationMirror annotation, javax.lang.model.element.ExecutableElement member, java.lang.String userText) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.SourceVersion getSupportedSourceVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<java.lang.String> getSupportedOptions() { return null; }
   < ---- END java signatures ---- >
 }

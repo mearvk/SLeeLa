@@ -58,25 +58,44 @@ class Instrumentation {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void addTransformer(java.lang.instrument.ClassFileTransformer transformer, boolean canRetransform) { throw new AbstractMethodError("java.lang.instrument.Instrumentation.addTransformer(java.lang.instrument.ClassFileTransformer, boolean)"); }
-  public abstract void addTransformer(java.lang.instrument.ClassFileTransformer transformer) { throw new AbstractMethodError("java.lang.instrument.Instrumentation.addTransformer(java.lang.instrument.ClassFileTransformer)"); }
-  public abstract boolean removeTransformer(java.lang.instrument.ClassFileTransformer transformer) { throw new AbstractMethodError("java.lang.instrument.Instrumentation.removeTransformer(java.lang.instrument.ClassFileTransformer)"); }
-  public abstract boolean isRetransformClassesSupported() { throw new AbstractMethodError("java.lang.instrument.Instrumentation.isRetransformClassesSupported()"); }
-  public abstract void retransformClasses(java.lang.Class<?>... classes) throws java.lang.instrument.UnmodifiableClassException { throw new AbstractMethodError("java.lang.instrument.Instrumentation.retransformClasses(java.lang.Class<?>...)"); }
-  public abstract boolean isRedefineClassesSupported() { throw new AbstractMethodError("java.lang.instrument.Instrumentation.isRedefineClassesSupported()"); }
-  public abstract void redefineClasses(java.lang.instrument.ClassDefinition... definitions) throws java.lang.ClassNotFoundException, java.lang.instrument.UnmodifiableClassException { throw new AbstractMethodError("java.lang.instrument.Instrumentation.redefineClasses(java.lang.instrument.ClassDefinition...)"); }
-  public abstract boolean isModifiableClass(java.lang.Class<?> theClass) { throw new AbstractMethodError("java.lang.instrument.Instrumentation.isModifiableClass(java.lang.Class<?>)"); }
-  public abstract java.lang.Class[] getAllLoadedClasses() { throw new AbstractMethodError("java.lang.instrument.Instrumentation.getAllLoadedClasses()"); }
-  public abstract java.lang.Class[] getInitiatedClasses(java.lang.ClassLoader loader) { throw new AbstractMethodError("java.lang.instrument.Instrumentation.getInitiatedClasses(java.lang.ClassLoader)"); }
-  public abstract long getObjectSize(java.lang.Object objectToSize) { throw new AbstractMethodError("java.lang.instrument.Instrumentation.getObjectSize(java.lang.Object)"); }
-  public abstract void appendToBootstrapClassLoaderSearch(java.util.jar.JarFile jarfile) { throw new AbstractMethodError("java.lang.instrument.Instrumentation.appendToBootstrapClassLoaderSearch(java.util.jar.JarFile)"); }
-  public abstract void appendToSystemClassLoaderSearch(java.util.jar.JarFile jarfile) { throw new AbstractMethodError("java.lang.instrument.Instrumentation.appendToSystemClassLoaderSearch(java.util.jar.JarFile)"); }
-  public abstract boolean isNativeMethodPrefixSupported() { throw new AbstractMethodError("java.lang.instrument.Instrumentation.isNativeMethodPrefixSupported()"); }
-  public abstract void setNativeMethodPrefix(java.lang.instrument.ClassFileTransformer transformer, java.lang.String prefix) { throw new AbstractMethodError("java.lang.instrument.Instrumentation.setNativeMethodPrefix(java.lang.instrument.ClassFileTransformer, java.lang.String)"); }
-  public abstract void redefineModule(java.lang.Module module, java.util.Set<java.lang.Module> extraReads, java.util.Map<java.lang.String, java.util.Set<java.lang.Module>> extraExports, java.util.Map<java.lang.String, java.util.Set<java.lang.Module>> extraOpens, java.util.Set<java.lang.Class<?>> extraUses, java.util.Map<java.lang.Class<?>, java.util.List<java.lang.Class<?>>> extraProvides) { throw new AbstractMethodError("java.lang.instrument.Instrumentation.redefineModule(java.lang.Module, java.util.Set<java.lang.Module>, java.util.Map<java.lang.String, java.util.Set<java.lang.Module>>, java.util.Map<java.lang.String, java.util.Set<java.lang.Module>>, java.util.Set<java.lang.Class<?>>, java.util.Map<java.lang.Class<?>, java.util.List<java.lang.Class<?>>>)"); }
-  public abstract boolean isModifiableModule(java.lang.Module module) { throw new AbstractMethodError("java.lang.instrument.Instrumentation.isModifiableModule(java.lang.Module)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void addTransformer(java.lang.instrument.ClassFileTransformer transformer, boolean canRetransform) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addTransformer(java.lang.instrument.ClassFileTransformer transformer) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean removeTransformer(java.lang.instrument.ClassFileTransformer transformer) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isRetransformClassesSupported() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.instrument.UnmodifiableClassException")
+  public void retransformClasses(java.lang.Class<?>... classes) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isRedefineClassesSupported() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.lang.ClassNotFoundException, java.lang.instrument.UnmodifiableClassException")
+  public void redefineClasses(java.lang.instrument.ClassDefinition... definitions) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isModifiableClass(java.lang.Class<?> theClass) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Class[] getAllLoadedClasses() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Class[] getInitiatedClasses(java.lang.ClassLoader loader) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getObjectSize(java.lang.Object objectToSize) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void appendToBootstrapClassLoaderSearch(java.util.jar.JarFile jarfile) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void appendToSystemClassLoaderSearch(java.util.jar.JarFile jarfile) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isNativeMethodPrefixSupported() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setNativeMethodPrefix(java.lang.instrument.ClassFileTransformer transformer, java.lang.String prefix) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void redefineModule(java.lang.Module module, java.util.Set<java.lang.Module> extraReads, java.util.Map<java.lang.String, java.util.Set<java.lang.Module>> extraExports, java.util.Map<java.lang.String, java.util.Set<java.lang.Module>> extraOpens, java.util.Set<java.lang.Class<?>> extraUses, java.util.Map<java.lang.Class<?>, java.util.List<java.lang.Class<?>>> extraProvides) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isModifiableModule(java.lang.Module module) { return false; }
   < ---- END java signatures ---- >
 }

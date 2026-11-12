@@ -58,40 +58,71 @@ class LogRecord {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LogRecord(java.util.logging.Level level, java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.<init>(java.util.logging.Level, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LogRecord(java.util.logging.Level level, java.lang.String msg) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getMessage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getMessage()"); }
-  public java.lang.Object[] getParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getParameters()"); }
-  public void setInstant(java.time.Instant instant) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setInstant(java.time.Instant)"); }
-  public long getMillis() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getMillis()"); }
-  public void setLevel(java.util.logging.Level level) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setLevel(java.util.logging.Level)"); }
-  public java.util.logging.Level getLevel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getLevel()"); }
-  public java.lang.String getResourceBundleName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getResourceBundleName()"); }
-  public java.lang.String getLoggerName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getLoggerName()"); }
-  public void setLoggerName(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setLoggerName(java.lang.String)"); }
-  public void setResourceBundleName(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setResourceBundleName(java.lang.String)"); }
-  public void setResourceBundle(java.util.ResourceBundle bundle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setResourceBundle(java.util.ResourceBundle)"); }
-  public void setParameters(java.lang.Object[] parameters) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setParameters(java.lang.Object[])"); }
-  public void setThrown(java.lang.Throwable thrown) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setThrown(java.lang.Throwable)"); }
-  public void setSourceClassName(java.lang.String sourceClassName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setSourceClassName(java.lang.String)"); }
-  public void setSourceMethodName(java.lang.String sourceMethodName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setSourceMethodName(java.lang.String)"); }
-  public java.util.ResourceBundle getResourceBundle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getResourceBundle()"); }
-  public void setMillis(long millis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setMillis(long)"); }
-  public void setMessage(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setMessage(java.lang.String)"); }
-  public java.time.Instant getInstant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getInstant()"); }
-  public long getSequenceNumber() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getSequenceNumber()"); }
-  public void setSequenceNumber(long seq) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setSequenceNumber(long)"); }
-  public java.lang.String getSourceClassName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getSourceClassName()"); }
-  public java.lang.String getSourceMethodName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getSourceMethodName()"); }
-  public int getThreadID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getThreadID()"); }
-  public void setThreadID(int threadID) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setThreadID(int)"); }
-  public long getLongThreadID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getLongThreadID()"); }
-  public java.util.logging.LogRecord setLongThreadID(long longThreadID) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.setLongThreadID(long)"); }
-  public java.lang.Throwable getThrown() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.LogRecord.getThrown()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getMessage() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] getParameters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInstant(java.time.Instant instant) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getMillis() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLevel(java.util.logging.Level level) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.logging.Level getLevel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getResourceBundleName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLoggerName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLoggerName(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setResourceBundleName(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setResourceBundle(java.util.ResourceBundle bundle) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setParameters(java.lang.Object[] parameters) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setThrown(java.lang.Throwable thrown) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSourceClassName(java.lang.String sourceClassName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSourceMethodName(java.lang.String sourceMethodName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.ResourceBundle getResourceBundle() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMillis(long millis) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMessage(java.lang.String message) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Instant getInstant() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getSequenceNumber() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSequenceNumber(long seq) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSourceClassName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSourceMethodName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getThreadID() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setThreadID(int threadID) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getLongThreadID() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.logging.LogRecord setLongThreadID(long longThreadID) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Throwable getThrown() { return null; }
   < ---- END java signatures ---- >
 }

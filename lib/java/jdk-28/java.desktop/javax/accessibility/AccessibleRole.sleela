@@ -125,6 +125,7 @@ class AccessibleRole {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AccessibleRole(java.lang.String key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleRole.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AccessibleRole(java.lang.String key) { }
   < ---- END java constructors ---- >
 }

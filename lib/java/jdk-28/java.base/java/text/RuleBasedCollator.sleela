@@ -58,20 +58,31 @@ class RuleBasedCollator {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RuleBasedCollator(java.lang.String rules) throws java.text.ParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.RuleBasedCollator.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
+  public RuleBasedCollator(java.lang.String rules) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.RuleBasedCollator.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.RuleBasedCollator.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.RuleBasedCollator.clone()"); }
-  public synchronized int compare(java.lang.String source, java.lang.String target) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.RuleBasedCollator.compare(java.lang.String, java.lang.String)"); }
-  public java.lang.String getRules() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.RuleBasedCollator.getRules()"); }
-  public java.text.CollationElementIterator getCollationElementIterator(java.lang.String source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.RuleBasedCollator.getCollationElementIterator(java.lang.String)"); }
-  public java.text.CollationElementIterator getCollationElementIterator(java.text.CharacterIterator source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.RuleBasedCollator.getCollationElementIterator(java.text.CharacterIterator)"); }
-  public synchronized java.text.CollationKey getCollationKey(java.lang.String source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.RuleBasedCollator.getCollationKey(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int compare(java.lang.String source, java.lang.String target) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getRules() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.CollationElementIterator getCollationElementIterator(java.lang.String source) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.CollationElementIterator getCollationElementIterator(java.text.CharacterIterator source) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.text.CollationKey getCollationKey(java.lang.String source) { return null; }
   < ---- END java signatures ---- >
 }

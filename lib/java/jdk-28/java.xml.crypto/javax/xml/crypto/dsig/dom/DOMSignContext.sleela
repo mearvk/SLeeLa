@@ -58,17 +58,25 @@ class DOMSignContext {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DOMSignContext(javax.xml.crypto.KeySelector ks, org.w3c.dom.Node parent, org.w3c.dom.Node nextSibling) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.dom.DOMSignContext.<init>(javax.xml.crypto.KeySelector, org.w3c.dom.Node, org.w3c.dom.Node)"); }
-  public DOMSignContext(javax.xml.crypto.KeySelector ks, org.w3c.dom.Node parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.dom.DOMSignContext.<init>(javax.xml.crypto.KeySelector, org.w3c.dom.Node)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DOMSignContext(javax.xml.crypto.KeySelector ks, org.w3c.dom.Node parent, org.w3c.dom.Node nextSibling) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DOMSignContext(javax.xml.crypto.KeySelector ks, org.w3c.dom.Node parent) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public org.w3c.dom.Node getParent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.dom.DOMSignContext.getParent()"); }
-  public void setParent(org.w3c.dom.Node parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.dom.DOMSignContext.setParent(org.w3c.dom.Node)"); }
-  public void setNextSibling(org.w3c.dom.Node nextSibling) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.dom.DOMSignContext.setNextSibling(org.w3c.dom.Node)"); }
-  public org.w3c.dom.Node getNextSibling() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.crypto.dsig.dom.DOMSignContext.getNextSibling()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public org.w3c.dom.Node getParent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setParent(org.w3c.dom.Node parent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNextSibling(org.w3c.dom.Node nextSibling) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public org.w3c.dom.Node getNextSibling() { return null; }
   < ---- END java signatures ---- >
 }

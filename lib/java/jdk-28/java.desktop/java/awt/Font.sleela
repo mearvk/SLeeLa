@@ -83,69 +83,129 @@ class Font {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Font(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?> attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.<init>(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?>)"); }
-  public Font(java.lang.String name, int style, int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.<init>(java.lang.String, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Font(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?> attributes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Font(java.lang.String name, int style, int size) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getName()"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.hashCode()"); }
-  public static java.awt.Font decode(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.decode(java.lang.String)"); }
-  public int getSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getSize()"); }
-  public java.util.Map<java.awt.font.TextAttribute, ?> getAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getAttributes()"); }
-  public java.lang.String getFamily(java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getFamily(java.util.Locale)"); }
-  public java.lang.String getFamily() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getFamily()"); }
-  public int getStyle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getStyle()"); }
-  public java.lang.String getFontName(java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getFontName(java.util.Locale)"); }
-  public java.lang.String getFontName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getFontName()"); }
-  public boolean hasLayoutAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.hasLayoutAttributes()"); }
-  public boolean isBold() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.isBold()"); }
-  public boolean isItalic() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.isItalic()"); }
-  public int getNumGlyphs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getNumGlyphs()"); }
-  public int getMissingGlyphCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getMissingGlyphCode()"); }
-  public byte getBaselineFor(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getBaselineFor(char)"); }
-  public boolean canDisplay(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.canDisplay(char)"); }
-  public boolean canDisplay(int codePoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.canDisplay(int)"); }
-  public float getItalicAngle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getItalicAngle()"); }
-  public boolean isTransformed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.isTransformed()"); }
-  public java.awt.geom.Rectangle2D getStringBounds(java.lang.String str, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getStringBounds(java.lang.String, int, int, java.awt.font.FontRenderContext)"); }
-  public java.awt.geom.Rectangle2D getStringBounds(java.text.CharacterIterator ci, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getStringBounds(java.text.CharacterIterator, int, int, java.awt.font.FontRenderContext)"); }
-  public java.awt.geom.Rectangle2D getStringBounds(java.lang.String str, java.awt.font.FontRenderContext frc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getStringBounds(java.lang.String, java.awt.font.FontRenderContext)"); }
-  public java.awt.geom.Rectangle2D getStringBounds(char[] chars, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getStringBounds(char[], int, int, java.awt.font.FontRenderContext)"); }
-  public static boolean textRequiresLayout(char[] chars, int start, int end) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.textRequiresLayout(char[], int, int)"); }
-  public static java.awt.Font[] createFonts(java.io.File fontFile) throws java.awt.FontFormatException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.createFonts(java.io.File)"); }
-  public static java.awt.Font createFont(int fontFormat, java.io.File fontFile) throws java.awt.FontFormatException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.createFont(int, java.io.File)"); }
-  public java.lang.String getPSName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getPSName()"); }
-  public float getSize2D() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getSize2D()"); }
-  public boolean isPlain() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.isPlain()"); }
-  public java.text.AttributedCharacterIterator.Attribute[] getAvailableAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getAvailableAttributes()"); }
-  public java.awt.Font deriveFont(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?> attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.deriveFont(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?>)"); }
-  public java.awt.Font deriveFont(float size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.deriveFont(float)"); }
-  public java.awt.Font deriveFont(int style) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.deriveFont(int)"); }
-  public java.awt.Font deriveFont(int style, float size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.deriveFont(int, float)"); }
-  public java.awt.Font deriveFont(int style, java.awt.geom.AffineTransform trans) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.deriveFont(int, java.awt.geom.AffineTransform)"); }
-  public int canDisplayUpTo(char[] text, int start, int limit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.canDisplayUpTo(char[], int, int)"); }
-  public int canDisplayUpTo(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.canDisplayUpTo(java.lang.String)"); }
-  public int canDisplayUpTo(java.text.CharacterIterator iter, int start, int limit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.canDisplayUpTo(java.text.CharacterIterator, int, int)"); }
-  public boolean hasUniformLineMetrics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.hasUniformLineMetrics()"); }
-  public java.awt.font.LineMetrics getLineMetrics(java.lang.String str, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getLineMetrics(java.lang.String, int, int, java.awt.font.FontRenderContext)"); }
-  public java.awt.font.LineMetrics getLineMetrics(char[] chars, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getLineMetrics(char[], int, int, java.awt.font.FontRenderContext)"); }
-  public java.awt.font.LineMetrics getLineMetrics(java.text.CharacterIterator ci, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getLineMetrics(java.text.CharacterIterator, int, int, java.awt.font.FontRenderContext)"); }
-  public java.awt.font.LineMetrics getLineMetrics(java.lang.String str, java.awt.font.FontRenderContext frc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getLineMetrics(java.lang.String, java.awt.font.FontRenderContext)"); }
-  public java.awt.geom.Rectangle2D getMaxCharBounds(java.awt.font.FontRenderContext frc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getMaxCharBounds(java.awt.font.FontRenderContext)"); }
-  public java.awt.font.GlyphVector createGlyphVector(java.awt.font.FontRenderContext frc, int[] glyphCodes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.createGlyphVector(java.awt.font.FontRenderContext, int[])"); }
-  public java.awt.font.GlyphVector createGlyphVector(java.awt.font.FontRenderContext frc, java.text.CharacterIterator ci) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.createGlyphVector(java.awt.font.FontRenderContext, java.text.CharacterIterator)"); }
-  public java.awt.font.GlyphVector createGlyphVector(java.awt.font.FontRenderContext frc, char[] chars) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.createGlyphVector(java.awt.font.FontRenderContext, char[])"); }
-  public java.awt.font.GlyphVector createGlyphVector(java.awt.font.FontRenderContext frc, java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.createGlyphVector(java.awt.font.FontRenderContext, java.lang.String)"); }
-  public java.awt.font.GlyphVector layoutGlyphVector(java.awt.font.FontRenderContext frc, char[] text, int start, int limit, int flags) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.layoutGlyphVector(java.awt.font.FontRenderContext, char[], int, int, int)"); }
-  public java.awt.geom.AffineTransform getTransform() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getTransform()"); }
-  public static java.awt.Font getFont(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?> attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getFont(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?>)"); }
-  public static java.awt.Font getFont(java.lang.String nm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getFont(java.lang.String)"); }
-  public static java.awt.Font getFont(java.lang.String nm, java.awt.Font font) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Font.getFont(java.lang.String, java.awt.Font)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Font decode(java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Map<java.awt.font.TextAttribute, ?> getAttributes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getFamily(java.util.Locale l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getFamily() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getStyle() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getFontName(java.util.Locale l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getFontName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasLayoutAttributes() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBold() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isItalic() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNumGlyphs() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMissingGlyphCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte getBaselineFor(char c) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean canDisplay(char c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean canDisplay(int codePoint) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getItalicAngle() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isTransformed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getStringBounds(java.lang.String str, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getStringBounds(java.text.CharacterIterator ci, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getStringBounds(java.lang.String str, java.awt.font.FontRenderContext frc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getStringBounds(char[] chars, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean textRequiresLayout(char[] chars, int start, int end) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.FontFormatException, java.io.IOException")
+  public static java.awt.Font[] createFonts(java.io.File fontFile) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.FontFormatException, java.io.IOException")
+  public static java.awt.Font createFont(int fontFormat, java.io.File fontFile) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPSName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getSize2D() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPlain() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.AttributedCharacterIterator.Attribute[] getAvailableAttributes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font deriveFont(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?> attributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font deriveFont(float size) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font deriveFont(int style) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font deriveFont(int style, float size) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font deriveFont(int style, java.awt.geom.AffineTransform trans) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int canDisplayUpTo(char[] text, int start, int limit) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int canDisplayUpTo(java.lang.String str) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int canDisplayUpTo(java.text.CharacterIterator iter, int start, int limit) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasUniformLineMetrics() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.LineMetrics getLineMetrics(java.lang.String str, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.LineMetrics getLineMetrics(char[] chars, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.LineMetrics getLineMetrics(java.text.CharacterIterator ci, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.LineMetrics getLineMetrics(java.lang.String str, java.awt.font.FontRenderContext frc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getMaxCharBounds(java.awt.font.FontRenderContext frc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.GlyphVector createGlyphVector(java.awt.font.FontRenderContext frc, int[] glyphCodes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.GlyphVector createGlyphVector(java.awt.font.FontRenderContext frc, java.text.CharacterIterator ci) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.GlyphVector createGlyphVector(java.awt.font.FontRenderContext frc, char[] chars) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.GlyphVector createGlyphVector(java.awt.font.FontRenderContext frc, java.lang.String str) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.GlyphVector layoutGlyphVector(java.awt.font.FontRenderContext frc, char[] text, int start, int limit, int flags) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.AffineTransform getTransform() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Font getFont(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?> attributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Font getFont(java.lang.String nm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.Font getFont(java.lang.String nm, java.awt.Font font) { return null; }
   < ---- END java signatures ---- >
 }

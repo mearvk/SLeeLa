@@ -58,7 +58,9 @@ class UnsupportedAudioFileException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnsupportedAudioFileException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.UnsupportedAudioFileException.<init>()"); }
-  public UnsupportedAudioFileException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.sampled.UnsupportedAudioFileException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsupportedAudioFileException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsupportedAudioFileException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

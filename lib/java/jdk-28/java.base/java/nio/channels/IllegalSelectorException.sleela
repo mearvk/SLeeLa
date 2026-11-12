@@ -58,6 +58,7 @@ class IllegalSelectorException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IllegalSelectorException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.IllegalSelectorException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalSelectorException() { }
   < ---- END java constructors ---- >
 }

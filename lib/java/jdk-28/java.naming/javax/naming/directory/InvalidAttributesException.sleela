@@ -58,7 +58,9 @@ class InvalidAttributesException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidAttributesException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InvalidAttributesException.<init>(java.lang.String)"); }
-  public InvalidAttributesException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.InvalidAttributesException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidAttributesException(java.lang.String explanation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidAttributesException() { }
   < ---- END java constructors ---- >
 }

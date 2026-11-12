@@ -58,15 +58,24 @@ class TreeNode {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.swing.tree.TreeNode getParent() { throw new AbstractMethodError("javax.swing.tree.TreeNode.getParent()"); }
-  public abstract int getIndex(javax.swing.tree.TreeNode node) { throw new AbstractMethodError("javax.swing.tree.TreeNode.getIndex(javax.swing.tree.TreeNode)"); }
-  public abstract java.util.Enumeration<? extends javax.swing.tree.TreeNode> children() { throw new AbstractMethodError("javax.swing.tree.TreeNode.children()"); }
-  public abstract boolean isLeaf() { throw new AbstractMethodError("javax.swing.tree.TreeNode.isLeaf()"); }
-  public abstract int getChildCount() { throw new AbstractMethodError("javax.swing.tree.TreeNode.getChildCount()"); }
-  public abstract boolean getAllowsChildren() { throw new AbstractMethodError("javax.swing.tree.TreeNode.getAllowsChildren()"); }
-  public abstract javax.swing.tree.TreeNode getChildAt(int childIndex) { throw new AbstractMethodError("javax.swing.tree.TreeNode.getChildAt(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.tree.TreeNode getParent() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getIndex(javax.swing.tree.TreeNode node) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Enumeration<? extends javax.swing.tree.TreeNode> children() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isLeaf() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getChildCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getAllowsChildren() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.tree.TreeNode getChildAt(int childIndex) { return null; }
   < ---- END java signatures ---- >
 }

@@ -69,26 +69,43 @@ class Collator {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Collator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Collator.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Collator() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.String source, java.lang.String target) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Collator.equals(java.lang.String, java.lang.String)"); }
-  public boolean equals(java.lang.Object that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Collator.equals(java.lang.Object)"); }
-  public abstract int hashCode() { throw new AbstractMethodError("java.text.Collator.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Collator.clone()"); }
-  public int compare(java.lang.Object o1, java.lang.Object o2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Collator.compare(java.lang.Object, java.lang.Object)"); }
-  public abstract int compare(java.lang.String source, java.lang.String target) { throw new AbstractMethodError("java.text.Collator.compare(java.lang.String, java.lang.String)"); }
-  public static synchronized java.text.Collator getInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Collator.getInstance()"); }
-  public static java.text.Collator getInstance(java.util.Locale desiredLocale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Collator.getInstance(java.util.Locale)"); }
-  public static synchronized java.util.Locale[] getAvailableLocales() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Collator.getAvailableLocales()"); }
-  public synchronized int getDecomposition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Collator.getDecomposition()"); }
-  public synchronized void setStrength(int newStrength) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Collator.setStrength(int)"); }
-  public synchronized void setDecomposition(int decompositionMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Collator.setDecomposition(int)"); }
-  public abstract java.text.CollationKey getCollationKey(java.lang.String source) { throw new AbstractMethodError("java.text.Collator.getCollationKey(java.lang.String)"); }
-  public synchronized int getStrength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Collator.getStrength()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.String source, java.lang.String target) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object that) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compare(java.lang.Object o1, java.lang.Object o2) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int compare(java.lang.String source, java.lang.String target) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static synchronized java.text.Collator getInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.text.Collator getInstance(java.util.Locale desiredLocale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static synchronized java.util.Locale[] getAvailableLocales() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int getDecomposition() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setStrength(int newStrength) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setDecomposition(int decompositionMode) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.text.CollationKey getCollationKey(java.lang.String source) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int getStrength() { return 0; }
   < ---- END java signatures ---- >
 }

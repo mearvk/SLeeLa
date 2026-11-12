@@ -58,7 +58,9 @@ class IIOException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IIOException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOException.<init>(java.lang.String)"); }
-  public IIOException(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.IIOException.<init>(java.lang.String, java.lang.Throwable)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IIOException(java.lang.String message) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IIOException(java.lang.String message, java.lang.Throwable cause) { }
   < ---- END java constructors ---- >
 }

@@ -58,19 +58,29 @@ class LinearGradientPaint {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LinearGradientPaint(java.awt.geom.Point2D start, java.awt.geom.Point2D end, float[] fractions, java.awt.Color[] colors, java.awt.MultipleGradientPaint.CycleMethod cycleMethod, java.awt.MultipleGradientPaint.ColorSpaceType colorSpace, java.awt.geom.AffineTransform gradientTransform) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.LinearGradientPaint.<init>(java.awt.geom.Point2D, java.awt.geom.Point2D, float[], java.awt.Color[], java.awt.MultipleGradientPaint.CycleMethod, java.awt.MultipleGradientPaint.ColorSpaceType, java.awt.geom.AffineTransform)"); }
-  public LinearGradientPaint(java.awt.geom.Point2D start, java.awt.geom.Point2D end, float[] fractions, java.awt.Color[] colors, java.awt.MultipleGradientPaint.CycleMethod cycleMethod) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.LinearGradientPaint.<init>(java.awt.geom.Point2D, java.awt.geom.Point2D, float[], java.awt.Color[], java.awt.MultipleGradientPaint.CycleMethod)"); }
-  public LinearGradientPaint(java.awt.geom.Point2D start, java.awt.geom.Point2D end, float[] fractions, java.awt.Color[] colors) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.LinearGradientPaint.<init>(java.awt.geom.Point2D, java.awt.geom.Point2D, float[], java.awt.Color[])"); }
-  public LinearGradientPaint(float startX, float startY, float endX, float endY, float[] fractions, java.awt.Color[] colors, java.awt.MultipleGradientPaint.CycleMethod cycleMethod) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.LinearGradientPaint.<init>(float, float, float, float, float[], java.awt.Color[], java.awt.MultipleGradientPaint.CycleMethod)"); }
-  public LinearGradientPaint(float startX, float startY, float endX, float endY, float[] fractions, java.awt.Color[] colors) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.LinearGradientPaint.<init>(float, float, float, float, float[], java.awt.Color[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinearGradientPaint(java.awt.geom.Point2D start, java.awt.geom.Point2D end, float[] fractions, java.awt.Color[] colors, java.awt.MultipleGradientPaint.CycleMethod cycleMethod, java.awt.MultipleGradientPaint.ColorSpaceType colorSpace, java.awt.geom.AffineTransform gradientTransform) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinearGradientPaint(java.awt.geom.Point2D start, java.awt.geom.Point2D end, float[] fractions, java.awt.Color[] colors, java.awt.MultipleGradientPaint.CycleMethod cycleMethod) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinearGradientPaint(java.awt.geom.Point2D start, java.awt.geom.Point2D end, float[] fractions, java.awt.Color[] colors) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinearGradientPaint(float startX, float startY, float endX, float endY, float[] fractions, java.awt.Color[] colors, java.awt.MultipleGradientPaint.CycleMethod cycleMethod) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinearGradientPaint(float startX, float startY, float endX, float endY, float[] fractions, java.awt.Color[] colors) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.geom.Point2D getStartPoint() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.LinearGradientPaint.getStartPoint()"); }
-  public java.awt.geom.Point2D getEndPoint() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.LinearGradientPaint.getEndPoint()"); }
-  public java.awt.PaintContext createContext(java.awt.image.ColorModel cm, java.awt.Rectangle deviceBounds, java.awt.geom.Rectangle2D userBounds, java.awt.geom.AffineTransform transform, java.awt.RenderingHints hints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.LinearGradientPaint.createContext(java.awt.image.ColorModel, java.awt.Rectangle, java.awt.geom.Rectangle2D, java.awt.geom.AffineTransform, java.awt.RenderingHints)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Point2D getStartPoint() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Point2D getEndPoint() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.PaintContext createContext(java.awt.image.ColorModel cm, java.awt.Rectangle deviceBounds, java.awt.geom.Rectangle2D userBounds, java.awt.geom.AffineTransform transform, java.awt.RenderingHints hints) { return null; }
   < ---- END java signatures ---- >
 }

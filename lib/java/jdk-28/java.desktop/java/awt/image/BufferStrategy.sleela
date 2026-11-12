@@ -59,18 +59,27 @@ class BufferStrategy {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  BufferStrategy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.BufferStrategy.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  BufferStrategy() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void dispose() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.BufferStrategy.dispose()"); }
-  public abstract void show() { throw new AbstractMethodError("java.awt.image.BufferStrategy.show()"); }
-  public abstract java.awt.Graphics getDrawGraphics() { throw new AbstractMethodError("java.awt.image.BufferStrategy.getDrawGraphics()"); }
-  public abstract boolean contentsLost() { throw new AbstractMethodError("java.awt.image.BufferStrategy.contentsLost()"); }
-  public abstract boolean contentsRestored() { throw new AbstractMethodError("java.awt.image.BufferStrategy.contentsRestored()"); }
-  public abstract java.awt.BufferCapabilities getCapabilities() { throw new AbstractMethodError("java.awt.image.BufferStrategy.getCapabilities()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void dispose() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void show() { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Graphics getDrawGraphics() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean contentsLost() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean contentsRestored() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.BufferCapabilities getCapabilities() { return null; }
   < ---- END java signatures ---- >
 }

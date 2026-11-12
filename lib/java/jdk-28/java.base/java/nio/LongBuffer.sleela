@@ -58,47 +58,88 @@ class LongBuffer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.nio.LongBuffer reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.reset()"); }
-  public abstract long get() { throw new AbstractMethodError("java.nio.LongBuffer.get()"); }
-  public java.nio.LongBuffer get(int index, long[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.get(int, long[])"); }
-  public abstract long get(int index) { throw new AbstractMethodError("java.nio.LongBuffer.get(int)"); }
-  public java.nio.LongBuffer get(long[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.get(long[], int, int)"); }
-  public java.nio.LongBuffer get(long[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.get(long[])"); }
-  public java.nio.LongBuffer get(int index, long[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.get(int, long[], int, int)"); }
-  public java.nio.LongBuffer put(java.nio.LongBuffer src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.put(java.nio.LongBuffer)"); }
-  public java.nio.LongBuffer put(long[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.put(long[], int, int)"); }
-  public final java.nio.LongBuffer put(long[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.put(long[])"); }
-  public java.nio.LongBuffer put(int index, java.nio.LongBuffer src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.put(int, java.nio.LongBuffer, int, int)"); }
-  public java.nio.LongBuffer put(int index, long[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.put(int, long[])"); }
-  public java.nio.LongBuffer put(int index, long[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.put(int, long[], int, int)"); }
-  public abstract java.nio.LongBuffer put(int index, long l) { throw new AbstractMethodError("java.nio.LongBuffer.put(int, long)"); }
-  public abstract java.nio.LongBuffer put(long l) { throw new AbstractMethodError("java.nio.LongBuffer.put(long)"); }
-  public boolean equals(java.lang.Object ob) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.hashCode()"); }
-  public int compareTo(java.nio.LongBuffer that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.compareTo(java.nio.LongBuffer)"); }
-  public final java.nio.LongBuffer clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.clear()"); }
-  public static java.nio.LongBuffer wrap(long[] array) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.wrap(long[])"); }
-  public static java.nio.LongBuffer wrap(long[] array, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.wrap(long[], int, int)"); }
-  public final java.nio.LongBuffer position(int newPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.position(int)"); }
-  public int mismatch(java.nio.LongBuffer that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.mismatch(java.nio.LongBuffer)"); }
-  public final java.nio.LongBuffer limit(int newLimit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.limit(int)"); }
-  public abstract boolean isDirect() { throw new AbstractMethodError("java.nio.LongBuffer.isDirect()"); }
-  public final boolean hasArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.hasArray()"); }
-  public final long[] array() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.array()"); }
-  public final int arrayOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.arrayOffset()"); }
-  public final java.nio.LongBuffer mark() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.mark()"); }
-  public final java.nio.LongBuffer flip() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.flip()"); }
-  public final java.nio.LongBuffer rewind() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.rewind()"); }
-  public abstract java.nio.LongBuffer slice() { throw new AbstractMethodError("java.nio.LongBuffer.slice()"); }
-  public abstract java.nio.LongBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.LongBuffer.slice(int, int)"); }
-  public abstract java.nio.LongBuffer duplicate() { throw new AbstractMethodError("java.nio.LongBuffer.duplicate()"); }
-  public static java.nio.LongBuffer allocate(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.LongBuffer.allocate(int)"); }
-  public abstract java.nio.LongBuffer asReadOnlyBuffer() { throw new AbstractMethodError("java.nio.LongBuffer.asReadOnlyBuffer()"); }
-  public abstract java.nio.LongBuffer compact() { throw new AbstractMethodError("java.nio.LongBuffer.compact()"); }
-  public abstract java.nio.ByteOrder order() { throw new AbstractMethodError("java.nio.LongBuffer.order()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.LongBuffer reset() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long get() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.LongBuffer get(int index, long[] dst) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long get(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.LongBuffer get(long[] dst, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.LongBuffer get(long[] dst) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.LongBuffer get(int index, long[] dst, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.LongBuffer put(java.nio.LongBuffer src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.LongBuffer put(long[] src, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.LongBuffer put(long[] src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.LongBuffer put(int index, java.nio.LongBuffer src, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.LongBuffer put(int index, long[] src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.LongBuffer put(int index, long[] src, int offset, int length) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.LongBuffer put(int index, long l) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.LongBuffer put(long l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object ob) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.nio.LongBuffer that) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.LongBuffer clear() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.LongBuffer wrap(long[] array) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.LongBuffer wrap(long[] array, int offset, int length) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.LongBuffer position(int newPosition) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int mismatch(java.nio.LongBuffer that) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.LongBuffer limit(int newLimit) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDirect() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean hasArray() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long[] array() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int arrayOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.LongBuffer mark() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.LongBuffer flip() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.LongBuffer rewind() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.LongBuffer slice() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.LongBuffer slice(int index, int length) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.LongBuffer duplicate() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.nio.LongBuffer allocate(int capacity) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.LongBuffer asReadOnlyBuffer() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.LongBuffer compact() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.ByteOrder order() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,16 +58,26 @@ class CharacterData {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getLength() { throw new AbstractMethodError("org.w3c.dom.CharacterData.getLength()"); }
-  public abstract java.lang.String getData() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.CharacterData.getData()"); }
-  public abstract void setData(java.lang.String data) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.CharacterData.setData(java.lang.String)"); }
-  public abstract java.lang.String substringData(int offset, int count) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.CharacterData.substringData(int, int)"); }
-  public abstract void appendData(java.lang.String arg) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.CharacterData.appendData(java.lang.String)"); }
-  public abstract void insertData(int offset, java.lang.String arg) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.CharacterData.insertData(int, java.lang.String)"); }
-  public abstract void deleteData(int offset, int count) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.CharacterData.deleteData(int, int)"); }
-  public abstract void replaceData(int offset, int count, java.lang.String arg) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.CharacterData.replaceData(int, int, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public java.lang.String getData() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setData(java.lang.String data) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public java.lang.String substringData(int offset, int count) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void appendData(java.lang.String arg) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void insertData(int offset, java.lang.String arg) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void deleteData(int offset, int count) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void replaceData(int offset, int count, java.lang.String arg) { }
   < ---- END java signatures ---- >
 }

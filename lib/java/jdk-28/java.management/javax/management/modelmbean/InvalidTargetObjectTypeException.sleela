@@ -58,8 +58,11 @@ class InvalidTargetObjectTypeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidTargetObjectTypeException(java.lang.Exception e, java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.InvalidTargetObjectTypeException.<init>(java.lang.Exception, java.lang.String)"); }
-  public InvalidTargetObjectTypeException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.InvalidTargetObjectTypeException.<init>(java.lang.String)"); }
-  public InvalidTargetObjectTypeException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.modelmbean.InvalidTargetObjectTypeException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidTargetObjectTypeException(java.lang.Exception e, java.lang.String s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidTargetObjectTypeException(java.lang.String s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidTargetObjectTypeException() { }
   < ---- END java constructors ---- >
 }

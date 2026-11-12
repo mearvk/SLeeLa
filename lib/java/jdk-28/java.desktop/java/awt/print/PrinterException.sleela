@@ -58,7 +58,9 @@ class PrinterException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PrinterException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterException.<init>()"); }
-  public PrinterException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PrinterException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PrinterException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

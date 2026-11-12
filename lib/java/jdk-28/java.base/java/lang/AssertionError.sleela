@@ -58,14 +58,23 @@ class AssertionError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AssertionError(int detailMessage) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.AssertionError.<init>(int)"); }
-  public AssertionError(long detailMessage) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.AssertionError.<init>(long)"); }
-  public AssertionError(float detailMessage) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.AssertionError.<init>(float)"); }
-  public AssertionError(double detailMessage) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.AssertionError.<init>(double)"); }
-  public AssertionError(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.AssertionError.<init>(java.lang.String, java.lang.Throwable)"); }
-  public AssertionError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.AssertionError.<init>()"); }
-  public AssertionError(java.lang.Object detailMessage) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.AssertionError.<init>(java.lang.Object)"); }
-  public AssertionError(boolean detailMessage) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.AssertionError.<init>(boolean)"); }
-  public AssertionError(char detailMessage) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.AssertionError.<init>(char)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AssertionError(int detailMessage) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AssertionError(long detailMessage) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AssertionError(float detailMessage) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AssertionError(double detailMessage) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AssertionError(java.lang.String message, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AssertionError() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AssertionError(java.lang.Object detailMessage) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AssertionError(boolean detailMessage) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AssertionError(char detailMessage) { }
   < ---- END java constructors ---- >
 }

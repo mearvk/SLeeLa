@@ -59,34 +59,58 @@ class SecureRandom {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SecureRandom(java.security.SecureRandomSpi secureRandomSpi, java.security.Provider provider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.<init>(java.security.SecureRandomSpi, java.security.Provider)"); }
-  public SecureRandom(byte[] seed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.<init>(byte[])"); }
-  public SecureRandom() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SecureRandom(java.security.SecureRandomSpi secureRandomSpi, java.security.Provider provider) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SecureRandom(byte[] seed) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SecureRandom() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.toString()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
   @JavaProtected
-  final int next(int numBits) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.next(int)"); }
-  public static java.security.SecureRandom getInstance(java.lang.String algorithm, java.security.SecureRandomParameters params, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getInstance(java.lang.String, java.security.SecureRandomParameters, java.security.Provider)"); }
-  public static java.security.SecureRandom getInstance(java.lang.String algorithm, java.security.SecureRandomParameters params, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getInstance(java.lang.String, java.security.SecureRandomParameters, java.lang.String)"); }
-  public static java.security.SecureRandom getInstance(java.lang.String algorithm, java.security.SecureRandomParameters params) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getInstance(java.lang.String, java.security.SecureRandomParameters)"); }
-  public static java.security.SecureRandom getInstance(java.lang.String algorithm, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getInstance(java.lang.String, java.lang.String)"); }
-  public static java.security.SecureRandom getInstance(java.lang.String algorithm) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getInstance(java.lang.String)"); }
-  public java.security.SecureRandomParameters getParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getParameters()"); }
-  public void nextBytes(byte[] bytes, java.security.SecureRandomParameters params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.nextBytes(byte[], java.security.SecureRandomParameters)"); }
-  public void nextBytes(byte[] bytes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.nextBytes(byte[])"); }
-  public final java.security.Provider getProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getProvider()"); }
-  public void setSeed(long seed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.setSeed(long)"); }
-  public void setSeed(byte[] seed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.setSeed(byte[])"); }
-  public static byte[] getSeed(int numBytes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getSeed(int)"); }
-  public java.lang.String getAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getAlgorithm()"); }
-  public byte[] generateSeed(int numBytes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.generateSeed(int)"); }
-  public static java.security.SecureRandom getInstanceStrong() throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.getInstanceStrong()"); }
-  public void reseed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.reseed()"); }
-  public void reseed(java.security.SecureRandomParameters params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SecureRandom.reseed(java.security.SecureRandomParameters)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final int next(int numBits) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static java.security.SecureRandom getInstance(java.lang.String algorithm, java.security.SecureRandomParameters params, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException")
+  public static java.security.SecureRandom getInstance(java.lang.String algorithm, java.security.SecureRandomParameters params, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static java.security.SecureRandom getInstance(java.lang.String algorithm, java.security.SecureRandomParameters params) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException")
+  public static java.security.SecureRandom getInstance(java.lang.String algorithm, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static java.security.SecureRandom getInstance(java.lang.String algorithm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.SecureRandomParameters getParameters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void nextBytes(byte[] bytes, java.security.SecureRandomParameters params) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void nextBytes(byte[] bytes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.Provider getProvider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSeed(long seed) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSeed(byte[] seed) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static byte[] getSeed(int numBytes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] generateSeed(int numBytes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static java.security.SecureRandom getInstanceStrong() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reseed() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reseed(java.security.SecureRandomParameters params) { }
   < ---- END java signatures ---- >
 }

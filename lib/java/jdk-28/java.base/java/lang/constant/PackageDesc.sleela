@@ -58,13 +58,20 @@ class PackageDesc {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default java.lang.String name() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.PackageDesc.name()"); }
-  public abstract boolean equals(java.lang.Object o) { throw new AbstractMethodError("java.lang.constant.PackageDesc.equals(java.lang.Object)"); }
-  public static java.lang.constant.PackageDesc of(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.PackageDesc.of(java.lang.String)"); }
-  public abstract java.lang.String internalName() { throw new AbstractMethodError("java.lang.constant.PackageDesc.internalName()"); }
-  public static java.lang.constant.PackageDesc ofInternalName(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.constant.PackageDesc.ofInternalName(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.String name() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.constant.PackageDesc of(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String internalName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.constant.PackageDesc ofInternalName(java.lang.String name) { return null; }
   < ---- END java signatures ---- >
 }

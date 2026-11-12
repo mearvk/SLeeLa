@@ -58,9 +58,13 @@ class GeneralPath {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public GeneralPath(java.awt.Shape s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.GeneralPath.<init>(java.awt.Shape)"); }
-  public GeneralPath(int rule, int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.GeneralPath.<init>(int, int)"); }
-  public GeneralPath(int rule) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.GeneralPath.<init>(int)"); }
-  public GeneralPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.GeneralPath.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public GeneralPath(java.awt.Shape s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public GeneralPath(int rule, int initialCapacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public GeneralPath(int rule) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public GeneralPath() { }
   < ---- END java constructors ---- >
 }

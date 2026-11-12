@@ -58,25 +58,44 @@ class Comparator<T> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("java.util.Comparator.equals(java.lang.Object)"); }
-  public abstract int compare(T o1, T o2) { throw new AbstractMethodError("java.util.Comparator.compare(T, T)"); }
-  public default java.util.Comparator<T> reversed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.reversed()"); }
-  public static <T extends java.lang.Comparable<? super T>> java.util.Comparator<T> reverseOrder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.reverseOrder()"); }
-  public static <T, U extends java.lang.Comparable<? super U>> java.util.Comparator<T> comparing(java.util.function.Function<? super T, ? extends U> keyExtractor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.comparing(java.util.function.Function<? super T, ? extends U>)"); }
-  public static <T, U> java.util.Comparator<T> comparing(java.util.function.Function<? super T, ? extends U> keyExtractor, java.util.Comparator<? super U> keyComparator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.comparing(java.util.function.Function<? super T, ? extends U>, java.util.Comparator<? super U>)"); }
-  public default <U> java.util.Comparator<T> thenComparing(java.util.function.Function<? super T, ? extends U> keyExtractor, java.util.Comparator<? super U> keyComparator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.thenComparing(java.util.function.Function<? super T, ? extends U>, java.util.Comparator<? super U>)"); }
-  public default java.util.Comparator<T> thenComparing(java.util.Comparator<? super T> other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.thenComparing(java.util.Comparator<? super T>)"); }
-  public static <T> java.util.Comparator<T> comparingInt(java.util.function.ToIntFunction<? super T> keyExtractor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.comparingInt(java.util.function.ToIntFunction<? super T>)"); }
-  public static <T> java.util.Comparator<T> comparingLong(java.util.function.ToLongFunction<? super T> keyExtractor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.comparingLong(java.util.function.ToLongFunction<? super T>)"); }
-  public static <T> java.util.Comparator<T> comparingDouble(java.util.function.ToDoubleFunction<? super T> keyExtractor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.comparingDouble(java.util.function.ToDoubleFunction<? super T>)"); }
-  public default java.util.Comparator<T> thenComparingInt(java.util.function.ToIntFunction<? super T> keyExtractor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.thenComparingInt(java.util.function.ToIntFunction<? super T>)"); }
-  public default java.util.Comparator<T> thenComparingLong(java.util.function.ToLongFunction<? super T> keyExtractor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.thenComparingLong(java.util.function.ToLongFunction<? super T>)"); }
-  public default java.util.Comparator<T> thenComparingDouble(java.util.function.ToDoubleFunction<? super T> keyExtractor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.thenComparingDouble(java.util.function.ToDoubleFunction<? super T>)"); }
-  public static <T extends java.lang.Comparable<? super T>> java.util.Comparator<T> naturalOrder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.naturalOrder()"); }
-  public static <T> java.util.Comparator<T> nullsFirst(java.util.Comparator<? super T> comparator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.nullsFirst(java.util.Comparator<? super T>)"); }
-  public static <T> java.util.Comparator<T> nullsLast(java.util.Comparator<? super T> comparator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Comparator.nullsLast(java.util.Comparator<? super T>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int compare(T o1, T o2) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Comparator<T> reversed() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T extends java.lang.Comparable<? super T>> java.util.Comparator<T> reverseOrder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T, U extends java.lang.Comparable<? super U>> java.util.Comparator<T> comparing(java.util.function.Function<? super T, ? extends U> keyExtractor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T, U> java.util.Comparator<T> comparing(java.util.function.Function<? super T, ? extends U> keyExtractor, java.util.Comparator<? super U> keyComparator) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default <U> java.util.Comparator<T> thenComparing(java.util.function.Function<? super T, ? extends U> keyExtractor, java.util.Comparator<? super U> keyComparator) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Comparator<T> thenComparing(java.util.Comparator<? super T> other) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Comparator<T> comparingInt(java.util.function.ToIntFunction<? super T> keyExtractor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Comparator<T> comparingLong(java.util.function.ToLongFunction<? super T> keyExtractor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Comparator<T> comparingDouble(java.util.function.ToDoubleFunction<? super T> keyExtractor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Comparator<T> thenComparingInt(java.util.function.ToIntFunction<? super T> keyExtractor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Comparator<T> thenComparingLong(java.util.function.ToLongFunction<? super T> keyExtractor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.Comparator<T> thenComparingDouble(java.util.function.ToDoubleFunction<? super T> keyExtractor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T extends java.lang.Comparable<? super T>> java.util.Comparator<T> naturalOrder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Comparator<T> nullsFirst(java.util.Comparator<? super T> comparator) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.Comparator<T> nullsLast(java.util.Comparator<? super T> comparator) { return null; }
   < ---- END java signatures ---- >
 }

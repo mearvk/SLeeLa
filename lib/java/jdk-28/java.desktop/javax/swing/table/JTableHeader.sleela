@@ -69,54 +69,95 @@ class JTableHeader {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JTableHeader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.<init>()"); }
-  public JTableHeader(javax.swing.table.TableColumnModel cm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.<init>(javax.swing.table.TableColumnModel)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTableHeader() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTableHeader(javax.swing.table.TableColumnModel cm) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.paramString()"); }
-  public javax.swing.JTable getTable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getTable()"); }
-  public java.awt.Dimension getPreferredSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getPreferredSize()"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.updateUI()"); }
-  public void setUI(javax.swing.plaf.TableHeaderUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.setUI(javax.swing.plaf.TableHeaderUI)"); }
-  public javax.swing.plaf.TableHeaderUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getUI()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getUIClassID()"); }
-  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getToolTipText(java.awt.event.MouseEvent)"); }
-  public java.awt.Rectangle getHeaderRect(int column) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getHeaderRect(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.JTable getTable() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.TableHeaderUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.TableHeaderUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getHeaderRect(int column) { return null; }
   @JavaProtected
-  javax.swing.table.TableCellRenderer createDefaultRenderer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.createDefaultRenderer()"); }
-  public void setReorderingAllowed(boolean reorderingAllowed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.setReorderingAllowed(boolean)"); }
-  public boolean getReorderingAllowed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getReorderingAllowed()"); }
-  public void setResizingAllowed(boolean resizingAllowed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.setResizingAllowed(boolean)"); }
-  public boolean getResizingAllowed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getResizingAllowed()"); }
-  public javax.swing.table.TableColumn getDraggedColumn() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getDraggedColumn()"); }
-  public int getDraggedDistance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getDraggedDistance()"); }
-  public void setUpdateTableInRealTime(boolean flag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.setUpdateTableInRealTime(boolean)"); }
-  public boolean getUpdateTableInRealTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getUpdateTableInRealTime()"); }
-  public void setDraggedColumn(javax.swing.table.TableColumn aColumn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.setDraggedColumn(javax.swing.table.TableColumn)"); }
-  public void setDraggedDistance(int distance) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.setDraggedDistance(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.table.TableCellRenderer createDefaultRenderer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setReorderingAllowed(boolean reorderingAllowed) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getReorderingAllowed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setResizingAllowed(boolean resizingAllowed) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getResizingAllowed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.table.TableColumn getDraggedColumn() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDraggedDistance() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUpdateTableInRealTime(boolean flag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getUpdateTableInRealTime() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDraggedColumn(javax.swing.table.TableColumn aColumn) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDraggedDistance(int distance) { }
   @JavaProtected
-  javax.swing.table.TableColumnModel createDefaultColumnModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.createDefaultColumnModel()"); }
-  public void setColumnModel(javax.swing.table.TableColumnModel columnModel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.setColumnModel(javax.swing.table.TableColumnModel)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.table.TableColumnModel createDefaultColumnModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColumnModel(javax.swing.table.TableColumnModel columnModel) { }
   @JavaProtected
-  void initializeLocalVars() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.initializeLocalVars()"); }
-  public void setTable(javax.swing.JTable table) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.setTable(javax.swing.JTable)"); }
-  public void resizeAndRepaint() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.resizeAndRepaint()"); }
-  public javax.swing.table.TableColumnModel getColumnModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getColumnModel()"); }
-  public void setResizingColumn(javax.swing.table.TableColumn aColumn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.setResizingColumn(javax.swing.table.TableColumn)"); }
-  public javax.swing.table.TableCellRenderer getDefaultRenderer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getDefaultRenderer()"); }
-  public int columnAtPoint(java.awt.Point point) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.columnAtPoint(java.awt.Point)"); }
-  public javax.swing.table.TableColumn getResizingColumn() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getResizingColumn()"); }
-  public void setDefaultRenderer(javax.swing.table.TableCellRenderer defaultRenderer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.setDefaultRenderer(javax.swing.table.TableCellRenderer)"); }
-  public void columnAdded(javax.swing.event.TableColumnModelEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.columnAdded(javax.swing.event.TableColumnModelEvent)"); }
-  public void columnRemoved(javax.swing.event.TableColumnModelEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.columnRemoved(javax.swing.event.TableColumnModelEvent)"); }
-  public void columnMoved(javax.swing.event.TableColumnModelEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.columnMoved(javax.swing.event.TableColumnModelEvent)"); }
-  public void columnMarginChanged(javax.swing.event.ChangeEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.columnMarginChanged(javax.swing.event.ChangeEvent)"); }
-  public void columnSelectionChanged(javax.swing.event.ListSelectionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.columnSelectionChanged(javax.swing.event.ListSelectionEvent)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.table.JTableHeader.getAccessibleContext()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void initializeLocalVars() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTable(javax.swing.JTable table) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void resizeAndRepaint() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.table.TableColumnModel getColumnModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setResizingColumn(javax.swing.table.TableColumn aColumn) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.table.TableCellRenderer getDefaultRenderer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int columnAtPoint(java.awt.Point point) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.table.TableColumn getResizingColumn() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultRenderer(javax.swing.table.TableCellRenderer defaultRenderer) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void columnAdded(javax.swing.event.TableColumnModelEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void columnRemoved(javax.swing.event.TableColumnModelEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void columnMoved(javax.swing.event.TableColumnModelEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void columnMarginChanged(javax.swing.event.ChangeEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void columnSelectionChanged(javax.swing.event.ListSelectionEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

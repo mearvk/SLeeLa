@@ -59,15 +59,21 @@ class DateEditor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DateEditor(javax.swing.JSpinner spinner, java.lang.String dateFormatPattern) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.DateEditor.<init>(javax.swing.JSpinner, java.lang.String)"); }
-  public DateEditor(javax.swing.JSpinner spinner) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.DateEditor.<init>(javax.swing.JSpinner)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DateEditor(javax.swing.JSpinner spinner, java.lang.String dateFormatPattern) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DateEditor(javax.swing.JSpinner spinner) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.text.SimpleDateFormat getFormat() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.DateEditor.getFormat()"); }
-  public javax.swing.SpinnerDateModel getModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JSpinner.DateEditor.getModel()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.SimpleDateFormat getFormat() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.SpinnerDateModel getModel() { return null; }
   < ---- END java signatures ---- >
 }

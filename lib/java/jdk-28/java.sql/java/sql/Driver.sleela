@@ -58,15 +58,24 @@ class Driver {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getMajorVersion() { throw new AbstractMethodError("java.sql.Driver.getMajorVersion()"); }
-  public abstract java.sql.Connection connect(java.lang.String url, java.util.Properties info) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Driver.connect(java.lang.String, java.util.Properties)"); }
-  public abstract int getMinorVersion() { throw new AbstractMethodError("java.sql.Driver.getMinorVersion()"); }
-  public abstract boolean acceptsURL(java.lang.String url) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Driver.acceptsURL(java.lang.String)"); }
-  public abstract java.sql.DriverPropertyInfo[] getPropertyInfo(java.lang.String url, java.util.Properties info) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Driver.getPropertyInfo(java.lang.String, java.util.Properties)"); }
-  public abstract boolean jdbcCompliant() { throw new AbstractMethodError("java.sql.Driver.jdbcCompliant()"); }
-  public abstract java.util.logging.Logger getParentLogger() throws java.sql.SQLFeatureNotSupportedException { throw new AbstractMethodError("java.sql.Driver.getParentLogger()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getMajorVersion() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.Connection connect(java.lang.String url, java.util.Properties info) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMinorVersion() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public boolean acceptsURL(java.lang.String url) { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.sql.DriverPropertyInfo[] getPropertyInfo(java.lang.String url, java.util.Properties info) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean jdbcCompliant() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLFeatureNotSupportedException")
+  public java.util.logging.Logger getParentLogger() { return null; }
   < ---- END java signatures ---- >
 }

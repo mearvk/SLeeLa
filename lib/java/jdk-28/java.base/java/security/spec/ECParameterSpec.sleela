@@ -58,16 +58,23 @@ class ECParameterSpec {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ECParameterSpec(java.security.spec.EllipticCurve curve, java.security.spec.ECPoint g, java.math.BigInteger n, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.ECParameterSpec.<init>(java.security.spec.EllipticCurve, java.security.spec.ECPoint, java.math.BigInteger, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ECParameterSpec(java.security.spec.EllipticCurve curve, java.security.spec.ECPoint g, java.math.BigInteger n, int h) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.security.spec.EllipticCurve getCurve() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.ECParameterSpec.getCurve()"); }
-  public java.security.spec.ECPoint getGenerator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.ECParameterSpec.getGenerator()"); }
-  public java.math.BigInteger getOrder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.ECParameterSpec.getOrder()"); }
-  public int getCofactor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.ECParameterSpec.getCofactor()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.spec.EllipticCurve getCurve() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.spec.ECPoint getGenerator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger getOrder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getCofactor() { return 0; }
   < ---- END java signatures ---- >
 }

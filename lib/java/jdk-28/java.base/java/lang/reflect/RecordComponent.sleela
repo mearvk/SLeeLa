@@ -58,19 +58,32 @@ class RecordComponent {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.RecordComponent.getName()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.RecordComponent.toString()"); }
-  public <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.RecordComponent.getAnnotation(java.lang.Class<T>)"); }
-  public java.lang.annotation.Annotation[] getAnnotations() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.RecordComponent.getAnnotations()"); }
-  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.RecordComponent.getDeclaredAnnotations()"); }
-  public java.lang.String getGenericSignature() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.RecordComponent.getGenericSignature()"); }
-  public java.lang.reflect.Type getGenericType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.RecordComponent.getGenericType()"); }
-  public java.lang.Class<?> getType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.RecordComponent.getType()"); }
-  public java.lang.reflect.AnnotatedType getAnnotatedType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.RecordComponent.getAnnotatedType()"); }
-  public java.lang.reflect.Method getAccessor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.RecordComponent.getAccessor()"); }
-  public java.lang.Class<?> getDeclaringRecord() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.RecordComponent.getDeclaringRecord()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.annotation.Annotation[] getAnnotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getGenericSignature() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.Type getGenericType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.AnnotatedType getAnnotatedType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.reflect.Method getAccessor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getDeclaringRecord() { return null; }
   < ---- END java signatures ---- >
 }

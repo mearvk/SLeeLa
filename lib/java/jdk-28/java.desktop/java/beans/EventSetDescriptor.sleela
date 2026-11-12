@@ -58,26 +58,43 @@ class EventSetDescriptor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public EventSetDescriptor(java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.reflect.Method[] listenerMethods, java.lang.reflect.Method addListenerMethod, java.lang.reflect.Method removeListenerMethod) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.<init>(java.lang.String, java.lang.Class<?>, java.lang.reflect.Method[], java.lang.reflect.Method, java.lang.reflect.Method)"); }
-  public EventSetDescriptor(java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.reflect.Method[] listenerMethods, java.lang.reflect.Method addListenerMethod, java.lang.reflect.Method removeListenerMethod, java.lang.reflect.Method getListenerMethod) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.<init>(java.lang.String, java.lang.Class<?>, java.lang.reflect.Method[], java.lang.reflect.Method, java.lang.reflect.Method, java.lang.reflect.Method)"); }
-  public EventSetDescriptor(java.lang.Class<?> sourceClass, java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.String listenerMethodName) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.<init>(java.lang.Class<?>, java.lang.String, java.lang.Class<?>, java.lang.String)"); }
-  public EventSetDescriptor(java.lang.Class<?> sourceClass, java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.String[] listenerMethodNames, java.lang.String addListenerMethodName, java.lang.String removeListenerMethodName) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.<init>(java.lang.Class<?>, java.lang.String, java.lang.Class<?>, java.lang.String[], java.lang.String, java.lang.String)"); }
-  public EventSetDescriptor(java.lang.Class<?> sourceClass, java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.String[] listenerMethodNames, java.lang.String addListenerMethodName, java.lang.String removeListenerMethodName, java.lang.String getListenerMethodName) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.<init>(java.lang.Class<?>, java.lang.String, java.lang.Class<?>, java.lang.String[], java.lang.String, java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public EventSetDescriptor(java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.reflect.Method[] listenerMethods, java.lang.reflect.Method addListenerMethod, java.lang.reflect.Method removeListenerMethod) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public EventSetDescriptor(java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.reflect.Method[] listenerMethods, java.lang.reflect.Method addListenerMethod, java.lang.reflect.Method removeListenerMethod, java.lang.reflect.Method getListenerMethod) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public EventSetDescriptor(java.lang.Class<?> sourceClass, java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.String listenerMethodName) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public EventSetDescriptor(java.lang.Class<?> sourceClass, java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.String[] listenerMethodNames, java.lang.String addListenerMethodName, java.lang.String removeListenerMethodName) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public EventSetDescriptor(java.lang.Class<?> sourceClass, java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.String[] listenerMethodNames, java.lang.String addListenerMethodName, java.lang.String removeListenerMethodName, java.lang.String getListenerMethodName) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized java.lang.reflect.Method[] getListenerMethods() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.getListenerMethods()"); }
-  public java.lang.Class<?> getListenerType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.getListenerType()"); }
-  public boolean isUnicast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.isUnicast()"); }
-  public void setUnicast(boolean unicast) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.setUnicast(boolean)"); }
-  public synchronized java.beans.MethodDescriptor[] getListenerMethodDescriptors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.getListenerMethodDescriptors()"); }
-  public synchronized java.lang.reflect.Method getAddListenerMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.getAddListenerMethod()"); }
-  public synchronized java.lang.reflect.Method getRemoveListenerMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.getRemoveListenerMethod()"); }
-  public synchronized java.lang.reflect.Method getGetListenerMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.getGetListenerMethod()"); }
-  public void setInDefaultEventSet(boolean inDefaultEventSet) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.setInDefaultEventSet(boolean)"); }
-  public boolean isInDefaultEventSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventSetDescriptor.isInDefaultEventSet()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.reflect.Method[] getListenerMethods() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getListenerType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isUnicast() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUnicast(boolean unicast) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.beans.MethodDescriptor[] getListenerMethodDescriptors() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.reflect.Method getAddListenerMethod() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.reflect.Method getRemoveListenerMethod() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.reflect.Method getGetListenerMethod() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInDefaultEventSet(boolean inDefaultEventSet) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isInDefaultEventSet() { return false; }
   < ---- END java signatures ---- >
 }

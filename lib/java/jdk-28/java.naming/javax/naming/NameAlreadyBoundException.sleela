@@ -58,7 +58,9 @@ class NameAlreadyBoundException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NameAlreadyBoundException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.NameAlreadyBoundException.<init>(java.lang.String)"); }
-  public NameAlreadyBoundException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.NameAlreadyBoundException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NameAlreadyBoundException(java.lang.String explanation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NameAlreadyBoundException() { }
   < ---- END java constructors ---- >
 }

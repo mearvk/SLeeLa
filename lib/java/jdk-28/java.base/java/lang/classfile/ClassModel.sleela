@@ -58,18 +58,30 @@ class ClassModel {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.classfile.AccessFlags flags() { throw new AbstractMethodError("java.lang.classfile.ClassModel.flags()"); }
-  public abstract java.util.List<java.lang.classfile.constantpool.ClassEntry> interfaces() { throw new AbstractMethodError("java.lang.classfile.ClassModel.interfaces()"); }
-  public abstract java.util.Optional<java.lang.classfile.constantpool.ClassEntry> superclass() { throw new AbstractMethodError("java.lang.classfile.ClassModel.superclass()"); }
-  public abstract java.util.List<java.lang.classfile.MethodModel> methods() { throw new AbstractMethodError("java.lang.classfile.ClassModel.methods()"); }
-  public abstract java.util.List<java.lang.classfile.FieldModel> fields() { throw new AbstractMethodError("java.lang.classfile.ClassModel.fields()"); }
-  public abstract java.lang.classfile.constantpool.ClassEntry thisClass() { throw new AbstractMethodError("java.lang.classfile.ClassModel.thisClass()"); }
-  public abstract java.lang.classfile.constantpool.ConstantPool constantPool() { throw new AbstractMethodError("java.lang.classfile.ClassModel.constantPool()"); }
-  public abstract int majorVersion() { throw new AbstractMethodError("java.lang.classfile.ClassModel.majorVersion()"); }
-  public abstract int minorVersion() { throw new AbstractMethodError("java.lang.classfile.ClassModel.minorVersion()"); }
-  public abstract boolean isModuleInfo() { throw new AbstractMethodError("java.lang.classfile.ClassModel.isModuleInfo()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.AccessFlags flags() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.classfile.constantpool.ClassEntry> interfaces() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Optional<java.lang.classfile.constantpool.ClassEntry> superclass() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.classfile.MethodModel> methods() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.classfile.FieldModel> fields() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.ClassEntry thisClass() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.ConstantPool constantPool() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int majorVersion() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int minorVersion() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isModuleInfo() { return false; }
   < ---- END java signatures ---- >
 }

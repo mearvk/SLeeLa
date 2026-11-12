@@ -58,14 +58,22 @@ class StructuredTaskScope<T, R> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract R join() throws java.lang.InterruptedException { throw new AbstractMethodError("java.util.concurrent.StructuredTaskScope.join()"); }
-  public static <T, R> java.util.concurrent.StructuredTaskScope<T, R> open(java.util.concurrent.StructuredTaskScope.Joiner<? super T, ? extends R> joiner, java.util.function.Function<java.util.concurrent.StructuredTaskScope.Configuration, java.util.concurrent.StructuredTaskScope.Configuration> configFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.StructuredTaskScope.open(java.util.concurrent.StructuredTaskScope.Joiner<? super T, ? extends R>, java.util.function.Function<java.util.concurrent.StructuredTaskScope.Configuration, java.util.concurrent.StructuredTaskScope.Configuration>)"); }
-  public static <T, R> java.util.concurrent.StructuredTaskScope<T, R> open(java.util.concurrent.StructuredTaskScope.Joiner<? super T, ? extends R> joiner) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.StructuredTaskScope.open(java.util.concurrent.StructuredTaskScope.Joiner<? super T, ? extends R>)"); }
-  public static <T> java.util.concurrent.StructuredTaskScope<T, java.lang.Void> open() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.StructuredTaskScope.open()"); }
-  public abstract <U extends T> java.util.concurrent.StructuredTaskScope.Subtask<U> fork(java.lang.Runnable task) { throw new AbstractMethodError("java.util.concurrent.StructuredTaskScope.fork(java.lang.Runnable)"); }
-  public abstract boolean isCancelled() { throw new AbstractMethodError("java.util.concurrent.StructuredTaskScope.isCancelled()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
+  public R join() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T, R> java.util.concurrent.StructuredTaskScope<T, R> open(java.util.concurrent.StructuredTaskScope.Joiner<? super T, ? extends R> joiner, java.util.function.Function<java.util.concurrent.StructuredTaskScope.Configuration, java.util.concurrent.StructuredTaskScope.Configuration> configFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T, R> java.util.concurrent.StructuredTaskScope<T, R> open(java.util.concurrent.StructuredTaskScope.Joiner<? super T, ? extends R> joiner) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> java.util.concurrent.StructuredTaskScope<T, java.lang.Void> open() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <U extends T> java.util.concurrent.StructuredTaskScope.Subtask<U> fork(java.lang.Runnable task) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isCancelled() { return false; }
   < ---- END java signatures ---- >
 }

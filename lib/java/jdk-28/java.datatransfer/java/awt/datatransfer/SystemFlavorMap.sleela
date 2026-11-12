@@ -58,22 +58,38 @@ class SystemFlavorMap {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized java.util.Map<java.awt.datatransfer.DataFlavor, java.lang.String> getNativesForFlavors(java.awt.datatransfer.DataFlavor[] flavors) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.getNativesForFlavors(java.awt.datatransfer.DataFlavor[])"); }
-  public synchronized java.util.Map<java.lang.String, java.awt.datatransfer.DataFlavor> getFlavorsForNatives(java.lang.String[] natives) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.getFlavorsForNatives(java.lang.String[])"); }
-  public synchronized java.util.List<java.lang.String> getNativesForFlavor(java.awt.datatransfer.DataFlavor flav) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.getNativesForFlavor(java.awt.datatransfer.DataFlavor)"); }
-  public synchronized java.util.List<java.awt.datatransfer.DataFlavor> getFlavorsForNative(java.lang.String nat) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.getFlavorsForNative(java.lang.String)"); }
-  public static boolean isJavaMIMEType(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.isJavaMIMEType(java.lang.String)"); }
-  public static java.lang.String decodeJavaMIMEType(java.lang.String nat) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.decodeJavaMIMEType(java.lang.String)"); }
-  public static java.lang.String encodeDataFlavor(java.awt.datatransfer.DataFlavor flav) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.encodeDataFlavor(java.awt.datatransfer.DataFlavor)"); }
-  public synchronized void addUnencodedNativeForFlavor(java.awt.datatransfer.DataFlavor flav, java.lang.String nat) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.addUnencodedNativeForFlavor(java.awt.datatransfer.DataFlavor, java.lang.String)"); }
-  public synchronized void addFlavorForUnencodedNative(java.lang.String nat, java.awt.datatransfer.DataFlavor flav) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.addFlavorForUnencodedNative(java.lang.String, java.awt.datatransfer.DataFlavor)"); }
-  public static java.lang.String encodeJavaMIMEType(java.lang.String mimeType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.encodeJavaMIMEType(java.lang.String)"); }
-  public static java.awt.datatransfer.FlavorMap getDefaultFlavorMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.getDefaultFlavorMap()"); }
-  public synchronized void setNativesForFlavor(java.awt.datatransfer.DataFlavor flav, java.lang.String[] natives) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.setNativesForFlavor(java.awt.datatransfer.DataFlavor, java.lang.String[])"); }
-  public synchronized void setFlavorsForNative(java.lang.String nat, java.awt.datatransfer.DataFlavor[] flavors) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.setFlavorsForNative(java.lang.String, java.awt.datatransfer.DataFlavor[])"); }
-  public static java.awt.datatransfer.DataFlavor decodeDataFlavor(java.lang.String nat) throws java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.SystemFlavorMap.decodeDataFlavor(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.util.Map<java.awt.datatransfer.DataFlavor, java.lang.String> getNativesForFlavors(java.awt.datatransfer.DataFlavor[] flavors) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.util.Map<java.lang.String, java.awt.datatransfer.DataFlavor> getFlavorsForNatives(java.lang.String[] natives) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.util.List<java.lang.String> getNativesForFlavor(java.awt.datatransfer.DataFlavor flav) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.util.List<java.awt.datatransfer.DataFlavor> getFlavorsForNative(java.lang.String nat) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isJavaMIMEType(java.lang.String str) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String decodeJavaMIMEType(java.lang.String nat) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String encodeDataFlavor(java.awt.datatransfer.DataFlavor flav) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addUnencodedNativeForFlavor(java.awt.datatransfer.DataFlavor flav, java.lang.String nat) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addFlavorForUnencodedNative(java.lang.String nat, java.awt.datatransfer.DataFlavor flav) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String encodeJavaMIMEType(java.lang.String mimeType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.datatransfer.FlavorMap getDefaultFlavorMap() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setNativesForFlavor(java.awt.datatransfer.DataFlavor flav, java.lang.String[] natives) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setFlavorsForNative(java.lang.String nat, java.awt.datatransfer.DataFlavor[] flavors) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException")
+  public static java.awt.datatransfer.DataFlavor decodeDataFlavor(java.lang.String nat) { return null; }
   < ---- END java signatures ---- >
 }

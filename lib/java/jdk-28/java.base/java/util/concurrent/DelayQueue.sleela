@@ -58,31 +58,53 @@ class DelayQueue<E extends java.util.concurrent.Delayed> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DelayQueue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.<init>()"); }
-  public DelayQueue(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.<init>(java.util.Collection<? extends E>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DelayQueue() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DelayQueue(java.util.Collection<? extends E> c) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.remove(java.lang.Object)"); }
-  public E remove() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.remove()"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.size()"); }
-  public void put(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.put(E)"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.clear()"); }
-  public boolean add(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.add(E)"); }
-  public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.toArray(T[])"); }
-  public java.lang.Object[] toArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.toArray()"); }
-  public java.util.Iterator<E> iterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.iterator()"); }
-  public E peek() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.peek()"); }
-  public E poll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.poll()"); }
-  public E poll(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.poll(long, java.util.concurrent.TimeUnit)"); }
-  public boolean offer(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.offer(E)"); }
-  public boolean offer(E e, long timeout, java.util.concurrent.TimeUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.offer(E, long, java.util.concurrent.TimeUnit)"); }
-  public E take() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.take()"); }
-  public int drainTo(java.util.Collection<? super E> c, int maxElements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.drainTo(java.util.Collection<? super E>, int)"); }
-  public int drainTo(java.util.Collection<? super E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.drainTo(java.util.Collection<? super E>)"); }
-  public int remainingCapacity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.DelayQueue.remainingCapacity()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E remove() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void put(E e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean add(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> T[] toArray(T[] a) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] toArray() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Iterator<E> iterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E peek() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E poll() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public E poll(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean offer(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean offer(E e, long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public E take() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int drainTo(java.util.Collection<? super E> c, int maxElements) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int drainTo(java.util.Collection<? super E> c) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int remainingCapacity() { return 0; }
   < ---- END java signatures ---- >
 }

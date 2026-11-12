@@ -58,6 +58,7 @@ class OverlappingFileLockException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public OverlappingFileLockException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.OverlappingFileLockException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public OverlappingFileLockException() { }
   < ---- END java constructors ---- >
 }

@@ -58,11 +58,16 @@ class Operation {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default jdk.dynalink.NamedOperation named(java.lang.Object name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.Operation.named(java.lang.Object)"); }
-  public default jdk.dynalink.NamespaceOperation withNamespaces(jdk.dynalink.Namespace... namespaces) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.Operation.withNamespaces(jdk.dynalink.Namespace...)"); }
-  public default jdk.dynalink.NamespaceOperation withNamespace(jdk.dynalink.Namespace namespace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.Operation.withNamespace(jdk.dynalink.Namespace)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default jdk.dynalink.NamedOperation named(java.lang.Object name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default jdk.dynalink.NamespaceOperation withNamespaces(jdk.dynalink.Namespace... namespaces) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default jdk.dynalink.NamespaceOperation withNamespace(jdk.dynalink.Namespace namespace) { return null; }
   < ---- END java signatures ---- >
 }

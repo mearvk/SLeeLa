@@ -58,19 +58,29 @@ class EventHandler {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public EventHandler(java.lang.Object target, java.lang.String action, java.lang.String eventPropertyName, java.lang.String listenerMethodName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventHandler.<init>(java.lang.Object, java.lang.String, java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EventHandler(java.lang.Object target, java.lang.String action, java.lang.String eventPropertyName, java.lang.String listenerMethodName) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static <T> T create(java.lang.Class<T> listenerInterface, java.lang.Object target, java.lang.String action, java.lang.String eventPropertyName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventHandler.create(java.lang.Class<T>, java.lang.Object, java.lang.String, java.lang.String)"); }
-  public static <T> T create(java.lang.Class<T> listenerInterface, java.lang.Object target, java.lang.String action, java.lang.String eventPropertyName, java.lang.String listenerMethodName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventHandler.create(java.lang.Class<T>, java.lang.Object, java.lang.String, java.lang.String, java.lang.String)"); }
-  public static <T> T create(java.lang.Class<T> listenerInterface, java.lang.Object target, java.lang.String action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventHandler.create(java.lang.Class<T>, java.lang.Object, java.lang.String)"); }
-  public java.lang.Object getTarget() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventHandler.getTarget()"); }
-  public java.lang.String getListenerMethodName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventHandler.getListenerMethodName()"); }
-  public java.lang.String getEventPropertyName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventHandler.getEventPropertyName()"); }
-  public java.lang.String getAction() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.EventHandler.getAction()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> T create(java.lang.Class<T> listenerInterface, java.lang.Object target, java.lang.String action, java.lang.String eventPropertyName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> T create(java.lang.Class<T> listenerInterface, java.lang.Object target, java.lang.String action, java.lang.String eventPropertyName, java.lang.String listenerMethodName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T> T create(java.lang.Class<T> listenerInterface, java.lang.Object target, java.lang.String action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getTarget() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getListenerMethodName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getEventPropertyName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAction() { return null; }
   < ---- END java signatures ---- >
 }

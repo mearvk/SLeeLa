@@ -59,17 +59,25 @@ class HttpsServer {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  HttpsServer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpsServer.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  HttpsServer() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static com.sun.net.httpserver.HttpsServer create(java.net.InetSocketAddress addr, int backlog, java.lang.String path, com.sun.net.httpserver.HttpHandler handler, com.sun.net.httpserver.Filter... filters) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpsServer.create(java.net.InetSocketAddress, int, java.lang.String, com.sun.net.httpserver.HttpHandler, com.sun.net.httpserver.Filter...)"); }
-  public static com.sun.net.httpserver.HttpsServer create(java.net.InetSocketAddress addr, int backlog) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpsServer.create(java.net.InetSocketAddress, int)"); }
-  public static com.sun.net.httpserver.HttpsServer create() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpsServer.create()"); }
-  public abstract com.sun.net.httpserver.HttpsConfigurator getHttpsConfigurator() { throw new AbstractMethodError("com.sun.net.httpserver.HttpsServer.getHttpsConfigurator()"); }
-  public abstract void setHttpsConfigurator(com.sun.net.httpserver.HttpsConfigurator config) { throw new AbstractMethodError("com.sun.net.httpserver.HttpsServer.setHttpsConfigurator(com.sun.net.httpserver.HttpsConfigurator)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static com.sun.net.httpserver.HttpsServer create(java.net.InetSocketAddress addr, int backlog, java.lang.String path, com.sun.net.httpserver.HttpHandler handler, com.sun.net.httpserver.Filter... filters) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static com.sun.net.httpserver.HttpsServer create(java.net.InetSocketAddress addr, int backlog) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static com.sun.net.httpserver.HttpsServer create() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.net.httpserver.HttpsConfigurator getHttpsConfigurator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHttpsConfigurator(com.sun.net.httpserver.HttpsConfigurator config) { }
   < ---- END java signatures ---- >
 }

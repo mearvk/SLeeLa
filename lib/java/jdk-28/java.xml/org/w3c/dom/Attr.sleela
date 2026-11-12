@@ -58,15 +58,24 @@ class Attr {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("org.w3c.dom.Attr.getName()"); }
-  public abstract java.lang.String getValue() { throw new AbstractMethodError("org.w3c.dom.Attr.getValue()"); }
-  public abstract void setValue(java.lang.String value) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Attr.setValue(java.lang.String)"); }
-  public abstract boolean getSpecified() { throw new AbstractMethodError("org.w3c.dom.Attr.getSpecified()"); }
-  public abstract org.w3c.dom.Element getOwnerElement() { throw new AbstractMethodError("org.w3c.dom.Attr.getOwnerElement()"); }
-  public abstract boolean isId() { throw new AbstractMethodError("org.w3c.dom.Attr.isId()"); }
-  public abstract org.w3c.dom.TypeInfo getSchemaTypeInfo() { throw new AbstractMethodError("org.w3c.dom.Attr.getSchemaTypeInfo()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getValue() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setValue(java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getSpecified() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Element getOwnerElement() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isId() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.TypeInfo getSchemaTypeInfo() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,11 +58,16 @@ class NamespaceChangeListener {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void objectAdded(javax.naming.event.NamingEvent evt) { throw new AbstractMethodError("javax.naming.event.NamespaceChangeListener.objectAdded(javax.naming.event.NamingEvent)"); }
-  public abstract void objectRemoved(javax.naming.event.NamingEvent evt) { throw new AbstractMethodError("javax.naming.event.NamespaceChangeListener.objectRemoved(javax.naming.event.NamingEvent)"); }
-  public abstract void objectRenamed(javax.naming.event.NamingEvent evt) { throw new AbstractMethodError("javax.naming.event.NamespaceChangeListener.objectRenamed(javax.naming.event.NamingEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void objectAdded(javax.naming.event.NamingEvent evt) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void objectRemoved(javax.naming.event.NamingEvent evt) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void objectRenamed(javax.naming.event.NamingEvent evt) { }
   < ---- END java signatures ---- >
 }

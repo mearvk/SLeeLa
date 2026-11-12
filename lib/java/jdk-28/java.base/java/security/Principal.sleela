@@ -58,13 +58,20 @@ class Principal {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("java.security.Principal.getName()"); }
-  public abstract boolean equals(java.lang.Object another) { throw new AbstractMethodError("java.security.Principal.equals(java.lang.Object)"); }
-  public abstract java.lang.String toString() { throw new AbstractMethodError("java.security.Principal.toString()"); }
-  public abstract int hashCode() { throw new AbstractMethodError("java.security.Principal.hashCode()"); }
-  public default boolean implies(javax.security.auth.Subject subject) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Principal.implies(javax.security.auth.Subject)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object another) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean implies(javax.security.auth.Subject subject) { return false; }
   < ---- END java signatures ---- >
 }

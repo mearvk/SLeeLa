@@ -58,56 +58,86 @@ class CompositeView {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CompositeView(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.<init>(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CompositeView(javax.swing.text.Element elem) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void replace(int offset, int length, javax.swing.text.View[] views) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.replace(int, int, javax.swing.text.View[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void replace(int offset, int length, javax.swing.text.View[] views) { }
   @JavaProtected
-  abstract boolean isAfter(int x, int y, java.awt.Rectangle alloc) { throw new AbstractMethodError("javax.swing.text.CompositeView.isAfter(int, int, java.awt.Rectangle)"); }
+  @throwable("java.lang.AbstractMethodError")
+  boolean isAfter(int x, int y, java.awt.Rectangle alloc) { return false; }
   @JavaProtected
-  abstract boolean isBefore(int x, int y, java.awt.Rectangle alloc) { throw new AbstractMethodError("javax.swing.text.CompositeView.isBefore(int, int, java.awt.Rectangle)"); }
-  public void setParent(javax.swing.text.View parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.setParent(javax.swing.text.View)"); }
+  @throwable("java.lang.AbstractMethodError")
+  boolean isBefore(int x, int y, java.awt.Rectangle alloc) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setParent(javax.swing.text.View parent) { }
   @JavaProtected
-  void setParagraphInsets(javax.swing.text.AttributeSet attr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.setParagraphInsets(javax.swing.text.AttributeSet)"); }
-  public int getViewCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getViewCount()"); }
-  public javax.swing.text.View getView(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getView(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setParagraphInsets(javax.swing.text.AttributeSet attr) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getViewCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.View getView(int n) { return null; }
   @JavaProtected
-  int getViewIndexAtPosition(int pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getViewIndexAtPosition(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getViewIndexAtPosition(int pos) { return 0; }
   @JavaProtected
-  short getLeftInset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getLeftInset()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  short getLeftInset() { return 0; }
   @JavaProtected
-  short getRightInset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getRightInset()"); }
-  public java.awt.Shape getChildAllocation(int index, java.awt.Shape a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getChildAllocation(int, java.awt.Shape)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  short getRightInset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Shape getChildAllocation(int index, java.awt.Shape a) { return null; }
   @JavaProtected
-  short getTopInset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getTopInset()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  short getTopInset() { return 0; }
   @JavaProtected
-  int getNextNorthSouthVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getNextNorthSouthVisualPositionFrom(int, javax.swing.text.Position.Bias, java.awt.Shape, int, javax.swing.text.Position.Bias[])"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  int getNextNorthSouthVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
   @JavaProtected
-  boolean flipEastAndWestAtEnds(int position, javax.swing.text.Position.Bias bias) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.flipEastAndWestAtEnds(int, javax.swing.text.Position.Bias)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean flipEastAndWestAtEnds(int position, javax.swing.text.Position.Bias bias) { return false; }
   @JavaProtected
-  java.awt.Rectangle getInsideAllocation(java.awt.Shape a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getInsideAllocation(java.awt.Shape)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Rectangle getInsideAllocation(java.awt.Shape a) { return null; }
   @JavaProtected
-  void loadChildren(javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.loadChildren(javax.swing.text.ViewFactory)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void loadChildren(javax.swing.text.ViewFactory f) { }
   @JavaProtected
-  short getBottomInset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getBottomInset()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  short getBottomInset() { return 0; }
   @JavaProtected
-  abstract void childAllocation(int index, java.awt.Rectangle a) { throw new AbstractMethodError("javax.swing.text.CompositeView.childAllocation(int, java.awt.Rectangle)"); }
+  @throwable("java.lang.AbstractMethodError")
+  void childAllocation(int index, java.awt.Rectangle a) { }
   @JavaProtected
-  abstract javax.swing.text.View getViewAtPoint(int x, int y, java.awt.Rectangle alloc) { throw new AbstractMethodError("javax.swing.text.CompositeView.getViewAtPoint(int, int, java.awt.Rectangle)"); }
+  @throwable("java.lang.AbstractMethodError")
+  javax.swing.text.View getViewAtPoint(int x, int y, java.awt.Rectangle alloc) { return null; }
   @JavaProtected
-  javax.swing.text.View getViewAtPosition(int pos, java.awt.Rectangle a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getViewAtPosition(int, java.awt.Rectangle)"); }
-  public int getNextVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getNextVisualPositionFrom(int, javax.swing.text.Position.Bias, java.awt.Shape, int, javax.swing.text.Position.Bias[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.View getViewAtPosition(int pos, java.awt.Rectangle a) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public int getNextVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
   @JavaProtected
-  int getNextEastWestVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getNextEastWestVisualPositionFrom(int, javax.swing.text.Position.Bias, java.awt.Shape, int, javax.swing.text.Position.Bias[])"); }
-  public int getViewIndex(int pos, javax.swing.text.Position.Bias b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.getViewIndex(int, javax.swing.text.Position.Bias)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  int getNextEastWestVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getViewIndex(int pos, javax.swing.text.Position.Bias b) { return 0; }
   @JavaProtected
-  void setInsets(short top, short left, short bottom, short right) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.setInsets(short, short, short, short)"); }
-  public int viewToModel(float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] bias) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.viewToModel(float, float, java.awt.Shape, javax.swing.text.Position.Bias[])"); }
-  public java.awt.Shape modelToView(int pos, java.awt.Shape a, javax.swing.text.Position.Bias b) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.modelToView(int, java.awt.Shape, javax.swing.text.Position.Bias)"); }
-  public java.awt.Shape modelToView(int p0, javax.swing.text.Position.Bias b0, int p1, javax.swing.text.Position.Bias b1, java.awt.Shape a) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.CompositeView.modelToView(int, javax.swing.text.Position.Bias, int, javax.swing.text.Position.Bias, java.awt.Shape)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setInsets(short top, short left, short bottom, short right) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int viewToModel(float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] bias) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public java.awt.Shape modelToView(int pos, java.awt.Shape a, javax.swing.text.Position.Bias b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public java.awt.Shape modelToView(int p0, javax.swing.text.Position.Bias b0, int p1, javax.swing.text.Position.Bias b1, java.awt.Shape a) { return null; }
   < ---- END java signatures ---- >
 }

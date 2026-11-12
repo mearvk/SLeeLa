@@ -59,11 +59,16 @@ class EncapsulatorSpi {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.crypto.KEM.Encapsulated engineEncapsulate(int from, int to, java.lang.String algorithm) { throw new AbstractMethodError("javax.crypto.KEMSpi.EncapsulatorSpi.engineEncapsulate(int, int, java.lang.String)"); }
-  public abstract int engineSecretSize() { throw new AbstractMethodError("javax.crypto.KEMSpi.EncapsulatorSpi.engineSecretSize()"); }
-  public abstract int engineEncapsulationSize() { throw new AbstractMethodError("javax.crypto.KEMSpi.EncapsulatorSpi.engineEncapsulationSize()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.crypto.KEM.Encapsulated engineEncapsulate(int from, int to, java.lang.String algorithm) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int engineSecretSize() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int engineEncapsulationSize() { return 0; }
   < ---- END java signatures ---- >
 }

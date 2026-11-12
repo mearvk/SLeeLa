@@ -58,7 +58,9 @@ class AttributeInUseException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AttributeInUseException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.AttributeInUseException.<init>(java.lang.String)"); }
-  public AttributeInUseException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.directory.AttributeInUseException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttributeInUseException(java.lang.String explanation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttributeInUseException() { }
   < ---- END java constructors ---- >
 }

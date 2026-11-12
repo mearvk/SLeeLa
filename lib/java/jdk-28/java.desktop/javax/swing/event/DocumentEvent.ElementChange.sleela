@@ -59,12 +59,18 @@ class ElementChange {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getIndex() { throw new AbstractMethodError("javax.swing.event.DocumentEvent.ElementChange.getIndex()"); }
-  public abstract javax.swing.text.Element getElement() { throw new AbstractMethodError("javax.swing.event.DocumentEvent.ElementChange.getElement()"); }
-  public abstract javax.swing.text.Element[] getChildrenRemoved() { throw new AbstractMethodError("javax.swing.event.DocumentEvent.ElementChange.getChildrenRemoved()"); }
-  public abstract javax.swing.text.Element[] getChildrenAdded() { throw new AbstractMethodError("javax.swing.event.DocumentEvent.ElementChange.getChildrenAdded()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getIndex() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.Element getElement() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.Element[] getChildrenRemoved() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.Element[] getChildrenAdded() { return null; }
   < ---- END java signatures ---- >
 }

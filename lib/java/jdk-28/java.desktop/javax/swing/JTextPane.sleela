@@ -58,37 +58,62 @@ class JTextPane {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JTextPane() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.<init>()"); }
-  public JTextPane(javax.swing.text.StyledDocument doc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.<init>(javax.swing.text.StyledDocument)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTextPane() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTextPane(javax.swing.text.StyledDocument doc) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.paramString()"); }
-  public javax.swing.text.Style getStyle(java.lang.String nm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.getStyle(java.lang.String)"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.getUIClassID()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Style getStyle(java.lang.String nm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
   @JavaProtected
-  javax.swing.text.EditorKit createDefaultEditorKit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.createDefaultEditorKit()"); }
-  public final void setEditorKit(javax.swing.text.EditorKit kit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.setEditorKit(javax.swing.text.EditorKit)"); }
-  public javax.swing.text.MutableAttributeSet getInputAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.getInputAttributes()"); }
-  public void setCharacterAttributes(javax.swing.text.AttributeSet attr, boolean replace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.setCharacterAttributes(javax.swing.text.AttributeSet, boolean)"); }
-  public void setStyledDocument(javax.swing.text.StyledDocument doc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.setStyledDocument(javax.swing.text.StyledDocument)"); }
-  public javax.swing.text.StyledDocument getStyledDocument() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.getStyledDocument()"); }
-  public javax.swing.text.Style addStyle(java.lang.String nm, javax.swing.text.Style parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.addStyle(java.lang.String, javax.swing.text.Style)"); }
-  public void removeStyle(java.lang.String nm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.removeStyle(java.lang.String)"); }
-  public void setLogicalStyle(javax.swing.text.Style s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.setLogicalStyle(javax.swing.text.Style)"); }
-  public javax.swing.text.Style getLogicalStyle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.getLogicalStyle()"); }
-  public void setParagraphAttributes(javax.swing.text.AttributeSet attr, boolean replace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.setParagraphAttributes(javax.swing.text.AttributeSet, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.EditorKit createDefaultEditorKit() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setEditorKit(javax.swing.text.EditorKit kit) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.MutableAttributeSet getInputAttributes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCharacterAttributes(javax.swing.text.AttributeSet attr, boolean replace) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setStyledDocument(javax.swing.text.StyledDocument doc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.StyledDocument getStyledDocument() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Style addStyle(java.lang.String nm, javax.swing.text.Style parent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeStyle(java.lang.String nm) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLogicalStyle(javax.swing.text.Style s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.Style getLogicalStyle() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setParagraphAttributes(javax.swing.text.AttributeSet attr, boolean replace) { }
   @JavaProtected
-  final javax.swing.text.StyledEditorKit getStyledEditorKit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.getStyledEditorKit()"); }
-  public void insertComponent(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.insertComponent(java.awt.Component)"); }
-  public void insertIcon(javax.swing.Icon g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.insertIcon(javax.swing.Icon)"); }
-  public javax.swing.text.AttributeSet getCharacterAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.getCharacterAttributes()"); }
-  public javax.swing.text.AttributeSet getParagraphAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.getParagraphAttributes()"); }
-  public void setDocument(javax.swing.text.Document doc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.setDocument(javax.swing.text.Document)"); }
-  public void replaceSelection(java.lang.String content) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTextPane.replaceSelection(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final javax.swing.text.StyledEditorKit getStyledEditorKit() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertComponent(java.awt.Component c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertIcon(javax.swing.Icon g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.AttributeSet getCharacterAttributes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.text.AttributeSet getParagraphAttributes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDocument(javax.swing.text.Document doc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void replaceSelection(java.lang.String content) { }
   < ---- END java signatures ---- >
 }

@@ -58,10 +58,14 @@ class DocumentationTool {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.tools.DocumentationTool.DocumentationTask getTask(java.io.Writer out, javax.tools.JavaFileManager fileManager, javax.tools.DiagnosticListener<? super javax.tools.JavaFileObject> diagnosticListener, java.lang.Class<?> docletClass, java.lang.Iterable<java.lang.String> options, java.lang.Iterable<? extends javax.tools.JavaFileObject> compilationUnits) { throw new AbstractMethodError("javax.tools.DocumentationTool.getTask(java.io.Writer, javax.tools.JavaFileManager, javax.tools.DiagnosticListener<? super javax.tools.JavaFileObject>, java.lang.Class<?>, java.lang.Iterable<java.lang.String>, java.lang.Iterable<? extends javax.tools.JavaFileObject>)"); }
-  public abstract javax.tools.StandardJavaFileManager getStandardFileManager(javax.tools.DiagnosticListener<? super javax.tools.JavaFileObject> diagnosticListener, java.util.Locale locale, java.nio.charset.Charset charset) { throw new AbstractMethodError("javax.tools.DocumentationTool.getStandardFileManager(javax.tools.DiagnosticListener<? super javax.tools.JavaFileObject>, java.util.Locale, java.nio.charset.Charset)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.tools.DocumentationTool.DocumentationTask getTask(java.io.Writer out, javax.tools.JavaFileManager fileManager, javax.tools.DiagnosticListener<? super javax.tools.JavaFileObject> diagnosticListener, java.lang.Class<?> docletClass, java.lang.Iterable<java.lang.String> options, java.lang.Iterable<? extends javax.tools.JavaFileObject> compilationUnits) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.tools.StandardJavaFileManager getStandardFileManager(javax.tools.DiagnosticListener<? super javax.tools.JavaFileObject> diagnosticListener, java.util.Locale locale, java.nio.charset.Charset charset) { return null; }
   < ---- END java signatures ---- >
 }

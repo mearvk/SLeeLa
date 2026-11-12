@@ -88,36 +88,63 @@ class AccessibleContext {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AccessibleContext() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.Locale getLocale() throws java.awt.IllegalComponentStateException { throw new AbstractMethodError("javax.accessibility.AccessibleContext.getLocale()"); }
-  public void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object)"); }
-  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.addPropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public abstract int getAccessibleChildrenCount() { throw new AbstractMethodError("javax.accessibility.AccessibleContext.getAccessibleChildrenCount()"); }
-  public abstract javax.accessibility.Accessible getAccessibleChild(int i) { throw new AbstractMethodError("javax.accessibility.AccessibleContext.getAccessibleChild(int)"); }
-  public javax.accessibility.AccessibleComponent getAccessibleComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.getAccessibleComponent()"); }
-  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.removePropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public javax.accessibility.Accessible getAccessibleParent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.getAccessibleParent()"); }
-  public javax.accessibility.AccessibleSelection getAccessibleSelection() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.getAccessibleSelection()"); }
-  public abstract int getAccessibleIndexInParent() { throw new AbstractMethodError("javax.accessibility.AccessibleContext.getAccessibleIndexInParent()"); }
-  public abstract javax.accessibility.AccessibleStateSet getAccessibleStateSet() { throw new AbstractMethodError("javax.accessibility.AccessibleContext.getAccessibleStateSet()"); }
-  public java.lang.String getAccessibleName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.getAccessibleName()"); }
-  public void setAccessibleName(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.setAccessibleName(java.lang.String)"); }
-  public java.lang.String getAccessibleDescription() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.getAccessibleDescription()"); }
-  public void setAccessibleDescription(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.setAccessibleDescription(java.lang.String)"); }
-  public abstract javax.accessibility.AccessibleRole getAccessibleRole() { throw new AbstractMethodError("javax.accessibility.AccessibleContext.getAccessibleRole()"); }
-  public void setAccessibleParent(javax.accessibility.Accessible a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.setAccessibleParent(javax.accessibility.Accessible)"); }
-  public javax.accessibility.AccessibleAction getAccessibleAction() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.getAccessibleAction()"); }
-  public javax.accessibility.AccessibleText getAccessibleText() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.getAccessibleText()"); }
-  public javax.accessibility.AccessibleEditableText getAccessibleEditableText() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.getAccessibleEditableText()"); }
-  public javax.accessibility.AccessibleValue getAccessibleValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.getAccessibleValue()"); }
-  public javax.accessibility.AccessibleIcon[] getAccessibleIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.getAccessibleIcon()"); }
-  public javax.accessibility.AccessibleRelationSet getAccessibleRelationSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.getAccessibleRelationSet()"); }
-  public javax.accessibility.AccessibleTable getAccessibleTable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.accessibility.AccessibleContext.getAccessibleTable()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.awt.IllegalComponentStateException")
+  public java.util.Locale getLocale() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getAccessibleChildrenCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.accessibility.Accessible getAccessibleChild(int i) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleComponent getAccessibleComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.Accessible getAccessibleParent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleSelection getAccessibleSelection() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getAccessibleIndexInParent() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.accessibility.AccessibleStateSet getAccessibleStateSet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAccessibleName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAccessibleName(java.lang.String s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAccessibleDescription() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAccessibleDescription(java.lang.String s) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.accessibility.AccessibleRole getAccessibleRole() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAccessibleParent(javax.accessibility.Accessible a) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleAction getAccessibleAction() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleText getAccessibleText() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleEditableText getAccessibleEditableText() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleValue getAccessibleValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleIcon[] getAccessibleIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleRelationSet getAccessibleRelationSet() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleTable getAccessibleTable() { return null; }
   < ---- END java signatures ---- >
 }

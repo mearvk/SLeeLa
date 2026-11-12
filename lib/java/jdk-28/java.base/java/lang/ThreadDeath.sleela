@@ -58,6 +58,7 @@ class ThreadDeath {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ThreadDeath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.ThreadDeath.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ThreadDeath() { }
   < ---- END java constructors ---- >
 }

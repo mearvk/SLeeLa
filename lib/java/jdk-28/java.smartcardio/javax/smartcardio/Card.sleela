@@ -59,20 +59,31 @@ class Card {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Card() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.smartcardio.Card.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Card() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getProtocol() { throw new AbstractMethodError("javax.smartcardio.Card.getProtocol()"); }
-  public abstract void endExclusive() throws javax.smartcardio.CardException { throw new AbstractMethodError("javax.smartcardio.Card.endExclusive()"); }
-  public abstract void disconnect(boolean reset) throws javax.smartcardio.CardException { throw new AbstractMethodError("javax.smartcardio.Card.disconnect(boolean)"); }
-  public abstract javax.smartcardio.ATR getATR() { throw new AbstractMethodError("javax.smartcardio.Card.getATR()"); }
-  public abstract javax.smartcardio.CardChannel getBasicChannel() { throw new AbstractMethodError("javax.smartcardio.Card.getBasicChannel()"); }
-  public abstract javax.smartcardio.CardChannel openLogicalChannel() throws javax.smartcardio.CardException { throw new AbstractMethodError("javax.smartcardio.Card.openLogicalChannel()"); }
-  public abstract void beginExclusive() throws javax.smartcardio.CardException { throw new AbstractMethodError("javax.smartcardio.Card.beginExclusive()"); }
-  public abstract byte[] transmitControlCommand(int controlCode, byte[] command) throws javax.smartcardio.CardException { throw new AbstractMethodError("javax.smartcardio.Card.transmitControlCommand(int, byte[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getProtocol() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.smartcardio.CardException")
+  public void endExclusive() { }
+  @throwable("java.lang.AbstractMethodError, javax.smartcardio.CardException")
+  public void disconnect(boolean reset) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.smartcardio.ATR getATR() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.smartcardio.CardChannel getBasicChannel() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.smartcardio.CardException")
+  public javax.smartcardio.CardChannel openLogicalChannel() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.smartcardio.CardException")
+  public void beginExclusive() { }
+  @throwable("java.lang.AbstractMethodError, javax.smartcardio.CardException")
+  public byte[] transmitControlCommand(int controlCode, byte[] command) { return null; }
   < ---- END java signatures ---- >
 }

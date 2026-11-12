@@ -59,25 +59,41 @@ class TextUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  TextUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.TextUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TextUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getToolTipText(javax.swing.text.JTextComponent t, java.awt.Point pt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.TextUI.getToolTipText(javax.swing.text.JTextComponent, java.awt.Point)"); }
-  public abstract javax.swing.text.View getRootView(javax.swing.text.JTextComponent t) { throw new AbstractMethodError("javax.swing.plaf.TextUI.getRootView(javax.swing.text.JTextComponent)"); }
-  public abstract int getNextVisualPositionFrom(javax.swing.text.JTextComponent t, int pos, javax.swing.text.Position.Bias b, int direction, javax.swing.text.Position.Bias[] biasRet) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.plaf.TextUI.getNextVisualPositionFrom(javax.swing.text.JTextComponent, int, javax.swing.text.Position.Bias, int, javax.swing.text.Position.Bias[])"); }
-  public abstract javax.swing.text.EditorKit getEditorKit(javax.swing.text.JTextComponent t) { throw new AbstractMethodError("javax.swing.plaf.TextUI.getEditorKit(javax.swing.text.JTextComponent)"); }
-  public java.awt.geom.Rectangle2D modelToView2D(javax.swing.text.JTextComponent t, int pos, javax.swing.text.Position.Bias bias) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.TextUI.modelToView2D(javax.swing.text.JTextComponent, int, javax.swing.text.Position.Bias)"); }
-  public int viewToModel2D(javax.swing.text.JTextComponent t, java.awt.geom.Point2D pt, javax.swing.text.Position.Bias[] biasReturn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.TextUI.viewToModel2D(javax.swing.text.JTextComponent, java.awt.geom.Point2D, javax.swing.text.Position.Bias[])"); }
-  public abstract int viewToModel(javax.swing.text.JTextComponent t, java.awt.Point pt) { throw new AbstractMethodError("javax.swing.plaf.TextUI.viewToModel(javax.swing.text.JTextComponent, java.awt.Point)"); }
-  public abstract int viewToModel(javax.swing.text.JTextComponent t, java.awt.Point pt, javax.swing.text.Position.Bias[] biasReturn) { throw new AbstractMethodError("javax.swing.plaf.TextUI.viewToModel(javax.swing.text.JTextComponent, java.awt.Point, javax.swing.text.Position.Bias[])"); }
-  public abstract java.awt.Rectangle modelToView(javax.swing.text.JTextComponent t, int pos, javax.swing.text.Position.Bias bias) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.plaf.TextUI.modelToView(javax.swing.text.JTextComponent, int, javax.swing.text.Position.Bias)"); }
-  public abstract java.awt.Rectangle modelToView(javax.swing.text.JTextComponent t, int pos) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.plaf.TextUI.modelToView(javax.swing.text.JTextComponent, int)"); }
-  public abstract void damageRange(javax.swing.text.JTextComponent t, int p0, int p1, javax.swing.text.Position.Bias firstBias, javax.swing.text.Position.Bias secondBias) { throw new AbstractMethodError("javax.swing.plaf.TextUI.damageRange(javax.swing.text.JTextComponent, int, int, javax.swing.text.Position.Bias, javax.swing.text.Position.Bias)"); }
-  public abstract void damageRange(javax.swing.text.JTextComponent t, int p0, int p1) { throw new AbstractMethodError("javax.swing.plaf.TextUI.damageRange(javax.swing.text.JTextComponent, int, int)"); }
-  public java.lang.String getToolTipText2D(javax.swing.text.JTextComponent t, java.awt.geom.Point2D pt) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.TextUI.getToolTipText2D(javax.swing.text.JTextComponent, java.awt.geom.Point2D)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getToolTipText(javax.swing.text.JTextComponent t, java.awt.Point pt) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.View getRootView(javax.swing.text.JTextComponent t) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public int getNextVisualPositionFrom(javax.swing.text.JTextComponent t, int pos, javax.swing.text.Position.Bias b, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.EditorKit getEditorKit(javax.swing.text.JTextComponent t) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public java.awt.geom.Rectangle2D modelToView2D(javax.swing.text.JTextComponent t, int pos, javax.swing.text.Position.Bias bias) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int viewToModel2D(javax.swing.text.JTextComponent t, java.awt.geom.Point2D pt, javax.swing.text.Position.Bias[] biasReturn) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int viewToModel(javax.swing.text.JTextComponent t, java.awt.Point pt) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int viewToModel(javax.swing.text.JTextComponent t, java.awt.Point pt, javax.swing.text.Position.Bias[] biasReturn) { return 0; }
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public java.awt.Rectangle modelToView(javax.swing.text.JTextComponent t, int pos, javax.swing.text.Position.Bias bias) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public java.awt.Rectangle modelToView(javax.swing.text.JTextComponent t, int pos) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void damageRange(javax.swing.text.JTextComponent t, int p0, int p1, javax.swing.text.Position.Bias firstBias, javax.swing.text.Position.Bias secondBias) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void damageRange(javax.swing.text.JTextComponent t, int p0, int p1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getToolTipText2D(javax.swing.text.JTextComponent t, java.awt.geom.Point2D pt) { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,7 +58,9 @@ class NoSuchPaddingException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NoSuchPaddingException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.NoSuchPaddingException.<init>()"); }
-  public NoSuchPaddingException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.NoSuchPaddingException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoSuchPaddingException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoSuchPaddingException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

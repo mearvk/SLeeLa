@@ -59,25 +59,41 @@ class HttpServer {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  HttpServer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpServer.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  HttpServer() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void start() { throw new AbstractMethodError("com.sun.net.httpserver.HttpServer.start()"); }
-  public abstract void stop(int delay) { throw new AbstractMethodError("com.sun.net.httpserver.HttpServer.stop(int)"); }
-  public static com.sun.net.httpserver.HttpServer create() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpServer.create()"); }
-  public static com.sun.net.httpserver.HttpServer create(java.net.InetSocketAddress addr, int backlog) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpServer.create(java.net.InetSocketAddress, int)"); }
-  public static com.sun.net.httpserver.HttpServer create(java.net.InetSocketAddress addr, int backlog, java.lang.String path, com.sun.net.httpserver.HttpHandler handler, com.sun.net.httpserver.Filter... filters) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.net.httpserver.HttpServer.create(java.net.InetSocketAddress, int, java.lang.String, com.sun.net.httpserver.HttpHandler, com.sun.net.httpserver.Filter...)"); }
-  public abstract java.net.InetSocketAddress getAddress() { throw new AbstractMethodError("com.sun.net.httpserver.HttpServer.getAddress()"); }
-  public abstract void bind(java.net.InetSocketAddress addr, int backlog) throws java.io.IOException { throw new AbstractMethodError("com.sun.net.httpserver.HttpServer.bind(java.net.InetSocketAddress, int)"); }
-  public abstract java.util.concurrent.Executor getExecutor() { throw new AbstractMethodError("com.sun.net.httpserver.HttpServer.getExecutor()"); }
-  public abstract com.sun.net.httpserver.HttpContext createContext(java.lang.String path) { throw new AbstractMethodError("com.sun.net.httpserver.HttpServer.createContext(java.lang.String)"); }
-  public abstract com.sun.net.httpserver.HttpContext createContext(java.lang.String path, com.sun.net.httpserver.HttpHandler handler) { throw new AbstractMethodError("com.sun.net.httpserver.HttpServer.createContext(java.lang.String, com.sun.net.httpserver.HttpHandler)"); }
-  public abstract void setExecutor(java.util.concurrent.Executor executor) { throw new AbstractMethodError("com.sun.net.httpserver.HttpServer.setExecutor(java.util.concurrent.Executor)"); }
-  public abstract void removeContext(com.sun.net.httpserver.HttpContext context) { throw new AbstractMethodError("com.sun.net.httpserver.HttpServer.removeContext(com.sun.net.httpserver.HttpContext)"); }
-  public abstract void removeContext(java.lang.String path) throws java.lang.IllegalArgumentException { throw new AbstractMethodError("com.sun.net.httpserver.HttpServer.removeContext(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void start() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void stop(int delay) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static com.sun.net.httpserver.HttpServer create() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static com.sun.net.httpserver.HttpServer create(java.net.InetSocketAddress addr, int backlog) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static com.sun.net.httpserver.HttpServer create(java.net.InetSocketAddress addr, int backlog, java.lang.String path, com.sun.net.httpserver.HttpHandler handler, com.sun.net.httpserver.Filter... filters) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.net.InetSocketAddress getAddress() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void bind(java.net.InetSocketAddress addr, int backlog) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.concurrent.Executor getExecutor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.net.httpserver.HttpContext createContext(java.lang.String path) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.net.httpserver.HttpContext createContext(java.lang.String path, com.sun.net.httpserver.HttpHandler handler) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setExecutor(java.util.concurrent.Executor executor) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeContext(com.sun.net.httpserver.HttpContext context) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
+  public void removeContext(java.lang.String path) { }
   < ---- END java signatures ---- >
 }

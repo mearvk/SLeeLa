@@ -59,14 +59,19 @@ class InternalFrameBorder {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InternalFrameBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalBorders.InternalFrameBorder.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InternalFrameBorder() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalBorders.InternalFrameBorder.paintBorder(java.awt.Component, java.awt.Graphics, int, int, int, int)"); }
-  public java.awt.Insets getBorderInsets(java.awt.Component c, java.awt.Insets newInsets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalBorders.InternalFrameBorder.getBorderInsets(java.awt.Component, java.awt.Insets)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int w, int h) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getBorderInsets(java.awt.Component c, java.awt.Insets newInsets) { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,24 +58,39 @@ class StackTraceElement {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StackTraceElement(java.lang.String classLoaderName, java.lang.String moduleName, java.lang.String moduleVersion, java.lang.String declaringClass, java.lang.String methodName, java.lang.String fileName, int lineNumber) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackTraceElement.<init>(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)"); }
-  public StackTraceElement(java.lang.String declaringClass, java.lang.String methodName, java.lang.String fileName, int lineNumber) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackTraceElement.<init>(java.lang.String, java.lang.String, java.lang.String, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StackTraceElement(java.lang.String classLoaderName, java.lang.String moduleName, java.lang.String moduleVersion, java.lang.String declaringClass, java.lang.String methodName, java.lang.String fileName, int lineNumber) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StackTraceElement(java.lang.String declaringClass, java.lang.String methodName, java.lang.String fileName, int lineNumber) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackTraceElement.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackTraceElement.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackTraceElement.hashCode()"); }
-  public java.lang.String getClassName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackTraceElement.getClassName()"); }
-  public boolean isNativeMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackTraceElement.isNativeMethod()"); }
-  public java.lang.String getFileName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackTraceElement.getFileName()"); }
-  public int getLineNumber() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackTraceElement.getLineNumber()"); }
-  public java.lang.String getModuleName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackTraceElement.getModuleName()"); }
-  public java.lang.String getModuleVersion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackTraceElement.getModuleVersion()"); }
-  public java.lang.String getClassLoaderName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackTraceElement.getClassLoaderName()"); }
-  public java.lang.String getMethodName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackTraceElement.getMethodName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getClassName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isNativeMethod() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getFileName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLineNumber() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getModuleName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getModuleVersion() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getClassLoaderName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getMethodName() { return null; }
   < ---- END java signatures ---- >
 }

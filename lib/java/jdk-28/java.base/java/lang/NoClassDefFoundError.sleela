@@ -58,7 +58,9 @@ class NoClassDefFoundError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NoClassDefFoundError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.NoClassDefFoundError.<init>()"); }
-  public NoClassDefFoundError(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.NoClassDefFoundError.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoClassDefFoundError() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoClassDefFoundError(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

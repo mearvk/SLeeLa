@@ -58,17 +58,23 @@ class TextAction {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TextAction(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TextAction.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TextAction(java.lang.String name) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  final javax.swing.text.JTextComponent getTextComponent(java.awt.event.ActionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TextAction.getTextComponent(java.awt.event.ActionEvent)"); }
-  public static final javax.swing.Action[] augmentList(javax.swing.Action[] list1, javax.swing.Action[] list2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TextAction.augmentList(javax.swing.Action[], javax.swing.Action[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final javax.swing.text.JTextComponent getTextComponent(java.awt.event.ActionEvent e) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final javax.swing.Action[] augmentList(javax.swing.Action[] list1, javax.swing.Action[] list2) { return null; }
   @JavaProtected
-  final javax.swing.text.JTextComponent getFocusedComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.TextAction.getFocusedComponent()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final javax.swing.text.JTextComponent getFocusedComponent() { return null; }
   < ---- END java signatures ---- >
 }

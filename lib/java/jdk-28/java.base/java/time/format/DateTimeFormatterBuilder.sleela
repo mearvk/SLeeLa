@@ -58,55 +58,101 @@ class DateTimeFormatterBuilder {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DateTimeFormatterBuilder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DateTimeFormatterBuilder() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.time.format.DateTimeFormatterBuilder append(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.append(java.time.format.DateTimeFormatter)"); }
-  public java.time.format.DateTimeFormatterBuilder parseStrict() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.parseStrict()"); }
-  public java.time.format.DateTimeFormatterBuilder appendZoneText(java.time.format.TextStyle textStyle, java.util.Set<java.time.ZoneId> preferredZones) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendZoneText(java.time.format.TextStyle, java.util.Set<java.time.ZoneId>)"); }
-  public java.time.format.DateTimeFormatterBuilder appendZoneText(java.time.format.TextStyle textStyle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendZoneText(java.time.format.TextStyle)"); }
-  public java.time.format.DateTimeFormatter toFormatter(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.toFormatter(java.util.Locale)"); }
-  public java.time.format.DateTimeFormatter toFormatter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.toFormatter()"); }
-  public java.time.format.DateTimeFormatterBuilder appendChronologyText(java.time.format.TextStyle textStyle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendChronologyText(java.time.format.TextStyle)"); }
-  public java.time.format.DateTimeFormatterBuilder appendPattern(java.lang.String pattern) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendPattern(java.lang.String)"); }
-  public java.time.format.DateTimeFormatterBuilder appendLocalized(java.lang.String requestedTemplate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendLocalized(java.lang.String)"); }
-  public java.time.format.DateTimeFormatterBuilder appendLocalized(java.time.format.FormatStyle dateStyle, java.time.format.FormatStyle timeStyle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendLocalized(java.time.format.FormatStyle, java.time.format.FormatStyle)"); }
-  public java.time.format.DateTimeFormatterBuilder appendValue(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendValue(java.time.temporal.TemporalField)"); }
-  public java.time.format.DateTimeFormatterBuilder appendValue(java.time.temporal.TemporalField field, int minWidth, int maxWidth, java.time.format.SignStyle signStyle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendValue(java.time.temporal.TemporalField, int, int, java.time.format.SignStyle)"); }
-  public java.time.format.DateTimeFormatterBuilder appendValue(java.time.temporal.TemporalField field, int width) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendValue(java.time.temporal.TemporalField, int)"); }
-  public java.time.format.DateTimeFormatterBuilder appendLiteral(java.lang.String literal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendLiteral(java.lang.String)"); }
-  public java.time.format.DateTimeFormatterBuilder appendLiteral(char literal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendLiteral(char)"); }
-  public java.time.format.DateTimeFormatterBuilder parseCaseInsensitive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.parseCaseInsensitive()"); }
-  public java.time.format.DateTimeFormatterBuilder appendOffsetId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendOffsetId()"); }
-  public java.time.format.DateTimeFormatterBuilder optionalStart() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.optionalStart()"); }
-  public java.time.format.DateTimeFormatterBuilder appendFraction(java.time.temporal.TemporalField field, int minWidth, int maxWidth, boolean decimalPoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendFraction(java.time.temporal.TemporalField, int, int, boolean)"); }
-  public java.time.format.DateTimeFormatterBuilder parseLenient() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.parseLenient()"); }
-  public java.time.format.DateTimeFormatterBuilder parseCaseSensitive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.parseCaseSensitive()"); }
-  public java.time.format.DateTimeFormatterBuilder appendZoneRegionId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendZoneRegionId()"); }
-  public java.time.format.DateTimeFormatterBuilder appendInstant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendInstant()"); }
-  public java.time.format.DateTimeFormatterBuilder appendInstant(int fractionalDigits) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendInstant(int)"); }
-  public java.time.format.DateTimeFormatterBuilder appendOffset(java.lang.String pattern, java.lang.String noOffsetText) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendOffset(java.lang.String, java.lang.String)"); }
-  public java.time.format.DateTimeFormatterBuilder appendText(java.time.temporal.TemporalField field, java.time.format.TextStyle textStyle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendText(java.time.temporal.TemporalField, java.time.format.TextStyle)"); }
-  public java.time.format.DateTimeFormatterBuilder appendText(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendText(java.time.temporal.TemporalField)"); }
-  public java.time.format.DateTimeFormatterBuilder optionalEnd() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.optionalEnd()"); }
-  public java.time.format.DateTimeFormatterBuilder padNext(int padWidth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.padNext(int)"); }
-  public java.time.format.DateTimeFormatterBuilder padNext(int padWidth, char padChar) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.padNext(int, char)"); }
-  public java.time.format.DateTimeFormatterBuilder appendZoneId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendZoneId()"); }
-  public java.time.format.DateTimeFormatterBuilder appendGenericZoneText(java.time.format.TextStyle textStyle, java.util.Set<java.time.ZoneId> preferredZones) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendGenericZoneText(java.time.format.TextStyle, java.util.Set<java.time.ZoneId>)"); }
-  public java.time.format.DateTimeFormatterBuilder appendGenericZoneText(java.time.format.TextStyle textStyle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendGenericZoneText(java.time.format.TextStyle)"); }
-  public java.time.format.DateTimeFormatterBuilder appendLocalizedOffset(java.time.format.TextStyle style) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendLocalizedOffset(java.time.format.TextStyle)"); }
-  public java.time.format.DateTimeFormatterBuilder appendDayPeriodText(java.time.format.TextStyle style) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendDayPeriodText(java.time.format.TextStyle)"); }
-  public java.time.format.DateTimeFormatterBuilder appendValueReduced(java.time.temporal.TemporalField field, int width, int maxWidth, int baseValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendValueReduced(java.time.temporal.TemporalField, int, int, int)"); }
-  public java.time.format.DateTimeFormatterBuilder appendValueReduced(java.time.temporal.TemporalField field, int width, int maxWidth, java.time.chrono.ChronoLocalDate baseDate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendValueReduced(java.time.temporal.TemporalField, int, int, java.time.chrono.ChronoLocalDate)"); }
-  public static java.lang.String getLocalizedDateTimePattern(java.time.format.FormatStyle dateStyle, java.time.format.FormatStyle timeStyle, java.time.chrono.Chronology chrono, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.getLocalizedDateTimePattern(java.time.format.FormatStyle, java.time.format.FormatStyle, java.time.chrono.Chronology, java.util.Locale)"); }
-  public static java.lang.String getLocalizedDateTimePattern(java.lang.String requestedTemplate, java.time.chrono.Chronology chrono, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.getLocalizedDateTimePattern(java.lang.String, java.time.chrono.Chronology, java.util.Locale)"); }
-  public java.time.format.DateTimeFormatterBuilder parseDefaulting(java.time.temporal.TemporalField field, long value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.parseDefaulting(java.time.temporal.TemporalField, long)"); }
-  public java.time.format.DateTimeFormatterBuilder appendZoneOrOffsetId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendZoneOrOffsetId()"); }
-  public java.time.format.DateTimeFormatterBuilder appendChronologyId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendChronologyId()"); }
-  public java.time.format.DateTimeFormatterBuilder appendOptional(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.format.DateTimeFormatterBuilder.appendOptional(java.time.format.DateTimeFormatter)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder append(java.time.format.DateTimeFormatter formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder parseStrict() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendZoneText(java.time.format.TextStyle textStyle, java.util.Set<java.time.ZoneId> preferredZones) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendZoneText(java.time.format.TextStyle textStyle) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatter toFormatter(java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatter toFormatter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendChronologyText(java.time.format.TextStyle textStyle) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendPattern(java.lang.String pattern) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendLocalized(java.lang.String requestedTemplate) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendLocalized(java.time.format.FormatStyle dateStyle, java.time.format.FormatStyle timeStyle) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendValue(java.time.temporal.TemporalField field) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendValue(java.time.temporal.TemporalField field, int minWidth, int maxWidth, java.time.format.SignStyle signStyle) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendValue(java.time.temporal.TemporalField field, int width) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendLiteral(java.lang.String literal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendLiteral(char literal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder parseCaseInsensitive() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendOffsetId() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder optionalStart() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendFraction(java.time.temporal.TemporalField field, int minWidth, int maxWidth, boolean decimalPoint) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder parseLenient() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder parseCaseSensitive() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendZoneRegionId() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendInstant() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendInstant(int fractionalDigits) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendOffset(java.lang.String pattern, java.lang.String noOffsetText) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendText(java.time.temporal.TemporalField field, java.time.format.TextStyle textStyle) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendText(java.time.temporal.TemporalField field) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder optionalEnd() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder padNext(int padWidth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder padNext(int padWidth, char padChar) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendZoneId() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendGenericZoneText(java.time.format.TextStyle textStyle, java.util.Set<java.time.ZoneId> preferredZones) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendGenericZoneText(java.time.format.TextStyle textStyle) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendLocalizedOffset(java.time.format.TextStyle style) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendDayPeriodText(java.time.format.TextStyle style) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendValueReduced(java.time.temporal.TemporalField field, int width, int maxWidth, int baseValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendValueReduced(java.time.temporal.TemporalField field, int width, int maxWidth, java.time.chrono.ChronoLocalDate baseDate) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String getLocalizedDateTimePattern(java.time.format.FormatStyle dateStyle, java.time.format.FormatStyle timeStyle, java.time.chrono.Chronology chrono, java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String getLocalizedDateTimePattern(java.lang.String requestedTemplate, java.time.chrono.Chronology chrono, java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder parseDefaulting(java.time.temporal.TemporalField field, long value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendZoneOrOffsetId() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendChronologyId() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.format.DateTimeFormatterBuilder appendOptional(java.time.format.DateTimeFormatter formatter) { return null; }
   < ---- END java signatures ---- >
 }

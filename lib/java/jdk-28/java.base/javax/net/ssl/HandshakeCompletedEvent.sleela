@@ -58,20 +58,31 @@ class HandshakeCompletedEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public HandshakeCompletedEvent(javax.net.ssl.SSLSocket sock, javax.net.ssl.SSLSession s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.HandshakeCompletedEvent.<init>(javax.net.ssl.SSLSocket, javax.net.ssl.SSLSession)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HandshakeCompletedEvent(javax.net.ssl.SSLSocket sock, javax.net.ssl.SSLSession s) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.net.ssl.SSLSession getSession() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.HandshakeCompletedEvent.getSession()"); }
-  public javax.net.ssl.SSLSocket getSocket() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.HandshakeCompletedEvent.getSocket()"); }
-  public java.lang.String getCipherSuite() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.HandshakeCompletedEvent.getCipherSuite()"); }
-  public java.security.Principal getPeerPrincipal() throws javax.net.ssl.SSLPeerUnverifiedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.HandshakeCompletedEvent.getPeerPrincipal()"); }
-  public java.security.Principal getLocalPrincipal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.HandshakeCompletedEvent.getLocalPrincipal()"); }
-  public java.security.cert.Certificate[] getPeerCertificates() throws javax.net.ssl.SSLPeerUnverifiedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.HandshakeCompletedEvent.getPeerCertificates()"); }
-  public java.security.cert.Certificate[] getLocalCertificates() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.HandshakeCompletedEvent.getLocalCertificates()"); }
-  public javax.security.cert.X509Certificate[] getPeerCertificateChain() throws javax.net.ssl.SSLPeerUnverifiedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.HandshakeCompletedEvent.getPeerCertificateChain()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.net.ssl.SSLSession getSession() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.net.ssl.SSLSocket getSocket() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getCipherSuite() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.net.ssl.SSLPeerUnverifiedException")
+  public java.security.Principal getPeerPrincipal() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.Principal getLocalPrincipal() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.net.ssl.SSLPeerUnverifiedException")
+  public java.security.cert.Certificate[] getPeerCertificates() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.cert.Certificate[] getLocalCertificates() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.net.ssl.SSLPeerUnverifiedException")
+  public javax.security.cert.X509Certificate[] getPeerCertificateChain() { return null; }
   < ---- END java signatures ---- >
 }

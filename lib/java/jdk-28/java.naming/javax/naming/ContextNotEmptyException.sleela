@@ -58,7 +58,9 @@ class ContextNotEmptyException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ContextNotEmptyException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ContextNotEmptyException.<init>(java.lang.String)"); }
-  public ContextNotEmptyException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.ContextNotEmptyException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ContextNotEmptyException(java.lang.String explanation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ContextNotEmptyException() { }
   < ---- END java constructors ---- >
 }

@@ -59,18 +59,27 @@ class Format {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Format() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Format.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Format() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Format.clone()"); }
-  public abstract java.lang.StringBuffer format(java.lang.Object obj, java.lang.StringBuffer toAppendTo, java.text.FieldPosition pos) { throw new AbstractMethodError("java.text.Format.format(java.lang.Object, java.lang.StringBuffer, java.text.FieldPosition)"); }
-  public final java.lang.String format(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Format.format(java.lang.Object)"); }
-  public java.lang.Object parseObject(java.lang.String source) throws java.text.ParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Format.parseObject(java.lang.String)"); }
-  public abstract java.lang.Object parseObject(java.lang.String source, java.text.ParsePosition pos) { throw new AbstractMethodError("java.text.Format.parseObject(java.lang.String, java.text.ParsePosition)"); }
-  public java.text.AttributedCharacterIterator formatToCharacterIterator(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Format.formatToCharacterIterator(java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.StringBuffer format(java.lang.Object obj, java.lang.StringBuffer toAppendTo, java.text.FieldPosition pos) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String format(java.lang.Object obj) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
+  public java.lang.Object parseObject(java.lang.String source) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object parseObject(java.lang.String source, java.text.ParsePosition pos) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.AttributedCharacterIterator formatToCharacterIterator(java.lang.Object obj) { return null; }
   < ---- END java signatures ---- >
 }

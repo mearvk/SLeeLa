@@ -58,28 +58,50 @@ class Buffer {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.nio.Buffer reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.Buffer.reset()"); }
-  public java.nio.Buffer clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.Buffer.clear()"); }
-  public java.nio.Buffer position(int newPosition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.Buffer.position(int)"); }
-  public final int position() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.Buffer.position()"); }
-  public final int limit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.Buffer.limit()"); }
-  public java.nio.Buffer limit(int newLimit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.Buffer.limit(int)"); }
-  public final int remaining() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.Buffer.remaining()"); }
-  public abstract boolean isDirect() { throw new AbstractMethodError("java.nio.Buffer.isDirect()"); }
-  public abstract boolean hasArray() { throw new AbstractMethodError("java.nio.Buffer.hasArray()"); }
-  public abstract java.lang.Object array() { throw new AbstractMethodError("java.nio.Buffer.array()"); }
-  public abstract int arrayOffset() { throw new AbstractMethodError("java.nio.Buffer.arrayOffset()"); }
-  public final int capacity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.Buffer.capacity()"); }
-  public java.nio.Buffer mark() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.Buffer.mark()"); }
-  public java.nio.Buffer flip() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.Buffer.flip()"); }
-  public java.nio.Buffer rewind() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.Buffer.rewind()"); }
-  public final boolean hasRemaining() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.Buffer.hasRemaining()"); }
-  public abstract boolean isReadOnly() { throw new AbstractMethodError("java.nio.Buffer.isReadOnly()"); }
-  public abstract java.nio.Buffer slice() { throw new AbstractMethodError("java.nio.Buffer.slice()"); }
-  public abstract java.nio.Buffer slice(int index, int length) { throw new AbstractMethodError("java.nio.Buffer.slice(int, int)"); }
-  public abstract java.nio.Buffer duplicate() { throw new AbstractMethodError("java.nio.Buffer.duplicate()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.Buffer reset() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.Buffer clear() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.Buffer position(int newPosition) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int position() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int limit() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.Buffer limit(int newLimit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int remaining() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDirect() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasArray() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object array() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int arrayOffset() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int capacity() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.Buffer mark() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.Buffer flip() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.Buffer rewind() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean hasRemaining() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isReadOnly() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.Buffer slice() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.Buffer slice(int index, int length) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.nio.Buffer duplicate() { return null; }
   < ---- END java signatures ---- >
 }

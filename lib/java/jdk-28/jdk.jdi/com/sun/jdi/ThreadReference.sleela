@@ -68,28 +68,50 @@ class ThreadReference {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String name() { throw new AbstractMethodError("com.sun.jdi.ThreadReference.name()"); }
-  public abstract void interrupt() { throw new AbstractMethodError("com.sun.jdi.ThreadReference.interrupt()"); }
-  public abstract int status() { throw new AbstractMethodError("com.sun.jdi.ThreadReference.status()"); }
-  public default boolean isVirtual() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.ThreadReference.isVirtual()"); }
-  public abstract void stop(com.sun.jdi.ObjectReference throwable) throws com.sun.jdi.InvalidTypeException { throw new AbstractMethodError("com.sun.jdi.ThreadReference.stop(com.sun.jdi.ObjectReference)"); }
-  public abstract java.util.List<com.sun.jdi.StackFrame> frames() throws com.sun.jdi.IncompatibleThreadStateException { throw new AbstractMethodError("com.sun.jdi.ThreadReference.frames()"); }
-  public abstract java.util.List<com.sun.jdi.StackFrame> frames(int start, int length) throws com.sun.jdi.IncompatibleThreadStateException { throw new AbstractMethodError("com.sun.jdi.ThreadReference.frames(int, int)"); }
-  public abstract com.sun.jdi.StackFrame frame(int index) throws com.sun.jdi.IncompatibleThreadStateException { throw new AbstractMethodError("com.sun.jdi.ThreadReference.frame(int)"); }
-  public abstract int frameCount() throws com.sun.jdi.IncompatibleThreadStateException { throw new AbstractMethodError("com.sun.jdi.ThreadReference.frameCount()"); }
-  public abstract com.sun.jdi.ThreadGroupReference threadGroup() { throw new AbstractMethodError("com.sun.jdi.ThreadReference.threadGroup()"); }
-  public abstract boolean isSuspended() { throw new AbstractMethodError("com.sun.jdi.ThreadReference.isSuspended()"); }
-  public abstract void suspend() { throw new AbstractMethodError("com.sun.jdi.ThreadReference.suspend()"); }
-  public abstract void resume() { throw new AbstractMethodError("com.sun.jdi.ThreadReference.resume()"); }
-  public abstract int suspendCount() { throw new AbstractMethodError("com.sun.jdi.ThreadReference.suspendCount()"); }
-  public abstract boolean isAtBreakpoint() { throw new AbstractMethodError("com.sun.jdi.ThreadReference.isAtBreakpoint()"); }
-  public abstract java.util.List<com.sun.jdi.ObjectReference> ownedMonitors() throws com.sun.jdi.IncompatibleThreadStateException { throw new AbstractMethodError("com.sun.jdi.ThreadReference.ownedMonitors()"); }
-  public abstract java.util.List<com.sun.jdi.MonitorInfo> ownedMonitorsAndFrames() throws com.sun.jdi.IncompatibleThreadStateException { throw new AbstractMethodError("com.sun.jdi.ThreadReference.ownedMonitorsAndFrames()"); }
-  public abstract com.sun.jdi.ObjectReference currentContendedMonitor() throws com.sun.jdi.IncompatibleThreadStateException { throw new AbstractMethodError("com.sun.jdi.ThreadReference.currentContendedMonitor()"); }
-  public abstract void popFrames(com.sun.jdi.StackFrame frame) throws com.sun.jdi.IncompatibleThreadStateException { throw new AbstractMethodError("com.sun.jdi.ThreadReference.popFrames(com.sun.jdi.StackFrame)"); }
-  public abstract void forceEarlyReturn(com.sun.jdi.Value value) throws com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException, com.sun.jdi.IncompatibleThreadStateException { throw new AbstractMethodError("com.sun.jdi.ThreadReference.forceEarlyReturn(com.sun.jdi.Value)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String name() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void interrupt() { }
+  @throwable("java.lang.AbstractMethodError")
+  public int status() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean isVirtual() { return false; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException")
+  public void stop(com.sun.jdi.ObjectReference throwable) { }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
+  public java.util.List<com.sun.jdi.StackFrame> frames() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
+  public java.util.List<com.sun.jdi.StackFrame> frames(int start, int length) { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
+  public com.sun.jdi.StackFrame frame(int index) { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
+  public int frameCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.ThreadGroupReference threadGroup() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSuspended() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void suspend() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void resume() { }
+  @throwable("java.lang.AbstractMethodError")
+  public int suspendCount() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isAtBreakpoint() { return false; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
+  public java.util.List<com.sun.jdi.ObjectReference> ownedMonitors() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
+  public java.util.List<com.sun.jdi.MonitorInfo> ownedMonitorsAndFrames() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
+  public com.sun.jdi.ObjectReference currentContendedMonitor() { return null; }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
+  public void popFrames(com.sun.jdi.StackFrame frame) { }
+  @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException, com.sun.jdi.IncompatibleThreadStateException")
+  public void forceEarlyReturn(com.sun.jdi.Value value) { }
   < ---- END java signatures ---- >
 }

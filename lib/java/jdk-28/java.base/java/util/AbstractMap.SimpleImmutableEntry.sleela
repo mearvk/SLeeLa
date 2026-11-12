@@ -59,19 +59,29 @@ class SimpleImmutableEntry<K, V> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SimpleImmutableEntry(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.SimpleImmutableEntry.<init>(K, V)"); }
-  public SimpleImmutableEntry(java.util.Map.Entry<? extends K, ? extends V> entry) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.SimpleImmutableEntry.<init>(java.util.Map.Entry<? extends K, ? extends V>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SimpleImmutableEntry(K key, V value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SimpleImmutableEntry(java.util.Map.Entry<? extends K, ? extends V> entry) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.SimpleImmutableEntry.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.SimpleImmutableEntry.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.SimpleImmutableEntry.hashCode()"); }
-  public V getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.SimpleImmutableEntry.getValue()"); }
-  public K getKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.SimpleImmutableEntry.getKey()"); }
-  public V setValue(V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.AbstractMap.SimpleImmutableEntry.setValue(V)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V getValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public K getKey() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V setValue(V value) { return null; }
   < ---- END java signatures ---- >
 }

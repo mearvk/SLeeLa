@@ -58,19 +58,32 @@ class ExecutableElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.List<? extends javax.lang.model.element.TypeParameterElement> getTypeParameters() { throw new AbstractMethodError("javax.lang.model.element.ExecutableElement.getTypeParameters()"); }
-  public abstract javax.lang.model.type.TypeMirror getReturnType() { throw new AbstractMethodError("javax.lang.model.element.ExecutableElement.getReturnType()"); }
-  public abstract javax.lang.model.element.Name getSimpleName() { throw new AbstractMethodError("javax.lang.model.element.ExecutableElement.getSimpleName()"); }
-  public abstract boolean isVarArgs() { throw new AbstractMethodError("javax.lang.model.element.ExecutableElement.isVarArgs()"); }
-  public abstract boolean isDefault() { throw new AbstractMethodError("javax.lang.model.element.ExecutableElement.isDefault()"); }
-  public abstract javax.lang.model.element.AnnotationValue getDefaultValue() { throw new AbstractMethodError("javax.lang.model.element.ExecutableElement.getDefaultValue()"); }
-  public abstract java.util.List<? extends javax.lang.model.element.VariableElement> getParameters() { throw new AbstractMethodError("javax.lang.model.element.ExecutableElement.getParameters()"); }
-  public abstract javax.lang.model.type.TypeMirror asType() { throw new AbstractMethodError("javax.lang.model.element.ExecutableElement.asType()"); }
-  public abstract java.util.List<? extends javax.lang.model.type.TypeMirror> getThrownTypes() { throw new AbstractMethodError("javax.lang.model.element.ExecutableElement.getThrownTypes()"); }
-  public abstract javax.lang.model.element.Element getEnclosingElement() { throw new AbstractMethodError("javax.lang.model.element.ExecutableElement.getEnclosingElement()"); }
-  public abstract javax.lang.model.type.TypeMirror getReceiverType() { throw new AbstractMethodError("javax.lang.model.element.ExecutableElement.getReceiverType()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends javax.lang.model.element.TypeParameterElement> getTypeParameters() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.type.TypeMirror getReturnType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.Name getSimpleName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isVarArgs() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDefault() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.AnnotationValue getDefaultValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends javax.lang.model.element.VariableElement> getParameters() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.type.TypeMirror asType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends javax.lang.model.type.TypeMirror> getThrownTypes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.Element getEnclosingElement() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.type.TypeMirror getReceiverType() { return null; }
   < ---- END java signatures ---- >
 }

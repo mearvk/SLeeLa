@@ -58,6 +58,7 @@ class AttachOperationFailedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AttachOperationFailedException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.AttachOperationFailedException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttachOperationFailedException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

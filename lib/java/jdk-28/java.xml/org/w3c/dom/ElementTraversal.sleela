@@ -58,13 +58,20 @@ class ElementTraversal {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract org.w3c.dom.Element getFirstElementChild() { throw new AbstractMethodError("org.w3c.dom.ElementTraversal.getFirstElementChild()"); }
-  public abstract org.w3c.dom.Element getLastElementChild() { throw new AbstractMethodError("org.w3c.dom.ElementTraversal.getLastElementChild()"); }
-  public abstract org.w3c.dom.Element getPreviousElementSibling() { throw new AbstractMethodError("org.w3c.dom.ElementTraversal.getPreviousElementSibling()"); }
-  public abstract org.w3c.dom.Element getNextElementSibling() { throw new AbstractMethodError("org.w3c.dom.ElementTraversal.getNextElementSibling()"); }
-  public abstract int getChildElementCount() { throw new AbstractMethodError("org.w3c.dom.ElementTraversal.getChildElementCount()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Element getFirstElementChild() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Element getLastElementChild() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Element getPreviousElementSibling() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Element getNextElementSibling() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getChildElementCount() { return 0; }
   < ---- END java signatures ---- >
 }

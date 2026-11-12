@@ -59,16 +59,23 @@ class SoundbankResource {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SoundbankResource(javax.sound.midi.Soundbank soundBank, java.lang.String name, java.lang.Class<?> dataClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.SoundbankResource.<init>(javax.sound.midi.Soundbank, java.lang.String, java.lang.Class<?>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SoundbankResource(javax.sound.midi.Soundbank soundBank, java.lang.String name, java.lang.Class<?> dataClass) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.SoundbankResource.getName()"); }
-  public abstract java.lang.Object getData() { throw new AbstractMethodError("javax.sound.midi.SoundbankResource.getData()"); }
-  public javax.sound.midi.Soundbank getSoundbank() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.SoundbankResource.getSoundbank()"); }
-  public java.lang.Class<?> getDataClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.SoundbankResource.getDataClass()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getData() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.sound.midi.Soundbank getSoundbank() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getDataClass() { return null; }
   < ---- END java signatures ---- >
 }

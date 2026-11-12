@@ -58,6 +58,7 @@ class FontFormatException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FontFormatException(java.lang.String reason) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.FontFormatException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FontFormatException(java.lang.String reason) { }
   < ---- END java constructors ---- >
 }

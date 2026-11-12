@@ -59,16 +59,26 @@ class ClassTypeSig {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String className() { throw new AbstractMethodError("java.lang.classfile.Signature.ClassTypeSig.className()"); }
-  public static java.lang.classfile.Signature.ClassTypeSig of(java.lang.classfile.Signature.ClassTypeSig outerType, java.lang.String className, java.lang.classfile.Signature.TypeArg... typeArgs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.Signature.ClassTypeSig.of(java.lang.classfile.Signature.ClassTypeSig, java.lang.String, java.lang.classfile.Signature.TypeArg...)"); }
-  public static java.lang.classfile.Signature.ClassTypeSig of(java.lang.classfile.Signature.ClassTypeSig outerType, java.lang.constant.ClassDesc className, java.lang.classfile.Signature.TypeArg... typeArgs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.Signature.ClassTypeSig.of(java.lang.classfile.Signature.ClassTypeSig, java.lang.constant.ClassDesc, java.lang.classfile.Signature.TypeArg...)"); }
-  public static java.lang.classfile.Signature.ClassTypeSig of(java.lang.String className, java.lang.classfile.Signature.TypeArg... typeArgs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.Signature.ClassTypeSig.of(java.lang.String, java.lang.classfile.Signature.TypeArg...)"); }
-  public static java.lang.classfile.Signature.ClassTypeSig of(java.lang.constant.ClassDesc className, java.lang.classfile.Signature.TypeArg... typeArgs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.Signature.ClassTypeSig.of(java.lang.constant.ClassDesc, java.lang.classfile.Signature.TypeArg...)"); }
-  public default java.lang.constant.ClassDesc classDesc() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.Signature.ClassTypeSig.classDesc()"); }
-  public abstract java.util.List<java.lang.classfile.Signature.TypeArg> typeArgs() { throw new AbstractMethodError("java.lang.classfile.Signature.ClassTypeSig.typeArgs()"); }
-  public abstract java.util.Optional<java.lang.classfile.Signature.ClassTypeSig> outerType() { throw new AbstractMethodError("java.lang.classfile.Signature.ClassTypeSig.outerType()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String className() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.Signature.ClassTypeSig of(java.lang.classfile.Signature.ClassTypeSig outerType, java.lang.String className, java.lang.classfile.Signature.TypeArg... typeArgs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.Signature.ClassTypeSig of(java.lang.classfile.Signature.ClassTypeSig outerType, java.lang.constant.ClassDesc className, java.lang.classfile.Signature.TypeArg... typeArgs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.Signature.ClassTypeSig of(java.lang.String className, java.lang.classfile.Signature.TypeArg... typeArgs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.Signature.ClassTypeSig of(java.lang.constant.ClassDesc className, java.lang.classfile.Signature.TypeArg... typeArgs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.constant.ClassDesc classDesc() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.classfile.Signature.TypeArg> typeArgs() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Optional<java.lang.classfile.Signature.ClassTypeSig> outerType() { return null; }
   < ---- END java signatures ---- >
 }

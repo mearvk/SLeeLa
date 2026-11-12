@@ -59,20 +59,31 @@ class Service {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Service(java.security.Provider provider, java.lang.String type, java.lang.String algorithm, java.lang.String className, java.util.List<java.lang.String> aliases, java.util.Map<java.lang.String, java.lang.String> attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Provider.Service.<init>(java.security.Provider, java.lang.String, java.lang.String, java.lang.String, java.util.List<java.lang.String>, java.util.Map<java.lang.String, java.lang.String>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Service(java.security.Provider provider, java.lang.String type, java.lang.String algorithm, java.lang.String className, java.util.List<java.lang.String> aliases, java.util.Map<java.lang.String, java.lang.String> attributes) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Provider.Service.toString()"); }
-  public java.lang.Object newInstance(java.lang.Object constructorParameter) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Provider.Service.newInstance(java.lang.Object)"); }
-  public final java.lang.String getType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Provider.Service.getType()"); }
-  public final java.lang.String getClassName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Provider.Service.getClassName()"); }
-  public final java.lang.String getAttribute(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Provider.Service.getAttribute(java.lang.String)"); }
-  public final java.security.Provider getProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Provider.Service.getProvider()"); }
-  public final java.lang.String getAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Provider.Service.getAlgorithm()"); }
-  public boolean supportsParameter(java.lang.Object parameter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Provider.Service.supportsParameter(java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public java.lang.Object newInstance(java.lang.Object constructorParameter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getClassName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getAttribute(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.Provider getProvider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean supportsParameter(java.lang.Object parameter) { return false; }
   < ---- END java signatures ---- >
 }

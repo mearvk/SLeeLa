@@ -58,35 +58,64 @@ class AccessibleComponent {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean contains(java.awt.Point p) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.contains(java.awt.Point)"); }
-  public abstract java.awt.Rectangle getBounds() { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.getBounds()"); }
-  public abstract java.awt.Point getLocation() { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.getLocation()"); }
-  public abstract boolean isEnabled() { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.isEnabled()"); }
-  public abstract java.awt.Dimension getSize() { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.getSize()"); }
-  public abstract void setSize(java.awt.Dimension d) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.setSize(java.awt.Dimension)"); }
-  public abstract void setVisible(boolean b) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.setVisible(boolean)"); }
-  public abstract void setBounds(java.awt.Rectangle r) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.setBounds(java.awt.Rectangle)"); }
-  public abstract void requestFocus() { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.requestFocus()"); }
-  public abstract javax.accessibility.Accessible getAccessibleAt(java.awt.Point p) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.getAccessibleAt(java.awt.Point)"); }
-  public abstract java.awt.Point getLocationOnScreen() { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.getLocationOnScreen()"); }
-  public abstract void setEnabled(boolean b) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.setEnabled(boolean)"); }
-  public abstract java.awt.Color getForeground() { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.getForeground()"); }
-  public abstract void setForeground(java.awt.Color c) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.setForeground(java.awt.Color)"); }
-  public abstract java.awt.Color getBackground() { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.getBackground()"); }
-  public abstract void setBackground(java.awt.Color c) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.setBackground(java.awt.Color)"); }
-  public abstract boolean isFocusTraversable() { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.isFocusTraversable()"); }
-  public abstract void addFocusListener(java.awt.event.FocusListener l) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.addFocusListener(java.awt.event.FocusListener)"); }
-  public abstract java.awt.FontMetrics getFontMetrics(java.awt.Font f) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.getFontMetrics(java.awt.Font)"); }
-  public abstract void setCursor(java.awt.Cursor cursor) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.setCursor(java.awt.Cursor)"); }
-  public abstract java.awt.Cursor getCursor() { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.getCursor()"); }
-  public abstract void removeFocusListener(java.awt.event.FocusListener l) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.removeFocusListener(java.awt.event.FocusListener)"); }
-  public abstract void setLocation(java.awt.Point p) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.setLocation(java.awt.Point)"); }
-  public abstract boolean isVisible() { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.isVisible()"); }
-  public abstract java.awt.Font getFont() { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.getFont()"); }
-  public abstract void setFont(java.awt.Font f) { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.setFont(java.awt.Font)"); }
-  public abstract boolean isShowing() { throw new AbstractMethodError("javax.accessibility.AccessibleComponent.isShowing()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean contains(java.awt.Point p) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Rectangle getBounds() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Point getLocation() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isEnabled() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Dimension getSize() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSize(java.awt.Dimension d) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setVisible(boolean b) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBounds(java.awt.Rectangle r) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void requestFocus() { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.accessibility.Accessible getAccessibleAt(java.awt.Point p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Point getLocationOnScreen() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setEnabled(boolean b) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Color getForeground() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setForeground(java.awt.Color c) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Color getBackground() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setBackground(java.awt.Color c) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isFocusTraversable() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void addFocusListener(java.awt.event.FocusListener l) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.FontMetrics getFontMetrics(java.awt.Font f) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCursor(java.awt.Cursor cursor) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Cursor getCursor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeFocusListener(java.awt.event.FocusListener l) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setLocation(java.awt.Point p) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isVisible() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Font getFont() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setFont(java.awt.Font f) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isShowing() { return false; }
   < ---- END java signatures ---- >
 }

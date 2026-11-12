@@ -58,29 +58,46 @@ class NimbusLookAndFeel {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NimbusLookAndFeel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NimbusLookAndFeel() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.getName()"); }
-  public void initialize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.initialize()"); }
-  public void register(javax.swing.plaf.synth.Region region, java.lang.String prefix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.register(javax.swing.plaf.synth.Region, java.lang.String)"); }
-  public java.lang.String getID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.getID()"); }
-  public java.lang.String getDescription() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.getDescription()"); }
-  public static javax.swing.plaf.nimbus.NimbusStyle getStyle(javax.swing.JComponent c, javax.swing.plaf.synth.Region r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.getStyle(javax.swing.JComponent, javax.swing.plaf.synth.Region)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void initialize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void register(javax.swing.plaf.synth.Region region, java.lang.String prefix) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDescription() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.nimbus.NimbusStyle getStyle(javax.swing.JComponent c, javax.swing.plaf.synth.Region r) { return null; }
   @JavaProtected
-  final java.awt.Color getDerivedColor(java.awt.Color color1, java.awt.Color color2, float midPoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.getDerivedColor(java.awt.Color, java.awt.Color, float)"); }
-  public java.awt.Color getDerivedColor(java.lang.String uiDefaultParentName, float hOffset, float sOffset, float bOffset, int aOffset, boolean uiResource) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.getDerivedColor(java.lang.String, float, float, float, int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final java.awt.Color getDerivedColor(java.awt.Color color1, java.awt.Color color2, float midPoint) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getDerivedColor(java.lang.String uiDefaultParentName, float hOffset, float sOffset, float bOffset, int aOffset, boolean uiResource) { return null; }
   @JavaProtected
-  final java.awt.Color getDerivedColor(java.awt.Color color1, java.awt.Color color2, float midPoint, boolean uiResource) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.getDerivedColor(java.awt.Color, java.awt.Color, float, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final java.awt.Color getDerivedColor(java.awt.Color color1, java.awt.Color color2, float midPoint, boolean uiResource) { return null; }
   @JavaProtected
-  boolean shouldUpdateStyleOnEvent(java.beans.PropertyChangeEvent ev) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.shouldUpdateStyleOnEvent(java.beans.PropertyChangeEvent)"); }
-  public boolean shouldUpdateStyleOnAncestorChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.shouldUpdateStyleOnAncestorChanged()"); }
-  public void uninitialize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.uninitialize()"); }
-  public javax.swing.UIDefaults getDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.getDefaults()"); }
-  public javax.swing.Icon getDisabledIcon(javax.swing.JComponent component, javax.swing.Icon icon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.nimbus.NimbusLookAndFeel.getDisabledIcon(javax.swing.JComponent, javax.swing.Icon)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean shouldUpdateStyleOnEvent(java.beans.PropertyChangeEvent ev) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean shouldUpdateStyleOnAncestorChanged() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninitialize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.UIDefaults getDefaults() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getDisabledIcon(javax.swing.JComponent component, javax.swing.Icon icon) { return null; }
   < ---- END java signatures ---- >
 }

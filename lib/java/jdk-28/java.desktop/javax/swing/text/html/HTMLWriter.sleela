@@ -58,46 +58,67 @@ class HTMLWriter {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public HTMLWriter(java.io.Writer w, javax.swing.text.html.HTMLDocument doc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.<init>(java.io.Writer, javax.swing.text.html.HTMLDocument)"); }
-  public HTMLWriter(java.io.Writer w, javax.swing.text.html.HTMLDocument doc, int pos, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.<init>(java.io.Writer, javax.swing.text.html.HTMLDocument, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HTMLWriter(java.io.Writer w, javax.swing.text.html.HTMLDocument doc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HTMLWriter(java.io.Writer w, javax.swing.text.html.HTMLDocument doc, int pos, int len) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void write() throws java.io.IOException, javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.write()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.swing.text.BadLocationException")
+  public void write() { }
   @JavaProtected
-  void comment(javax.swing.text.Element elem) throws javax.swing.text.BadLocationException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.comment(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException, java.io.IOException")
+  void comment(javax.swing.text.Element elem) { }
   @JavaProtected
-  void text(javax.swing.text.Element elem) throws javax.swing.text.BadLocationException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.text(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException, java.io.IOException")
+  void text(javax.swing.text.Element elem) { }
   @JavaProtected
-  void writeAttributes(javax.swing.text.AttributeSet attr) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.writeAttributes(javax.swing.text.AttributeSet)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeAttributes(javax.swing.text.AttributeSet attr) { }
   @JavaProtected
-  void output(char[] chars, int start, int length) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.output(char[], int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void output(char[] chars, int start, int length) { }
   @JavaProtected
-  void writeLineSeparator() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.writeLineSeparator()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeLineSeparator() { }
   @JavaProtected
-  boolean matchNameAttribute(javax.swing.text.AttributeSet attr, javax.swing.text.html.HTML.Tag tag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.matchNameAttribute(javax.swing.text.AttributeSet, javax.swing.text.html.HTML.Tag)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean matchNameAttribute(javax.swing.text.AttributeSet attr, javax.swing.text.html.HTML.Tag tag) { return false; }
   @JavaProtected
-  void textAreaContent(javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.textAreaContent(javax.swing.text.AttributeSet)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException, java.io.IOException")
+  void textAreaContent(javax.swing.text.AttributeSet attr) { }
   @JavaProtected
-  boolean isBlockTag(javax.swing.text.AttributeSet attr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.isBlockTag(javax.swing.text.AttributeSet)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isBlockTag(javax.swing.text.AttributeSet attr) { return false; }
   @JavaProtected
-  boolean synthesizedElement(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.synthesizedElement(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean synthesizedElement(javax.swing.text.Element elem) { return false; }
   @JavaProtected
-  void endTag(javax.swing.text.Element elem) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.endTag(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void endTag(javax.swing.text.Element elem) { }
   @JavaProtected
-  void startTag(javax.swing.text.Element elem) throws java.io.IOException, javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.startTag(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.swing.text.BadLocationException")
+  void startTag(javax.swing.text.Element elem) { }
   @JavaProtected
-  void emptyTag(javax.swing.text.Element elem) throws javax.swing.text.BadLocationException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.emptyTag(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException, java.io.IOException")
+  void emptyTag(javax.swing.text.Element elem) { }
   @JavaProtected
-  void closeOutUnwantedEmbeddedTags(javax.swing.text.AttributeSet attr) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.closeOutUnwantedEmbeddedTags(javax.swing.text.AttributeSet)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void closeOutUnwantedEmbeddedTags(javax.swing.text.AttributeSet attr) { }
   @JavaProtected
-  void writeEmbeddedTags(javax.swing.text.AttributeSet attr) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.writeEmbeddedTags(javax.swing.text.AttributeSet)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeEmbeddedTags(javax.swing.text.AttributeSet attr) { }
   @JavaProtected
-  void selectContent(javax.swing.text.AttributeSet attr) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.selectContent(javax.swing.text.AttributeSet)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void selectContent(javax.swing.text.AttributeSet attr) { }
   @JavaProtected
-  void writeOption(javax.swing.text.html.Option option) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.html.HTMLWriter.writeOption(javax.swing.text.html.Option)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  void writeOption(javax.swing.text.html.Option option) { }
   < ---- END java signatures ---- >
 }

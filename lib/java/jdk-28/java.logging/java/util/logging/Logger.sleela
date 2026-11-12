@@ -64,71 +64,133 @@ class Logger {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Logger(java.lang.String name, java.lang.String resourceBundleName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.<init>(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Logger(java.lang.String name, java.lang.String resourceBundleName) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.getName()"); }
-  public void log(java.util.logging.Level level, java.util.function.Supplier<java.lang.String> msgSupplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.log(java.util.logging.Level, java.util.function.Supplier<java.lang.String>)"); }
-  public void log(java.util.logging.LogRecord record_) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.log(java.util.logging.LogRecord)"); }
-  public void log(java.util.logging.Level level, java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.log(java.util.logging.Level, java.lang.String)"); }
-  public void log(java.util.logging.Level level, java.lang.String msg, java.lang.Object param1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.log(java.util.logging.Level, java.lang.String, java.lang.Object)"); }
-  public void log(java.util.logging.Level level, java.lang.Throwable thrown, java.util.function.Supplier<java.lang.String> msgSupplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.log(java.util.logging.Level, java.lang.Throwable, java.util.function.Supplier<java.lang.String>)"); }
-  public void log(java.util.logging.Level level, java.lang.String msg, java.lang.Object[] params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.log(java.util.logging.Level, java.lang.String, java.lang.Object[])"); }
-  public void info(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.info(java.lang.String)"); }
-  public void info(java.util.function.Supplier<java.lang.String> msgSupplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.info(java.util.function.Supplier<java.lang.String>)"); }
-  public java.util.logging.Logger getParent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.getParent()"); }
-  public static java.util.logging.Logger getLogger(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.getLogger(java.lang.String)"); }
-  public static java.util.logging.Logger getLogger(java.lang.String name, java.lang.String resourceBundleName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.getLogger(java.lang.String, java.lang.String)"); }
-  public void config(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.config(java.lang.String)"); }
-  public void config(java.util.function.Supplier<java.lang.String> msgSupplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.config(java.util.function.Supplier<java.lang.String>)"); }
-  public java.util.logging.Filter getFilter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.getFilter()"); }
-  public void addHandler(java.util.logging.Handler handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.addHandler(java.util.logging.Handler)"); }
-  public boolean isLoggable(java.util.logging.Level level) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.isLoggable(java.util.logging.Level)"); }
-  public void warning(java.util.function.Supplier<java.lang.String> msgSupplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.warning(java.util.function.Supplier<java.lang.String>)"); }
-  public void warning(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.warning(java.lang.String)"); }
-  public void setParent(java.util.logging.Logger parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.setParent(java.util.logging.Logger)"); }
-  public void setLevel(java.util.logging.Level newLevel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.setLevel(java.util.logging.Level)"); }
-  public void setFilter(java.util.logging.Filter newFilter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.setFilter(java.util.logging.Filter)"); }
-  public java.util.logging.Level getLevel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.getLevel()"); }
-  public java.lang.String getResourceBundleName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.getResourceBundleName()"); }
-  public java.util.logging.Handler[] getHandlers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.getHandlers()"); }
-  public void removeHandler(java.util.logging.Handler handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.removeHandler(java.util.logging.Handler)"); }
-  public void setUseParentHandlers(boolean useParentHandlers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.setUseParentHandlers(boolean)"); }
-  public static java.util.logging.Logger getAnonymousLogger() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.getAnonymousLogger()"); }
-  public static java.util.logging.Logger getAnonymousLogger(java.lang.String resourceBundleName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.getAnonymousLogger(java.lang.String)"); }
-  public boolean getUseParentHandlers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.getUseParentHandlers()"); }
-  public void setResourceBundle(java.util.ResourceBundle bundle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.setResourceBundle(java.util.ResourceBundle)"); }
-  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String msg, java.lang.Object[] params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.logp(java.util.logging.Level, java.lang.String, java.lang.String, java.lang.String, java.lang.Object[])"); }
-  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String msg, java.lang.Throwable thrown) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.logp(java.util.logging.Level, java.lang.String, java.lang.String, java.lang.String, java.lang.Throwable)"); }
-  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.logp(java.util.logging.Level, java.lang.String, java.lang.String, java.lang.String)"); }
-  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Throwable thrown, java.util.function.Supplier<java.lang.String> msgSupplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.logp(java.util.logging.Level, java.lang.String, java.lang.String, java.lang.Throwable, java.util.function.Supplier<java.lang.String>)"); }
-  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.util.function.Supplier<java.lang.String> msgSupplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.logp(java.util.logging.Level, java.lang.String, java.lang.String, java.util.function.Supplier<java.lang.String>)"); }
-  public java.util.ResourceBundle getResourceBundle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.getResourceBundle()"); }
-  public static final java.util.logging.Logger getGlobal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.getGlobal()"); }
-  public void logrb(java.util.logging.Level level, java.util.ResourceBundle bundle, java.lang.String msg, java.lang.Object... params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.logrb(java.util.logging.Level, java.util.ResourceBundle, java.lang.String, java.lang.Object...)"); }
-  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.util.ResourceBundle bundle, java.lang.String msg, java.lang.Object... params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.logrb(java.util.logging.Level, java.lang.String, java.lang.String, java.util.ResourceBundle, java.lang.String, java.lang.Object...)"); }
-  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String bundleName, java.lang.String msg, java.lang.Throwable thrown) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.logrb(java.util.logging.Level, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Throwable)"); }
-  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.util.ResourceBundle bundle, java.lang.String msg, java.lang.Throwable thrown) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.logrb(java.util.logging.Level, java.lang.String, java.lang.String, java.util.ResourceBundle, java.lang.String, java.lang.Throwable)"); }
-  public void logrb(java.util.logging.Level level, java.util.ResourceBundle bundle, java.lang.String msg, java.lang.Throwable thrown) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.logrb(java.util.logging.Level, java.util.ResourceBundle, java.lang.String, java.lang.Throwable)"); }
-  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String bundleName, java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.logrb(java.util.logging.Level, java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String bundleName, java.lang.String msg, java.lang.Object[] params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.logrb(java.util.logging.Level, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Object[])"); }
-  public void entering(java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Object param1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.entering(java.lang.String, java.lang.String, java.lang.Object)"); }
-  public void entering(java.lang.String sourceClass, java.lang.String sourceMethod) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.entering(java.lang.String, java.lang.String)"); }
-  public void entering(java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Object[] params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.entering(java.lang.String, java.lang.String, java.lang.Object[])"); }
-  public void exiting(java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Object result) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.exiting(java.lang.String, java.lang.String, java.lang.Object)"); }
-  public void exiting(java.lang.String sourceClass, java.lang.String sourceMethod) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.exiting(java.lang.String, java.lang.String)"); }
-  public void throwing(java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Throwable thrown) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.throwing(java.lang.String, java.lang.String, java.lang.Throwable)"); }
-  public void severe(java.util.function.Supplier<java.lang.String> msgSupplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.severe(java.util.function.Supplier<java.lang.String>)"); }
-  public void severe(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.severe(java.lang.String)"); }
-  public void fine(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.fine(java.lang.String)"); }
-  public void fine(java.util.function.Supplier<java.lang.String> msgSupplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.fine(java.util.function.Supplier<java.lang.String>)"); }
-  public void finer(java.util.function.Supplier<java.lang.String> msgSupplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.finer(java.util.function.Supplier<java.lang.String>)"); }
-  public void finer(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.finer(java.lang.String)"); }
-  public void finest(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.finest(java.lang.String)"); }
-  public void finest(java.util.function.Supplier<java.lang.String> msgSupplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.logging.Logger.finest(java.util.function.Supplier<java.lang.String>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void log(java.util.logging.Level level, java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void log(java.util.logging.LogRecord record_) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void log(java.util.logging.Level level, java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void log(java.util.logging.Level level, java.lang.String msg, java.lang.Object param1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void log(java.util.logging.Level level, java.lang.Throwable thrown, java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void log(java.util.logging.Level level, java.lang.String msg, java.lang.Object[] params) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void info(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void info(java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.logging.Logger getParent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.logging.Logger getLogger(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.logging.Logger getLogger(java.lang.String name, java.lang.String resourceBundleName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void config(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void config(java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.logging.Filter getFilter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addHandler(java.util.logging.Handler handler) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLoggable(java.util.logging.Level level) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void warning(java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void warning(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setParent(java.util.logging.Logger parent) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLevel(java.util.logging.Level newLevel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFilter(java.util.logging.Filter newFilter) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.logging.Level getLevel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getResourceBundleName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.logging.Handler[] getHandlers() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeHandler(java.util.logging.Handler handler) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUseParentHandlers(boolean useParentHandlers) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.logging.Logger getAnonymousLogger() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.logging.Logger getAnonymousLogger(java.lang.String resourceBundleName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getUseParentHandlers() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setResourceBundle(java.util.ResourceBundle bundle) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String msg, java.lang.Object[] params) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String msg, java.lang.Throwable thrown) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Throwable thrown, java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.ResourceBundle getResourceBundle() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final java.util.logging.Logger getGlobal() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void logrb(java.util.logging.Level level, java.util.ResourceBundle bundle, java.lang.String msg, java.lang.Object... params) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.util.ResourceBundle bundle, java.lang.String msg, java.lang.Object... params) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String bundleName, java.lang.String msg, java.lang.Throwable thrown) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.util.ResourceBundle bundle, java.lang.String msg, java.lang.Throwable thrown) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void logrb(java.util.logging.Level level, java.util.ResourceBundle bundle, java.lang.String msg, java.lang.Throwable thrown) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String bundleName, java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String bundleName, java.lang.String msg, java.lang.Object[] params) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void entering(java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Object param1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void entering(java.lang.String sourceClass, java.lang.String sourceMethod) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void entering(java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Object[] params) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void exiting(java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Object result) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void exiting(java.lang.String sourceClass, java.lang.String sourceMethod) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void throwing(java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Throwable thrown) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void severe(java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void severe(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fine(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fine(java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void finer(java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void finer(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void finest(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void finest(java.util.function.Supplier<java.lang.String> msgSupplier) { }
   < ---- END java signatures ---- >
 }

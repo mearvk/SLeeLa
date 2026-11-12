@@ -58,21 +58,33 @@ class InputMap {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InputMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.InputMap.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InputMap() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove(javax.swing.KeyStroke key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.InputMap.remove(javax.swing.KeyStroke)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.InputMap.size()"); }
-  public java.lang.Object get(javax.swing.KeyStroke keyStroke) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.InputMap.get(javax.swing.KeyStroke)"); }
-  public void put(javax.swing.KeyStroke keyStroke, java.lang.Object actionMapKey) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.InputMap.put(javax.swing.KeyStroke, java.lang.Object)"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.InputMap.clear()"); }
-  public javax.swing.InputMap getParent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.InputMap.getParent()"); }
-  public javax.swing.KeyStroke[] keys() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.InputMap.keys()"); }
-  public void setParent(javax.swing.InputMap map) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.InputMap.setParent(javax.swing.InputMap)"); }
-  public javax.swing.KeyStroke[] allKeys() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.InputMap.allKeys()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(javax.swing.KeyStroke key) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object get(javax.swing.KeyStroke keyStroke) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void put(javax.swing.KeyStroke keyStroke, java.lang.Object actionMapKey) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.InputMap getParent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.KeyStroke[] keys() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setParent(javax.swing.InputMap map) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.KeyStroke[] allKeys() { return null; }
   < ---- END java signatures ---- >
 }

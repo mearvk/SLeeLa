@@ -58,6 +58,7 @@ class UnsupportedLookAndFeelException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnsupportedLookAndFeelException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UnsupportedLookAndFeelException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnsupportedLookAndFeelException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

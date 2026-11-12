@@ -58,7 +58,9 @@ class InvalidStackFrameException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidStackFrameException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InvalidStackFrameException.<init>()"); }
-  public InvalidStackFrameException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.InvalidStackFrameException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidStackFrameException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidStackFrameException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

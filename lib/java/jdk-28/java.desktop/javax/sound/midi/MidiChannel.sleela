@@ -58,34 +58,62 @@ class MidiChannel {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getController(int controller) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.getController(int)"); }
-  public abstract void controlChange(int controller, int value) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.controlChange(int, int)"); }
-  public abstract int getProgram() { throw new AbstractMethodError("javax.sound.midi.MidiChannel.getProgram()"); }
-  public abstract void noteOn(int noteNumber, int velocity) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.noteOn(int, int)"); }
-  public abstract void noteOff(int noteNumber) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.noteOff(int)"); }
-  public abstract void noteOff(int noteNumber, int velocity) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.noteOff(int, int)"); }
-  public abstract void setPolyPressure(int noteNumber, int pressure) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.setPolyPressure(int, int)"); }
-  public abstract int getPolyPressure(int noteNumber) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.getPolyPressure(int)"); }
-  public abstract void setChannelPressure(int pressure) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.setChannelPressure(int)"); }
-  public abstract int getChannelPressure() { throw new AbstractMethodError("javax.sound.midi.MidiChannel.getChannelPressure()"); }
-  public abstract void programChange(int bank, int program) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.programChange(int, int)"); }
-  public abstract void programChange(int program) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.programChange(int)"); }
-  public abstract void setPitchBend(int bend) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.setPitchBend(int)"); }
-  public abstract int getPitchBend() { throw new AbstractMethodError("javax.sound.midi.MidiChannel.getPitchBend()"); }
-  public abstract void resetAllControllers() { throw new AbstractMethodError("javax.sound.midi.MidiChannel.resetAllControllers()"); }
-  public abstract void allNotesOff() { throw new AbstractMethodError("javax.sound.midi.MidiChannel.allNotesOff()"); }
-  public abstract void allSoundOff() { throw new AbstractMethodError("javax.sound.midi.MidiChannel.allSoundOff()"); }
-  public abstract boolean localControl(boolean on) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.localControl(boolean)"); }
-  public abstract void setMono(boolean on) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.setMono(boolean)"); }
-  public abstract boolean getMono() { throw new AbstractMethodError("javax.sound.midi.MidiChannel.getMono()"); }
-  public abstract void setOmni(boolean on) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.setOmni(boolean)"); }
-  public abstract boolean getOmni() { throw new AbstractMethodError("javax.sound.midi.MidiChannel.getOmni()"); }
-  public abstract void setMute(boolean mute) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.setMute(boolean)"); }
-  public abstract boolean getMute() { throw new AbstractMethodError("javax.sound.midi.MidiChannel.getMute()"); }
-  public abstract void setSolo(boolean soloState) { throw new AbstractMethodError("javax.sound.midi.MidiChannel.setSolo(boolean)"); }
-  public abstract boolean getSolo() { throw new AbstractMethodError("javax.sound.midi.MidiChannel.getSolo()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getController(int controller) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void controlChange(int controller, int value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getProgram() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void noteOn(int noteNumber, int velocity) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void noteOff(int noteNumber) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void noteOff(int noteNumber, int velocity) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setPolyPressure(int noteNumber, int pressure) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getPolyPressure(int noteNumber) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setChannelPressure(int pressure) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getChannelPressure() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void programChange(int bank, int program) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void programChange(int program) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setPitchBend(int bend) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getPitchBend() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void resetAllControllers() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void allNotesOff() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void allSoundOff() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean localControl(boolean on) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMono(boolean on) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getMono() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setOmni(boolean on) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getOmni() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMute(boolean mute) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getMute() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSolo(boolean soloState) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getSolo() { return false; }
   < ---- END java signatures ---- >
 }

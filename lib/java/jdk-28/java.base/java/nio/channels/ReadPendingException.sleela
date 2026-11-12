@@ -58,6 +58,7 @@ class ReadPendingException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ReadPendingException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.ReadPendingException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ReadPendingException() { }
   < ---- END java constructors ---- >
 }

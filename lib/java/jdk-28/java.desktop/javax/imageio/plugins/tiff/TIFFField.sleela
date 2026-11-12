@@ -58,46 +58,83 @@ class TIFFField {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TIFFField(javax.imageio.plugins.tiff.TIFFTag tag, int type, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.<init>(javax.imageio.plugins.tiff.TIFFTag, int, int)"); }
-  public TIFFField(javax.imageio.plugins.tiff.TIFFTag tag, int type, int count, java.lang.Object data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.<init>(javax.imageio.plugins.tiff.TIFFTag, int, int, java.lang.Object)"); }
-  public TIFFField(javax.imageio.plugins.tiff.TIFFTag tag, long value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.<init>(javax.imageio.plugins.tiff.TIFFTag, long)"); }
-  public TIFFField(javax.imageio.plugins.tiff.TIFFTag tag, int type, long offset, javax.imageio.plugins.tiff.TIFFDirectory dir) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.<init>(javax.imageio.plugins.tiff.TIFFTag, int, long, javax.imageio.plugins.tiff.TIFFDirectory)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TIFFField(javax.imageio.plugins.tiff.TIFFTag tag, int type, int count) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TIFFField(javax.imageio.plugins.tiff.TIFFTag tag, int type, int count, java.lang.Object data) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TIFFField(javax.imageio.plugins.tiff.TIFFTag tag, long value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TIFFField(javax.imageio.plugins.tiff.TIFFTag tag, int type, long offset, javax.imageio.plugins.tiff.TIFFDirectory dir) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.imageio.plugins.tiff.TIFFField clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.clone()"); }
-  public static java.lang.String getTypeName(int dataType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getTypeName(int)"); }
-  public int getCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getCount()"); }
-  public int getType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getType()"); }
-  public boolean isIntegral() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.isIntegral()"); }
-  public double getAsDouble(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsDouble(int)"); }
-  public int getAsInt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsInt(int)"); }
-  public long getAsLong(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsLong(int)"); }
-  public java.lang.Object getData() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getData()"); }
-  public javax.imageio.plugins.tiff.TIFFDirectory getDirectory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getDirectory()"); }
-  public java.lang.String getAsString(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsString(int)"); }
-  public int getTagNumber() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getTagNumber()"); }
-  public static int getTypeByName(java.lang.String typeName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getTypeByName(java.lang.String)"); }
-  public static java.lang.Object createArrayForType(int dataType, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.createArrayForType(int, int)"); }
-  public int[] getAsSRational(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsSRational(int)"); }
-  public long[] getAsRational(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsRational(int)"); }
-  public static javax.imageio.plugins.tiff.TIFFField createFromMetadataNode(javax.imageio.plugins.tiff.TIFFTagSet tagSet, org.w3c.dom.Node node) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.createFromMetadataNode(javax.imageio.plugins.tiff.TIFFTagSet, org.w3c.dom.Node)"); }
-  public org.w3c.dom.Node getAsNativeNode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsNativeNode()"); }
-  public byte[] getAsBytes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsBytes()"); }
-  public char[] getAsChars() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsChars()"); }
-  public short[] getAsShorts() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsShorts()"); }
-  public int[] getAsInts() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsInts()"); }
-  public long[] getAsLongs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsLongs()"); }
-  public float[] getAsFloats() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsFloats()"); }
-  public double[] getAsDoubles() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsDoubles()"); }
-  public int[][] getAsSRationals() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsSRationals()"); }
-  public long[][] getAsRationals() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsRationals()"); }
-  public float getAsFloat(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getAsFloat(int)"); }
-  public java.lang.String getValueAsString(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getValueAsString(int)"); }
-  public boolean hasDirectory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.hasDirectory()"); }
-  public javax.imageio.plugins.tiff.TIFFTag getTag() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.TIFFField.getTag()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
+  public javax.imageio.plugins.tiff.TIFFField clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String getTypeName(int dataType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getType() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isIntegral() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getAsDouble(int index) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAsInt(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getAsLong(int index) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getData() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.plugins.tiff.TIFFDirectory getDirectory() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAsString(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTagNumber() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getTypeByName(java.lang.String typeName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Object createArrayForType(int dataType, int count) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getAsSRational(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long[] getAsRational(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.imageio.plugins.tiff.TIFFField createFromMetadataNode(javax.imageio.plugins.tiff.TIFFTagSet tagSet, org.w3c.dom.Node node) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public org.w3c.dom.Node getAsNativeNode() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getAsBytes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char[] getAsChars() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public short[] getAsShorts() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getAsInts() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long[] getAsLongs() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float[] getAsFloats() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double[] getAsDoubles() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[][] getAsSRationals() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long[][] getAsRationals() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float getAsFloat(int index) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getValueAsString(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasDirectory() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.plugins.tiff.TIFFTag getTag() { return null; }
   < ---- END java signatures ---- >
 }

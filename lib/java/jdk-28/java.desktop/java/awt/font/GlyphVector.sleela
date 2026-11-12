@@ -67,39 +67,69 @@ class GlyphVector {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  GlyphVector() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.GlyphVector.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  GlyphVector() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean equals(java.awt.font.GlyphVector set) { throw new AbstractMethodError("java.awt.font.GlyphVector.equals(java.awt.font.GlyphVector)"); }
-  public abstract int getNumGlyphs() { throw new AbstractMethodError("java.awt.font.GlyphVector.getNumGlyphs()"); }
-  public abstract java.awt.font.FontRenderContext getFontRenderContext() { throw new AbstractMethodError("java.awt.font.GlyphVector.getFontRenderContext()"); }
-  public int getGlyphCharIndex(int glyphIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.GlyphVector.getGlyphCharIndex(int)"); }
-  public abstract java.awt.geom.Rectangle2D getVisualBounds() { throw new AbstractMethodError("java.awt.font.GlyphVector.getVisualBounds()"); }
-  public abstract java.awt.Shape getGlyphOutline(int glyphIndex) { throw new AbstractMethodError("java.awt.font.GlyphVector.getGlyphOutline(int)"); }
-  public java.awt.Shape getGlyphOutline(int glyphIndex, float x, float y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.GlyphVector.getGlyphOutline(int, float, float)"); }
-  public abstract java.awt.Shape getGlyphVisualBounds(int glyphIndex) { throw new AbstractMethodError("java.awt.font.GlyphVector.getGlyphVisualBounds(int)"); }
-  public abstract void performDefaultLayout() { throw new AbstractMethodError("java.awt.font.GlyphVector.performDefaultLayout()"); }
-  public abstract int getGlyphCode(int glyphIndex) { throw new AbstractMethodError("java.awt.font.GlyphVector.getGlyphCode(int)"); }
-  public abstract int[] getGlyphCodes(int beginGlyphIndex, int numEntries, int[] codeReturn) { throw new AbstractMethodError("java.awt.font.GlyphVector.getGlyphCodes(int, int, int[])"); }
-  public int[] getGlyphCharIndices(int beginGlyphIndex, int numEntries, int[] codeReturn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.GlyphVector.getGlyphCharIndices(int, int, int[])"); }
-  public abstract java.awt.geom.Rectangle2D getLogicalBounds() { throw new AbstractMethodError("java.awt.font.GlyphVector.getLogicalBounds()"); }
-  public java.awt.Rectangle getPixelBounds(java.awt.font.FontRenderContext renderFRC, float x, float y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.GlyphVector.getPixelBounds(java.awt.font.FontRenderContext, float, float)"); }
-  public abstract java.awt.Shape getOutline(float x, float y) { throw new AbstractMethodError("java.awt.font.GlyphVector.getOutline(float, float)"); }
-  public abstract java.awt.Shape getOutline() { throw new AbstractMethodError("java.awt.font.GlyphVector.getOutline()"); }
-  public abstract java.awt.geom.Point2D getGlyphPosition(int glyphIndex) { throw new AbstractMethodError("java.awt.font.GlyphVector.getGlyphPosition(int)"); }
-  public abstract void setGlyphPosition(int glyphIndex, java.awt.geom.Point2D newPos) { throw new AbstractMethodError("java.awt.font.GlyphVector.setGlyphPosition(int, java.awt.geom.Point2D)"); }
-  public abstract java.awt.geom.AffineTransform getGlyphTransform(int glyphIndex) { throw new AbstractMethodError("java.awt.font.GlyphVector.getGlyphTransform(int)"); }
-  public abstract void setGlyphTransform(int glyphIndex, java.awt.geom.AffineTransform newTX) { throw new AbstractMethodError("java.awt.font.GlyphVector.setGlyphTransform(int, java.awt.geom.AffineTransform)"); }
-  public int getLayoutFlags() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.GlyphVector.getLayoutFlags()"); }
-  public abstract float[] getGlyphPositions(int beginGlyphIndex, int numEntries, float[] positionReturn) { throw new AbstractMethodError("java.awt.font.GlyphVector.getGlyphPositions(int, int, float[])"); }
-  public abstract java.awt.Shape getGlyphLogicalBounds(int glyphIndex) { throw new AbstractMethodError("java.awt.font.GlyphVector.getGlyphLogicalBounds(int)"); }
-  public java.awt.Rectangle getGlyphPixelBounds(int index, java.awt.font.FontRenderContext renderFRC, float x, float y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.GlyphVector.getGlyphPixelBounds(int, java.awt.font.FontRenderContext, float, float)"); }
-  public abstract java.awt.font.GlyphMetrics getGlyphMetrics(int glyphIndex) { throw new AbstractMethodError("java.awt.font.GlyphVector.getGlyphMetrics(int)"); }
-  public abstract java.awt.font.GlyphJustificationInfo getGlyphJustificationInfo(int glyphIndex) { throw new AbstractMethodError("java.awt.font.GlyphVector.getGlyphJustificationInfo(int)"); }
-  public abstract java.awt.Font getFont() { throw new AbstractMethodError("java.awt.font.GlyphVector.getFont()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.awt.font.GlyphVector set) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getNumGlyphs() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.font.FontRenderContext getFontRenderContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getGlyphCharIndex(int glyphIndex) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.geom.Rectangle2D getVisualBounds() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Shape getGlyphOutline(int glyphIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Shape getGlyphOutline(int glyphIndex, float x, float y) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Shape getGlyphVisualBounds(int glyphIndex) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void performDefaultLayout() { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getGlyphCode(int glyphIndex) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int[] getGlyphCodes(int beginGlyphIndex, int numEntries, int[] codeReturn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getGlyphCharIndices(int beginGlyphIndex, int numEntries, int[] codeReturn) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.geom.Rectangle2D getLogicalBounds() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getPixelBounds(java.awt.font.FontRenderContext renderFRC, float x, float y) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Shape getOutline(float x, float y) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Shape getOutline() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.geom.Point2D getGlyphPosition(int glyphIndex) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setGlyphPosition(int glyphIndex, java.awt.geom.Point2D newPos) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.geom.AffineTransform getGlyphTransform(int glyphIndex) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setGlyphTransform(int glyphIndex, java.awt.geom.AffineTransform newTX) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLayoutFlags() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float[] getGlyphPositions(int beginGlyphIndex, int numEntries, float[] positionReturn) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Shape getGlyphLogicalBounds(int glyphIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getGlyphPixelBounds(int index, java.awt.font.FontRenderContext renderFRC, float x, float y) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.font.GlyphMetrics getGlyphMetrics(int glyphIndex) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.font.GlyphJustificationInfo getGlyphJustificationInfo(int glyphIndex) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Font getFont() { return null; }
   < ---- END java signatures ---- >
 }

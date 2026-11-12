@@ -63,29 +63,47 @@ class SimpleAnnotationValueVisitor6<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SimpleAnnotationValueVisitor6() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleAnnotationValueVisitor6() { }
   @JavaProtected
-  SimpleAnnotationValueVisitor6(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.<init>(R)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleAnnotationValueVisitor6(R defaultValue) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public R visitType(javax.lang.model.type.TypeMirror t, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.visitType(javax.lang.model.type.TypeMirror, P)"); }
-  public R visitArray(java.util.List<? extends javax.lang.model.element.AnnotationValue> vals, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.visitArray(java.util.List<? extends javax.lang.model.element.AnnotationValue>, P)"); }
-  public R visitAnnotation(javax.lang.model.element.AnnotationMirror a, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.visitAnnotation(javax.lang.model.element.AnnotationMirror, P)"); }
-  public R visitString(java.lang.String s, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.visitString(java.lang.String, P)"); }
-  public R visitBoolean(boolean b, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.visitBoolean(boolean, P)"); }
-  public R visitChar(char c, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.visitChar(char, P)"); }
-  public R visitByte(byte b, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.visitByte(byte, P)"); }
-  public R visitShort(short s, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.visitShort(short, P)"); }
-  public R visitInt(int i, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.visitInt(int, P)"); }
-  public R visitLong(long i, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.visitLong(long, P)"); }
-  public R visitFloat(float f, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.visitFloat(float, P)"); }
-  public R visitDouble(double d, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.visitDouble(double, P)"); }
-  public R visitEnumConstant(javax.lang.model.element.VariableElement c, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.visitEnumConstant(javax.lang.model.element.VariableElement, P)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitType(javax.lang.model.type.TypeMirror t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitArray(java.util.List<? extends javax.lang.model.element.AnnotationValue> vals, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitAnnotation(javax.lang.model.element.AnnotationMirror a, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitString(java.lang.String s, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitBoolean(boolean b, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitChar(char c, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitByte(byte b, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitShort(short s, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitInt(int i, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitLong(long i, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitFloat(float f, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitDouble(double d, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public R visitEnumConstant(javax.lang.model.element.VariableElement c, P p) { return null; }
   @JavaProtected
-  R defaultAction(java.lang.Object o, P p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.SimpleAnnotationValueVisitor6.defaultAction(java.lang.Object, P)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  R defaultAction(java.lang.Object o, P p) { return null; }
   < ---- END java signatures ---- >
 }

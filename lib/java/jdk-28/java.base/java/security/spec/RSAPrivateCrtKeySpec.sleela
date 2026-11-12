@@ -58,19 +58,29 @@ class RSAPrivateCrtKeySpec {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RSAPrivateCrtKeySpec(java.math.BigInteger modulus, java.math.BigInteger publicExponent, java.math.BigInteger privateExponent, java.math.BigInteger primeP, java.math.BigInteger primeQ, java.math.BigInteger primeExponentP, java.math.BigInteger primeExponentQ, java.math.BigInteger crtCoefficient) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.RSAPrivateCrtKeySpec.<init>(java.math.BigInteger, java.math.BigInteger, java.math.BigInteger, java.math.BigInteger, java.math.BigInteger, java.math.BigInteger, java.math.BigInteger, java.math.BigInteger)"); }
-  public RSAPrivateCrtKeySpec(java.math.BigInteger modulus, java.math.BigInteger publicExponent, java.math.BigInteger privateExponent, java.math.BigInteger primeP, java.math.BigInteger primeQ, java.math.BigInteger primeExponentP, java.math.BigInteger primeExponentQ, java.math.BigInteger crtCoefficient, java.security.spec.AlgorithmParameterSpec keyParams) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.RSAPrivateCrtKeySpec.<init>(java.math.BigInteger, java.math.BigInteger, java.math.BigInteger, java.math.BigInteger, java.math.BigInteger, java.math.BigInteger, java.math.BigInteger, java.math.BigInteger, java.security.spec.AlgorithmParameterSpec)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RSAPrivateCrtKeySpec(java.math.BigInteger modulus, java.math.BigInteger publicExponent, java.math.BigInteger privateExponent, java.math.BigInteger primeP, java.math.BigInteger primeQ, java.math.BigInteger primeExponentP, java.math.BigInteger primeExponentQ, java.math.BigInteger crtCoefficient) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RSAPrivateCrtKeySpec(java.math.BigInteger modulus, java.math.BigInteger publicExponent, java.math.BigInteger privateExponent, java.math.BigInteger primeP, java.math.BigInteger primeQ, java.math.BigInteger primeExponentP, java.math.BigInteger primeExponentQ, java.math.BigInteger crtCoefficient, java.security.spec.AlgorithmParameterSpec keyParams) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.math.BigInteger getPublicExponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.RSAPrivateCrtKeySpec.getPublicExponent()"); }
-  public java.math.BigInteger getPrimeP() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.RSAPrivateCrtKeySpec.getPrimeP()"); }
-  public java.math.BigInteger getPrimeQ() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.RSAPrivateCrtKeySpec.getPrimeQ()"); }
-  public java.math.BigInteger getPrimeExponentP() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.RSAPrivateCrtKeySpec.getPrimeExponentP()"); }
-  public java.math.BigInteger getPrimeExponentQ() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.RSAPrivateCrtKeySpec.getPrimeExponentQ()"); }
-  public java.math.BigInteger getCrtCoefficient() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.RSAPrivateCrtKeySpec.getCrtCoefficient()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger getPublicExponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger getPrimeP() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger getPrimeQ() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger getPrimeExponentP() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger getPrimeExponentQ() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger getCrtCoefficient() { return null; }
   < ---- END java signatures ---- >
 }

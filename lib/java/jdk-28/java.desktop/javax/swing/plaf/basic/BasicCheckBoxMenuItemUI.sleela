@@ -58,16 +58,22 @@ class BasicCheckBoxMenuItemUI {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicCheckBoxMenuItemUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicCheckBoxMenuItemUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicCheckBoxMenuItemUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void processMouseEvent(javax.swing.JMenuItem item, java.awt.event.MouseEvent e, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicCheckBoxMenuItemUI.processMouseEvent(javax.swing.JMenuItem, java.awt.event.MouseEvent, javax.swing.MenuElement[], javax.swing.MenuSelectionManager)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicCheckBoxMenuItemUI.createUI(javax.swing.JComponent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void processMouseEvent(javax.swing.JMenuItem item, java.awt.event.MouseEvent e, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  java.lang.String getPropertyPrefix() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicCheckBoxMenuItemUI.getPropertyPrefix()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String getPropertyPrefix() { return null; }
   < ---- END java signatures ---- >
 }

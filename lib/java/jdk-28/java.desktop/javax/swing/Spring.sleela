@@ -63,25 +63,41 @@ class Spring {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Spring() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Spring.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Spring() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.swing.Spring max(javax.swing.Spring s1, javax.swing.Spring s2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Spring.max(javax.swing.Spring, javax.swing.Spring)"); }
-  public static javax.swing.Spring scale(javax.swing.Spring s, float factor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Spring.scale(javax.swing.Spring, float)"); }
-  public abstract int getValue() { throw new AbstractMethodError("javax.swing.Spring.getValue()"); }
-  public static javax.swing.Spring constant(int pref) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Spring.constant(int)"); }
-  public static javax.swing.Spring constant(int min, int pref, int max) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Spring.constant(int, int, int)"); }
-  public abstract void setValue(int value) { throw new AbstractMethodError("javax.swing.Spring.setValue(int)"); }
-  public static javax.swing.Spring sum(javax.swing.Spring s1, javax.swing.Spring s2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Spring.sum(javax.swing.Spring, javax.swing.Spring)"); }
-  public static javax.swing.Spring width(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Spring.width(java.awt.Component)"); }
-  public static javax.swing.Spring minus(javax.swing.Spring s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Spring.minus(javax.swing.Spring)"); }
-  public abstract int getPreferredValue() { throw new AbstractMethodError("javax.swing.Spring.getPreferredValue()"); }
-  public abstract int getMinimumValue() { throw new AbstractMethodError("javax.swing.Spring.getMinimumValue()"); }
-  public abstract int getMaximumValue() { throw new AbstractMethodError("javax.swing.Spring.getMaximumValue()"); }
-  public static javax.swing.Spring height(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Spring.height(java.awt.Component)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Spring max(javax.swing.Spring s1, javax.swing.Spring s2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Spring scale(javax.swing.Spring s, float factor) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Spring constant(int pref) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Spring constant(int min, int pref, int max) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setValue(int value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Spring sum(javax.swing.Spring s1, javax.swing.Spring s2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Spring width(java.awt.Component c) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Spring minus(javax.swing.Spring s) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getPreferredValue() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMinimumValue() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMaximumValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.Spring height(java.awt.Component c) { return null; }
   < ---- END java signatures ---- >
 }

@@ -64,17 +64,28 @@ class Introspector {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static java.lang.String decapitalize(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Introspector.decapitalize(java.lang.String)"); }
-  public static java.beans.BeanInfo getBeanInfo(java.lang.Class<?> beanClass) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Introspector.getBeanInfo(java.lang.Class<?>)"); }
-  public static java.beans.BeanInfo getBeanInfo(java.lang.Class<?> beanClass, java.lang.Class<?> stopClass) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Introspector.getBeanInfo(java.lang.Class<?>, java.lang.Class<?>)"); }
-  public static java.beans.BeanInfo getBeanInfo(java.lang.Class<?> beanClass, int flags) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Introspector.getBeanInfo(java.lang.Class<?>, int)"); }
-  public static java.beans.BeanInfo getBeanInfo(java.lang.Class<?> beanClass, java.lang.Class<?> stopClass, int flags) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Introspector.getBeanInfo(java.lang.Class<?>, java.lang.Class<?>, int)"); }
-  public static java.lang.String[] getBeanInfoSearchPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Introspector.getBeanInfoSearchPath()"); }
-  public static void setBeanInfoSearchPath(java.lang.String[] path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Introspector.setBeanInfoSearchPath(java.lang.String[])"); }
-  public static void flushCaches() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Introspector.flushCaches()"); }
-  public static void flushFromCaches(java.lang.Class<?> clz) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.Introspector.flushFromCaches(java.lang.Class<?>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String decapitalize(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public static java.beans.BeanInfo getBeanInfo(java.lang.Class<?> beanClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public static java.beans.BeanInfo getBeanInfo(java.lang.Class<?> beanClass, java.lang.Class<?> stopClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public static java.beans.BeanInfo getBeanInfo(java.lang.Class<?> beanClass, int flags) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public static java.beans.BeanInfo getBeanInfo(java.lang.Class<?> beanClass, java.lang.Class<?> stopClass, int flags) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String[] getBeanInfoSearchPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setBeanInfoSearchPath(java.lang.String[] path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void flushCaches() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void flushFromCaches(java.lang.Class<?> clz) { }
   < ---- END java signatures ---- >
 }

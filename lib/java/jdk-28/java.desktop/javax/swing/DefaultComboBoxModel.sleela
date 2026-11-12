@@ -58,26 +58,43 @@ class DefaultComboBoxModel<E> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DefaultComboBoxModel(java.util.Vector<E> v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.<init>(java.util.Vector<E>)"); }
-  public DefaultComboBoxModel(E[] items) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.<init>(E[])"); }
-  public DefaultComboBoxModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultComboBoxModel(java.util.Vector<E> v) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultComboBoxModel(E[] items) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DefaultComboBoxModel() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void addAll(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.addAll(java.util.Collection<? extends E>)"); }
-  public void addAll(int index, java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.addAll(int, java.util.Collection<? extends E>)"); }
-  public int getSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.getSize()"); }
-  public void insertElementAt(E anObject, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.insertElementAt(E, int)"); }
-  public void removeElementAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.removeElementAt(int)"); }
-  public void removeAllElements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.removeAllElements()"); }
-  public void addElement(E anObject) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.addElement(E)"); }
-  public void removeElement(java.lang.Object anObject) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.removeElement(java.lang.Object)"); }
-  public java.lang.Object getSelectedItem() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.getSelectedItem()"); }
-  public void setSelectedItem(java.lang.Object anObject) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.setSelectedItem(java.lang.Object)"); }
-  public E getElementAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.getElementAt(int)"); }
-  public int getIndexOf(java.lang.Object anObject) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.DefaultComboBoxModel.getIndexOf(java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addAll(java.util.Collection<? extends E> c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addAll(int index, java.util.Collection<? extends E> c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertElementAt(E anObject, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeElementAt(int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAllElements() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addElement(E anObject) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeElement(java.lang.Object anObject) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getSelectedItem() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectedItem(java.lang.Object anObject) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E getElementAt(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getIndexOf(java.lang.Object anObject) { return 0; }
   < ---- END java signatures ---- >
 }

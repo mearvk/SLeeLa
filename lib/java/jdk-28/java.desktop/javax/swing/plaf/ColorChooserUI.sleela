@@ -59,6 +59,7 @@ class ColorChooserUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ColorChooserUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.ColorChooserUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ColorChooserUI() { }
   < ---- END java constructors ---- >
 }

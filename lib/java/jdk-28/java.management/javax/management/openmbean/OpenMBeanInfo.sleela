@@ -58,17 +58,28 @@ class OpenMBeanInfo {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanInfo.equals(java.lang.Object)"); }
-  public abstract java.lang.String toString() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanInfo.toString()"); }
-  public abstract int hashCode() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanInfo.hashCode()"); }
-  public abstract javax.management.MBeanConstructorInfo[] getConstructors() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanInfo.getConstructors()"); }
-  public abstract java.lang.String getClassName() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanInfo.getClassName()"); }
-  public abstract javax.management.MBeanAttributeInfo[] getAttributes() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanInfo.getAttributes()"); }
-  public abstract java.lang.String getDescription() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanInfo.getDescription()"); }
-  public abstract javax.management.MBeanOperationInfo[] getOperations() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanInfo.getOperations()"); }
-  public abstract javax.management.MBeanNotificationInfo[] getNotifications() { throw new AbstractMethodError("javax.management.openmbean.OpenMBeanInfo.getNotifications()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.MBeanConstructorInfo[] getConstructors() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getClassName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.MBeanAttributeInfo[] getAttributes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDescription() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.MBeanOperationInfo[] getOperations() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.MBeanNotificationInfo[] getNotifications() { return null; }
   < ---- END java signatures ---- >
 }

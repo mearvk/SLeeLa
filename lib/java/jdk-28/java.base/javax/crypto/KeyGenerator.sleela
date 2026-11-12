@@ -59,22 +59,35 @@ class KeyGenerator {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  KeyGenerator(javax.crypto.KeyGeneratorSpi keyGenSpi, java.security.Provider provider, java.lang.String algorithm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyGenerator.<init>(javax.crypto.KeyGeneratorSpi, java.security.Provider, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  KeyGenerator(javax.crypto.KeyGeneratorSpi keyGenSpi, java.security.Provider provider, java.lang.String algorithm) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static final javax.crypto.KeyGenerator getInstance(java.lang.String algorithm, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyGenerator.getInstance(java.lang.String, java.lang.String)"); }
-  public static final javax.crypto.KeyGenerator getInstance(java.lang.String algorithm) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyGenerator.getInstance(java.lang.String)"); }
-  public static final javax.crypto.KeyGenerator getInstance(java.lang.String algorithm, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyGenerator.getInstance(java.lang.String, java.security.Provider)"); }
-  public final void init(int keysize, java.security.SecureRandom random) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyGenerator.init(int, java.security.SecureRandom)"); }
-  public final void init(int keysize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyGenerator.init(int)"); }
-  public final void init(java.security.spec.AlgorithmParameterSpec params, java.security.SecureRandom random) throws java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyGenerator.init(java.security.spec.AlgorithmParameterSpec, java.security.SecureRandom)"); }
-  public final void init(java.security.spec.AlgorithmParameterSpec params) throws java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyGenerator.init(java.security.spec.AlgorithmParameterSpec)"); }
-  public final java.security.Provider getProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyGenerator.getProvider()"); }
-  public final java.lang.String getAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyGenerator.getAlgorithm()"); }
-  public final javax.crypto.SecretKey generateKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyGenerator.generateKey()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException")
+  public static final javax.crypto.KeyGenerator getInstance(java.lang.String algorithm, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static final javax.crypto.KeyGenerator getInstance(java.lang.String algorithm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static final javax.crypto.KeyGenerator getInstance(java.lang.String algorithm, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void init(int keysize, java.security.SecureRandom random) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void init(int keysize) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidAlgorithmParameterException")
+  public final void init(java.security.spec.AlgorithmParameterSpec params, java.security.SecureRandom random) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidAlgorithmParameterException")
+  public final void init(java.security.spec.AlgorithmParameterSpec params) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.Provider getProvider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.crypto.SecretKey generateKey() { return null; }
   < ---- END java signatures ---- >
 }

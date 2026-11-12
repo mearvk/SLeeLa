@@ -58,20 +58,31 @@ class RoleList {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RoleList(java.util.List<javax.management.relation.Role> list) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleList.<init>(java.util.List<javax.management.relation.Role>)"); }
-  public RoleList(int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleList.<init>(int)"); }
-  public RoleList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleList.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public RoleList(java.util.List<javax.management.relation.Role> list) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RoleList(int initialCapacity) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RoleList() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void add(int index, javax.management.relation.Role role) throws java.lang.IllegalArgumentException, java.lang.IndexOutOfBoundsException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleList.add(int, javax.management.relation.Role)"); }
-  public boolean add(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleList.add(java.lang.Object)"); }
-  public boolean addAll(java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleList.addAll(java.util.Collection<?>)"); }
-  public boolean addAll(int index, java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleList.addAll(int, java.util.Collection<?>)"); }
-  public java.lang.Object set(int index, java.lang.Object element) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleList.set(int, java.lang.Object)"); }
-  public java.util.List<javax.management.relation.Role> asList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RoleList.asList()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IndexOutOfBoundsException")
+  public void add(int index, javax.management.relation.Role role) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean add(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean addAll(java.util.Collection<?> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean addAll(int index, java.util.Collection<?> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object set(int index, java.lang.Object element) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<javax.management.relation.Role> asList() { return null; }
   < ---- END java signatures ---- >
 }

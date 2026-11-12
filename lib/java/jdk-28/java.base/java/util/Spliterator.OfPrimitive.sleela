@@ -59,11 +59,16 @@ class OfPrimitive<T, T_CONS, T_SPLITR extends java.util.Spliterator.OfPrimitive<
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default void forEachRemaining(T_CONS action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Spliterator.OfPrimitive.forEachRemaining(T_CONS)"); }
-  public abstract T_SPLITR trySplit() { throw new AbstractMethodError("java.util.Spliterator.OfPrimitive.trySplit()"); }
-  public abstract boolean tryAdvance(T_CONS action) { throw new AbstractMethodError("java.util.Spliterator.OfPrimitive.tryAdvance(T_CONS)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void forEachRemaining(T_CONS action) { }
+  @throwable("java.lang.AbstractMethodError")
+  public T_SPLITR trySplit() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean tryAdvance(T_CONS action) { return false; }
   < ---- END java signatures ---- >
 }

@@ -58,14 +58,22 @@ class UserDefinedFileAttributeView {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String name() { throw new AbstractMethodError("java.nio.file.attribute.UserDefinedFileAttributeView.name()"); }
-  public abstract int size(java.lang.String name) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.attribute.UserDefinedFileAttributeView.size(java.lang.String)"); }
-  public abstract java.util.List<java.lang.String> list() throws java.io.IOException { throw new AbstractMethodError("java.nio.file.attribute.UserDefinedFileAttributeView.list()"); }
-  public abstract int write(java.lang.String name, java.nio.ByteBuffer src) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.attribute.UserDefinedFileAttributeView.write(java.lang.String, java.nio.ByteBuffer)"); }
-  public abstract void delete(java.lang.String name) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.attribute.UserDefinedFileAttributeView.delete(java.lang.String)"); }
-  public abstract int read(java.lang.String name, java.nio.ByteBuffer dst) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.attribute.UserDefinedFileAttributeView.read(java.lang.String, java.nio.ByteBuffer)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String name() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public int size(java.lang.String name) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.util.List<java.lang.String> list() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public int write(java.lang.String name, java.nio.ByteBuffer src) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void delete(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public int read(java.lang.String name, java.nio.ByteBuffer dst) { return 0; }
   < ---- END java signatures ---- >
 }

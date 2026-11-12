@@ -59,22 +59,35 @@ class TreeUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  TreeUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.TreeUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  TreeUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getRowForPath(javax.swing.JTree tree, javax.swing.tree.TreePath path) { throw new AbstractMethodError("javax.swing.plaf.TreeUI.getRowForPath(javax.swing.JTree, javax.swing.tree.TreePath)"); }
-  public abstract javax.swing.tree.TreePath getClosestPathForLocation(javax.swing.JTree tree, int x, int y) { throw new AbstractMethodError("javax.swing.plaf.TreeUI.getClosestPathForLocation(javax.swing.JTree, int, int)"); }
-  public abstract boolean isEditing(javax.swing.JTree tree) { throw new AbstractMethodError("javax.swing.plaf.TreeUI.isEditing(javax.swing.JTree)"); }
-  public abstract boolean stopEditing(javax.swing.JTree tree) { throw new AbstractMethodError("javax.swing.plaf.TreeUI.stopEditing(javax.swing.JTree)"); }
-  public abstract void cancelEditing(javax.swing.JTree tree) { throw new AbstractMethodError("javax.swing.plaf.TreeUI.cancelEditing(javax.swing.JTree)"); }
-  public abstract void startEditingAtPath(javax.swing.JTree tree, javax.swing.tree.TreePath path) { throw new AbstractMethodError("javax.swing.plaf.TreeUI.startEditingAtPath(javax.swing.JTree, javax.swing.tree.TreePath)"); }
-  public abstract javax.swing.tree.TreePath getEditingPath(javax.swing.JTree tree) { throw new AbstractMethodError("javax.swing.plaf.TreeUI.getEditingPath(javax.swing.JTree)"); }
-  public abstract javax.swing.tree.TreePath getPathForRow(javax.swing.JTree tree, int row) { throw new AbstractMethodError("javax.swing.plaf.TreeUI.getPathForRow(javax.swing.JTree, int)"); }
-  public abstract int getRowCount(javax.swing.JTree tree) { throw new AbstractMethodError("javax.swing.plaf.TreeUI.getRowCount(javax.swing.JTree)"); }
-  public abstract java.awt.Rectangle getPathBounds(javax.swing.JTree tree, javax.swing.tree.TreePath path) { throw new AbstractMethodError("javax.swing.plaf.TreeUI.getPathBounds(javax.swing.JTree, javax.swing.tree.TreePath)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getRowForPath(javax.swing.JTree tree, javax.swing.tree.TreePath path) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.tree.TreePath getClosestPathForLocation(javax.swing.JTree tree, int x, int y) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isEditing(javax.swing.JTree tree) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean stopEditing(javax.swing.JTree tree) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void cancelEditing(javax.swing.JTree tree) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void startEditingAtPath(javax.swing.JTree tree, javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.tree.TreePath getEditingPath(javax.swing.JTree tree) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.tree.TreePath getPathForRow(javax.swing.JTree tree, int row) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getRowCount(javax.swing.JTree tree) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Rectangle getPathBounds(javax.swing.JTree tree, javax.swing.tree.TreePath path) { return null; }
   < ---- END java signatures ---- >
 }

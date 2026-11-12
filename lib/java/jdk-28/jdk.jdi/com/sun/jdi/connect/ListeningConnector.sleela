@@ -58,12 +58,18 @@ class ListeningConnector {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract com.sun.jdi.VirtualMachine accept(java.util.Map<java.lang.String, ? extends com.sun.jdi.connect.Connector.Argument> arguments) throws java.io.IOException, com.sun.jdi.connect.IllegalConnectorArgumentsException { throw new AbstractMethodError("com.sun.jdi.connect.ListeningConnector.accept(java.util.Map<java.lang.String, ? extends com.sun.jdi.connect.Connector.Argument>)"); }
-  public abstract boolean supportsMultipleConnections() { throw new AbstractMethodError("com.sun.jdi.connect.ListeningConnector.supportsMultipleConnections()"); }
-  public abstract java.lang.String startListening(java.util.Map<java.lang.String, ? extends com.sun.jdi.connect.Connector.Argument> arguments) throws java.io.IOException, com.sun.jdi.connect.IllegalConnectorArgumentsException { throw new AbstractMethodError("com.sun.jdi.connect.ListeningConnector.startListening(java.util.Map<java.lang.String, ? extends com.sun.jdi.connect.Connector.Argument>)"); }
-  public abstract void stopListening(java.util.Map<java.lang.String, ? extends com.sun.jdi.connect.Connector.Argument> arguments) throws java.io.IOException, com.sun.jdi.connect.IllegalConnectorArgumentsException { throw new AbstractMethodError("com.sun.jdi.connect.ListeningConnector.stopListening(java.util.Map<java.lang.String, ? extends com.sun.jdi.connect.Connector.Argument>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException, com.sun.jdi.connect.IllegalConnectorArgumentsException")
+  public com.sun.jdi.VirtualMachine accept(java.util.Map<java.lang.String, ? extends com.sun.jdi.connect.Connector.Argument> arguments) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean supportsMultipleConnections() { return false; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException, com.sun.jdi.connect.IllegalConnectorArgumentsException")
+  public java.lang.String startListening(java.util.Map<java.lang.String, ? extends com.sun.jdi.connect.Connector.Argument> arguments) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException, com.sun.jdi.connect.IllegalConnectorArgumentsException")
+  public void stopListening(java.util.Map<java.lang.String, ? extends com.sun.jdi.connect.Connector.Argument> arguments) { }
   < ---- END java signatures ---- >
 }

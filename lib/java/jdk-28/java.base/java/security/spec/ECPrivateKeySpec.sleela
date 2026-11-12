@@ -58,14 +58,19 @@ class ECPrivateKeySpec {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ECPrivateKeySpec(java.math.BigInteger s, java.security.spec.ECParameterSpec params) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.ECPrivateKeySpec.<init>(java.math.BigInteger, java.security.spec.ECParameterSpec)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ECPrivateKeySpec(java.math.BigInteger s, java.security.spec.ECParameterSpec params) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.math.BigInteger getS() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.ECPrivateKeySpec.getS()"); }
-  public java.security.spec.ECParameterSpec getParams() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.ECPrivateKeySpec.getParams()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger getS() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.spec.ECParameterSpec getParams() { return null; }
   < ---- END java signatures ---- >
 }

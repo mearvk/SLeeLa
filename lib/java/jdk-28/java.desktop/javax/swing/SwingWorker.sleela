@@ -58,35 +58,56 @@ class SwingWorker<T, V> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SwingWorker() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SwingWorker() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final void run() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.run()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void run() { }
   @JavaProtected
-  void done() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.done()"); }
-  public final T get() throws java.lang.InterruptedException, java.util.concurrent.ExecutionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.get()"); }
-  public final T get(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.get(long, java.util.concurrent.TimeUnit)"); }
-  public final javax.swing.SwingWorker.StateValue getState() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.getState()"); }
-  public final boolean isDone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.isDone()"); }
-  public final boolean cancel(boolean mayInterruptIfRunning) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.cancel(boolean)"); }
-  public final void execute() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.execute()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void done() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException")
+  public final T get() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException")
+  public final T get(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.swing.SwingWorker.StateValue getState() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isDone() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean cancel(boolean mayInterruptIfRunning) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void execute() { }
   @JavaProtected
-  final void publish(V... chunks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.publish(V...)"); }
-  public final boolean isCancelled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.isCancelled()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void publish(V... chunks) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isCancelled() { return false; }
   @JavaProtected
-  void process(java.util.List<V> chunks) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.process(java.util.List<V>)"); }
-  public final void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object)"); }
-  public final void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.addPropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public final void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.removePropertyChangeListener(java.beans.PropertyChangeListener)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void process(java.util.List<V> chunks) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
   @JavaProtected
-  abstract T doInBackground() throws java.lang.Exception { throw new AbstractMethodError("javax.swing.SwingWorker.doInBackground()"); }
-  public final java.beans.PropertyChangeSupport getPropertyChangeSupport() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.getPropertyChangeSupport()"); }
+  @throwable("java.lang.AbstractMethodError, java.lang.Exception")
+  T doInBackground() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.beans.PropertyChangeSupport getPropertyChangeSupport() { return null; }
   @JavaProtected
-  final void setProgress(int progress) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.setProgress(int)"); }
-  public final int getProgress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SwingWorker.getProgress()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final void setProgress(int progress) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getProgress() { return 0; }
   < ---- END java signatures ---- >
 }

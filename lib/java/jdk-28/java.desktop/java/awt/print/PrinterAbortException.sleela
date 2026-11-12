@@ -58,7 +58,9 @@ class PrinterAbortException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PrinterAbortException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterAbortException.<init>()"); }
-  public PrinterAbortException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterAbortException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PrinterAbortException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PrinterAbortException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

@@ -58,14 +58,19 @@ class LanguageCallback {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LanguageCallback() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.callback.LanguageCallback.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LanguageCallback() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.Locale getLocale() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.callback.LanguageCallback.getLocale()"); }
-  public void setLocale(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.callback.LanguageCallback.setLocale(java.util.Locale)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale getLocale() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLocale(java.util.Locale locale) { }
   < ---- END java signatures ---- >
 }

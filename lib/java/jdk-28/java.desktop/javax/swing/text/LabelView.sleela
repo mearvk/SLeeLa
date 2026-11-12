@@ -58,34 +58,52 @@ class LabelView {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LabelView(javax.swing.text.Element elem) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.<init>(javax.swing.text.Element)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LabelView(javax.swing.text.Element elem) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void setSuperscript(boolean s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.setSuperscript(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setSuperscript(boolean s) { }
   @JavaProtected
-  void setUnderline(boolean u) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.setUnderline(boolean)"); }
-  public java.awt.Color getForeground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.getForeground()"); }
-  public java.awt.Color getBackground() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.getBackground()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setUnderline(boolean u) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getForeground() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getBackground() { return null; }
   @JavaProtected
-  void setBackground(java.awt.Color bg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.setBackground(java.awt.Color)"); }
-  public boolean isSuperscript() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.isSuperscript()"); }
-  public boolean isSubscript() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.isSubscript()"); }
-  public void changedUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.changedUpdate(javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setBackground(java.awt.Color bg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSuperscript() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSubscript() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void changedUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
   @JavaProtected
-  void setPropertiesFromAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.setPropertiesFromAttributes()"); }
-  public boolean isUnderline() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.isUnderline()"); }
-  public boolean isStrikeThrough() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.isStrikeThrough()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setPropertiesFromAttributes() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isUnderline() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isStrikeThrough() { return false; }
   @JavaProtected
-  java.awt.FontMetrics getFontMetrics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.getFontMetrics()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.FontMetrics getFontMetrics() { return null; }
   @JavaProtected
-  void setStrikeThrough(boolean s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.setStrikeThrough(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setStrikeThrough(boolean s) { }
   @JavaProtected
-  void setSubscript(boolean s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.setSubscript(boolean)"); }
-  public java.awt.Font getFont() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.LabelView.getFont()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setSubscript(boolean s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font getFont() { return null; }
   < ---- END java signatures ---- >
 }

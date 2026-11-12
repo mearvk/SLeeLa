@@ -58,6 +58,7 @@ class ECGenParameterSpec {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ECGenParameterSpec(java.lang.String stdName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.ECGenParameterSpec.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ECGenParameterSpec(java.lang.String stdName) { }
   < ---- END java constructors ---- >
 }

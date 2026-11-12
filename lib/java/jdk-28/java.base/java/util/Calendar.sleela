@@ -118,70 +118,126 @@ class Calendar {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Calendar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Calendar() { }
   @JavaProtected
-  Calendar(java.util.TimeZone zone, java.util.Locale aLocale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.<init>(java.util.TimeZone, java.util.Locale)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Calendar(java.util.TimeZone zone, java.util.Locale aLocale) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int get(int field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.get(int)"); }
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.clone()"); }
-  public int compareTo(java.util.Calendar anotherCalendar) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.compareTo(java.util.Calendar)"); }
-  public final void clear(int field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.clear(int)"); }
-  public final void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.clear()"); }
-  public abstract void add(int field, int amount) { throw new AbstractMethodError("java.util.Calendar.add(int, int)"); }
-  public static java.util.Calendar getInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getInstance()"); }
-  public static java.util.Calendar getInstance(java.util.Locale aLocale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getInstance(java.util.Locale)"); }
-  public static java.util.Calendar getInstance(java.util.TimeZone zone, java.util.Locale aLocale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getInstance(java.util.TimeZone, java.util.Locale)"); }
-  public final void set(int year, int month, int date, int hourOfDay, int minute) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.set(int, int, int, int, int)"); }
-  public final void set(int year, int month, int date) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.set(int, int, int)"); }
-  public void set(int field, int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.set(int, int)"); }
-  public final void set(int year, int month, int date, int hourOfDay, int minute, int second) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.set(int, int, int, int, int, int)"); }
-  public boolean before(java.lang.Object when) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.before(java.lang.Object)"); }
-  public boolean after(java.lang.Object when) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.after(java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int get(int field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.util.Calendar anotherCalendar) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void clear(int field) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void clear() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void add(int field, int amount) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Calendar getInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Calendar getInstance(java.util.Locale aLocale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Calendar getInstance(java.util.TimeZone zone, java.util.Locale aLocale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void set(int year, int month, int date, int hourOfDay, int minute) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void set(int year, int month, int date) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void set(int field, int value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void set(int year, int month, int date, int hourOfDay, int minute, int second) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean before(java.lang.Object when) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean after(java.lang.Object when) { return false; }
   @JavaProtected
-  void complete() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.complete()"); }
-  public java.lang.String getDisplayName(int field, int style, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getDisplayName(int, int, java.util.Locale)"); }
-  public final java.time.Instant toInstant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.toInstant()"); }
-  public static synchronized java.util.Locale[] getAvailableLocales() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getAvailableLocales()"); }
-  public void setTimeZone(java.util.TimeZone value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.setTimeZone(java.util.TimeZone)"); }
-  public java.util.TimeZone getTimeZone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getTimeZone()"); }
-  public void setLenient(boolean lenient) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.setLenient(boolean)"); }
-  public boolean isLenient() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.isLenient()"); }
-  public int getFirstDayOfWeek() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getFirstDayOfWeek()"); }
-  public int getMinimalDaysInFirstWeek() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getMinimalDaysInFirstWeek()"); }
-  public void setTimeInMillis(long millis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.setTimeInMillis(long)"); }
-  public final java.util.Date getTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getTime()"); }
-  public final void setTime(java.util.Date date) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.setTime(java.util.Date)"); }
-  public boolean isWeekDateSupported() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.isWeekDateSupported()"); }
-  public int getWeekYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getWeekYear()"); }
-  public abstract int getMaximum(int field) { throw new AbstractMethodError("java.util.Calendar.getMaximum(int)"); }
-  public abstract int getLeastMaximum(int field) { throw new AbstractMethodError("java.util.Calendar.getLeastMaximum(int)"); }
-  public java.util.Map<java.lang.String, java.lang.Integer> getDisplayNames(int field, int style, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getDisplayNames(int, int, java.util.Locale)"); }
-  public java.lang.String getCalendarType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getCalendarType()"); }
-  public abstract int getMinimum(int field) { throw new AbstractMethodError("java.util.Calendar.getMinimum(int)"); }
-  public long getTimeInMillis() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getTimeInMillis()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void complete() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDisplayName(int field, int style, java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.time.Instant toInstant() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static synchronized java.util.Locale[] getAvailableLocales() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTimeZone(java.util.TimeZone value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.TimeZone getTimeZone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLenient(boolean lenient) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLenient() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getFirstDayOfWeek() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinimalDaysInFirstWeek() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTimeInMillis(long millis) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.Date getTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setTime(java.util.Date date) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isWeekDateSupported() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getWeekYear() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMaximum(int field) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getLeastMaximum(int field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Map<java.lang.String, java.lang.Integer> getDisplayNames(int field, int style, java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getCalendarType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMinimum(int field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getTimeInMillis() { return 0; }
   @JavaProtected
-  abstract void computeFields() { throw new AbstractMethodError("java.util.Calendar.computeFields()"); }
+  @throwable("java.lang.AbstractMethodError")
+  void computeFields() { }
   @JavaProtected
-  final int internalGet(int field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.internalGet(int)"); }
-  public void roll(int field, int amount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.roll(int, int)"); }
-  public abstract void roll(int field, boolean up) { throw new AbstractMethodError("java.util.Calendar.roll(int, boolean)"); }
-  public abstract int getGreatestMinimum(int field) { throw new AbstractMethodError("java.util.Calendar.getGreatestMinimum(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final int internalGet(int field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void roll(int field, int amount) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void roll(int field, boolean up) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getGreatestMinimum(int field) { return 0; }
   @JavaProtected
-  abstract void computeTime() { throw new AbstractMethodError("java.util.Calendar.computeTime()"); }
-  public static java.util.Set<java.lang.String> getAvailableCalendarTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getAvailableCalendarTypes()"); }
-  public void setFirstDayOfWeek(int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.setFirstDayOfWeek(int)"); }
-  public void setMinimalDaysInFirstWeek(int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.setMinimalDaysInFirstWeek(int)"); }
-  public void setWeekDate(int weekYear, int weekOfYear, int dayOfWeek) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.setWeekDate(int, int, int)"); }
-  public int getWeeksInWeekYear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getWeeksInWeekYear()"); }
-  public int getActualMinimum(int field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getActualMinimum(int)"); }
-  public int getActualMaximum(int field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Calendar.getActualMaximum(int)"); }
+  @throwable("java.lang.AbstractMethodError")
+  void computeTime() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.Set<java.lang.String> getAvailableCalendarTypes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFirstDayOfWeek(int value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinimalDaysInFirstWeek(int value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setWeekDate(int weekYear, int weekOfYear, int dayOfWeek) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getWeeksInWeekYear() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getActualMinimum(int field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getActualMaximum(int field) { return 0; }
   < ---- END java signatures ---- >
 }

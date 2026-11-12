@@ -58,18 +58,27 @@ class PropertyChangeEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PropertyChangeEvent(java.lang.Object source, java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeEvent.<init>(java.lang.Object, java.lang.String, java.lang.Object, java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PropertyChangeEvent(java.lang.Object source, java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeEvent.toString()"); }
-  public java.lang.String getPropertyName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeEvent.getPropertyName()"); }
-  public java.lang.Object getPropagationId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeEvent.getPropagationId()"); }
-  public void setPropagationId(java.lang.Object propagationId) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeEvent.setPropagationId(java.lang.Object)"); }
-  public java.lang.Object getOldValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeEvent.getOldValue()"); }
-  public java.lang.Object getNewValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.PropertyChangeEvent.getNewValue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPropertyName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getPropagationId() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPropagationId(java.lang.Object propagationId) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getOldValue() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getNewValue() { return null; }
   < ---- END java signatures ---- >
 }

@@ -59,23 +59,37 @@ class ValidatorHandler {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ValidatorHandler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.ValidatorHandler.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ValidatorHandler() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object getProperty(java.lang.String name) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.ValidatorHandler.getProperty(java.lang.String)"); }
-  public void setProperty(java.lang.String name, java.lang.Object object) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.ValidatorHandler.setProperty(java.lang.String, java.lang.Object)"); }
-  public abstract void setResourceResolver(org.w3c.dom.ls.LSResourceResolver resourceResolver) { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.setResourceResolver(org.w3c.dom.ls.LSResourceResolver)"); }
-  public abstract org.w3c.dom.ls.LSResourceResolver getResourceResolver() { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.getResourceResolver()"); }
-  public abstract javax.xml.validation.TypeInfoProvider getTypeInfoProvider() { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.getTypeInfoProvider()"); }
-  public abstract void setContentHandler(org.xml.sax.ContentHandler receiver) { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.setContentHandler(org.xml.sax.ContentHandler)"); }
-  public abstract org.xml.sax.ErrorHandler getErrorHandler() { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.getErrorHandler()"); }
-  public abstract void setErrorHandler(org.xml.sax.ErrorHandler errorHandler) { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.setErrorHandler(org.xml.sax.ErrorHandler)"); }
-  public boolean getFeature(java.lang.String name) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.ValidatorHandler.getFeature(java.lang.String)"); }
-  public void setFeature(java.lang.String name, boolean value) throws org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.validation.ValidatorHandler.setFeature(java.lang.String, boolean)"); }
-  public abstract org.xml.sax.ContentHandler getContentHandler() { throw new AbstractMethodError("javax.xml.validation.ValidatorHandler.getContentHandler()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public java.lang.Object getProperty(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public void setProperty(java.lang.String name, java.lang.Object object) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setResourceResolver(org.w3c.dom.ls.LSResourceResolver resourceResolver) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.ls.LSResourceResolver getResourceResolver() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.validation.TypeInfoProvider getTypeInfoProvider() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setContentHandler(org.xml.sax.ContentHandler receiver) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.xml.sax.ErrorHandler getErrorHandler() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setErrorHandler(org.xml.sax.ErrorHandler errorHandler) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public boolean getFeature(java.lang.String name) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
+  public void setFeature(java.lang.String name, boolean value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.xml.sax.ContentHandler getContentHandler() { return null; }
   < ---- END java signatures ---- >
 }

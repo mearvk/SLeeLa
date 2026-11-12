@@ -58,17 +58,28 @@ class SQLXML {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract <T extends javax.xml.transform.Result> T setResult(java.lang.Class<T> resultClass) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLXML.setResult(java.lang.Class<T>)"); }
-  public abstract java.lang.String getString() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLXML.getString()"); }
-  public abstract void free() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLXML.free()"); }
-  public abstract void setString(java.lang.String value) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLXML.setString(java.lang.String)"); }
-  public abstract <T extends javax.xml.transform.Source> T getSource(java.lang.Class<T> sourceClass) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLXML.getSource(java.lang.Class<T>)"); }
-  public abstract java.io.Reader getCharacterStream() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLXML.getCharacterStream()"); }
-  public abstract java.io.Writer setCharacterStream() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLXML.setCharacterStream()"); }
-  public abstract java.io.InputStream getBinaryStream() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLXML.getBinaryStream()"); }
-  public abstract java.io.OutputStream setBinaryStream() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLXML.setBinaryStream()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public <T extends javax.xml.transform.Result> T setResult(java.lang.Class<T> resultClass) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getString() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void free() { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setString(java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public <T extends javax.xml.transform.Source> T getSource(java.lang.Class<T> sourceClass) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.Reader getCharacterStream() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.Writer setCharacterStream() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.InputStream getBinaryStream() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.OutputStream setBinaryStream() { return null; }
   < ---- END java signatures ---- >
 }

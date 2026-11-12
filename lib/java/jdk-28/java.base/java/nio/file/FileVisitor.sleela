@@ -58,12 +58,18 @@ class FileVisitor<T> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.nio.file.FileVisitResult visitFile(T file, java.nio.file.attribute.BasicFileAttributes attrs) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.FileVisitor.visitFile(T, java.nio.file.attribute.BasicFileAttributes)"); }
-  public abstract java.nio.file.FileVisitResult visitFileFailed(T file, java.io.IOException exc) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.FileVisitor.visitFileFailed(T, java.io.IOException)"); }
-  public abstract java.nio.file.FileVisitResult preVisitDirectory(T dir, java.nio.file.attribute.BasicFileAttributes attrs) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.FileVisitor.preVisitDirectory(T, java.nio.file.attribute.BasicFileAttributes)"); }
-  public abstract java.nio.file.FileVisitResult postVisitDirectory(T dir, java.io.IOException exc) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.FileVisitor.postVisitDirectory(T, java.io.IOException)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.file.FileVisitResult visitFile(T file, java.nio.file.attribute.BasicFileAttributes attrs) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.file.FileVisitResult visitFileFailed(T file, java.io.IOException exc) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.file.FileVisitResult preVisitDirectory(T dir, java.nio.file.attribute.BasicFileAttributes attrs) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.file.FileVisitResult postVisitDirectory(T dir, java.io.IOException exc) { return null; }
   < ---- END java signatures ---- >
 }

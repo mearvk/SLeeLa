@@ -58,7 +58,9 @@ class ServiceNotFoundException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ServiceNotFoundException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ServiceNotFoundException.<init>()"); }
-  public ServiceNotFoundException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ServiceNotFoundException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ServiceNotFoundException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ServiceNotFoundException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

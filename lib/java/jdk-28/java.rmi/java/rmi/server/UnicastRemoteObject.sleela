@@ -59,23 +59,35 @@ class UnicastRemoteObject {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  UnicastRemoteObject(int port, java.rmi.server.RMIClientSocketFactory csf, java.rmi.server.RMIServerSocketFactory ssf) throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.UnicastRemoteObject.<init>(int, java.rmi.server.RMIClientSocketFactory, java.rmi.server.RMIServerSocketFactory)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  UnicastRemoteObject(int port, java.rmi.server.RMIClientSocketFactory csf, java.rmi.server.RMIServerSocketFactory ssf) { }
   @JavaProtected
-  UnicastRemoteObject(int port) throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.UnicastRemoteObject.<init>(int)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  UnicastRemoteObject(int port) { }
   @JavaProtected
-  UnicastRemoteObject() throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.UnicastRemoteObject.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  UnicastRemoteObject() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.UnicastRemoteObject.clone()"); }
-  public static java.rmi.Remote exportObject(java.rmi.Remote obj, int port, java.rmi.server.RMIClientSocketFactory csf, java.rmi.server.RMIServerSocketFactory ssf) throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.UnicastRemoteObject.exportObject(java.rmi.Remote, int, java.rmi.server.RMIClientSocketFactory, java.rmi.server.RMIServerSocketFactory)"); }
-  public static java.rmi.Remote exportObject(java.rmi.Remote obj, int port, java.io.ObjectInputFilter filter) throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.UnicastRemoteObject.exportObject(java.rmi.Remote, int, java.io.ObjectInputFilter)"); }
-  public static java.rmi.Remote exportObject(java.rmi.Remote obj, int port, java.rmi.server.RMIClientSocketFactory csf, java.rmi.server.RMIServerSocketFactory ssf, java.io.ObjectInputFilter filter) throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.UnicastRemoteObject.exportObject(java.rmi.Remote, int, java.rmi.server.RMIClientSocketFactory, java.rmi.server.RMIServerSocketFactory, java.io.ObjectInputFilter)"); }
-  public static java.rmi.Remote exportObject(java.rmi.Remote obj, int port) throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.UnicastRemoteObject.exportObject(java.rmi.Remote, int)"); }
-  public static java.rmi.server.RemoteStub exportObject(java.rmi.Remote obj) throws java.rmi.RemoteException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.UnicastRemoteObject.exportObject(java.rmi.Remote)"); }
-  public static boolean unexportObject(java.rmi.Remote obj, boolean force) throws java.rmi.NoSuchObjectException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.server.UnicastRemoteObject.unexportObject(java.rmi.Remote, boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  public static java.rmi.Remote exportObject(java.rmi.Remote obj, int port, java.rmi.server.RMIClientSocketFactory csf, java.rmi.server.RMIServerSocketFactory ssf) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  public static java.rmi.Remote exportObject(java.rmi.Remote obj, int port, java.io.ObjectInputFilter filter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  public static java.rmi.Remote exportObject(java.rmi.Remote obj, int port, java.rmi.server.RMIClientSocketFactory csf, java.rmi.server.RMIServerSocketFactory ssf, java.io.ObjectInputFilter filter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  public static java.rmi.Remote exportObject(java.rmi.Remote obj, int port) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.RemoteException")
+  public static java.rmi.server.RemoteStub exportObject(java.rmi.Remote obj) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.rmi.NoSuchObjectException")
+  public static boolean unexportObject(java.rmi.Remote obj, boolean force) { return false; }
   < ---- END java signatures ---- >
 }

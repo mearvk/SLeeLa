@@ -58,23 +58,37 @@ class NamespaceOperation {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NamespaceOperation(jdk.dynalink.Operation baseOperation, jdk.dynalink.Namespace... namespaces) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.NamespaceOperation.<init>(jdk.dynalink.Operation, jdk.dynalink.Namespace...)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NamespaceOperation(jdk.dynalink.Operation baseOperation, jdk.dynalink.Namespace... namespaces) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.NamespaceOperation.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.NamespaceOperation.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.NamespaceOperation.hashCode()"); }
-  public static boolean contains(jdk.dynalink.Operation op, jdk.dynalink.Operation baseOperation, jdk.dynalink.Namespace namespace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.NamespaceOperation.contains(jdk.dynalink.Operation, jdk.dynalink.Operation, jdk.dynalink.Namespace)"); }
-  public boolean contains(jdk.dynalink.Namespace namespace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.NamespaceOperation.contains(jdk.dynalink.Namespace)"); }
-  public int getNamespaceCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.NamespaceOperation.getNamespaceCount()"); }
-  public jdk.dynalink.Namespace[] getNamespaces() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.NamespaceOperation.getNamespaces()"); }
-  public static jdk.dynalink.Namespace[] getNamespaces(jdk.dynalink.Operation op) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.NamespaceOperation.getNamespaces(jdk.dynalink.Operation)"); }
-  public jdk.dynalink.Operation getBaseOperation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.NamespaceOperation.getBaseOperation()"); }
-  public static jdk.dynalink.Operation getBaseOperation(jdk.dynalink.Operation op) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.NamespaceOperation.getBaseOperation(jdk.dynalink.Operation)"); }
-  public jdk.dynalink.Namespace getNamespace(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.NamespaceOperation.getNamespace(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean contains(jdk.dynalink.Operation op, jdk.dynalink.Operation baseOperation, jdk.dynalink.Namespace namespace) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(jdk.dynalink.Namespace namespace) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNamespaceCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.dynalink.Namespace[] getNamespaces() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static jdk.dynalink.Namespace[] getNamespaces(jdk.dynalink.Operation op) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.dynalink.Operation getBaseOperation() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static jdk.dynalink.Operation getBaseOperation(jdk.dynalink.Operation op) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public jdk.dynalink.Namespace getNamespace(int i) { return null; }
   < ---- END java signatures ---- >
 }

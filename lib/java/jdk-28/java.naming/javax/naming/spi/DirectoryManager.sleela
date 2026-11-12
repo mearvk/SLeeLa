@@ -58,11 +58,16 @@ class DirectoryManager {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.naming.spi.DirStateFactory.Result getStateToBind(java.lang.Object obj, javax.naming.Name name, javax.naming.Context nameCtx, java.util.Hashtable<?, ?> environment, javax.naming.directory.Attributes attrs) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.spi.DirectoryManager.getStateToBind(java.lang.Object, javax.naming.Name, javax.naming.Context, java.util.Hashtable<?, ?>, javax.naming.directory.Attributes)"); }
-  public static javax.naming.directory.DirContext getContinuationDirContext(javax.naming.CannotProceedException cpe) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.spi.DirectoryManager.getContinuationDirContext(javax.naming.CannotProceedException)"); }
-  public static java.lang.Object getObjectInstance(java.lang.Object refInfo, javax.naming.Name name, javax.naming.Context nameCtx, java.util.Hashtable<?, ?> environment, javax.naming.directory.Attributes attrs) throws java.lang.Exception { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.spi.DirectoryManager.getObjectInstance(java.lang.Object, javax.naming.Name, javax.naming.Context, java.util.Hashtable<?, ?>, javax.naming.directory.Attributes)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public static javax.naming.spi.DirStateFactory.Result getStateToBind(java.lang.Object obj, javax.naming.Name name, javax.naming.Context nameCtx, java.util.Hashtable<?, ?> environment, javax.naming.directory.Attributes attrs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public static javax.naming.directory.DirContext getContinuationDirContext(javax.naming.CannotProceedException cpe) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
+  public static java.lang.Object getObjectInstance(java.lang.Object refInfo, javax.naming.Name name, javax.naming.Context nameCtx, java.util.Hashtable<?, ?> environment, javax.naming.directory.Attributes attrs) { return null; }
   < ---- END java signatures ---- >
 }

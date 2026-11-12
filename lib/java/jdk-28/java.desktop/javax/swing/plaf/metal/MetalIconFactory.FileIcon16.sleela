@@ -59,17 +59,25 @@ class FileIcon16 {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FileIcon16() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.FileIcon16.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FileIcon16() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int getShift() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.FileIcon16.getShift()"); }
-  public int getAdditionalHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.FileIcon16.getAdditionalHeight()"); }
-  public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.FileIcon16.paintIcon(java.awt.Component, java.awt.Graphics, int, int)"); }
-  public int getIconWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.FileIcon16.getIconWidth()"); }
-  public int getIconHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.metal.MetalIconFactory.FileIcon16.getIconHeight()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getShift() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAdditionalHeight() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getIconWidth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getIconHeight() { return 0; }
   < ---- END java signatures ---- >
 }

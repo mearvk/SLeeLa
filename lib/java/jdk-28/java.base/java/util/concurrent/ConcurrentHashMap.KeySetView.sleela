@@ -59,18 +59,30 @@ class KeySetView<K, V> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.KeySetView.remove(java.lang.Object)"); }
-  public boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.KeySetView.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.KeySetView.hashCode()"); }
-  public boolean add(K e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.KeySetView.add(K)"); }
-  public java.util.Iterator<K> iterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.KeySetView.iterator()"); }
-  public boolean contains(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.KeySetView.contains(java.lang.Object)"); }
-  public java.util.Spliterator<K> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.KeySetView.spliterator()"); }
-  public boolean addAll(java.util.Collection<? extends K> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.KeySetView.addAll(java.util.Collection<? extends K>)"); }
-  public void forEach(java.util.function.Consumer<? super K> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.KeySetView.forEach(java.util.function.Consumer<? super K>)"); }
-  public V getMappedValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentHashMap.KeySetView.getMappedValue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean add(K e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Iterator<K> iterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Spliterator<K> spliterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean addAll(java.util.Collection<? extends K> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEach(java.util.function.Consumer<? super K> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public V getMappedValue() { return null; }
   < ---- END java signatures ---- >
 }

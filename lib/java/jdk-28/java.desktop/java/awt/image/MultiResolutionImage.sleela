@@ -58,10 +58,14 @@ class MultiResolutionImage {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.awt.Image getResolutionVariant(double destImageWidth, double destImageHeight) { throw new AbstractMethodError("java.awt.image.MultiResolutionImage.getResolutionVariant(double, double)"); }
-  public abstract java.util.List<java.awt.Image> getResolutionVariants() { throw new AbstractMethodError("java.awt.image.MultiResolutionImage.getResolutionVariants()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.Image getResolutionVariant(double destImageWidth, double destImageHeight) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.awt.Image> getResolutionVariants() { return null; }
   < ---- END java signatures ---- >
 }

@@ -59,42 +59,68 @@ class CharsetEncoder {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  CharsetEncoder(java.nio.charset.Charset cs, float averageBytesPerChar, float maxBytesPerChar, byte[] replacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.<init>(java.nio.charset.Charset, float, float, byte[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  CharsetEncoder(java.nio.charset.Charset cs, float averageBytesPerChar, float maxBytesPerChar, byte[] replacement) { }
   @JavaProtected
-  CharsetEncoder(java.nio.charset.Charset cs, float averageBytesPerChar, float maxBytesPerChar) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.<init>(java.nio.charset.Charset, float, float)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  CharsetEncoder(java.nio.charset.Charset cs, float averageBytesPerChar, float maxBytesPerChar) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.nio.charset.CharsetEncoder reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.reset()"); }
-  public final java.nio.charset.CharsetEncoder onMalformedInput(java.nio.charset.CodingErrorAction newAction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.onMalformedInput(java.nio.charset.CodingErrorAction)"); }
-  public final java.nio.charset.CharsetEncoder onUnmappableCharacter(java.nio.charset.CodingErrorAction newAction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.onUnmappableCharacter(java.nio.charset.CodingErrorAction)"); }
-  public final float maxBytesPerChar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.maxBytesPerChar()"); }
-  public final java.nio.charset.CoderResult encode(java.nio.CharBuffer in, java.nio.ByteBuffer out, boolean endOfInput) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.encode(java.nio.CharBuffer, java.nio.ByteBuffer, boolean)"); }
-  public final java.nio.ByteBuffer encode(java.nio.CharBuffer in) throws java.nio.charset.CharacterCodingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.encode(java.nio.CharBuffer)"); }
-  public final java.nio.charset.CoderResult flush(java.nio.ByteBuffer out) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.flush(java.nio.ByteBuffer)"); }
-  public boolean canEncode(java.lang.CharSequence cs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.canEncode(java.lang.CharSequence)"); }
-  public boolean canEncode(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.canEncode(char)"); }
-  public final java.nio.charset.Charset charset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.charset()"); }
-  public final byte[] replacement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.replacement()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.charset.CharsetEncoder reset() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.charset.CharsetEncoder onMalformedInput(java.nio.charset.CodingErrorAction newAction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.charset.CharsetEncoder onUnmappableCharacter(java.nio.charset.CodingErrorAction newAction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final float maxBytesPerChar() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.charset.CoderResult encode(java.nio.CharBuffer in, java.nio.ByteBuffer out, boolean endOfInput) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.nio.charset.CharacterCodingException")
+  public final java.nio.ByteBuffer encode(java.nio.CharBuffer in) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.charset.CoderResult flush(java.nio.ByteBuffer out) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean canEncode(java.lang.CharSequence cs) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean canEncode(char c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.charset.Charset charset() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final byte[] replacement() { return null; }
   @JavaProtected
-  java.nio.charset.CoderResult implFlush(java.nio.ByteBuffer out) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.implFlush(java.nio.ByteBuffer)"); }
-  public boolean isLegalReplacement(byte[] repl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.isLegalReplacement(byte[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.nio.charset.CoderResult implFlush(java.nio.ByteBuffer out) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLegalReplacement(byte[] repl) { return false; }
   @JavaProtected
-  abstract java.nio.charset.CoderResult encodeLoop(java.nio.CharBuffer in, java.nio.ByteBuffer out) { throw new AbstractMethodError("java.nio.charset.CharsetEncoder.encodeLoop(java.nio.CharBuffer, java.nio.ByteBuffer)"); }
-  public java.nio.charset.CodingErrorAction malformedInputAction() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.malformedInputAction()"); }
-  public java.nio.charset.CodingErrorAction unmappableCharacterAction() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.unmappableCharacterAction()"); }
-  public final float averageBytesPerChar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.averageBytesPerChar()"); }
-  public final java.nio.charset.CharsetEncoder replaceWith(byte[] newReplacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.replaceWith(byte[])"); }
+  @throwable("java.lang.AbstractMethodError")
+  java.nio.charset.CoderResult encodeLoop(java.nio.CharBuffer in, java.nio.ByteBuffer out) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.charset.CodingErrorAction malformedInputAction() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.charset.CodingErrorAction unmappableCharacterAction() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final float averageBytesPerChar() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.charset.CharsetEncoder replaceWith(byte[] newReplacement) { return null; }
   @JavaProtected
-  void implReplaceWith(byte[] newReplacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.implReplaceWith(byte[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void implReplaceWith(byte[] newReplacement) { }
   @JavaProtected
-  void implOnMalformedInput(java.nio.charset.CodingErrorAction newAction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.implOnMalformedInput(java.nio.charset.CodingErrorAction)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void implOnMalformedInput(java.nio.charset.CodingErrorAction newAction) { }
   @JavaProtected
-  void implOnUnmappableCharacter(java.nio.charset.CodingErrorAction newAction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.implOnUnmappableCharacter(java.nio.charset.CodingErrorAction)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void implOnUnmappableCharacter(java.nio.charset.CodingErrorAction newAction) { }
   @JavaProtected
-  void implReset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.charset.CharsetEncoder.implReset()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void implReset() { }
   < ---- END java signatures ---- >
 }

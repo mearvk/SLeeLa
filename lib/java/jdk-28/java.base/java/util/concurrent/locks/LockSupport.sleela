@@ -58,17 +58,28 @@ class LockSupport {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static void park() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.LockSupport.park()"); }
-  public static void park(java.lang.Object blocker) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.LockSupport.park(java.lang.Object)"); }
-  public static void unpark(java.lang.Thread thread) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.LockSupport.unpark(java.lang.Thread)"); }
-  public static void parkNanos(long nanos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.LockSupport.parkNanos(long)"); }
-  public static void parkNanos(java.lang.Object blocker, long nanos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.LockSupport.parkNanos(java.lang.Object, long)"); }
-  public static void parkUntil(long deadline) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.LockSupport.parkUntil(long)"); }
-  public static void parkUntil(java.lang.Object blocker, long deadline) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.LockSupport.parkUntil(java.lang.Object, long)"); }
-  public static void setCurrentBlocker(java.lang.Object blocker) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.LockSupport.setCurrentBlocker(java.lang.Object)"); }
-  public static java.lang.Object getBlocker(java.lang.Thread t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.locks.LockSupport.getBlocker(java.lang.Thread)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void park() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void park(java.lang.Object blocker) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void unpark(java.lang.Thread thread) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void parkNanos(long nanos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void parkNanos(java.lang.Object blocker, long nanos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void parkUntil(long deadline) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void parkUntil(java.lang.Object blocker, long deadline) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setCurrentBlocker(java.lang.Object blocker) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Object getBlocker(java.lang.Thread t) { return null; }
   < ---- END java signatures ---- >
 }

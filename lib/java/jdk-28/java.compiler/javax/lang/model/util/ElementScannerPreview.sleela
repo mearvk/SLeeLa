@@ -59,8 +59,10 @@ class ElementScannerPreview<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  ElementScannerPreview() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.ElementScannerPreview.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ElementScannerPreview() { }
   @JavaProtected
-  ElementScannerPreview(R defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.ElementScannerPreview.<init>(R)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  ElementScannerPreview(R defaultValue) { }
   < ---- END java constructors ---- >
 }

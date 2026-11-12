@@ -58,11 +58,16 @@ class CompilationMXBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("java.lang.management.CompilationMXBean.getName()"); }
-  public abstract boolean isCompilationTimeMonitoringSupported() { throw new AbstractMethodError("java.lang.management.CompilationMXBean.isCompilationTimeMonitoringSupported()"); }
-  public abstract long getTotalCompilationTime() { throw new AbstractMethodError("java.lang.management.CompilationMXBean.getTotalCompilationTime()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isCompilationTimeMonitoringSupported() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getTotalCompilationTime() { return 0; }
   < ---- END java signatures ---- >
 }

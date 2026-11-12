@@ -58,22 +58,38 @@ class TypeVisitor<R, P> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract R visit(javax.lang.model.type.TypeMirror t, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeVisitor.visit(javax.lang.model.type.TypeMirror, P)"); }
-  public default R visit(javax.lang.model.type.TypeMirror t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.type.TypeVisitor.visit(javax.lang.model.type.TypeMirror)"); }
-  public abstract R visitError(javax.lang.model.type.ErrorType t, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeVisitor.visitError(javax.lang.model.type.ErrorType, P)"); }
-  public abstract R visitDeclared(javax.lang.model.type.DeclaredType t, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeVisitor.visitDeclared(javax.lang.model.type.DeclaredType, P)"); }
-  public abstract R visitExecutable(javax.lang.model.type.ExecutableType t, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeVisitor.visitExecutable(javax.lang.model.type.ExecutableType, P)"); }
-  public abstract R visitTypeVariable(javax.lang.model.type.TypeVariable t, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeVisitor.visitTypeVariable(javax.lang.model.type.TypeVariable, P)"); }
-  public abstract R visitWildcard(javax.lang.model.type.WildcardType t, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeVisitor.visitWildcard(javax.lang.model.type.WildcardType, P)"); }
-  public abstract R visitNoType(javax.lang.model.type.NoType t, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeVisitor.visitNoType(javax.lang.model.type.NoType, P)"); }
-  public abstract R visitArray(javax.lang.model.type.ArrayType t, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeVisitor.visitArray(javax.lang.model.type.ArrayType, P)"); }
-  public abstract R visitUnknown(javax.lang.model.type.TypeMirror t, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeVisitor.visitUnknown(javax.lang.model.type.TypeMirror, P)"); }
-  public abstract R visitPrimitive(javax.lang.model.type.PrimitiveType t, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeVisitor.visitPrimitive(javax.lang.model.type.PrimitiveType, P)"); }
-  public abstract R visitNull(javax.lang.model.type.NullType t, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeVisitor.visitNull(javax.lang.model.type.NullType, P)"); }
-  public abstract R visitUnion(javax.lang.model.type.UnionType t, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeVisitor.visitUnion(javax.lang.model.type.UnionType, P)"); }
-  public abstract R visitIntersection(javax.lang.model.type.IntersectionType t, P p) { throw new AbstractMethodError("javax.lang.model.type.TypeVisitor.visitIntersection(javax.lang.model.type.IntersectionType, P)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public R visit(javax.lang.model.type.TypeMirror t, P p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default R visit(javax.lang.model.type.TypeMirror t) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitError(javax.lang.model.type.ErrorType t, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitDeclared(javax.lang.model.type.DeclaredType t, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitExecutable(javax.lang.model.type.ExecutableType t, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitTypeVariable(javax.lang.model.type.TypeVariable t, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitWildcard(javax.lang.model.type.WildcardType t, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitNoType(javax.lang.model.type.NoType t, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitArray(javax.lang.model.type.ArrayType t, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitUnknown(javax.lang.model.type.TypeMirror t, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitPrimitive(javax.lang.model.type.PrimitiveType t, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitNull(javax.lang.model.type.NullType t, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitUnion(javax.lang.model.type.UnionType t, P p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public R visitIntersection(javax.lang.model.type.IntersectionType t, P p) { return null; }
   < ---- END java signatures ---- >
 }

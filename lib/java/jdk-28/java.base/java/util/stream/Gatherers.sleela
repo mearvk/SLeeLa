@@ -58,13 +58,20 @@ class Gatherers {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static <T, R> java.util.stream.Gatherer<T, ?, R> scan(java.util.function.Supplier<R> initial, java.util.function.BiFunction<? super R, ? super T, ? extends R> scanner) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherers.scan(java.util.function.Supplier<R>, java.util.function.BiFunction<? super R, ? super T, ? extends R>)"); }
-  public static <TR> java.util.stream.Gatherer<TR, ?, java.util.List<TR>> windowFixed(int windowSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherers.windowFixed(int)"); }
-  public static <TR> java.util.stream.Gatherer<TR, ?, java.util.List<TR>> windowSliding(int windowSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherers.windowSliding(int)"); }
-  public static <T, R> java.util.stream.Gatherer<T, ?, R> fold(java.util.function.Supplier<R> initial, java.util.function.BiFunction<? super R, ? super T, ? extends R> folder) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherers.fold(java.util.function.Supplier<R>, java.util.function.BiFunction<? super R, ? super T, ? extends R>)"); }
-  public static <T, R> java.util.stream.Gatherer<T, ?, R> mapConcurrent(int maxConcurrency, java.util.function.Function<? super T, ? extends R> mapper) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.stream.Gatherers.mapConcurrent(int, java.util.function.Function<? super T, ? extends R>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T, R> java.util.stream.Gatherer<T, ?, R> scan(java.util.function.Supplier<R> initial, java.util.function.BiFunction<? super R, ? super T, ? extends R> scanner) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <TR> java.util.stream.Gatherer<TR, ?, java.util.List<TR>> windowFixed(int windowSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <TR> java.util.stream.Gatherer<TR, ?, java.util.List<TR>> windowSliding(int windowSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T, R> java.util.stream.Gatherer<T, ?, R> fold(java.util.function.Supplier<R> initial, java.util.function.BiFunction<? super R, ? super T, ? extends R> folder) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T, R> java.util.stream.Gatherer<T, ?, R> mapConcurrent(int maxConcurrency, java.util.function.Function<? super T, ? extends R> mapper) { return null; }
   < ---- END java signatures ---- >
 }

@@ -59,18 +59,27 @@ class Event {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Event() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Event.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Event() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void commit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Event.commit()"); }
-  public void begin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Event.begin()"); }
-  public void end() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Event.end()"); }
-  public void set(int index, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Event.set(int, java.lang.Object)"); }
-  public boolean isEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Event.isEnabled()"); }
-  public boolean shouldCommit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Event.shouldCommit()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void commit() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void begin() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void end() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void set(int index, java.lang.Object value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean shouldCommit() { return false; }
   < ---- END java signatures ---- >
 }

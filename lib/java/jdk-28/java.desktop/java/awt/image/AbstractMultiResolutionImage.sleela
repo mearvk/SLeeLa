@@ -59,19 +59,28 @@ class AbstractMultiResolutionImage {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractMultiResolutionImage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.AbstractMultiResolutionImage.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractMultiResolutionImage() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object getProperty(java.lang.String name, java.awt.image.ImageObserver observer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.AbstractMultiResolutionImage.getProperty(java.lang.String, java.awt.image.ImageObserver)"); }
-  public int getHeight(java.awt.image.ImageObserver observer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.AbstractMultiResolutionImage.getHeight(java.awt.image.ImageObserver)"); }
-  public java.awt.Graphics getGraphics() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.AbstractMultiResolutionImage.getGraphics()"); }
-  public int getWidth(java.awt.image.ImageObserver observer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.AbstractMultiResolutionImage.getWidth(java.awt.image.ImageObserver)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getProperty(java.lang.String name, java.awt.image.ImageObserver observer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHeight(java.awt.image.ImageObserver observer) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Graphics getGraphics() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getWidth(java.awt.image.ImageObserver observer) { return 0; }
   @JavaProtected
-  abstract java.awt.Image getBaseImage() { throw new AbstractMethodError("java.awt.image.AbstractMultiResolutionImage.getBaseImage()"); }
-  public java.awt.image.ImageProducer getSource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.AbstractMultiResolutionImage.getSource()"); }
+  @throwable("java.lang.AbstractMethodError")
+  java.awt.Image getBaseImage() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.ImageProducer getSource() { return null; }
   < ---- END java signatures ---- >
 }

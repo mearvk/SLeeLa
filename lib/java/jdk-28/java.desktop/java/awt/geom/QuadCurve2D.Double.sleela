@@ -68,23 +68,37 @@ class Double {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Double() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.QuadCurve2D.Double.<init>()"); }
-  public Double(double x1, double y1, double ctrlx, double ctrly, double x2, double y2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.QuadCurve2D.Double.<init>(double, double, double, double, double, double)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Double() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Double(double x1, double y1, double ctrlx, double ctrly, double x2, double y2) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public double getX1() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.QuadCurve2D.Double.getX1()"); }
-  public double getY1() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.QuadCurve2D.Double.getY1()"); }
-  public double getX2() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.QuadCurve2D.Double.getX2()"); }
-  public double getY2() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.QuadCurve2D.Double.getY2()"); }
-  public void setCurve(double x1, double y1, double ctrlx, double ctrly, double x2, double y2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.QuadCurve2D.Double.setCurve(double, double, double, double, double, double)"); }
-  public java.awt.geom.Point2D getP1() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.QuadCurve2D.Double.getP1()"); }
-  public java.awt.geom.Point2D getP2() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.QuadCurve2D.Double.getP2()"); }
-  public double getCtrlX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.QuadCurve2D.Double.getCtrlX()"); }
-  public double getCtrlY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.QuadCurve2D.Double.getCtrlY()"); }
-  public java.awt.geom.Point2D getCtrlPt() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.QuadCurve2D.Double.getCtrlPt()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getX1() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getY1() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getX2() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getY2() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCurve(double x1, double y1, double ctrlx, double ctrly, double x2, double y2) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Point2D getP1() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Point2D getP2() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getCtrlX() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getCtrlY() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Point2D getCtrlPt() { return null; }
   < ---- END java signatures ---- >
 }

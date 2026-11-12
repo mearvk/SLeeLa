@@ -58,24 +58,39 @@ class MessageProp {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MessageProp(boolean privState) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.ietf.jgss.MessageProp.<init>(boolean)"); }
-  public MessageProp(int qop, boolean privState) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.ietf.jgss.MessageProp.<init>(int, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MessageProp(boolean privState) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MessageProp(int qop, boolean privState) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int getQOP() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.ietf.jgss.MessageProp.getQOP()"); }
-  public boolean getPrivacy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.ietf.jgss.MessageProp.getPrivacy()"); }
-  public void setQOP(int qop) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.ietf.jgss.MessageProp.setQOP(int)"); }
-  public void setPrivacy(boolean privState) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.ietf.jgss.MessageProp.setPrivacy(boolean)"); }
-  public boolean isDuplicateToken() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.ietf.jgss.MessageProp.isDuplicateToken()"); }
-  public boolean isOldToken() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.ietf.jgss.MessageProp.isOldToken()"); }
-  public boolean isUnseqToken() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.ietf.jgss.MessageProp.isUnseqToken()"); }
-  public boolean isGapToken() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.ietf.jgss.MessageProp.isGapToken()"); }
-  public int getMinorStatus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.ietf.jgss.MessageProp.getMinorStatus()"); }
-  public java.lang.String getMinorString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.ietf.jgss.MessageProp.getMinorString()"); }
-  public void setSupplementaryStates(boolean duplicate, boolean old, boolean unseq, boolean gap, int minorStatus, java.lang.String minorString) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.ietf.jgss.MessageProp.setSupplementaryStates(boolean, boolean, boolean, boolean, int, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getQOP() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getPrivacy() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setQOP(int qop) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPrivacy(boolean privState) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDuplicateToken() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isOldToken() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isUnseqToken() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isGapToken() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinorStatus() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getMinorString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSupplementaryStates(boolean duplicate, boolean old, boolean unseq, boolean gap, int minorStatus, java.lang.String minorString) { }
   < ---- END java signatures ---- >
 }

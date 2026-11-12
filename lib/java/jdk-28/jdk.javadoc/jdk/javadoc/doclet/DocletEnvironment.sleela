@@ -58,19 +58,32 @@ class DocletEnvironment {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.lang.model.SourceVersion getSourceVersion() { throw new AbstractMethodError("jdk.javadoc.doclet.DocletEnvironment.getSourceVersion()"); }
-  public abstract javax.lang.model.util.Types getTypeUtils() { throw new AbstractMethodError("jdk.javadoc.doclet.DocletEnvironment.getTypeUtils()"); }
-  public abstract javax.lang.model.util.Elements getElementUtils() { throw new AbstractMethodError("jdk.javadoc.doclet.DocletEnvironment.getElementUtils()"); }
-  public abstract boolean isSelected(javax.lang.model.element.Element e) { throw new AbstractMethodError("jdk.javadoc.doclet.DocletEnvironment.isSelected(javax.lang.model.element.Element)"); }
-  public abstract boolean isIncluded(javax.lang.model.element.Element e) { throw new AbstractMethodError("jdk.javadoc.doclet.DocletEnvironment.isIncluded(javax.lang.model.element.Element)"); }
-  public abstract java.util.Set<? extends javax.lang.model.element.Element> getSpecifiedElements() { throw new AbstractMethodError("jdk.javadoc.doclet.DocletEnvironment.getSpecifiedElements()"); }
-  public abstract java.util.Set<? extends javax.lang.model.element.Element> getIncludedElements() { throw new AbstractMethodError("jdk.javadoc.doclet.DocletEnvironment.getIncludedElements()"); }
-  public abstract com.sun.source.util.DocTrees getDocTrees() { throw new AbstractMethodError("jdk.javadoc.doclet.DocletEnvironment.getDocTrees()"); }
-  public abstract javax.tools.JavaFileManager getJavaFileManager() { throw new AbstractMethodError("jdk.javadoc.doclet.DocletEnvironment.getJavaFileManager()"); }
-  public abstract jdk.javadoc.doclet.DocletEnvironment.ModuleMode getModuleMode() { throw new AbstractMethodError("jdk.javadoc.doclet.DocletEnvironment.getModuleMode()"); }
-  public abstract javax.tools.JavaFileObject.Kind getFileKind(javax.lang.model.element.TypeElement type) { throw new AbstractMethodError("jdk.javadoc.doclet.DocletEnvironment.getFileKind(javax.lang.model.element.TypeElement)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.SourceVersion getSourceVersion() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.util.Types getTypeUtils() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.util.Elements getElementUtils() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSelected(javax.lang.model.element.Element e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isIncluded(javax.lang.model.element.Element e) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<? extends javax.lang.model.element.Element> getSpecifiedElements() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<? extends javax.lang.model.element.Element> getIncludedElements() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.source.util.DocTrees getDocTrees() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.tools.JavaFileManager getJavaFileManager() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public jdk.javadoc.doclet.DocletEnvironment.ModuleMode getModuleMode() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.tools.JavaFileObject.Kind getFileKind(javax.lang.model.element.TypeElement type) { return null; }
   < ---- END java signatures ---- >
 }

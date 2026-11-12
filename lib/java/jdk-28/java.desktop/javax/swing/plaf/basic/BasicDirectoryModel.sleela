@@ -58,34 +58,56 @@ class BasicDirectoryModel {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicDirectoryModel(javax.swing.JFileChooser filechooser) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.<init>(javax.swing.JFileChooser)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicDirectoryModel(javax.swing.JFileChooser filechooser) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  void sort(java.util.Vector<? extends java.io.File> v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.sort(java.util.Vector<? extends java.io.File>)"); }
-  public int indexOf(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.indexOf(java.lang.Object)"); }
-  public boolean contains(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.contains(java.lang.Object)"); }
-  public int getSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.getSize()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void sort(java.util.Vector<? extends java.io.File> v) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int indexOf(java.lang.Object o) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSize() { return 0; }
   @JavaProtected
-  boolean lt(java.io.File a, java.io.File b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.lt(java.io.File, java.io.File)"); }
-  public java.util.Vector<java.io.File> getFiles() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.getFiles()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean lt(java.io.File a, java.io.File b) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Vector<java.io.File> getFiles() { return null; }
   @JavaProtected
-  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object)"); }
-  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.addPropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public java.beans.PropertyChangeListener[] getPropertyChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.getPropertyChangeListeners()"); }
-  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.removePropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public void validateFileCache() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.validateFileCache()"); }
-  public void invalidateFileCache() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.invalidateFileCache()"); }
-  public java.util.Vector<java.io.File> getDirectories() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.getDirectories()"); }
-  public boolean renameFile(java.io.File oldFile, java.io.File newFile) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.renameFile(java.io.File, java.io.File)"); }
-  public void propertyChange(java.beans.PropertyChangeEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.propertyChange(java.beans.PropertyChangeEvent)"); }
-  public void intervalAdded(javax.swing.event.ListDataEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.intervalAdded(javax.swing.event.ListDataEvent)"); }
-  public void intervalRemoved(javax.swing.event.ListDataEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.intervalRemoved(javax.swing.event.ListDataEvent)"); }
-  public void fireContentsChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.fireContentsChanged()"); }
-  public java.lang.Object getElementAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicDirectoryModel.getElementAt(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.beans.PropertyChangeListener[] getPropertyChangeListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void validateFileCache() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void invalidateFileCache() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Vector<java.io.File> getDirectories() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean renameFile(java.io.File oldFile, java.io.File newFile) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void propertyChange(java.beans.PropertyChangeEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void intervalAdded(javax.swing.event.ListDataEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void intervalRemoved(javax.swing.event.ListDataEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fireContentsChanged() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getElementAt(int index) { return null; }
   < ---- END java signatures ---- >
 }

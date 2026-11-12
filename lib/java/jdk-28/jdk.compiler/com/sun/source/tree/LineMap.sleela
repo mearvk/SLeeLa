@@ -58,12 +58,18 @@ class LineMap {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract long getLineNumber(long pos) { throw new AbstractMethodError("com.sun.source.tree.LineMap.getLineNumber(long)"); }
-  public abstract long getPosition(long line, long column) { throw new AbstractMethodError("com.sun.source.tree.LineMap.getPosition(long, long)"); }
-  public abstract long getStartPosition(long line) { throw new AbstractMethodError("com.sun.source.tree.LineMap.getStartPosition(long)"); }
-  public abstract long getColumnNumber(long pos) { throw new AbstractMethodError("com.sun.source.tree.LineMap.getColumnNumber(long)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public long getLineNumber(long pos) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getPosition(long line, long column) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getStartPosition(long line) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getColumnNumber(long pos) { return 0; }
   < ---- END java signatures ---- >
 }

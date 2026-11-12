@@ -58,14 +58,22 @@ class ThreadGroupReference {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String name() { throw new AbstractMethodError("com.sun.jdi.ThreadGroupReference.name()"); }
-  public abstract com.sun.jdi.ThreadGroupReference parent() { throw new AbstractMethodError("com.sun.jdi.ThreadGroupReference.parent()"); }
-  public abstract java.util.List<com.sun.jdi.ThreadReference> threads() { throw new AbstractMethodError("com.sun.jdi.ThreadGroupReference.threads()"); }
-  public abstract void suspend() { throw new AbstractMethodError("com.sun.jdi.ThreadGroupReference.suspend()"); }
-  public abstract void resume() { throw new AbstractMethodError("com.sun.jdi.ThreadGroupReference.resume()"); }
-  public abstract java.util.List<com.sun.jdi.ThreadGroupReference> threadGroups() { throw new AbstractMethodError("com.sun.jdi.ThreadGroupReference.threadGroups()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String name() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.ThreadGroupReference parent() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.ThreadReference> threads() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void suspend() { }
+  @throwable("java.lang.AbstractMethodError")
+  public void resume() { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.jdi.ThreadGroupReference> threadGroups() { return null; }
   < ---- END java signatures ---- >
 }

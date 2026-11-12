@@ -58,21 +58,33 @@ class BasicBorders {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicBorders() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicBorders.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicBorders() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.swing.border.Border getButtonBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicBorders.getButtonBorder()"); }
-  public static javax.swing.border.Border getRadioButtonBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicBorders.getRadioButtonBorder()"); }
-  public static javax.swing.border.Border getToggleButtonBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicBorders.getToggleButtonBorder()"); }
-  public static javax.swing.border.Border getMenuBarBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicBorders.getMenuBarBorder()"); }
-  public static javax.swing.border.Border getSplitPaneBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicBorders.getSplitPaneBorder()"); }
-  public static javax.swing.border.Border getSplitPaneDividerBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicBorders.getSplitPaneDividerBorder()"); }
-  public static javax.swing.border.Border getTextFieldBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicBorders.getTextFieldBorder()"); }
-  public static javax.swing.border.Border getProgressBarBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicBorders.getProgressBarBorder()"); }
-  public static javax.swing.border.Border getInternalFrameBorder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicBorders.getInternalFrameBorder()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border getButtonBorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border getRadioButtonBorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border getToggleButtonBorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border getMenuBarBorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border getSplitPaneBorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border getSplitPaneDividerBorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border getTextFieldBorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border getProgressBarBorder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.border.Border getInternalFrameBorder() { return null; }
   < ---- END java signatures ---- >
 }

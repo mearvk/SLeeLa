@@ -58,15 +58,24 @@ class TypeComponent {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String signature() { throw new AbstractMethodError("com.sun.jdi.TypeComponent.signature()"); }
-  public abstract java.lang.String name() { throw new AbstractMethodError("com.sun.jdi.TypeComponent.name()"); }
-  public abstract boolean isFinal() { throw new AbstractMethodError("com.sun.jdi.TypeComponent.isFinal()"); }
-  public abstract boolean isStatic() { throw new AbstractMethodError("com.sun.jdi.TypeComponent.isStatic()"); }
-  public abstract boolean isSynthetic() { throw new AbstractMethodError("com.sun.jdi.TypeComponent.isSynthetic()"); }
-  public abstract java.lang.String genericSignature() { throw new AbstractMethodError("com.sun.jdi.TypeComponent.genericSignature()"); }
-  public abstract com.sun.jdi.ReferenceType declaringType() { throw new AbstractMethodError("com.sun.jdi.TypeComponent.declaringType()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String signature() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String name() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isFinal() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isStatic() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isSynthetic() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String genericSignature() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.jdi.ReferenceType declaringType() { return null; }
   < ---- END java signatures ---- >
 }

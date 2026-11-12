@@ -59,14 +59,19 @@ class CalendarDataProvider {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  CalendarDataProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.spi.CalendarDataProvider.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  CalendarDataProvider() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getFirstDayOfWeek(java.util.Locale locale) { throw new AbstractMethodError("java.util.spi.CalendarDataProvider.getFirstDayOfWeek(java.util.Locale)"); }
-  public abstract int getMinimalDaysInFirstWeek(java.util.Locale locale) { throw new AbstractMethodError("java.util.spi.CalendarDataProvider.getMinimalDaysInFirstWeek(java.util.Locale)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getFirstDayOfWeek(java.util.Locale locale) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getMinimalDaysInFirstWeek(java.util.Locale locale) { return 0; }
   < ---- END java signatures ---- >
 }

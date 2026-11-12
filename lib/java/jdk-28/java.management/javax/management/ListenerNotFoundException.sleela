@@ -58,7 +58,9 @@ class ListenerNotFoundException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ListenerNotFoundException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ListenerNotFoundException.<init>()"); }
-  public ListenerNotFoundException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.ListenerNotFoundException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ListenerNotFoundException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ListenerNotFoundException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

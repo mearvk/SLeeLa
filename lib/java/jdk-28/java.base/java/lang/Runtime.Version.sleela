@@ -59,26 +59,46 @@ class Version {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.toString()"); }
-  public java.util.List<java.lang.Integer> version() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.version()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.hashCode()"); }
-  public int compareTo(java.lang.Runtime.Version obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.compareTo(java.lang.Runtime.Version)"); }
-  public int update() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.update()"); }
-  public static java.lang.Runtime.Version parse(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.parse(java.lang.String)"); }
-  public int major() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.major()"); }
-  public int minor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.minor()"); }
-  public java.util.Optional<java.lang.String> pre() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.pre()"); }
-  public java.util.Optional<java.lang.Integer> build() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.build()"); }
-  public java.util.Optional<java.lang.String> optional() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.optional()"); }
-  public int feature() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.feature()"); }
-  public int interim() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.interim()"); }
-  public boolean equalsIgnoreOptional(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.equalsIgnoreOptional(java.lang.Object)"); }
-  public int patch() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.patch()"); }
-  public int security() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.security()"); }
-  public int compareToIgnoreOptional(java.lang.Runtime.Version obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Runtime.Version.compareToIgnoreOptional(java.lang.Runtime.Version)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.lang.Integer> version() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.lang.Runtime.Version obj) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int update() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Runtime.Version parse(java.lang.String s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int major() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int minor() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<java.lang.String> pre() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<java.lang.Integer> build() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Optional<java.lang.String> optional() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int feature() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int interim() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equalsIgnoreOptional(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int patch() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int security() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareToIgnoreOptional(java.lang.Runtime.Version obj) { return 0; }
   < ---- END java signatures ---- >
 }

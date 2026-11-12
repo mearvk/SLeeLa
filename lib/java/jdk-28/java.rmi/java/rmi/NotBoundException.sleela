@@ -58,7 +58,9 @@ class NotBoundException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NotBoundException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.NotBoundException.<init>()"); }
-  public NotBoundException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.NotBoundException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotBoundException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotBoundException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

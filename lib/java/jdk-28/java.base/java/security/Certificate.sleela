@@ -58,15 +58,24 @@ class Certificate {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String toString(boolean detailed) { throw new AbstractMethodError("java.security.Certificate.toString(boolean)"); }
-  public abstract void decode(java.io.InputStream stream) throws java.security.KeyException, java.io.IOException { throw new AbstractMethodError("java.security.Certificate.decode(java.io.InputStream)"); }
-  public abstract void encode(java.io.OutputStream stream) throws java.security.KeyException, java.io.IOException { throw new AbstractMethodError("java.security.Certificate.encode(java.io.OutputStream)"); }
-  public abstract java.security.PublicKey getPublicKey() { throw new AbstractMethodError("java.security.Certificate.getPublicKey()"); }
-  public abstract java.lang.String getFormat() { throw new AbstractMethodError("java.security.Certificate.getFormat()"); }
-  public abstract java.security.Principal getGuarantor() { throw new AbstractMethodError("java.security.Certificate.getGuarantor()"); }
-  public abstract java.security.Principal getPrincipal() { throw new AbstractMethodError("java.security.Certificate.getPrincipal()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String toString(boolean detailed) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.KeyException, java.io.IOException")
+  public void decode(java.io.InputStream stream) { }
+  @throwable("java.lang.AbstractMethodError, java.security.KeyException, java.io.IOException")
+  public void encode(java.io.OutputStream stream) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.PublicKey getPublicKey() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getFormat() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.Principal getGuarantor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.security.Principal getPrincipal() { return null; }
   < ---- END java signatures ---- >
 }

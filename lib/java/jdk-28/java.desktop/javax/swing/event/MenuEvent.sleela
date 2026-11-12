@@ -58,6 +58,7 @@ class MenuEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MenuEvent(java.lang.Object source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.MenuEvent.<init>(java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MenuEvent(java.lang.Object source) { }
   < ---- END java constructors ---- >
 }

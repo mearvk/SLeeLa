@@ -58,7 +58,9 @@ class UnrecoverableEntryException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UnrecoverableEntryException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnrecoverableEntryException.<init>()"); }
-  public UnrecoverableEntryException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.UnrecoverableEntryException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnrecoverableEntryException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UnrecoverableEntryException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

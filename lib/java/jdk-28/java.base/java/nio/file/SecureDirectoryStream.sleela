@@ -58,15 +58,24 @@ class SecureDirectoryStream<T> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.nio.channels.SeekableByteChannel newByteChannel(T path, java.util.Set<? extends java.nio.file.OpenOption> options, java.nio.file.attribute.FileAttribute<?>... attrs) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.newByteChannel(T, java.util.Set<? extends java.nio.file.OpenOption>, java.nio.file.attribute.FileAttribute<?>...)"); }
-  public abstract java.nio.file.SecureDirectoryStream<T> newDirectoryStream(T path, java.nio.file.LinkOption... options) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.newDirectoryStream(T, java.nio.file.LinkOption...)"); }
-  public abstract void move(T srcpath, java.nio.file.SecureDirectoryStream<T> targetdir, T targetpath) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.move(T, java.nio.file.SecureDirectoryStream<T>, T)"); }
-  public abstract <V extends java.nio.file.attribute.FileAttributeView> V getFileAttributeView(java.lang.Class<V> type) { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.getFileAttributeView(java.lang.Class<V>)"); }
-  public abstract <V extends java.nio.file.attribute.FileAttributeView> V getFileAttributeView(T path, java.lang.Class<V> type, java.nio.file.LinkOption... options) { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.getFileAttributeView(T, java.lang.Class<V>, java.nio.file.LinkOption...)"); }
-  public abstract void deleteFile(T path) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.deleteFile(T)"); }
-  public abstract void deleteDirectory(T path) throws java.io.IOException { throw new AbstractMethodError("java.nio.file.SecureDirectoryStream.deleteDirectory(T)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.channels.SeekableByteChannel newByteChannel(T path, java.util.Set<? extends java.nio.file.OpenOption> options, java.nio.file.attribute.FileAttribute<?>... attrs) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.nio.file.SecureDirectoryStream<T> newDirectoryStream(T path, java.nio.file.LinkOption... options) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void move(T srcpath, java.nio.file.SecureDirectoryStream<T> targetdir, T targetpath) { }
+  @throwable("java.lang.AbstractMethodError")
+  public <V extends java.nio.file.attribute.FileAttributeView> V getFileAttributeView(java.lang.Class<V> type) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <V extends java.nio.file.attribute.FileAttributeView> V getFileAttributeView(T path, java.lang.Class<V> type, java.nio.file.LinkOption... options) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void deleteFile(T path) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void deleteDirectory(T path) { }
   < ---- END java signatures ---- >
 }

@@ -58,23 +58,40 @@ class OptionalInt {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.hashCode()"); }
-  public static java.util.OptionalInt of(int value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.of(int)"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.isEmpty()"); }
-  public java.util.stream.IntStream stream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.stream()"); }
-  public static java.util.OptionalInt empty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.empty()"); }
-  public int orElse(int other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.orElse(int)"); }
-  public boolean isPresent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.isPresent()"); }
-  public <X extends java.lang.Throwable> int orElseThrow(java.util.function.Supplier<? extends X> exceptionSupplier) throws X { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.orElseThrow(java.util.function.Supplier<? extends X>)"); }
-  public int orElseThrow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.orElseThrow()"); }
-  public void ifPresent(java.util.function.IntConsumer action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.ifPresent(java.util.function.IntConsumer)"); }
-  public void ifPresentOrElse(java.util.function.IntConsumer action, java.lang.Runnable emptyAction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.ifPresentOrElse(java.util.function.IntConsumer, java.lang.Runnable)"); }
-  public int orElseGet(java.util.function.IntSupplier supplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.orElseGet(java.util.function.IntSupplier)"); }
-  public int getAsInt() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalInt.getAsInt()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.OptionalInt of(int value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.IntStream stream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.OptionalInt empty() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int orElse(int other) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPresent() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, X")
+  public <X extends java.lang.Throwable> int orElseThrow(java.util.function.Supplier<? extends X> exceptionSupplier) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int orElseThrow() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ifPresent(java.util.function.IntConsumer action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ifPresentOrElse(java.util.function.IntConsumer action, java.lang.Runnable emptyAction) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int orElseGet(java.util.function.IntSupplier supplier) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAsInt() { return 0; }
   < ---- END java signatures ---- >
 }

@@ -60,6 +60,7 @@ class Field {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Field(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.Format.Field.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Field(java.lang.String name) { }
   < ---- END java constructors ---- >
 }

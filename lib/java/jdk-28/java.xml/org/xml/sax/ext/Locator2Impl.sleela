@@ -58,17 +58,25 @@ class Locator2Impl {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Locator2Impl() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.Locator2Impl.<init>()"); }
-  public Locator2Impl(org.xml.sax.Locator locator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.Locator2Impl.<init>(org.xml.sax.Locator)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Locator2Impl() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Locator2Impl(org.xml.sax.Locator locator) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getEncoding() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.Locator2Impl.getEncoding()"); }
-  public void setEncoding(java.lang.String encoding) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.Locator2Impl.setEncoding(java.lang.String)"); }
-  public java.lang.String getXMLVersion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.Locator2Impl.getXMLVersion()"); }
-  public void setXMLVersion(java.lang.String version) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.ext.Locator2Impl.setXMLVersion(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getEncoding() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEncoding(java.lang.String encoding) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getXMLVersion() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setXMLVersion(java.lang.String version) { }
   < ---- END java signatures ---- >
 }

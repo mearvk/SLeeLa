@@ -59,19 +59,29 @@ class JConsolePlugin {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  JConsolePlugin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.jconsole.JConsolePlugin.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  JConsolePlugin() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final com.sun.tools.jconsole.JConsoleContext getContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.jconsole.JConsolePlugin.getContext()"); }
-  public void dispose() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.jconsole.JConsolePlugin.dispose()"); }
-  public final synchronized void setContext(com.sun.tools.jconsole.JConsoleContext context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.jconsole.JConsolePlugin.setContext(com.sun.tools.jconsole.JConsoleContext)"); }
-  public abstract java.util.Map<java.lang.String, javax.swing.JPanel> getTabs() { throw new AbstractMethodError("com.sun.tools.jconsole.JConsolePlugin.getTabs()"); }
-  public abstract javax.swing.SwingWorker<?, ?> newSwingWorker() { throw new AbstractMethodError("com.sun.tools.jconsole.JConsolePlugin.newSwingWorker()"); }
-  public final void addContextPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.jconsole.JConsolePlugin.addContextPropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public final void removeContextPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.jconsole.JConsolePlugin.removeContextPropertyChangeListener(java.beans.PropertyChangeListener)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final com.sun.tools.jconsole.JConsoleContext getContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void dispose() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final synchronized void setContext(com.sun.tools.jconsole.JConsoleContext context) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Map<java.lang.String, javax.swing.JPanel> getTabs() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.SwingWorker<?, ?> newSwingWorker() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void addContextPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void removeContextPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
   < ---- END java signatures ---- >
 }

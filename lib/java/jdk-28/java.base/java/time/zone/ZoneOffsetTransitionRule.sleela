@@ -58,22 +58,38 @@ class ZoneOffsetTransitionRule {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object otherRule) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.hashCode()"); }
-  public static java.time.zone.ZoneOffsetTransitionRule of(java.time.Month month, int dayOfMonthIndicator, java.time.DayOfWeek dayOfWeek, java.time.LocalTime time, boolean timeEndOfDay, java.time.zone.ZoneOffsetTransitionRule.TimeDefinition timeDefinition, java.time.ZoneOffset standardOffset, java.time.ZoneOffset offsetBefore, java.time.ZoneOffset offsetAfter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.of(java.time.Month, int, java.time.DayOfWeek, java.time.LocalTime, boolean, java.time.zone.ZoneOffsetTransitionRule.TimeDefinition, java.time.ZoneOffset, java.time.ZoneOffset, java.time.ZoneOffset)"); }
-  public java.time.Month getMonth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.getMonth()"); }
-  public java.time.DayOfWeek getDayOfWeek() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.getDayOfWeek()"); }
-  public int getDayOfMonthIndicator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.getDayOfMonthIndicator()"); }
-  public java.time.LocalTime getLocalTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.getLocalTime()"); }
-  public boolean isMidnightEndOfDay() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.isMidnightEndOfDay()"); }
-  public java.time.zone.ZoneOffsetTransitionRule.TimeDefinition getTimeDefinition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.getTimeDefinition()"); }
-  public java.time.ZoneOffset getStandardOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.getStandardOffset()"); }
-  public java.time.ZoneOffset getOffsetBefore() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.getOffsetBefore()"); }
-  public java.time.ZoneOffset getOffsetAfter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.getOffsetAfter()"); }
-  public java.time.zone.ZoneOffsetTransition createTransition(int year) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransitionRule.createTransition(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object otherRule) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.zone.ZoneOffsetTransitionRule of(java.time.Month month, int dayOfMonthIndicator, java.time.DayOfWeek dayOfWeek, java.time.LocalTime time, boolean timeEndOfDay, java.time.zone.ZoneOffsetTransitionRule.TimeDefinition timeDefinition, java.time.ZoneOffset standardOffset, java.time.ZoneOffset offsetBefore, java.time.ZoneOffset offsetAfter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Month getMonth() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.DayOfWeek getDayOfWeek() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDayOfMonthIndicator() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalTime getLocalTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMidnightEndOfDay() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.zone.ZoneOffsetTransitionRule.TimeDefinition getTimeDefinition() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.ZoneOffset getStandardOffset() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.ZoneOffset getOffsetBefore() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.ZoneOffset getOffsetAfter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.zone.ZoneOffsetTransition createTransition(int year) { return null; }
   < ---- END java signatures ---- >
 }

@@ -71,54 +71,97 @@ class DataFlavor {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DataFlavor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.<init>()"); }
-  public DataFlavor(java.lang.String mimeType) throws java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.<init>(java.lang.String)"); }
-  public DataFlavor(java.lang.Class<?> representationClass, java.lang.String humanPresentableName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.<init>(java.lang.Class<?>, java.lang.String)"); }
-  public DataFlavor(java.lang.String mimeType, java.lang.String humanPresentableName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.<init>(java.lang.String, java.lang.String)"); }
-  public DataFlavor(java.lang.String mimeType, java.lang.String humanPresentableName, java.lang.ClassLoader classLoader) throws java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.<init>(java.lang.String, java.lang.String, java.lang.ClassLoader)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataFlavor() { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException")
+  public DataFlavor(java.lang.String mimeType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataFlavor(java.lang.Class<?> representationClass, java.lang.String humanPresentableName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DataFlavor(java.lang.String mimeType, java.lang.String humanPresentableName) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException")
+  public DataFlavor(java.lang.String mimeType, java.lang.String humanPresentableName, java.lang.ClassLoader classLoader) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.equals(java.lang.Object)"); }
-  public boolean equals(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.equals(java.lang.String)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.hashCode()"); }
-  public java.lang.Object clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.clone()"); }
-  public boolean match(java.awt.datatransfer.DataFlavor that) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.match(java.awt.datatransfer.DataFlavor)"); }
-  public synchronized void writeExternal(java.io.ObjectOutput os) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.writeExternal(java.io.ObjectOutput)"); }
-  public synchronized void readExternal(java.io.ObjectInput is) throws java.io.IOException, java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.readExternal(java.io.ObjectInput)"); }
-  public java.lang.String getParameter(java.lang.String paramName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.getParameter(java.lang.String)"); }
-  protected static final java.lang.Class<?> tryToLoadClass(java.lang.String className, java.lang.ClassLoader fallback) throws java.lang.ClassNotFoundException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.tryToLoadClass(java.lang.String, java.lang.ClassLoader)"); }
-  public java.lang.String getPrimaryType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.getPrimaryType()"); }
-  public java.lang.String getSubType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.getSubType()"); }
-  public boolean isRepresentationClassInputStream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.isRepresentationClassInputStream()"); }
-  public boolean isRepresentationClassByteBuffer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.isRepresentationClassByteBuffer()"); }
-  public boolean isFlavorTextType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.isFlavorTextType()"); }
-  public java.lang.Class<?> getRepresentationClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.getRepresentationClass()"); }
-  public final boolean isMimeTypeEqual(java.awt.datatransfer.DataFlavor dataFlavor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.isMimeTypeEqual(java.awt.datatransfer.DataFlavor)"); }
-  public boolean isMimeTypeEqual(java.lang.String mimeType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.isMimeTypeEqual(java.lang.String)"); }
-  public boolean isRepresentationClassReader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.isRepresentationClassReader()"); }
-  public boolean isRepresentationClassCharBuffer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.isRepresentationClassCharBuffer()"); }
-  public final java.lang.Class<?> getDefaultRepresentationClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.getDefaultRepresentationClass()"); }
-  public boolean isRepresentationClassSerializable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.isRepresentationClassSerializable()"); }
-  public boolean isRepresentationClassRemote() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.isRepresentationClassRemote()"); }
-  public static final java.awt.datatransfer.DataFlavor getTextPlainUnicodeFlavor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.getTextPlainUnicodeFlavor()"); }
-  public static final java.awt.datatransfer.DataFlavor selectBestTextFlavor(java.awt.datatransfer.DataFlavor[] availableFlavors) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.selectBestTextFlavor(java.awt.datatransfer.DataFlavor[])"); }
-  public java.io.Reader getReaderForText(java.awt.datatransfer.Transferable transferable) throws java.awt.datatransfer.UnsupportedFlavorException, java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.getReaderForText(java.awt.datatransfer.Transferable)"); }
-  public java.lang.String getMimeType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.getMimeType()"); }
-  public java.lang.String getHumanPresentableName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.getHumanPresentableName()"); }
-  public void setHumanPresentableName(java.lang.String humanPresentableName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.setHumanPresentableName(java.lang.String)"); }
-  public boolean isMimeTypeSerializedObject() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.isMimeTypeSerializedObject()"); }
-  public final java.lang.String getDefaultRepresentationClassAsString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.getDefaultRepresentationClassAsString()"); }
-  public boolean isFlavorSerializedObjectType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.isFlavorSerializedObjectType()"); }
-  public boolean isFlavorRemoteObjectType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.isFlavorRemoteObjectType()"); }
-  public boolean isFlavorJavaFileListType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.isFlavorJavaFileListType()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.String s) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean match(java.awt.datatransfer.DataFlavor that) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public synchronized void writeExternal(java.io.ObjectOutput os) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException, java.lang.ClassNotFoundException")
+  public synchronized void readExternal(java.io.ObjectInput is) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getParameter(java.lang.String paramName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException")
+  protected static final java.lang.Class<?> tryToLoadClass(java.lang.String className, java.lang.ClassLoader fallback) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPrimaryType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSubType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRepresentationClassInputStream() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRepresentationClassByteBuffer() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFlavorTextType() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getRepresentationClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isMimeTypeEqual(java.awt.datatransfer.DataFlavor dataFlavor) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMimeTypeEqual(java.lang.String mimeType) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRepresentationClassReader() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRepresentationClassCharBuffer() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.Class<?> getDefaultRepresentationClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRepresentationClassSerializable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRepresentationClassRemote() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final java.awt.datatransfer.DataFlavor getTextPlainUnicodeFlavor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final java.awt.datatransfer.DataFlavor selectBestTextFlavor(java.awt.datatransfer.DataFlavor[] availableFlavors) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.datatransfer.UnsupportedFlavorException, java.io.IOException")
+  public java.io.Reader getReaderForText(java.awt.datatransfer.Transferable transferable) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getMimeType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getHumanPresentableName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHumanPresentableName(java.lang.String humanPresentableName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMimeTypeSerializedObject() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getDefaultRepresentationClassAsString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFlavorSerializedObjectType() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFlavorRemoteObjectType() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFlavorJavaFileListType() { return false; }
   @JavaProtected
-  java.lang.String normalizeMimeTypeParameter(java.lang.String parameterName, java.lang.String parameterValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.normalizeMimeTypeParameter(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String normalizeMimeTypeParameter(java.lang.String parameterName, java.lang.String parameterValue) { return null; }
   @JavaProtected
-  java.lang.String normalizeMimeType(java.lang.String mimeType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.datatransfer.DataFlavor.normalizeMimeType(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String normalizeMimeType(java.lang.String mimeType) { return null; }
   < ---- END java signatures ---- >
 }

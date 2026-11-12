@@ -58,7 +58,9 @@ class JMException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JMException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.JMException.<init>()"); }
-  public JMException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.JMException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JMException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JMException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

@@ -59,24 +59,39 @@ class KeyAgreement {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  KeyAgreement(javax.crypto.KeyAgreementSpi keyAgreeSpi, java.security.Provider provider, java.lang.String algorithm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreement.<init>(javax.crypto.KeyAgreementSpi, java.security.Provider, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  KeyAgreement(javax.crypto.KeyAgreementSpi keyAgreeSpi, java.security.Provider provider, java.lang.String algorithm) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static final javax.crypto.KeyAgreement getInstance(java.lang.String algorithm, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreement.getInstance(java.lang.String, java.security.Provider)"); }
-  public static final javax.crypto.KeyAgreement getInstance(java.lang.String algorithm, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreement.getInstance(java.lang.String, java.lang.String)"); }
-  public static final javax.crypto.KeyAgreement getInstance(java.lang.String algorithm) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreement.getInstance(java.lang.String)"); }
-  public final void init(java.security.Key key, java.security.SecureRandom random) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreement.init(java.security.Key, java.security.SecureRandom)"); }
-  public final void init(java.security.Key key, java.security.spec.AlgorithmParameterSpec params, java.security.SecureRandom random) throws java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreement.init(java.security.Key, java.security.spec.AlgorithmParameterSpec, java.security.SecureRandom)"); }
-  public final void init(java.security.Key key) throws java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreement.init(java.security.Key)"); }
-  public final java.security.Provider getProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreement.getProvider()"); }
-  public final java.lang.String getAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreement.getAlgorithm()"); }
-  public final java.security.Key doPhase(java.security.Key key, boolean lastPhase) throws java.security.InvalidKeyException, java.lang.IllegalStateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreement.doPhase(java.security.Key, boolean)"); }
-  public final int generateSecret(byte[] sharedSecret, int offset) throws java.lang.IllegalStateException, javax.crypto.ShortBufferException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreement.generateSecret(byte[], int)"); }
-  public final javax.crypto.SecretKey generateSecret(java.lang.String algorithm) throws java.lang.IllegalStateException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreement.generateSecret(java.lang.String)"); }
-  public final byte[] generateSecret() throws java.lang.IllegalStateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.crypto.KeyAgreement.generateSecret()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static final javax.crypto.KeyAgreement getInstance(java.lang.String algorithm, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException")
+  public static final javax.crypto.KeyAgreement getInstance(java.lang.String algorithm, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static final javax.crypto.KeyAgreement getInstance(java.lang.String algorithm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException")
+  public final void init(java.security.Key key, java.security.SecureRandom random) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException")
+  public final void init(java.security.Key key, java.security.spec.AlgorithmParameterSpec params, java.security.SecureRandom random) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException")
+  public final void init(java.security.Key key) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.Provider getProvider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException, java.lang.IllegalStateException")
+  public final java.security.Key doPhase(java.security.Key key, boolean lastPhase) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalStateException, javax.crypto.ShortBufferException")
+  public final int generateSecret(byte[] sharedSecret, int offset) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalStateException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException")
+  public final javax.crypto.SecretKey generateSecret(java.lang.String algorithm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalStateException")
+  public final byte[] generateSecret() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,7 +58,9 @@ class PortUnreachableException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PortUnreachableException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.PortUnreachableException.<init>(java.lang.String)"); }
-  public PortUnreachableException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.PortUnreachableException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PortUnreachableException(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PortUnreachableException() { }
   < ---- END java constructors ---- >
 }

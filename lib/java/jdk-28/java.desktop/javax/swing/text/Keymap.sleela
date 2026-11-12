@@ -58,21 +58,36 @@ class Keymap {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("javax.swing.text.Keymap.getName()"); }
-  public abstract javax.swing.text.Keymap getResolveParent() { throw new AbstractMethodError("javax.swing.text.Keymap.getResolveParent()"); }
-  public abstract void setResolveParent(javax.swing.text.Keymap parent) { throw new AbstractMethodError("javax.swing.text.Keymap.setResolveParent(javax.swing.text.Keymap)"); }
-  public abstract javax.swing.Action getAction(javax.swing.KeyStroke key) { throw new AbstractMethodError("javax.swing.text.Keymap.getAction(javax.swing.KeyStroke)"); }
-  public abstract void setDefaultAction(javax.swing.Action a) { throw new AbstractMethodError("javax.swing.text.Keymap.setDefaultAction(javax.swing.Action)"); }
-  public abstract void addActionForKeyStroke(javax.swing.KeyStroke key, javax.swing.Action a) { throw new AbstractMethodError("javax.swing.text.Keymap.addActionForKeyStroke(javax.swing.KeyStroke, javax.swing.Action)"); }
-  public abstract javax.swing.Action getDefaultAction() { throw new AbstractMethodError("javax.swing.text.Keymap.getDefaultAction()"); }
-  public abstract javax.swing.KeyStroke[] getBoundKeyStrokes() { throw new AbstractMethodError("javax.swing.text.Keymap.getBoundKeyStrokes()"); }
-  public abstract javax.swing.Action[] getBoundActions() { throw new AbstractMethodError("javax.swing.text.Keymap.getBoundActions()"); }
-  public abstract javax.swing.KeyStroke[] getKeyStrokesForAction(javax.swing.Action a) { throw new AbstractMethodError("javax.swing.text.Keymap.getKeyStrokesForAction(javax.swing.Action)"); }
-  public abstract boolean isLocallyDefined(javax.swing.KeyStroke key) { throw new AbstractMethodError("javax.swing.text.Keymap.isLocallyDefined(javax.swing.KeyStroke)"); }
-  public abstract void removeKeyStrokeBinding(javax.swing.KeyStroke keys) { throw new AbstractMethodError("javax.swing.text.Keymap.removeKeyStrokeBinding(javax.swing.KeyStroke)"); }
-  public abstract void removeBindings() { throw new AbstractMethodError("javax.swing.text.Keymap.removeBindings()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.Keymap getResolveParent() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setResolveParent(javax.swing.text.Keymap parent) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.Action getAction(javax.swing.KeyStroke key) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDefaultAction(javax.swing.Action a) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addActionForKeyStroke(javax.swing.KeyStroke key, javax.swing.Action a) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.Action getDefaultAction() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.KeyStroke[] getBoundKeyStrokes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.Action[] getBoundActions() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.KeyStroke[] getKeyStrokesForAction(javax.swing.Action a) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isLocallyDefined(javax.swing.KeyStroke key) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeKeyStrokeBinding(javax.swing.KeyStroke keys) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeBindings() { }
   < ---- END java signatures ---- >
 }

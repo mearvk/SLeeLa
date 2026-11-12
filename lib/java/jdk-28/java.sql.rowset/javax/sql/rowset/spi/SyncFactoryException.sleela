@@ -58,7 +58,9 @@ class SyncFactoryException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SyncFactoryException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.spi.SyncFactoryException.<init>()"); }
-  public SyncFactoryException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.spi.SyncFactoryException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SyncFactoryException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SyncFactoryException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

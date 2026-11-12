@@ -58,19 +58,29 @@ class CertificateFactorySpi {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CertificateFactorySpi() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateFactorySpi.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CertificateFactorySpi() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.security.cert.Certificate engineGenerateCertificate(java.io.InputStream inStream) throws java.security.cert.CertificateException { throw new AbstractMethodError("java.security.cert.CertificateFactorySpi.engineGenerateCertificate(java.io.InputStream)"); }
-  public java.util.Iterator<java.lang.String> engineGetCertPathEncodings() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateFactorySpi.engineGetCertPathEncodings()"); }
-  public java.security.cert.CertPath engineGenerateCertPath(java.util.List<? extends java.security.cert.Certificate> certificates) throws java.security.cert.CertificateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateFactorySpi.engineGenerateCertPath(java.util.List<? extends java.security.cert.Certificate>)"); }
-  public java.security.cert.CertPath engineGenerateCertPath(java.io.InputStream inStream, java.lang.String encoding) throws java.security.cert.CertificateException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertificateFactorySpi.engineGenerateCertPath(java.io.InputStream, java.lang.String)"); }
-  public abstract java.util.Collection<? extends java.security.cert.Certificate> engineGenerateCertificates(java.io.InputStream inStream) throws java.security.cert.CertificateException { throw new AbstractMethodError("java.security.cert.CertificateFactorySpi.engineGenerateCertificates(java.io.InputStream)"); }
-  public abstract java.security.cert.CRL engineGenerateCRL(java.io.InputStream inStream) throws java.security.cert.CRLException { throw new AbstractMethodError("java.security.cert.CertificateFactorySpi.engineGenerateCRL(java.io.InputStream)"); }
-  public abstract java.util.Collection<? extends java.security.cert.CRL> engineGenerateCRLs(java.io.InputStream inStream) throws java.security.cert.CRLException { throw new AbstractMethodError("java.security.cert.CertificateFactorySpi.engineGenerateCRLs(java.io.InputStream)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertificateException")
+  public java.security.cert.Certificate engineGenerateCertificate(java.io.InputStream inStream) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Iterator<java.lang.String> engineGetCertPathEncodings() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.cert.CertificateException")
+  public java.security.cert.CertPath engineGenerateCertPath(java.util.List<? extends java.security.cert.Certificate> certificates) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.cert.CertificateException")
+  public java.security.cert.CertPath engineGenerateCertPath(java.io.InputStream inStream, java.lang.String encoding) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertificateException")
+  public java.util.Collection<? extends java.security.cert.Certificate> engineGenerateCertificates(java.io.InputStream inStream) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CRLException")
+  public java.security.cert.CRL engineGenerateCRL(java.io.InputStream inStream) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CRLException")
+  public java.util.Collection<? extends java.security.cert.CRL> engineGenerateCRLs(java.io.InputStream inStream) { return null; }
   < ---- END java signatures ---- >
 }

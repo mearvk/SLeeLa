@@ -62,16 +62,26 @@ class NamingManager {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static javax.naming.Context getInitialContext(java.util.Hashtable<?, ?> env) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.spi.NamingManager.getInitialContext(java.util.Hashtable<?, ?>)"); }
-  public static boolean hasInitialContextFactoryBuilder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.spi.NamingManager.hasInitialContextFactoryBuilder()"); }
-  public static javax.naming.Context getURLContext(java.lang.String scheme, java.util.Hashtable<?, ?> environment) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.spi.NamingManager.getURLContext(java.lang.String, java.util.Hashtable<?, ?>)"); }
-  public static java.lang.Object getStateToBind(java.lang.Object obj, javax.naming.Name name, javax.naming.Context nameCtx, java.util.Hashtable<?, ?> environment) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.spi.NamingManager.getStateToBind(java.lang.Object, javax.naming.Name, javax.naming.Context, java.util.Hashtable<?, ?>)"); }
-  public static void setObjectFactoryBuilder(javax.naming.spi.ObjectFactoryBuilder builder) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.spi.NamingManager.setObjectFactoryBuilder(javax.naming.spi.ObjectFactoryBuilder)"); }
-  public static synchronized void setInitialContextFactoryBuilder(javax.naming.spi.InitialContextFactoryBuilder builder) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.spi.NamingManager.setInitialContextFactoryBuilder(javax.naming.spi.InitialContextFactoryBuilder)"); }
-  public static javax.naming.Context getContinuationContext(javax.naming.CannotProceedException cpe) throws javax.naming.NamingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.spi.NamingManager.getContinuationContext(javax.naming.CannotProceedException)"); }
-  public static java.lang.Object getObjectInstance(java.lang.Object refInfo, javax.naming.Name name, javax.naming.Context nameCtx, java.util.Hashtable<?, ?> environment) throws java.lang.Exception { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.spi.NamingManager.getObjectInstance(java.lang.Object, javax.naming.Name, javax.naming.Context, java.util.Hashtable<?, ?>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public static javax.naming.Context getInitialContext(java.util.Hashtable<?, ?> env) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean hasInitialContextFactoryBuilder() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public static javax.naming.Context getURLContext(java.lang.String scheme, java.util.Hashtable<?, ?> environment) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public static java.lang.Object getStateToBind(java.lang.Object obj, javax.naming.Name name, javax.naming.Context nameCtx, java.util.Hashtable<?, ?> environment) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public static void setObjectFactoryBuilder(javax.naming.spi.ObjectFactoryBuilder builder) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public static synchronized void setInitialContextFactoryBuilder(javax.naming.spi.InitialContextFactoryBuilder builder) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
+  public static javax.naming.Context getContinuationContext(javax.naming.CannotProceedException cpe) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
+  public static java.lang.Object getObjectInstance(java.lang.Object refInfo, javax.naming.Name name, javax.naming.Context nameCtx, java.util.Hashtable<?, ?> environment) { return null; }
   < ---- END java signatures ---- >
 }

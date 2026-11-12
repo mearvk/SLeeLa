@@ -261,26 +261,43 @@ class KeyEvent {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public KeyEvent(java.awt.Component source, int id, long when, int modifiers, int keyCode, char keyChar) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.<init>(java.awt.Component, int, long, int, int, char)"); }
-  public KeyEvent(java.awt.Component source, int id, long when, int modifiers, int keyCode, char keyChar, int keyLocation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.<init>(java.awt.Component, int, long, int, int, char, int)"); }
-  public KeyEvent(java.awt.Component source, int id, long when, int modifiers, int keyCode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.<init>(java.awt.Component, int, long, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public KeyEvent(java.awt.Component source, int id, long when, int modifiers, int keyCode, char keyChar) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public KeyEvent(java.awt.Component source, int id, long when, int modifiers, int keyCode, char keyChar, int keyLocation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public KeyEvent(java.awt.Component source, int id, long when, int modifiers, int keyCode) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.paramString()"); }
-  public void setKeyChar(char keyChar) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.setKeyChar(char)"); }
-  public void setModifiers(int modifiers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.setModifiers(int)"); }
-  public char getKeyChar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.getKeyChar()"); }
-  public static java.lang.String getKeyText(int keyCode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.getKeyText(int)"); }
-  public static java.lang.String getKeyModifiersText(int modifiers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.getKeyModifiersText(int)"); }
-  public static int getExtendedKeyCodeForChar(int c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.getExtendedKeyCodeForChar(int)"); }
-  public void setKeyCode(int keyCode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.setKeyCode(int)"); }
-  public int getKeyLocation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.getKeyLocation()"); }
-  public int getExtendedKeyCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.getExtendedKeyCode()"); }
-  public boolean isActionKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.isActionKey()"); }
-  public int getKeyCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.event.KeyEvent.getKeyCode()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setKeyChar(char keyChar) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setModifiers(int modifiers) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getKeyChar() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String getKeyText(int keyCode) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.String getKeyModifiersText(int modifiers) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getExtendedKeyCodeForChar(int c) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setKeyCode(int keyCode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getKeyLocation() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getExtendedKeyCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isActionKey() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getKeyCode() { return 0; }
   < ---- END java signatures ---- >
 }

@@ -87,16 +87,26 @@ class CSSPrimitiveValue {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract short getPrimitiveType() { throw new AbstractMethodError("org.w3c.dom.css.CSSPrimitiveValue.getPrimitiveType()"); }
-  public abstract java.lang.String getStringValue() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.css.CSSPrimitiveValue.getStringValue()"); }
-  public abstract void setFloatValue(short unitType, float floatValue) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.css.CSSPrimitiveValue.setFloatValue(short, float)"); }
-  public abstract float getFloatValue(short unitType) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.css.CSSPrimitiveValue.getFloatValue(short)"); }
-  public abstract void setStringValue(short stringType, java.lang.String stringValue) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.css.CSSPrimitiveValue.setStringValue(short, java.lang.String)"); }
-  public abstract org.w3c.dom.css.Counter getCounterValue() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.css.CSSPrimitiveValue.getCounterValue()"); }
-  public abstract org.w3c.dom.css.Rect getRectValue() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.css.CSSPrimitiveValue.getRectValue()"); }
-  public abstract org.w3c.dom.css.RGBColor getRGBColorValue() throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.css.CSSPrimitiveValue.getRGBColorValue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public short getPrimitiveType() { return 0; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public java.lang.String getStringValue() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setFloatValue(short unitType, float floatValue) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public float getFloatValue(short unitType) { return 0.0; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setStringValue(short stringType, java.lang.String stringValue) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.css.Counter getCounterValue() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.css.Rect getRectValue() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.css.RGBColor getRGBColorValue() { return null; }
   < ---- END java signatures ---- >
 }

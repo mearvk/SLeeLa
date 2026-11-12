@@ -58,25 +58,44 @@ class PrintService {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getName() { throw new AbstractMethodError("javax.print.PrintService.getName()"); }
-  public abstract boolean equals(java.lang.Object obj) { throw new AbstractMethodError("javax.print.PrintService.equals(java.lang.Object)"); }
-  public abstract int hashCode() { throw new AbstractMethodError("javax.print.PrintService.hashCode()"); }
-  public abstract javax.print.attribute.PrintServiceAttributeSet getAttributes() { throw new AbstractMethodError("javax.print.PrintService.getAttributes()"); }
-  public abstract <T extends javax.print.attribute.PrintServiceAttribute> T getAttribute(java.lang.Class<T> category) { throw new AbstractMethodError("javax.print.PrintService.getAttribute(java.lang.Class<T>)"); }
-  public abstract boolean isAttributeCategorySupported(java.lang.Class<? extends javax.print.attribute.Attribute> category) { throw new AbstractMethodError("javax.print.PrintService.isAttributeCategorySupported(java.lang.Class<? extends javax.print.attribute.Attribute>)"); }
-  public abstract java.lang.Object getSupportedAttributeValues(java.lang.Class<? extends javax.print.attribute.Attribute> category, javax.print.DocFlavor flavor, javax.print.attribute.AttributeSet attributes) { throw new AbstractMethodError("javax.print.PrintService.getSupportedAttributeValues(java.lang.Class<? extends javax.print.attribute.Attribute>, javax.print.DocFlavor, javax.print.attribute.AttributeSet)"); }
-  public abstract boolean isAttributeValueSupported(javax.print.attribute.Attribute attrval, javax.print.DocFlavor flavor, javax.print.attribute.AttributeSet attributes) { throw new AbstractMethodError("javax.print.PrintService.isAttributeValueSupported(javax.print.attribute.Attribute, javax.print.DocFlavor, javax.print.attribute.AttributeSet)"); }
-  public abstract javax.print.DocPrintJob createPrintJob() { throw new AbstractMethodError("javax.print.PrintService.createPrintJob()"); }
-  public abstract void addPrintServiceAttributeListener(javax.print.event.PrintServiceAttributeListener listener) { throw new AbstractMethodError("javax.print.PrintService.addPrintServiceAttributeListener(javax.print.event.PrintServiceAttributeListener)"); }
-  public abstract void removePrintServiceAttributeListener(javax.print.event.PrintServiceAttributeListener listener) { throw new AbstractMethodError("javax.print.PrintService.removePrintServiceAttributeListener(javax.print.event.PrintServiceAttributeListener)"); }
-  public abstract javax.print.DocFlavor[] getSupportedDocFlavors() { throw new AbstractMethodError("javax.print.PrintService.getSupportedDocFlavors()"); }
-  public abstract boolean isDocFlavorSupported(javax.print.DocFlavor flavor) { throw new AbstractMethodError("javax.print.PrintService.isDocFlavorSupported(javax.print.DocFlavor)"); }
-  public abstract java.lang.Class<?>[] getSupportedAttributeCategories() { throw new AbstractMethodError("javax.print.PrintService.getSupportedAttributeCategories()"); }
-  public abstract java.lang.Object getDefaultAttributeValue(java.lang.Class<? extends javax.print.attribute.Attribute> category) { throw new AbstractMethodError("javax.print.PrintService.getDefaultAttributeValue(java.lang.Class<? extends javax.print.attribute.Attribute>)"); }
-  public abstract javax.print.attribute.AttributeSet getUnsupportedAttributes(javax.print.DocFlavor flavor, javax.print.attribute.AttributeSet attributes) { throw new AbstractMethodError("javax.print.PrintService.getUnsupportedAttributes(javax.print.DocFlavor, javax.print.attribute.AttributeSet)"); }
-  public abstract javax.print.ServiceUIFactory getServiceUIFactory() { throw new AbstractMethodError("javax.print.PrintService.getServiceUIFactory()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.attribute.PrintServiceAttributeSet getAttributes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <T extends javax.print.attribute.PrintServiceAttribute> T getAttribute(java.lang.Class<T> category) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isAttributeCategorySupported(java.lang.Class<? extends javax.print.attribute.Attribute> category) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getSupportedAttributeValues(java.lang.Class<? extends javax.print.attribute.Attribute> category, javax.print.DocFlavor flavor, javax.print.attribute.AttributeSet attributes) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isAttributeValueSupported(javax.print.attribute.Attribute attrval, javax.print.DocFlavor flavor, javax.print.attribute.AttributeSet attributes) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.DocPrintJob createPrintJob() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void addPrintServiceAttributeListener(javax.print.event.PrintServiceAttributeListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removePrintServiceAttributeListener(javax.print.event.PrintServiceAttributeListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.DocFlavor[] getSupportedDocFlavors() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isDocFlavorSupported(javax.print.DocFlavor flavor) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Class<?>[] getSupportedAttributeCategories() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getDefaultAttributeValue(java.lang.Class<? extends javax.print.attribute.Attribute> category) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.attribute.AttributeSet getUnsupportedAttributes(javax.print.DocFlavor flavor, javax.print.attribute.AttributeSet attributes) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.print.ServiceUIFactory getServiceUIFactory() { return null; }
   < ---- END java signatures ---- >
 }

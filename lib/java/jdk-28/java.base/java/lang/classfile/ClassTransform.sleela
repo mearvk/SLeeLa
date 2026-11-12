@@ -62,17 +62,28 @@ class ClassTransform {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default java.lang.classfile.ClassTransform andThen(java.lang.classfile.ClassTransform t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassTransform.andThen(java.lang.classfile.ClassTransform)"); }
-  public static java.lang.classfile.ClassTransform endHandler(java.util.function.Consumer<java.lang.classfile.ClassBuilder> finisher) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassTransform.endHandler(java.util.function.Consumer<java.lang.classfile.ClassBuilder>)"); }
-  public static java.lang.classfile.ClassTransform ofStateful(java.util.function.Supplier<java.lang.classfile.ClassTransform> supplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassTransform.ofStateful(java.util.function.Supplier<java.lang.classfile.ClassTransform>)"); }
-  public static java.lang.classfile.ClassTransform dropping(java.util.function.Predicate<java.lang.classfile.ClassElement> filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassTransform.dropping(java.util.function.Predicate<java.lang.classfile.ClassElement>)"); }
-  public static java.lang.classfile.ClassTransform transformingMethods(java.util.function.Predicate<java.lang.classfile.MethodModel> filter, java.lang.classfile.MethodTransform xform) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassTransform.transformingMethods(java.util.function.Predicate<java.lang.classfile.MethodModel>, java.lang.classfile.MethodTransform)"); }
-  public static java.lang.classfile.ClassTransform transformingMethods(java.lang.classfile.MethodTransform xform) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassTransform.transformingMethods(java.lang.classfile.MethodTransform)"); }
-  public static java.lang.classfile.ClassTransform transformingMethodBodies(java.util.function.Predicate<java.lang.classfile.MethodModel> filter, java.lang.classfile.CodeTransform xform) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassTransform.transformingMethodBodies(java.util.function.Predicate<java.lang.classfile.MethodModel>, java.lang.classfile.CodeTransform)"); }
-  public static java.lang.classfile.ClassTransform transformingMethodBodies(java.lang.classfile.CodeTransform xform) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassTransform.transformingMethodBodies(java.lang.classfile.CodeTransform)"); }
-  public static java.lang.classfile.ClassTransform transformingFields(java.lang.classfile.FieldTransform xform) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.ClassTransform.transformingFields(java.lang.classfile.FieldTransform)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.ClassTransform andThen(java.lang.classfile.ClassTransform t) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.ClassTransform endHandler(java.util.function.Consumer<java.lang.classfile.ClassBuilder> finisher) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.ClassTransform ofStateful(java.util.function.Supplier<java.lang.classfile.ClassTransform> supplier) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.ClassTransform dropping(java.util.function.Predicate<java.lang.classfile.ClassElement> filter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.ClassTransform transformingMethods(java.util.function.Predicate<java.lang.classfile.MethodModel> filter, java.lang.classfile.MethodTransform xform) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.ClassTransform transformingMethods(java.lang.classfile.MethodTransform xform) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.ClassTransform transformingMethodBodies(java.util.function.Predicate<java.lang.classfile.MethodModel> filter, java.lang.classfile.CodeTransform xform) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.ClassTransform transformingMethodBodies(java.lang.classfile.CodeTransform xform) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.ClassTransform transformingFields(java.lang.classfile.FieldTransform xform) { return null; }
   < ---- END java signatures ---- >
 }

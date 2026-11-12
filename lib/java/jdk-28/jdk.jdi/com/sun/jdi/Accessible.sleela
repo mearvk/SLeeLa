@@ -58,13 +58,20 @@ class Accessible {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int modifiers() { throw new AbstractMethodError("com.sun.jdi.Accessible.modifiers()"); }
-  public abstract boolean isPublic() { throw new AbstractMethodError("com.sun.jdi.Accessible.isPublic()"); }
-  public abstract boolean isProtected() { throw new AbstractMethodError("com.sun.jdi.Accessible.isProtected()"); }
-  public abstract boolean isPrivate() { throw new AbstractMethodError("com.sun.jdi.Accessible.isPrivate()"); }
-  public abstract boolean isPackagePrivate() { throw new AbstractMethodError("com.sun.jdi.Accessible.isPackagePrivate()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int modifiers() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isPublic() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isProtected() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isPrivate() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isPackagePrivate() { return false; }
   < ---- END java signatures ---- >
 }

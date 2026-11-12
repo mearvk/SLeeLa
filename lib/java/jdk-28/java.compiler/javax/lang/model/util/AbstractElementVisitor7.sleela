@@ -59,6 +59,7 @@ class AbstractElementVisitor7<R, P> {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  AbstractElementVisitor7() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.lang.model.util.AbstractElementVisitor7.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  AbstractElementVisitor7() { }
   < ---- END java constructors ---- >
 }

@@ -59,28 +59,47 @@ class SctpMultiChannel {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  SctpMultiChannel(java.nio.channels.spi.SelectorProvider provider) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.SctpMultiChannel.<init>(java.nio.channels.spi.SelectorProvider)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  SctpMultiChannel(java.nio.channels.spi.SelectorProvider provider) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract com.sun.nio.sctp.SctpMultiChannel shutdown(com.sun.nio.sctp.Association association) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.shutdown(com.sun.nio.sctp.Association)"); }
-  public static com.sun.nio.sctp.SctpMultiChannel open() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.SctpMultiChannel.open()"); }
-  public final com.sun.nio.sctp.SctpMultiChannel bind(java.net.SocketAddress local) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.SctpMultiChannel.bind(java.net.SocketAddress)"); }
-  public abstract com.sun.nio.sctp.SctpMultiChannel bind(java.net.SocketAddress local, int backlog) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.bind(java.net.SocketAddress, int)"); }
-  public abstract com.sun.nio.sctp.SctpChannel branch(com.sun.nio.sctp.Association association) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.branch(com.sun.nio.sctp.Association)"); }
-  public abstract <T> com.sun.nio.sctp.SctpMultiChannel setOption(com.sun.nio.sctp.SctpSocketOption<T> name, T value, com.sun.nio.sctp.Association association) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.setOption(com.sun.nio.sctp.SctpSocketOption<T>, T, com.sun.nio.sctp.Association)"); }
-  public abstract <T> T getOption(com.sun.nio.sctp.SctpSocketOption<T> name, com.sun.nio.sctp.Association association) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.getOption(com.sun.nio.sctp.SctpSocketOption<T>, com.sun.nio.sctp.Association)"); }
-  public abstract java.util.Set<com.sun.nio.sctp.SctpSocketOption<?>> supportedOptions() { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.supportedOptions()"); }
-  public final int validOps() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.SctpMultiChannel.validOps()"); }
-  public abstract com.sun.nio.sctp.SctpMultiChannel bindAddress(java.net.InetAddress address) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.bindAddress(java.net.InetAddress)"); }
-  public abstract com.sun.nio.sctp.SctpMultiChannel unbindAddress(java.net.InetAddress address) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.unbindAddress(java.net.InetAddress)"); }
-  public abstract java.util.Set<java.net.SocketAddress> getAllLocalAddresses() throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.getAllLocalAddresses()"); }
-  public abstract java.util.Set<java.net.SocketAddress> getRemoteAddresses(com.sun.nio.sctp.Association association) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.getRemoteAddresses(com.sun.nio.sctp.Association)"); }
-  public abstract int send(java.nio.ByteBuffer buffer, com.sun.nio.sctp.MessageInfo messageInfo) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.send(java.nio.ByteBuffer, com.sun.nio.sctp.MessageInfo)"); }
-  public abstract <T> com.sun.nio.sctp.MessageInfo receive(java.nio.ByteBuffer buffer, T attachment, com.sun.nio.sctp.NotificationHandler<T> handler) throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.receive(java.nio.ByteBuffer, T, com.sun.nio.sctp.NotificationHandler<T>)"); }
-  public abstract java.util.Set<com.sun.nio.sctp.Association> associations() throws java.io.IOException { throw new AbstractMethodError("com.sun.nio.sctp.SctpMultiChannel.associations()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public com.sun.nio.sctp.SctpMultiChannel shutdown(com.sun.nio.sctp.Association association) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static com.sun.nio.sctp.SctpMultiChannel open() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public final com.sun.nio.sctp.SctpMultiChannel bind(java.net.SocketAddress local) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public com.sun.nio.sctp.SctpMultiChannel bind(java.net.SocketAddress local, int backlog) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public com.sun.nio.sctp.SctpChannel branch(com.sun.nio.sctp.Association association) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public <T> com.sun.nio.sctp.SctpMultiChannel setOption(com.sun.nio.sctp.SctpSocketOption<T> name, T value, com.sun.nio.sctp.Association association) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public <T> T getOption(com.sun.nio.sctp.SctpSocketOption<T> name, com.sun.nio.sctp.Association association) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<com.sun.nio.sctp.SctpSocketOption<?>> supportedOptions() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int validOps() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public com.sun.nio.sctp.SctpMultiChannel bindAddress(java.net.InetAddress address) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public com.sun.nio.sctp.SctpMultiChannel unbindAddress(java.net.InetAddress address) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.util.Set<java.net.SocketAddress> getAllLocalAddresses() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.util.Set<java.net.SocketAddress> getRemoteAddresses(com.sun.nio.sctp.Association association) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public int send(java.nio.ByteBuffer buffer, com.sun.nio.sctp.MessageInfo messageInfo) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public <T> com.sun.nio.sctp.MessageInfo receive(java.nio.ByteBuffer buffer, T attachment, com.sun.nio.sctp.NotificationHandler<T> handler) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.util.Set<com.sun.nio.sctp.Association> associations() { return null; }
   < ---- END java signatures ---- >
 }

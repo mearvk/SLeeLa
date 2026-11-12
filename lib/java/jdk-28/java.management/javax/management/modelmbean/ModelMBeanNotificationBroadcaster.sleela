@@ -58,14 +58,22 @@ class ModelMBeanNotificationBroadcaster {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void sendNotification(javax.management.Notification ntfyObj) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new AbstractMethodError("javax.management.modelmbean.ModelMBeanNotificationBroadcaster.sendNotification(javax.management.Notification)"); }
-  public abstract void sendNotification(java.lang.String ntfyText) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new AbstractMethodError("javax.management.modelmbean.ModelMBeanNotificationBroadcaster.sendNotification(java.lang.String)"); }
-  public abstract void sendAttributeChangeNotification(javax.management.Attribute oldValue, javax.management.Attribute newValue) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new AbstractMethodError("javax.management.modelmbean.ModelMBeanNotificationBroadcaster.sendAttributeChangeNotification(javax.management.Attribute, javax.management.Attribute)"); }
-  public abstract void sendAttributeChangeNotification(javax.management.AttributeChangeNotification notification) throws javax.management.MBeanException, javax.management.RuntimeOperationsException { throw new AbstractMethodError("javax.management.modelmbean.ModelMBeanNotificationBroadcaster.sendAttributeChangeNotification(javax.management.AttributeChangeNotification)"); }
-  public abstract void addAttributeChangeNotificationListener(javax.management.NotificationListener listener, java.lang.String attributeName, java.lang.Object handback) throws javax.management.MBeanException, javax.management.RuntimeOperationsException, java.lang.IllegalArgumentException { throw new AbstractMethodError("javax.management.modelmbean.ModelMBeanNotificationBroadcaster.addAttributeChangeNotificationListener(javax.management.NotificationListener, java.lang.String, java.lang.Object)"); }
-  public abstract void removeAttributeChangeNotificationListener(javax.management.NotificationListener listener, java.lang.String attributeName) throws javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.ListenerNotFoundException { throw new AbstractMethodError("javax.management.modelmbean.ModelMBeanNotificationBroadcaster.removeAttributeChangeNotificationListener(javax.management.NotificationListener, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public void sendNotification(javax.management.Notification ntfyObj) { }
+  @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public void sendNotification(java.lang.String ntfyText) { }
+  @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public void sendAttributeChangeNotification(javax.management.Attribute oldValue, javax.management.Attribute newValue) { }
+  @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException")
+  public void sendAttributeChangeNotification(javax.management.AttributeChangeNotification notification) { }
+  @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException, java.lang.IllegalArgumentException")
+  public void addAttributeChangeNotificationListener(javax.management.NotificationListener listener, java.lang.String attributeName, java.lang.Object handback) { }
+  @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.ListenerNotFoundException")
+  public void removeAttributeChangeNotificationListener(javax.management.NotificationListener listener, java.lang.String attributeName) { }
   < ---- END java signatures ---- >
 }

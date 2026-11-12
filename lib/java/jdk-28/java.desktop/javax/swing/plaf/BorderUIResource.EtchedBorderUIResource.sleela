@@ -59,9 +59,13 @@ class EtchedBorderUIResource {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public EtchedBorderUIResource(int etchType, java.awt.Color highlight, java.awt.Color shadow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.EtchedBorderUIResource.<init>(int, java.awt.Color, java.awt.Color)"); }
-  public EtchedBorderUIResource(java.awt.Color highlight, java.awt.Color shadow) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.EtchedBorderUIResource.<init>(java.awt.Color, java.awt.Color)"); }
-  public EtchedBorderUIResource(int etchType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.EtchedBorderUIResource.<init>(int)"); }
-  public EtchedBorderUIResource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.BorderUIResource.EtchedBorderUIResource.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EtchedBorderUIResource(int etchType, java.awt.Color highlight, java.awt.Color shadow) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EtchedBorderUIResource(java.awt.Color highlight, java.awt.Color shadow) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EtchedBorderUIResource(int etchType) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EtchedBorderUIResource() { }
   < ---- END java constructors ---- >
 }

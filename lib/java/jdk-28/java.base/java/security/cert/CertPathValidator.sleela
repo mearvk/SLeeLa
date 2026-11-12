@@ -59,20 +59,31 @@ class CertPathValidator {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  CertPathValidator(java.security.cert.CertPathValidatorSpi validatorSpi, java.security.Provider provider, java.lang.String algorithm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPathValidator.<init>(java.security.cert.CertPathValidatorSpi, java.security.Provider, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  CertPathValidator(java.security.cert.CertPathValidatorSpi validatorSpi, java.security.Provider provider, java.lang.String algorithm) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.security.cert.CertPathValidatorResult validate(java.security.cert.CertPath certPath, java.security.cert.CertPathParameters params) throws java.security.cert.CertPathValidatorException, java.security.InvalidAlgorithmParameterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPathValidator.validate(java.security.cert.CertPath, java.security.cert.CertPathParameters)"); }
-  public static java.security.cert.CertPathValidator getInstance(java.lang.String algorithm) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPathValidator.getInstance(java.lang.String)"); }
-  public static java.security.cert.CertPathValidator getInstance(java.lang.String algorithm, java.security.Provider provider) throws java.security.NoSuchAlgorithmException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPathValidator.getInstance(java.lang.String, java.security.Provider)"); }
-  public static java.security.cert.CertPathValidator getInstance(java.lang.String algorithm, java.lang.String provider) throws java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPathValidator.getInstance(java.lang.String, java.lang.String)"); }
-  public final java.security.Provider getProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPathValidator.getProvider()"); }
-  public final java.lang.String getAlgorithm() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPathValidator.getAlgorithm()"); }
-  public static final java.lang.String getDefaultType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPathValidator.getDefaultType()"); }
-  public final java.security.cert.CertPathChecker getRevocationChecker() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.CertPathValidator.getRevocationChecker()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.security.cert.CertPathValidatorException, java.security.InvalidAlgorithmParameterException")
+  public final java.security.cert.CertPathValidatorResult validate(java.security.cert.CertPath certPath, java.security.cert.CertPathParameters params) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static java.security.cert.CertPathValidator getInstance(java.lang.String algorithm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
+  public static java.security.cert.CertPathValidator getInstance(java.lang.String algorithm, java.security.Provider provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException")
+  public static java.security.cert.CertPathValidator getInstance(java.lang.String algorithm, java.lang.String provider) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.Provider getProvider() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getAlgorithm() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final java.lang.String getDefaultType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.cert.CertPathChecker getRevocationChecker() { return null; }
   < ---- END java signatures ---- >
 }

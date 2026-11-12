@@ -58,18 +58,27 @@ class Number {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Number() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Number.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Number() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public byte byteValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Number.byteValue()"); }
-  public short shortValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Number.shortValue()"); }
-  public abstract int intValue() { throw new AbstractMethodError("java.lang.Number.intValue()"); }
-  public abstract long longValue() { throw new AbstractMethodError("java.lang.Number.longValue()"); }
-  public abstract float floatValue() { throw new AbstractMethodError("java.lang.Number.floatValue()"); }
-  public abstract double doubleValue() { throw new AbstractMethodError("java.lang.Number.doubleValue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte byteValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public short shortValue() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int intValue() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long longValue() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public float floatValue() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public double doubleValue() { return 0.0; }
   < ---- END java signatures ---- >
 }

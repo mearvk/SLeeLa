@@ -58,7 +58,9 @@ class CloneNotSupportedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CloneNotSupportedException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.CloneNotSupportedException.<init>()"); }
-  public CloneNotSupportedException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.CloneNotSupportedException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CloneNotSupportedException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CloneNotSupportedException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

@@ -93,156 +93,294 @@ class JTree {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JTree(java.lang.Object[] value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.<init>(java.lang.Object[])"); }
-  public JTree(java.util.Vector<?> value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.<init>(java.util.Vector<?>)"); }
-  public JTree(javax.swing.tree.TreeNode root, boolean asksAllowsChildren) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.<init>(javax.swing.tree.TreeNode, boolean)"); }
-  public JTree() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTree(java.lang.Object[] value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTree(java.util.Vector<?> value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTree(javax.swing.tree.TreeNode root, boolean asksAllowsChildren) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTree() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.paramString()"); }
-  public boolean isExpanded(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isExpanded(int)"); }
-  public boolean isExpanded(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isExpanded(javax.swing.tree.TreePath)"); }
-  public void makeVisible(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.makeVisible(javax.swing.tree.TreePath)"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.updateUI()"); }
-  public void setSelectionModel(javax.swing.tree.TreeSelectionModel selectionModel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setSelectionModel(javax.swing.tree.TreeSelectionModel)"); }
-  public void setUI(javax.swing.plaf.TreeUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setUI(javax.swing.plaf.TreeUI)"); }
-  public javax.swing.plaf.TreeUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getUI()"); }
-  public javax.swing.tree.TreeSelectionModel getSelectionModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getSelectionModel()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getUIClassID()"); }
-  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getToolTipText(java.awt.event.MouseEvent)"); }
-  public void setSelectionRows(int[] rows) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setSelectionRows(int[])"); }
-  public void addSelectionPath(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.addSelectionPath(javax.swing.tree.TreePath)"); }
-  public void addSelectionPaths(javax.swing.tree.TreePath[] paths) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.addSelectionPaths(javax.swing.tree.TreePath[])"); }
-  public void addSelectionRows(int[] rows) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.addSelectionRows(int[])"); }
-  public javax.swing.tree.TreePath getSelectionPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getSelectionPath()"); }
-  public int[] getSelectionRows() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getSelectionRows()"); }
-  public int getSelectionCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getSelectionCount()"); }
-  public int getMinSelectionRow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getMinSelectionRow()"); }
-  public int getMaxSelectionRow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getMaxSelectionRow()"); }
-  public int getRowForPath(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getRowForPath(javax.swing.tree.TreePath)"); }
-  public boolean isPathSelected(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isPathSelected(javax.swing.tree.TreePath)"); }
-  public void expandPath(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.expandPath(javax.swing.tree.TreePath)"); }
-  public void scrollPathToVisible(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.scrollPathToVisible(javax.swing.tree.TreePath)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isExpanded(int row) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isExpanded(javax.swing.tree.TreePath path) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void makeVisible(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionModel(javax.swing.tree.TreeSelectionModel selectionModel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(javax.swing.plaf.TreeUI ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.TreeUI getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreeSelectionModel getSelectionModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionRows(int[] rows) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addSelectionPath(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addSelectionPaths(javax.swing.tree.TreePath[] paths) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addSelectionRows(int[] rows) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath getSelectionPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getSelectionRows() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSelectionCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinSelectionRow() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaxSelectionRow() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRowForPath(javax.swing.tree.TreePath path) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPathSelected(javax.swing.tree.TreePath path) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void expandPath(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void scrollPathToVisible(javax.swing.tree.TreePath path) { }
   @JavaProtected
-  void setExpandedState(javax.swing.tree.TreePath path, boolean state) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setExpandedState(javax.swing.tree.TreePath, boolean)"); }
-  public void collapsePath(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.collapsePath(javax.swing.tree.TreePath)"); }
-  public javax.swing.tree.TreePath getClosestPathForLocation(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getClosestPathForLocation(int, int)"); }
-  public javax.swing.tree.TreePath getPathForLocation(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getPathForLocation(int, int)"); }
-  public boolean isEditing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isEditing()"); }
-  public boolean stopEditing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.stopEditing()"); }
-  public void cancelEditing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.cancelEditing()"); }
-  public void startEditingAtPath(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.startEditingAtPath(javax.swing.tree.TreePath)"); }
-  public javax.swing.tree.TreePath getEditingPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getEditingPath()"); }
-  public void removeTreeSelectionListener(javax.swing.event.TreeSelectionListener tsl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.removeTreeSelectionListener(javax.swing.event.TreeSelectionListener)"); }
-  public void addTreeSelectionListener(javax.swing.event.TreeSelectionListener tsl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.addTreeSelectionListener(javax.swing.event.TreeSelectionListener)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setExpandedState(javax.swing.tree.TreePath path, boolean state) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void collapsePath(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath getClosestPathForLocation(int x, int y) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath getPathForLocation(int x, int y) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEditing() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean stopEditing() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void cancelEditing() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void startEditingAtPath(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath getEditingPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeTreeSelectionListener(javax.swing.event.TreeSelectionListener tsl) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addTreeSelectionListener(javax.swing.event.TreeSelectionListener tsl) { }
   @JavaProtected
-  javax.swing.tree.TreePath[] getPathBetweenRows(int index0, int index1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getPathBetweenRows(int, int)"); }
-  public void removeSelectionPaths(javax.swing.tree.TreePath[] paths) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.removeSelectionPaths(javax.swing.tree.TreePath[])"); }
-  public void removeSelectionPath(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.removeSelectionPath(javax.swing.tree.TreePath)"); }
-  public void removeSelectionRows(int[] rows) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.removeSelectionRows(int[])"); }
-  public boolean isSelectionEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isSelectionEmpty()"); }
-  public int getVisibleRowCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getVisibleRowCount()"); }
-  public boolean isFixedRowHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isFixedRowHeight()"); }
-  public int getRowHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getRowHeight()"); }
-  public void fireTreeWillExpand(javax.swing.tree.TreePath path) throws javax.swing.tree.ExpandVetoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.fireTreeWillExpand(javax.swing.tree.TreePath)"); }
-  public void fireTreeExpanded(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.fireTreeExpanded(javax.swing.tree.TreePath)"); }
-  public void fireTreeWillCollapse(javax.swing.tree.TreePath path) throws javax.swing.tree.ExpandVetoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.fireTreeWillCollapse(javax.swing.tree.TreePath)"); }
-  public void fireTreeCollapsed(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.fireTreeCollapsed(javax.swing.tree.TreePath)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.tree.TreePath[] getPathBetweenRows(int index0, int index1) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeSelectionPaths(javax.swing.tree.TreePath[] paths) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeSelectionPath(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeSelectionRows(int[] rows) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSelectionEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getVisibleRowCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFixedRowHeight() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRowHeight() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.tree.ExpandVetoException")
+  public void fireTreeWillExpand(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fireTreeExpanded(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.tree.ExpandVetoException")
+  public void fireTreeWillCollapse(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void fireTreeCollapsed(javax.swing.tree.TreePath path) { }
   @JavaProtected
-  boolean removeDescendantSelectedPaths(javax.swing.tree.TreePath path, boolean includePath) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.removeDescendantSelectedPaths(javax.swing.tree.TreePath, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean removeDescendantSelectedPaths(javax.swing.tree.TreePath path, boolean includePath) { return false; }
   @JavaProtected
-  java.util.Enumeration<javax.swing.tree.TreePath> getDescendantToggledPaths(javax.swing.tree.TreePath parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getDescendantToggledPaths(javax.swing.tree.TreePath)"); }
-  public void setRowHeight(int rowHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setRowHeight(int)"); }
-  public void setScrollsOnExpand(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setScrollsOnExpand(boolean)"); }
-  public void setCellRenderer(javax.swing.tree.TreeCellRenderer x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setCellRenderer(javax.swing.tree.TreeCellRenderer)"); }
-  public void setCellEditor(javax.swing.tree.TreeCellEditor cellEditor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setCellEditor(javax.swing.tree.TreeCellEditor)"); }
-  public boolean isRootVisible() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isRootVisible()"); }
-  public boolean getShowsRootHandles() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getShowsRootHandles()"); }
-  public void setLargeModel(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setLargeModel(boolean)"); }
-  public boolean isLargeModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isLargeModel()"); }
-  public void setInvokesStopCellEditing(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setInvokesStopCellEditing(boolean)"); }
-  public boolean getInvokesStopCellEditing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getInvokesStopCellEditing()"); }
-  public boolean getScrollsOnExpand() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getScrollsOnExpand()"); }
-  public void setToggleClickCount(int clickCount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setToggleClickCount(int)"); }
-  public int getToggleClickCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getToggleClickCount()"); }
-  public void setExpandsSelectedPaths(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setExpandsSelectedPaths(boolean)"); }
-  public boolean getExpandsSelectedPaths() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getExpandsSelectedPaths()"); }
-  public boolean isPathEditable(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isPathEditable(javax.swing.tree.TreePath)"); }
-  public void setSelectionRow(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setSelectionRow(int)"); }
-  public void addSelectionRow(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.addSelectionRow(int)"); }
-  public java.lang.Object getLastSelectedPathComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getLastSelectedPathComponent()"); }
-  public int getLeadSelectionRow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getLeadSelectionRow()"); }
-  public java.util.Enumeration<javax.swing.tree.TreePath> getExpandedDescendants(javax.swing.tree.TreePath parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getExpandedDescendants(javax.swing.tree.TreePath)"); }
-  public boolean hasBeenExpanded(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.hasBeenExpanded(javax.swing.tree.TreePath)"); }
-  public void scrollRowToVisible(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.scrollRowToVisible(int)"); }
-  public void collapseRow(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.collapseRow(int)"); }
-  public void setSelectionInterval(int index0, int index1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setSelectionInterval(int, int)"); }
-  public void addSelectionInterval(int index0, int index1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.addSelectionInterval(int, int)"); }
-  public void removeSelectionInterval(int index0, int index1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.removeSelectionInterval(int, int)"); }
-  public void removeSelectionRow(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.removeSelectionRow(int)"); }
-  public void addTreeExpansionListener(javax.swing.event.TreeExpansionListener tel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.addTreeExpansionListener(javax.swing.event.TreeExpansionListener)"); }
-  public void removeTreeExpansionListener(javax.swing.event.TreeExpansionListener tel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.removeTreeExpansionListener(javax.swing.event.TreeExpansionListener)"); }
-  public javax.swing.event.TreeExpansionListener[] getTreeExpansionListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getTreeExpansionListeners()"); }
-  public void addTreeWillExpandListener(javax.swing.event.TreeWillExpandListener tel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.addTreeWillExpandListener(javax.swing.event.TreeWillExpandListener)"); }
-  public void removeTreeWillExpandListener(javax.swing.event.TreeWillExpandListener tel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.removeTreeWillExpandListener(javax.swing.event.TreeWillExpandListener)"); }
-  public javax.swing.event.TreeWillExpandListener[] getTreeWillExpandListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getTreeWillExpandListeners()"); }
-  public javax.swing.event.TreeSelectionListener[] getTreeSelectionListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getTreeSelectionListeners()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.util.Enumeration<javax.swing.tree.TreePath> getDescendantToggledPaths(javax.swing.tree.TreePath parent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRowHeight(int rowHeight) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setScrollsOnExpand(boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCellRenderer(javax.swing.tree.TreeCellRenderer x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCellEditor(javax.swing.tree.TreeCellEditor cellEditor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRootVisible() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getShowsRootHandles() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLargeModel(boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLargeModel() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInvokesStopCellEditing(boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getInvokesStopCellEditing() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getScrollsOnExpand() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setToggleClickCount(int clickCount) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getToggleClickCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setExpandsSelectedPaths(boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getExpandsSelectedPaths() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPathEditable(javax.swing.tree.TreePath path) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionRow(int row) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addSelectionRow(int row) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getLastSelectedPathComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLeadSelectionRow() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Enumeration<javax.swing.tree.TreePath> getExpandedDescendants(javax.swing.tree.TreePath parent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasBeenExpanded(javax.swing.tree.TreePath path) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void scrollRowToVisible(int row) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void collapseRow(int row) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionInterval(int index0, int index1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addSelectionInterval(int index0, int index1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeSelectionInterval(int index0, int index1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeSelectionRow(int row) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addTreeExpansionListener(javax.swing.event.TreeExpansionListener tel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeTreeExpansionListener(javax.swing.event.TreeExpansionListener tel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.TreeExpansionListener[] getTreeExpansionListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addTreeWillExpandListener(javax.swing.event.TreeWillExpandListener tel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeTreeWillExpandListener(javax.swing.event.TreeWillExpandListener tel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.TreeWillExpandListener[] getTreeWillExpandListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.event.TreeSelectionListener[] getTreeSelectionListeners() { return null; }
   @JavaProtected
-  void fireValueChanged(javax.swing.event.TreeSelectionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.fireValueChanged(javax.swing.event.TreeSelectionEvent)"); }
-  public void treeDidChange() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.treeDidChange()"); }
-  public void setVisibleRowCount(int newCount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setVisibleRowCount(int)"); }
-  public javax.swing.tree.TreePath getNextMatch(java.lang.String prefix, int startingRow, javax.swing.text.Position.Bias bias) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getNextMatch(java.lang.String, int, javax.swing.text.Position.Bias)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireValueChanged(javax.swing.event.TreeSelectionEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void treeDidChange() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setVisibleRowCount(int newCount) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath getNextMatch(java.lang.String prefix, int startingRow, javax.swing.text.Position.Bias bias) { return null; }
   @JavaProtected
-  void removeDescendantToggledPaths(java.util.Enumeration<javax.swing.tree.TreePath> toRemove) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.removeDescendantToggledPaths(java.util.Enumeration<javax.swing.tree.TreePath>)"); }
-  public java.lang.String convertValueToText(java.lang.Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.convertValueToText(java.lang.Object, boolean, boolean, boolean, int, boolean)"); }
-  public javax.swing.tree.TreeCellRenderer getCellRenderer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getCellRenderer()"); }
-  public void setDragEnabled(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setDragEnabled(boolean)"); }
-  public boolean getDragEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getDragEnabled()"); }
-  public final void setDropMode(javax.swing.DropMode dropMode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setDropMode(javax.swing.DropMode)"); }
-  public final javax.swing.DropMode getDropMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getDropMode()"); }
-  public final javax.swing.JTree.DropLocation getDropLocation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getDropLocation()"); }
-  public java.awt.Dimension getPreferredScrollableViewportSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getPreferredScrollableViewportSize()"); }
-  public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getScrollableUnitIncrement(java.awt.Rectangle, int, int)"); }
-  public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getScrollableBlockIncrement(java.awt.Rectangle, int, int)"); }
-  public boolean getScrollableTracksViewportWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getScrollableTracksViewportWidth()"); }
-  public boolean getScrollableTracksViewportHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getScrollableTracksViewportHeight()"); }
-  protected static javax.swing.tree.TreeModel getDefaultTreeModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getDefaultTreeModel()"); }
-  protected static javax.swing.tree.TreeModel createTreeModel(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.createTreeModel(java.lang.Object)"); }
-  public void setRootVisible(boolean rootVisible) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setRootVisible(boolean)"); }
-  public void setShowsRootHandles(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setShowsRootHandles(boolean)"); }
-  public void expandRow(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.expandRow(int)"); }
-  public javax.swing.tree.TreeCellEditor getCellEditor() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getCellEditor()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void removeDescendantToggledPaths(java.util.Enumeration<javax.swing.tree.TreePath> toRemove) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String convertValueToText(java.lang.Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreeCellRenderer getCellRenderer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDragEnabled(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getDragEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setDropMode(javax.swing.DropMode dropMode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.swing.DropMode getDropMode() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.swing.JTree.DropLocation getDropLocation() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredScrollableViewportSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getScrollableTracksViewportWidth() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getScrollableTracksViewportHeight() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static javax.swing.tree.TreeModel getDefaultTreeModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static javax.swing.tree.TreeModel createTreeModel(java.lang.Object value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRootVisible(boolean rootVisible) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setShowsRootHandles(boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void expandRow(int row) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreeCellEditor getCellEditor() { return null; }
   @JavaProtected
-  void clearToggledPaths() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.clearToggledPaths()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void clearToggledPaths() { }
   @JavaProtected
-  javax.swing.event.TreeModelListener createTreeModelListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.createTreeModelListener()"); }
-  public int getClosestRowForLocation(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getClosestRowForLocation(int, int)"); }
-  public java.awt.Rectangle getRowBounds(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getRowBounds(int)"); }
-  public javax.swing.tree.TreePath getPathForRow(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getPathForRow(int)"); }
-  public int getRowCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getRowCount()"); }
-  public boolean isCollapsed(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isCollapsed(javax.swing.tree.TreePath)"); }
-  public boolean isCollapsed(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isCollapsed(int)"); }
-  public void setSelectionPaths(javax.swing.tree.TreePath[] paths) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setSelectionPaths(javax.swing.tree.TreePath[])"); }
-  public void setAnchorSelectionPath(javax.swing.tree.TreePath newPath) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setAnchorSelectionPath(javax.swing.tree.TreePath)"); }
-  public void setLeadSelectionPath(javax.swing.tree.TreePath newPath) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setLeadSelectionPath(javax.swing.tree.TreePath)"); }
-  public javax.swing.tree.TreePath[] getSelectionPaths() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getSelectionPaths()"); }
-  public javax.swing.tree.TreePath getAnchorSelectionPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getAnchorSelectionPath()"); }
-  public javax.swing.tree.TreePath getLeadSelectionPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getLeadSelectionPath()"); }
-  public void setSelectionPath(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setSelectionPath(javax.swing.tree.TreePath)"); }
-  public int getRowForLocation(int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getRowForLocation(int, int)"); }
-  public boolean isRowSelected(int row) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isRowSelected(int)"); }
-  public java.awt.Rectangle getPathBounds(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getPathBounds(javax.swing.tree.TreePath)"); }
-  public void setEditable(boolean flag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setEditable(boolean)"); }
-  public boolean isEditable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isEditable()"); }
-  public javax.swing.tree.TreeModel getModel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getModel()"); }
-  public void clearSelection() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.clearSelection()"); }
-  public void setModel(javax.swing.tree.TreeModel newModel) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.setModel(javax.swing.tree.TreeModel)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.getAccessibleContext()"); }
-  public boolean isVisible(javax.swing.tree.TreePath path) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JTree.isVisible(javax.swing.tree.TreePath)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.event.TreeModelListener createTreeModelListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getClosestRowForLocation(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getRowBounds(int row) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath getPathForRow(int row) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRowCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCollapsed(javax.swing.tree.TreePath path) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCollapsed(int row) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionPaths(javax.swing.tree.TreePath[] paths) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAnchorSelectionPath(javax.swing.tree.TreePath newPath) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLeadSelectionPath(javax.swing.tree.TreePath newPath) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath[] getSelectionPaths() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath getAnchorSelectionPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreePath getLeadSelectionPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionPath(javax.swing.tree.TreePath path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRowForLocation(int x, int y) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRowSelected(int row) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getPathBounds(javax.swing.tree.TreePath path) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEditable(boolean flag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEditable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.tree.TreeModel getModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clearSelection() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setModel(javax.swing.tree.TreeModel newModel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isVisible(javax.swing.tree.TreePath path) { return false; }
   < ---- END java signatures ---- >
 }

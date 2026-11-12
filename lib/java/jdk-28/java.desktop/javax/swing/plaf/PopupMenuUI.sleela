@@ -59,14 +59,19 @@ class PopupMenuUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  PopupMenuUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.PopupMenuUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  PopupMenuUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean isPopupTrigger(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.PopupMenuUI.isPopupTrigger(java.awt.event.MouseEvent)"); }
-  public javax.swing.Popup getPopup(javax.swing.JPopupMenu popup, int x, int y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.PopupMenuUI.getPopup(javax.swing.JPopupMenu, int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPopupTrigger(java.awt.event.MouseEvent e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Popup getPopup(javax.swing.JPopupMenu popup, int x, int y) { return null; }
   < ---- END java signatures ---- >
 }

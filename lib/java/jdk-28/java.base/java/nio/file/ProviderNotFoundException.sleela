@@ -58,7 +58,9 @@ class ProviderNotFoundException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ProviderNotFoundException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.ProviderNotFoundException.<init>()"); }
-  public ProviderNotFoundException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.ProviderNotFoundException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ProviderNotFoundException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ProviderNotFoundException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

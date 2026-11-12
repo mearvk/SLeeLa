@@ -58,40 +58,65 @@ class UndoManager {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UndoManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UndoManager() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.toString()"); }
-  public synchronized void end() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.end()"); }
-  public void undo() throws javax.swing.undo.CannotUndoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.undo()"); }
-  public synchronized boolean canUndo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.canUndo()"); }
-  public void redo() throws javax.swing.undo.CannotRedoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.redo()"); }
-  public synchronized boolean canRedo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.canRedo()"); }
-  public synchronized boolean addEdit(javax.swing.undo.UndoableEdit anEdit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.addEdit(javax.swing.undo.UndoableEdit)"); }
-  public synchronized java.lang.String getUndoPresentationName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.getUndoPresentationName()"); }
-  public synchronized java.lang.String getRedoPresentationName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.getRedoPresentationName()"); }
-  public void undoableEditHappened(javax.swing.event.UndoableEditEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.undoableEditHappened(javax.swing.event.UndoableEditEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void end() { }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.undo.CannotUndoException")
+  public void undo() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean canUndo() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.undo.CannotRedoException")
+  public void redo() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean canRedo() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean addEdit(javax.swing.undo.UndoableEdit anEdit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String getUndoPresentationName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String getRedoPresentationName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void undoableEditHappened(javax.swing.event.UndoableEditEvent e) { }
   @JavaProtected
-  void trimEdits(int from, int to) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.trimEdits(int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void trimEdits(int from, int to) { }
   @JavaProtected
-  void trimForLimit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.trimForLimit()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void trimForLimit() { }
   @JavaProtected
-  javax.swing.undo.UndoableEdit editToBeUndone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.editToBeUndone()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.undo.UndoableEdit editToBeUndone() { return null; }
   @JavaProtected
-  javax.swing.undo.UndoableEdit editToBeRedone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.editToBeRedone()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.undo.UndoableEdit editToBeRedone() { return null; }
   @JavaProtected
-  void undoTo(javax.swing.undo.UndoableEdit edit) throws javax.swing.undo.CannotUndoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.undoTo(javax.swing.undo.UndoableEdit)"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.undo.CannotUndoException")
+  void undoTo(javax.swing.undo.UndoableEdit edit) { }
   @JavaProtected
-  void redoTo(javax.swing.undo.UndoableEdit edit) throws javax.swing.undo.CannotRedoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.redoTo(javax.swing.undo.UndoableEdit)"); }
-  public synchronized int getLimit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.getLimit()"); }
-  public synchronized void discardAllEdits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.discardAllEdits()"); }
-  public synchronized void setLimit(int l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.setLimit(int)"); }
-  public void undoOrRedo() throws javax.swing.undo.CannotRedoException, javax.swing.undo.CannotUndoException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.undoOrRedo()"); }
-  public synchronized boolean canUndoOrRedo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.canUndoOrRedo()"); }
-  public synchronized java.lang.String getUndoOrRedoPresentationName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.undo.UndoManager.getUndoOrRedoPresentationName()"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.undo.CannotRedoException")
+  void redoTo(javax.swing.undo.UndoableEdit edit) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized int getLimit() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void discardAllEdits() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setLimit(int l) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.undo.CannotRedoException, javax.swing.undo.CannotUndoException")
+  public void undoOrRedo() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean canUndoOrRedo() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.String getUndoOrRedoPresentationName() { return null; }
   < ---- END java signatures ---- >
 }

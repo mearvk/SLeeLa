@@ -58,14 +58,22 @@ class PrintJobListener {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void printDataTransferCompleted(javax.print.event.PrintJobEvent pje) { throw new AbstractMethodError("javax.print.event.PrintJobListener.printDataTransferCompleted(javax.print.event.PrintJobEvent)"); }
-  public abstract void printJobCompleted(javax.print.event.PrintJobEvent pje) { throw new AbstractMethodError("javax.print.event.PrintJobListener.printJobCompleted(javax.print.event.PrintJobEvent)"); }
-  public abstract void printJobFailed(javax.print.event.PrintJobEvent pje) { throw new AbstractMethodError("javax.print.event.PrintJobListener.printJobFailed(javax.print.event.PrintJobEvent)"); }
-  public abstract void printJobCanceled(javax.print.event.PrintJobEvent pje) { throw new AbstractMethodError("javax.print.event.PrintJobListener.printJobCanceled(javax.print.event.PrintJobEvent)"); }
-  public abstract void printJobNoMoreEvents(javax.print.event.PrintJobEvent pje) { throw new AbstractMethodError("javax.print.event.PrintJobListener.printJobNoMoreEvents(javax.print.event.PrintJobEvent)"); }
-  public abstract void printJobRequiresAttention(javax.print.event.PrintJobEvent pje) { throw new AbstractMethodError("javax.print.event.PrintJobListener.printJobRequiresAttention(javax.print.event.PrintJobEvent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void printDataTransferCompleted(javax.print.event.PrintJobEvent pje) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void printJobCompleted(javax.print.event.PrintJobEvent pje) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void printJobFailed(javax.print.event.PrintJobEvent pje) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void printJobCanceled(javax.print.event.PrintJobEvent pje) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void printJobNoMoreEvents(javax.print.event.PrintJobEvent pje) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void printJobRequiresAttention(javax.print.event.PrintJobEvent pje) { }
   < ---- END java signatures ---- >
 }

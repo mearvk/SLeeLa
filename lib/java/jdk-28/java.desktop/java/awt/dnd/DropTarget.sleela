@@ -58,44 +58,74 @@ class DropTarget {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DropTarget(java.awt.Component c, int ops, java.awt.dnd.DropTargetListener dtl) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.<init>(java.awt.Component, int, java.awt.dnd.DropTargetListener)"); }
-  public DropTarget(java.awt.Component c, java.awt.dnd.DropTargetListener dtl) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.<init>(java.awt.Component, java.awt.dnd.DropTargetListener)"); }
-  public DropTarget() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.<init>()"); }
-  public DropTarget(java.awt.Component c, int ops, java.awt.dnd.DropTargetListener dtl, boolean act) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.<init>(java.awt.Component, int, java.awt.dnd.DropTargetListener, boolean)"); }
-  public DropTarget(java.awt.Component c, int ops, java.awt.dnd.DropTargetListener dtl, boolean act, java.awt.datatransfer.FlavorMap fm) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.<init>(java.awt.Component, int, java.awt.dnd.DropTargetListener, boolean, java.awt.datatransfer.FlavorMap)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public DropTarget(java.awt.Component c, int ops, java.awt.dnd.DropTargetListener dtl) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public DropTarget(java.awt.Component c, java.awt.dnd.DropTargetListener dtl) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public DropTarget() { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public DropTarget(java.awt.Component c, int ops, java.awt.dnd.DropTargetListener dtl, boolean act) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public DropTarget(java.awt.Component c, int ops, java.awt.dnd.DropTargetListener dtl, boolean act, java.awt.datatransfer.FlavorMap fm) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean isActive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.isActive()"); }
-  public synchronized java.awt.Component getComponent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.getComponent()"); }
-  public synchronized void drop(java.awt.dnd.DropTargetDropEvent dtde) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.drop(java.awt.dnd.DropTargetDropEvent)"); }
-  public synchronized void setComponent(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.setComponent(java.awt.Component)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isActive() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.Component getComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void drop(java.awt.dnd.DropTargetDropEvent dtde) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setComponent(java.awt.Component c) { }
   @JavaProtected
-  java.awt.dnd.DropTargetContext createDropTargetContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.createDropTargetContext()"); }
-  public void setDefaultActions(int ops) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.setDefaultActions(int)"); }
-  public synchronized void addDropTargetListener(java.awt.dnd.DropTargetListener dtl) throws java.util.TooManyListenersException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.addDropTargetListener(java.awt.dnd.DropTargetListener)"); }
-  public synchronized void setActive(boolean isActive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.setActive(boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.dnd.DropTargetContext createDropTargetContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultActions(int ops) { }
+  @throwable("java.lang.UnsupportedOperationException, java.util.TooManyListenersException")
+  public synchronized void addDropTargetListener(java.awt.dnd.DropTargetListener dtl) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void setActive(boolean isActive) { }
   @JavaProtected
-  void clearAutoscroll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.clearAutoscroll()"); }
-  public java.awt.dnd.DropTargetContext getDropTargetContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.getDropTargetContext()"); }
-  public synchronized void dragEnter(java.awt.dnd.DropTargetDragEvent dtde) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.dragEnter(java.awt.dnd.DropTargetDragEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void clearAutoscroll() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.dnd.DropTargetContext getDropTargetContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void dragEnter(java.awt.dnd.DropTargetDragEvent dtde) { }
   @JavaProtected
-  void initializeAutoscrolling(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.initializeAutoscrolling(java.awt.Point)"); }
-  public synchronized void dragOver(java.awt.dnd.DropTargetDragEvent dtde) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.dragOver(java.awt.dnd.DropTargetDragEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void initializeAutoscrolling(java.awt.Point p) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void dragOver(java.awt.dnd.DropTargetDragEvent dtde) { }
   @JavaProtected
-  void updateAutoscroll(java.awt.Point dragCursorLocn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.updateAutoscroll(java.awt.Point)"); }
-  public synchronized void dropActionChanged(java.awt.dnd.DropTargetDragEvent dtde) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.dropActionChanged(java.awt.dnd.DropTargetDragEvent)"); }
-  public synchronized void dragExit(java.awt.dnd.DropTargetEvent dte) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.dragExit(java.awt.dnd.DropTargetEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void updateAutoscroll(java.awt.Point dragCursorLocn) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void dropActionChanged(java.awt.dnd.DropTargetDragEvent dtde) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void dragExit(java.awt.dnd.DropTargetEvent dte) { }
   @JavaProtected
-  java.awt.dnd.DropTarget.DropTargetAutoScroller createDropTargetAutoScroller(java.awt.Component c, java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.createDropTargetAutoScroller(java.awt.Component, java.awt.Point)"); }
-  public int getDefaultActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.getDefaultActions()"); }
-  public synchronized void removeDropTargetListener(java.awt.dnd.DropTargetListener dtl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.removeDropTargetListener(java.awt.dnd.DropTargetListener)"); }
-  public void setFlavorMap(java.awt.datatransfer.FlavorMap fm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.setFlavorMap(java.awt.datatransfer.FlavorMap)"); }
-  public java.awt.datatransfer.FlavorMap getFlavorMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.getFlavorMap()"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.addNotify()"); }
-  public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTarget.removeNotify()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.dnd.DropTarget.DropTargetAutoScroller createDropTargetAutoScroller(java.awt.Component c, java.awt.Point p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDefaultActions() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeDropTargetListener(java.awt.dnd.DropTargetListener dtl) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFlavorMap(java.awt.datatransfer.FlavorMap fm) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.datatransfer.FlavorMap getFlavorMap() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeNotify() { }
   < ---- END java signatures ---- >
 }

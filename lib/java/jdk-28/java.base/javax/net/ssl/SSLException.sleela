@@ -58,8 +58,11 @@ class SSLException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SSLException(java.lang.String reason) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLException.<init>(java.lang.String)"); }
-  public SSLException(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLException.<init>(java.lang.String, java.lang.Throwable)"); }
-  public SSLException(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLException.<init>(java.lang.Throwable)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SSLException(java.lang.String reason) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SSLException(java.lang.String message, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SSLException(java.lang.Throwable cause) { }
   < ---- END java constructors ---- >
 }

@@ -58,50 +58,89 @@ class UIDefaults {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public UIDefaults(java.lang.Object[] keyValueList) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.<init>(java.lang.Object[])"); }
-  public UIDefaults(int initialCapacity, float loadFactor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.<init>(int, float)"); }
-  public UIDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UIDefaults(java.lang.Object[] keyValueList) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UIDefaults(int initialCapacity, float loadFactor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public UIDefaults() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object get(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.get(java.lang.Object)"); }
-  public java.lang.Object get(java.lang.Object key, java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.get(java.lang.Object, java.util.Locale)"); }
-  public java.lang.Object put(java.lang.Object key, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.put(java.lang.Object, java.lang.Object)"); }
-  public boolean getBoolean(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getBoolean(java.lang.Object)"); }
-  public boolean getBoolean(java.lang.Object key, java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getBoolean(java.lang.Object, java.util.Locale)"); }
-  public int getInt(java.lang.Object key, java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getInt(java.lang.Object, java.util.Locale)"); }
-  public int getInt(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getInt(java.lang.Object)"); }
-  public java.lang.String getString(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getString(java.lang.Object)"); }
-  public java.lang.String getString(java.lang.Object key, java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getString(java.lang.Object, java.util.Locale)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object get(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object get(java.lang.Object key, java.util.Locale l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object put(java.lang.Object key, java.lang.Object value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getBoolean(java.lang.Object key) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getBoolean(java.lang.Object key, java.util.Locale l) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getInt(java.lang.Object key, java.util.Locale l) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getInt(java.lang.Object key) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getString(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getString(java.lang.Object key, java.util.Locale l) { return null; }
   @JavaProtected
-  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object)"); }
-  public synchronized void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.addPropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public synchronized java.beans.PropertyChangeListener[] getPropertyChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getPropertyChangeListeners()"); }
-  public synchronized void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.removePropertyChangeListener(java.beans.PropertyChangeListener)"); }
-  public javax.swing.plaf.ComponentUI getUI(javax.swing.JComponent target) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getUI(javax.swing.JComponent)"); }
-  public java.util.Locale getDefaultLocale() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getDefaultLocale()"); }
-  public javax.swing.border.Border getBorder(java.lang.Object key, java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getBorder(java.lang.Object, java.util.Locale)"); }
-  public javax.swing.border.Border getBorder(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getBorder(java.lang.Object)"); }
-  public void setDefaultLocale(java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.setDefaultLocale(java.util.Locale)"); }
-  public java.lang.Class<? extends javax.swing.plaf.ComponentUI> getUIClass(java.lang.String uiClassID, java.lang.ClassLoader uiClassLoader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getUIClass(java.lang.String, java.lang.ClassLoader)"); }
-  public java.lang.Class<? extends javax.swing.plaf.ComponentUI> getUIClass(java.lang.String uiClassID) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getUIClass(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.beans.PropertyChangeListener[] getPropertyChangeListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.plaf.ComponentUI getUI(javax.swing.JComponent target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale getDefaultLocale() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.border.Border getBorder(java.lang.Object key, java.util.Locale l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.border.Border getBorder(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultLocale(java.util.Locale l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<? extends javax.swing.plaf.ComponentUI> getUIClass(java.lang.String uiClassID, java.lang.ClassLoader uiClassLoader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<? extends javax.swing.plaf.ComponentUI> getUIClass(java.lang.String uiClassID) { return null; }
   @JavaProtected
-  void getUIError(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getUIError(java.lang.String)"); }
-  public void putDefaults(java.lang.Object[] keyValueList) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.putDefaults(java.lang.Object[])"); }
-  public java.awt.Dimension getDimension(java.lang.Object key, java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getDimension(java.lang.Object, java.util.Locale)"); }
-  public java.awt.Dimension getDimension(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getDimension(java.lang.Object)"); }
-  public synchronized void addResourceBundle(java.lang.String bundleName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.addResourceBundle(java.lang.String)"); }
-  public synchronized void removeResourceBundle(java.lang.String bundleName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.removeResourceBundle(java.lang.String)"); }
-  public java.awt.Color getColor(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getColor(java.lang.Object)"); }
-  public java.awt.Color getColor(java.lang.Object key, java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getColor(java.lang.Object, java.util.Locale)"); }
-  public javax.swing.Icon getIcon(java.lang.Object key, java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getIcon(java.lang.Object, java.util.Locale)"); }
-  public javax.swing.Icon getIcon(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getIcon(java.lang.Object)"); }
-  public java.awt.Insets getInsets(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getInsets(java.lang.Object)"); }
-  public java.awt.Insets getInsets(java.lang.Object key, java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getInsets(java.lang.Object, java.util.Locale)"); }
-  public java.awt.Font getFont(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getFont(java.lang.Object)"); }
-  public java.awt.Font getFont(java.lang.Object key, java.util.Locale l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.UIDefaults.getFont(java.lang.Object, java.util.Locale)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void getUIError(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void putDefaults(java.lang.Object[] keyValueList) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getDimension(java.lang.Object key, java.util.Locale l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getDimension(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addResourceBundle(java.lang.String bundleName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeResourceBundle(java.lang.String bundleName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getColor(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Color getColor(java.lang.Object key, java.util.Locale l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getIcon(java.lang.Object key, java.util.Locale l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getIcon(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getInsets(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Insets getInsets(java.lang.Object key, java.util.Locale l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font getFont(java.lang.Object key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Font getFont(java.lang.Object key, java.util.Locale l) { return null; }
   < ---- END java signatures ---- >
 }

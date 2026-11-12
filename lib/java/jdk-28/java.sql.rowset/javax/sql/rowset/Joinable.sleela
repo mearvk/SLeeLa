@@ -58,18 +58,30 @@ class Joinable {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void setMatchColumn(java.lang.String[] columnNames) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.Joinable.setMatchColumn(java.lang.String[])"); }
-  public abstract void setMatchColumn(java.lang.String columnName) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.Joinable.setMatchColumn(java.lang.String)"); }
-  public abstract void setMatchColumn(int[] columnIdxes) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.Joinable.setMatchColumn(int[])"); }
-  public abstract void setMatchColumn(int columnIdx) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.Joinable.setMatchColumn(int)"); }
-  public abstract int[] getMatchColumnIndexes() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.Joinable.getMatchColumnIndexes()"); }
-  public abstract java.lang.String[] getMatchColumnNames() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.Joinable.getMatchColumnNames()"); }
-  public abstract void unsetMatchColumn(java.lang.String[] columnName) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.Joinable.unsetMatchColumn(java.lang.String[])"); }
-  public abstract void unsetMatchColumn(java.lang.String columnName) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.Joinable.unsetMatchColumn(java.lang.String)"); }
-  public abstract void unsetMatchColumn(int[] columnIdxes) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.Joinable.unsetMatchColumn(int[])"); }
-  public abstract void unsetMatchColumn(int columnIdx) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.rowset.Joinable.unsetMatchColumn(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setMatchColumn(java.lang.String[] columnNames) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setMatchColumn(java.lang.String columnName) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setMatchColumn(int[] columnIdxes) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setMatchColumn(int columnIdx) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int[] getMatchColumnIndexes() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String[] getMatchColumnNames() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void unsetMatchColumn(java.lang.String[] columnName) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void unsetMatchColumn(java.lang.String columnName) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void unsetMatchColumn(int[] columnIdxes) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void unsetMatchColumn(int columnIdx) { }
   < ---- END java signatures ---- >
 }

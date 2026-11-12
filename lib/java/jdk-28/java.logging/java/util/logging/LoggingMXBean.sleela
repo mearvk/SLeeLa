@@ -58,12 +58,18 @@ class LoggingMXBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.List<java.lang.String> getLoggerNames() { throw new AbstractMethodError("java.util.logging.LoggingMXBean.getLoggerNames()"); }
-  public abstract java.lang.String getLoggerLevel(java.lang.String loggerName) { throw new AbstractMethodError("java.util.logging.LoggingMXBean.getLoggerLevel(java.lang.String)"); }
-  public abstract void setLoggerLevel(java.lang.String loggerName, java.lang.String levelName) { throw new AbstractMethodError("java.util.logging.LoggingMXBean.setLoggerLevel(java.lang.String, java.lang.String)"); }
-  public abstract java.lang.String getParentLoggerName(java.lang.String loggerName) { throw new AbstractMethodError("java.util.logging.LoggingMXBean.getParentLoggerName(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.lang.String> getLoggerNames() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getLoggerLevel(java.lang.String loggerName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setLoggerLevel(java.lang.String loggerName, java.lang.String levelName) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getParentLoggerName(java.lang.String loggerName) { return null; }
   < ---- END java signatures ---- >
 }

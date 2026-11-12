@@ -59,25 +59,41 @@ class Builder {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Builder() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Builder() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.util.Locale.Builder clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.clear()"); }
-  public java.util.Locale build() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.build()"); }
-  public java.util.Locale.Builder setLocale(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.setLocale(java.util.Locale)"); }
-  public java.util.Locale.Builder setLanguageTag(java.lang.String languageTag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.setLanguageTag(java.lang.String)"); }
-  public java.util.Locale.Builder setLanguage(java.lang.String language) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.setLanguage(java.lang.String)"); }
-  public java.util.Locale.Builder setScript(java.lang.String script) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.setScript(java.lang.String)"); }
-  public java.util.Locale.Builder setRegion(java.lang.String region) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.setRegion(java.lang.String)"); }
-  public java.util.Locale.Builder setVariant(java.lang.String variant) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.setVariant(java.lang.String)"); }
-  public java.util.Locale.Builder setExtension(char key, java.lang.String value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.setExtension(char, java.lang.String)"); }
-  public java.util.Locale.Builder setUnicodeLocaleKeyword(java.lang.String key, java.lang.String type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.setUnicodeLocaleKeyword(java.lang.String, java.lang.String)"); }
-  public java.util.Locale.Builder addUnicodeLocaleAttribute(java.lang.String attribute) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.addUnicodeLocaleAttribute(java.lang.String)"); }
-  public java.util.Locale.Builder removeUnicodeLocaleAttribute(java.lang.String attribute) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.removeUnicodeLocaleAttribute(java.lang.String)"); }
-  public java.util.Locale.Builder clearExtensions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Locale.Builder.clearExtensions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale.Builder clear() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale build() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale.Builder setLocale(java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale.Builder setLanguageTag(java.lang.String languageTag) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale.Builder setLanguage(java.lang.String language) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale.Builder setScript(java.lang.String script) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale.Builder setRegion(java.lang.String region) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale.Builder setVariant(java.lang.String variant) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale.Builder setExtension(char key, java.lang.String value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale.Builder setUnicodeLocaleKeyword(java.lang.String key, java.lang.String type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale.Builder addUnicodeLocaleAttribute(java.lang.String attribute) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale.Builder removeUnicodeLocaleAttribute(java.lang.String attribute) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Locale.Builder clearExtensions() { return null; }
   < ---- END java signatures ---- >
 }

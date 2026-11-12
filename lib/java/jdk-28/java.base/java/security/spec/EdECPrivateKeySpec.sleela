@@ -58,14 +58,19 @@ class EdECPrivateKeySpec {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public EdECPrivateKeySpec(java.security.spec.NamedParameterSpec params, byte[] bytes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.EdECPrivateKeySpec.<init>(java.security.spec.NamedParameterSpec, byte[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EdECPrivateKeySpec(java.security.spec.NamedParameterSpec params, byte[] bytes) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public byte[] getBytes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.EdECPrivateKeySpec.getBytes()"); }
-  public java.security.spec.NamedParameterSpec getParams() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.EdECPrivateKeySpec.getParams()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getBytes() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.spec.NamedParameterSpec getParams() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,19 +58,29 @@ class TaskEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public TaskEvent(com.sun.source.util.TaskEvent.Kind kind, com.sun.source.tree.CompilationUnitTree unit, javax.lang.model.element.TypeElement clazz) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.TaskEvent.<init>(com.sun.source.util.TaskEvent.Kind, com.sun.source.tree.CompilationUnitTree, javax.lang.model.element.TypeElement)"); }
-  public TaskEvent(com.sun.source.util.TaskEvent.Kind kind, com.sun.source.tree.CompilationUnitTree unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.TaskEvent.<init>(com.sun.source.util.TaskEvent.Kind, com.sun.source.tree.CompilationUnitTree)"); }
-  public TaskEvent(com.sun.source.util.TaskEvent.Kind kind) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.TaskEvent.<init>(com.sun.source.util.TaskEvent.Kind)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TaskEvent(com.sun.source.util.TaskEvent.Kind kind, com.sun.source.tree.CompilationUnitTree unit, javax.lang.model.element.TypeElement clazz) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TaskEvent(com.sun.source.util.TaskEvent.Kind kind, com.sun.source.tree.CompilationUnitTree unit) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public TaskEvent(com.sun.source.util.TaskEvent.Kind kind) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.TaskEvent.toString()"); }
-  public javax.lang.model.element.TypeElement getTypeElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.TaskEvent.getTypeElement()"); }
-  public com.sun.source.tree.CompilationUnitTree getCompilationUnit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.TaskEvent.getCompilationUnit()"); }
-  public com.sun.source.util.TaskEvent.Kind getKind() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.TaskEvent.getKind()"); }
-  public javax.tools.JavaFileObject getSourceFile() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.util.TaskEvent.getSourceFile()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.lang.model.element.TypeElement getTypeElement() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public com.sun.source.tree.CompilationUnitTree getCompilationUnit() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public com.sun.source.util.TaskEvent.Kind getKind() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.tools.JavaFileObject getSourceFile() { return null; }
   < ---- END java signatures ---- >
 }

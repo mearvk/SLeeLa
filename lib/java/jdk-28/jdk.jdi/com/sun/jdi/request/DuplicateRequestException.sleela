@@ -58,7 +58,9 @@ class DuplicateRequestException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DuplicateRequestException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.request.DuplicateRequestException.<init>()"); }
-  public DuplicateRequestException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.request.DuplicateRequestException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DuplicateRequestException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DuplicateRequestException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

@@ -58,14 +58,22 @@ class SpinnerModel {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object getValue() { throw new AbstractMethodError("javax.swing.SpinnerModel.getValue()"); }
-  public abstract void setValue(java.lang.Object value) { throw new AbstractMethodError("javax.swing.SpinnerModel.setValue(java.lang.Object)"); }
-  public abstract void removeChangeListener(javax.swing.event.ChangeListener l) { throw new AbstractMethodError("javax.swing.SpinnerModel.removeChangeListener(javax.swing.event.ChangeListener)"); }
-  public abstract void addChangeListener(javax.swing.event.ChangeListener l) { throw new AbstractMethodError("javax.swing.SpinnerModel.addChangeListener(javax.swing.event.ChangeListener)"); }
-  public abstract java.lang.Object getNextValue() { throw new AbstractMethodError("javax.swing.SpinnerModel.getNextValue()"); }
-  public abstract java.lang.Object getPreviousValue() { throw new AbstractMethodError("javax.swing.SpinnerModel.getPreviousValue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setValue(java.lang.Object value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeChangeListener(javax.swing.event.ChangeListener l) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addChangeListener(javax.swing.event.ChangeListener l) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getNextValue() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object getPreviousValue() { return null; }
   < ---- END java signatures ---- >
 }

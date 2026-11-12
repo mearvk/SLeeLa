@@ -63,6 +63,7 @@ class GuardingDynamicLinkerExporter {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  GuardingDynamicLinkerExporter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardingDynamicLinkerExporter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  GuardingDynamicLinkerExporter() { }
   < ---- END java constructors ---- >
 }

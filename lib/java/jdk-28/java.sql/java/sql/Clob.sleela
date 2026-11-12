@@ -58,21 +58,36 @@ class Clob {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract long length() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Clob.length()"); }
-  public abstract long position(java.lang.String searchstr, long start) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Clob.position(java.lang.String, long)"); }
-  public abstract long position(java.sql.Clob searchstr, long start) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Clob.position(java.sql.Clob, long)"); }
-  public abstract void truncate(long len) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Clob.truncate(long)"); }
-  public abstract void free() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Clob.free()"); }
-  public abstract int setString(long pos, java.lang.String str) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Clob.setString(long, java.lang.String)"); }
-  public abstract int setString(long pos, java.lang.String str, int offset, int len) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Clob.setString(long, java.lang.String, int, int)"); }
-  public abstract java.io.Reader getCharacterStream(long pos, long length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Clob.getCharacterStream(long, long)"); }
-  public abstract java.io.Reader getCharacterStream() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Clob.getCharacterStream()"); }
-  public abstract java.io.Writer setCharacterStream(long pos) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Clob.setCharacterStream(long)"); }
-  public abstract java.io.InputStream getAsciiStream() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Clob.getAsciiStream()"); }
-  public abstract java.io.OutputStream setAsciiStream(long pos) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Clob.setAsciiStream(long)"); }
-  public abstract java.lang.String getSubString(long pos, int length) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Clob.getSubString(long, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public long length() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public long position(java.lang.String searchstr, long start) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public long position(java.sql.Clob searchstr, long start) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void truncate(long len) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void free() { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int setString(long pos, java.lang.String str) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int setString(long pos, java.lang.String str, int offset, int len) { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.Reader getCharacterStream(long pos, long length) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.Reader getCharacterStream() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.Writer setCharacterStream(long pos) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.InputStream getAsciiStream() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.OutputStream setAsciiStream(long pos) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getSubString(long pos, int length) { return null; }
   < ---- END java signatures ---- >
 }

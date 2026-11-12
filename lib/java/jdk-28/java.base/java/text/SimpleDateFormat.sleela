@@ -58,29 +58,49 @@ class SimpleDateFormat {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SimpleDateFormat(java.lang.String pattern, java.text.DateFormatSymbols formatSymbols) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.<init>(java.lang.String, java.text.DateFormatSymbols)"); }
-  public SimpleDateFormat(java.lang.String pattern) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.<init>(java.lang.String)"); }
-  public SimpleDateFormat() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SimpleDateFormat(java.lang.String pattern, java.text.DateFormatSymbols formatSymbols) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SimpleDateFormat(java.lang.String pattern) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SimpleDateFormat() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.hashCode()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.clone()"); }
-  public java.lang.StringBuffer format(java.util.Date date, java.lang.StringBuffer toAppendTo, java.text.FieldPosition pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.format(java.util.Date, java.lang.StringBuffer, java.text.FieldPosition)"); }
-  public java.util.Date parse(java.lang.String text, java.text.ParsePosition pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.parse(java.lang.String, java.text.ParsePosition)"); }
-  public java.text.AttributedCharacterIterator formatToCharacterIterator(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.formatToCharacterIterator(java.lang.Object)"); }
-  public void applyPattern(java.lang.String pattern) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.applyPattern(java.lang.String)"); }
-  public java.lang.String toPattern() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.toPattern()"); }
-  public java.lang.String toLocalizedPattern() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.toLocalizedPattern()"); }
-  public void applyLocalizedPattern(java.lang.String pattern) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.applyLocalizedPattern(java.lang.String)"); }
-  public void set2DigitYearStart(java.util.Date startDate) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.set2DigitYearStart(java.util.Date)"); }
-  public java.util.Date get2DigitYearStart() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.get2DigitYearStart()"); }
-  public java.text.DateFormatSymbols getDateFormatSymbols() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.getDateFormatSymbols()"); }
-  public void setDateFormatSymbols(java.text.DateFormatSymbols newFormatSymbols) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.text.SimpleDateFormat.setDateFormatSymbols(java.text.DateFormatSymbols)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.StringBuffer format(java.util.Date date, java.lang.StringBuffer toAppendTo, java.text.FieldPosition pos) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Date parse(java.lang.String text, java.text.ParsePosition pos) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.AttributedCharacterIterator formatToCharacterIterator(java.lang.Object obj) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void applyPattern(java.lang.String pattern) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toPattern() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toLocalizedPattern() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void applyLocalizedPattern(java.lang.String pattern) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void set2DigitYearStart(java.util.Date startDate) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Date get2DigitYearStart() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.DateFormatSymbols getDateFormatSymbols() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDateFormatSymbols(java.text.DateFormatSymbols newFormatSymbols) { }
   < ---- END java signatures ---- >
 }

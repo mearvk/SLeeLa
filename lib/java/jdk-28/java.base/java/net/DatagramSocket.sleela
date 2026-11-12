@@ -58,49 +58,89 @@ class DatagramSocket {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DatagramSocket(int port) throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.<init>(int)"); }
-  public DatagramSocket(java.net.SocketAddress bindaddr) throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.<init>(java.net.SocketAddress)"); }
-  public DatagramSocket(int port, java.net.InetAddress laddr) throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.<init>(int, java.net.InetAddress)"); }
-  public DatagramSocket() throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public DatagramSocket(int port) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public DatagramSocket(java.net.SocketAddress bindaddr) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public DatagramSocket(int port, java.net.InetAddress laddr) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public DatagramSocket() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int getPort() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getPort()"); }
-  public java.nio.channels.DatagramChannel getChannel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getChannel()"); }
-  public void bind(java.net.SocketAddress addr) throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.bind(java.net.SocketAddress)"); }
-  public boolean getBroadcast() throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getBroadcast()"); }
-  public java.net.InetAddress getLocalAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getLocalAddress()"); }
-  public <T> java.net.DatagramSocket setOption(java.net.SocketOption<T> name, T value) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.setOption(java.net.SocketOption<T>, T)"); }
-  public <T> T getOption(java.net.SocketOption<T> name) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getOption(java.net.SocketOption<T>)"); }
-  public java.util.Set<java.net.SocketOption<?>> supportedOptions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.supportedOptions()"); }
-  public void connect(java.net.InetAddress address, int port) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.connect(java.net.InetAddress, int)"); }
-  public void connect(java.net.SocketAddress addr) throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.connect(java.net.SocketAddress)"); }
-  public boolean isConnected() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.isConnected()"); }
-  public void disconnect() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.disconnect()"); }
-  public java.net.InetAddress getInetAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getInetAddress()"); }
-  public java.net.SocketAddress getRemoteSocketAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getRemoteSocketAddress()"); }
-  public java.net.SocketAddress getLocalSocketAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getLocalSocketAddress()"); }
-  public void send(java.net.DatagramPacket p) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.send(java.net.DatagramPacket)"); }
-  public int getLocalPort() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getLocalPort()"); }
-  public void setSoTimeout(int timeout) throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.setSoTimeout(int)"); }
-  public int getSoTimeout() throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getSoTimeout()"); }
-  public void setSendBufferSize(int size) throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.setSendBufferSize(int)"); }
-  public int getSendBufferSize() throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getSendBufferSize()"); }
-  public void setReceiveBufferSize(int size) throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.setReceiveBufferSize(int)"); }
-  public int getReceiveBufferSize() throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getReceiveBufferSize()"); }
-  public void setReuseAddress(boolean on) throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.setReuseAddress(boolean)"); }
-  public boolean getReuseAddress() throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getReuseAddress()"); }
-  public void setBroadcast(boolean on) throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.setBroadcast(boolean)"); }
-  public void setTrafficClass(int tc) throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.setTrafficClass(int)"); }
-  public int getTrafficClass() throws java.net.SocketException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.getTrafficClass()"); }
-  public void joinGroup(java.net.SocketAddress mcastaddr, java.net.NetworkInterface netIf) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.joinGroup(java.net.SocketAddress, java.net.NetworkInterface)"); }
-  public void leaveGroup(java.net.SocketAddress mcastaddr, java.net.NetworkInterface netIf) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.leaveGroup(java.net.SocketAddress, java.net.NetworkInterface)"); }
-  public static synchronized void setDatagramSocketImplFactory(java.net.DatagramSocketImplFactory fac) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.setDatagramSocketImplFactory(java.net.DatagramSocketImplFactory)"); }
-  public void receive(java.net.DatagramPacket p) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.receive(java.net.DatagramPacket)"); }
-  public boolean isClosed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.isClosed()"); }
-  public boolean isBound() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.net.DatagramSocket.isBound()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getPort() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.channels.DatagramChannel getChannel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public void bind(java.net.SocketAddress addr) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public boolean getBroadcast() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.InetAddress getLocalAddress() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public <T> java.net.DatagramSocket setOption(java.net.SocketOption<T> name, T value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public <T> T getOption(java.net.SocketOption<T> name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Set<java.net.SocketOption<?>> supportedOptions() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void connect(java.net.InetAddress address, int port) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public void connect(java.net.SocketAddress addr) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isConnected() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void disconnect() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.InetAddress getInetAddress() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.SocketAddress getRemoteSocketAddress() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.net.SocketAddress getLocalSocketAddress() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void send(java.net.DatagramPacket p) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLocalPort() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public void setSoTimeout(int timeout) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public int getSoTimeout() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public void setSendBufferSize(int size) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public int getSendBufferSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public void setReceiveBufferSize(int size) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public int getReceiveBufferSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public void setReuseAddress(boolean on) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public boolean getReuseAddress() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public void setBroadcast(boolean on) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public void setTrafficClass(int tc) { }
+  @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
+  public int getTrafficClass() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void joinGroup(java.net.SocketAddress mcastaddr, java.net.NetworkInterface netIf) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void leaveGroup(java.net.SocketAddress mcastaddr, java.net.NetworkInterface netIf) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static synchronized void setDatagramSocketImplFactory(java.net.DatagramSocketImplFactory fac) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void receive(java.net.DatagramPacket p) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isClosed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBound() { return false; }
   < ---- END java signatures ---- >
 }

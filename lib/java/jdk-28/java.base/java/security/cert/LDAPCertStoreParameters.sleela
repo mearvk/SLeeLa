@@ -58,18 +58,27 @@ class LDAPCertStoreParameters {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LDAPCertStoreParameters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.LDAPCertStoreParameters.<init>()"); }
-  public LDAPCertStoreParameters(java.lang.String serverName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.LDAPCertStoreParameters.<init>(java.lang.String)"); }
-  public LDAPCertStoreParameters(java.lang.String serverName, int port) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.LDAPCertStoreParameters.<init>(java.lang.String, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LDAPCertStoreParameters() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LDAPCertStoreParameters(java.lang.String serverName) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LDAPCertStoreParameters(java.lang.String serverName, int port) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.LDAPCertStoreParameters.toString()"); }
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.LDAPCertStoreParameters.clone()"); }
-  public int getPort() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.LDAPCertStoreParameters.getPort()"); }
-  public java.lang.String getServerName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.cert.LDAPCertStoreParameters.getServerName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getPort() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getServerName() { return null; }
   < ---- END java signatures ---- >
 }

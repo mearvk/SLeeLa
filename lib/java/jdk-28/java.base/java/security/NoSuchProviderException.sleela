@@ -58,7 +58,9 @@ class NoSuchProviderException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NoSuchProviderException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.NoSuchProviderException.<init>()"); }
-  public NoSuchProviderException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.NoSuchProviderException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoSuchProviderException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NoSuchProviderException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

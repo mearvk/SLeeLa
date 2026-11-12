@@ -58,28 +58,50 @@ class RandomGeneratorFactory<T extends java.util.random.RandomGenerator> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String name() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.name()"); }
-  public java.lang.String group() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.group()"); }
-  public static <T extends java.util.random.RandomGenerator> java.util.random.RandomGeneratorFactory<T> of(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.of(java.lang.String)"); }
-  public static java.util.random.RandomGeneratorFactory<java.util.random.RandomGenerator> getDefault() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.getDefault()"); }
-  public T create(byte[] seed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.create(byte[])"); }
-  public T create(long seed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.create(long)"); }
-  public T create() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.create()"); }
-  public static java.util.stream.Stream<java.util.random.RandomGeneratorFactory<java.util.random.RandomGenerator>> all() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.all()"); }
-  public java.math.BigInteger period() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.period()"); }
-  public boolean isDeprecated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.isDeprecated()"); }
-  public int stateBits() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.stateBits()"); }
-  public int equidistribution() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.equidistribution()"); }
-  public boolean isStochastic() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.isStochastic()"); }
-  public boolean isHardware() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.isHardware()"); }
-  public boolean isStatistical() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.isStatistical()"); }
-  public boolean isArbitrarilyJumpable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.isArbitrarilyJumpable()"); }
-  public boolean isJumpable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.isJumpable()"); }
-  public boolean isLeapable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.isLeapable()"); }
-  public boolean isSplittable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.isSplittable()"); }
-  public boolean isStreamable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.random.RandomGeneratorFactory.isStreamable()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String name() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String group() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <T extends java.util.random.RandomGenerator> java.util.random.RandomGeneratorFactory<T> of(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.random.RandomGeneratorFactory<java.util.random.RandomGenerator> getDefault() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public T create(byte[] seed) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public T create(long seed) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public T create() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.stream.Stream<java.util.random.RandomGeneratorFactory<java.util.random.RandomGenerator>> all() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.math.BigInteger period() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDeprecated() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int stateBits() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int equidistribution() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isStochastic() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isHardware() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isStatistical() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isArbitrarilyJumpable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isJumpable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLeapable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSplittable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isStreamable() { return false; }
   < ---- END java signatures ---- >
 }

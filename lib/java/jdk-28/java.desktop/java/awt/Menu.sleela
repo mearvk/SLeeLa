@@ -58,31 +58,53 @@ class Menu {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Menu(java.lang.String label, boolean tearOff) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.<init>(java.lang.String, boolean)"); }
-  public Menu(java.lang.String label) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.<init>(java.lang.String)"); }
-  public Menu() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Menu(java.lang.String label, boolean tearOff) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Menu(java.lang.String label) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Menu() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.remove(int)"); }
-  public void remove(java.awt.MenuComponent item) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.remove(java.awt.MenuComponent)"); }
-  public void insert(java.awt.MenuItem menuitem, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.insert(java.awt.MenuItem, int)"); }
-  public void insert(java.lang.String label, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.insert(java.lang.String, int)"); }
-  public void add(java.lang.String label) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.add(java.lang.String)"); }
-  public java.awt.MenuItem add(java.awt.MenuItem mi) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.add(java.awt.MenuItem)"); }
-  public java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.paramString()"); }
-  public void removeAll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.removeAll()"); }
-  public int countItems() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.countItems()"); }
-  public int getItemCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.getItemCount()"); }
-  public void addSeparator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.addSeparator()"); }
-  public boolean isTearOff() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.isTearOff()"); }
-  public void insertSeparator(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.insertSeparator(int)"); }
-  public java.awt.MenuItem getItem(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.getItem(int)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.getAccessibleContext()"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.addNotify()"); }
-  public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Menu.removeNotify()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(java.awt.MenuComponent item) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insert(java.awt.MenuItem menuitem, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insert(java.lang.String label, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void add(java.lang.String label) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.MenuItem add(java.awt.MenuItem mi) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAll() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int countItems() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getItemCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addSeparator() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isTearOff() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertSeparator(int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.MenuItem getItem(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeNotify() { }
   < ---- END java signatures ---- >
 }

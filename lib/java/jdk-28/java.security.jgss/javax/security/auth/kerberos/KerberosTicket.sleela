@@ -58,37 +58,65 @@ class KerberosTicket {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public KerberosTicket(byte[] asn1Encoding, javax.security.auth.kerberos.KerberosPrincipal client, javax.security.auth.kerberos.KerberosPrincipal server, byte[] sessionKey, int keyType, boolean[] flags, java.util.Date authTime, java.util.Date startTime, java.util.Date endTime, java.util.Date renewTill, java.net.InetAddress[] clientAddresses) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.<init>(byte[], javax.security.auth.kerberos.KerberosPrincipal, javax.security.auth.kerberos.KerberosPrincipal, byte[], int, boolean[], java.util.Date, java.util.Date, java.util.Date, java.util.Date, java.net.InetAddress[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public KerberosTicket(byte[] asn1Encoding, javax.security.auth.kerberos.KerberosPrincipal client, javax.security.auth.kerberos.KerberosPrincipal server, byte[] sessionKey, int keyType, boolean[] flags, java.util.Date authTime, java.util.Date startTime, java.util.Date endTime, java.util.Date renewTill, java.net.InetAddress[] clientAddresses) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.hashCode()"); }
-  public boolean isDestroyed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.isDestroyed()"); }
-  public void destroy() throws javax.security.auth.DestroyFailedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.destroy()"); }
-  public final byte[] getEncoded() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.getEncoded()"); }
-  public final boolean isProxy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.isProxy()"); }
-  public final boolean[] getFlags() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.getFlags()"); }
-  public boolean isCurrent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.isCurrent()"); }
-  public void refresh() throws javax.security.auth.RefreshFailedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.refresh()"); }
-  public final java.util.Date getStartTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.getStartTime()"); }
-  public final boolean isRenewable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.isRenewable()"); }
-  public final java.util.Date getRenewTill() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.getRenewTill()"); }
-  public final javax.security.auth.kerberos.KerberosPrincipal getClient() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.getClient()"); }
-  public final javax.security.auth.kerberos.KerberosPrincipal getServer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.getServer()"); }
-  public final javax.crypto.SecretKey getSessionKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.getSessionKey()"); }
-  public final java.util.Date getAuthTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.getAuthTime()"); }
-  public final java.util.Date getEndTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.getEndTime()"); }
-  public final java.net.InetAddress[] getClientAddresses() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.getClientAddresses()"); }
-  public final int getSessionKeyType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.getSessionKeyType()"); }
-  public final boolean isForwardable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.isForwardable()"); }
-  public final boolean isForwarded() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.isForwarded()"); }
-  public final boolean isProxiable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.isProxiable()"); }
-  public final boolean isPostdated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.isPostdated()"); }
-  public final boolean isInitial() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.security.auth.kerberos.KerberosTicket.isInitial()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDestroyed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.security.auth.DestroyFailedException")
+  public void destroy() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final byte[] getEncoded() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isProxy() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean[] getFlags() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCurrent() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.security.auth.RefreshFailedException")
+  public void refresh() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.Date getStartTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isRenewable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.Date getRenewTill() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.security.auth.kerberos.KerberosPrincipal getClient() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.security.auth.kerberos.KerberosPrincipal getServer() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final javax.crypto.SecretKey getSessionKey() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.Date getAuthTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.util.Date getEndTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.net.InetAddress[] getClientAddresses() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getSessionKeyType() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isForwardable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isForwarded() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isProxiable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isPostdated() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isInitial() { return false; }
   < ---- END java signatures ---- >
 }

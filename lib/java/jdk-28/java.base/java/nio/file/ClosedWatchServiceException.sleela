@@ -58,6 +58,7 @@ class ClosedWatchServiceException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ClosedWatchServiceException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.file.ClosedWatchServiceException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ClosedWatchServiceException() { }
   < ---- END java constructors ---- >
 }

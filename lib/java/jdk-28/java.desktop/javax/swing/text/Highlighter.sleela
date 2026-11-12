@@ -58,16 +58,26 @@ class Highlighter {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void install(javax.swing.text.JTextComponent c) { throw new AbstractMethodError("javax.swing.text.Highlighter.install(javax.swing.text.JTextComponent)"); }
-  public abstract void deinstall(javax.swing.text.JTextComponent c) { throw new AbstractMethodError("javax.swing.text.Highlighter.deinstall(javax.swing.text.JTextComponent)"); }
-  public abstract javax.swing.text.Highlighter.Highlight[] getHighlights() { throw new AbstractMethodError("javax.swing.text.Highlighter.getHighlights()"); }
-  public abstract java.lang.Object addHighlight(int p0, int p1, javax.swing.text.Highlighter.HighlightPainter p) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.text.Highlighter.addHighlight(int, int, javax.swing.text.Highlighter.HighlightPainter)"); }
-  public abstract void removeHighlight(java.lang.Object tag) { throw new AbstractMethodError("javax.swing.text.Highlighter.removeHighlight(java.lang.Object)"); }
-  public abstract void removeAllHighlights() { throw new AbstractMethodError("javax.swing.text.Highlighter.removeAllHighlights()"); }
-  public abstract void changeHighlight(java.lang.Object tag, int p0, int p1) throws javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.text.Highlighter.changeHighlight(java.lang.Object, int, int)"); }
-  public abstract void paint(java.awt.Graphics g) { throw new AbstractMethodError("javax.swing.text.Highlighter.paint(java.awt.Graphics)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void install(javax.swing.text.JTextComponent c) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void deinstall(javax.swing.text.JTextComponent c) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.Highlighter.Highlight[] getHighlights() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public java.lang.Object addHighlight(int p0, int p1, javax.swing.text.Highlighter.HighlightPainter p) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeHighlight(java.lang.Object tag) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeAllHighlights() { }
+  @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
+  public void changeHighlight(java.lang.Object tag, int p0, int p1) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void paint(java.awt.Graphics g) { }
   < ---- END java signatures ---- >
 }

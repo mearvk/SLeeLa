@@ -58,9 +58,13 @@ class SignatureException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SignatureException(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SignatureException.<init>(java.lang.Throwable)"); }
-  public SignatureException(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SignatureException.<init>(java.lang.String, java.lang.Throwable)"); }
-  public SignatureException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SignatureException.<init>(java.lang.String)"); }
-  public SignatureException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.SignatureException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SignatureException(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SignatureException(java.lang.String message, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SignatureException(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SignatureException() { }
   < ---- END java constructors ---- >
 }

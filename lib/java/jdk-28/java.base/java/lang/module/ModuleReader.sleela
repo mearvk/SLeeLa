@@ -58,13 +58,20 @@ class ModuleReader {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.util.stream.Stream<java.lang.String> list() throws java.io.IOException { throw new AbstractMethodError("java.lang.module.ModuleReader.list()"); }
-  public abstract java.util.Optional<java.net.URI> find(java.lang.String name) throws java.io.IOException { throw new AbstractMethodError("java.lang.module.ModuleReader.find(java.lang.String)"); }
-  public default java.util.Optional<java.io.InputStream> open(java.lang.String name) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleReader.open(java.lang.String)"); }
-  public default java.util.Optional<java.nio.ByteBuffer> read(java.lang.String name) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleReader.read(java.lang.String)"); }
-  public default void release(java.nio.ByteBuffer bb) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleReader.release(java.nio.ByteBuffer)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.util.stream.Stream<java.lang.String> list() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public java.util.Optional<java.net.URI> find(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public default java.util.Optional<java.io.InputStream> open(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public default java.util.Optional<java.nio.ByteBuffer> read(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void release(java.nio.ByteBuffer bb) { }
   < ---- END java signatures ---- >
 }

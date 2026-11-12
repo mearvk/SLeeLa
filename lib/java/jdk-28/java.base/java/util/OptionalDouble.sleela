@@ -58,23 +58,40 @@ class OptionalDouble {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.hashCode()"); }
-  public static java.util.OptionalDouble of(double value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.of(double)"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.isEmpty()"); }
-  public java.util.stream.DoubleStream stream() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.stream()"); }
-  public static java.util.OptionalDouble empty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.empty()"); }
-  public double orElse(double other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.orElse(double)"); }
-  public boolean isPresent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.isPresent()"); }
-  public <X extends java.lang.Throwable> double orElseThrow(java.util.function.Supplier<? extends X> exceptionSupplier) throws X { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.orElseThrow(java.util.function.Supplier<? extends X>)"); }
-  public double orElseThrow() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.orElseThrow()"); }
-  public void ifPresent(java.util.function.DoubleConsumer action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.ifPresent(java.util.function.DoubleConsumer)"); }
-  public void ifPresentOrElse(java.util.function.DoubleConsumer action, java.lang.Runnable emptyAction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.ifPresentOrElse(java.util.function.DoubleConsumer, java.lang.Runnable)"); }
-  public double orElseGet(java.util.function.DoubleSupplier supplier) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.orElseGet(java.util.function.DoubleSupplier)"); }
-  public double getAsDouble() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.OptionalDouble.getAsDouble()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.OptionalDouble of(double value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.stream.DoubleStream stream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.util.OptionalDouble empty() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double orElse(double other) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPresent() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, X")
+  public <X extends java.lang.Throwable> double orElseThrow(java.util.function.Supplier<? extends X> exceptionSupplier) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double orElseThrow() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ifPresent(java.util.function.DoubleConsumer action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ifPresentOrElse(java.util.function.DoubleConsumer action, java.lang.Runnable emptyAction) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double orElseGet(java.util.function.DoubleSupplier supplier) { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getAsDouble() { return 0.0; }
   < ---- END java signatures ---- >
 }

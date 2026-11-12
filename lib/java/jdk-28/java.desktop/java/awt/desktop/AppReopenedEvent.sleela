@@ -58,6 +58,7 @@ class AppReopenedEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AppReopenedEvent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.desktop.AppReopenedEvent.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AppReopenedEvent() { }
   < ---- END java constructors ---- >
 }

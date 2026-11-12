@@ -58,23 +58,40 @@ class ZoneOffsetTransition {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object other) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.toString()"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.hashCode()"); }
-  public int compareTo(java.time.zone.ZoneOffsetTransition otherTransition) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.compareTo(java.time.zone.ZoneOffsetTransition)"); }
-  public static java.time.zone.ZoneOffsetTransition of(java.time.LocalDateTime transition, java.time.ZoneOffset offsetBefore, java.time.ZoneOffset offsetAfter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.of(java.time.LocalDateTime, java.time.ZoneOffset, java.time.ZoneOffset)"); }
-  public java.time.Duration getDuration() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.getDuration()"); }
-  public boolean isGap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.isGap()"); }
-  public java.time.LocalDateTime getDateTimeAfter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.getDateTimeAfter()"); }
-  public long toEpochSecond() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.toEpochSecond()"); }
-  public java.time.ZoneOffset getOffsetBefore() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.getOffsetBefore()"); }
-  public java.time.ZoneOffset getOffsetAfter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.getOffsetAfter()"); }
-  public java.time.LocalDateTime getDateTimeBefore() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.getDateTimeBefore()"); }
-  public boolean isValidOffset(java.time.ZoneOffset offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.isValidOffset(java.time.ZoneOffset)"); }
-  public boolean isOverlap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.isOverlap()"); }
-  public java.time.Instant getInstant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.zone.ZoneOffsetTransition.getInstant()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.time.zone.ZoneOffsetTransition otherTransition) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.time.zone.ZoneOffsetTransition of(java.time.LocalDateTime transition, java.time.ZoneOffset offsetBefore, java.time.ZoneOffset offsetAfter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Duration getDuration() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isGap() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDateTime getDateTimeAfter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toEpochSecond() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.ZoneOffset getOffsetBefore() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.ZoneOffset getOffsetAfter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.LocalDateTime getDateTimeBefore() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isValidOffset(java.time.ZoneOffset offset) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isOverlap() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.time.Instant getInstant() { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,33 +58,57 @@ class AtomicBoolean {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AtomicBoolean(boolean initialValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.<init>(boolean)"); }
-  public AtomicBoolean() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AtomicBoolean(boolean initialValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AtomicBoolean() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final boolean get() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.get()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.toString()"); }
-  public final void set(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.set(boolean)"); }
-  public final boolean getOpaque() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.getOpaque()"); }
-  public final void setOpaque(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.setOpaque(boolean)"); }
-  public final boolean getAcquire() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.getAcquire()"); }
-  public final void setRelease(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.setRelease(boolean)"); }
-  public final boolean compareAndSet(boolean expectedValue, boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.compareAndSet(boolean, boolean)"); }
-  public final boolean compareAndExchange(boolean expectedValue, boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.compareAndExchange(boolean, boolean)"); }
-  public final boolean compareAndExchangeAcquire(boolean expectedValue, boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.compareAndExchangeAcquire(boolean, boolean)"); }
-  public final boolean compareAndExchangeRelease(boolean expectedValue, boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.compareAndExchangeRelease(boolean, boolean)"); }
-  public boolean weakCompareAndSetPlain(boolean expectedValue, boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.weakCompareAndSetPlain(boolean, boolean)"); }
-  public boolean weakCompareAndSet(boolean expectedValue, boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.weakCompareAndSet(boolean, boolean)"); }
-  public final boolean weakCompareAndSetAcquire(boolean expectedValue, boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.weakCompareAndSetAcquire(boolean, boolean)"); }
-  public final boolean weakCompareAndSetRelease(boolean expectedValue, boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.weakCompareAndSetRelease(boolean, boolean)"); }
-  public final boolean getAndSet(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.getAndSet(boolean)"); }
-  public final boolean weakCompareAndSetVolatile(boolean expectedValue, boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.weakCompareAndSetVolatile(boolean, boolean)"); }
-  public final void lazySet(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.lazySet(boolean)"); }
-  public final boolean getPlain() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.getPlain()"); }
-  public final void setPlain(boolean newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicBoolean.setPlain(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean get() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void set(boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean getOpaque() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setOpaque(boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean getAcquire() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setRelease(boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean compareAndSet(boolean expectedValue, boolean newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean compareAndExchange(boolean expectedValue, boolean newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean compareAndExchangeAcquire(boolean expectedValue, boolean newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean compareAndExchangeRelease(boolean expectedValue, boolean newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean weakCompareAndSetPlain(boolean expectedValue, boolean newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean weakCompareAndSet(boolean expectedValue, boolean newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetAcquire(boolean expectedValue, boolean newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetRelease(boolean expectedValue, boolean newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean getAndSet(boolean newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean weakCompareAndSetVolatile(boolean expectedValue, boolean newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void lazySet(boolean newValue) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean getPlain() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setPlain(boolean newValue) { }
   < ---- END java signatures ---- >
 }

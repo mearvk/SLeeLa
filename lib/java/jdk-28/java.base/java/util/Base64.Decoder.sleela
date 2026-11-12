@@ -59,13 +59,20 @@ class Decoder {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public byte[] decode(java.lang.String src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Base64.Decoder.decode(java.lang.String)"); }
-  public byte[] decode(byte[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Base64.Decoder.decode(byte[])"); }
-  public java.nio.ByteBuffer decode(java.nio.ByteBuffer buffer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Base64.Decoder.decode(java.nio.ByteBuffer)"); }
-  public int decode(byte[] src, byte[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Base64.Decoder.decode(byte[], byte[])"); }
-  public java.io.InputStream wrap(java.io.InputStream is) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Base64.Decoder.wrap(java.io.InputStream)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] decode(java.lang.String src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] decode(byte[] src) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.ByteBuffer decode(java.nio.ByteBuffer buffer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int decode(byte[] src, byte[] dst) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.io.InputStream wrap(java.io.InputStream is) { return null; }
   < ---- END java signatures ---- >
 }

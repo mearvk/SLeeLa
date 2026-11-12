@@ -58,7 +58,9 @@ class ClosedConnectionException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ClosedConnectionException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.connect.spi.ClosedConnectionException.<init>()"); }
-  public ClosedConnectionException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.connect.spi.ClosedConnectionException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ClosedConnectionException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ClosedConnectionException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

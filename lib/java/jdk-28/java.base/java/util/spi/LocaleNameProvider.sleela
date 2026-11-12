@@ -59,18 +59,27 @@ class LocaleNameProvider {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  LocaleNameProvider() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.spi.LocaleNameProvider.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  LocaleNameProvider() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getDisplayLanguage(java.lang.String languageCode, java.util.Locale locale) { throw new AbstractMethodError("java.util.spi.LocaleNameProvider.getDisplayLanguage(java.lang.String, java.util.Locale)"); }
-  public java.lang.String getDisplayScript(java.lang.String scriptCode, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.spi.LocaleNameProvider.getDisplayScript(java.lang.String, java.util.Locale)"); }
-  public abstract java.lang.String getDisplayCountry(java.lang.String countryCode, java.util.Locale locale) { throw new AbstractMethodError("java.util.spi.LocaleNameProvider.getDisplayCountry(java.lang.String, java.util.Locale)"); }
-  public abstract java.lang.String getDisplayVariant(java.lang.String variant, java.util.Locale locale) { throw new AbstractMethodError("java.util.spi.LocaleNameProvider.getDisplayVariant(java.lang.String, java.util.Locale)"); }
-  public java.lang.String getDisplayUnicodeExtensionKey(java.lang.String key, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.spi.LocaleNameProvider.getDisplayUnicodeExtensionKey(java.lang.String, java.util.Locale)"); }
-  public java.lang.String getDisplayUnicodeExtensionType(java.lang.String type, java.lang.String key, java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.spi.LocaleNameProvider.getDisplayUnicodeExtensionType(java.lang.String, java.lang.String, java.util.Locale)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDisplayLanguage(java.lang.String languageCode, java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDisplayScript(java.lang.String scriptCode, java.util.Locale locale) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDisplayCountry(java.lang.String countryCode, java.util.Locale locale) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getDisplayVariant(java.lang.String variant, java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDisplayUnicodeExtensionKey(java.lang.String key, java.util.Locale locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDisplayUnicodeExtensionType(java.lang.String type, java.lang.String key, java.util.Locale locale) { return null; }
   < ---- END java signatures ---- >
 }

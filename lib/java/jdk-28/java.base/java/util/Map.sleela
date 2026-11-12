@@ -58,47 +58,88 @@ class Map<K, V> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default boolean remove(java.lang.Object key, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.remove(java.lang.Object, java.lang.Object)"); }
-  public abstract V remove(java.lang.Object key) { throw new AbstractMethodError("java.util.Map.remove(java.lang.Object)"); }
-  public abstract int size() { throw new AbstractMethodError("java.util.Map.size()"); }
-  public abstract V get(java.lang.Object key) { throw new AbstractMethodError("java.util.Map.get(java.lang.Object)"); }
-  public abstract V put(K key, V value) { throw new AbstractMethodError("java.util.Map.put(K, V)"); }
-  public abstract boolean equals(java.lang.Object o) { throw new AbstractMethodError("java.util.Map.equals(java.lang.Object)"); }
-  public abstract java.util.Collection<V> values() { throw new AbstractMethodError("java.util.Map.values()"); }
-  public abstract int hashCode() { throw new AbstractMethodError("java.util.Map.hashCode()"); }
-  public static <K, V> java.util.Map<K, V> copyOf(java.util.Map<? extends K, ? extends V> map) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.copyOf(java.util.Map<? extends K, ? extends V>)"); }
-  public abstract void clear() { throw new AbstractMethodError("java.util.Map.clear()"); }
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.of(K, V, K, V, K, V, K, V)"); }
-  public static <K, V> java.util.Map<K, V> of() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.of()"); }
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.of(K, V, K, V, K, V, K, V, K, V, K, V)"); }
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.of(K, V, K, V, K, V)"); }
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.of(K, V, K, V)"); }
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.of(K, V)"); }
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6, K k7, V v7, K k8, V v8, K k9, V v9, K k10, V v10) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.of(K, V, K, V, K, V, K, V, K, V, K, V, K, V, K, V, K, V, K, V)"); }
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6, K k7, V v7, K k8, V v8, K k9, V v9) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.of(K, V, K, V, K, V, K, V, K, V, K, V, K, V, K, V, K, V)"); }
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6, K k7, V v7, K k8, V v8) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.of(K, V, K, V, K, V, K, V, K, V, K, V, K, V, K, V)"); }
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6, K k7, V v7) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.of(K, V, K, V, K, V, K, V, K, V, K, V, K, V)"); }
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.of(K, V, K, V, K, V, K, V, K, V)"); }
-  public abstract boolean isEmpty() { throw new AbstractMethodError("java.util.Map.isEmpty()"); }
-  public default boolean replace(K key, V oldValue, V newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.replace(K, V, V)"); }
-  public default V replace(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.replace(K, V)"); }
-  public default void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
-  public default V merge(K key, V value, java.util.function.BiFunction<? super V, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.merge(K, V, java.util.function.BiFunction<? super V, ? super V, ? extends V>)"); }
-  public abstract java.util.Set<java.util.Map.Entry<K, V>> entrySet() { throw new AbstractMethodError("java.util.Map.entrySet()"); }
-  public abstract void putAll(java.util.Map<? extends K, ? extends V> m) { throw new AbstractMethodError("java.util.Map.putAll(java.util.Map<? extends K, ? extends V>)"); }
-  public default V putIfAbsent(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.putIfAbsent(K, V)"); }
-  public default V compute(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.compute(K, java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
-  public static <K, V> java.util.Map.Entry<K, V> entry(K k, V v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.entry(K, V)"); }
-  public default V computeIfAbsent(K key, java.util.function.Function<? super K, ? extends V> mappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.computeIfAbsent(K, java.util.function.Function<? super K, ? extends V>)"); }
-  public default void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.forEach(java.util.function.BiConsumer<? super K, ? super V>)"); }
-  public abstract java.util.Set<K> keySet() { throw new AbstractMethodError("java.util.Map.keySet()"); }
-  public abstract boolean containsValue(java.lang.Object value) { throw new AbstractMethodError("java.util.Map.containsValue(java.lang.Object)"); }
-  public abstract boolean containsKey(java.lang.Object key) { throw new AbstractMethodError("java.util.Map.containsKey(java.lang.Object)"); }
-  public default V getOrDefault(java.lang.Object key, V defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.getOrDefault(java.lang.Object, V)"); }
-  public default V computeIfPresent(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.computeIfPresent(K, java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
-  public static <K, V> java.util.Map<K, V> ofEntries(java.util.Map.Entry<? extends K, ? extends V>... entries) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Map.ofEntries(java.util.Map.Entry<? extends K, ? extends V>...)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean remove(java.lang.Object key, java.lang.Object value) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public V remove(java.lang.Object key) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int size() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public V get(java.lang.Object key) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public V put(K key, V value) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean equals(java.lang.Object o) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Collection<V> values() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> copyOf(java.util.Map<? extends K, ? extends V> map) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> of() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> of(K k1, V v1) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6, K k7, V v7, K k8, V v8, K k9, V v9, K k10, V v10) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6, K k7, V v7, K k8, V v8, K k9, V v9) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6, K k7, V v7, K k8, V v8) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6, K k7, V v7) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default boolean replace(K key, V oldValue, V newValue) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V replace(K key, V value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V merge(K key, V value, java.util.function.BiFunction<? super V, ? super V, ? extends V> remappingFunction) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void putAll(java.util.Map<? extends K, ? extends V> m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V putIfAbsent(K key, V value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V compute(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map.Entry<K, V> entry(K k, V v) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V computeIfAbsent(K key, java.util.function.Function<? super K, ? extends V> mappingFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Set<K> keySet() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean containsValue(java.lang.Object value) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean containsKey(java.lang.Object key) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V getOrDefault(java.lang.Object key, V defaultValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V computeIfPresent(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static <K, V> java.util.Map<K, V> ofEntries(java.util.Map.Entry<? extends K, ? extends V>... entries) { return null; }
   < ---- END java signatures ---- >
 }

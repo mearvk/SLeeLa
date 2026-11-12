@@ -58,14 +58,19 @@ class CaretEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CaretEvent(java.lang.Object source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.CaretEvent.<init>(java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CaretEvent(java.lang.Object source) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getMark() { throw new AbstractMethodError("javax.swing.event.CaretEvent.getMark()"); }
-  public abstract int getDot() { throw new AbstractMethodError("javax.swing.event.CaretEvent.getDot()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getMark() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getDot() { return 0; }
   < ---- END java signatures ---- >
 }

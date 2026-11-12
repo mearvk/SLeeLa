@@ -58,27 +58,48 @@ class ClassReader {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int flags() { throw new AbstractMethodError("java.lang.classfile.ClassReader.flags()"); }
-  public abstract int readInt(int offset) { throw new AbstractMethodError("java.lang.classfile.ClassReader.readInt(int)"); }
-  public abstract long readLong(int offset) { throw new AbstractMethodError("java.lang.classfile.ClassReader.readLong(int)"); }
-  public abstract byte[] readBytes(int offset, int len) { throw new AbstractMethodError("java.lang.classfile.ClassReader.readBytes(int, int)"); }
-  public abstract float readFloat(int offset) { throw new AbstractMethodError("java.lang.classfile.ClassReader.readFloat(int)"); }
-  public abstract java.lang.classfile.constantpool.ClassEntry thisClassEntry() { throw new AbstractMethodError("java.lang.classfile.ClassReader.thisClassEntry()"); }
-  public abstract java.util.Optional<java.lang.classfile.constantpool.ClassEntry> superclassEntry() { throw new AbstractMethodError("java.lang.classfile.ClassReader.superclassEntry()"); }
-  public abstract <T extends java.lang.classfile.constantpool.PoolEntry> T readEntry(int offset, java.lang.Class<T> cls) { throw new AbstractMethodError("java.lang.classfile.ClassReader.readEntry(int, java.lang.Class<T>)"); }
-  public abstract java.lang.classfile.constantpool.PoolEntry readEntry(int offset) { throw new AbstractMethodError("java.lang.classfile.ClassReader.readEntry(int)"); }
-  public abstract void copyBytesTo(java.lang.classfile.BufWriter buf, int offset, int len) { throw new AbstractMethodError("java.lang.classfile.ClassReader.copyBytesTo(java.lang.classfile.BufWriter, int, int)"); }
-  public abstract int readU2(int offset) { throw new AbstractMethodError("java.lang.classfile.ClassReader.readU2(int)"); }
-  public abstract int classfileLength() { throw new AbstractMethodError("java.lang.classfile.ClassReader.classfileLength()"); }
-  public abstract java.util.function.Function<java.lang.classfile.constantpool.Utf8Entry, java.lang.classfile.AttributeMapper<?>> customAttributes() { throw new AbstractMethodError("java.lang.classfile.ClassReader.customAttributes()"); }
-  public abstract int readU1(int offset) { throw new AbstractMethodError("java.lang.classfile.ClassReader.readU1(int)"); }
-  public abstract java.lang.classfile.constantpool.PoolEntry readEntryOrNull(int offset) { throw new AbstractMethodError("java.lang.classfile.ClassReader.readEntryOrNull(int)"); }
-  public abstract <T extends java.lang.classfile.constantpool.PoolEntry> T readEntryOrNull(int offset, java.lang.Class<T> cls) { throw new AbstractMethodError("java.lang.classfile.ClassReader.readEntryOrNull(int, java.lang.Class<T>)"); }
-  public abstract double readDouble(int offset) { throw new AbstractMethodError("java.lang.classfile.ClassReader.readDouble(int)"); }
-  public abstract int readS1(int offset) { throw new AbstractMethodError("java.lang.classfile.ClassReader.readS1(int)"); }
-  public abstract int readS2(int offset) { throw new AbstractMethodError("java.lang.classfile.ClassReader.readS2(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int flags() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int readInt(int offset) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public long readLong(int offset) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public byte[] readBytes(int offset, int len) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public float readFloat(int offset) { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.ClassEntry thisClassEntry() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Optional<java.lang.classfile.constantpool.ClassEntry> superclassEntry() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <T extends java.lang.classfile.constantpool.PoolEntry> T readEntry(int offset, java.lang.Class<T> cls) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.PoolEntry readEntry(int offset) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void copyBytesTo(java.lang.classfile.BufWriter buf, int offset, int len) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int readU2(int offset) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int classfileLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.function.Function<java.lang.classfile.constantpool.Utf8Entry, java.lang.classfile.AttributeMapper<?>> customAttributes() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int readU1(int offset) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.PoolEntry readEntryOrNull(int offset) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public <T extends java.lang.classfile.constantpool.PoolEntry> T readEntryOrNull(int offset, java.lang.Class<T> cls) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public double readDouble(int offset) { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int readS1(int offset) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int readS2(int offset) { return 0; }
   < ---- END java signatures ---- >
 }

@@ -58,6 +58,7 @@ class PreferencesEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PreferencesEvent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.desktop.PreferencesEvent.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PreferencesEvent() { }
   < ---- END java constructors ---- >
 }

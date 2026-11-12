@@ -63,16 +63,23 @@ class Proxy {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Proxy(java.lang.reflect.InvocationHandler h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Proxy.<init>(java.lang.reflect.InvocationHandler)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Proxy(java.lang.reflect.InvocationHandler h) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static boolean isProxyClass(java.lang.Class<?> cl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Proxy.isProxyClass(java.lang.Class<?>)"); }
-  public static java.lang.Object newProxyInstance(java.lang.ClassLoader loader, java.lang.Class<?>[] interfaces, java.lang.reflect.InvocationHandler h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Proxy.newProxyInstance(java.lang.ClassLoader, java.lang.Class<?>[], java.lang.reflect.InvocationHandler)"); }
-  public static java.lang.reflect.InvocationHandler getInvocationHandler(java.lang.Object proxy) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Proxy.getInvocationHandler(java.lang.Object)"); }
-  public static java.lang.Class<?> getProxyClass(java.lang.ClassLoader loader, java.lang.Class<?>... interfaces) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.Proxy.getProxyClass(java.lang.ClassLoader, java.lang.Class<?>...)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isProxyClass(java.lang.Class<?> cl) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.Object newProxyInstance(java.lang.ClassLoader loader, java.lang.Class<?>[] interfaces, java.lang.reflect.InvocationHandler h) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public static java.lang.reflect.InvocationHandler getInvocationHandler(java.lang.Object proxy) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public static java.lang.Class<?> getProxyClass(java.lang.ClassLoader loader, java.lang.Class<?>... interfaces) { return null; }
   < ---- END java signatures ---- >
 }

@@ -64,24 +64,39 @@ class XPathFactory {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  XPathFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.xpath.XPathFactory.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  XPathFactory() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getProperty(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.xpath.XPathFactory.getProperty(java.lang.String)"); }
-  public static javax.xml.xpath.XPathFactory newInstance(java.lang.String uri, java.lang.String factoryClassName, java.lang.ClassLoader classLoader) throws javax.xml.xpath.XPathFactoryConfigurationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.xpath.XPathFactory.newInstance(java.lang.String, java.lang.String, java.lang.ClassLoader)"); }
-  public static javax.xml.xpath.XPathFactory newInstance(java.lang.String uri) throws javax.xml.xpath.XPathFactoryConfigurationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.xpath.XPathFactory.newInstance(java.lang.String)"); }
-  public static javax.xml.xpath.XPathFactory newInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.xpath.XPathFactory.newInstance()"); }
-  public void setProperty(java.lang.String name, java.lang.String value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.xpath.XPathFactory.setProperty(java.lang.String, java.lang.String)"); }
-  public abstract void setXPathVariableResolver(javax.xml.xpath.XPathVariableResolver resolver) { throw new AbstractMethodError("javax.xml.xpath.XPathFactory.setXPathVariableResolver(javax.xml.xpath.XPathVariableResolver)"); }
-  public abstract void setXPathFunctionResolver(javax.xml.xpath.XPathFunctionResolver resolver) { throw new AbstractMethodError("javax.xml.xpath.XPathFactory.setXPathFunctionResolver(javax.xml.xpath.XPathFunctionResolver)"); }
-  public abstract boolean isObjectModelSupported(java.lang.String objectModel) { throw new AbstractMethodError("javax.xml.xpath.XPathFactory.isObjectModelSupported(java.lang.String)"); }
-  public abstract javax.xml.xpath.XPath newXPath() { throw new AbstractMethodError("javax.xml.xpath.XPathFactory.newXPath()"); }
-  public static javax.xml.xpath.XPathFactory newDefaultInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.xpath.XPathFactory.newDefaultInstance()"); }
-  public abstract boolean getFeature(java.lang.String name) throws javax.xml.xpath.XPathFactoryConfigurationException { throw new AbstractMethodError("javax.xml.xpath.XPathFactory.getFeature(java.lang.String)"); }
-  public abstract void setFeature(java.lang.String name, boolean value) throws javax.xml.xpath.XPathFactoryConfigurationException { throw new AbstractMethodError("javax.xml.xpath.XPathFactory.setFeature(java.lang.String, boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getProperty(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.xml.xpath.XPathFactoryConfigurationException")
+  public static javax.xml.xpath.XPathFactory newInstance(java.lang.String uri, java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.xml.xpath.XPathFactoryConfigurationException")
+  public static javax.xml.xpath.XPathFactory newInstance(java.lang.String uri) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.xpath.XPathFactory newInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setProperty(java.lang.String name, java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setXPathVariableResolver(javax.xml.xpath.XPathVariableResolver resolver) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setXPathFunctionResolver(javax.xml.xpath.XPathFunctionResolver resolver) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isObjectModelSupported(java.lang.String objectModel) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.xml.xpath.XPath newXPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.xml.xpath.XPathFactory newDefaultInstance() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.xpath.XPathFactoryConfigurationException")
+  public boolean getFeature(java.lang.String name) { return false; }
+  @throwable("java.lang.AbstractMethodError, javax.xml.xpath.XPathFactoryConfigurationException")
+  public void setFeature(java.lang.String name, boolean value) { }
   < ---- END java signatures ---- >
 }

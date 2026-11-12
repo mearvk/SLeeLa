@@ -58,7 +58,9 @@ class IllegalUnbindException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IllegalUnbindException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.IllegalUnbindException.<init>()"); }
-  public IllegalUnbindException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.nio.sctp.IllegalUnbindException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalUnbindException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalUnbindException(java.lang.String msg) { }
   < ---- END java constructors ---- >
 }

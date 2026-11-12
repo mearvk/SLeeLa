@@ -58,21 +58,33 @@ class LongAccumulator {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LongAccumulator(java.util.function.LongBinaryOperator accumulatorFunction, long identity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAccumulator.<init>(java.util.function.LongBinaryOperator, long)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LongAccumulator(java.util.function.LongBinaryOperator accumulatorFunction, long identity) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAccumulator.reset()"); }
-  public long get() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAccumulator.get()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAccumulator.toString()"); }
-  public int intValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAccumulator.intValue()"); }
-  public long longValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAccumulator.longValue()"); }
-  public float floatValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAccumulator.floatValue()"); }
-  public double doubleValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAccumulator.doubleValue()"); }
-  public void accumulate(long x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAccumulator.accumulate(long)"); }
-  public long getThenReset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.LongAccumulator.getThenReset()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reset() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long get() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int intValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long longValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public float floatValue() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double doubleValue() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void accumulate(long x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getThenReset() { return 0; }
   < ---- END java signatures ---- >
 }

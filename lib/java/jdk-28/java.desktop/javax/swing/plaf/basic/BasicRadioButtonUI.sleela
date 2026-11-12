@@ -62,24 +62,35 @@ class BasicRadioButtonUI {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BasicRadioButtonUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRadioButtonUI.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicRadioButtonUI() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRadioButtonUI.getPreferredSize(javax.swing.JComponent)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
   @JavaProtected
-  void paintFocus(java.awt.Graphics g, java.awt.Rectangle textRect, java.awt.Dimension size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRadioButtonUI.paintFocus(java.awt.Graphics, java.awt.Rectangle, java.awt.Dimension)"); }
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRadioButtonUI.createUI(javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintFocus(java.awt.Graphics g, java.awt.Rectangle textRect, java.awt.Dimension size) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent b) { return null; }
   @JavaProtected
-  java.lang.String getPropertyPrefix() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRadioButtonUI.getPropertyPrefix()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String getPropertyPrefix() { return null; }
   @JavaProtected
-  void installDefaults(javax.swing.AbstractButton b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRadioButtonUI.installDefaults(javax.swing.AbstractButton)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults(javax.swing.AbstractButton b) { }
   @JavaProtected
-  void uninstallDefaults(javax.swing.AbstractButton b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRadioButtonUI.uninstallDefaults(javax.swing.AbstractButton)"); }
-  public javax.swing.Icon getDefaultIcon() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRadioButtonUI.getDefaultIcon()"); }
-  public synchronized void paint(java.awt.Graphics g, javax.swing.JComponent c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicRadioButtonUI.paint(java.awt.Graphics, javax.swing.JComponent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults(javax.swing.AbstractButton b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Icon getDefaultIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
   < ---- END java signatures ---- >
 }

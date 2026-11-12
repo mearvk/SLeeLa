@@ -58,21 +58,33 @@ class DropTargetDragEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DropTargetDragEvent(java.awt.dnd.DropTargetContext dtc, java.awt.Point cursorLocn, int dropAction, int srcActions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetDragEvent.<init>(java.awt.dnd.DropTargetContext, java.awt.Point, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DropTargetDragEvent(java.awt.dnd.DropTargetContext dtc, java.awt.Point cursorLocn, int dropAction, int srcActions) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Point getLocation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetDragEvent.getLocation()"); }
-  public int getSourceActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetDragEvent.getSourceActions()"); }
-  public int getDropAction() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetDragEvent.getDropAction()"); }
-  public java.awt.datatransfer.Transferable getTransferable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetDragEvent.getTransferable()"); }
-  public java.awt.datatransfer.DataFlavor[] getCurrentDataFlavors() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetDragEvent.getCurrentDataFlavors()"); }
-  public java.util.List<java.awt.datatransfer.DataFlavor> getCurrentDataFlavorsAsList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetDragEvent.getCurrentDataFlavorsAsList()"); }
-  public void acceptDrag(int dragOperation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetDragEvent.acceptDrag(int)"); }
-  public void rejectDrag() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetDragEvent.rejectDrag()"); }
-  public boolean isDataFlavorSupported(java.awt.datatransfer.DataFlavor df) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.dnd.DropTargetDragEvent.isDataFlavorSupported(java.awt.datatransfer.DataFlavor)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Point getLocation() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSourceActions() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDropAction() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.datatransfer.Transferable getTransferable() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.datatransfer.DataFlavor[] getCurrentDataFlavors() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.awt.datatransfer.DataFlavor> getCurrentDataFlavorsAsList() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void acceptDrag(int dragOperation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void rejectDrag() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDataFlavorSupported(java.awt.datatransfer.DataFlavor df) { return false; }
   < ---- END java signatures ---- >
 }

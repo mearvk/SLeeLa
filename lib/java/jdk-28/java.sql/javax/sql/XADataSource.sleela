@@ -58,15 +58,24 @@ class XADataSource {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.io.PrintWriter getLogWriter() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.XADataSource.getLogWriter()"); }
-  public abstract void setLogWriter(java.io.PrintWriter out) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.XADataSource.setLogWriter(java.io.PrintWriter)"); }
-  public abstract void setLoginTimeout(int seconds) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.XADataSource.setLoginTimeout(int)"); }
-  public abstract int getLoginTimeout() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.XADataSource.getLoginTimeout()"); }
-  public abstract javax.sql.XAConnection getXAConnection() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.XADataSource.getXAConnection()"); }
-  public abstract javax.sql.XAConnection getXAConnection(java.lang.String user, java.lang.String password) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.XADataSource.getXAConnection(java.lang.String, java.lang.String)"); }
-  public default javax.sql.XAConnectionBuilder createXAConnectionBuilder() throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.XADataSource.createXAConnectionBuilder()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.io.PrintWriter getLogWriter() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setLogWriter(java.io.PrintWriter out) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setLoginTimeout(int seconds) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public int getLoginTimeout() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public javax.sql.XAConnection getXAConnection() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public javax.sql.XAConnection getXAConnection(java.lang.String user, java.lang.String password) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public default javax.sql.XAConnectionBuilder createXAConnectionBuilder() { return null; }
   < ---- END java signatures ---- >
 }

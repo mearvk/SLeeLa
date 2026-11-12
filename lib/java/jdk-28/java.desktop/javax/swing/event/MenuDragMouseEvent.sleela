@@ -58,15 +58,21 @@ class MenuDragMouseEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MenuDragMouseEvent(java.awt.Component source, int id, long when, int modifiers, int x, int y, int clickCount, boolean popupTrigger, javax.swing.MenuElement[] p, javax.swing.MenuSelectionManager m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.MenuDragMouseEvent.<init>(java.awt.Component, int, long, int, int, int, int, boolean, javax.swing.MenuElement[], javax.swing.MenuSelectionManager)"); }
-  public MenuDragMouseEvent(java.awt.Component source, int id, long when, int modifiers, int x, int y, int xAbs, int yAbs, int clickCount, boolean popupTrigger, javax.swing.MenuElement[] p, javax.swing.MenuSelectionManager m) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.MenuDragMouseEvent.<init>(java.awt.Component, int, long, int, int, int, int, int, int, boolean, javax.swing.MenuElement[], javax.swing.MenuSelectionManager)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MenuDragMouseEvent(java.awt.Component source, int id, long when, int modifiers, int x, int y, int clickCount, boolean popupTrigger, javax.swing.MenuElement[] p, javax.swing.MenuSelectionManager m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MenuDragMouseEvent(java.awt.Component source, int id, long when, int modifiers, int x, int y, int xAbs, int yAbs, int clickCount, boolean popupTrigger, javax.swing.MenuElement[] p, javax.swing.MenuSelectionManager m) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.swing.MenuElement[] getPath() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.MenuDragMouseEvent.getPath()"); }
-  public javax.swing.MenuSelectionManager getMenuSelectionManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.event.MenuDragMouseEvent.getMenuSelectionManager()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.MenuElement[] getPath() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.MenuSelectionManager getMenuSelectionManager() { return null; }
   < ---- END java signatures ---- >
 }

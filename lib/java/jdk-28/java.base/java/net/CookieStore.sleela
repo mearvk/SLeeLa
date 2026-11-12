@@ -58,14 +58,22 @@ class CookieStore {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean remove(java.net.URI uri, java.net.HttpCookie cookie) { throw new AbstractMethodError("java.net.CookieStore.remove(java.net.URI, java.net.HttpCookie)"); }
-  public abstract java.util.List<java.net.HttpCookie> get(java.net.URI uri) { throw new AbstractMethodError("java.net.CookieStore.get(java.net.URI)"); }
-  public abstract void add(java.net.URI uri, java.net.HttpCookie cookie) { throw new AbstractMethodError("java.net.CookieStore.add(java.net.URI, java.net.HttpCookie)"); }
-  public abstract boolean removeAll() { throw new AbstractMethodError("java.net.CookieStore.removeAll()"); }
-  public abstract java.util.List<java.net.HttpCookie> getCookies() { throw new AbstractMethodError("java.net.CookieStore.getCookies()"); }
-  public abstract java.util.List<java.net.URI> getURIs() { throw new AbstractMethodError("java.net.CookieStore.getURIs()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean remove(java.net.URI uri, java.net.HttpCookie cookie) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.net.HttpCookie> get(java.net.URI uri) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void add(java.net.URI uri, java.net.HttpCookie cookie) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean removeAll() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.net.HttpCookie> getCookies() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<java.net.URI> getURIs() { return null; }
   < ---- END java signatures ---- >
 }

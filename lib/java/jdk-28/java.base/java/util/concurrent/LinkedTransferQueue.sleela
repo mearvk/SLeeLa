@@ -58,43 +58,77 @@ class LinkedTransferQueue<E> {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LinkedTransferQueue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.<init>()"); }
-  public LinkedTransferQueue(java.util.Collection<? extends E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.<init>(java.util.Collection<? extends E>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkedTransferQueue() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LinkedTransferQueue(java.util.Collection<? extends E> c) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean remove(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.remove(java.lang.Object)"); }
-  public int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.size()"); }
-  public void put(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.put(E)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.toString()"); }
-  public void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.clear()"); }
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.isEmpty()"); }
-  public boolean add(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.add(E)"); }
-  public <T> T[] toArray(T[] a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.toArray(T[])"); }
-  public java.lang.Object[] toArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.toArray()"); }
-  public java.util.Iterator<E> iterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.iterator()"); }
-  public boolean contains(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.contains(java.lang.Object)"); }
-  public java.util.Spliterator<E> spliterator() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.spliterator()"); }
-  public void forEach(java.util.function.Consumer<? super E> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.forEach(java.util.function.Consumer<? super E>)"); }
-  public E peek() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.peek()"); }
-  public void transfer(E e) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.transfer(E)"); }
-  public boolean removeIf(java.util.function.Predicate<? super E> filter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.removeIf(java.util.function.Predicate<? super E>)"); }
-  public boolean removeAll(java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.removeAll(java.util.Collection<?>)"); }
-  public boolean retainAll(java.util.Collection<?> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.retainAll(java.util.Collection<?>)"); }
-  public E poll() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.poll()"); }
-  public E poll(long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.poll(long, java.util.concurrent.TimeUnit)"); }
-  public boolean offer(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.offer(E)"); }
-  public boolean offer(E e, long timeout, java.util.concurrent.TimeUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.offer(E, long, java.util.concurrent.TimeUnit)"); }
-  public E take() throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.take()"); }
-  public int drainTo(java.util.Collection<? super E> c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.drainTo(java.util.Collection<? super E>)"); }
-  public int drainTo(java.util.Collection<? super E> c, int maxElements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.drainTo(java.util.Collection<? super E>, int)"); }
-  public int remainingCapacity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.remainingCapacity()"); }
-  public boolean tryTransfer(E e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.tryTransfer(E)"); }
-  public boolean tryTransfer(E e, long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.tryTransfer(E, long, java.util.concurrent.TimeUnit)"); }
-  public boolean hasWaitingConsumer() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.hasWaitingConsumer()"); }
-  public int getWaitingConsumerCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.LinkedTransferQueue.getWaitingConsumerCount()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean remove(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void put(E e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean add(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> T[] toArray(T[] a) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object[] toArray() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Iterator<E> iterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.lang.Object o) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.Spliterator<E> spliterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEach(java.util.function.Consumer<? super E> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E peek() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public void transfer(E e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean removeIf(java.util.function.Predicate<? super E> filter) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean removeAll(java.util.Collection<?> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean retainAll(java.util.Collection<?> c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public E poll() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public E poll(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean offer(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean offer(E e, long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public E take() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int drainTo(java.util.Collection<? super E> c) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int drainTo(java.util.Collection<? super E> c, int maxElements) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int remainingCapacity() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean tryTransfer(E e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
+  public boolean tryTransfer(E e, long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasWaitingConsumer() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getWaitingConsumerCount() { return 0; }
   < ---- END java signatures ---- >
 }

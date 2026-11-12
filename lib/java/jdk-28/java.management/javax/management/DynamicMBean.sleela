@@ -58,13 +58,20 @@ class DynamicMBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.management.AttributeList getAttributes(java.lang.String[] attributes) { throw new AbstractMethodError("javax.management.DynamicMBean.getAttributes(java.lang.String[])"); }
-  public abstract void setAttribute(javax.management.Attribute attribute) throws javax.management.AttributeNotFoundException, javax.management.InvalidAttributeValueException, javax.management.MBeanException, javax.management.ReflectionException { throw new AbstractMethodError("javax.management.DynamicMBean.setAttribute(javax.management.Attribute)"); }
-  public abstract java.lang.Object getAttribute(java.lang.String attribute) throws javax.management.AttributeNotFoundException, javax.management.MBeanException, javax.management.ReflectionException { throw new AbstractMethodError("javax.management.DynamicMBean.getAttribute(java.lang.String)"); }
-  public abstract javax.management.AttributeList setAttributes(javax.management.AttributeList attributes) { throw new AbstractMethodError("javax.management.DynamicMBean.setAttributes(javax.management.AttributeList)"); }
-  public abstract javax.management.MBeanInfo getMBeanInfo() { throw new AbstractMethodError("javax.management.DynamicMBean.getMBeanInfo()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.AttributeList getAttributes(java.lang.String[] attributes) { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.management.AttributeNotFoundException, javax.management.InvalidAttributeValueException, javax.management.MBeanException, javax.management.ReflectionException")
+  public void setAttribute(javax.management.Attribute attribute) { }
+  @throwable("java.lang.AbstractMethodError, javax.management.AttributeNotFoundException, javax.management.MBeanException, javax.management.ReflectionException")
+  public java.lang.Object getAttribute(java.lang.String attribute) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.AttributeList setAttributes(javax.management.AttributeList attributes) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.management.MBeanInfo getMBeanInfo() { return null; }
   < ---- END java signatures ---- >
 }

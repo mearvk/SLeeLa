@@ -58,17 +58,24 @@ class BaseMultiResolutionImage {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public BaseMultiResolutionImage(java.awt.Image... resolutionVariants) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.BaseMultiResolutionImage.<init>(java.awt.Image...)"); }
-  public BaseMultiResolutionImage(int baseImageIndex, java.awt.Image... resolutionVariants) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.BaseMultiResolutionImage.<init>(int, java.awt.Image...)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BaseMultiResolutionImage(java.awt.Image... resolutionVariants) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public BaseMultiResolutionImage(int baseImageIndex, java.awt.Image... resolutionVariants) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.Image getResolutionVariant(double destImageWidth, double destImageHeight) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.BaseMultiResolutionImage.getResolutionVariant(double, double)"); }
-  public java.util.List<java.awt.Image> getResolutionVariants() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.BaseMultiResolutionImage.getResolutionVariants()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Image getResolutionVariant(double destImageWidth, double destImageHeight) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.util.List<java.awt.Image> getResolutionVariants() { return null; }
   @JavaProtected
-  java.awt.Image getBaseImage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.BaseMultiResolutionImage.getBaseImage()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.awt.Image getBaseImage() { return null; }
   < ---- END java signatures ---- >
 }

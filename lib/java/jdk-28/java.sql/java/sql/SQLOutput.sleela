@@ -58,36 +58,66 @@ class SQLOutput {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default void writeObject(java.lang.Object x, java.sql.SQLType targetSqlType) throws java.sql.SQLException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.sql.SQLOutput.writeObject(java.lang.Object, java.sql.SQLType)"); }
-  public abstract void writeObject(java.sql.SQLData x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeObject(java.sql.SQLData)"); }
-  public abstract void writeInt(int x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeInt(int)"); }
-  public abstract void writeLong(long x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeLong(long)"); }
-  public abstract void writeByte(byte x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeByte(byte)"); }
-  public abstract void writeShort(short x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeShort(short)"); }
-  public abstract void writeBytes(byte[] x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeBytes(byte[])"); }
-  public abstract void writeFloat(float x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeFloat(float)"); }
-  public abstract void writeDouble(double x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeDouble(double)"); }
-  public abstract void writeBoolean(boolean x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeBoolean(boolean)"); }
-  public abstract void writeString(java.lang.String x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeString(java.lang.String)"); }
-  public abstract void writeArray(java.sql.Array x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeArray(java.sql.Array)"); }
-  public abstract void writeBigDecimal(java.math.BigDecimal x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeBigDecimal(java.math.BigDecimal)"); }
-  public abstract void writeDate(java.sql.Date x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeDate(java.sql.Date)"); }
-  public abstract void writeTime(java.sql.Time x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeTime(java.sql.Time)"); }
-  public abstract void writeTimestamp(java.sql.Timestamp x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeTimestamp(java.sql.Timestamp)"); }
-  public abstract void writeCharacterStream(java.io.Reader x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeCharacterStream(java.io.Reader)"); }
-  public abstract void writeAsciiStream(java.io.InputStream x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeAsciiStream(java.io.InputStream)"); }
-  public abstract void writeBinaryStream(java.io.InputStream x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeBinaryStream(java.io.InputStream)"); }
-  public abstract void writeRef(java.sql.Ref x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeRef(java.sql.Ref)"); }
-  public abstract void writeBlob(java.sql.Blob x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeBlob(java.sql.Blob)"); }
-  public abstract void writeClob(java.sql.Clob x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeClob(java.sql.Clob)"); }
-  public abstract void writeStruct(java.sql.Struct x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeStruct(java.sql.Struct)"); }
-  public abstract void writeURL(java.net.URL x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeURL(java.net.URL)"); }
-  public abstract void writeNString(java.lang.String x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeNString(java.lang.String)"); }
-  public abstract void writeNClob(java.sql.NClob x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeNClob(java.sql.NClob)"); }
-  public abstract void writeRowId(java.sql.RowId x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeRowId(java.sql.RowId)"); }
-  public abstract void writeSQLXML(java.sql.SQLXML x) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.SQLOutput.writeSQLXML(java.sql.SQLXML)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
+  public default void writeObject(java.lang.Object x, java.sql.SQLType targetSqlType) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeObject(java.sql.SQLData x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeInt(int x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeLong(long x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeByte(byte x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeShort(short x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeBytes(byte[] x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeFloat(float x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeDouble(double x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeBoolean(boolean x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeString(java.lang.String x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeArray(java.sql.Array x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeBigDecimal(java.math.BigDecimal x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeDate(java.sql.Date x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeTime(java.sql.Time x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeTimestamp(java.sql.Timestamp x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeCharacterStream(java.io.Reader x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeAsciiStream(java.io.InputStream x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeBinaryStream(java.io.InputStream x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeRef(java.sql.Ref x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeBlob(java.sql.Blob x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeClob(java.sql.Clob x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeStruct(java.sql.Struct x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeURL(java.net.URL x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeNString(java.lang.String x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeNClob(java.sql.NClob x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeRowId(java.sql.RowId x) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void writeSQLXML(java.sql.SQLXML x) { }
   < ---- END java signatures ---- >
 }

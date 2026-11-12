@@ -58,19 +58,32 @@ class MouseEvent {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int getScreenX() { throw new AbstractMethodError("org.w3c.dom.events.MouseEvent.getScreenX()"); }
-  public abstract int getScreenY() { throw new AbstractMethodError("org.w3c.dom.events.MouseEvent.getScreenY()"); }
-  public abstract int getClientX() { throw new AbstractMethodError("org.w3c.dom.events.MouseEvent.getClientX()"); }
-  public abstract int getClientY() { throw new AbstractMethodError("org.w3c.dom.events.MouseEvent.getClientY()"); }
-  public abstract boolean getCtrlKey() { throw new AbstractMethodError("org.w3c.dom.events.MouseEvent.getCtrlKey()"); }
-  public abstract boolean getShiftKey() { throw new AbstractMethodError("org.w3c.dom.events.MouseEvent.getShiftKey()"); }
-  public abstract boolean getAltKey() { throw new AbstractMethodError("org.w3c.dom.events.MouseEvent.getAltKey()"); }
-  public abstract boolean getMetaKey() { throw new AbstractMethodError("org.w3c.dom.events.MouseEvent.getMetaKey()"); }
-  public abstract org.w3c.dom.events.EventTarget getRelatedTarget() { throw new AbstractMethodError("org.w3c.dom.events.MouseEvent.getRelatedTarget()"); }
-  public abstract void initMouseEvent(java.lang.String typeArg, boolean canBubbleArg, boolean cancelableArg, org.w3c.dom.views.AbstractView viewArg, int detailArg, int screenXArg, int screenYArg, int clientXArg, int clientYArg, boolean ctrlKeyArg, boolean altKeyArg, boolean shiftKeyArg, boolean metaKeyArg, short buttonArg, org.w3c.dom.events.EventTarget relatedTargetArg) { throw new AbstractMethodError("org.w3c.dom.events.MouseEvent.initMouseEvent(java.lang.String, boolean, boolean, org.w3c.dom.views.AbstractView, int, int, int, int, int, boolean, boolean, boolean, boolean, short, org.w3c.dom.events.EventTarget)"); }
-  public abstract short getButton() { throw new AbstractMethodError("org.w3c.dom.events.MouseEvent.getButton()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int getScreenX() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getScreenY() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getClientX() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getClientY() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getCtrlKey() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getShiftKey() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getAltKey() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getMetaKey() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.events.EventTarget getRelatedTarget() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void initMouseEvent(java.lang.String typeArg, boolean canBubbleArg, boolean cancelableArg, org.w3c.dom.views.AbstractView viewArg, int detailArg, int screenXArg, int screenYArg, int clientXArg, int clientYArg, boolean ctrlKeyArg, boolean altKeyArg, boolean shiftKeyArg, boolean metaKeyArg, short buttonArg, org.w3c.dom.events.EventTarget relatedTargetArg) { }
+  @throwable("java.lang.AbstractMethodError")
+  public short getButton() { return 0; }
   < ---- END java signatures ---- >
 }

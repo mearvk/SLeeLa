@@ -58,7 +58,9 @@ class AttachNotSupportedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AttachNotSupportedException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.AttachNotSupportedException.<init>()"); }
-  public AttachNotSupportedException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.tools.attach.AttachNotSupportedException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttachNotSupportedException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AttachNotSupportedException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

@@ -58,24 +58,38 @@ class JButton {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public JButton(java.lang.String text, javax.swing.Icon icon) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JButton.<init>(java.lang.String, javax.swing.Icon)"); }
-  public JButton(javax.swing.Action a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JButton.<init>(javax.swing.Action)"); }
-  public JButton(java.lang.String text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JButton.<init>(java.lang.String)"); }
-  public JButton() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JButton.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JButton(java.lang.String text, javax.swing.Icon icon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JButton(javax.swing.Action a) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JButton(java.lang.String text) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JButton() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JButton.paramString()"); }
-  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JButton.updateUI()"); }
-  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JButton.getUIClassID()"); }
-  public boolean isDefaultButton() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JButton.isDefaultButton()"); }
-  public boolean isDefaultCapable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JButton.isDefaultCapable()"); }
-  public void setDefaultCapable(boolean defaultCapable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JButton.setDefaultCapable(boolean)"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JButton.getAccessibleContext()"); }
-  public void removeNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JButton.removeNotify()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDefaultButton() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDefaultCapable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultCapable(boolean defaultCapable) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeNotify() { }
   < ---- END java signatures ---- >
 }

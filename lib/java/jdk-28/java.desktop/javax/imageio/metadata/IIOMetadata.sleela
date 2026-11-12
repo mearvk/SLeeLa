@@ -69,47 +69,75 @@ class IIOMetadata {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  IIOMetadata() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  IIOMetadata() { }
   @JavaProtected
-  IIOMetadata(boolean standardMetadataFormatSupported, java.lang.String nativeMetadataFormatName, java.lang.String nativeMetadataFormatClassName, java.lang.String[] extraMetadataFormatNames, java.lang.String[] extraMetadataFormatClassNames) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.<init>(boolean, java.lang.String, java.lang.String, java.lang.String[], java.lang.String[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  IIOMetadata(boolean standardMetadataFormatSupported, java.lang.String nativeMetadataFormatName, java.lang.String nativeMetadataFormatClassName, java.lang.String[] extraMetadataFormatNames, java.lang.String[] extraMetadataFormatClassNames) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void reset() { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadata.reset()"); }
-  public abstract boolean isReadOnly() { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadata.isReadOnly()"); }
-  public java.lang.String getNativeMetadataFormatName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getNativeMetadataFormatName()"); }
-  public boolean isStandardMetadataFormatSupported() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.isStandardMetadataFormatSupported()"); }
-  public java.lang.String[] getExtraMetadataFormatNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getExtraMetadataFormatNames()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void reset() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isReadOnly() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getNativeMetadataFormatName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isStandardMetadataFormatSupported() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getExtraMetadataFormatNames() { return null; }
   @JavaProtected
-  javax.imageio.metadata.IIOMetadataNode getStandardChromaNode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getStandardChromaNode()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.imageio.metadata.IIOMetadataNode getStandardChromaNode() { return null; }
   @JavaProtected
-  javax.imageio.metadata.IIOMetadataNode getStandardCompressionNode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getStandardCompressionNode()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.imageio.metadata.IIOMetadataNode getStandardCompressionNode() { return null; }
   @JavaProtected
-  javax.imageio.metadata.IIOMetadataNode getStandardDataNode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getStandardDataNode()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.imageio.metadata.IIOMetadataNode getStandardDataNode() { return null; }
   @JavaProtected
-  javax.imageio.metadata.IIOMetadataNode getStandardDimensionNode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getStandardDimensionNode()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.imageio.metadata.IIOMetadataNode getStandardDimensionNode() { return null; }
   @JavaProtected
-  javax.imageio.metadata.IIOMetadataNode getStandardDocumentNode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getStandardDocumentNode()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.imageio.metadata.IIOMetadataNode getStandardDocumentNode() { return null; }
   @JavaProtected
-  javax.imageio.metadata.IIOMetadataNode getStandardTextNode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getStandardTextNode()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.imageio.metadata.IIOMetadataNode getStandardTextNode() { return null; }
   @JavaProtected
-  javax.imageio.metadata.IIOMetadataNode getStandardTileNode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getStandardTileNode()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.imageio.metadata.IIOMetadataNode getStandardTileNode() { return null; }
   @JavaProtected
-  javax.imageio.metadata.IIOMetadataNode getStandardTransparencyNode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getStandardTransparencyNode()"); }
-  public abstract void mergeTree(java.lang.String formatName, org.w3c.dom.Node root) throws javax.imageio.metadata.IIOInvalidTreeException { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadata.mergeTree(java.lang.String, org.w3c.dom.Node)"); }
-  public javax.imageio.metadata.IIOMetadataController getController() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getController()"); }
-  public boolean hasController() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.hasController()"); }
-  public java.lang.String[] getMetadataFormatNames() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getMetadataFormatNames()"); }
-  public javax.imageio.metadata.IIOMetadataFormat getMetadataFormat(java.lang.String formatName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getMetadataFormat(java.lang.String)"); }
-  public abstract org.w3c.dom.Node getAsTree(java.lang.String formatName) { throw new AbstractMethodError("javax.imageio.metadata.IIOMetadata.getAsTree(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.imageio.metadata.IIOMetadataNode getStandardTransparencyNode() { return null; }
+  @throwable("java.lang.AbstractMethodError, javax.imageio.metadata.IIOInvalidTreeException")
+  public void mergeTree(java.lang.String formatName, org.w3c.dom.Node root) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.metadata.IIOMetadataController getController() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasController() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String[] getMetadataFormatNames() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.metadata.IIOMetadataFormat getMetadataFormat(java.lang.String formatName) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Node getAsTree(java.lang.String formatName) { return null; }
   @JavaProtected
-  final javax.imageio.metadata.IIOMetadataNode getStandardTree() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getStandardTree()"); }
-  public void setFromTree(java.lang.String formatName, org.w3c.dom.Node root) throws javax.imageio.metadata.IIOInvalidTreeException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.setFromTree(java.lang.String, org.w3c.dom.Node)"); }
-  public void setController(javax.imageio.metadata.IIOMetadataController controller) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.setController(javax.imageio.metadata.IIOMetadataController)"); }
-  public javax.imageio.metadata.IIOMetadataController getDefaultController() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.getDefaultController()"); }
-  public boolean activateController() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.metadata.IIOMetadata.activateController()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  final javax.imageio.metadata.IIOMetadataNode getStandardTree() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.imageio.metadata.IIOInvalidTreeException")
+  public void setFromTree(java.lang.String formatName, org.w3c.dom.Node root) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setController(javax.imageio.metadata.IIOMetadataController controller) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.imageio.metadata.IIOMetadataController getDefaultController() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean activateController() { return false; }
   < ---- END java signatures ---- >
 }

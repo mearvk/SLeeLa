@@ -58,7 +58,9 @@ class RelationNotFoundException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RelationNotFoundException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationNotFoundException.<init>()"); }
-  public RelationNotFoundException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.RelationNotFoundException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RelationNotFoundException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RelationNotFoundException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

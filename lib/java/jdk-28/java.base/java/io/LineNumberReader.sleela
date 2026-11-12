@@ -58,21 +58,33 @@ class LineNumberReader {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public LineNumberReader(java.io.Reader in) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.LineNumberReader.<init>(java.io.Reader)"); }
-  public LineNumberReader(java.io.Reader in, int sz) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.LineNumberReader.<init>(java.io.Reader, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LineNumberReader(java.io.Reader in) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public LineNumberReader(java.io.Reader in, int sz) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void reset() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.LineNumberReader.reset()"); }
-  public java.lang.String readLine() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.LineNumberReader.readLine()"); }
-  public void mark(int readAheadLimit) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.LineNumberReader.mark(int)"); }
-  public int read(char[] cbuf, int off, int len) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.LineNumberReader.read(char[], int, int)"); }
-  public int read() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.LineNumberReader.read()"); }
-  public long skip(long n) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.LineNumberReader.skip(long)"); }
-  public int getLineNumber() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.LineNumberReader.getLineNumber()"); }
-  public void setLineNumber(int lineNumber) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.LineNumberReader.setLineNumber(int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void reset() { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public java.lang.String readLine() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public void mark(int readAheadLimit) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public int read(char[] cbuf, int off, int len) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public int read() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public long skip(long n) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLineNumber() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLineNumber(int lineNumber) { }
   < ---- END java signatures ---- >
 }

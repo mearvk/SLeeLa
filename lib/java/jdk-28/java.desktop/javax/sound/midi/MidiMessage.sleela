@@ -64,18 +64,26 @@ class MidiMessage {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  MidiMessage(byte[] data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiMessage.<init>(byte[])"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  MidiMessage(byte[] data) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object clone() { throw new AbstractMethodError("javax.sound.midi.MidiMessage.clone()"); }
-  public int getLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiMessage.getLength()"); }
-  public byte[] getMessage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiMessage.getMessage()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLength() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public byte[] getMessage() { return null; }
   @JavaProtected
-  void setMessage(byte[] data, int length) throws javax.sound.midi.InvalidMidiDataException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiMessage.setMessage(byte[], int)"); }
-  public int getStatus() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sound.midi.MidiMessage.getStatus()"); }
+  @throwable("java.lang.UnsupportedOperationException, javax.sound.midi.InvalidMidiDataException")
+  void setMessage(byte[] data, int length) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getStatus() { return 0; }
   < ---- END java signatures ---- >
 }

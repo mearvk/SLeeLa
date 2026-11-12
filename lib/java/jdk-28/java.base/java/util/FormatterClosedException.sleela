@@ -58,6 +58,7 @@ class FormatterClosedException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public FormatterClosedException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.FormatterClosedException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public FormatterClosedException() { }
   < ---- END java constructors ---- >
 }

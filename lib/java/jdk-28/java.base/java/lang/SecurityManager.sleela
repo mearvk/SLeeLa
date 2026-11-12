@@ -58,42 +58,74 @@ class SecurityManager {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SecurityManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SecurityManager() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void checkCreateClassLoader() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkCreateClassLoader()"); }
-  public java.lang.ThreadGroup getThreadGroup() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.getThreadGroup()"); }
-  public void checkAccess(java.lang.Thread t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkAccess(java.lang.Thread)"); }
-  public void checkExit(int status) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkExit(int)"); }
-  public void checkPermission(java.security.Permission perm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkPermission(java.security.Permission)"); }
-  public void checkPermission(java.security.Permission perm, java.lang.Object context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkPermission(java.security.Permission, java.lang.Object)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkCreateClassLoader() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.ThreadGroup getThreadGroup() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkAccess(java.lang.Thread t) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkExit(int status) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkPermission(java.security.Permission perm) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkPermission(java.security.Permission perm, java.lang.Object context) { }
   @JavaProtected
-  java.lang.Class<?>[] getClassContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.getClassContext()"); }
-  public java.lang.Object getSecurityContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.getSecurityContext()"); }
-  public void checkExec(java.lang.String cmd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkExec(java.lang.String)"); }
-  public void checkLink(java.lang.String lib) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkLink(java.lang.String)"); }
-  public void checkRead(java.lang.String file) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkRead(java.lang.String)"); }
-  public void checkRead(java.lang.String file, java.lang.Object context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkRead(java.lang.String, java.lang.Object)"); }
-  public void checkRead(java.io.FileDescriptor fd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkRead(java.io.FileDescriptor)"); }
-  public void checkWrite(java.lang.String file) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkWrite(java.lang.String)"); }
-  public void checkWrite(java.io.FileDescriptor fd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkWrite(java.io.FileDescriptor)"); }
-  public void checkDelete(java.lang.String file) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkDelete(java.lang.String)"); }
-  public void checkConnect(java.lang.String host, int port) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkConnect(java.lang.String, int)"); }
-  public void checkConnect(java.lang.String host, int port, java.lang.Object context) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkConnect(java.lang.String, int, java.lang.Object)"); }
-  public void checkListen(int port) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkListen(int)"); }
-  public void checkAccept(java.lang.String host, int port) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkAccept(java.lang.String, int)"); }
-  public void checkMulticast(java.net.InetAddress maddr) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkMulticast(java.net.InetAddress)"); }
-  public void checkMulticast(java.net.InetAddress maddr, byte ttl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkMulticast(java.net.InetAddress, byte)"); }
-  public void checkPropertiesAccess() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkPropertiesAccess()"); }
-  public void checkPropertyAccess(java.lang.String key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkPropertyAccess(java.lang.String)"); }
-  public void checkPrintJobAccess() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkPrintJobAccess()"); }
-  public void checkPackageAccess(java.lang.String pkg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkPackageAccess(java.lang.String)"); }
-  public void checkPackageDefinition(java.lang.String pkg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkPackageDefinition(java.lang.String)"); }
-  public void checkSetFactory() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkSetFactory()"); }
-  public void checkSecurityAccess(java.lang.String target) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.SecurityManager.checkSecurityAccess(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.Class<?>[] getClassContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getSecurityContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkExec(java.lang.String cmd) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkLink(java.lang.String lib) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkRead(java.lang.String file) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkRead(java.lang.String file, java.lang.Object context) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkRead(java.io.FileDescriptor fd) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkWrite(java.lang.String file) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkWrite(java.io.FileDescriptor fd) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkDelete(java.lang.String file) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkConnect(java.lang.String host, int port) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkConnect(java.lang.String host, int port, java.lang.Object context) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkListen(int port) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkAccept(java.lang.String host, int port) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkMulticast(java.net.InetAddress maddr) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkMulticast(java.net.InetAddress maddr, byte ttl) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkPropertiesAccess() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkPropertyAccess(java.lang.String key) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkPrintJobAccess() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkPackageAccess(java.lang.String pkg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkPackageDefinition(java.lang.String pkg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkSetFactory() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void checkSecurityAccess(java.lang.String target) { }
   < ---- END java signatures ---- >
 }

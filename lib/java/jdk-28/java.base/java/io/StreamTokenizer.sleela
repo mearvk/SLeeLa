@@ -69,28 +69,47 @@ class StreamTokenizer {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StreamTokenizer(java.io.Reader r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.<init>(java.io.Reader)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StreamTokenizer(java.io.Reader r) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.toString()"); }
-  public int nextToken() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.nextToken()"); }
-  public void pushBack() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.pushBack()"); }
-  public void wordChars(int low, int hi) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.wordChars(int, int)"); }
-  public void whitespaceChars(int low, int hi) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.whitespaceChars(int, int)"); }
-  public void commentChar(int ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.commentChar(int)"); }
-  public void quoteChar(int ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.quoteChar(int)"); }
-  public void parseNumbers() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.parseNumbers()"); }
-  public void resetSyntax() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.resetSyntax()"); }
-  public void ordinaryChars(int low, int hi) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.ordinaryChars(int, int)"); }
-  public void ordinaryChar(int ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.ordinaryChar(int)"); }
-  public void eolIsSignificant(boolean flag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.eolIsSignificant(boolean)"); }
-  public void slashStarComments(boolean flag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.slashStarComments(boolean)"); }
-  public void slashSlashComments(boolean flag) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.slashSlashComments(boolean)"); }
-  public void lowerCaseMode(boolean fl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.lowerCaseMode(boolean)"); }
-  public int lineno() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.StreamTokenizer.lineno()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public int nextToken() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void pushBack() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void wordChars(int low, int hi) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void whitespaceChars(int low, int hi) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void commentChar(int ch) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void quoteChar(int ch) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void parseNumbers() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void resetSyntax() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ordinaryChars(int low, int hi) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ordinaryChar(int ch) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void eolIsSignificant(boolean flag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void slashStarComments(boolean flag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void slashSlashComments(boolean flag) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void lowerCaseMode(boolean fl) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int lineno() { return 0; }
   < ---- END java signatures ---- >
 }

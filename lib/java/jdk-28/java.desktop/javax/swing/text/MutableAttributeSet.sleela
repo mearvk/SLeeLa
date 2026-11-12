@@ -58,13 +58,20 @@ class MutableAttributeSet {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void addAttribute(java.lang.Object name, java.lang.Object value) { throw new AbstractMethodError("javax.swing.text.MutableAttributeSet.addAttribute(java.lang.Object, java.lang.Object)"); }
-  public abstract void addAttributes(javax.swing.text.AttributeSet attributes) { throw new AbstractMethodError("javax.swing.text.MutableAttributeSet.addAttributes(javax.swing.text.AttributeSet)"); }
-  public abstract void removeAttribute(java.lang.Object name) { throw new AbstractMethodError("javax.swing.text.MutableAttributeSet.removeAttribute(java.lang.Object)"); }
-  public abstract void removeAttributes(javax.swing.text.AttributeSet attributes) { throw new AbstractMethodError("javax.swing.text.MutableAttributeSet.removeAttributes(javax.swing.text.AttributeSet)"); }
-  public abstract void setResolveParent(javax.swing.text.AttributeSet parent) { throw new AbstractMethodError("javax.swing.text.MutableAttributeSet.setResolveParent(javax.swing.text.AttributeSet)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void addAttribute(java.lang.Object name, java.lang.Object value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addAttributes(javax.swing.text.AttributeSet attributes) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeAttribute(java.lang.Object name) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeAttributes(javax.swing.text.AttributeSet attributes) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setResolveParent(javax.swing.text.AttributeSet parent) { }
   < ---- END java signatures ---- >
 }

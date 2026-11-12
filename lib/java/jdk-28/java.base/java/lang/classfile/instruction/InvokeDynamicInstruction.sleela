@@ -58,15 +58,24 @@ class InvokeDynamicInstruction {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default java.lang.classfile.constantpool.Utf8Entry name() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.InvokeDynamicInstruction.name()"); }
-  public default java.lang.classfile.constantpool.Utf8Entry type() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.InvokeDynamicInstruction.type()"); }
-  public static java.lang.classfile.instruction.InvokeDynamicInstruction of(java.lang.classfile.constantpool.InvokeDynamicEntry invokedynamic) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.InvokeDynamicInstruction.of(java.lang.classfile.constantpool.InvokeDynamicEntry)"); }
-  public default java.lang.constant.DirectMethodHandleDesc bootstrapMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.InvokeDynamicInstruction.bootstrapMethod()"); }
-  public default java.util.List<java.lang.constant.ConstantDesc> bootstrapArgs() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.InvokeDynamicInstruction.bootstrapArgs()"); }
-  public default java.lang.constant.MethodTypeDesc typeSymbol() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.InvokeDynamicInstruction.typeSymbol()"); }
-  public abstract java.lang.classfile.constantpool.InvokeDynamicEntry invokedynamic() { throw new AbstractMethodError("java.lang.classfile.instruction.InvokeDynamicInstruction.invokedynamic()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.constantpool.Utf8Entry name() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.classfile.constantpool.Utf8Entry type() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.instruction.InvokeDynamicInstruction of(java.lang.classfile.constantpool.InvokeDynamicEntry invokedynamic) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.constant.DirectMethodHandleDesc bootstrapMethod() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.List<java.lang.constant.ConstantDesc> bootstrapArgs() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.constant.MethodTypeDesc typeSymbol() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.InvokeDynamicEntry invokedynamic() { return null; }
   < ---- END java signatures ---- >
 }

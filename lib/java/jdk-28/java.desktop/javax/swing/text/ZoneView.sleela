@@ -58,32 +58,48 @@ class ZoneView {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ZoneView(javax.swing.text.Element elem, int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.<init>(javax.swing.text.Element, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ZoneView(javax.swing.text.Element elem, int axis) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void insertUpdate(javax.swing.event.DocumentEvent changes, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.insertUpdate(javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
-  public void removeUpdate(javax.swing.event.DocumentEvent changes, java.awt.Shape a, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.removeUpdate(javax.swing.event.DocumentEvent, java.awt.Shape, javax.swing.text.ViewFactory)"); }
-  public int getMaxZonesLoaded() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.getMaxZonesLoaded()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void insertUpdate(javax.swing.event.DocumentEvent changes, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeUpdate(javax.swing.event.DocumentEvent changes, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaxZonesLoaded() { return 0; }
   @JavaProtected
-  void unloadZone(javax.swing.text.View zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.unloadZone(javax.swing.text.View)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void unloadZone(javax.swing.text.View zone) { }
   @JavaProtected
-  javax.swing.text.View createZone(int p0, int p1) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.createZone(int, int)"); }
-  public int getMaximumZoneSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.getMaximumZoneSize()"); }
-  public void setMaximumZoneSize(int size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.setMaximumZoneSize(int)"); }
-  public void setMaxZonesLoaded(int mzl) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.setMaxZonesLoaded(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.text.View createZone(int p0, int p1) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMaximumZoneSize() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximumZoneSize(int size) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaxZonesLoaded(int mzl) { }
   @JavaProtected
-  void zoneWasLoaded(javax.swing.text.View zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.zoneWasLoaded(javax.swing.text.View)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void zoneWasLoaded(javax.swing.text.View zone) { }
   @JavaProtected
-  boolean isZoneLoaded(javax.swing.text.View zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.isZoneLoaded(javax.swing.text.View)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isZoneLoaded(javax.swing.text.View zone) { return false; }
   @JavaProtected
-  int getViewIndexAtPosition(int pos) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.getViewIndexAtPosition(int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  int getViewIndexAtPosition(int pos) { return 0; }
   @JavaProtected
-  void loadChildren(javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.loadChildren(javax.swing.text.ViewFactory)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void loadChildren(javax.swing.text.ViewFactory f) { }
   @JavaProtected
-  boolean updateChildren(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, javax.swing.text.ViewFactory f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.ZoneView.updateChildren(javax.swing.event.DocumentEvent.ElementChange, javax.swing.event.DocumentEvent, javax.swing.text.ViewFactory)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean updateChildren(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, javax.swing.text.ViewFactory f) { return false; }
   < ---- END java signatures ---- >
 }

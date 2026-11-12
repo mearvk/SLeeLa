@@ -58,7 +58,9 @@ class SizeLimitExceededException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SizeLimitExceededException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.SizeLimitExceededException.<init>()"); }
-  public SizeLimitExceededException(java.lang.String explanation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.naming.SizeLimitExceededException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SizeLimitExceededException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SizeLimitExceededException(java.lang.String explanation) { }
   < ---- END java constructors ---- >
 }

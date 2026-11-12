@@ -58,7 +58,9 @@ class AbstractMethodError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public AbstractMethodError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.AbstractMethodError.<init>()"); }
-  public AbstractMethodError(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.AbstractMethodError.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AbstractMethodError() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public AbstractMethodError(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

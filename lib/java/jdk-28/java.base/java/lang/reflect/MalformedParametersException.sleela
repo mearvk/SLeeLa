@@ -58,7 +58,9 @@ class MalformedParametersException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MalformedParametersException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.MalformedParametersException.<init>()"); }
-  public MalformedParametersException(java.lang.String reason) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.MalformedParametersException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MalformedParametersException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MalformedParametersException(java.lang.String reason) { }
   < ---- END java constructors ---- >
 }

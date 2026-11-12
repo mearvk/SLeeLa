@@ -59,10 +59,14 @@ class SelectableChannelCloser {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void implCloseChannel(java.nio.channels.SelectableChannel sc) throws java.io.IOException { throw new AbstractMethodError("jdk.nio.Channels.SelectableChannelCloser.implCloseChannel(java.nio.channels.SelectableChannel)"); }
-  public abstract void implReleaseChannel(java.nio.channels.SelectableChannel sc) throws java.io.IOException { throw new AbstractMethodError("jdk.nio.Channels.SelectableChannelCloser.implReleaseChannel(java.nio.channels.SelectableChannel)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void implCloseChannel(java.nio.channels.SelectableChannel sc) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void implReleaseChannel(java.nio.channels.SelectableChannel sc) { }
   < ---- END java signatures ---- >
 }

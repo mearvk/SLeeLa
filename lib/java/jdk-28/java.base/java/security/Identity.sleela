@@ -59,29 +59,48 @@ class Identity {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  Identity() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.<init>()"); }
-  public Identity(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.<init>(java.lang.String)"); }
-  public Identity(java.lang.String name, java.security.IdentityScope scope) throws java.security.KeyManagementException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.<init>(java.lang.String, java.security.IdentityScope)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  Identity() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Identity(java.lang.String name) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.KeyManagementException")
+  public Identity(java.lang.String name, java.security.IdentityScope scope) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.getName()"); }
-  public final boolean equals(java.lang.Object identity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.equals(java.lang.Object)"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.toString()"); }
-  public java.lang.String toString(boolean detailed) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.toString(boolean)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.hashCode()"); }
-  public final java.security.IdentityScope getScope() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.getScope()"); }
-  public java.security.PublicKey getPublicKey() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.getPublicKey()"); }
-  public java.lang.String getInfo() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.getInfo()"); }
-  public java.security.Certificate[] certificates() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.certificates()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean equals(java.lang.Object identity) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString(boolean detailed) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.security.IdentityScope getScope() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.PublicKey getPublicKey() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getInfo() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.security.Certificate[] certificates() { return null; }
   @JavaProtected
-  boolean identityEquals(java.security.Identity identity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.identityEquals(java.security.Identity)"); }
-  public void setPublicKey(java.security.PublicKey key) throws java.security.KeyManagementException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.setPublicKey(java.security.PublicKey)"); }
-  public void setInfo(java.lang.String info) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.setInfo(java.lang.String)"); }
-  public void addCertificate(java.security.Certificate certificate) throws java.security.KeyManagementException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.addCertificate(java.security.Certificate)"); }
-  public void removeCertificate(java.security.Certificate certificate) throws java.security.KeyManagementException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.Identity.removeCertificate(java.security.Certificate)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean identityEquals(java.security.Identity identity) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.security.KeyManagementException")
+  public void setPublicKey(java.security.PublicKey key) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setInfo(java.lang.String info) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.KeyManagementException")
+  public void addCertificate(java.security.Certificate certificate) { }
+  @throwable("java.lang.UnsupportedOperationException, java.security.KeyManagementException")
+  public void removeCertificate(java.security.Certificate certificate) { }
   < ---- END java signatures ---- >
 }

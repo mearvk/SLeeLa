@@ -58,7 +58,9 @@ class MonitorSettingException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MonitorSettingException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.MonitorSettingException.<init>()"); }
-  public MonitorSettingException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.monitor.MonitorSettingException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MonitorSettingException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MonitorSettingException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

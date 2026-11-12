@@ -59,10 +59,15 @@ class RuntimeException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  RuntimeException(java.lang.String message, java.lang.Throwable cause, boolean enableSuppression, boolean writableStackTrace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.RuntimeException.<init>(java.lang.String, java.lang.Throwable, boolean, boolean)"); }
-  public RuntimeException(java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.RuntimeException.<init>(java.lang.Throwable)"); }
-  public RuntimeException(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.RuntimeException.<init>(java.lang.String, java.lang.Throwable)"); }
-  public RuntimeException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.RuntimeException.<init>(java.lang.String)"); }
-  public RuntimeException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.RuntimeException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  RuntimeException(java.lang.String message, java.lang.Throwable cause, boolean enableSuppression, boolean writableStackTrace) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RuntimeException(java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RuntimeException(java.lang.String message, java.lang.Throwable cause) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RuntimeException(java.lang.String message) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RuntimeException() { }
   < ---- END java constructors ---- >
 }

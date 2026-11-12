@@ -58,17 +58,25 @@ class NotificationFilterSupport {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public NotificationFilterSupport() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationFilterSupport.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public NotificationFilterSupport() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public synchronized boolean isNotificationEnabled(javax.management.Notification notification) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationFilterSupport.isNotificationEnabled(javax.management.Notification)"); }
-  public synchronized void enableType(java.lang.String prefix) throws java.lang.IllegalArgumentException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationFilterSupport.enableType(java.lang.String)"); }
-  public synchronized void disableType(java.lang.String prefix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationFilterSupport.disableType(java.lang.String)"); }
-  public synchronized void disableAllTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationFilterSupport.disableAllTypes()"); }
-  public synchronized java.util.Vector<java.lang.String> getEnabledTypes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.NotificationFilterSupport.getEnabledTypes()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized boolean isNotificationEnabled(javax.management.Notification notification) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
+  public synchronized void enableType(java.lang.String prefix) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void disableType(java.lang.String prefix) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void disableAllTypes() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.util.Vector<java.lang.String> getEnabledTypes() { return null; }
   < ---- END java signatures ---- >
 }

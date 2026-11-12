@@ -59,21 +59,33 @@ class FileLock {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  FileLock(java.nio.channels.FileChannel channel, long position, long size, boolean shared) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.FileLock.<init>(java.nio.channels.FileChannel, long, long, boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  FileLock(java.nio.channels.FileChannel channel, long position, long size, boolean shared) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public final long size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.FileLock.size()"); }
-  public final java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.FileLock.toString()"); }
-  public final long position() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.FileLock.position()"); }
-  public abstract void release() throws java.io.IOException { throw new AbstractMethodError("java.nio.channels.FileLock.release()"); }
-  public final java.nio.channels.FileChannel channel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.FileLock.channel()"); }
-  public abstract boolean isValid() { throw new AbstractMethodError("java.nio.channels.FileLock.isValid()"); }
-  public java.nio.channels.Channel acquiredBy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.FileLock.acquiredBy()"); }
-  public final boolean isShared() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.FileLock.isShared()"); }
-  public final boolean overlaps(long position, long size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.channels.FileLock.overlaps(long, long)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long size() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final long position() { return 0; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void release() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final java.nio.channels.FileChannel channel() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isValid() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.nio.channels.Channel acquiredBy() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isShared() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean overlaps(long position, long size) { return false; }
   < ---- END java signatures ---- >
 }

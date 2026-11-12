@@ -58,13 +58,20 @@ class HotSpotDiagnosticMXBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public default void dumpThreads(java.lang.String outputFile, com.sun.management.HotSpotDiagnosticMXBean.ThreadDumpFormat format) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.management.HotSpotDiagnosticMXBean.dumpThreads(java.lang.String, com.sun.management.HotSpotDiagnosticMXBean.ThreadDumpFormat)"); }
-  public abstract void dumpHeap(java.lang.String outputFile, boolean live) throws java.io.IOException { throw new AbstractMethodError("com.sun.management.HotSpotDiagnosticMXBean.dumpHeap(java.lang.String, boolean)"); }
-  public abstract java.util.List<com.sun.management.VMOption> getDiagnosticOptions() { throw new AbstractMethodError("com.sun.management.HotSpotDiagnosticMXBean.getDiagnosticOptions()"); }
-  public abstract com.sun.management.VMOption getVMOption(java.lang.String name) { throw new AbstractMethodError("com.sun.management.HotSpotDiagnosticMXBean.getVMOption(java.lang.String)"); }
-  public abstract void setVMOption(java.lang.String name, java.lang.String value) { throw new AbstractMethodError("com.sun.management.HotSpotDiagnosticMXBean.setVMOption(java.lang.String, java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public default void dumpThreads(java.lang.String outputFile, com.sun.management.HotSpotDiagnosticMXBean.ThreadDumpFormat format) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException")
+  public void dumpHeap(java.lang.String outputFile, boolean live) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<com.sun.management.VMOption> getDiagnosticOptions() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public com.sun.management.VMOption getVMOption(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setVMOption(java.lang.String name, java.lang.String value) { }
   < ---- END java signatures ---- >
 }

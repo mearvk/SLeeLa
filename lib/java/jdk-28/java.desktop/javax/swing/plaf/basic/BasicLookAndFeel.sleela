@@ -59,29 +59,42 @@ class BasicLookAndFeel {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  BasicLookAndFeel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicLookAndFeel.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  BasicLookAndFeel() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void initialize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicLookAndFeel.initialize()"); }
-  public void uninitialize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicLookAndFeel.uninitialize()"); }
-  public javax.swing.UIDefaults getDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicLookAndFeel.getDefaults()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void initialize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninitialize() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.UIDefaults getDefaults() { return null; }
   @JavaProtected
-  void loadSystemColors(javax.swing.UIDefaults table, java.lang.String[] systemColors, boolean useNative) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicLookAndFeel.loadSystemColors(javax.swing.UIDefaults, java.lang.String[], boolean)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void loadSystemColors(javax.swing.UIDefaults table, java.lang.String[] systemColors, boolean useNative) { }
   @JavaProtected
-  void initClassDefaults(javax.swing.UIDefaults table) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicLookAndFeel.initClassDefaults(javax.swing.UIDefaults)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void initClassDefaults(javax.swing.UIDefaults table) { }
   @JavaProtected
-  void initSystemColorDefaults(javax.swing.UIDefaults table) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicLookAndFeel.initSystemColorDefaults(javax.swing.UIDefaults)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void initSystemColorDefaults(javax.swing.UIDefaults table) { }
   @JavaProtected
-  void initComponentDefaults(javax.swing.UIDefaults table) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicLookAndFeel.initComponentDefaults(javax.swing.UIDefaults)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void initComponentDefaults(javax.swing.UIDefaults table) { }
   @JavaProtected
-  javax.swing.Action createAudioAction(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicLookAndFeel.createAudioAction(java.lang.Object)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.Action createAudioAction(java.lang.Object key) { return null; }
   @JavaProtected
-  javax.swing.ActionMap getAudioActionMap() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicLookAndFeel.getAudioActionMap()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.ActionMap getAudioActionMap() { return null; }
   @JavaProtected
-  void playSound(javax.swing.Action audioAction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicLookAndFeel.playSound(javax.swing.Action)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void playSound(javax.swing.Action audioAction) { }
   < ---- END java signatures ---- >
 }

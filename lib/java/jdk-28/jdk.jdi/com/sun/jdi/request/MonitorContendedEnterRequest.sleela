@@ -58,13 +58,20 @@ class MonitorContendedEnterRequest {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void addThreadFilter(com.sun.jdi.ThreadReference thread) { throw new AbstractMethodError("com.sun.jdi.request.MonitorContendedEnterRequest.addThreadFilter(com.sun.jdi.ThreadReference)"); }
-  public abstract void addClassFilter(java.lang.String classPattern) { throw new AbstractMethodError("com.sun.jdi.request.MonitorContendedEnterRequest.addClassFilter(java.lang.String)"); }
-  public abstract void addClassFilter(com.sun.jdi.ReferenceType refType) { throw new AbstractMethodError("com.sun.jdi.request.MonitorContendedEnterRequest.addClassFilter(com.sun.jdi.ReferenceType)"); }
-  public abstract void addClassExclusionFilter(java.lang.String classPattern) { throw new AbstractMethodError("com.sun.jdi.request.MonitorContendedEnterRequest.addClassExclusionFilter(java.lang.String)"); }
-  public abstract void addInstanceFilter(com.sun.jdi.ObjectReference instance) { throw new AbstractMethodError("com.sun.jdi.request.MonitorContendedEnterRequest.addInstanceFilter(com.sun.jdi.ObjectReference)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void addThreadFilter(com.sun.jdi.ThreadReference thread) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addClassFilter(java.lang.String classPattern) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addClassFilter(com.sun.jdi.ReferenceType refType) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addClassExclusionFilter(java.lang.String classPattern) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void addInstanceFilter(com.sun.jdi.ObjectReference instance) { }
   < ---- END java signatures ---- >
 }

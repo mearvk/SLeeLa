@@ -58,17 +58,25 @@ class MBeanPermission {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MBeanPermission(java.lang.String className, java.lang.String member, javax.management.ObjectName objectName, java.lang.String actions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanPermission.<init>(java.lang.String, java.lang.String, javax.management.ObjectName, java.lang.String)"); }
-  public MBeanPermission(java.lang.String name, java.lang.String actions) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanPermission.<init>(java.lang.String, java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MBeanPermission(java.lang.String className, java.lang.String member, javax.management.ObjectName objectName, java.lang.String actions) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MBeanPermission(java.lang.String name, java.lang.String actions) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanPermission.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanPermission.hashCode()"); }
-  public boolean implies(java.security.Permission p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanPermission.implies(java.security.Permission)"); }
-  public java.lang.String getActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.MBeanPermission.getActions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean implies(java.security.Permission p) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getActions() { return null; }
   < ---- END java signatures ---- >
 }

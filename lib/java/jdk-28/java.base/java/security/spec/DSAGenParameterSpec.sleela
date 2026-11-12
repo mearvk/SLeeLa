@@ -58,16 +58,23 @@ class DSAGenParameterSpec {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DSAGenParameterSpec(int primePLen, int subprimeQLen) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.DSAGenParameterSpec.<init>(int, int)"); }
-  public DSAGenParameterSpec(int primePLen, int subprimeQLen, int seedLen) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.DSAGenParameterSpec.<init>(int, int, int)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DSAGenParameterSpec(int primePLen, int subprimeQLen) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DSAGenParameterSpec(int primePLen, int subprimeQLen, int seedLen) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public int getPrimePLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.DSAGenParameterSpec.getPrimePLength()"); }
-  public int getSubprimeQLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.DSAGenParameterSpec.getSubprimeQLength()"); }
-  public int getSeedLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.security.spec.DSAGenParameterSpec.getSeedLength()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getPrimePLength() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSubprimeQLength() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSeedLength() { return 0; }
   < ---- END java signatures ---- >
 }

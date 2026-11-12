@@ -58,16 +58,26 @@ class Line {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean isOpen() { throw new AbstractMethodError("javax.sound.sampled.Line.isOpen()"); }
-  public abstract void open() throws javax.sound.sampled.LineUnavailableException { throw new AbstractMethodError("javax.sound.sampled.Line.open()"); }
-  public abstract javax.sound.sampled.Control getControl(javax.sound.sampled.Control.Type control) { throw new AbstractMethodError("javax.sound.sampled.Line.getControl(javax.sound.sampled.Control.Type)"); }
-  public abstract javax.sound.sampled.Line.Info getLineInfo() { throw new AbstractMethodError("javax.sound.sampled.Line.getLineInfo()"); }
-  public abstract javax.sound.sampled.Control[] getControls() { throw new AbstractMethodError("javax.sound.sampled.Line.getControls()"); }
-  public abstract boolean isControlSupported(javax.sound.sampled.Control.Type control) { throw new AbstractMethodError("javax.sound.sampled.Line.isControlSupported(javax.sound.sampled.Control.Type)"); }
-  public abstract void addLineListener(javax.sound.sampled.LineListener listener) { throw new AbstractMethodError("javax.sound.sampled.Line.addLineListener(javax.sound.sampled.LineListener)"); }
-  public abstract void removeLineListener(javax.sound.sampled.LineListener listener) { throw new AbstractMethodError("javax.sound.sampled.Line.removeLineListener(javax.sound.sampled.LineListener)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isOpen() { return false; }
+  @throwable("java.lang.AbstractMethodError, javax.sound.sampled.LineUnavailableException")
+  public void open() { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.Control getControl(javax.sound.sampled.Control.Type control) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.Line.Info getLineInfo() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.sound.sampled.Control[] getControls() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isControlSupported(javax.sound.sampled.Control.Type control) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void addLineListener(javax.sound.sampled.LineListener listener) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void removeLineListener(javax.sound.sampled.LineListener listener) { }
   < ---- END java signatures ---- >
 }

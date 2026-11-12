@@ -58,17 +58,25 @@ class Adler32 {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Adler32() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Adler32.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Adler32() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Adler32.reset()"); }
-  public void update(int b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Adler32.update(int)"); }
-  public void update(java.nio.ByteBuffer buffer) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Adler32.update(java.nio.ByteBuffer)"); }
-  public void update(byte[] b, int off, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Adler32.update(byte[], int, int)"); }
-  public long getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Adler32.getValue()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reset() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void update(int b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void update(java.nio.ByteBuffer buffer) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void update(byte[] b, int off, int len) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getValue() { return 0; }
   < ---- END java signatures ---- >
 }

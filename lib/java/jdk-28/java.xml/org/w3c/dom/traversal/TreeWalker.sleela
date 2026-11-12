@@ -58,21 +58,36 @@ class TreeWalker {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract org.w3c.dom.Node getRoot() { throw new AbstractMethodError("org.w3c.dom.traversal.TreeWalker.getRoot()"); }
-  public abstract org.w3c.dom.Node nextNode() { throw new AbstractMethodError("org.w3c.dom.traversal.TreeWalker.nextNode()"); }
-  public abstract org.w3c.dom.traversal.NodeFilter getFilter() { throw new AbstractMethodError("org.w3c.dom.traversal.TreeWalker.getFilter()"); }
-  public abstract org.w3c.dom.Node nextSibling() { throw new AbstractMethodError("org.w3c.dom.traversal.TreeWalker.nextSibling()"); }
-  public abstract int getWhatToShow() { throw new AbstractMethodError("org.w3c.dom.traversal.TreeWalker.getWhatToShow()"); }
-  public abstract org.w3c.dom.Node firstChild() { throw new AbstractMethodError("org.w3c.dom.traversal.TreeWalker.firstChild()"); }
-  public abstract org.w3c.dom.Node lastChild() { throw new AbstractMethodError("org.w3c.dom.traversal.TreeWalker.lastChild()"); }
-  public abstract org.w3c.dom.Node previousSibling() { throw new AbstractMethodError("org.w3c.dom.traversal.TreeWalker.previousSibling()"); }
-  public abstract boolean getExpandEntityReferences() { throw new AbstractMethodError("org.w3c.dom.traversal.TreeWalker.getExpandEntityReferences()"); }
-  public abstract org.w3c.dom.Node getCurrentNode() { throw new AbstractMethodError("org.w3c.dom.traversal.TreeWalker.getCurrentNode()"); }
-  public abstract void setCurrentNode(org.w3c.dom.Node currentNode) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.traversal.TreeWalker.setCurrentNode(org.w3c.dom.Node)"); }
-  public abstract org.w3c.dom.Node parentNode() { throw new AbstractMethodError("org.w3c.dom.traversal.TreeWalker.parentNode()"); }
-  public abstract org.w3c.dom.Node previousNode() { throw new AbstractMethodError("org.w3c.dom.traversal.TreeWalker.previousNode()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Node getRoot() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Node nextNode() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.traversal.NodeFilter getFilter() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Node nextSibling() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getWhatToShow() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Node firstChild() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Node lastChild() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Node previousSibling() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getExpandEntityReferences() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Node getCurrentNode() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setCurrentNode(org.w3c.dom.Node currentNode) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Node parentNode() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Node previousNode() { return null; }
   < ---- END java signatures ---- >
 }

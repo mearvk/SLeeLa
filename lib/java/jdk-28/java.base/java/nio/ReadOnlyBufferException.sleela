@@ -58,6 +58,7 @@ class ReadOnlyBufferException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ReadOnlyBufferException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ReadOnlyBufferException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ReadOnlyBufferException() { }
   < ---- END java constructors ---- >
 }

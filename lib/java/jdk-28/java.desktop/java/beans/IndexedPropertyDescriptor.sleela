@@ -58,21 +58,33 @@ class IndexedPropertyDescriptor {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IndexedPropertyDescriptor(java.lang.String propertyName, java.lang.Class<?> beanClass, java.lang.String readMethodName, java.lang.String writeMethodName, java.lang.String indexedReadMethodName, java.lang.String indexedWriteMethodName) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.IndexedPropertyDescriptor.<init>(java.lang.String, java.lang.Class<?>, java.lang.String, java.lang.String, java.lang.String, java.lang.String)"); }
-  public IndexedPropertyDescriptor(java.lang.String propertyName, java.lang.Class<?> beanClass) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.IndexedPropertyDescriptor.<init>(java.lang.String, java.lang.Class<?>)"); }
-  public IndexedPropertyDescriptor(java.lang.String propertyName, java.lang.reflect.Method readMethod, java.lang.reflect.Method writeMethod, java.lang.reflect.Method indexedReadMethod, java.lang.reflect.Method indexedWriteMethod) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.IndexedPropertyDescriptor.<init>(java.lang.String, java.lang.reflect.Method, java.lang.reflect.Method, java.lang.reflect.Method, java.lang.reflect.Method)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public IndexedPropertyDescriptor(java.lang.String propertyName, java.lang.Class<?> beanClass, java.lang.String readMethodName, java.lang.String writeMethodName, java.lang.String indexedReadMethodName, java.lang.String indexedWriteMethodName) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public IndexedPropertyDescriptor(java.lang.String propertyName, java.lang.Class<?> beanClass) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public IndexedPropertyDescriptor(java.lang.String propertyName, java.lang.reflect.Method readMethod, java.lang.reflect.Method writeMethod, java.lang.reflect.Method indexedReadMethod, java.lang.reflect.Method indexedWriteMethod) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.IndexedPropertyDescriptor.equals(java.lang.Object)"); }
-  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.IndexedPropertyDescriptor.hashCode()"); }
-  public synchronized java.lang.reflect.Method getIndexedReadMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.IndexedPropertyDescriptor.getIndexedReadMethod()"); }
-  public synchronized java.lang.reflect.Method getIndexedWriteMethod() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.IndexedPropertyDescriptor.getIndexedWriteMethod()"); }
-  public synchronized java.lang.Class<?> getIndexedPropertyType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.IndexedPropertyDescriptor.getIndexedPropertyType()"); }
-  public synchronized void setIndexedReadMethod(java.lang.reflect.Method readMethod) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.IndexedPropertyDescriptor.setIndexedReadMethod(java.lang.reflect.Method)"); }
-  public synchronized void setIndexedWriteMethod(java.lang.reflect.Method writeMethod) throws java.beans.IntrospectionException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.beans.IndexedPropertyDescriptor.setIndexedWriteMethod(java.lang.reflect.Method)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(java.lang.Object obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.reflect.Method getIndexedReadMethod() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.reflect.Method getIndexedWriteMethod() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.lang.Class<?> getIndexedPropertyType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public synchronized void setIndexedReadMethod(java.lang.reflect.Method readMethod) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
+  public synchronized void setIndexedWriteMethod(java.lang.reflect.Method writeMethod) { }
   < ---- END java signatures ---- >
 }

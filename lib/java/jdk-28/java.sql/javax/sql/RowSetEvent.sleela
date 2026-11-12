@@ -58,6 +58,7 @@ class RowSetEvent {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RowSetEvent(javax.sql.RowSet source) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.RowSetEvent.<init>(javax.sql.RowSet)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RowSetEvent(javax.sql.RowSet source) { }
   < ---- END java constructors ---- >
 }

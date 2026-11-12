@@ -58,26 +58,46 @@ class NavigableSet<E> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract E floor(E e) { throw new AbstractMethodError("java.util.NavigableSet.floor(E)"); }
-  public abstract java.util.Iterator<E> iterator() { throw new AbstractMethodError("java.util.NavigableSet.iterator()"); }
-  public default E removeFirst() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.NavigableSet.removeFirst()"); }
-  public default E removeLast() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.NavigableSet.removeLast()"); }
-  public default java.util.NavigableSet<E> reversed() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.NavigableSet.reversed()"); }
-  public abstract E lower(E e) { throw new AbstractMethodError("java.util.NavigableSet.lower(E)"); }
-  public abstract E pollFirst() { throw new AbstractMethodError("java.util.NavigableSet.pollFirst()"); }
-  public abstract E pollLast() { throw new AbstractMethodError("java.util.NavigableSet.pollLast()"); }
-  public abstract java.util.Iterator<E> descendingIterator() { throw new AbstractMethodError("java.util.NavigableSet.descendingIterator()"); }
-  public abstract java.util.NavigableSet<E> descendingSet() { throw new AbstractMethodError("java.util.NavigableSet.descendingSet()"); }
-  public abstract E ceiling(E e) { throw new AbstractMethodError("java.util.NavigableSet.ceiling(E)"); }
-  public abstract E higher(E e) { throw new AbstractMethodError("java.util.NavigableSet.higher(E)"); }
-  public abstract java.util.NavigableSet<E> subSet(E fromElement, boolean fromInclusive, E toElement, boolean toInclusive) { throw new AbstractMethodError("java.util.NavigableSet.subSet(E, boolean, E, boolean)"); }
-  public abstract java.util.SortedSet<E> subSet(E fromElement, E toElement) { throw new AbstractMethodError("java.util.NavigableSet.subSet(E, E)"); }
-  public abstract java.util.NavigableSet<E> headSet(E toElement, boolean inclusive) { throw new AbstractMethodError("java.util.NavigableSet.headSet(E, boolean)"); }
-  public abstract java.util.SortedSet<E> headSet(E toElement) { throw new AbstractMethodError("java.util.NavigableSet.headSet(E)"); }
-  public abstract java.util.NavigableSet<E> tailSet(E fromElement, boolean inclusive) { throw new AbstractMethodError("java.util.NavigableSet.tailSet(E, boolean)"); }
-  public abstract java.util.SortedSet<E> tailSet(E fromElement) { throw new AbstractMethodError("java.util.NavigableSet.tailSet(E)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public E floor(E e) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Iterator<E> iterator() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default E removeFirst() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default E removeLast() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.util.NavigableSet<E> reversed() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E lower(E e) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E pollFirst() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E pollLast() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Iterator<E> descendingIterator() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.NavigableSet<E> descendingSet() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E ceiling(E e) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public E higher(E e) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.NavigableSet<E> subSet(E fromElement, boolean fromInclusive, E toElement, boolean toInclusive) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.SortedSet<E> subSet(E fromElement, E toElement) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.NavigableSet<E> headSet(E toElement, boolean inclusive) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.SortedSet<E> headSet(E toElement) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.NavigableSet<E> tailSet(E fromElement, boolean inclusive) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.SortedSet<E> tailSet(E fromElement) { return null; }
   < ---- END java signatures ---- >
 }

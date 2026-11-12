@@ -58,14 +58,22 @@ class StackWalker {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Class<?> getCallerClass() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackWalker.getCallerClass()"); }
-  public static java.lang.StackWalker getInstance(java.lang.StackWalker.Option option) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackWalker.getInstance(java.lang.StackWalker.Option)"); }
-  public static java.lang.StackWalker getInstance(java.util.Set<java.lang.StackWalker.Option> options, int estimateDepth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackWalker.getInstance(java.util.Set<java.lang.StackWalker.Option>, int)"); }
-  public static java.lang.StackWalker getInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackWalker.getInstance()"); }
-  public void forEach(java.util.function.Consumer<? super java.lang.StackWalker.StackFrame> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackWalker.forEach(java.util.function.Consumer<? super java.lang.StackWalker.StackFrame>)"); }
-  public <T> T walk(java.util.function.Function<? super java.util.stream.Stream<java.lang.StackWalker.StackFrame>, ? extends T> function) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.StackWalker.walk(java.util.function.Function<? super java.util.stream.Stream<java.lang.StackWalker.StackFrame>, ? extends T>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getCallerClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.StackWalker getInstance(java.lang.StackWalker.Option option) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.StackWalker getInstance(java.util.Set<java.lang.StackWalker.Option> options, int estimateDepth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.StackWalker getInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void forEach(java.util.function.Consumer<? super java.lang.StackWalker.StackFrame> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T> T walk(java.util.function.Function<? super java.util.stream.Stream<java.lang.StackWalker.StackFrame>, ? extends T> function) { return null; }
   < ---- END java signatures ---- >
 }

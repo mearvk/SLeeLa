@@ -58,11 +58,16 @@ class TypeParameterTree {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract javax.lang.model.element.Name getName() { throw new AbstractMethodError("com.sun.source.tree.TypeParameterTree.getName()"); }
-  public abstract java.util.List<? extends com.sun.source.tree.Tree> getBounds() { throw new AbstractMethodError("com.sun.source.tree.TypeParameterTree.getBounds()"); }
-  public abstract java.util.List<? extends com.sun.source.tree.AnnotationTree> getAnnotations() { throw new AbstractMethodError("com.sun.source.tree.TypeParameterTree.getAnnotations()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public javax.lang.model.element.Name getName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends com.sun.source.tree.Tree> getBounds() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.List<? extends com.sun.source.tree.AnnotationTree> getAnnotations() { return null; }
   < ---- END java signatures ---- >
 }

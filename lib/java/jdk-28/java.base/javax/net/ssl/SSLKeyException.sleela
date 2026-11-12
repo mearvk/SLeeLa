@@ -58,7 +58,9 @@ class SSLKeyException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SSLKeyException(java.lang.String reason) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLKeyException.<init>(java.lang.String)"); }
-  public SSLKeyException(java.lang.String message, java.lang.Throwable cause) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.SSLKeyException.<init>(java.lang.String, java.lang.Throwable)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SSLKeyException(java.lang.String reason) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SSLKeyException(java.lang.String message, java.lang.Throwable cause) { }
   < ---- END java constructors ---- >
 }

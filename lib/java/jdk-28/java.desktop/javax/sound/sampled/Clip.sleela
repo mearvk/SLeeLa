@@ -62,16 +62,26 @@ class Clip {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void open(javax.sound.sampled.AudioFormat format, byte[] data, int offset, int bufferSize) throws javax.sound.sampled.LineUnavailableException { throw new AbstractMethodError("javax.sound.sampled.Clip.open(javax.sound.sampled.AudioFormat, byte[], int, int)"); }
-  public abstract void open(javax.sound.sampled.AudioInputStream stream) throws javax.sound.sampled.LineUnavailableException, java.io.IOException { throw new AbstractMethodError("javax.sound.sampled.Clip.open(javax.sound.sampled.AudioInputStream)"); }
-  public abstract void loop(int count) { throw new AbstractMethodError("javax.sound.sampled.Clip.loop(int)"); }
-  public abstract long getMicrosecondLength() { throw new AbstractMethodError("javax.sound.sampled.Clip.getMicrosecondLength()"); }
-  public abstract void setMicrosecondPosition(long microseconds) { throw new AbstractMethodError("javax.sound.sampled.Clip.setMicrosecondPosition(long)"); }
-  public abstract int getFrameLength() { throw new AbstractMethodError("javax.sound.sampled.Clip.getFrameLength()"); }
-  public abstract void setFramePosition(int frames) { throw new AbstractMethodError("javax.sound.sampled.Clip.setFramePosition(int)"); }
-  public abstract void setLoopPoints(int start, int end) { throw new AbstractMethodError("javax.sound.sampled.Clip.setLoopPoints(int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, javax.sound.sampled.LineUnavailableException")
+  public void open(javax.sound.sampled.AudioFormat format, byte[] data, int offset, int bufferSize) { }
+  @throwable("java.lang.AbstractMethodError, javax.sound.sampled.LineUnavailableException, java.io.IOException")
+  public void open(javax.sound.sampled.AudioInputStream stream) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void loop(int count) { }
+  @throwable("java.lang.AbstractMethodError")
+  public long getMicrosecondLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setMicrosecondPosition(long microseconds) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int getFrameLength() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setFramePosition(int frames) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setLoopPoints(int start, int end) { }
   < ---- END java signatures ---- >
 }

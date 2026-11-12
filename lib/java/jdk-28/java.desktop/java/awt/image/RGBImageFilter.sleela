@@ -65,19 +65,29 @@ class RGBImageFilter {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  RGBImageFilter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.RGBImageFilter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  RGBImageFilter() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void setPixels(int x, int y, int w, int h, java.awt.image.ColorModel model, int[] pixels, int off, int scansize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.RGBImageFilter.setPixels(int, int, int, int, java.awt.image.ColorModel, int[], int, int)"); }
-  public void setPixels(int x, int y, int w, int h, java.awt.image.ColorModel model, byte[] pixels, int off, int scansize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.RGBImageFilter.setPixels(int, int, int, int, java.awt.image.ColorModel, byte[], int, int)"); }
-  public void setColorModel(java.awt.image.ColorModel model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.RGBImageFilter.setColorModel(java.awt.image.ColorModel)"); }
-  public java.awt.image.IndexColorModel filterIndexColorModel(java.awt.image.IndexColorModel icm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.RGBImageFilter.filterIndexColorModel(java.awt.image.IndexColorModel)"); }
-  public void substituteColorModel(java.awt.image.ColorModel oldcm, java.awt.image.ColorModel newcm) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.RGBImageFilter.substituteColorModel(java.awt.image.ColorModel, java.awt.image.ColorModel)"); }
-  public abstract int filterRGB(int x, int y, int rgb) { throw new AbstractMethodError("java.awt.image.RGBImageFilter.filterRGB(int, int, int)"); }
-  public void filterRGBPixels(int x, int y, int w, int h, int[] pixels, int off, int scansize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.image.RGBImageFilter.filterRGBPixels(int, int, int, int, int[], int, int)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPixels(int x, int y, int w, int h, java.awt.image.ColorModel model, int[] pixels, int off, int scansize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPixels(int x, int y, int w, int h, java.awt.image.ColorModel model, byte[] pixels, int off, int scansize) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColorModel(java.awt.image.ColorModel model) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.image.IndexColorModel filterIndexColorModel(java.awt.image.IndexColorModel icm) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void substituteColorModel(java.awt.image.ColorModel oldcm, java.awt.image.ColorModel newcm) { }
+  @throwable("java.lang.AbstractMethodError")
+  public int filterRGB(int x, int y, int rgb) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void filterRGBPixels(int x, int y, int w, int h, int[] pixels, int off, int scansize) { }
   < ---- END java signatures ---- >
 }

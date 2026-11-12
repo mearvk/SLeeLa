@@ -59,25 +59,41 @@ class Constraints {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Constraints(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.<init>(java.awt.Component)"); }
-  public Constraints(javax.swing.Spring x, javax.swing.Spring y, javax.swing.Spring width, javax.swing.Spring height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.<init>(javax.swing.Spring, javax.swing.Spring, javax.swing.Spring, javax.swing.Spring)"); }
-  public Constraints(javax.swing.Spring x, javax.swing.Spring y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.<init>(javax.swing.Spring, javax.swing.Spring)"); }
-  public Constraints() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Constraints(java.awt.Component c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Constraints(javax.swing.Spring x, javax.swing.Spring y, javax.swing.Spring width, javax.swing.Spring height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Constraints(javax.swing.Spring x, javax.swing.Spring y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Constraints() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.swing.Spring getX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.getX()"); }
-  public javax.swing.Spring getY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.getY()"); }
-  public void setWidth(javax.swing.Spring width) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.setWidth(javax.swing.Spring)"); }
-  public javax.swing.Spring getHeight() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.getHeight()"); }
-  public void setX(javax.swing.Spring x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.setX(javax.swing.Spring)"); }
-  public void setY(javax.swing.Spring y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.setY(javax.swing.Spring)"); }
-  public void setHeight(javax.swing.Spring height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.setHeight(javax.swing.Spring)"); }
-  public javax.swing.Spring getConstraint(java.lang.String edgeName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.getConstraint(java.lang.String)"); }
-  public void setConstraint(java.lang.String edgeName, javax.swing.Spring s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.setConstraint(java.lang.String, javax.swing.Spring)"); }
-  public javax.swing.Spring getWidth() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.Constraints.getWidth()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Spring getX() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Spring getY() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setWidth(javax.swing.Spring width) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Spring getHeight() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setX(javax.swing.Spring x) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setY(javax.swing.Spring y) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setHeight(javax.swing.Spring height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Spring getConstraint(java.lang.String edgeName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setConstraint(java.lang.String edgeName, javax.swing.Spring s) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.Spring getWidth() { return null; }
   < ---- END java signatures ---- >
 }

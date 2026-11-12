@@ -59,13 +59,17 @@ class CaretPolicy {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public CaretPolicy() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextLayout.CaretPolicy.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public CaretPolicy() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.awt.font.TextHitInfo getStrongCaret(java.awt.font.TextHitInfo hit1, java.awt.font.TextHitInfo hit2, java.awt.font.TextLayout layout) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.font.TextLayout.CaretPolicy.getStrongCaret(java.awt.font.TextHitInfo, java.awt.font.TextHitInfo, java.awt.font.TextLayout)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.font.TextHitInfo getStrongCaret(java.awt.font.TextHitInfo hit1, java.awt.font.TextHitInfo hit2, java.awt.font.TextLayout layout) { return null; }
   < ---- END java signatures ---- >
 }

@@ -58,16 +58,23 @@ class SyncProviderException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public SyncProviderException(javax.sql.rowset.spi.SyncResolver syncResolver) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.spi.SyncProviderException.<init>(javax.sql.rowset.spi.SyncResolver)"); }
-  public SyncProviderException(java.lang.String msg) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.spi.SyncProviderException.<init>(java.lang.String)"); }
-  public SyncProviderException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.spi.SyncProviderException.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SyncProviderException(javax.sql.rowset.spi.SyncResolver syncResolver) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SyncProviderException(java.lang.String msg) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public SyncProviderException() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void setSyncResolver(javax.sql.rowset.spi.SyncResolver syncResolver) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.spi.SyncProviderException.setSyncResolver(javax.sql.rowset.spi.SyncResolver)"); }
-  public javax.sql.rowset.spi.SyncResolver getSyncResolver() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.sql.rowset.spi.SyncProviderException.getSyncResolver()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSyncResolver(javax.sql.rowset.spi.SyncResolver syncResolver) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.sql.rowset.spi.SyncResolver getSyncResolver() { return null; }
   < ---- END java signatures ---- >
 }

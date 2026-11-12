@@ -58,29 +58,46 @@ class Button {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public Button() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.<init>()"); }
-  public Button(java.lang.String label) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Button() { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Button(java.lang.String label) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
   @JavaProtected
-  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.paramString()"); }
-  public java.lang.String getLabel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.getLabel()"); }
-  public void setLabel(java.lang.String label) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.setLabel(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  java.lang.String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLabel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLabel(java.lang.String label) { }
   @JavaProtected
-  void processActionEvent(java.awt.event.ActionEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.processActionEvent(java.awt.event.ActionEvent)"); }
-  public synchronized void addActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.addActionListener(java.awt.event.ActionListener)"); }
-  public void setActionCommand(java.lang.String command) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.setActionCommand(java.lang.String)"); }
-  public synchronized void removeActionListener(java.awt.event.ActionListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.removeActionListener(java.awt.event.ActionListener)"); }
-  public synchronized java.awt.event.ActionListener[] getActionListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.getActionListeners()"); }
-  public java.lang.String getActionCommand() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.getActionCommand()"); }
-  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.getAccessibleContext()"); }
-  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.addNotify()"); }
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.getListeners(java.lang.Class<T>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processActionEvent(java.awt.event.ActionEvent e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void addActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setActionCommand(java.lang.String command) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized void removeActionListener(java.awt.event.ActionListener l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public synchronized java.awt.event.ActionListener[] getActionListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getActionCommand() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
   @JavaProtected
-  void processEvent(java.awt.AWTEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Button.processEvent(java.awt.AWTEvent)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void processEvent(java.awt.AWTEvent e) { }
   < ---- END java signatures ---- >
 }

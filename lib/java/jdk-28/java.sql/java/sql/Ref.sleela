@@ -58,12 +58,18 @@ class Ref {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.Object getObject() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Ref.getObject()"); }
-  public abstract java.lang.Object getObject(java.util.Map<java.lang.String, java.lang.Class<?>> map) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Ref.getObject(java.util.Map<java.lang.String, java.lang.Class<?>>)"); }
-  public abstract void setObject(java.lang.Object value) throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Ref.setObject(java.lang.Object)"); }
-  public abstract java.lang.String getBaseTypeName() throws java.sql.SQLException { throw new AbstractMethodError("java.sql.Ref.getBaseTypeName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.Object getObject() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.Object getObject(java.util.Map<java.lang.String, java.lang.Class<?>> map) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public void setObject(java.lang.Object value) { }
+  @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
+  public java.lang.String getBaseTypeName() { return null; }
   < ---- END java signatures ---- >
 }

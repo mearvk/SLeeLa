@@ -58,7 +58,9 @@ class IllegalAccessError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IllegalAccessError() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.IllegalAccessError.<init>()"); }
-  public IllegalAccessError(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.IllegalAccessError.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalAccessError() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IllegalAccessError(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

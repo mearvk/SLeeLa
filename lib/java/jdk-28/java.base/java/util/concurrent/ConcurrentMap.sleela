@@ -58,19 +58,32 @@ class ConcurrentMap<K, V> {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean remove(java.lang.Object key, java.lang.Object value) { throw new AbstractMethodError("java.util.concurrent.ConcurrentMap.remove(java.lang.Object, java.lang.Object)"); }
-  public abstract boolean replace(K key, V oldValue, V newValue) { throw new AbstractMethodError("java.util.concurrent.ConcurrentMap.replace(K, V, V)"); }
-  public abstract V replace(K key, V value) { throw new AbstractMethodError("java.util.concurrent.ConcurrentMap.replace(K, V)"); }
-  public default void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentMap.replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
-  public default V merge(K key, V value, java.util.function.BiFunction<? super V, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentMap.merge(K, V, java.util.function.BiFunction<? super V, ? super V, ? extends V>)"); }
-  public abstract V putIfAbsent(K key, V value) { throw new AbstractMethodError("java.util.concurrent.ConcurrentMap.putIfAbsent(K, V)"); }
-  public default V compute(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentMap.compute(K, java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
-  public default V computeIfAbsent(K key, java.util.function.Function<? super K, ? extends V> mappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentMap.computeIfAbsent(K, java.util.function.Function<? super K, ? extends V>)"); }
-  public default void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentMap.forEach(java.util.function.BiConsumer<? super K, ? super V>)"); }
-  public default V getOrDefault(java.lang.Object key, V defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentMap.getOrDefault(java.lang.Object, V)"); }
-  public default V computeIfPresent(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.ConcurrentMap.computeIfPresent(K, java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean remove(java.lang.Object key, java.lang.Object value) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean replace(K key, V oldValue, V newValue) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public V replace(K key, V value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V merge(K key, V value, java.util.function.BiFunction<? super V, ? super V, ? extends V> remappingFunction) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public V putIfAbsent(K key, V value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V compute(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V computeIfAbsent(K key, java.util.function.Function<? super K, ? extends V> mappingFunction) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V getOrDefault(java.lang.Object key, V defaultValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default V computeIfPresent(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { return null; }
   < ---- END java signatures ---- >
 }

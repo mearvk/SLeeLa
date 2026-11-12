@@ -58,7 +58,9 @@ class IncompatibleThreadStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public IncompatibleThreadStateException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.IncompatibleThreadStateException.<init>()"); }
-  public IncompatibleThreadStateException(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.IncompatibleThreadStateException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IncompatibleThreadStateException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IncompatibleThreadStateException(java.lang.String s) { }
   < ---- END java constructors ---- >
 }

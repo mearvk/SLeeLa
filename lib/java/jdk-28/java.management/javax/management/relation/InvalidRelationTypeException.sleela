@@ -58,7 +58,9 @@ class InvalidRelationTypeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InvalidRelationTypeException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.InvalidRelationTypeException.<init>()"); }
-  public InvalidRelationTypeException(java.lang.String message) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.relation.InvalidRelationTypeException.<init>(java.lang.String)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidRelationTypeException() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InvalidRelationTypeException(java.lang.String message) { }
   < ---- END java constructors ---- >
 }

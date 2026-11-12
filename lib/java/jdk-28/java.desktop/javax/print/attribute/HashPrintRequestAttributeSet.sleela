@@ -58,8 +58,11 @@ class HashPrintRequestAttributeSet {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public HashPrintRequestAttributeSet(javax.print.attribute.PrintRequestAttributeSet attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashPrintRequestAttributeSet.<init>(javax.print.attribute.PrintRequestAttributeSet)"); }
-  public HashPrintRequestAttributeSet(javax.print.attribute.PrintRequestAttribute[] attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashPrintRequestAttributeSet.<init>(javax.print.attribute.PrintRequestAttribute[])"); }
-  public HashPrintRequestAttributeSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.print.attribute.HashPrintRequestAttributeSet.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashPrintRequestAttributeSet(javax.print.attribute.PrintRequestAttributeSet attributes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashPrintRequestAttributeSet(javax.print.attribute.PrintRequestAttribute[] attributes) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public HashPrintRequestAttributeSet() { }
   < ---- END java constructors ---- >
 }

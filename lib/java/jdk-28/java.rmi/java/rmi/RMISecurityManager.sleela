@@ -58,6 +58,7 @@ class RMISecurityManager {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public RMISecurityManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.rmi.RMISecurityManager.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public RMISecurityManager() { }
   < ---- END java constructors ---- >
 }

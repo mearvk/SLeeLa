@@ -58,14 +58,19 @@ class X509ExtendedTrustManager {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public X509ExtendedTrustManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.net.ssl.X509ExtendedTrustManager.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public X509ExtendedTrustManager() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void checkClientTrusted(java.security.cert.X509Certificate[] chain, java.lang.String authType, javax.net.ssl.SSLEngine engine) throws java.security.cert.CertificateException { throw new AbstractMethodError("javax.net.ssl.X509ExtendedTrustManager.checkClientTrusted(java.security.cert.X509Certificate[], java.lang.String, javax.net.ssl.SSLEngine)"); }
-  public abstract void checkServerTrusted(java.security.cert.X509Certificate[] chain, java.lang.String authType, javax.net.ssl.SSLEngine engine) throws java.security.cert.CertificateException { throw new AbstractMethodError("javax.net.ssl.X509ExtendedTrustManager.checkServerTrusted(java.security.cert.X509Certificate[], java.lang.String, javax.net.ssl.SSLEngine)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertificateException")
+  public void checkClientTrusted(java.security.cert.X509Certificate[] chain, java.lang.String authType, javax.net.ssl.SSLEngine engine) { }
+  @throwable("java.lang.AbstractMethodError, java.security.cert.CertificateException")
+  public void checkServerTrusted(java.security.cert.X509Certificate[] chain, java.lang.String authType, javax.net.ssl.SSLEngine engine) { }
   < ---- END java signatures ---- >
 }

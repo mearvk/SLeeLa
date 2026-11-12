@@ -58,28 +58,50 @@ class Element {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void setAttribute(java.lang.String name, java.lang.String value) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.setAttribute(java.lang.String, java.lang.String)"); }
-  public abstract java.lang.String getAttribute(java.lang.String name) { throw new AbstractMethodError("org.w3c.dom.Element.getAttribute(java.lang.String)"); }
-  public abstract java.lang.String getTagName() { throw new AbstractMethodError("org.w3c.dom.Element.getTagName()"); }
-  public abstract void removeAttribute(java.lang.String name) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.removeAttribute(java.lang.String)"); }
-  public abstract org.w3c.dom.TypeInfo getSchemaTypeInfo() { throw new AbstractMethodError("org.w3c.dom.Element.getSchemaTypeInfo()"); }
-  public abstract org.w3c.dom.Attr getAttributeNode(java.lang.String name) { throw new AbstractMethodError("org.w3c.dom.Element.getAttributeNode(java.lang.String)"); }
-  public abstract org.w3c.dom.Attr removeAttributeNode(org.w3c.dom.Attr oldAttr) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.removeAttributeNode(org.w3c.dom.Attr)"); }
-  public abstract org.w3c.dom.Attr setAttributeNode(org.w3c.dom.Attr newAttr) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.setAttributeNode(org.w3c.dom.Attr)"); }
-  public abstract org.w3c.dom.NodeList getElementsByTagName(java.lang.String name) { throw new AbstractMethodError("org.w3c.dom.Element.getElementsByTagName(java.lang.String)"); }
-  public abstract boolean hasAttribute(java.lang.String name) { throw new AbstractMethodError("org.w3c.dom.Element.hasAttribute(java.lang.String)"); }
-  public abstract java.lang.String getAttributeNS(java.lang.String namespaceURI, java.lang.String localName) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.getAttributeNS(java.lang.String, java.lang.String)"); }
-  public abstract void setAttributeNS(java.lang.String namespaceURI, java.lang.String qualifiedName, java.lang.String value) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.setAttributeNS(java.lang.String, java.lang.String, java.lang.String)"); }
-  public abstract void removeAttributeNS(java.lang.String namespaceURI, java.lang.String localName) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.removeAttributeNS(java.lang.String, java.lang.String)"); }
-  public abstract org.w3c.dom.Attr getAttributeNodeNS(java.lang.String namespaceURI, java.lang.String localName) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.getAttributeNodeNS(java.lang.String, java.lang.String)"); }
-  public abstract org.w3c.dom.Attr setAttributeNodeNS(org.w3c.dom.Attr newAttr) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.setAttributeNodeNS(org.w3c.dom.Attr)"); }
-  public abstract org.w3c.dom.NodeList getElementsByTagNameNS(java.lang.String namespaceURI, java.lang.String localName) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.getElementsByTagNameNS(java.lang.String, java.lang.String)"); }
-  public abstract boolean hasAttributeNS(java.lang.String namespaceURI, java.lang.String localName) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.hasAttributeNS(java.lang.String, java.lang.String)"); }
-  public abstract void setIdAttribute(java.lang.String name, boolean isId) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.setIdAttribute(java.lang.String, boolean)"); }
-  public abstract void setIdAttributeNS(java.lang.String namespaceURI, java.lang.String localName, boolean isId) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.setIdAttributeNS(java.lang.String, java.lang.String, boolean)"); }
-  public abstract void setIdAttributeNode(org.w3c.dom.Attr idAttr, boolean isId) throws org.w3c.dom.DOMException { throw new AbstractMethodError("org.w3c.dom.Element.setIdAttributeNode(org.w3c.dom.Attr, boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setAttribute(java.lang.String name, java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getAttribute(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getTagName() { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void removeAttribute(java.lang.String name) { }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.TypeInfo getSchemaTypeInfo() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.Attr getAttributeNode(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Attr removeAttributeNode(org.w3c.dom.Attr oldAttr) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Attr setAttributeNode(org.w3c.dom.Attr newAttr) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public org.w3c.dom.NodeList getElementsByTagName(java.lang.String name) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean hasAttribute(java.lang.String name) { return false; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public java.lang.String getAttributeNS(java.lang.String namespaceURI, java.lang.String localName) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setAttributeNS(java.lang.String namespaceURI, java.lang.String qualifiedName, java.lang.String value) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void removeAttributeNS(java.lang.String namespaceURI, java.lang.String localName) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Attr getAttributeNodeNS(java.lang.String namespaceURI, java.lang.String localName) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.Attr setAttributeNodeNS(org.w3c.dom.Attr newAttr) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public org.w3c.dom.NodeList getElementsByTagNameNS(java.lang.String namespaceURI, java.lang.String localName) { return null; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public boolean hasAttributeNS(java.lang.String namespaceURI, java.lang.String localName) { return false; }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setIdAttribute(java.lang.String name, boolean isId) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setIdAttributeNS(java.lang.String namespaceURI, java.lang.String localName, boolean isId) { }
+  @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
+  public void setIdAttributeNode(org.w3c.dom.Attr idAttr, boolean isId) { }
   < ---- END java signatures ---- >
 }

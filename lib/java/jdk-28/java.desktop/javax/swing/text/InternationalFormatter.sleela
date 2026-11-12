@@ -58,26 +58,42 @@ class InternationalFormatter {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public InternationalFormatter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.<init>()"); }
-  public InternationalFormatter(java.text.Format format) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.<init>(java.text.Format)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InternationalFormatter() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public InternationalFormatter(java.text.Format format) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() throws java.lang.CloneNotSupportedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.clone()"); }
-  public java.text.Format.Field[] getFields(int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.getFields(int)"); }
-  public java.lang.Comparable<?> getMaximum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.getMaximum()"); }
-  public java.lang.Comparable<?> getMinimum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.getMinimum()"); }
-  public void setFormat(java.text.Format format) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.setFormat(java.text.Format)"); }
-  public java.text.Format getFormat() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.getFormat()"); }
-  public void install(javax.swing.JFormattedTextField ftf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.install(javax.swing.JFormattedTextField)"); }
-  public java.lang.Object stringToValue(java.lang.String text) throws java.text.ParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.stringToValue(java.lang.String)"); }
-  public java.lang.String valueToString(java.lang.Object value) throws java.text.ParseException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.valueToString(java.lang.Object)"); }
-  public void setMinimum(java.lang.Comparable<?> minimum) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.setMinimum(java.lang.Comparable<?>)"); }
-  public void setMaximum(java.lang.Comparable<?> max) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.setMaximum(java.lang.Comparable<?>)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.Format.Field[] getFields(int offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Comparable<?> getMaximum() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Comparable<?> getMinimum() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFormat(java.text.Format format) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.text.Format getFormat() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void install(javax.swing.JFormattedTextField ftf) { }
+  @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
+  public java.lang.Object stringToValue(java.lang.String text) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
+  public java.lang.String valueToString(java.lang.Object value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMinimum(java.lang.Comparable<?> minimum) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximum(java.lang.Comparable<?> max) { }
   @JavaProtected
-  javax.swing.Action[] getActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.InternationalFormatter.getActions()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  javax.swing.Action[] getActions() { return null; }
   < ---- END java signatures ---- >
 }

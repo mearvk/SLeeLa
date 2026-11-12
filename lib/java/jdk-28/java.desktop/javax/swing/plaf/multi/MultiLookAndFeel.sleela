@@ -58,20 +58,31 @@ class MultiLookAndFeel {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public MultiLookAndFeel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.multi.MultiLookAndFeel.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public MultiLookAndFeel() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.multi.MultiLookAndFeel.getName()"); }
-  public java.lang.String getID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.multi.MultiLookAndFeel.getID()"); }
-  public java.lang.String getDescription() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.multi.MultiLookAndFeel.getDescription()"); }
-  protected static javax.swing.plaf.ComponentUI[] uisToArray(java.util.Vector<? extends javax.swing.plaf.ComponentUI> uis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.multi.MultiLookAndFeel.uisToArray(java.util.Vector<? extends javax.swing.plaf.ComponentUI>)"); }
-  public static javax.swing.plaf.ComponentUI createUIs(javax.swing.plaf.ComponentUI mui, java.util.Vector<javax.swing.plaf.ComponentUI> uis, javax.swing.JComponent target) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.multi.MultiLookAndFeel.createUIs(javax.swing.plaf.ComponentUI, java.util.Vector<javax.swing.plaf.ComponentUI>, javax.swing.JComponent)"); }
-  public boolean isNativeLookAndFeel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.multi.MultiLookAndFeel.isNativeLookAndFeel()"); }
-  public boolean isSupportedLookAndFeel() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.multi.MultiLookAndFeel.isSupportedLookAndFeel()"); }
-  public javax.swing.UIDefaults getDefaults() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.multi.MultiLookAndFeel.getDefaults()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getDescription() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static javax.swing.plaf.ComponentUI[] uisToArray(java.util.Vector<? extends javax.swing.plaf.ComponentUI> uis) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.swing.plaf.ComponentUI createUIs(javax.swing.plaf.ComponentUI mui, java.util.Vector<javax.swing.plaf.ComponentUI> uis, javax.swing.JComponent target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isNativeLookAndFeel() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSupportedLookAndFeel() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.swing.UIDefaults getDefaults() { return null; }
   < ---- END java signatures ---- >
 }

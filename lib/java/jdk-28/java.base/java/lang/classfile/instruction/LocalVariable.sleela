@@ -58,16 +58,26 @@ class LocalVariable {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract int slot() { throw new AbstractMethodError("java.lang.classfile.instruction.LocalVariable.slot()"); }
-  public abstract java.lang.classfile.constantpool.Utf8Entry name() { throw new AbstractMethodError("java.lang.classfile.instruction.LocalVariable.name()"); }
-  public abstract java.lang.classfile.constantpool.Utf8Entry type() { throw new AbstractMethodError("java.lang.classfile.instruction.LocalVariable.type()"); }
-  public static java.lang.classfile.instruction.LocalVariable of(int slot, java.lang.classfile.constantpool.Utf8Entry nameEntry, java.lang.classfile.constantpool.Utf8Entry descriptorEntry, java.lang.classfile.Label startScope, java.lang.classfile.Label endScope) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.LocalVariable.of(int, java.lang.classfile.constantpool.Utf8Entry, java.lang.classfile.constantpool.Utf8Entry, java.lang.classfile.Label, java.lang.classfile.Label)"); }
-  public static java.lang.classfile.instruction.LocalVariable of(int slot, java.lang.String name, java.lang.constant.ClassDesc descriptor, java.lang.classfile.Label startScope, java.lang.classfile.Label endScope) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.LocalVariable.of(int, java.lang.String, java.lang.constant.ClassDesc, java.lang.classfile.Label, java.lang.classfile.Label)"); }
-  public default java.lang.constant.ClassDesc typeSymbol() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.LocalVariable.typeSymbol()"); }
-  public abstract java.lang.classfile.Label startScope() { throw new AbstractMethodError("java.lang.classfile.instruction.LocalVariable.startScope()"); }
-  public abstract java.lang.classfile.Label endScope() { throw new AbstractMethodError("java.lang.classfile.instruction.LocalVariable.endScope()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public int slot() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.Utf8Entry name() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.constantpool.Utf8Entry type() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.instruction.LocalVariable of(int slot, java.lang.classfile.constantpool.Utf8Entry nameEntry, java.lang.classfile.constantpool.Utf8Entry descriptorEntry, java.lang.classfile.Label startScope, java.lang.classfile.Label endScope) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.instruction.LocalVariable of(int slot, java.lang.String name, java.lang.constant.ClassDesc descriptor, java.lang.classfile.Label startScope, java.lang.classfile.Label endScope) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default java.lang.constant.ClassDesc typeSymbol() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.Label startScope() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.Label endScope() { return null; }
   < ---- END java signatures ---- >
 }

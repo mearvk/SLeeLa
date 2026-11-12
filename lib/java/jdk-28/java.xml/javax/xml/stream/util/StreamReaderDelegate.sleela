@@ -58,58 +58,107 @@ class StreamReaderDelegate {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public StreamReaderDelegate() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.<init>()"); }
-  public StreamReaderDelegate(javax.xml.stream.XMLStreamReader reader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.<init>(javax.xml.stream.XMLStreamReader)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StreamReaderDelegate() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public StreamReaderDelegate(javax.xml.stream.XMLStreamReader reader) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public javax.xml.namespace.QName getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getName()"); }
-  public java.lang.Object getProperty(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getProperty(java.lang.String)"); }
-  public boolean hasNext() throws javax.xml.stream.XMLStreamException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.hasNext()"); }
-  public int next() throws javax.xml.stream.XMLStreamException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.next()"); }
-  public javax.xml.stream.Location getLocation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getLocation()"); }
-  public javax.xml.stream.XMLStreamReader getParent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getParent()"); }
-  public java.lang.String getEncoding() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getEncoding()"); }
-  public int nextTag() throws javax.xml.stream.XMLStreamException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.nextTag()"); }
-  public java.lang.String getText() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getText()"); }
-  public boolean isStandalone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.isStandalone()"); }
-  public void setParent(javax.xml.stream.XMLStreamReader reader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.setParent(javax.xml.stream.XMLStreamReader)"); }
-  public java.lang.String getVersion() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getVersion()"); }
-  public int getTextLength() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getTextLength()"); }
-  public boolean hasName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.hasName()"); }
-  public java.lang.String getPrefix() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getPrefix()"); }
-  public javax.xml.namespace.QName getAttributeName(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getAttributeName(int)"); }
-  public int getAttributeCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getAttributeCount()"); }
-  public java.lang.String getAttributeType(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getAttributeType(int)"); }
-  public int getEventType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getEventType()"); }
-  public boolean isStartElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.isStartElement()"); }
-  public boolean isEndElement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.isEndElement()"); }
-  public boolean isCharacters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.isCharacters()"); }
-  public java.lang.String getElementText() throws javax.xml.stream.XMLStreamException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getElementText()"); }
-  public boolean isWhiteSpace() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.isWhiteSpace()"); }
-  public java.lang.String getAttributeValue(java.lang.String namespaceUri, java.lang.String localName) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getAttributeValue(java.lang.String, java.lang.String)"); }
-  public java.lang.String getAttributeValue(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getAttributeValue(int)"); }
-  public java.lang.String getAttributeNamespace(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getAttributeNamespace(int)"); }
-  public java.lang.String getAttributeLocalName(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getAttributeLocalName(int)"); }
-  public java.lang.String getAttributePrefix(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getAttributePrefix(int)"); }
-  public boolean isAttributeSpecified(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.isAttributeSpecified(int)"); }
-  public int getNamespaceCount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getNamespaceCount()"); }
-  public java.lang.String getNamespacePrefix(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getNamespacePrefix(int)"); }
-  public javax.xml.namespace.NamespaceContext getNamespaceContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getNamespaceContext()"); }
-  public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length) throws javax.xml.stream.XMLStreamException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getTextCharacters(int, char[], int, int)"); }
-  public char[] getTextCharacters() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getTextCharacters()"); }
-  public int getTextStart() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getTextStart()"); }
-  public boolean hasText() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.hasText()"); }
-  public boolean standaloneSet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.standaloneSet()"); }
-  public java.lang.String getCharacterEncodingScheme() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getCharacterEncodingScheme()"); }
-  public java.lang.String getPITarget() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getPITarget()"); }
-  public java.lang.String getPIData() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getPIData()"); }
-  public java.lang.String getNamespaceURI(java.lang.String prefix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getNamespaceURI(java.lang.String)"); }
-  public java.lang.String getNamespaceURI(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getNamespaceURI(int)"); }
-  public java.lang.String getNamespaceURI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getNamespaceURI()"); }
-  public java.lang.String getLocalName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.stream.util.StreamReaderDelegate.getLocalName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.namespace.QName getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object getProperty(java.lang.String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.xml.stream.XMLStreamException")
+  public boolean hasNext() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.xml.stream.XMLStreamException")
+  public int next() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.stream.Location getLocation() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.stream.XMLStreamReader getParent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getEncoding() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.xml.stream.XMLStreamException")
+  public int nextTag() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getText() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isStandalone() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setParent(javax.xml.stream.XMLStreamReader reader) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getVersion() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTextLength() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasName() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPrefix() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.namespace.QName getAttributeName(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAttributeCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAttributeType(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getEventType() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isStartElement() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEndElement() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCharacters() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, javax.xml.stream.XMLStreamException")
+  public java.lang.String getElementText() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isWhiteSpace() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAttributeValue(java.lang.String namespaceUri, java.lang.String localName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAttributeValue(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAttributeNamespace(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAttributeLocalName(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getAttributePrefix(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAttributeSpecified(int index) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNamespaceCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getNamespacePrefix(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.xml.namespace.NamespaceContext getNamespaceContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.xml.stream.XMLStreamException")
+  public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char[] getTextCharacters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getTextStart() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean hasText() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean standaloneSet() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getCharacterEncodingScheme() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPITarget() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getPIData() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getNamespaceURI(java.lang.String prefix) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getNamespaceURI(int index) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getNamespaceURI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getLocalName() { return null; }
   < ---- END java signatures ---- >
 }

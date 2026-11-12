@@ -58,22 +58,35 @@ class EditorKit {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public EditorKit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.EditorKit.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public EditorKit() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.EditorKit.clone()"); }
-  public abstract void write(java.io.Writer out, javax.swing.text.Document doc, int pos, int len) throws java.io.IOException, javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.text.EditorKit.write(java.io.Writer, javax.swing.text.Document, int, int)"); }
-  public abstract void read(java.io.Reader in, javax.swing.text.Document doc, int pos) throws java.io.IOException, javax.swing.text.BadLocationException { throw new AbstractMethodError("javax.swing.text.EditorKit.read(java.io.Reader, javax.swing.text.Document, int)"); }
-  public void install(javax.swing.JEditorPane c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.EditorKit.install(javax.swing.JEditorPane)"); }
-  public abstract javax.swing.text.ViewFactory getViewFactory() { throw new AbstractMethodError("javax.swing.text.EditorKit.getViewFactory()"); }
-  public abstract javax.swing.text.Caret createCaret() { throw new AbstractMethodError("javax.swing.text.EditorKit.createCaret()"); }
-  public void deinstall(javax.swing.JEditorPane c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.EditorKit.deinstall(javax.swing.JEditorPane)"); }
-  public abstract javax.swing.text.Document createDefaultDocument() { throw new AbstractMethodError("javax.swing.text.EditorKit.createDefaultDocument()"); }
-  public abstract java.lang.String getContentType() { throw new AbstractMethodError("javax.swing.text.EditorKit.getContentType()"); }
-  public abstract javax.swing.Action[] getActions() { throw new AbstractMethodError("javax.swing.text.EditorKit.getActions()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException, javax.swing.text.BadLocationException")
+  public void write(java.io.Writer out, javax.swing.text.Document doc, int pos, int len) { }
+  @throwable("java.lang.AbstractMethodError, java.io.IOException, javax.swing.text.BadLocationException")
+  public void read(java.io.Reader in, javax.swing.text.Document doc, int pos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void install(javax.swing.JEditorPane c) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.ViewFactory getViewFactory() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.Caret createCaret() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void deinstall(javax.swing.JEditorPane c) { }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.text.Document createDefaultDocument() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getContentType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public javax.swing.Action[] getActions() { return null; }
   < ---- END java signatures ---- >
 }

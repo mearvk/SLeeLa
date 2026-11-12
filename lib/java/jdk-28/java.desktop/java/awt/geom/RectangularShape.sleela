@@ -59,36 +59,63 @@ class RectangularShape {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  RectangularShape() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  RectangularShape() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.clone()"); }
-  public abstract boolean isEmpty() { throw new AbstractMethodError("java.awt.geom.RectangularShape.isEmpty()"); }
-  public boolean contains(java.awt.geom.Rectangle2D r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.contains(java.awt.geom.Rectangle2D)"); }
-  public java.awt.Rectangle getBounds() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.getBounds()"); }
-  public java.awt.geom.Rectangle2D getFrame() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.getFrame()"); }
-  public boolean intersects(java.awt.geom.Rectangle2D r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.intersects(java.awt.geom.Rectangle2D)"); }
-  public abstract double getX() { throw new AbstractMethodError("java.awt.geom.RectangularShape.getX()"); }
-  public abstract double getY() { throw new AbstractMethodError("java.awt.geom.RectangularShape.getY()"); }
-  public abstract double getHeight() { throw new AbstractMethodError("java.awt.geom.RectangularShape.getHeight()"); }
-  public double getMinX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.getMinX()"); }
-  public double getMinY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.getMinY()"); }
-  public double getMaxX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.getMaxX()"); }
-  public double getMaxY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.getMaxY()"); }
-  public abstract void setFrame(double x, double y, double w, double h) { throw new AbstractMethodError("java.awt.geom.RectangularShape.setFrame(double, double, double, double)"); }
-  public void setFrame(java.awt.geom.Point2D loc, java.awt.geom.Dimension2D size) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.setFrame(java.awt.geom.Point2D, java.awt.geom.Dimension2D)"); }
-  public void setFrame(java.awt.geom.Rectangle2D r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.setFrame(java.awt.geom.Rectangle2D)"); }
-  public void setFrameFromDiagonal(double x1, double y1, double x2, double y2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.setFrameFromDiagonal(double, double, double, double)"); }
-  public void setFrameFromDiagonal(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.setFrameFromDiagonal(java.awt.geom.Point2D, java.awt.geom.Point2D)"); }
-  public void setFrameFromCenter(java.awt.geom.Point2D center, java.awt.geom.Point2D corner) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.setFrameFromCenter(java.awt.geom.Point2D, java.awt.geom.Point2D)"); }
-  public void setFrameFromCenter(double centerX, double centerY, double cornerX, double cornerY) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.setFrameFromCenter(double, double, double, double)"); }
-  public double getCenterX() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.getCenterX()"); }
-  public double getCenterY() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.getCenterY()"); }
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.RectangularShape.getPathIterator(java.awt.geom.AffineTransform, double)"); }
-  public abstract double getWidth() { throw new AbstractMethodError("java.awt.geom.RectangularShape.getWidth()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Object clone() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean contains(java.awt.geom.Rectangle2D r) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.Rectangle getBounds() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.Rectangle2D getFrame() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean intersects(java.awt.geom.Rectangle2D r) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public double getX() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public double getY() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public double getHeight() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getMinX() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getMinY() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getMaxX() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getMaxY() { return 0.0; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setFrame(double x, double y, double w, double h) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFrame(java.awt.geom.Point2D loc, java.awt.geom.Dimension2D size) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFrame(java.awt.geom.Rectangle2D r) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFrameFromDiagonal(double x1, double y1, double x2, double y2) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFrameFromDiagonal(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFrameFromCenter(java.awt.geom.Point2D center, java.awt.geom.Point2D corner) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFrameFromCenter(double centerX, double centerY, double cornerX, double cornerY) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getCenterX() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public double getCenterY() { return 0.0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public double getWidth() { return 0.0; }
   < ---- END java signatures ---- >
 }

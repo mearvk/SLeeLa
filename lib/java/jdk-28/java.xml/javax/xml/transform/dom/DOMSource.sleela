@@ -62,19 +62,29 @@ class DOMSource {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DOMSource(org.w3c.dom.Node node, java.lang.String systemID) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMSource.<init>(org.w3c.dom.Node, java.lang.String)"); }
-  public DOMSource(org.w3c.dom.Node n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMSource.<init>(org.w3c.dom.Node)"); }
-  public DOMSource() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMSource.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DOMSource(org.w3c.dom.Node node, java.lang.String systemID) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DOMSource(org.w3c.dom.Node n) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DOMSource() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMSource.isEmpty()"); }
-  public org.w3c.dom.Node getNode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMSource.getNode()"); }
-  public void setNode(org.w3c.dom.Node node) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMSource.setNode(org.w3c.dom.Node)"); }
-  public void setSystemId(java.lang.String systemID) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMSource.setSystemId(java.lang.String)"); }
-  public java.lang.String getSystemId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.transform.dom.DOMSource.getSystemId()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEmpty() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public org.w3c.dom.Node getNode() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNode(org.w3c.dom.Node node) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSystemId(java.lang.String systemID) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getSystemId() { return null; }
   < ---- END java signatures ---- >
 }

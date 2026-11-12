@@ -58,10 +58,14 @@ class ThreadDeathRequest {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void addThreadFilter(com.sun.jdi.ThreadReference thread) { throw new AbstractMethodError("com.sun.jdi.request.ThreadDeathRequest.addThreadFilter(com.sun.jdi.ThreadReference)"); }
-  public default void addPlatformThreadsOnlyFilter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.jdi.request.ThreadDeathRequest.addPlatformThreadsOnlyFilter()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void addThreadFilter(com.sun.jdi.ThreadReference thread) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default void addPlatformThreadsOnlyFilter() { }
   < ---- END java signatures ---- >
 }

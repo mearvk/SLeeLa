@@ -58,22 +58,38 @@ class HTMLScriptElement {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract java.lang.String getType() { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.getType()"); }
-  public abstract java.lang.String getText() { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.getText()"); }
-  public abstract void setType(java.lang.String type) { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.setType(java.lang.String)"); }
-  public abstract void setText(java.lang.String text) { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.setText(java.lang.String)"); }
-  public abstract java.lang.String getCharset() { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.getCharset()"); }
-  public abstract void setCharset(java.lang.String charset) { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.setCharset(java.lang.String)"); }
-  public abstract java.lang.String getSrc() { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.getSrc()"); }
-  public abstract void setSrc(java.lang.String src) { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.setSrc(java.lang.String)"); }
-  public abstract java.lang.String getHtmlFor() { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.getHtmlFor()"); }
-  public abstract void setHtmlFor(java.lang.String htmlFor) { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.setHtmlFor(java.lang.String)"); }
-  public abstract java.lang.String getEvent() { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.getEvent()"); }
-  public abstract void setEvent(java.lang.String event) { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.setEvent(java.lang.String)"); }
-  public abstract boolean getDefer() { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.getDefer()"); }
-  public abstract void setDefer(boolean defer) { throw new AbstractMethodError("org.w3c.dom.html.HTMLScriptElement.setDefer(boolean)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getType() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getText() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setType(java.lang.String type) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setText(java.lang.String text) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getCharset() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCharset(java.lang.String charset) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getSrc() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setSrc(java.lang.String src) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getHtmlFor() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setHtmlFor(java.lang.String htmlFor) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getEvent() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setEvent(java.lang.String event) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean getDefer() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setDefer(boolean defer) { }
   < ---- END java signatures ---- >
 }

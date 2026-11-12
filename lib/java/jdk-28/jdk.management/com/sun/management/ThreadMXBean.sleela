@@ -58,17 +58,28 @@ class ThreadMXBean {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract boolean isThreadAllocatedMemorySupported() { throw new AbstractMethodError("com.sun.management.ThreadMXBean.isThreadAllocatedMemorySupported()"); }
-  public abstract long[] getThreadAllocatedBytes(long[] ids) { throw new AbstractMethodError("com.sun.management.ThreadMXBean.getThreadAllocatedBytes(long[])"); }
-  public abstract long getThreadAllocatedBytes(long id) { throw new AbstractMethodError("com.sun.management.ThreadMXBean.getThreadAllocatedBytes(long)"); }
-  public default long getTotalThreadAllocatedBytes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.management.ThreadMXBean.getTotalThreadAllocatedBytes()"); }
-  public default long getCurrentThreadAllocatedBytes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.management.ThreadMXBean.getCurrentThreadAllocatedBytes()"); }
-  public abstract boolean isThreadAllocatedMemoryEnabled() { throw new AbstractMethodError("com.sun.management.ThreadMXBean.isThreadAllocatedMemoryEnabled()"); }
-  public abstract void setThreadAllocatedMemoryEnabled(boolean enable) { throw new AbstractMethodError("com.sun.management.ThreadMXBean.setThreadAllocatedMemoryEnabled(boolean)"); }
-  public abstract long[] getThreadCpuTime(long[] ids) { throw new AbstractMethodError("com.sun.management.ThreadMXBean.getThreadCpuTime(long[])"); }
-  public abstract long[] getThreadUserTime(long[] ids) { throw new AbstractMethodError("com.sun.management.ThreadMXBean.getThreadUserTime(long[])"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isThreadAllocatedMemorySupported() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public long[] getThreadAllocatedBytes(long[] ids) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long getThreadAllocatedBytes(long id) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default long getTotalThreadAllocatedBytes() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default long getCurrentThreadAllocatedBytes() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isThreadAllocatedMemoryEnabled() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setThreadAllocatedMemoryEnabled(boolean enable) { }
+  @throwable("java.lang.AbstractMethodError")
+  public long[] getThreadCpuTime(long[] ids) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public long[] getThreadUserTime(long[] ids) { return null; }
   < ---- END java signatures ---- >
 }

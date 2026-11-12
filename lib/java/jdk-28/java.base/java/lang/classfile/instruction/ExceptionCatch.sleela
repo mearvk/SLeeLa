@@ -58,14 +58,22 @@ class ExceptionCatch {
 
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public static java.lang.classfile.instruction.ExceptionCatch of(java.lang.classfile.Label handler, java.lang.classfile.Label tryStart, java.lang.classfile.Label tryEnd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.ExceptionCatch.of(java.lang.classfile.Label, java.lang.classfile.Label, java.lang.classfile.Label)"); }
-  public static java.lang.classfile.instruction.ExceptionCatch of(java.lang.classfile.Label handler, java.lang.classfile.Label tryStart, java.lang.classfile.Label tryEnd, java.util.Optional<java.lang.classfile.constantpool.ClassEntry> catchTypeEntry) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.classfile.instruction.ExceptionCatch.of(java.lang.classfile.Label, java.lang.classfile.Label, java.lang.classfile.Label, java.util.Optional<java.lang.classfile.constantpool.ClassEntry>)"); }
-  public abstract java.lang.classfile.Label handler() { throw new AbstractMethodError("java.lang.classfile.instruction.ExceptionCatch.handler()"); }
-  public abstract java.lang.classfile.Label tryStart() { throw new AbstractMethodError("java.lang.classfile.instruction.ExceptionCatch.tryStart()"); }
-  public abstract java.lang.classfile.Label tryEnd() { throw new AbstractMethodError("java.lang.classfile.instruction.ExceptionCatch.tryEnd()"); }
-  public abstract java.util.Optional<java.lang.classfile.constantpool.ClassEntry> catchType() { throw new AbstractMethodError("java.lang.classfile.instruction.ExceptionCatch.catchType()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.instruction.ExceptionCatch of(java.lang.classfile.Label handler, java.lang.classfile.Label tryStart, java.lang.classfile.Label tryEnd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.lang.classfile.instruction.ExceptionCatch of(java.lang.classfile.Label handler, java.lang.classfile.Label tryStart, java.lang.classfile.Label tryEnd, java.util.Optional<java.lang.classfile.constantpool.ClassEntry> catchTypeEntry) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.Label handler() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.Label tryStart() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.classfile.Label tryEnd() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.util.Optional<java.lang.classfile.constantpool.ClassEntry> catchType() { return null; }
   < ---- END java signatures ---- >
 }

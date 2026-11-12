@@ -58,31 +58,53 @@ class XMLReaderAdapter {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public XMLReaderAdapter() throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.<init>()"); }
-  public XMLReaderAdapter(org.xml.sax.XMLReader xmlReader) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.<init>(org.xml.sax.XMLReader)"); }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public XMLReaderAdapter() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public XMLReaderAdapter(org.xml.sax.XMLReader xmlReader) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void parse(java.lang.String systemId) throws java.io.IOException, org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.parse(java.lang.String)"); }
-  public void parse(org.xml.sax.InputSource input) throws java.io.IOException, org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.parse(org.xml.sax.InputSource)"); }
-  public void setLocale(java.util.Locale locale) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.setLocale(java.util.Locale)"); }
-  public void setDocumentHandler(org.xml.sax.DocumentHandler handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.setDocumentHandler(org.xml.sax.DocumentHandler)"); }
-  public void setDTDHandler(org.xml.sax.DTDHandler handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.setDTDHandler(org.xml.sax.DTDHandler)"); }
-  public void setEntityResolver(org.xml.sax.EntityResolver resolver) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.setEntityResolver(org.xml.sax.EntityResolver)"); }
-  public void setErrorHandler(org.xml.sax.ErrorHandler handler) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.setErrorHandler(org.xml.sax.ErrorHandler)"); }
-  public void setDocumentLocator(org.xml.sax.Locator locator) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.setDocumentLocator(org.xml.sax.Locator)"); }
-  public void startDocument() throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.startDocument()"); }
-  public void endDocument() throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.endDocument()"); }
-  public void startPrefixMapping(java.lang.String prefix, java.lang.String uri) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.startPrefixMapping(java.lang.String, java.lang.String)"); }
-  public void endPrefixMapping(java.lang.String prefix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.endPrefixMapping(java.lang.String)"); }
-  public void startElement(java.lang.String uri, java.lang.String localName, java.lang.String qName, org.xml.sax.Attributes atts) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)"); }
-  public void endElement(java.lang.String uri, java.lang.String localName, java.lang.String qName) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.endElement(java.lang.String, java.lang.String, java.lang.String)"); }
-  public void characters(char[] ch, int start, int length) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.characters(char[], int, int)"); }
-  public void ignorableWhitespace(char[] ch, int start, int length) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.ignorableWhitespace(char[], int, int)"); }
-  public void processingInstruction(java.lang.String target, java.lang.String data) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.processingInstruction(java.lang.String, java.lang.String)"); }
-  public void skippedEntity(java.lang.String name) throws org.xml.sax.SAXException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: org.xml.sax.helpers.XMLReaderAdapter.skippedEntity(java.lang.String)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException, org.xml.sax.SAXException")
+  public void parse(java.lang.String systemId) { }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException, org.xml.sax.SAXException")
+  public void parse(org.xml.sax.InputSource input) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void setLocale(java.util.Locale locale) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDocumentHandler(org.xml.sax.DocumentHandler handler) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDTDHandler(org.xml.sax.DTDHandler handler) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEntityResolver(org.xml.sax.EntityResolver resolver) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setErrorHandler(org.xml.sax.ErrorHandler handler) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDocumentLocator(org.xml.sax.Locator locator) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void startDocument() { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void endDocument() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void startPrefixMapping(java.lang.String prefix, java.lang.String uri) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void endPrefixMapping(java.lang.String prefix) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void startElement(java.lang.String uri, java.lang.String localName, java.lang.String qName, org.xml.sax.Attributes atts) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void endElement(java.lang.String uri, java.lang.String localName, java.lang.String qName) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void characters(char[] ch, int start, int length) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void ignorableWhitespace(char[] ch, int start, int length) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void processingInstruction(java.lang.String target, java.lang.String data) { }
+  @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
+  public void skippedEntity(java.lang.String name) { }
   < ---- END java signatures ---- >
 }

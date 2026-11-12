@@ -58,15 +58,21 @@ class DocumentFilter {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public DocumentFilter() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DocumentFilter.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public DocumentFilter() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public void remove(javax.swing.text.DocumentFilter.FilterBypass fb, int offset, int length) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DocumentFilter.remove(javax.swing.text.DocumentFilter.FilterBypass, int, int)"); }
-  public void replace(javax.swing.text.DocumentFilter.FilterBypass fb, int offset, int length, java.lang.String text, javax.swing.text.AttributeSet attrs) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DocumentFilter.replace(javax.swing.text.DocumentFilter.FilterBypass, int, int, java.lang.String, javax.swing.text.AttributeSet)"); }
-  public void insertString(javax.swing.text.DocumentFilter.FilterBypass fb, int offset, java.lang.String string, javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.text.DocumentFilter.insertString(javax.swing.text.DocumentFilter.FilterBypass, int, java.lang.String, javax.swing.text.AttributeSet)"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public void remove(javax.swing.text.DocumentFilter.FilterBypass fb, int offset, int length) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public void replace(javax.swing.text.DocumentFilter.FilterBypass fb, int offset, int length, java.lang.String text, javax.swing.text.AttributeSet attrs) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
+  public void insertString(javax.swing.text.DocumentFilter.FilterBypass fb, int offset, java.lang.String string, javax.swing.text.AttributeSet attr) { }
   < ---- END java signatures ---- >
 }

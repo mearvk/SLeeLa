@@ -58,34 +58,59 @@ class PrinterJob {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public PrinterJob() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterJob.<init>()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public PrinterJob() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public abstract void cancel() { throw new AbstractMethodError("java.awt.print.PrinterJob.cancel()"); }
-  public abstract boolean isCancelled() { throw new AbstractMethodError("java.awt.print.PrinterJob.isCancelled()"); }
-  public abstract int getCopies() { throw new AbstractMethodError("java.awt.print.PrinterJob.getCopies()"); }
-  public abstract java.lang.String getUserName() { throw new AbstractMethodError("java.awt.print.PrinterJob.getUserName()"); }
-  public abstract void setCopies(int copies) { throw new AbstractMethodError("java.awt.print.PrinterJob.setCopies(int)"); }
-  public java.awt.print.PageFormat getPageFormat(javax.print.attribute.PrintRequestAttributeSet attributes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterJob.getPageFormat(javax.print.attribute.PrintRequestAttributeSet)"); }
-  public static java.awt.print.PrinterJob getPrinterJob() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterJob.getPrinterJob()"); }
-  public static javax.print.PrintService[] lookupPrintServices() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterJob.lookupPrintServices()"); }
-  public abstract boolean printDialog() throws java.awt.HeadlessException { throw new AbstractMethodError("java.awt.print.PrinterJob.printDialog()"); }
-  public boolean printDialog(javax.print.attribute.PrintRequestAttributeSet attributes) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterJob.printDialog(javax.print.attribute.PrintRequestAttributeSet)"); }
-  public java.awt.print.PageFormat defaultPage() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterJob.defaultPage()"); }
-  public abstract java.awt.print.PageFormat defaultPage(java.awt.print.PageFormat page) { throw new AbstractMethodError("java.awt.print.PrinterJob.defaultPage(java.awt.print.PageFormat)"); }
-  public java.awt.print.PageFormat pageDialog(javax.print.attribute.PrintRequestAttributeSet attributes) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterJob.pageDialog(javax.print.attribute.PrintRequestAttributeSet)"); }
-  public javax.print.PrintService getPrintService() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterJob.getPrintService()"); }
-  public abstract java.awt.print.PageFormat validatePage(java.awt.print.PageFormat page) { throw new AbstractMethodError("java.awt.print.PrinterJob.validatePage(java.awt.print.PageFormat)"); }
-  public static javax.print.StreamPrintServiceFactory[] lookupStreamPrintServices(java.lang.String mimeType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterJob.lookupStreamPrintServices(java.lang.String)"); }
-  public void setPrintService(javax.print.PrintService service) throws java.awt.print.PrinterException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.print.PrinterJob.setPrintService(javax.print.PrintService)"); }
-  public abstract void setPrintable(java.awt.print.Printable painter) { throw new AbstractMethodError("java.awt.print.PrinterJob.setPrintable(java.awt.print.Printable)"); }
-  public abstract void setPrintable(java.awt.print.Printable painter, java.awt.print.PageFormat format) { throw new AbstractMethodError("java.awt.print.PrinterJob.setPrintable(java.awt.print.Printable, java.awt.print.PageFormat)"); }
-  public abstract void setPageable(java.awt.print.Pageable document) throws java.lang.NullPointerException { throw new AbstractMethodError("java.awt.print.PrinterJob.setPageable(java.awt.print.Pageable)"); }
-  public abstract void setJobName(java.lang.String jobName) { throw new AbstractMethodError("java.awt.print.PrinterJob.setJobName(java.lang.String)"); }
-  public abstract java.lang.String getJobName() { throw new AbstractMethodError("java.awt.print.PrinterJob.getJobName()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.AbstractMethodError")
+  public void cancel() { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isCancelled() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int getCopies() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getUserName() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void setCopies(int copies) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.print.PageFormat getPageFormat(javax.print.attribute.PrintRequestAttributeSet attributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static java.awt.print.PrinterJob getPrinterJob() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.print.PrintService[] lookupPrintServices() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.awt.HeadlessException")
+  public boolean printDialog() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public boolean printDialog(javax.print.attribute.PrintRequestAttributeSet attributes) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.awt.print.PageFormat defaultPage() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.print.PageFormat defaultPage(java.awt.print.PageFormat page) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public java.awt.print.PageFormat pageDialog(javax.print.attribute.PrintRequestAttributeSet attributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public javax.print.PrintService getPrintService() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public java.awt.print.PageFormat validatePage(java.awt.print.PageFormat page) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static javax.print.StreamPrintServiceFactory[] lookupStreamPrintServices(java.lang.String mimeType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.print.PrinterException")
+  public void setPrintService(javax.print.PrintService service) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setPrintable(java.awt.print.Printable painter) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setPrintable(java.awt.print.Printable painter, java.awt.print.PageFormat format) { }
+  @throwable("java.lang.AbstractMethodError, java.lang.NullPointerException")
+  public void setPageable(java.awt.print.Pageable document) { }
+  @throwable("java.lang.AbstractMethodError")
+  public void setJobName(java.lang.String jobName) { }
+  @throwable("java.lang.AbstractMethodError")
+  public java.lang.String getJobName() { return null; }
   < ---- END java signatures ---- >
 }

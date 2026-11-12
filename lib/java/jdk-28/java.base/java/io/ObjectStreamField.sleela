@@ -58,24 +58,38 @@ class ObjectStreamField {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  public ObjectStreamField(java.lang.String name, java.lang.Class<?> type, boolean unshared) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamField.<init>(java.lang.String, java.lang.Class<?>, boolean)"); }
-  public ObjectStreamField(java.lang.String name, java.lang.Class<?> type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamField.<init>(java.lang.String, java.lang.Class<?>)"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ObjectStreamField(java.lang.String name, java.lang.Class<?> type, boolean unshared) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public ObjectStreamField(java.lang.String name, java.lang.Class<?> type) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
-  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
-     abstract method, else UnsupportedOperationException naming the Java
-     signature. Produce the SLeeLa logic from the Java Source above. >>
-  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamField.getName()"); }
-  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamField.toString()"); }
-  public int compareTo(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamField.compareTo(java.lang.Object)"); }
-  public boolean isPrimitive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamField.isPrimitive()"); }
-  public java.lang.Class<?> getType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamField.getType()"); }
-  public char getTypeCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamField.getTypeCode()"); }
-  public java.lang.String getTypeString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamField.getTypeString()"); }
-  public int getOffset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamField.getOffset()"); }
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(java.lang.Object obj) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPrimitive() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.Class<?> getType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public char getTypeCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public java.lang.String getTypeString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getOffset() { return 0; }
   @JavaProtected
-  void setOffset(int offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamField.setOffset(int)"); }
-  public boolean isUnshared() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.io.ObjectStreamField.isUnshared()"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  void setOffset(int offset) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isUnshared() { return false; }
   < ---- END java signatures ---- >
 }
