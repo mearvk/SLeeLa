@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "dd4e2dd0008300bc2e11bccb226b073855fd599d7e405bcc8fb830f73ac81a87"
+      "sha256": "c8718229504f8165aeab30e454ba94a36ebb8e9790c090a15e14b7c5fc70e944"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -614,6 +614,14 @@
       "sha256": "f5c3091d8db9d1442e472e729a199a220ec3e4bec983adc4bfe922d0fcf65799"
     },
     {
+      "path": "impl/frontend/java_references.cpp",
+      "sha256": "0148073c06fdba4baef2dc69c9568e83cd2cedf92cb58947a7969b07de7ec687"
+    },
+    {
+      "path": "impl/frontend/java_references.h",
+      "sha256": "cfe3046bdda86e817489946385b6926a44d791e44d36e6102cd8b885fb695330"
+    },
+    {
       "path": "impl/frontend/keyword_supporter.cpp",
       "sha256": "0fd06f41442ced05998e30e24115630739f1a920ed47ea47cd2c555c9a9d1917"
     },
@@ -663,7 +671,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "e382c25a51e8a5b18e2016720f51f123e1ab7a1753e168186de19166bc8411ca"
+      "sha256": "33f6d23c33ca393adde697b20a3c86f4ed7dfb2a044db1edabb0d7da282b7a26"
     },
     {
       "path": "impl/frontend/semantic.h",

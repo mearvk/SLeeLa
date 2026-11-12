@@ -345,7 +345,7 @@ SOC_MATH_OBJ := $(BUILD)/sociology_math.o
 SOC_OBJ := $(BUILD)/sociology.o
 SOC_SMOKE := $(BUILD)/sociology_smoke
 CORE_SRC := core/sleela_artifact.c
-FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/java_equivalence.cpp frontend/semantic.cpp frontend/compiler.cpp \
+FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/java_equivalence.cpp frontend/java_references.cpp frontend/semantic.cpp frontend/compiler.cpp \
           frontend/version.cpp frontend/artifact.cpp frontend/originate.cpp frontend/wikigen.cpp frontend/annotation_pipeline.cpp frontend/library_index.cpp frontend/docs.cpp frontend/keyword_supporter.cpp frontend/dynamite.cpp frontend/permissible.cpp \
           annotation/Annotation.cpp annotation/ForwardingAnnotation.cpp annotation/AnnotationForwarder.cpp \
           annotation/AnnotationInterpreter.cpp annotation/AnnotationRuntime.cpp \

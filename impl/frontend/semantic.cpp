@@ -3,6 +3,7 @@
 #include "wide_integer.h"
 #include "annotation_pipeline.h"
 #include <map>
+#include "java_references.h"
 #include <set>
 #include <string>
 #include <functional>
@@ -268,20 +269,9 @@ class Analyzer{
    // index classes by name for superclass lookup
    std::map<std::string,const ClassDecl*> byName;
    for(const auto&c:p.classes) byName[c.name]=&c;
-   // Resolve a qualified Java superclass against the simple class name of the
-   // uniquely selected /lib source unit. Only library-origin classes may be
-   // used for this fallback, so a local class named Object cannot impersonate
-   // java.lang.Object.
-   auto resolveBaseName=[&](const std::string& declared)->std::string{
-    if(byName.count(declared)) return declared;
-    const std::size_t dot=declared.rfind('.');
-    if(dot!=std::string::npos){
-     const std::string simple=declared.substr(dot+1);
-     auto it=byName.find(simple);
-     if(it!=byName.end() && it->second->fromLibrary) return simple;
-    }
-    return declared;
-   };
+   // Java superclass references resolve through java_references.cpp (shared with
+   // the compiler so check and run agree).
+   auto resolveBaseName=[&](const std::string& declared)->std::string{ return javaref::resolveBaseName(byName,declared); };
    // validate: known base, no cycles
    for(const auto&c:p.classes){
     const std::string sup=resolveBaseName(c.java.superclass);

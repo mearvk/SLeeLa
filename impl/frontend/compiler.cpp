@@ -4,6 +4,7 @@
 #include "compiler.h"
 #include "semantic.h"
 #include "java_compat.h"
+#include "java_references.h"
 #include "unsigned_integer.h"
 #include "wide_integer.h"
 
@@ -156,7 +157,7 @@ public:
             const ClassDecl* cls=classByName[name];
             std::vector<const Field*> ordered; std::set<std::string> seen;
             if(inheritance){
-                const std::string& sup=cls->java.superclass;
+                const std::string sup=javaref::superclassOf(classByName,*cls);
                 if(!sup.empty()&&classByName.count(sup)&&!layoutInProgress.count(sup)){
                     resolveFields(sup);
                     for(const Field* bf:instanceFieldsOf[sup]) if(seen.insert(bf->name).second) ordered.push_back(bf);
@@ -196,7 +197,7 @@ public:
         }
         if(inheritance) {
             for(const auto& cls:prog_.classes) {
-                const std::string& parent=cls.java.superclass;
+                const std::string parent=javaref::superclassOf(classByName,cls);
                 if(parent.empty() || !structLayout_.count(parent) || !structLayout_.count(cls.name)) continue;
                 const int rc=slvm_set_struct_parent(vm_,structLayout_.at(cls.name).typeIndex,structLayout_.at(parent).typeIndex);
                 if(rc!=0) throw std::runtime_error("Semantic error: could not register runtime parent class for '"+cls.name+"'");
@@ -233,7 +234,7 @@ public:
             std::function<void(const std::string&)> inheritMethods=[&](const std::string& name){
                 if(aliased.count(name)||!classByName.count(name)) return;
                 if(!aliasInProgress.insert(name).second) return; // cycle guard
-                const std::string& sup=classByName[name]->java.superclass;
+                const std::string sup=javaref::superclassOf(classByName,*classByName[name]);
                 if(sup.empty()||!classByName.count(sup)||aliasInProgress.count(sup)){ aliasInProgress.erase(name); aliased.insert(name); return; }
                 inheritMethods(sup);
                 // Alias the base's RESOLVED function set (its own + inherited),
@@ -274,14 +275,14 @@ private:
     std::string currentClass_;
     // Sleela.home lineage (SLEELA.syntax section 42), resolved against the loaded classes.
     std::map<std::string,const ClassDecl*> lineageClasses_;
-    std::string lineageParentOf(const std::string& n) const {auto it=lineageClasses_.find(n);if(it==lineageClasses_.end())return "";const std::string& s=it->second->java.superclass;return lineageClasses_.count(s)?s:"";}
+    std::string lineageParentOf(const std::string& n) const {auto it=lineageClasses_.find(n);if(it==lineageClasses_.end())return "";const std::string s=javaref::superclassOf(lineageClasses_,*it->second);return lineageClasses_.count(s)?s:"";}
     std::string lineageRootOf(std::string n) const {std::set<std::string> seen;for(;;){seen.insert(n);std::string p=lineageParentOf(n);if(p.empty()||seen.count(p))return n;n=p;}}
     std::string lineageValue(const LineageExpr& x) const {
         const std::string vm="Sleela.System";
         switch(x.kind){
         case LineageExpr::Vm:return vm;
         case LineageExpr::InitParent:{std::string p=lineageParentOf(currentClass_);return p.empty()?vm:p;}
-        case LineageExpr::InitChild:{for(const auto& kv:lineageClasses_) if(kv.second->java.superclass==currentClass_&&kv.first!=currentClass_) return kv.first;return vm;}
+        case LineageExpr::InitChild:{for(const auto& kv:lineageClasses_) if(javaref::superclassOf(lineageClasses_,*kv.second)==currentClass_&&kv.first!=currentClass_) return kv.first;return vm;}
         case LineageExpr::InitRoot:return lineageRootOf(currentClass_);
         case LineageExpr::Parents:{
             if(x.depth<=0)return vm;
