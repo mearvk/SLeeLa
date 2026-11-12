@@ -69,9 +69,9 @@ total.
 | lesson | subject | sample verified data point |
 |---|---|---|
 | 1 | registry intake | tally: `accepted=5 refused=3 registered=5` |
-| 2 | student input gate | a claim is refused unless its evidence is already registered |
+| 2 | student input gate | 6 submissions, 3 good and 3 refused for three distinct reasons (empty claim, unregistered evidence, wrong step order); final tally `good=3 refused=3 last accepted step=3` |
 | 3 | system readiness | 5 checks (memory, storage, display, input, clock) go from "5 check(s) to fix" to "the instructor is ready," distinguishing NOT OBSERVED, BELOW MINIMUM, and IMPLAUSIBLE readings |
-| 4 | agreement | two independently-built registries compared entry by entry |
+| 4 | agreement | two independently-built registries compared entry by entry; first pass finds 2 differences ("re-observe," "master only"), second pass after re-observing ends `AGREE, work accepted` |
 | 5 | nested carriers | a carrier chain up to 3 levels deep |
 | 6 | purchase onion | supplier A total 11,650¢ vs. supplier B 12,400¢; a missed discount flips the student's total to 12,450¢ (off by exactly 800¢); a later tie at 11,650¢/11,650¢ demonstrates the tie norm (the earlier-listed supplier wins) |
 | 7–22 | sixteen trading decisions | lumber, cement, copper, steel, coffee, cotton, solar, lithium, semiconductors, server racks, smartphones, televisions, wheat, fuel, freight, a tie capstone |
@@ -174,15 +174,20 @@ cross-check was the condition for trusting them.
 
 ## 8. Glossary and defined-vs-undefined terms
 
-The authoritative glossary for this courseware is
-[`courseware/ORGANIZED.md`](./courseware/ORGANIZED.md). It is not duplicated
-here; this section only flags what it covers, since it bears directly on
-reading any of the material above honestly:
+The authoritative glossary for this courseware's trading vocabulary is
+[`courseware/ORGANIZED.md`](./courseware/ORGANIZED.md); it is not duplicated
+here, this section only flags what it covers. Two metrics used above —
+**term potency** and **age potency** — are defined in
+[`SLTermPotency.sleela`](./courseware/long-term-potencies/SLTermPotency.sleela)'s
+own header comment, not in `ORGANIZED.md` (which predates that topic); both
+places agree on being precise about what a term means before using it.
 
-- **Defined terms, used in running, checked code:** long, short, lot, FIFO,
-  verb, refusal, invariant, borrow cost, the tie norm, the term boundary,
-  margin/equity/excess/call, differential testing, the exact-comparison
-  bound, the daily-trades cap, term potency, age potency.
+- **Defined in `ORGANIZED.md`, used in running, checked code:** long, short,
+  lot, FIFO, verb, refusal, invariant, borrow cost, the tie norm, the term
+  boundary, margin/equity/excess/call, differential testing, the
+  exact-comparison bound, the daily-trades cap (14 terms as of this writing).
+- **Defined in `SLTermPotency.sleela`, not in `ORGANIZED.md`:** term potency,
+  age potency (see §7 above).
 - **Named but never defined, and not used in any number here:** "Flat 2,"
   "'2'-ness," "medium-concerns" as a formal metric, any "military/aluminum/
   grey Quality of the Instrument" tier scheme.
