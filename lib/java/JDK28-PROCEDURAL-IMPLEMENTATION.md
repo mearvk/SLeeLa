@@ -142,9 +142,11 @@ operations are gated at 3.0.
 
 ## Conventions used in this phase
 
-1. **Static members are instance methods.** SLeeLa does not yet resolve
-   `Math.abs(x)` or `Integer.MAX_VALUE` across classes. Create an instance and
-   call through it: `new Math().abs(x)`, `new Integer(0).parseInt("42")`,
+1. **Static members are instance methods (except `Math` and `StrictMath`).**
+   `Math.abs(x)`, `Math.PI` and `StrictMath.abs(x)` work as written; every
+   `StrictMath` static call is mapped to the `Math` function of the same name.
+   SLeeLa does not yet resolve `Integer.MAX_VALUE` across classes. Create an
+   instance and call through it: `new Math().abs(x)`, `new Integer(0).parseInt("42")`,
    `new Integer(0).maxValue()`. `static final` constants are still declared,
    so the Java names are in the source.
 2. **Overloads get a role or type suffix.** Calls resolve by name only:

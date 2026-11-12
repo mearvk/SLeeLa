@@ -50879,7 +50879,7 @@
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/StrictMath.sleela",
-      "sha256": "c6ff5122a36ec1f61c3a9e9abac8d9b56fbd877598b75926c5666bec3c962f25"
+      "sha256": "7778edae1c855c4e24ad9bfe97ebbc448bd92cf0d47938cd266c47191c7aba0b"
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/String.sleela",

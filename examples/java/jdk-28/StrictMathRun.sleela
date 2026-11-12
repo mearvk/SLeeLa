@@ -1,0 +1,37 @@
+#sleela 3.0
+import java.jdk-28;
+material;
+
+< Runs java.lang.StrictMath from lib/java/jdk-28 on the SLeeLa VM (import java.jdk-28 selects it). >
+class StrictMathRun {
+  void main() {
+    print(StrictMath.abs(-7));
+    print(StrictMath.abs(-2.5));
+    print(StrictMath.max(3, 9));
+    print(StrictMath.min(2.5, -1.0));
+    print(StrictMath.floor(-2.5));
+    print(StrictMath.ceil(2.1));
+    print(StrictMath.rint(2.5));
+    print(StrictMath.round(2.5));
+    print(StrictMath.sqrt(2.0));
+    print(StrictMath.cbrt(-27.0));
+    print(StrictMath.hypot(3.0, 4.0));
+    print(StrictMath.pow(2.0, 10.0));
+    print(StrictMath.exp(1.0));
+    print(StrictMath.log(StrictMath.E));
+    print(StrictMath.log10(1000.0));
+    print(StrictMath.sin(StrictMath.PI / 2.0));
+    print(StrictMath.cos(0.0));
+    print(StrictMath.atan2(1.0, 1.0));
+    print(StrictMath.toDegrees(StrictMath.PI));
+    print(StrictMath.floorDiv(-7, 2));
+    print(StrictMath.floorMod(-7, 3));
+    print(StrictMath.ceilDiv(7, 2));
+    print(StrictMath.multiplyHigh(9223372036854775807, 4));
+    print(StrictMath.getExponent(1024.0));
+    print(StrictMath.ulp(1.0));
+    print(StrictMath.nextUp(1.0));
+    print(StrictMath.signum(-3.0));
+    print(StrictMath.clamp(15, 0, 10));
+  }
+}
