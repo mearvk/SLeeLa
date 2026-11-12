@@ -447,7 +447,7 @@
     },
     {
       "path": "impl/core/sleela_terminal.c",
-      "sha256": "c7570ea6f3c55af951ac02e4b7e6fa0bb9435a267713085b784b9cc90918c0fa"
+      "sha256": "cc965ed1ef064ce710dd4cc2595ea427e18c03e10193f97b8ce4c53691097238"
     },
     {
       "path": "impl/core/sleela_terminal.h",
