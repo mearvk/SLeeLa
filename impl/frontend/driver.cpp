@@ -2088,18 +2088,29 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
             // java/early_access/jdk28/docs/api/.../String.sleela vs
             // java/java/lang/String.sleela). Prefer a real source unit whenever
             // one exists; only consider docs/api envelopes as a last resort.
+            // java/jdk-28/<module>/... (one SLeeLa reference file per JDK 28
+            // type, at the online API path) is the same reference tier; when
+            // only reference files match, java/jdk-28 wins over docs/api.
+            auto isJdk28Reference=[](const sleela::library::Symbol& symbol){
+                return symbol.path.rfind("java/jdk-28/",0)==0;
+            };
+            auto isReferenceUnit=[&](const sleela::library::Symbol& symbol){
+                return symbol.path.find("/docs/api/")!=std::string::npos || isJdk28Reference(symbol);
+            };
             bool hasNonDocumentationMatch=false;
+            bool hasJdk28Match=false;
             for(const auto& symbol:index.symbols()){
                 if(symbol.name!=name) continue;
                 if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
-                if(symbol.path.find("/docs/api/")==std::string::npos)
+                if(!isReferenceUnit(symbol))
                     hasNonDocumentationMatch=true;
+                if(isJdk28Reference(symbol)) hasJdk28Match=true;
             }
             for(const auto& symbol:index.symbols()){
                 if(symbol.name!=name) continue;
                 if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
-                if(hasNonDocumentationMatch &&
-                   symbol.path.find("/docs/api/")!=std::string::npos) continue;
+                if(hasNonDocumentationMatch && isReferenceUnit(symbol)) continue;
+                if(!hasNonDocumentationMatch && hasJdk28Match && !isJdk28Reference(symbol)) continue;
                 if(match && match->path!=symbol.path){
                     std::cerr<<"sleelvac: ambiguous library symbol '"<<name<<"' in /lib ("
                              <<match->path<<" and "<<symbol.path<<"); add a versioned import such as 'import gui.version-military;' to select the intended library line.\n";

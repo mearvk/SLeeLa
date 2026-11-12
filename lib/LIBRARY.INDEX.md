@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 1.04 moves the `lib/java/jdk-28/` module folders up from `docs/api/` to `lib/java/jdk-28/<module>/<package>/<Type>.sleela` and adds the 16 JDK 28 modules that export no packages (`java.se`, `jdk.jlink`, `jdk.zipfs`, ...) as folders holding a `module-summary.md`: 58 module folders and 386 folders in all. The /lib loader (`impl/frontend/driver.cpp`) now treats `java/jdk-28/` as a reference tier like `docs/api/`, so a real `lib/java/java/...` unit always wins; `working-binaries/sleela` was rebuilt with that rule. No source or symbol count change (moves only).
+>
 > Revision 1.03 adds `lib/java/jdk-28/`: one SLeeLa file per public Java SE / JDK 28 type (4,721 files, 1:1), at the online API path `lib/java/jdk-28/docs/api/<module>/<package>/<Type>.sleela`, each naming its JDK 28 API page as Java Source. The `docs/api` segment keeps the real `lib/java/java/...` units preferred by the loader, so no existing program becomes ambiguous. 4,721 new source units (counts: 13373 to **18094** sources; 13457 to **18178** total records; 121 packages).
 >
 > Revision 1.02 adds `lib/java/implementations/java/lang/JavaStringMethods.sleela`, the `java.lang.String` instance methods for built-in Strings (SLEELA.syntax section 41; sources 13373, symbols 13457).

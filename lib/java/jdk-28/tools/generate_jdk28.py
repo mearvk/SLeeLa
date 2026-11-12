@@ -5,10 +5,10 @@ Rule: every Java type documented in the JDK 28 API has exactly one SLeeLa
 file, at the same path the online API documentation uses:
 
     online : https://download.java.net/java/early_access/jdk28/docs/api/<module>/<pkg/path>/<Type>.html
-    SLeeLa : lib/java/jdk-28/docs/api/<module>/<pkg/path>/<Type>.sleela
+    SLeeLa : lib/java/jdk-28/<module>/<pkg/path>/<Type>.sleela
 
-The docs/api segment is the online path, and it also tells the /lib loader that
-a real library unit of the same name (lib/java/java/...) wins over these files.
+The /lib loader treats java/jdk-28/ as a reference tier: a real library unit of
+the same name (lib/java/java/...) wins over these files (impl/frontend/driver.cpp).
 
 Each file names its Java Source (the online API page) and carries the initial
 SLeeLa reference for that type, taken from the API only (no Java source text
@@ -30,7 +30,7 @@ Inputs (all in-repo):
 A JDK 28 type that the reflected data does not know (new in JDK 28) gets its
 identity and Source link only; its members are marked pending.
 
-Outputs: lib/java/jdk-28/docs/api/<module>/..., lib/java/jdk-28/INDEX.tsv (Java type -> SLeeLa file -> Source).
+Outputs: lib/java/jdk-28/<module>/..., lib/java/jdk-28/INDEX.tsv (Java type -> SLeeLa file -> Source).
 Idempotent: rewrites every generated file. usage: python3 lib/java/jdk-28/tools/generate_jdk28.py
 """
 from __future__ import annotations
@@ -43,7 +43,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[4]
 OUT = REPO / "lib" / "java" / "jdk-28"
-API_DIR = OUT / "docs" / "api"
+API_DIR = OUT
 LIBJAVA = REPO / "lib" / "java"
 DOCS = LIBJAVA / "early_access" / "jdk28" / "docs" / "api"
 ONLINE = "https://download.java.net/java/early_access/jdk28/docs/api/"
@@ -55,6 +55,30 @@ import jdk_api_signatures as sg  # noqa: E402
 
 FIXED_FIELDS = 11 + 5  # metadata + javaType/javaModule/javaSource/javaKind/javaSuper
 MAX_FIELDS = 64
+# Documented modules that export no packages (no types). Each is in the JDK 25
+# runtime this tree was reflected from and has a module-summary page in the
+# Oracle API docs; the newest release where that page was confirmed is noted.
+# Not listed: jdk.crypto.ec (deprecated for removal since JDK 22; JDK 28 status
+# unconfirmed), and jdk.unsupported, jdk.unsupported.desktop and jdk.jsobject,
+# which have no types in the JDK 28 API index.
+NO_PACKAGE_MODULES = {
+    "java.se": "module page in the JDK 27 API docs",
+    "jdk.jcmd": "module page in the JDK 27 API docs",
+    "jdk.jdwp.agent": "module page in the JDK 27 API docs",
+    "jdk.jlink": "module page in the JDK 27 API docs",
+    "jdk.jpackage": "module page in the JDK 27 API docs",
+    "jdk.zipfs": "module page in the JDK 27 API docs",
+    "jdk.jdeps": "module page in the JDK 25 API docs",
+    "jdk.editpad": "module page in the JDK 24 API docs",
+    "jdk.charsets": "module page in the JDK 22 API docs; in the JDK 25 runtime",
+    "jdk.naming.rmi": "module page in the JDK 21 API docs; in the JDK 25 runtime",
+    "jdk.crypto.cryptoki": "module page in the JDK 17 API docs; in the JDK 25 runtime",
+    "jdk.jstatd": "module page in the JDK 17 API docs; in the JDK 25 runtime",
+    "jdk.hotspot.agent": "module page in the JDK 11 API docs; in the JDK 25 runtime",
+    "jdk.localedata": "module page in the JDK 11 API docs; in the JDK 25 runtime",
+    "jdk.naming.dns": "module page in the JDK 11 API docs; in the JDK 25 runtime",
+    "jdk.management.agent": "in the JDK 25 runtime; module page not yet confirmed online",
+}
 HELPERS = {"javaModule", "javaSource", "javaKind", "javaSuper", "javaInterfaces", "sourceUrl"}
 
 
@@ -216,7 +240,7 @@ def main() -> int:
         nested = ""
         if "." in simple:
             nested = f"\n   Nested Java type: the file keeps the documented name {simple}."
-        text = f'''<< lib/java/jdk-28/docs/api/{out_rel.as_posix()}
+        text = f'''<< lib/java/jdk-28/{out_rel.as_posix()}
    SLeeLa file for the Java type {fq} (module {module}). One Java type, one SLeeLa file.
    Java Source (JDK 28 API): {src_url}
    Java kind: {kind}{("; extends " + sup) if sup else ""}{("; implements " + ifaces) if ifaces else ""}
@@ -241,10 +265,35 @@ class {cls}{tps} {{
         else:
             dest.write_text(text, encoding="utf-8")
         stats["files"] += 1
-        index.append("\t".join([fq, module, kind, "lib/java/jdk-28/docs/api/" + out_rel.as_posix(), src_url, "api" if t else "pending"]))
+        index.append("\t".join([fq, module, kind, "lib/java/jdk-28/" + out_rel.as_posix(), src_url, "api" if t else "pending"]))
     (OUT / "INDEX.tsv").write_text("\n".join(index) + "\n", encoding="utf-8")
+
+    # Every documented module has a folder, as online (docs/api/<module>/module-summary.html).
+    # Modules that export no packages hold no types, so their folder carries a
+    # module-summary.md naming the online page instead.
+    counts = {}
+    for module, *_ in inventory():
+        counts[module] = counts.get(module, 0) + 1
+    mods = ["# module\ttypes\tfolder\tjava_source\tevidence"]
+    for module in sorted(counts):
+        mods.append(f"{module}\t{counts[module]}\tlib/java/jdk-28/{module}/\t{ONLINE}{module}/module-summary.html\tJDK 28 API index (types)")
+    for module, evidence in sorted(NO_PACKAGE_MODULES.items()):
+        folder = OUT / module
+        folder.mkdir(parents=True, exist_ok=True)
+        url = f"{ONLINE}{module}/module-summary.html"
+        (folder / "module-summary.md").write_text(
+            f"# Module {module} (Java SE 28 & JDK 28)\n\n"
+            f"Java Source: {url}\n\n"
+            "This module exports no packages, so it has no Java types and no SLeeLa\n"
+            "type files. The folder exists so that /lib/java/jdk-28 has every module\n"
+            "folder the online JDK 28 API has.\n\n"
+            f"Evidence that the module is documented: {evidence}.\n", encoding="utf-8")
+        mods.append(f"{module}\t0\tlib/java/jdk-28/{module}/\t{url}\t{evidence}")
+    (OUT / "MODULES.tsv").write_text("\n".join(mods) + "\n", encoding="utf-8")
+    stats["modules"] = len(counts) + len(NO_PACKAGE_MODULES)
     print(f"jdk-28: {stats['files']} files (1:1 with JDK 28 types); {stats['with_members']} with API members, "
-          f"{stats['pending']} pending; {stats['ctors']} constructors, {stats['methods']} methods")
+          f"{stats['pending']} pending; {stats['ctors']} constructors, {stats['methods']} methods; "
+          f"{stats['modules']} module folders")
     return 0
 
 

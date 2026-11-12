@@ -1,0 +1,91 @@
+<< lib/java/jdk-28/java.base/java/util/concurrent/Phaser.sleela
+   SLeeLa file for the Java type java.util.concurrent.Phaser (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/Phaser.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Phaser {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7002;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.concurrent.Phaser";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/Phaser.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public Phaser(int parties) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.<init>(int)"); }
+  public Phaser() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.<init>()"); }
+  public Phaser(java.util.concurrent.Phaser parent, int parties) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.<init>(java.util.concurrent.Phaser, int)"); }
+  public Phaser(java.util.concurrent.Phaser parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.<init>(java.util.concurrent.Phaser)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.toString()"); }
+  public int register() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.register()"); }
+  public java.util.concurrent.Phaser getParent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.getParent()"); }
+  public boolean isTerminated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.isTerminated()"); }
+  public java.util.concurrent.Phaser getRoot() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.getRoot()"); }
+  @JavaProtected
+  boolean onAdvance(int phase, int registeredParties) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.onAdvance(int, int)"); }
+  public final int getPhase() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.getPhase()"); }
+  public int arriveAndAwaitAdvance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.arriveAndAwaitAdvance()"); }
+  public int bulkRegister(int parties) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.bulkRegister(int)"); }
+  public int arrive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.arrive()"); }
+  public int arriveAndDeregister() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.arriveAndDeregister()"); }
+  public int awaitAdvance(int phase) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.awaitAdvance(int)"); }
+  public int awaitAdvanceInterruptibly(int phase) throws java.lang.InterruptedException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.awaitAdvanceInterruptibly(int)"); }
+  public int awaitAdvanceInterruptibly(int phase, long timeout, java.util.concurrent.TimeUnit unit) throws java.lang.InterruptedException, java.util.concurrent.TimeoutException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.awaitAdvanceInterruptibly(int, long, java.util.concurrent.TimeUnit)"); }
+  public void forceTermination() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.forceTermination()"); }
+  public int getRegisteredParties() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.getRegisteredParties()"); }
+  public int getArrivedParties() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.getArrivedParties()"); }
+  public int getUnarrivedParties() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.Phaser.getUnarrivedParties()"); }
+  < ---- END java signatures ---- >
+}

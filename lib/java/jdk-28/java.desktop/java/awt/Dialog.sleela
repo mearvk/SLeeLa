@@ -1,0 +1,101 @@
+<< lib/java/jdk-28/java.desktop/java/awt/Dialog.sleela
+   SLeeLa file for the Java type java.awt.Dialog (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/Dialog.html
+   Java kind: class; extends java.awt.Window
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Dialog {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 3209;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.awt.Dialog";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/Dialog.html";
+  String javaKind = "class";
+  String javaSuper = "java.awt.Window";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static Any DEFAULT_MODALITY_TYPE = null;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public Dialog(java.awt.Window owner, java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.<init>(java.awt.Window, java.lang.String)"); }
+  public Dialog(java.awt.Window owner) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.<init>(java.awt.Window)"); }
+  public Dialog(java.awt.Dialog owner, java.lang.String title, boolean modal, java.awt.GraphicsConfiguration gc_) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.<init>(java.awt.Dialog, java.lang.String, boolean, java.awt.GraphicsConfiguration)"); }
+  public Dialog(java.awt.Dialog owner, java.lang.String title, boolean modal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.<init>(java.awt.Dialog, java.lang.String, boolean)"); }
+  public Dialog(java.awt.Window owner, java.awt.Dialog.ModalityType modalityType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.<init>(java.awt.Window, java.awt.Dialog.ModalityType)"); }
+  public Dialog(java.awt.Window owner, java.lang.String title, java.awt.Dialog.ModalityType modalityType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.<init>(java.awt.Window, java.lang.String, java.awt.Dialog.ModalityType)"); }
+  public Dialog(java.awt.Window owner, java.lang.String title, java.awt.Dialog.ModalityType modalityType, java.awt.GraphicsConfiguration gc_) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.<init>(java.awt.Window, java.lang.String, java.awt.Dialog.ModalityType, java.awt.GraphicsConfiguration)"); }
+  public Dialog(java.awt.Frame owner, boolean modal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.<init>(java.awt.Frame, boolean)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  @JavaProtected
+  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.paramString()"); }
+  public void setVisible(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.setVisible(boolean)"); }
+  public java.lang.String getTitle() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.getTitle()"); }
+  public void setModalityType(java.awt.Dialog.ModalityType type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.setModalityType(java.awt.Dialog.ModalityType)"); }
+  public void setTitle(java.lang.String title) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.setTitle(java.lang.String)"); }
+  public boolean isModal() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.isModal()"); }
+  public void setResizable(boolean resizable) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.setResizable(boolean)"); }
+  public boolean isUndecorated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.isUndecorated()"); }
+  public java.awt.Dialog.ModalityType getModalityType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.getModalityType()"); }
+  public void setModal(boolean modal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.setModal(boolean)"); }
+  public boolean isResizable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.isResizable()"); }
+  public void setUndecorated(boolean undecorated) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.setUndecorated(boolean)"); }
+  public void show() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.show()"); }
+  public void hide() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.hide()"); }
+  public void setBackground(java.awt.Color bgColor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.setBackground(java.awt.Color)"); }
+  public void toBack() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.toBack()"); }
+  public void setOpacity(float opacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.setOpacity(float)"); }
+  public void setShape(java.awt.Shape shape) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.setShape(java.awt.Shape)"); }
+  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.getAccessibleContext()"); }
+  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Dialog.addNotify()"); }
+  < ---- END java signatures ---- >
+}

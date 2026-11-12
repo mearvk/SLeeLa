@@ -1,0 +1,94 @@
+<< lib/java/jdk-28/java.management/java/lang/management/ThreadMXBean.sleela
+   SLeeLa file for the Java type java.lang.management.ThreadMXBean (module java.management). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.management/java/lang/management/ThreadMXBean.html
+   Java kind: interface; implements java.lang.management.PlatformManagedObject
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class ThreadMXBean {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9101;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.management.ThreadMXBean";
+  String javaModule = "java.management";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.management/java/lang/management/ThreadMXBean.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract int getThreadCount() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadCount()"); }
+  public abstract int getPeakThreadCount() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getPeakThreadCount()"); }
+  public abstract long getTotalStartedThreadCount() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getTotalStartedThreadCount()"); }
+  public abstract int getDaemonThreadCount() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getDaemonThreadCount()"); }
+  public abstract long[] getAllThreadIds() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getAllThreadIds()"); }
+  public abstract java.lang.management.ThreadInfo[] getThreadInfo(long[] ids, boolean lockedMonitors, boolean lockedSynchronizers) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadInfo(long[], boolean, boolean)"); }
+  public default java.lang.management.ThreadInfo[] getThreadInfo(long[] ids, boolean lockedMonitors, boolean lockedSynchronizers, int maxDepth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ThreadMXBean.getThreadInfo(long[], boolean, boolean, int)"); }
+  public abstract java.lang.management.ThreadInfo[] getThreadInfo(long[] ids, int maxDepth) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadInfo(long[], int)"); }
+  public abstract java.lang.management.ThreadInfo[] getThreadInfo(long[] ids) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadInfo(long[])"); }
+  public abstract java.lang.management.ThreadInfo getThreadInfo(long id) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadInfo(long)"); }
+  public abstract java.lang.management.ThreadInfo getThreadInfo(long id, int maxDepth) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadInfo(long, int)"); }
+  public abstract boolean isThreadContentionMonitoringSupported() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isThreadContentionMonitoringSupported()"); }
+  public abstract boolean isThreadContentionMonitoringEnabled() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isThreadContentionMonitoringEnabled()"); }
+  public abstract void setThreadContentionMonitoringEnabled(boolean enable) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.setThreadContentionMonitoringEnabled(boolean)"); }
+  public abstract long getCurrentThreadCpuTime() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getCurrentThreadCpuTime()"); }
+  public abstract long getCurrentThreadUserTime() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getCurrentThreadUserTime()"); }
+  public abstract long getThreadCpuTime(long id) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadCpuTime(long)"); }
+  public abstract long getThreadUserTime(long id) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.getThreadUserTime(long)"); }
+  public abstract boolean isThreadCpuTimeSupported() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isThreadCpuTimeSupported()"); }
+  public abstract boolean isCurrentThreadCpuTimeSupported() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isCurrentThreadCpuTimeSupported()"); }
+  public abstract boolean isThreadCpuTimeEnabled() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isThreadCpuTimeEnabled()"); }
+  public abstract void setThreadCpuTimeEnabled(boolean enable) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.setThreadCpuTimeEnabled(boolean)"); }
+  public abstract long[] findMonitorDeadlockedThreads() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.findMonitorDeadlockedThreads()"); }
+  public abstract void resetPeakThreadCount() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.resetPeakThreadCount()"); }
+  public abstract long[] findDeadlockedThreads() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.findDeadlockedThreads()"); }
+  public abstract boolean isObjectMonitorUsageSupported() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isObjectMonitorUsageSupported()"); }
+  public abstract boolean isSynchronizerUsageSupported() { throw new AbstractMethodError("java.lang.management.ThreadMXBean.isSynchronizerUsageSupported()"); }
+  public abstract java.lang.management.ThreadInfo[] dumpAllThreads(boolean lockedMonitors, boolean lockedSynchronizers) { throw new AbstractMethodError("java.lang.management.ThreadMXBean.dumpAllThreads(boolean, boolean)"); }
+  public default java.lang.management.ThreadInfo[] dumpAllThreads(boolean lockedMonitors, boolean lockedSynchronizers, int maxDepth) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.management.ThreadMXBean.dumpAllThreads(boolean, boolean, int)"); }
+  < ---- END java signatures ---- >
+}

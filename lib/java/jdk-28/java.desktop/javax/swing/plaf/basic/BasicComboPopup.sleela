@@ -1,0 +1,167 @@
+<< lib/java/jdk-28/java.desktop/javax/swing/plaf/basic/BasicComboPopup.sleela
+   SLeeLa file for the Java type javax.swing.plaf.basic.BasicComboPopup (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/basic/BasicComboPopup.html
+   Java kind: class; extends javax.swing.JPopupMenu; implements javax.swing.plaf.basic.ComboPopup
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class BasicComboPopup {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1656;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.plaf.basic.BasicComboPopup";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/basic/BasicComboPopup.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.JPopupMenu";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static int SCROLL_UP = 0;
+  static int SCROLL_DOWN = 0;
+  < public and protected instance fields >
+  Any comboBox;
+  Any list;
+  Any scroller;
+  boolean valueIsAdjusting;
+  Any mouseMotionListener;
+  Any mouseListener;
+  Any keyListener;
+  Any listSelectionListener;
+  Any listMouseListener;
+  Any listMouseMotionListener;
+  Any propertyChangeListener;
+  Any listDataListener;
+  Any itemListener;
+  Any autoscrollTimer;
+  boolean hasEntered;
+  boolean isAutoScrolling;
+  int scrollDirection;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public BasicComboPopup(javax.swing.JComboBox<java.lang.Object> combo) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.<init>(javax.swing.JComboBox<java.lang.Object>)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  @JavaProtected
+  java.awt.event.MouseEvent convertMouseEvent(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.convertMouseEvent(java.awt.event.MouseEvent)"); }
+  public void show() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.show()"); }
+  public void hide() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.hide()"); }
+  public boolean isFocusTraversable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.isFocusTraversable()"); }
+  @JavaProtected
+  java.awt.event.MouseListener createMouseListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.createMouseListener()"); }
+  @JavaProtected
+  java.awt.event.MouseMotionListener createMouseMotionListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.createMouseMotionListener()"); }
+  @JavaProtected
+  void uninstallComboBoxModelListeners(javax.swing.ComboBoxModel<?> model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.uninstallComboBoxModelListeners(javax.swing.ComboBoxModel<?>)"); }
+  @JavaProtected
+  void configureList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.configureList()"); }
+  @JavaProtected
+  javax.swing.JScrollPane createScroller() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.createScroller()"); }
+  @JavaProtected
+  void configureScroller() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.configureScroller()"); }
+  @JavaProtected
+  void configurePopup() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.configurePopup()"); }
+  @JavaProtected
+  void installComboBoxListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.installComboBoxListeners()"); }
+  @JavaProtected
+  void installListListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.installListListeners()"); }
+  @JavaProtected
+  java.awt.event.MouseListener createListMouseListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.createListMouseListener()"); }
+  @JavaProtected
+  java.awt.event.MouseMotionListener createListMouseMotionListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.createListMouseMotionListener()"); }
+  @JavaProtected
+  javax.swing.event.ListSelectionListener createListSelectionListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.createListSelectionListener()"); }
+  @JavaProtected
+  void installComboBoxModelListeners(javax.swing.ComboBoxModel<?> model) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.installComboBoxModelListeners(javax.swing.ComboBoxModel<?>)"); }
+  @JavaProtected
+  int getPopupHeightForRowCount(int maxRowCount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.getPopupHeightForRowCount(int)"); }
+  @JavaProtected
+  java.awt.Rectangle computePopupBounds(int px, int py, int pw, int ph) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.computePopupBounds(int, int, int, int)"); }
+  @JavaProtected
+  void startAutoScrolling(int direction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.startAutoScrolling(int)"); }
+  @JavaProtected
+  void stopAutoScrolling() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.stopAutoScrolling()"); }
+  @JavaProtected
+  void autoScrollUp() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.autoScrollUp()"); }
+  @JavaProtected
+  void autoScrollDown() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.autoScrollDown()"); }
+  @JavaProtected
+  void delegateFocus(java.awt.event.MouseEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.delegateFocus(java.awt.event.MouseEvent)"); }
+  @JavaProtected
+  void updateListBoxSelectionForEvent(java.awt.event.MouseEvent anEvent, boolean shouldScroll) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.updateListBoxSelectionForEvent(java.awt.event.MouseEvent, boolean)"); }
+  public javax.swing.JList<java.lang.Object> getList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.getList()"); }
+  @JavaProtected
+  javax.swing.JList<java.lang.Object> createList() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.createList()"); }
+  @JavaProtected
+  void firePopupMenuWillBecomeVisible() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.firePopupMenuWillBecomeVisible()"); }
+  @JavaProtected
+  void firePopupMenuWillBecomeInvisible() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.firePopupMenuWillBecomeInvisible()"); }
+  @JavaProtected
+  void firePopupMenuCanceled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.firePopupMenuCanceled()"); }
+  @JavaProtected
+  java.awt.event.ItemListener createItemListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.createItemListener()"); }
+  @JavaProtected
+  void installKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.installKeyboardActions()"); }
+  @JavaProtected
+  void uninstallKeyboardActions() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.uninstallKeyboardActions()"); }
+  @JavaProtected
+  java.awt.event.KeyListener createKeyListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.createKeyListener()"); }
+  @JavaProtected
+  java.beans.PropertyChangeListener createPropertyChangeListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.createPropertyChangeListener()"); }
+  @JavaProtected
+  void togglePopup() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.togglePopup()"); }
+  public void uninstallingUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.uninstallingUI()"); }
+  public java.awt.event.MouseListener getMouseListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.getMouseListener()"); }
+  public java.awt.event.MouseMotionListener getMouseMotionListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.getMouseMotionListener()"); }
+  public java.awt.event.KeyListener getKeyListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.getKeyListener()"); }
+  @JavaProtected
+  javax.swing.event.ListDataListener createListDataListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.createListDataListener()"); }
+  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.plaf.basic.BasicComboPopup.getAccessibleContext()"); }
+  < ---- END java signatures ---- >
+}

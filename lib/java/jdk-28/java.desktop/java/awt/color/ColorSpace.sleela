@@ -1,0 +1,114 @@
+<< lib/java/jdk-28/java.desktop/java/awt/color/ColorSpace.sleela
+   SLeeLa file for the Java type java.awt.color.ColorSpace (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/color/ColorSpace.html
+   Java kind: class; extends java.lang.Object; implements java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class ColorSpace {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 2507;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.awt.color.ColorSpace";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/color/ColorSpace.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int TYPE_XYZ = 0;
+  static final int TYPE_Lab = 1;
+  static final int TYPE_Luv = 2;
+  static final int TYPE_YCbCr = 3;
+  static final int TYPE_Yxy = 4;
+  static final int TYPE_RGB = 5;
+  static final int TYPE_GRAY = 6;
+  static final int TYPE_HSV = 7;
+  static final int TYPE_HLS = 8;
+  static final int TYPE_CMYK = 9;
+  static final int TYPE_CMY = 11;
+  static final int TYPE_2CLR = 12;
+  static final int TYPE_3CLR = 13;
+  static final int TYPE_4CLR = 14;
+  static final int TYPE_5CLR = 15;
+  static final int TYPE_6CLR = 16;
+  static final int TYPE_7CLR = 17;
+  static final int TYPE_8CLR = 18;
+  static final int TYPE_9CLR = 19;
+  static final int TYPE_ACLR = 20;
+  static final int TYPE_BCLR = 21;
+  static final int TYPE_CCLR = 22;
+  static final int TYPE_DCLR = 23;
+  static final int TYPE_ECLR = 24;
+  static final int TYPE_FCLR = 25;
+  static final int CS_sRGB = 1000;
+  static final int CS_LINEAR_RGB = 1004;
+  static final int CS_CIEXYZ = 1001;
+  static final int CS_PYCC = 1002;
+  static final int CS_GRAY = 1003;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  ColorSpace(int type, int numComponents) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.<init>(int, int)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.String getName(int component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.getName(int)"); }
+  public static java.awt.color.ColorSpace getInstance(int cspace) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.getInstance(int)"); }
+  public int getType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.getType()"); }
+  public abstract float[] toRGB(float[] colorvalue) { throw new AbstractMethodError("java.awt.color.ColorSpace.toRGB(float[])"); }
+  public abstract float[] toCIEXYZ(float[] colorvalue) { throw new AbstractMethodError("java.awt.color.ColorSpace.toCIEXYZ(float[])"); }
+  public abstract float[] fromCIEXYZ(float[] colorvalue) { throw new AbstractMethodError("java.awt.color.ColorSpace.fromCIEXYZ(float[])"); }
+  public boolean isCS_sRGB() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.isCS_sRGB()"); }
+  public abstract float[] fromRGB(float[] rgbvalue) { throw new AbstractMethodError("java.awt.color.ColorSpace.fromRGB(float[])"); }
+  public float getMinValue(int component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.getMinValue(int)"); }
+  public float getMaxValue(int component) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.getMaxValue(int)"); }
+  public int getNumComponents() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.color.ColorSpace.getNumComponents()"); }
+  < ---- END java signatures ---- >
+}

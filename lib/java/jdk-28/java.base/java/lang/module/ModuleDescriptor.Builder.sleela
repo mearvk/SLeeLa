@@ -1,0 +1,88 @@
+<< lib/java/jdk-28/java.base/java/lang/module/ModuleDescriptor.Builder.sleela
+   SLeeLa file for the Java type java.lang.module.ModuleDescriptor.Builder (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/module/ModuleDescriptor.Builder.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   Nested Java type: the file keeps the documented name ModuleDescriptor.Builder.
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Builder {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1958;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.module.ModuleDescriptor.Builder";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/module/ModuleDescriptor.Builder.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.module.ModuleDescriptor.Builder version(java.lang.String vs) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.version(java.lang.String)"); }
+  public java.lang.module.ModuleDescriptor.Builder version(java.lang.module.ModuleDescriptor.Version v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.version(java.lang.module.ModuleDescriptor.Version)"); }
+  public java.lang.module.ModuleDescriptor.Builder packages(java.util.Set<java.lang.String> pns) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.packages(java.util.Set<java.lang.String>)"); }
+  public java.lang.module.ModuleDescriptor.Builder exports(java.util.Set<java.lang.module.ModuleDescriptor.Exports.Modifier> ms, java.lang.String pn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.exports(java.util.Set<java.lang.module.ModuleDescriptor.Exports.Modifier>, java.lang.String)"); }
+  public java.lang.module.ModuleDescriptor.Builder exports(java.lang.String pn, java.util.Set<java.lang.String> targets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.exports(java.lang.String, java.util.Set<java.lang.String>)"); }
+  public java.lang.module.ModuleDescriptor.Builder exports(java.lang.String pn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.exports(java.lang.String)"); }
+  public java.lang.module.ModuleDescriptor.Builder exports(java.util.Set<java.lang.module.ModuleDescriptor.Exports.Modifier> ms, java.lang.String pn, java.util.Set<java.lang.String> targets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.exports(java.util.Set<java.lang.module.ModuleDescriptor.Exports.Modifier>, java.lang.String, java.util.Set<java.lang.String>)"); }
+  public java.lang.module.ModuleDescriptor.Builder exports(java.lang.module.ModuleDescriptor.Exports e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.exports(java.lang.module.ModuleDescriptor.Exports)"); }
+  public java.lang.module.ModuleDescriptor.Builder uses(java.lang.String service) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.uses(java.lang.String)"); }
+  public java.lang.module.ModuleDescriptor.Builder opens(java.util.Set<java.lang.module.ModuleDescriptor.Opens.Modifier> ms, java.lang.String pn, java.util.Set<java.lang.String> targets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.opens(java.util.Set<java.lang.module.ModuleDescriptor.Opens.Modifier>, java.lang.String, java.util.Set<java.lang.String>)"); }
+  public java.lang.module.ModuleDescriptor.Builder opens(java.lang.String pn, java.util.Set<java.lang.String> targets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.opens(java.lang.String, java.util.Set<java.lang.String>)"); }
+  public java.lang.module.ModuleDescriptor.Builder opens(java.lang.String pn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.opens(java.lang.String)"); }
+  public java.lang.module.ModuleDescriptor.Builder opens(java.lang.module.ModuleDescriptor.Opens obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.opens(java.lang.module.ModuleDescriptor.Opens)"); }
+  public java.lang.module.ModuleDescriptor.Builder opens(java.util.Set<java.lang.module.ModuleDescriptor.Opens.Modifier> ms, java.lang.String pn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.opens(java.util.Set<java.lang.module.ModuleDescriptor.Opens.Modifier>, java.lang.String)"); }
+  public java.lang.module.ModuleDescriptor.Builder provides(java.lang.module.ModuleDescriptor.Provides p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.provides(java.lang.module.ModuleDescriptor.Provides)"); }
+  public java.lang.module.ModuleDescriptor.Builder provides(java.lang.String service, java.util.List<java.lang.String> providers) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.provides(java.lang.String, java.util.List<java.lang.String>)"); }
+  public java.lang.module.ModuleDescriptor build() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.build()"); }
+  public java.lang.module.ModuleDescriptor.Builder requires(java.lang.module.ModuleDescriptor.Requires req) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.requires(java.lang.module.ModuleDescriptor.Requires)"); }
+  public java.lang.module.ModuleDescriptor.Builder requires(java.util.Set<java.lang.module.ModuleDescriptor.Requires.Modifier> ms, java.lang.String mn, java.lang.module.ModuleDescriptor.Version compiledVersion) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.requires(java.util.Set<java.lang.module.ModuleDescriptor.Requires.Modifier>, java.lang.String, java.lang.module.ModuleDescriptor.Version)"); }
+  public java.lang.module.ModuleDescriptor.Builder requires(java.lang.String mn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.requires(java.lang.String)"); }
+  public java.lang.module.ModuleDescriptor.Builder requires(java.util.Set<java.lang.module.ModuleDescriptor.Requires.Modifier> ms, java.lang.String mn) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.requires(java.util.Set<java.lang.module.ModuleDescriptor.Requires.Modifier>, java.lang.String)"); }
+  public java.lang.module.ModuleDescriptor.Builder mainClass(java.lang.String mc) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.module.ModuleDescriptor.Builder.mainClass(java.lang.String)"); }
+  < ---- END java signatures ---- >
+}

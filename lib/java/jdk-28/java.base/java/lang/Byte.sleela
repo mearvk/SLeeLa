@@ -1,0 +1,101 @@
+<< lib/java/jdk-28/java.base/java/lang/Byte.sleela
+   SLeeLa file for the Java type java.lang.Byte (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/Byte.html
+   Java kind: class; extends java.lang.Number; implements java.lang.Comparable, java.lang.constant.Constable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Byte {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1986;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.Byte";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/Byte.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Number";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int MIN_VALUE = -128;
+  static final int MAX_VALUE = 127;
+  static Any TYPE = null;
+  static final int SIZE = 8;
+  static final int BYTES = 1;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public Byte(byte value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.<init>(byte)"); }
+  public Byte(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.<init>(java.lang.String)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.equals(java.lang.Object)"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.toString()"); }
+  public static java.lang.String toString(byte b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.toString(byte)"); }
+  public static int hashCode(byte value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.hashCode(byte)"); }
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.hashCode()"); }
+  public static int compareUnsigned(byte x, byte y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.compareUnsigned(byte, byte)"); }
+  public int compareTo(java.lang.Byte anotherByte) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.compareTo(java.lang.Byte)"); }
+  public static int compare(byte x, byte y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.compare(byte, byte)"); }
+  public byte byteValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.byteValue()"); }
+  public short shortValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.shortValue()"); }
+  public int intValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.intValue()"); }
+  public long longValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.longValue()"); }
+  public float floatValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.floatValue()"); }
+  public double doubleValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.doubleValue()"); }
+  public static java.lang.Byte valueOf(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.valueOf(java.lang.String)"); }
+  public static java.lang.Byte valueOf(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.valueOf(java.lang.String, int)"); }
+  public static java.lang.Byte valueOf(byte b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.valueOf(byte)"); }
+  public static java.lang.Byte decode(java.lang.String nm) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.decode(java.lang.String)"); }
+  public java.util.Optional<java.lang.constant.DynamicConstantDesc<java.lang.Byte>> describeConstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.describeConstable()"); }
+  public static long toUnsignedLong(byte x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.toUnsignedLong(byte)"); }
+  public static int toUnsignedInt(byte x) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.toUnsignedInt(byte)"); }
+  public static byte parseByte(java.lang.String s) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.parseByte(java.lang.String)"); }
+  public static byte parseByte(java.lang.String s, int radix) throws java.lang.NumberFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Byte.parseByte(java.lang.String, int)"); }
+  < ---- END java signatures ---- >
+}

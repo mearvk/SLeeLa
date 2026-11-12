@@ -1,0 +1,170 @@
+<< lib/java/jdk-28/java.sql/javax/sql/RowSet.sleela
+   SLeeLa file for the Java type javax.sql.RowSet (module java.sql). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.sql/javax/sql/RowSet.html
+   Java kind: interface; implements java.sql.ResultSet
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class RowSet {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7775;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.sql.RowSet";
+  String javaModule = "java.sql";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.sql/javax/sql/RowSet.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract void setReadOnly(boolean value) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setReadOnly(boolean)"); }
+  public abstract void execute() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.execute()"); }
+  public abstract void setBoolean(int parameterIndex, boolean x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBoolean(int, boolean)"); }
+  public abstract void setBoolean(java.lang.String parameterName, boolean x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBoolean(java.lang.String, boolean)"); }
+  public abstract void setByte(java.lang.String parameterName, byte x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setByte(java.lang.String, byte)"); }
+  public abstract void setByte(int parameterIndex, byte x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setByte(int, byte)"); }
+  public abstract void setShort(int parameterIndex, short x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setShort(int, short)"); }
+  public abstract void setShort(java.lang.String parameterName, short x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setShort(java.lang.String, short)"); }
+  public abstract void setInt(int parameterIndex, int x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setInt(int, int)"); }
+  public abstract void setInt(java.lang.String parameterName, int x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setInt(java.lang.String, int)"); }
+  public abstract void setLong(java.lang.String parameterName, long x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setLong(java.lang.String, long)"); }
+  public abstract void setLong(int parameterIndex, long x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setLong(int, long)"); }
+  public abstract void setFloat(java.lang.String parameterName, float x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setFloat(java.lang.String, float)"); }
+  public abstract void setFloat(int parameterIndex, float x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setFloat(int, float)"); }
+  public abstract void setDouble(java.lang.String parameterName, double x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setDouble(java.lang.String, double)"); }
+  public abstract void setDouble(int parameterIndex, double x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setDouble(int, double)"); }
+  public abstract boolean isReadOnly() { throw new AbstractMethodError("javax.sql.RowSet.isReadOnly()"); }
+  public abstract void setURL(int parameterIndex, java.net.URL x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setURL(int, java.net.URL)"); }
+  public abstract void setArray(int i, java.sql.Array x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setArray(int, java.sql.Array)"); }
+  public abstract void setTime(int parameterIndex, java.sql.Time x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setTime(int, java.sql.Time)"); }
+  public abstract void setTime(int parameterIndex, java.sql.Time x, java.util.Calendar cal) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setTime(int, java.sql.Time, java.util.Calendar)"); }
+  public abstract void setTime(java.lang.String parameterName, java.sql.Time x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setTime(java.lang.String, java.sql.Time)"); }
+  public abstract void setTime(java.lang.String parameterName, java.sql.Time x, java.util.Calendar cal) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setTime(java.lang.String, java.sql.Time, java.util.Calendar)"); }
+  public abstract void setType(int type) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setType(int)"); }
+  public abstract java.lang.String getPassword() { throw new AbstractMethodError("javax.sql.RowSet.getPassword()"); }
+  public abstract java.lang.String getCommand() { throw new AbstractMethodError("javax.sql.RowSet.getCommand()"); }
+  public abstract void setPassword(java.lang.String password) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setPassword(java.lang.String)"); }
+  public abstract void setRef(int i, java.sql.Ref x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setRef(int, java.sql.Ref)"); }
+  public abstract void setObject(int parameterIndex, java.lang.Object x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setObject(int, java.lang.Object)"); }
+  public abstract void setObject(java.lang.String parameterName, java.lang.Object x, int targetSqlType, int scale) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setObject(java.lang.String, java.lang.Object, int, int)"); }
+  public abstract void setObject(int parameterIndex, java.lang.Object x, int targetSqlType, int scaleOrLength) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setObject(int, java.lang.Object, int, int)"); }
+  public abstract void setObject(int parameterIndex, java.lang.Object x, int targetSqlType) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setObject(int, java.lang.Object, int)"); }
+  public abstract void setObject(java.lang.String parameterName, java.lang.Object x, int targetSqlType) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setObject(java.lang.String, java.lang.Object, int)"); }
+  public abstract void setObject(java.lang.String parameterName, java.lang.Object x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setObject(java.lang.String, java.lang.Object)"); }
+  public abstract void setString(java.lang.String parameterName, java.lang.String x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setString(java.lang.String, java.lang.String)"); }
+  public abstract void setString(int parameterIndex, java.lang.String x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setString(int, java.lang.String)"); }
+  public abstract void setCharacterStream(int parameterIndex, java.io.Reader reader) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setCharacterStream(int, java.io.Reader)"); }
+  public abstract void setCharacterStream(java.lang.String parameterName, java.io.Reader reader) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setCharacterStream(java.lang.String, java.io.Reader)"); }
+  public abstract void setCharacterStream(int parameterIndex, java.io.Reader reader, int length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setCharacterStream(int, java.io.Reader, int)"); }
+  public abstract void setCharacterStream(java.lang.String parameterName, java.io.Reader reader, int length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setCharacterStream(java.lang.String, java.io.Reader, int)"); }
+  public abstract void setBytes(int parameterIndex, byte[] x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBytes(int, byte[])"); }
+  public abstract void setBytes(java.lang.String parameterName, byte[] x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBytes(java.lang.String, byte[])"); }
+  public abstract void setBinaryStream(int parameterIndex, java.io.InputStream x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBinaryStream(int, java.io.InputStream)"); }
+  public abstract void setBinaryStream(java.lang.String parameterName, java.io.InputStream x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBinaryStream(java.lang.String, java.io.InputStream)"); }
+  public abstract void setBinaryStream(int parameterIndex, java.io.InputStream x, int length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBinaryStream(int, java.io.InputStream, int)"); }
+  public abstract void setBinaryStream(java.lang.String parameterName, java.io.InputStream x, int length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBinaryStream(java.lang.String, java.io.InputStream, int)"); }
+  public abstract void setNull(int paramIndex, int sqlType, java.lang.String typeName) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNull(int, int, java.lang.String)"); }
+  public abstract void setNull(java.lang.String parameterName, int sqlType, java.lang.String typeName) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNull(java.lang.String, int, java.lang.String)"); }
+  public abstract void setNull(int parameterIndex, int sqlType) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNull(int, int)"); }
+  public abstract void setNull(java.lang.String parameterName, int sqlType) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNull(java.lang.String, int)"); }
+  public abstract void setBigDecimal(int parameterIndex, java.math.BigDecimal x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBigDecimal(int, java.math.BigDecimal)"); }
+  public abstract void setBigDecimal(java.lang.String parameterName, java.math.BigDecimal x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBigDecimal(java.lang.String, java.math.BigDecimal)"); }
+  public abstract void setTimestamp(int parameterIndex, java.sql.Timestamp x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setTimestamp(int, java.sql.Timestamp)"); }
+  public abstract void setTimestamp(java.lang.String parameterName, java.sql.Timestamp x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setTimestamp(java.lang.String, java.sql.Timestamp)"); }
+  public abstract void setTimestamp(java.lang.String parameterName, java.sql.Timestamp x, java.util.Calendar cal) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setTimestamp(java.lang.String, java.sql.Timestamp, java.util.Calendar)"); }
+  public abstract void setTimestamp(int parameterIndex, java.sql.Timestamp x, java.util.Calendar cal) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setTimestamp(int, java.sql.Timestamp, java.util.Calendar)"); }
+  public abstract void setAsciiStream(java.lang.String parameterName, java.io.InputStream x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setAsciiStream(java.lang.String, java.io.InputStream)"); }
+  public abstract void setAsciiStream(int parameterIndex, java.io.InputStream x, int length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setAsciiStream(int, java.io.InputStream, int)"); }
+  public abstract void setAsciiStream(java.lang.String parameterName, java.io.InputStream x, int length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setAsciiStream(java.lang.String, java.io.InputStream, int)"); }
+  public abstract void setAsciiStream(int parameterIndex, java.io.InputStream x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setAsciiStream(int, java.io.InputStream)"); }
+  public abstract void setRowId(java.lang.String parameterName, java.sql.RowId x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setRowId(java.lang.String, java.sql.RowId)"); }
+  public abstract void setRowId(int parameterIndex, java.sql.RowId x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setRowId(int, java.sql.RowId)"); }
+  public abstract void setNString(java.lang.String parameterName, java.lang.String value) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNString(java.lang.String, java.lang.String)"); }
+  public abstract void setNString(int parameterIndex, java.lang.String value) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNString(int, java.lang.String)"); }
+  public abstract void setNCharacterStream(int parameterIndex, java.io.Reader value, long length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNCharacterStream(int, java.io.Reader, long)"); }
+  public abstract void setNCharacterStream(java.lang.String parameterName, java.io.Reader value, long length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNCharacterStream(java.lang.String, java.io.Reader, long)"); }
+  public abstract void setNCharacterStream(java.lang.String parameterName, java.io.Reader value) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNCharacterStream(java.lang.String, java.io.Reader)"); }
+  public abstract void setNCharacterStream(int parameterIndex, java.io.Reader value) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNCharacterStream(int, java.io.Reader)"); }
+  public abstract void setNClob(int parameterIndex, java.io.Reader reader, long length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNClob(int, java.io.Reader, long)"); }
+  public abstract void setNClob(int parameterIndex, java.sql.NClob value) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNClob(int, java.sql.NClob)"); }
+  public abstract void setNClob(java.lang.String parameterName, java.sql.NClob value) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNClob(java.lang.String, java.sql.NClob)"); }
+  public abstract void setNClob(java.lang.String parameterName, java.io.Reader reader, long length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setNClob(java.lang.String, java.io.Reader, long)"); }
+  public abstract void setClob(int parameterIndex, java.io.Reader reader) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setClob(int, java.io.Reader)"); }
+  public abstract void setClob(java.lang.String parameterName, java.io.Reader reader, long length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setClob(java.lang.String, java.io.Reader, long)"); }
+  public abstract void setClob(java.lang.String parameterName, java.sql.Clob x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setClob(java.lang.String, java.sql.Clob)"); }
+  public abstract void setClob(int parameterIndex, java.io.Reader reader, long length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setClob(int, java.io.Reader, long)"); }
+  public abstract void setBlob(int parameterIndex, java.io.InputStream inputStream) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBlob(int, java.io.InputStream)"); }
+  public abstract void setBlob(java.lang.String parameterName, java.io.InputStream inputStream, long length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBlob(java.lang.String, java.io.InputStream, long)"); }
+  public abstract void setBlob(int parameterIndex, java.io.InputStream inputStream, long length) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBlob(int, java.io.InputStream, long)"); }
+  public abstract void setBlob(java.lang.String parameterName, java.sql.Blob x) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setBlob(java.lang.String, java.sql.Blob)"); }
+  public abstract void setSQLXML(int parameterIndex, java.sql.SQLXML xmlObject) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setSQLXML(int, java.sql.SQLXML)"); }
+  public abstract void setSQLXML(java.lang.String parameterName, java.sql.SQLXML xmlObject) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setSQLXML(java.lang.String, java.sql.SQLXML)"); }
+  public abstract void clearParameters() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.clearParameters()"); }
+  public abstract int getMaxFieldSize() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.getMaxFieldSize()"); }
+  public abstract void setMaxFieldSize(int max) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setMaxFieldSize(int)"); }
+  public abstract int getMaxRows() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.getMaxRows()"); }
+  public abstract void setMaxRows(int max) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setMaxRows(int)"); }
+  public abstract void setEscapeProcessing(boolean enable) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setEscapeProcessing(boolean)"); }
+  public abstract int getQueryTimeout() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.getQueryTimeout()"); }
+  public abstract void setQueryTimeout(int seconds) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setQueryTimeout(int)"); }
+  public abstract void setTransactionIsolation(int level) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setTransactionIsolation(int)"); }
+  public abstract int getTransactionIsolation() { throw new AbstractMethodError("javax.sql.RowSet.getTransactionIsolation()"); }
+  public abstract java.util.Map<java.lang.String, java.lang.Class<?>> getTypeMap() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.getTypeMap()"); }
+  public abstract void setTypeMap(java.util.Map<java.lang.String, java.lang.Class<?>> map) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setTypeMap(java.util.Map<java.lang.String, java.lang.Class<?>>)"); }
+  public abstract java.lang.String getUrl() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.getUrl()"); }
+  public abstract void setUrl(java.lang.String url) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setUrl(java.lang.String)"); }
+  public abstract java.lang.String getDataSourceName() { throw new AbstractMethodError("javax.sql.RowSet.getDataSourceName()"); }
+  public abstract void setDataSourceName(java.lang.String name) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setDataSourceName(java.lang.String)"); }
+  public abstract java.lang.String getUsername() { throw new AbstractMethodError("javax.sql.RowSet.getUsername()"); }
+  public abstract void setUsername(java.lang.String name) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setUsername(java.lang.String)"); }
+  public abstract void setCommand(java.lang.String cmd) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setCommand(java.lang.String)"); }
+  public abstract void setConcurrency(int concurrency) throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.setConcurrency(int)"); }
+  public abstract void addRowSetListener(javax.sql.RowSetListener listener) { throw new AbstractMethodError("javax.sql.RowSet.addRowSetListener(javax.sql.RowSetListener)"); }
+  public abstract void removeRowSetListener(javax.sql.RowSetListener listener) { throw new AbstractMethodError("javax.sql.RowSet.removeRowSetListener(javax.sql.RowSetListener)"); }
+  public abstract boolean getEscapeProcessing() throws java.sql.SQLException { throw new AbstractMethodError("javax.sql.RowSet.getEscapeProcessing()"); }
+  < ---- END java signatures ---- >
+}

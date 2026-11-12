@@ -1,0 +1,74 @@
+<< lib/java/jdk-28/java.desktop/java/beans/beancontext/BeanContextServices.sleela
+   SLeeLa file for the Java type java.beans.beancontext.BeanContextServices (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/beans/beancontext/BeanContextServices.html
+   Java kind: interface; implements java.beans.beancontext.BeanContext, java.beans.beancontext.BeanContextServicesListener
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class BeanContextServices {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1793;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.beans.beancontext.BeanContextServices";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/beans/beancontext/BeanContextServices.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract java.lang.Object getService(java.beans.beancontext.BeanContextChild child, java.lang.Object requestor, java.lang.Class<?> serviceClass, java.lang.Object serviceSelector, java.beans.beancontext.BeanContextServiceRevokedListener bcsrl) throws java.util.TooManyListenersException { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.getService(java.beans.beancontext.BeanContextChild, java.lang.Object, java.lang.Class<?>, java.lang.Object, java.beans.beancontext.BeanContextServiceRevokedListener)"); }
+  public abstract java.util.Iterator<?> getCurrentServiceSelectors(java.lang.Class<?> serviceClass) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.getCurrentServiceSelectors(java.lang.Class<?>)"); }
+  public abstract boolean addService(java.lang.Class<?> serviceClass, java.beans.beancontext.BeanContextServiceProvider serviceProvider) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.addService(java.lang.Class<?>, java.beans.beancontext.BeanContextServiceProvider)"); }
+  public abstract void revokeService(java.lang.Class<?> serviceClass, java.beans.beancontext.BeanContextServiceProvider serviceProvider, boolean revokeCurrentServicesNow) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.revokeService(java.lang.Class<?>, java.beans.beancontext.BeanContextServiceProvider, boolean)"); }
+  public abstract boolean hasService(java.lang.Class<?> serviceClass) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.hasService(java.lang.Class<?>)"); }
+  public abstract void releaseService(java.beans.beancontext.BeanContextChild child, java.lang.Object requestor, java.lang.Object service) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.releaseService(java.beans.beancontext.BeanContextChild, java.lang.Object, java.lang.Object)"); }
+  public abstract java.util.Iterator<?> getCurrentServiceClasses() { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.getCurrentServiceClasses()"); }
+  public abstract void addBeanContextServicesListener(java.beans.beancontext.BeanContextServicesListener bcsl) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.addBeanContextServicesListener(java.beans.beancontext.BeanContextServicesListener)"); }
+  public abstract void removeBeanContextServicesListener(java.beans.beancontext.BeanContextServicesListener bcsl) { throw new AbstractMethodError("java.beans.beancontext.BeanContextServices.removeBeanContextServicesListener(java.beans.beancontext.BeanContextServicesListener)"); }
+  < ---- END java signatures ---- >
+}

@@ -1,0 +1,101 @@
+<< lib/java/jdk-28/jdk.jfr/jdk/jfr/Recording.sleela
+   SLeeLa file for the Java type jdk.jfr.Recording (module jdk.jfr). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/jdk.jfr/jdk/jfr/Recording.html
+   Java kind: class; extends java.lang.Object; implements java.io.Closeable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Recording {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7504;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "jdk.jfr.Recording";
+  String javaModule = "jdk.jfr";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/jdk.jfr/jdk/jfr/Recording.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public Recording(java.util.Map<java.lang.String, java.lang.String> settings) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.<init>(java.util.Map<java.lang.String, java.lang.String>)"); }
+  public Recording() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.String getName() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.getName()"); }
+  public jdk.jfr.Recording copy(boolean stop) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.copy(boolean)"); }
+  public void start() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.start()"); }
+  public boolean stop() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.stop()"); }
+  public void setName(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.setName(java.lang.String)"); }
+  public long getId() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.getId()"); }
+  public jdk.jfr.RecordingState getState() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.getState()"); }
+  public void dump(java.nio.file.Path destination) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.dump(java.nio.file.Path)"); }
+  public long getSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.getSize()"); }
+  public jdk.jfr.EventSettings enable(java.lang.Class<? extends jdk.jfr.Event> eventClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.enable(java.lang.Class<? extends jdk.jfr.Event>)"); }
+  public jdk.jfr.EventSettings enable(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.enable(java.lang.String)"); }
+  public java.time.Duration getDuration() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.getDuration()"); }
+  public jdk.jfr.EventSettings disable(java.lang.Class<? extends jdk.jfr.Event> eventClass) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.disable(java.lang.Class<? extends jdk.jfr.Event>)"); }
+  public jdk.jfr.EventSettings disable(java.lang.String name) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.disable(java.lang.String)"); }
+  public void setMaxAge(java.time.Duration maxAge) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.setMaxAge(java.time.Duration)"); }
+  public java.time.Duration getMaxAge() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.getMaxAge()"); }
+  public void setSettings(java.util.Map<java.lang.String, java.lang.String> settings) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.setSettings(java.util.Map<java.lang.String, java.lang.String>)"); }
+  public boolean isToDisk() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.isToDisk()"); }
+  public java.time.Instant getStopTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.getStopTime()"); }
+  public long getMaxSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.getMaxSize()"); }
+  public void setMaxSize(long maxSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.setMaxSize(long)"); }
+  public boolean getDumpOnExit() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.getDumpOnExit()"); }
+  public void setDumpOnExit(boolean dumpOnExit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.setDumpOnExit(boolean)"); }
+  public void setToDisk(boolean disk) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.setToDisk(boolean)"); }
+  public void scheduleStart(java.time.Duration delay) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.scheduleStart(java.time.Duration)"); }
+  public void setDuration(java.time.Duration duration) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.setDuration(java.time.Duration)"); }
+  public void setDestination(java.nio.file.Path destination) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.setDestination(java.nio.file.Path)"); }
+  public java.nio.file.Path getDestination() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.getDestination()"); }
+  public java.io.InputStream getStream(java.time.Instant start, java.time.Instant end) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.getStream(java.time.Instant, java.time.Instant)"); }
+  public java.time.Instant getStartTime() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.getStartTime()"); }
+  public java.util.Map<java.lang.String, java.lang.String> getSettings() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.jfr.Recording.getSettings()"); }
+  < ---- END java signatures ---- >
+}

@@ -1,0 +1,95 @@
+<< lib/java/jdk-28/java.base/java/nio/file/attribute/AclEntryFlag.sleela
+   SLeeLa file for the Java type java.nio.file.attribute.AclEntryFlag (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/nio/file/attribute/AclEntryFlag.html
+   Java kind: enum; extends java.lang.Enum
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class AclEntryFlag {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1242;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.nio.file.attribute.AclEntryFlag";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/nio/file/attribute/AclEntryFlag.html";
+  String javaKind = "enum";
+  String javaSuper = "java.lang.Enum";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  << Complete enum: one static final instance per constant (so identity
+     and == hold for values / valueOf / the constants), with the
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: AclEntryFlag.valueOf(...), AclEntryFlag.values(), and the constants are
+     static final fields. >>
+  static final AclEntryFlag FILE_INHERIT = new AclEntryFlag("FILE_INHERIT", 0);
+  static final AclEntryFlag DIRECTORY_INHERIT = new AclEntryFlag("DIRECTORY_INHERIT", 1);
+  static final AclEntryFlag NO_PROPAGATE_INHERIT = new AclEntryFlag("NO_PROPAGATE_INHERIT", 2);
+  static final AclEntryFlag INHERIT_ONLY = new AclEntryFlag("INHERIT_ONLY", 3);
+  String enumName;
+  int enumOrdinal;
+  AclEntryFlag(String name, int ordinal) { this.enumName = name; this.enumOrdinal = ordinal; }
+  String name() { return this.enumName; }
+  int ordinal() { return this.enumOrdinal; }
+  String toString() { return this.enumName; }
+  int compareTo(AclEntryFlag o) { return this.enumOrdinal - o.enumOrdinal; }
+  boolean equals(Any other) { return this == other; }
+  int hashCode() { return this.enumOrdinal * 31 + 17; }
+  public static AclEntryFlag[] values() {
+    AclEntryFlag[] v = new AclEntryFlag[4];
+    v[0] = FILE_INHERIT;
+    v[1] = DIRECTORY_INHERIT;
+    v[2] = NO_PROPAGATE_INHERIT;
+    v[3] = INHERIT_ONLY;
+    return v;
+  }
+  public static AclEntryFlag valueOf(String name) {
+    if (name == null) { throw new NullPointerException("Name is null"); }
+    if (name == "FILE_INHERIT") { return FILE_INHERIT; }
+    if (name == "DIRECTORY_INHERIT") { return DIRECTORY_INHERIT; }
+    if (name == "NO_PROPAGATE_INHERIT") { return NO_PROPAGATE_INHERIT; }
+    if (name == "INHERIT_ONLY") { return INHERIT_ONLY; }
+    throw new IllegalArgumentException("No enum constant java.nio.file.attribute.AclEntryFlag." + name);
+  }
+  < ---- END java declarations ---- >
+}

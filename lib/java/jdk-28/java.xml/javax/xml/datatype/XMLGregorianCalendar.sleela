@@ -1,0 +1,108 @@
+<< lib/java/jdk-28/java.xml/javax/xml/datatype/XMLGregorianCalendar.sleela
+   SLeeLa file for the Java type javax.xml.datatype.XMLGregorianCalendar (module java.xml). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.xml/javax/xml/datatype/XMLGregorianCalendar.html
+   Java kind: class; extends java.lang.Object; implements java.lang.Cloneable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class XMLGregorianCalendar {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9857;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.xml.datatype.XMLGregorianCalendar";
+  String javaModule = "java.xml";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.xml/javax/xml/datatype/XMLGregorianCalendar.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public XMLGregorianCalendar() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract void reset() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.reset()"); }
+  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.equals(java.lang.Object)"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.toString()"); }
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.hashCode()"); }
+  public abstract java.lang.Object clone() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.clone()"); }
+  public abstract int compare(javax.xml.datatype.XMLGregorianCalendar xmlGregorianCalendar) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.compare(javax.xml.datatype.XMLGregorianCalendar)"); }
+  public abstract void clear() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.clear()"); }
+  public abstract void add(javax.xml.datatype.Duration duration) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.add(javax.xml.datatype.Duration)"); }
+  public abstract javax.xml.datatype.XMLGregorianCalendar normalize() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.normalize()"); }
+  public abstract boolean isValid() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.isValid()"); }
+  public abstract int getYear() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getYear()"); }
+  public abstract int getHour() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getHour()"); }
+  public abstract int getMinute() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getMinute()"); }
+  public abstract int getSecond() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getSecond()"); }
+  public abstract java.util.TimeZone getTimeZone(int defaultZoneoffset) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getTimeZone(int)"); }
+  public void setTime(int hour, int minute, int second) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.setTime(int, int, int)"); }
+  public void setTime(int hour, int minute, int second, java.math.BigDecimal fractional) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.setTime(int, int, int, java.math.BigDecimal)"); }
+  public void setTime(int hour, int minute, int second, int millisecond) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.setTime(int, int, int, int)"); }
+  public abstract int getMonth() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getMonth()"); }
+  public abstract void setMonth(int month) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setMonth(int)"); }
+  public abstract void setYear(java.math.BigInteger year) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setYear(java.math.BigInteger)"); }
+  public abstract void setYear(int year) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setYear(int)"); }
+  public abstract int getDay() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getDay()"); }
+  public abstract javax.xml.namespace.QName getXMLSchemaType() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getXMLSchemaType()"); }
+  public abstract void setHour(int hour) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setHour(int)"); }
+  public abstract void setMinute(int minute) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setMinute(int)"); }
+  public abstract void setSecond(int second) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setSecond(int)"); }
+  public abstract void setFractionalSecond(java.math.BigDecimal fractional) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setFractionalSecond(java.math.BigDecimal)"); }
+  public abstract void setMillisecond(int millisecond) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setMillisecond(int)"); }
+  public abstract java.math.BigDecimal getFractionalSecond() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getFractionalSecond()"); }
+  public abstract int getTimezone() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getTimezone()"); }
+  public int getMillisecond() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.xml.datatype.XMLGregorianCalendar.getMillisecond()"); }
+  public abstract java.lang.String toXMLFormat() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.toXMLFormat()"); }
+  public abstract void setDay(int day) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setDay(int)"); }
+  public abstract void setTimezone(int offset) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.setTimezone(int)"); }
+  public abstract java.math.BigInteger getEon() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getEon()"); }
+  public abstract java.math.BigInteger getEonAndYear() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.getEonAndYear()"); }
+  public abstract java.util.GregorianCalendar toGregorianCalendar() { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.toGregorianCalendar()"); }
+  public abstract java.util.GregorianCalendar toGregorianCalendar(java.util.TimeZone timezone, java.util.Locale aLocale, javax.xml.datatype.XMLGregorianCalendar defaults) { throw new AbstractMethodError("javax.xml.datatype.XMLGregorianCalendar.toGregorianCalendar(java.util.TimeZone, java.util.Locale, javax.xml.datatype.XMLGregorianCalendar)"); }
+  < ---- END java signatures ---- >
+}

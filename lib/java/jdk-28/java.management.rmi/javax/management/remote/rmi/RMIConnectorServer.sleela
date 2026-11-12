@@ -1,0 +1,92 @@
+<< lib/java/jdk-28/java.management.rmi/javax/management/remote/rmi/RMIConnectorServer.sleela
+   SLeeLa file for the Java type javax.management.remote.rmi.RMIConnectorServer (module java.management.rmi). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.management.rmi/javax/management/remote/rmi/RMIConnectorServer.html
+   Java kind: class; extends javax.management.remote.JMXConnectorServer
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class RMIConnectorServer {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7376;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.management.remote.rmi.RMIConnectorServer";
+  String javaModule = "java.management.rmi";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.management.rmi/javax/management/remote/rmi/RMIConnectorServer.html";
+  String javaKind = "class";
+  String javaSuper = "javax.management.remote.JMXConnectorServer";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final String JNDI_REBIND_ATTRIBUTE = "jmx.remote.jndi.rebind";
+  static final String RMI_CLIENT_SOCKET_FACTORY_ATTRIBUTE = "jmx.remote.rmi.client.socket.factory";
+  static final String RMI_SERVER_SOCKET_FACTORY_ATTRIBUTE = "jmx.remote.rmi.server.socket.factory";
+  static final String CREDENTIALS_FILTER_PATTERN = "jmx.remote.rmi.server.credentials.filter.pattern";
+  static final String SERIAL_FILTER_PATTERN = "jmx.remote.rmi.server.serial.filter.pattern";
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public RMIConnectorServer(javax.management.remote.JMXServiceURL url, java.util.Map<java.lang.String, ?> environment, javax.management.remote.rmi.RMIServerImpl rmiServerImpl, javax.management.MBeanServer mbeanServer) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectorServer.<init>(javax.management.remote.JMXServiceURL, java.util.Map<java.lang.String, ?>, javax.management.remote.rmi.RMIServerImpl, javax.management.MBeanServer)"); }
+  public RMIConnectorServer(javax.management.remote.JMXServiceURL url, java.util.Map<java.lang.String, ?> environment, javax.management.MBeanServer mbeanServer) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectorServer.<init>(javax.management.remote.JMXServiceURL, java.util.Map<java.lang.String, ?>, javax.management.MBeanServer)"); }
+  public RMIConnectorServer(javax.management.remote.JMXServiceURL url, java.util.Map<java.lang.String, ?> environment) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectorServer.<init>(javax.management.remote.JMXServiceURL, java.util.Map<java.lang.String, ?>)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public synchronized void start() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectorServer.start()"); }
+  public void stop() throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectorServer.stop()"); }
+  public javax.management.remote.JMXServiceURL getAddress() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectorServer.getAddress()"); }
+  public java.util.Map<java.lang.String, ?> getAttributes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectorServer.getAttributes()"); }
+  public synchronized boolean isActive() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectorServer.isActive()"); }
+  public synchronized void setMBeanServerForwarder(javax.management.remote.MBeanServerForwarder mbsf) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectorServer.setMBeanServerForwarder(javax.management.remote.MBeanServerForwarder)"); }
+  public javax.management.remote.JMXConnector toJMXConnector(java.util.Map<java.lang.String, ?> env) throws java.io.IOException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectorServer.toJMXConnector(java.util.Map<java.lang.String, ?>)"); }
+  @JavaProtected
+  void connectionOpened(java.lang.String connectionId, java.lang.String message, java.lang.Object userData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectorServer.connectionOpened(java.lang.String, java.lang.String, java.lang.Object)"); }
+  @JavaProtected
+  void connectionClosed(java.lang.String connectionId, java.lang.String message, java.lang.Object userData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectorServer.connectionClosed(java.lang.String, java.lang.String, java.lang.Object)"); }
+  @JavaProtected
+  void connectionFailed(java.lang.String connectionId, java.lang.String message, java.lang.Object userData) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.management.remote.rmi.RMIConnectorServer.connectionFailed(java.lang.String, java.lang.String, java.lang.Object)"); }
+  < ---- END java signatures ---- >
+}

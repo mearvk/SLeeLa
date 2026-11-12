@@ -1,0 +1,107 @@
+<< lib/java/jdk-28/java.desktop/java/awt/geom/Arc2D.sleela
+   SLeeLa file for the Java type java.awt.geom.Arc2D (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/geom/Arc2D.html
+   Java kind: class; extends java.awt.geom.RectangularShape
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Arc2D {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1381;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.awt.geom.Arc2D";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/geom/Arc2D.html";
+  String javaKind = "class";
+  String javaSuper = "java.awt.geom.RectangularShape";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int OPEN = 0;
+  static final int CHORD = 1;
+  static final int PIE = 2;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  Arc2D() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.<init>()"); }
+  @JavaProtected
+  Arc2D(int type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.<init>(int)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public boolean equals(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.equals(java.lang.Object)"); }
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.hashCode()"); }
+  public boolean contains(java.awt.geom.Rectangle2D r) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.contains(java.awt.geom.Rectangle2D)"); }
+  public boolean contains(double x, double y, double w, double h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.contains(double, double, double, double)"); }
+  public boolean contains(double x, double y) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.contains(double, double)"); }
+  public boolean intersects(double x, double y, double w, double h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.intersects(double, double, double, double)"); }
+  public java.awt.geom.Point2D getStartPoint() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.getStartPoint()"); }
+  public java.awt.geom.Point2D getEndPoint() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.getEndPoint()"); }
+  public void setFrame(double x, double y, double w, double h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.setFrame(double, double, double, double)"); }
+  public java.awt.geom.Rectangle2D getBounds2D() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.getBounds2D()"); }
+  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.getPathIterator(java.awt.geom.AffineTransform)"); }
+  public void setArcType(int type) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.setArcType(int)"); }
+  public abstract double getAngleStart() { throw new AbstractMethodError("java.awt.geom.Arc2D.getAngleStart()"); }
+  public abstract double getAngleExtent() { throw new AbstractMethodError("java.awt.geom.Arc2D.getAngleExtent()"); }
+  public void setArc(java.awt.geom.Arc2D a) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.setArc(java.awt.geom.Arc2D)"); }
+  public void setArc(java.awt.geom.Point2D loc, java.awt.geom.Dimension2D size, double angSt, double angExt, int closure) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.setArc(java.awt.geom.Point2D, java.awt.geom.Dimension2D, double, double, int)"); }
+  public abstract void setArc(double x, double y, double w, double h, double angSt, double angExt, int closure) { throw new AbstractMethodError("java.awt.geom.Arc2D.setArc(double, double, double, double, double, double, int)"); }
+  public void setArc(java.awt.geom.Rectangle2D rect, double angSt, double angExt, int closure) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.setArc(java.awt.geom.Rectangle2D, double, double, int)"); }
+  public void setArcByCenter(double x, double y, double radius, double angSt, double angExt, int closure) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.setArcByCenter(double, double, double, double, double, int)"); }
+  public void setAngleStart(java.awt.geom.Point2D p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.setAngleStart(java.awt.geom.Point2D)"); }
+  public abstract void setAngleStart(double angSt) { throw new AbstractMethodError("java.awt.geom.Arc2D.setAngleStart(double)"); }
+  public abstract void setAngleExtent(double angExt) { throw new AbstractMethodError("java.awt.geom.Arc2D.setAngleExtent(double)"); }
+  public void setAngles(double x1, double y1, double x2, double y2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.setAngles(double, double, double, double)"); }
+  public void setAngles(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.setAngles(java.awt.geom.Point2D, java.awt.geom.Point2D)"); }
+  @JavaProtected
+  abstract java.awt.geom.Rectangle2D makeBounds(double x, double y, double w, double h) { throw new AbstractMethodError("java.awt.geom.Arc2D.makeBounds(double, double, double, double)"); }
+  public int getArcType() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.getArcType()"); }
+  public boolean containsAngle(double angle) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.containsAngle(double)"); }
+  public void setArcByTangent(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2, java.awt.geom.Point2D p3, double radius) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.geom.Arc2D.setArcByTangent(java.awt.geom.Point2D, java.awt.geom.Point2D, java.awt.geom.Point2D, double)"); }
+  < ---- END java signatures ---- >
+}

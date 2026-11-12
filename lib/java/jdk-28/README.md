@@ -8,29 +8,49 @@ Each file names its Java Source, which is the JDK 28 API page for that type.
 The SLeeLa functions in the file are produced from that Source. No Java source
 text is copied or expanded into the repository.
 
-## Layout: the same paths as the online API
+## Layout: the same folders as the online API
 
-| Online JDK 28 API | SLeeLa file |
+Every module of the online JDK 28 API has a folder directly under
+`lib/java/jdk-28/`, and every package has its folders under its module:
+
+| Online JDK 28 API (`.../jdk28/docs/api/`) | SLeeLa file |
 |---|---|
-| `docs/api/java.base/java/util/ArrayList.html` | `lib/java/jdk-28/docs/api/java.base/java/util/ArrayList.sleela` |
-| `docs/api/java.base/java/util/Map.Entry.html` | `lib/java/jdk-28/docs/api/java.base/java/util/Map.Entry.sleela` |
-| `docs/api/java.sql/java/sql/Connection.html` | `lib/java/jdk-28/docs/api/java.sql/java/sql/Connection.sleela` |
+| `java.base/java/util/ArrayList.html` | `lib/java/jdk-28/java.base/java/util/ArrayList.sleela` |
+| `java.base/java/util/Map.Entry.html` | `lib/java/jdk-28/java.base/java/util/Map.Entry.sleela` |
+| `java.sql/java/sql/Connection.html` | `lib/java/jdk-28/java.sql/java/sql/Connection.sleela` |
+| `jdk.zipfs/module-summary.html` | `lib/java/jdk-28/jdk.zipfs/module-summary.md` |
 
-The path under `docs/api/` (module folder such as `java.base`, then the package
-folders) matches the online API exactly. The `docs/api` segment also matters to
-the compiler: the `/lib` loader resolves a class by file name, and when a real
-library unit of that name exists (for example `lib/java/java/util/ArrayList.sleela`)
-it wins over a file under `docs/api/`. So adding these files does not make any
-existing program ambiguous. A nested type keeps its documented name
-(`Map.Entry`).
+- **58 module folders:**
+  - 42 modules hold types: 370 folders including their package folders.
+  - 16 modules export no packages, for example `java.se`, `jdk.jlink` and
+    `jdk.zipfs`. Each of those folders holds a `module-summary.md` naming its
+    online page and the evidence that the module is documented.
+- **386 folders in all,** none empty.
+- **Nested types:** a nested type keeps its documented name (`Map.Entry`).
 
-[`INDEX.tsv`](INDEX.tsv) lists every Java type with its module, kind, SLeeLa
-file and Java Source URL. [`FOLDERS.txt`](FOLDERS.txt) lists the 371 folders.
+The index files:
+- [`INDEX.tsv`](INDEX.tsv) lists every Java type with its module, kind,
+  SLeeLa file and Java Source URL.
+- [`MODULES.tsv`](MODULES.tsv) lists the 58 modules.
+- [`FOLDERS.txt`](FOLDERS.txt) lists every folder.
+
+**Loader rule.** The `/lib` loader finds a class by file name, so
+`impl/frontend/driver.cpp` treats `java/jdk-28/` as a reference tier, the same
+as `docs/api/`. When a real library unit of that name exists, for example
+`lib/java/java/util/ArrayList.sleela`, the real unit wins. These files never
+make an existing program ambiguous. `working-binaries/sleela` was rebuilt with
+this rule.
+
+**Not created:**
+- `jdk.crypto.ec`: deprecated for removal since JDK 22, and its JDK 28
+  status is unconfirmed.
+- `jdk.unsupported`, `jdk.unsupported.desktop` and `jdk.jsobject`: these
+  have no types in the JDK 28 API index.
 
 ## What each file contains
 
 ```
-<< lib/java/jdk-28/docs/api/java.base/java/util/ArrayList.sleela
+<< lib/java/jdk-28/java.base/java/util/ArrayList.sleela
    SLeeLa file for the Java type java.util.ArrayList (module java.base). One Java type, one SLeeLa file.
    Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/ArrayList.html
    Java kind: class; extends java.util.AbstractList; implements java.util.List, ...
@@ -57,8 +77,9 @@ the Java Source specifies.
 | Measure | Count |
 |---|---:|
 | JDK 28 public types | **4,721** |
-| SLeeLa files in `/lib/java/jdk-28/docs/api` | **4,721** (1:1) |
-| Modules | 42 |
+| SLeeLa files in `/lib/java/jdk-28` | **4,721** (1:1) |
+| Module folders | 58 (42 with types, 16 without packages) |
+| Folders in all | 386 |
 | Kinds | 2,856 classes, 1,590 interfaces, 157 enums, 50 annotations, 3 records, 65 not yet classified |
 | Files with API members written | 4,656 |
 | Files with members pending | 65 |
@@ -102,7 +123,7 @@ the Java Source specifies.
 ## Tools (run from the repository root)
 
 ```sh
-python3 lib/java/jdk-28/tools/generate_jdk28.py   # (re)write every file and INDEX.tsv
+python3 lib/java/jdk-28/tools/generate_jdk28.py   # (re)write every file, INDEX.tsv and MODULES.tsv
 python3 lib/java/jdk-28/tools/validate_jdk28.py   # enforce the 1:1 rule and the Source links
 bash    lib/java/jdk-28/tools/check_jdk28.sh 8    # compile-check every file; report in CHECK-REPORT.txt
 ```

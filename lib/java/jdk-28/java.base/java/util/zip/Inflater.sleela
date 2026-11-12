@@ -1,0 +1,90 @@
+<< lib/java/jdk-28/java.base/java/util/zip/Inflater.sleela
+   SLeeLa file for the Java type java.util.zip.Inflater (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/zip/Inflater.html
+   Java kind: class; extends java.lang.Object; implements java.lang.AutoCloseable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Inflater {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 4660;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.zip.Inflater";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/zip/Inflater.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public Inflater(boolean nowrap) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.<init>(boolean)"); }
+  public Inflater() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public void reset() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.reset()"); }
+  public int inflate(java.nio.ByteBuffer output) throws java.util.zip.DataFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.inflate(java.nio.ByteBuffer)"); }
+  public int inflate(byte[] output) throws java.util.zip.DataFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.inflate(byte[])"); }
+  public int inflate(byte[] output, int off, int len) throws java.util.zip.DataFormatException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.inflate(byte[], int, int)"); }
+  public void end() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.end()"); }
+  public void setInput(byte[] input, int off, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.setInput(byte[], int, int)"); }
+  public void setInput(byte[] input) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.setInput(byte[])"); }
+  public void setInput(java.nio.ByteBuffer input) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.setInput(java.nio.ByteBuffer)"); }
+  public void setDictionary(java.nio.ByteBuffer dictionary) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.setDictionary(java.nio.ByteBuffer)"); }
+  public void setDictionary(byte[] dictionary, int off, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.setDictionary(byte[], int, int)"); }
+  public void setDictionary(byte[] dictionary) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.setDictionary(byte[])"); }
+  public boolean finished() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.finished()"); }
+  public int getAdler() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.getAdler()"); }
+  public long getBytesRead() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.getBytesRead()"); }
+  public long getBytesWritten() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.getBytesWritten()"); }
+  public int getRemaining() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.getRemaining()"); }
+  public boolean needsInput() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.needsInput()"); }
+  public boolean needsDictionary() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.needsDictionary()"); }
+  public int getTotalIn() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.getTotalIn()"); }
+  public int getTotalOut() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.zip.Inflater.getTotalOut()"); }
+  < ---- END java signatures ---- >
+}

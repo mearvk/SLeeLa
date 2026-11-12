@@ -1,0 +1,128 @@
+<< lib/java/jdk-28/java.desktop/javax/swing/JViewport.sleela
+   SLeeLa file for the Java type javax.swing.JViewport (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/JViewport.html
+   Java kind: class; extends javax.swing.JComponent; implements javax.accessibility.Accessible
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class JViewport {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 5105;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.JViewport";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/JViewport.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.JComponent";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int BLIT_SCROLL_MODE = 1;
+  static final int BACKINGSTORE_SCROLL_MODE = 2;
+  static final int SIMPLE_SCROLL_MODE = 0;
+  < public and protected instance fields >
+  boolean isViewSizeSet;
+  Any lastPaintPosition;
+  boolean backingStore;
+  Any backingStoreImage;
+  boolean scrollUnderway;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public JViewport() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public void remove(java.awt.Component child) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.remove(java.awt.Component)"); }
+  @JavaProtected
+  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.paramString()"); }
+  public final void setBorder(javax.swing.border.Border border) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setBorder(javax.swing.border.Border)"); }
+  @JavaProtected
+  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.firePropertyChange(java.lang.String, java.lang.Object, java.lang.Object)"); }
+  public void repaint(long tm, int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.repaint(long, int, int, int, int)"); }
+  public void updateUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.updateUI()"); }
+  public void setUI(javax.swing.plaf.ViewportUI ui) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setUI(javax.swing.plaf.ViewportUI)"); }
+  public javax.swing.plaf.ViewportUI getUI() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getUI()"); }
+  public java.lang.String getUIClassID() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getUIClassID()"); }
+  public boolean isOptimizedDrawingEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.isOptimizedDrawingEnabled()"); }
+  public void scrollRectToVisible(java.awt.Rectangle contentRect) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.scrollRectToVisible(java.awt.Rectangle)"); }
+  @JavaProtected
+  boolean isPaintingOrigin() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.isPaintingOrigin()"); }
+  public void reshape(int x, int y, int w, int h) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.reshape(int, int, int, int)"); }
+  public java.awt.Component getView() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getView()"); }
+  public void setView(java.awt.Component view) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setView(java.awt.Component)"); }
+  public void setViewPosition(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setViewPosition(java.awt.Point)"); }
+  @JavaProtected
+  java.awt.LayoutManager createLayoutManager() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.createLayoutManager()"); }
+  public java.awt.Point getViewPosition() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getViewPosition()"); }
+  public java.awt.Dimension getExtentSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getExtentSize()"); }
+  @JavaProtected
+  boolean computeBlit(int dx, int dy, java.awt.Point blitFrom, java.awt.Point blitTo, java.awt.Dimension blitSize, java.awt.Rectangle blitPaint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.computeBlit(int, int, java.awt.Point, java.awt.Point, java.awt.Dimension, java.awt.Rectangle)"); }
+  public void setScrollMode(int mode) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setScrollMode(int)"); }
+  @JavaProtected
+  javax.swing.JViewport.ViewListener createViewListener() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.createViewListener()"); }
+  public int getScrollMode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getScrollMode()"); }
+  public boolean isBackingStoreEnabled() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.isBackingStoreEnabled()"); }
+  public void setBackingStoreEnabled(boolean enabled) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setBackingStoreEnabled(boolean)"); }
+  public java.awt.Dimension getViewSize() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getViewSize()"); }
+  public void setViewSize(java.awt.Dimension newSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setViewSize(java.awt.Dimension)"); }
+  public java.awt.Rectangle getViewRect() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getViewRect()"); }
+  public java.awt.Point toViewCoordinates(java.awt.Point p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.toViewCoordinates(java.awt.Point)"); }
+  public void setExtentSize(java.awt.Dimension newExtent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.setExtentSize(java.awt.Dimension)"); }
+  public void removeChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.removeChangeListener(javax.swing.event.ChangeListener)"); }
+  public void addChangeListener(javax.swing.event.ChangeListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.addChangeListener(javax.swing.event.ChangeListener)"); }
+  public javax.swing.event.ChangeListener[] getChangeListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getChangeListeners()"); }
+  @JavaProtected
+  void fireStateChanged() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.fireStateChanged()"); }
+  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getAccessibleContext()"); }
+  public final java.awt.Insets getInsets(java.awt.Insets insets) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getInsets(java.awt.Insets)"); }
+  public final java.awt.Insets getInsets() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.getInsets()"); }
+  @JavaProtected
+  void addImpl(java.awt.Component child, java.lang.Object constraints, int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.addImpl(java.awt.Component, java.lang.Object, int)"); }
+  public void paint(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.JViewport.paint(java.awt.Graphics)"); }
+  < ---- END java signatures ---- >
+}

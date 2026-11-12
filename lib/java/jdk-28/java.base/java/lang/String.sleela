@@ -1,0 +1,170 @@
+<< lib/java/jdk-28/java.base/java/lang/String.sleela
+   SLeeLa file for the Java type java.lang.String (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/String.html
+   Java kind: class; extends java.lang.Object; implements java.io.Serializable, java.lang.Comparable, java.lang.CharSequence, java.lang.constant.Constable, java.lang.constant.ConstantDesc
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class String {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8645;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.String";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/String.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static Any CASE_INSENSITIVE_ORDER = null;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public String(java.lang.StringBuilder builder) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>(java.lang.StringBuilder)"); }
+  public String(byte[] bytes, int offset, int length, java.nio.charset.Charset charset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>(byte[], int, int, java.nio.charset.Charset)"); }
+  public String(byte[] bytes, java.lang.String charsetName) throws java.io.UnsupportedEncodingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>(byte[], java.lang.String)"); }
+  public String(byte[] bytes, java.nio.charset.Charset charset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>(byte[], java.nio.charset.Charset)"); }
+  public String(byte[] bytes, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>(byte[], int, int)"); }
+  public String(byte[] bytes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>(byte[])"); }
+  public String(char[] value, int offset, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>(char[], int, int)"); }
+  public String(char[] value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>(char[])"); }
+  public String(java.lang.String original) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>(java.lang.String)"); }
+  public String() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>()"); }
+  public String(byte[] bytes, int offset, int length, java.lang.String charsetName) throws java.io.UnsupportedEncodingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>(byte[], int, int, java.lang.String)"); }
+  public String(byte[] ascii, int hibyte) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>(byte[], int)"); }
+  public String(byte[] ascii, int hibyte, int offset, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>(byte[], int, int, int)"); }
+  public String(int[] codePoints, int offset, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.<init>(int[], int, int)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public boolean equals(java.lang.Object anObject) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.equals(java.lang.Object)"); }
+  public int length() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.length()"); }
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.toString()"); }
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.hashCode()"); }
+  public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.getChars(int, int, char[], int)"); }
+  public int compareTo(java.lang.String anotherString) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.compareTo(java.lang.String)"); }
+  public int indexOf(java.lang.String str, int fromIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.indexOf(java.lang.String, int)"); }
+  public int indexOf(java.lang.String str, int beginIndex, int endIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.indexOf(java.lang.String, int, int)"); }
+  public int indexOf(int ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.indexOf(int)"); }
+  public int indexOf(int ch, int fromIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.indexOf(int, int)"); }
+  public int indexOf(int ch, int beginIndex, int endIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.indexOf(int, int, int)"); }
+  public int indexOf(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.indexOf(java.lang.String)"); }
+  public static java.lang.String valueOf(java.lang.Object obj) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.valueOf(java.lang.Object)"); }
+  public static java.lang.String valueOf(long l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.valueOf(long)"); }
+  public static java.lang.String valueOf(int i) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.valueOf(int)"); }
+  public static java.lang.String valueOf(char c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.valueOf(char)"); }
+  public static java.lang.String valueOf(char[] data, int offset, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.valueOf(char[], int, int)"); }
+  public static java.lang.String valueOf(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.valueOf(boolean)"); }
+  public static java.lang.String valueOf(double d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.valueOf(double)"); }
+  public static java.lang.String valueOf(char[] data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.valueOf(char[])"); }
+  public static java.lang.String valueOf(float f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.valueOf(float)"); }
+  public char charAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.charAt(int)"); }
+  public int codePointAt(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.codePointAt(int)"); }
+  public int codePointBefore(int index) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.codePointBefore(int)"); }
+  public int codePointCount(int beginIndex, int endIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.codePointCount(int, int)"); }
+  public int offsetByCodePoints(int index, int codePointOffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.offsetByCodePoints(int, int)"); }
+  public byte[] getBytes(java.lang.String charsetName) throws java.io.UnsupportedEncodingException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.getBytes(java.lang.String)"); }
+  public void getBytes(int srcBegin, int srcEnd, byte[] dst, int dstBegin) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.getBytes(int, int, byte[], int)"); }
+  public byte[] getBytes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.getBytes()"); }
+  public byte[] getBytes(java.nio.charset.Charset charset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.getBytes(java.nio.charset.Charset)"); }
+  public boolean contentEquals(java.lang.StringBuffer sb) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.contentEquals(java.lang.StringBuffer)"); }
+  public boolean regionMatches(int toffset, java.lang.String other, int ooffset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.regionMatches(int, java.lang.String, int, int)"); }
+  public boolean regionMatches(boolean ignoreCase, int toffset, java.lang.String other, int ooffset, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.regionMatches(boolean, int, java.lang.String, int, int)"); }
+  public boolean startsWith(java.lang.String prefix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.startsWith(java.lang.String)"); }
+  public boolean startsWith(java.lang.String prefix, int toffset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.startsWith(java.lang.String, int)"); }
+  public int lastIndexOf(int ch) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.lastIndexOf(int)"); }
+  public int lastIndexOf(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.lastIndexOf(java.lang.String)"); }
+  public int lastIndexOf(java.lang.String str, int fromIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.lastIndexOf(java.lang.String, int)"); }
+  public int lastIndexOf(int ch, int fromIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.lastIndexOf(int, int)"); }
+  public java.lang.String substring(int beginIndex, int endIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.substring(int, int)"); }
+  public java.lang.String substring(int beginIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.substring(int)"); }
+  public boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.isEmpty()"); }
+  public java.lang.String replace(java.lang.CharSequence target, java.lang.CharSequence replacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.replace(java.lang.CharSequence, java.lang.CharSequence)"); }
+  public java.lang.String replace(char oldChar, char newChar) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.replace(char, char)"); }
+  public boolean matches(java.lang.String regex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.matches(java.lang.String)"); }
+  public java.lang.String replaceFirst(java.lang.String regex, java.lang.String replacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.replaceFirst(java.lang.String, java.lang.String)"); }
+  public java.lang.String replaceAll(java.lang.String regex, java.lang.String replacement) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.replaceAll(java.lang.String, java.lang.String)"); }
+  public java.lang.String[] split(java.lang.String regex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.split(java.lang.String)"); }
+  public java.lang.String[] split(java.lang.String regex, int limit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.split(java.lang.String, int)"); }
+  public java.lang.String[] splitWithDelimiters(java.lang.String regex, int limit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.splitWithDelimiters(java.lang.String, int)"); }
+  public static java.lang.String join(java.lang.CharSequence delimiter, java.lang.CharSequence... elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.join(java.lang.CharSequence, java.lang.CharSequence...)"); }
+  public static java.lang.String join(java.lang.CharSequence delimiter, java.lang.Iterable<? extends java.lang.CharSequence> elements) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.join(java.lang.CharSequence, java.lang.Iterable<? extends java.lang.CharSequence>)"); }
+  public java.lang.String toLowerCase() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.toLowerCase()"); }
+  public java.lang.String toLowerCase(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.toLowerCase(java.util.Locale)"); }
+  public java.lang.String toUpperCase(java.util.Locale locale) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.toUpperCase(java.util.Locale)"); }
+  public java.lang.String toUpperCase() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.toUpperCase()"); }
+  public java.lang.String trim() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.trim()"); }
+  public java.lang.String strip() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.strip()"); }
+  public java.lang.String stripLeading() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.stripLeading()"); }
+  public java.lang.String stripTrailing() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.stripTrailing()"); }
+  public java.util.stream.Stream<java.lang.String> lines() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.lines()"); }
+  public java.lang.String repeat(int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.repeat(int)"); }
+  public boolean isBlank() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.isBlank()"); }
+  public char[] toCharArray() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.toCharArray()"); }
+  public static java.lang.String format(java.util.Locale l, java.lang.String format, java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.format(java.util.Locale, java.lang.String, java.lang.Object...)"); }
+  public static java.lang.String format(java.lang.String format, java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.format(java.lang.String, java.lang.Object...)"); }
+  public java.lang.String resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup lookup) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup)"); }
+  public java.util.stream.IntStream codePoints() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.codePoints()"); }
+  public boolean equalsIgnoreCase(java.lang.String anotherString) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.equalsIgnoreCase(java.lang.String)"); }
+  public int compareToIgnoreCase(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.compareToIgnoreCase(java.lang.String)"); }
+  public boolean endsWith(java.lang.String suffix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.endsWith(java.lang.String)"); }
+  public java.lang.CharSequence subSequence(int beginIndex, int endIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.subSequence(int, int)"); }
+  public java.lang.String concat(java.lang.String str) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.concat(java.lang.String)"); }
+  public boolean contains(java.lang.CharSequence s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.contains(java.lang.CharSequence)"); }
+  public java.lang.String indent(int n) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.indent(int)"); }
+  public java.lang.String stripIndent() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.stripIndent()"); }
+  public java.lang.String translateEscapes() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.translateEscapes()"); }
+  public java.util.stream.IntStream chars() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.chars()"); }
+  public <R> R transform(java.util.function.Function<? super java.lang.String, ? extends R> f) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.transform(java.util.function.Function<? super java.lang.String, ? extends R>)"); }
+  public java.lang.String formatted(java.lang.Object... args) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.formatted(java.lang.Object...)"); }
+  public static java.lang.String copyValueOf(char[] data, int offset, int count) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.copyValueOf(char[], int, int)"); }
+  public static java.lang.String copyValueOf(char[] data) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.copyValueOf(char[])"); }
+  public native java.lang.String intern() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.intern()"); }
+  public java.util.Optional<java.lang.String> describeConstable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.String.describeConstable()"); }
+  < ---- END java signatures ---- >
+}

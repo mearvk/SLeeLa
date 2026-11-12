@@ -1,0 +1,442 @@
+<< lib/java/jdk-28/jdk.compiler/com/sun/source/tree/Tree.Kind.sleela
+   SLeeLa file for the Java type com.sun.source.tree.Tree.Kind (module jdk.compiler). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/jdk.compiler/com/sun/source/tree/Tree.Kind.html
+   Java kind: enum; extends java.lang.Enum
+   Status: members from the JDK 28 API (exact signatures).
+   Nested Java type: the file keeps the documented name Tree.Kind.
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Kind {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 5365;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "com.sun.source.tree.Tree.Kind";
+  String javaModule = "jdk.compiler";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/jdk.compiler/com/sun/source/tree/Tree.Kind.html";
+  String javaKind = "enum";
+  String javaSuper = "java.lang.Enum";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  << Complete enum: one static final instance per constant (so identity
+     and == hold for values / valueOf / the constants), with the
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: Kind.valueOf(...), Kind.values(), and the constants are
+     static final fields. >>
+  static final Kind ANNOTATED_TYPE = new Kind("ANNOTATED_TYPE", 0);
+  static final Kind ANNOTATION = new Kind("ANNOTATION", 1);
+  static final Kind TYPE_ANNOTATION = new Kind("TYPE_ANNOTATION", 2);
+  static final Kind ARRAY_ACCESS = new Kind("ARRAY_ACCESS", 3);
+  static final Kind ARRAY_TYPE = new Kind("ARRAY_TYPE", 4);
+  static final Kind ASSERT = new Kind("ASSERT", 5);
+  static final Kind ASSIGNMENT = new Kind("ASSIGNMENT", 6);
+  static final Kind BLOCK = new Kind("BLOCK", 7);
+  static final Kind BREAK = new Kind("BREAK", 8);
+  static final Kind CASE = new Kind("CASE", 9);
+  static final Kind CATCH = new Kind("CATCH", 10);
+  static final Kind CLASS = new Kind("CLASS", 11);
+  static final Kind COMPILATION_UNIT = new Kind("COMPILATION_UNIT", 12);
+  static final Kind CONDITIONAL_EXPRESSION = new Kind("CONDITIONAL_EXPRESSION", 13);
+  static final Kind CONTINUE = new Kind("CONTINUE", 14);
+  static final Kind DO_WHILE_LOOP = new Kind("DO_WHILE_LOOP", 15);
+  static final Kind ENHANCED_FOR_LOOP = new Kind("ENHANCED_FOR_LOOP", 16);
+  static final Kind EXPRESSION_STATEMENT = new Kind("EXPRESSION_STATEMENT", 17);
+  static final Kind MEMBER_SELECT = new Kind("MEMBER_SELECT", 18);
+  static final Kind MEMBER_REFERENCE = new Kind("MEMBER_REFERENCE", 19);
+  static final Kind FOR_LOOP = new Kind("FOR_LOOP", 20);
+  static final Kind IDENTIFIER = new Kind("IDENTIFIER", 21);
+  static final Kind IF = new Kind("IF", 22);
+  static final Kind IMPORT = new Kind("IMPORT", 23);
+  static final Kind INSTANCE_OF = new Kind("INSTANCE_OF", 24);
+  static final Kind LABELED_STATEMENT = new Kind("LABELED_STATEMENT", 25);
+  static final Kind METHOD = new Kind("METHOD", 26);
+  static final Kind METHOD_INVOCATION = new Kind("METHOD_INVOCATION", 27);
+  static final Kind MODIFIERS = new Kind("MODIFIERS", 28);
+  static final Kind NEW_ARRAY = new Kind("NEW_ARRAY", 29);
+  static final Kind NEW_CLASS = new Kind("NEW_CLASS", 30);
+  static final Kind LAMBDA_EXPRESSION = new Kind("LAMBDA_EXPRESSION", 31);
+  static final Kind PACKAGE = new Kind("PACKAGE", 32);
+  static final Kind PARENTHESIZED = new Kind("PARENTHESIZED", 33);
+  static final Kind ANY_PATTERN = new Kind("ANY_PATTERN", 34);
+  static final Kind BINDING_PATTERN = new Kind("BINDING_PATTERN", 35);
+  static final Kind DEFAULT_CASE_LABEL = new Kind("DEFAULT_CASE_LABEL", 36);
+  static final Kind CONSTANT_CASE_LABEL = new Kind("CONSTANT_CASE_LABEL", 37);
+  static final Kind PATTERN_CASE_LABEL = new Kind("PATTERN_CASE_LABEL", 38);
+  static final Kind DECONSTRUCTION_PATTERN = new Kind("DECONSTRUCTION_PATTERN", 39);
+  static final Kind PRIMITIVE_TYPE = new Kind("PRIMITIVE_TYPE", 40);
+  static final Kind RETURN = new Kind("RETURN", 41);
+  static final Kind EMPTY_STATEMENT = new Kind("EMPTY_STATEMENT", 42);
+  static final Kind SWITCH = new Kind("SWITCH", 43);
+  static final Kind SWITCH_EXPRESSION = new Kind("SWITCH_EXPRESSION", 44);
+  static final Kind SYNCHRONIZED = new Kind("SYNCHRONIZED", 45);
+  static final Kind THROW = new Kind("THROW", 46);
+  static final Kind TRY = new Kind("TRY", 47);
+  static final Kind PARAMETERIZED_TYPE = new Kind("PARAMETERIZED_TYPE", 48);
+  static final Kind UNION_TYPE = new Kind("UNION_TYPE", 49);
+  static final Kind INTERSECTION_TYPE = new Kind("INTERSECTION_TYPE", 50);
+  static final Kind TYPE_CAST = new Kind("TYPE_CAST", 51);
+  static final Kind TYPE_PARAMETER = new Kind("TYPE_PARAMETER", 52);
+  static final Kind VARIABLE = new Kind("VARIABLE", 53);
+  static final Kind WHILE_LOOP = new Kind("WHILE_LOOP", 54);
+  static final Kind POSTFIX_INCREMENT = new Kind("POSTFIX_INCREMENT", 55);
+  static final Kind POSTFIX_DECREMENT = new Kind("POSTFIX_DECREMENT", 56);
+  static final Kind PREFIX_INCREMENT = new Kind("PREFIX_INCREMENT", 57);
+  static final Kind PREFIX_DECREMENT = new Kind("PREFIX_DECREMENT", 58);
+  static final Kind UNARY_PLUS = new Kind("UNARY_PLUS", 59);
+  static final Kind UNARY_MINUS = new Kind("UNARY_MINUS", 60);
+  static final Kind BITWISE_COMPLEMENT = new Kind("BITWISE_COMPLEMENT", 61);
+  static final Kind LOGICAL_COMPLEMENT = new Kind("LOGICAL_COMPLEMENT", 62);
+  static final Kind MULTIPLY = new Kind("MULTIPLY", 63);
+  static final Kind DIVIDE = new Kind("DIVIDE", 64);
+  static final Kind REMAINDER = new Kind("REMAINDER", 65);
+  static final Kind PLUS = new Kind("PLUS", 66);
+  static final Kind MINUS = new Kind("MINUS", 67);
+  static final Kind LEFT_SHIFT = new Kind("LEFT_SHIFT", 68);
+  static final Kind RIGHT_SHIFT = new Kind("RIGHT_SHIFT", 69);
+  static final Kind UNSIGNED_RIGHT_SHIFT = new Kind("UNSIGNED_RIGHT_SHIFT", 70);
+  static final Kind LESS_THAN = new Kind("LESS_THAN", 71);
+  static final Kind GREATER_THAN = new Kind("GREATER_THAN", 72);
+  static final Kind LESS_THAN_EQUAL = new Kind("LESS_THAN_EQUAL", 73);
+  static final Kind GREATER_THAN_EQUAL = new Kind("GREATER_THAN_EQUAL", 74);
+  static final Kind EQUAL_TO = new Kind("EQUAL_TO", 75);
+  static final Kind NOT_EQUAL_TO = new Kind("NOT_EQUAL_TO", 76);
+  static final Kind AND = new Kind("AND", 77);
+  static final Kind XOR = new Kind("XOR", 78);
+  static final Kind OR = new Kind("OR", 79);
+  static final Kind CONDITIONAL_AND = new Kind("CONDITIONAL_AND", 80);
+  static final Kind CONDITIONAL_OR = new Kind("CONDITIONAL_OR", 81);
+  static final Kind MULTIPLY_ASSIGNMENT = new Kind("MULTIPLY_ASSIGNMENT", 82);
+  static final Kind DIVIDE_ASSIGNMENT = new Kind("DIVIDE_ASSIGNMENT", 83);
+  static final Kind REMAINDER_ASSIGNMENT = new Kind("REMAINDER_ASSIGNMENT", 84);
+  static final Kind PLUS_ASSIGNMENT = new Kind("PLUS_ASSIGNMENT", 85);
+  static final Kind MINUS_ASSIGNMENT = new Kind("MINUS_ASSIGNMENT", 86);
+  static final Kind LEFT_SHIFT_ASSIGNMENT = new Kind("LEFT_SHIFT_ASSIGNMENT", 87);
+  static final Kind RIGHT_SHIFT_ASSIGNMENT = new Kind("RIGHT_SHIFT_ASSIGNMENT", 88);
+  static final Kind UNSIGNED_RIGHT_SHIFT_ASSIGNMENT = new Kind("UNSIGNED_RIGHT_SHIFT_ASSIGNMENT", 89);
+  static final Kind AND_ASSIGNMENT = new Kind("AND_ASSIGNMENT", 90);
+  static final Kind XOR_ASSIGNMENT = new Kind("XOR_ASSIGNMENT", 91);
+  static final Kind OR_ASSIGNMENT = new Kind("OR_ASSIGNMENT", 92);
+  static final Kind INT_LITERAL = new Kind("INT_LITERAL", 93);
+  static final Kind LONG_LITERAL = new Kind("LONG_LITERAL", 94);
+  static final Kind FLOAT_LITERAL = new Kind("FLOAT_LITERAL", 95);
+  static final Kind DOUBLE_LITERAL = new Kind("DOUBLE_LITERAL", 96);
+  static final Kind BOOLEAN_LITERAL = new Kind("BOOLEAN_LITERAL", 97);
+  static final Kind CHAR_LITERAL = new Kind("CHAR_LITERAL", 98);
+  static final Kind STRING_LITERAL = new Kind("STRING_LITERAL", 99);
+  static final Kind NULL_LITERAL = new Kind("NULL_LITERAL", 100);
+  static final Kind UNBOUNDED_WILDCARD = new Kind("UNBOUNDED_WILDCARD", 101);
+  static final Kind EXTENDS_WILDCARD = new Kind("EXTENDS_WILDCARD", 102);
+  static final Kind SUPER_WILDCARD = new Kind("SUPER_WILDCARD", 103);
+  static final Kind ERRONEOUS = new Kind("ERRONEOUS", 104);
+  static final Kind INTERFACE = new Kind("INTERFACE", 105);
+  static final Kind ENUM = new Kind("ENUM", 106);
+  static final Kind ANNOTATION_TYPE = new Kind("ANNOTATION_TYPE", 107);
+  static final Kind MODULE = new Kind("MODULE", 108);
+  static final Kind EXPORTS = new Kind("EXPORTS", 109);
+  static final Kind OPENS = new Kind("OPENS", 110);
+  static final Kind PROVIDES = new Kind("PROVIDES", 111);
+  static final Kind RECORD = new Kind("RECORD", 112);
+  static final Kind REQUIRES = new Kind("REQUIRES", 113);
+  static final Kind USES = new Kind("USES", 114);
+  static final Kind OTHER = new Kind("OTHER", 115);
+  static final Kind YIELD = new Kind("YIELD", 116);
+  String enumName;
+  int enumOrdinal;
+  Kind(String name, int ordinal) { this.enumName = name; this.enumOrdinal = ordinal; }
+  String name() { return this.enumName; }
+  int ordinal() { return this.enumOrdinal; }
+  String toString() { return this.enumName; }
+  int compareTo(Kind o) { return this.enumOrdinal - o.enumOrdinal; }
+  boolean equals(Any other) { return this == other; }
+  int hashCode() { return this.enumOrdinal * 31 + 17; }
+  public static Kind[] values() {
+    Kind[] v = new Kind[117];
+    v[0] = ANNOTATED_TYPE;
+    v[1] = ANNOTATION;
+    v[2] = TYPE_ANNOTATION;
+    v[3] = ARRAY_ACCESS;
+    v[4] = ARRAY_TYPE;
+    v[5] = ASSERT;
+    v[6] = ASSIGNMENT;
+    v[7] = BLOCK;
+    v[8] = BREAK;
+    v[9] = CASE;
+    v[10] = CATCH;
+    v[11] = CLASS;
+    v[12] = COMPILATION_UNIT;
+    v[13] = CONDITIONAL_EXPRESSION;
+    v[14] = CONTINUE;
+    v[15] = DO_WHILE_LOOP;
+    v[16] = ENHANCED_FOR_LOOP;
+    v[17] = EXPRESSION_STATEMENT;
+    v[18] = MEMBER_SELECT;
+    v[19] = MEMBER_REFERENCE;
+    v[20] = FOR_LOOP;
+    v[21] = IDENTIFIER;
+    v[22] = IF;
+    v[23] = IMPORT;
+    v[24] = INSTANCE_OF;
+    v[25] = LABELED_STATEMENT;
+    v[26] = METHOD;
+    v[27] = METHOD_INVOCATION;
+    v[28] = MODIFIERS;
+    v[29] = NEW_ARRAY;
+    v[30] = NEW_CLASS;
+    v[31] = LAMBDA_EXPRESSION;
+    v[32] = PACKAGE;
+    v[33] = PARENTHESIZED;
+    v[34] = ANY_PATTERN;
+    v[35] = BINDING_PATTERN;
+    v[36] = DEFAULT_CASE_LABEL;
+    v[37] = CONSTANT_CASE_LABEL;
+    v[38] = PATTERN_CASE_LABEL;
+    v[39] = DECONSTRUCTION_PATTERN;
+    v[40] = PRIMITIVE_TYPE;
+    v[41] = RETURN;
+    v[42] = EMPTY_STATEMENT;
+    v[43] = SWITCH;
+    v[44] = SWITCH_EXPRESSION;
+    v[45] = SYNCHRONIZED;
+    v[46] = THROW;
+    v[47] = TRY;
+    v[48] = PARAMETERIZED_TYPE;
+    v[49] = UNION_TYPE;
+    v[50] = INTERSECTION_TYPE;
+    v[51] = TYPE_CAST;
+    v[52] = TYPE_PARAMETER;
+    v[53] = VARIABLE;
+    v[54] = WHILE_LOOP;
+    v[55] = POSTFIX_INCREMENT;
+    v[56] = POSTFIX_DECREMENT;
+    v[57] = PREFIX_INCREMENT;
+    v[58] = PREFIX_DECREMENT;
+    v[59] = UNARY_PLUS;
+    v[60] = UNARY_MINUS;
+    v[61] = BITWISE_COMPLEMENT;
+    v[62] = LOGICAL_COMPLEMENT;
+    v[63] = MULTIPLY;
+    v[64] = DIVIDE;
+    v[65] = REMAINDER;
+    v[66] = PLUS;
+    v[67] = MINUS;
+    v[68] = LEFT_SHIFT;
+    v[69] = RIGHT_SHIFT;
+    v[70] = UNSIGNED_RIGHT_SHIFT;
+    v[71] = LESS_THAN;
+    v[72] = GREATER_THAN;
+    v[73] = LESS_THAN_EQUAL;
+    v[74] = GREATER_THAN_EQUAL;
+    v[75] = EQUAL_TO;
+    v[76] = NOT_EQUAL_TO;
+    v[77] = AND;
+    v[78] = XOR;
+    v[79] = OR;
+    v[80] = CONDITIONAL_AND;
+    v[81] = CONDITIONAL_OR;
+    v[82] = MULTIPLY_ASSIGNMENT;
+    v[83] = DIVIDE_ASSIGNMENT;
+    v[84] = REMAINDER_ASSIGNMENT;
+    v[85] = PLUS_ASSIGNMENT;
+    v[86] = MINUS_ASSIGNMENT;
+    v[87] = LEFT_SHIFT_ASSIGNMENT;
+    v[88] = RIGHT_SHIFT_ASSIGNMENT;
+    v[89] = UNSIGNED_RIGHT_SHIFT_ASSIGNMENT;
+    v[90] = AND_ASSIGNMENT;
+    v[91] = XOR_ASSIGNMENT;
+    v[92] = OR_ASSIGNMENT;
+    v[93] = INT_LITERAL;
+    v[94] = LONG_LITERAL;
+    v[95] = FLOAT_LITERAL;
+    v[96] = DOUBLE_LITERAL;
+    v[97] = BOOLEAN_LITERAL;
+    v[98] = CHAR_LITERAL;
+    v[99] = STRING_LITERAL;
+    v[100] = NULL_LITERAL;
+    v[101] = UNBOUNDED_WILDCARD;
+    v[102] = EXTENDS_WILDCARD;
+    v[103] = SUPER_WILDCARD;
+    v[104] = ERRONEOUS;
+    v[105] = INTERFACE;
+    v[106] = ENUM;
+    v[107] = ANNOTATION_TYPE;
+    v[108] = MODULE;
+    v[109] = EXPORTS;
+    v[110] = OPENS;
+    v[111] = PROVIDES;
+    v[112] = RECORD;
+    v[113] = REQUIRES;
+    v[114] = USES;
+    v[115] = OTHER;
+    v[116] = YIELD;
+    return v;
+  }
+  public static Kind valueOf(String name) {
+    if (name == null) { throw new NullPointerException("Name is null"); }
+    if (name == "ANNOTATED_TYPE") { return ANNOTATED_TYPE; }
+    if (name == "ANNOTATION") { return ANNOTATION; }
+    if (name == "TYPE_ANNOTATION") { return TYPE_ANNOTATION; }
+    if (name == "ARRAY_ACCESS") { return ARRAY_ACCESS; }
+    if (name == "ARRAY_TYPE") { return ARRAY_TYPE; }
+    if (name == "ASSERT") { return ASSERT; }
+    if (name == "ASSIGNMENT") { return ASSIGNMENT; }
+    if (name == "BLOCK") { return BLOCK; }
+    if (name == "BREAK") { return BREAK; }
+    if (name == "CASE") { return CASE; }
+    if (name == "CATCH") { return CATCH; }
+    if (name == "CLASS") { return CLASS; }
+    if (name == "COMPILATION_UNIT") { return COMPILATION_UNIT; }
+    if (name == "CONDITIONAL_EXPRESSION") { return CONDITIONAL_EXPRESSION; }
+    if (name == "CONTINUE") { return CONTINUE; }
+    if (name == "DO_WHILE_LOOP") { return DO_WHILE_LOOP; }
+    if (name == "ENHANCED_FOR_LOOP") { return ENHANCED_FOR_LOOP; }
+    if (name == "EXPRESSION_STATEMENT") { return EXPRESSION_STATEMENT; }
+    if (name == "MEMBER_SELECT") { return MEMBER_SELECT; }
+    if (name == "MEMBER_REFERENCE") { return MEMBER_REFERENCE; }
+    if (name == "FOR_LOOP") { return FOR_LOOP; }
+    if (name == "IDENTIFIER") { return IDENTIFIER; }
+    if (name == "IF") { return IF; }
+    if (name == "IMPORT") { return IMPORT; }
+    if (name == "INSTANCE_OF") { return INSTANCE_OF; }
+    if (name == "LABELED_STATEMENT") { return LABELED_STATEMENT; }
+    if (name == "METHOD") { return METHOD; }
+    if (name == "METHOD_INVOCATION") { return METHOD_INVOCATION; }
+    if (name == "MODIFIERS") { return MODIFIERS; }
+    if (name == "NEW_ARRAY") { return NEW_ARRAY; }
+    if (name == "NEW_CLASS") { return NEW_CLASS; }
+    if (name == "LAMBDA_EXPRESSION") { return LAMBDA_EXPRESSION; }
+    if (name == "PACKAGE") { return PACKAGE; }
+    if (name == "PARENTHESIZED") { return PARENTHESIZED; }
+    if (name == "ANY_PATTERN") { return ANY_PATTERN; }
+    if (name == "BINDING_PATTERN") { return BINDING_PATTERN; }
+    if (name == "DEFAULT_CASE_LABEL") { return DEFAULT_CASE_LABEL; }
+    if (name == "CONSTANT_CASE_LABEL") { return CONSTANT_CASE_LABEL; }
+    if (name == "PATTERN_CASE_LABEL") { return PATTERN_CASE_LABEL; }
+    if (name == "DECONSTRUCTION_PATTERN") { return DECONSTRUCTION_PATTERN; }
+    if (name == "PRIMITIVE_TYPE") { return PRIMITIVE_TYPE; }
+    if (name == "RETURN") { return RETURN; }
+    if (name == "EMPTY_STATEMENT") { return EMPTY_STATEMENT; }
+    if (name == "SWITCH") { return SWITCH; }
+    if (name == "SWITCH_EXPRESSION") { return SWITCH_EXPRESSION; }
+    if (name == "SYNCHRONIZED") { return SYNCHRONIZED; }
+    if (name == "THROW") { return THROW; }
+    if (name == "TRY") { return TRY; }
+    if (name == "PARAMETERIZED_TYPE") { return PARAMETERIZED_TYPE; }
+    if (name == "UNION_TYPE") { return UNION_TYPE; }
+    if (name == "INTERSECTION_TYPE") { return INTERSECTION_TYPE; }
+    if (name == "TYPE_CAST") { return TYPE_CAST; }
+    if (name == "TYPE_PARAMETER") { return TYPE_PARAMETER; }
+    if (name == "VARIABLE") { return VARIABLE; }
+    if (name == "WHILE_LOOP") { return WHILE_LOOP; }
+    if (name == "POSTFIX_INCREMENT") { return POSTFIX_INCREMENT; }
+    if (name == "POSTFIX_DECREMENT") { return POSTFIX_DECREMENT; }
+    if (name == "PREFIX_INCREMENT") { return PREFIX_INCREMENT; }
+    if (name == "PREFIX_DECREMENT") { return PREFIX_DECREMENT; }
+    if (name == "UNARY_PLUS") { return UNARY_PLUS; }
+    if (name == "UNARY_MINUS") { return UNARY_MINUS; }
+    if (name == "BITWISE_COMPLEMENT") { return BITWISE_COMPLEMENT; }
+    if (name == "LOGICAL_COMPLEMENT") { return LOGICAL_COMPLEMENT; }
+    if (name == "MULTIPLY") { return MULTIPLY; }
+    if (name == "DIVIDE") { return DIVIDE; }
+    if (name == "REMAINDER") { return REMAINDER; }
+    if (name == "PLUS") { return PLUS; }
+    if (name == "MINUS") { return MINUS; }
+    if (name == "LEFT_SHIFT") { return LEFT_SHIFT; }
+    if (name == "RIGHT_SHIFT") { return RIGHT_SHIFT; }
+    if (name == "UNSIGNED_RIGHT_SHIFT") { return UNSIGNED_RIGHT_SHIFT; }
+    if (name == "LESS_THAN") { return LESS_THAN; }
+    if (name == "GREATER_THAN") { return GREATER_THAN; }
+    if (name == "LESS_THAN_EQUAL") { return LESS_THAN_EQUAL; }
+    if (name == "GREATER_THAN_EQUAL") { return GREATER_THAN_EQUAL; }
+    if (name == "EQUAL_TO") { return EQUAL_TO; }
+    if (name == "NOT_EQUAL_TO") { return NOT_EQUAL_TO; }
+    if (name == "AND") { return AND; }
+    if (name == "XOR") { return XOR; }
+    if (name == "OR") { return OR; }
+    if (name == "CONDITIONAL_AND") { return CONDITIONAL_AND; }
+    if (name == "CONDITIONAL_OR") { return CONDITIONAL_OR; }
+    if (name == "MULTIPLY_ASSIGNMENT") { return MULTIPLY_ASSIGNMENT; }
+    if (name == "DIVIDE_ASSIGNMENT") { return DIVIDE_ASSIGNMENT; }
+    if (name == "REMAINDER_ASSIGNMENT") { return REMAINDER_ASSIGNMENT; }
+    if (name == "PLUS_ASSIGNMENT") { return PLUS_ASSIGNMENT; }
+    if (name == "MINUS_ASSIGNMENT") { return MINUS_ASSIGNMENT; }
+    if (name == "LEFT_SHIFT_ASSIGNMENT") { return LEFT_SHIFT_ASSIGNMENT; }
+    if (name == "RIGHT_SHIFT_ASSIGNMENT") { return RIGHT_SHIFT_ASSIGNMENT; }
+    if (name == "UNSIGNED_RIGHT_SHIFT_ASSIGNMENT") { return UNSIGNED_RIGHT_SHIFT_ASSIGNMENT; }
+    if (name == "AND_ASSIGNMENT") { return AND_ASSIGNMENT; }
+    if (name == "XOR_ASSIGNMENT") { return XOR_ASSIGNMENT; }
+    if (name == "OR_ASSIGNMENT") { return OR_ASSIGNMENT; }
+    if (name == "INT_LITERAL") { return INT_LITERAL; }
+    if (name == "LONG_LITERAL") { return LONG_LITERAL; }
+    if (name == "FLOAT_LITERAL") { return FLOAT_LITERAL; }
+    if (name == "DOUBLE_LITERAL") { return DOUBLE_LITERAL; }
+    if (name == "BOOLEAN_LITERAL") { return BOOLEAN_LITERAL; }
+    if (name == "CHAR_LITERAL") { return CHAR_LITERAL; }
+    if (name == "STRING_LITERAL") { return STRING_LITERAL; }
+    if (name == "NULL_LITERAL") { return NULL_LITERAL; }
+    if (name == "UNBOUNDED_WILDCARD") { return UNBOUNDED_WILDCARD; }
+    if (name == "EXTENDS_WILDCARD") { return EXTENDS_WILDCARD; }
+    if (name == "SUPER_WILDCARD") { return SUPER_WILDCARD; }
+    if (name == "ERRONEOUS") { return ERRONEOUS; }
+    if (name == "INTERFACE") { return INTERFACE; }
+    if (name == "ENUM") { return ENUM; }
+    if (name == "ANNOTATION_TYPE") { return ANNOTATION_TYPE; }
+    if (name == "MODULE") { return MODULE; }
+    if (name == "EXPORTS") { return EXPORTS; }
+    if (name == "OPENS") { return OPENS; }
+    if (name == "PROVIDES") { return PROVIDES; }
+    if (name == "RECORD") { return RECORD; }
+    if (name == "REQUIRES") { return REQUIRES; }
+    if (name == "USES") { return USES; }
+    if (name == "OTHER") { return OTHER; }
+    if (name == "YIELD") { return YIELD; }
+    throw new IllegalArgumentException("No enum constant com.sun.source.tree.Tree.Kind." + name);
+  }
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.Class<? extends com.sun.source.tree.Tree> asInterface() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: com.sun.source.tree.Tree.Kind.asInterface()"); }
+  < ---- END java signatures ---- >
+}

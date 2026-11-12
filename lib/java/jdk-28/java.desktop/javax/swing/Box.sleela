@@ -1,0 +1,81 @@
+<< lib/java/jdk-28/java.desktop/javax/swing/Box.sleela
+   SLeeLa file for the Java type javax.swing.Box (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/Box.html
+   Java kind: class; extends javax.swing.JComponent; implements javax.accessibility.Accessible
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Box {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1908;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.Box";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/Box.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.JComponent";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public Box(int axis) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.<init>(int)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  @JavaProtected
+  void paintComponent(java.awt.Graphics g) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.paintComponent(java.awt.Graphics)"); }
+  public static javax.swing.Box createHorizontalBox() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.createHorizontalBox()"); }
+  public static javax.swing.Box createVerticalBox() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.createVerticalBox()"); }
+  public static java.awt.Component createRigidArea(java.awt.Dimension d) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.createRigidArea(java.awt.Dimension)"); }
+  public static java.awt.Component createHorizontalStrut(int width) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.createHorizontalStrut(int)"); }
+  public static java.awt.Component createVerticalStrut(int height) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.createVerticalStrut(int)"); }
+  public static java.awt.Component createGlue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.createGlue()"); }
+  public static java.awt.Component createHorizontalGlue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.createHorizontalGlue()"); }
+  public static java.awt.Component createVerticalGlue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.createVerticalGlue()"); }
+  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.getAccessibleContext()"); }
+  public void setLayout(java.awt.LayoutManager l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.Box.setLayout(java.awt.LayoutManager)"); }
+  < ---- END java signatures ---- >
+}

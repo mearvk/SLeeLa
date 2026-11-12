@@ -1,0 +1,89 @@
+<< lib/java/jdk-28/java.transaction.xa/javax/transaction/xa/XAResource.sleela
+   SLeeLa file for the Java type javax.transaction.xa.XAResource (module java.transaction.xa). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.transaction.xa/javax/transaction/xa/XAResource.html
+   Java kind: interface
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class XAResource {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9821;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.transaction.xa.XAResource";
+  String javaModule = "java.transaction.xa";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.transaction.xa/javax/transaction/xa/XAResource.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int TMENDRSCAN = 8388608;
+  static final int TMFAIL = 536870912;
+  static final int TMJOIN = 2097152;
+  static final int TMNOFLAGS = 0;
+  static final int TMONEPHASE = 1073741824;
+  static final int TMRESUME = 134217728;
+  static final int TMSTARTRSCAN = 16777216;
+  static final int TMSUCCESS = 67108864;
+  static final int TMSUSPEND = 33554432;
+  static final int XA_RDONLY = 3;
+  static final int XA_OK = 0;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public abstract void commit(javax.transaction.xa.Xid xid, boolean onePhase) throws javax.transaction.xa.XAException { throw new AbstractMethodError("javax.transaction.xa.XAResource.commit(javax.transaction.xa.Xid, boolean)"); }
+  public abstract void end(javax.transaction.xa.Xid xid, int flags) throws javax.transaction.xa.XAException { throw new AbstractMethodError("javax.transaction.xa.XAResource.end(javax.transaction.xa.Xid, int)"); }
+  public abstract void start(javax.transaction.xa.Xid xid, int flags) throws javax.transaction.xa.XAException { throw new AbstractMethodError("javax.transaction.xa.XAResource.start(javax.transaction.xa.Xid, int)"); }
+  public abstract int prepare(javax.transaction.xa.Xid xid) throws javax.transaction.xa.XAException { throw new AbstractMethodError("javax.transaction.xa.XAResource.prepare(javax.transaction.xa.Xid)"); }
+  public abstract void rollback(javax.transaction.xa.Xid xid) throws javax.transaction.xa.XAException { throw new AbstractMethodError("javax.transaction.xa.XAResource.rollback(javax.transaction.xa.Xid)"); }
+  public abstract javax.transaction.xa.Xid[] recover(int flag) throws javax.transaction.xa.XAException { throw new AbstractMethodError("javax.transaction.xa.XAResource.recover(int)"); }
+  public abstract void forget(javax.transaction.xa.Xid xid) throws javax.transaction.xa.XAException { throw new AbstractMethodError("javax.transaction.xa.XAResource.forget(javax.transaction.xa.Xid)"); }
+  public abstract int getTransactionTimeout() throws javax.transaction.xa.XAException { throw new AbstractMethodError("javax.transaction.xa.XAResource.getTransactionTimeout()"); }
+  public abstract boolean isSameRM(javax.transaction.xa.XAResource xares) throws javax.transaction.xa.XAException { throw new AbstractMethodError("javax.transaction.xa.XAResource.isSameRM(javax.transaction.xa.XAResource)"); }
+  public abstract boolean setTransactionTimeout(int seconds) throws javax.transaction.xa.XAException { throw new AbstractMethodError("javax.transaction.xa.XAResource.setTransactionTimeout(int)"); }
+  < ---- END java signatures ---- >
+}

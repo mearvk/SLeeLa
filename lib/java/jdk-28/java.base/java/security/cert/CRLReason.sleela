@@ -1,0 +1,116 @@
+<< lib/java/jdk-28/java.base/java/security/cert/CRLReason.sleela
+   SLeeLa file for the Java type java.security.cert.CRLReason (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/security/cert/CRLReason.html
+   Java kind: enum; extends java.lang.Enum
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class CRLReason {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 2025;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.security.cert.CRLReason";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/security/cert/CRLReason.html";
+  String javaKind = "enum";
+  String javaSuper = "java.lang.Enum";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  << Complete enum: one static final instance per constant (so identity
+     and == hold for values / valueOf / the constants), with the
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: CRLReason.valueOf(...), CRLReason.values(), and the constants are
+     static final fields. >>
+  static final CRLReason UNSPECIFIED = new CRLReason("UNSPECIFIED", 0);
+  static final CRLReason KEY_COMPROMISE = new CRLReason("KEY_COMPROMISE", 1);
+  static final CRLReason CA_COMPROMISE = new CRLReason("CA_COMPROMISE", 2);
+  static final CRLReason AFFILIATION_CHANGED = new CRLReason("AFFILIATION_CHANGED", 3);
+  static final CRLReason SUPERSEDED = new CRLReason("SUPERSEDED", 4);
+  static final CRLReason CESSATION_OF_OPERATION = new CRLReason("CESSATION_OF_OPERATION", 5);
+  static final CRLReason CERTIFICATE_HOLD = new CRLReason("CERTIFICATE_HOLD", 6);
+  static final CRLReason UNUSED = new CRLReason("UNUSED", 7);
+  static final CRLReason REMOVE_FROM_CRL = new CRLReason("REMOVE_FROM_CRL", 8);
+  static final CRLReason PRIVILEGE_WITHDRAWN = new CRLReason("PRIVILEGE_WITHDRAWN", 9);
+  static final CRLReason AA_COMPROMISE = new CRLReason("AA_COMPROMISE", 10);
+  String enumName;
+  int enumOrdinal;
+  CRLReason(String name, int ordinal) { this.enumName = name; this.enumOrdinal = ordinal; }
+  String name() { return this.enumName; }
+  int ordinal() { return this.enumOrdinal; }
+  String toString() { return this.enumName; }
+  int compareTo(CRLReason o) { return this.enumOrdinal - o.enumOrdinal; }
+  boolean equals(Any other) { return this == other; }
+  int hashCode() { return this.enumOrdinal * 31 + 17; }
+  public static CRLReason[] values() {
+    CRLReason[] v = new CRLReason[11];
+    v[0] = UNSPECIFIED;
+    v[1] = KEY_COMPROMISE;
+    v[2] = CA_COMPROMISE;
+    v[3] = AFFILIATION_CHANGED;
+    v[4] = SUPERSEDED;
+    v[5] = CESSATION_OF_OPERATION;
+    v[6] = CERTIFICATE_HOLD;
+    v[7] = UNUSED;
+    v[8] = REMOVE_FROM_CRL;
+    v[9] = PRIVILEGE_WITHDRAWN;
+    v[10] = AA_COMPROMISE;
+    return v;
+  }
+  public static CRLReason valueOf(String name) {
+    if (name == null) { throw new NullPointerException("Name is null"); }
+    if (name == "UNSPECIFIED") { return UNSPECIFIED; }
+    if (name == "KEY_COMPROMISE") { return KEY_COMPROMISE; }
+    if (name == "CA_COMPROMISE") { return CA_COMPROMISE; }
+    if (name == "AFFILIATION_CHANGED") { return AFFILIATION_CHANGED; }
+    if (name == "SUPERSEDED") { return SUPERSEDED; }
+    if (name == "CESSATION_OF_OPERATION") { return CESSATION_OF_OPERATION; }
+    if (name == "CERTIFICATE_HOLD") { return CERTIFICATE_HOLD; }
+    if (name == "UNUSED") { return UNUSED; }
+    if (name == "REMOVE_FROM_CRL") { return REMOVE_FROM_CRL; }
+    if (name == "PRIVILEGE_WITHDRAWN") { return PRIVILEGE_WITHDRAWN; }
+    if (name == "AA_COMPROMISE") { return AA_COMPROMISE; }
+    throw new IllegalArgumentException("No enum constant java.security.cert.CRLReason." + name);
+  }
+  < ---- END java declarations ---- >
+}

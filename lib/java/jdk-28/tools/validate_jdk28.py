@@ -2,7 +2,7 @@
 """Validate the 1:1 rule of /lib/java/jdk-28.
 
   * every JDK 28 type in the inventory has exactly one SLeeLa file;
-  * every SLeeLa file under lib/java/jdk-28/docs/api/<module>/ is listed in INDEX.tsv (no extras);
+  * every SLeeLa file under lib/java/jdk-28/<module>/ is listed in INDEX.tsv (no extras);
   * each file sits at the online API path and names its Java Source URL.
 
 usage: python3 lib/java/jdk-28/tools/validate_jdk28.py   (exit 1 on any violation)
@@ -25,22 +25,22 @@ def main() -> int:
         errors.append("a Java type is listed more than once in INDEX.tsv")
     listed = set()
     for fq, module, _kind, sfile, src, _m in rows:
-        rel = Path(sfile).relative_to("lib/java/jdk-28/docs/api")
+        rel = Path(sfile).relative_to("lib/java/jdk-28")
         listed.add(rel.as_posix())
         want = ONLINE + rel.with_suffix(".html").as_posix()
         if src != want:
             errors.append(f"{fq}: Source {src} does not match the file path ({want})")
-        p = ROOT / "docs" / "api" / rel
+        p = ROOT / rel
         if not p.is_file():
             errors.append(f"{fq}: missing {sfile}")
             continue
         text = p.read_text(encoding="utf-8")
         if f'String javaType = "{fq}";' not in text or f'String javaSource = "{src}";' not in text:
             errors.append(f"{fq}: {sfile} does not name its Java type and Source")
-    api_dir = ROOT / "docs" / "api"
-    on_disk = {p.relative_to(api_dir).as_posix() for p in api_dir.rglob("*.sleela")}
+    on_disk = {p.relative_to(ROOT).as_posix() for p in ROOT.rglob("*.sleela")
+               if p.relative_to(ROOT).parts[0] != "tools"}
     for extra in sorted(on_disk - listed):
-        errors.append(f"extra file not in INDEX.tsv: lib/java/jdk-28/docs/api/{extra}")
+        errors.append(f"extra file not in INDEX.tsv: lib/java/jdk-28/{extra}")
     for e in errors[:50]:
         print("FAIL:", e)
     print(f"jdk-28 validate: {len(rows)} Java types, {len(on_disk)} SLeeLa files, "

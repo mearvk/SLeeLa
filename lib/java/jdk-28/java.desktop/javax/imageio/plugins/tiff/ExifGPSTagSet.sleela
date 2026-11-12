@@ -1,0 +1,121 @@
+<< lib/java/jdk-28/java.desktop/javax/imageio/plugins/tiff/ExifGPSTagSet.sleela
+   SLeeLa file for the Java type javax.imageio.plugins.tiff.ExifGPSTagSet (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/imageio/plugins/tiff/ExifGPSTagSet.html
+   Java kind: class; extends javax.imageio.plugins.tiff.TIFFTagSet
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class ExifGPSTagSet {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 3766;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.imageio.plugins.tiff.ExifGPSTagSet";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/imageio/plugins/tiff/ExifGPSTagSet.html";
+  String javaKind = "class";
+  String javaSuper = "javax.imageio.plugins.tiff.TIFFTagSet";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int TAG_GPS_VERSION_ID = 0;
+  static final String GPS_VERSION_2_2 = "2200";
+  static final int TAG_GPS_LATITUDE_REF = 1;
+  static final int TAG_GPS_LATITUDE = 2;
+  static final int TAG_GPS_LONGITUDE_REF = 3;
+  static final int TAG_GPS_LONGITUDE = 4;
+  static final int TAG_GPS_ALTITUDE_REF = 5;
+  static final int TAG_GPS_ALTITUDE = 6;
+  static final int TAG_GPS_TIME_STAMP = 7;
+  static final int TAG_GPS_SATELLITES = 8;
+  static final int TAG_GPS_STATUS = 9;
+  static final int TAG_GPS_MEASURE_MODE = 10;
+  static final int TAG_GPS_DOP = 11;
+  static final int TAG_GPS_SPEED_REF = 12;
+  static final int TAG_GPS_SPEED = 13;
+  static final int TAG_GPS_TRACK_REF = 14;
+  static final int TAG_GPS_TRACK = 15;
+  static final int TAG_GPS_IMG_DIRECTION_REF = 16;
+  static final int TAG_GPS_IMG_DIRECTION = 17;
+  static final int TAG_GPS_MAP_DATUM = 18;
+  static final int TAG_GPS_DEST_LATITUDE_REF = 19;
+  static final int TAG_GPS_DEST_LATITUDE = 20;
+  static final int TAG_GPS_DEST_LONGITUDE_REF = 21;
+  static final int TAG_GPS_DEST_LONGITUDE = 22;
+  static final int TAG_GPS_DEST_BEARING_REF = 23;
+  static final int TAG_GPS_DEST_BEARING = 24;
+  static final int TAG_GPS_DEST_DISTANCE_REF = 25;
+  static final int TAG_GPS_DEST_DISTANCE = 26;
+  static final int TAG_GPS_PROCESSING_METHOD = 27;
+  static final int TAG_GPS_AREA_INFORMATION = 28;
+  static final int TAG_GPS_DATE_STAMP = 29;
+  static final int TAG_GPS_DIFFERENTIAL = 30;
+  static final String LATITUDE_REF_NORTH = "N";
+  static final String LATITUDE_REF_SOUTH = "S";
+  static final String LONGITUDE_REF_EAST = "E";
+  static final String LONGITUDE_REF_WEST = "W";
+  static final int ALTITUDE_REF_SEA_LEVEL = 0;
+  static final int ALTITUDE_REF_SEA_LEVEL_REFERENCE = 1;
+  static final String STATUS_MEASUREMENT_IN_PROGRESS = "A";
+  static final String STATUS_MEASUREMENT_INTEROPERABILITY = "V";
+  static final String MEASURE_MODE_2D = "2";
+  static final String MEASURE_MODE_3D = "3";
+  static final String SPEED_REF_KILOMETERS_PER_HOUR = "K";
+  static final String SPEED_REF_MILES_PER_HOUR = "M";
+  static final String SPEED_REF_KNOTS = "N";
+  static final String DIRECTION_REF_TRUE = "T";
+  static final String DIRECTION_REF_MAGNETIC = "M";
+  static final String DEST_DISTANCE_REF_KILOMETERS = "K";
+  static final String DEST_DISTANCE_REF_MILES = "M";
+  static final String DEST_DISTANCE_REF_KNOTS = "N";
+  static final int DIFFERENTIAL_CORRECTION_NONE = 0;
+  static final int DIFFERENTIAL_CORRECTION_APPLIED = 1;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public static synchronized javax.imageio.plugins.tiff.ExifGPSTagSet getInstance() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.imageio.plugins.tiff.ExifGPSTagSet.getInstance()"); }
+  < ---- END java signatures ---- >
+}

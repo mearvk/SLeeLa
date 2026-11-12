@@ -1,0 +1,110 @@
+<< lib/java/jdk-28/java.desktop/java/awt/Scrollbar.sleela
+   SLeeLa file for the Java type java.awt.Scrollbar (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/Scrollbar.html
+   Java kind: class; extends java.awt.Component; implements java.awt.Adjustable, javax.accessibility.Accessible
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Scrollbar {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8051;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.awt.Scrollbar";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/Scrollbar.html";
+  String javaKind = "class";
+  String javaSuper = "java.awt.Component";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int HORIZONTAL = 0;
+  static final int VERTICAL = 1;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public Scrollbar(int orientation) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.<init>(int)"); }
+  public Scrollbar() throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.<init>()"); }
+  public Scrollbar(int orientation, int value, int visible, int minimum, int maximum) throws java.awt.HeadlessException { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.<init>(int, int, int, int, int)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public int getValue() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getValue()"); }
+  public void setValue(int newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.setValue(int)"); }
+  @JavaProtected
+  java.lang.String paramString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.paramString()"); }
+  public int getMaximum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getMaximum()"); }
+  public int getMinimum() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getMinimum()"); }
+  public int getVisible() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getVisible()"); }
+  public int getOrientation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getOrientation()"); }
+  public void setMinimum(int newMinimum) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.setMinimum(int)"); }
+  public void setMaximum(int newMaximum) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.setMaximum(int)"); }
+  public void setUnitIncrement(int v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.setUnitIncrement(int)"); }
+  public int getUnitIncrement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getUnitIncrement()"); }
+  public void setBlockIncrement(int v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.setBlockIncrement(int)"); }
+  public int getBlockIncrement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getBlockIncrement()"); }
+  public void setVisibleAmount(int newAmount) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.setVisibleAmount(int)"); }
+  public int getVisibleAmount() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getVisibleAmount()"); }
+  public synchronized void addAdjustmentListener(java.awt.event.AdjustmentListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.addAdjustmentListener(java.awt.event.AdjustmentListener)"); }
+  public synchronized void removeAdjustmentListener(java.awt.event.AdjustmentListener l) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.removeAdjustmentListener(java.awt.event.AdjustmentListener)"); }
+  public void setValueIsAdjusting(boolean b) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.setValueIsAdjusting(boolean)"); }
+  public synchronized java.awt.event.AdjustmentListener[] getAdjustmentListeners() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getAdjustmentListeners()"); }
+  public void setValues(int value, int visible, int minimum, int maximum) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.setValues(int, int, int, int)"); }
+  public synchronized void setLineIncrement(int v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.setLineIncrement(int)"); }
+  public int getLineIncrement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getLineIncrement()"); }
+  public synchronized void setPageIncrement(int v) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.setPageIncrement(int)"); }
+  public int getPageIncrement() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getPageIncrement()"); }
+  @JavaProtected
+  void processAdjustmentEvent(java.awt.event.AdjustmentEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.processAdjustmentEvent(java.awt.event.AdjustmentEvent)"); }
+  public void setOrientation(int orientation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.setOrientation(int)"); }
+  public boolean getValueIsAdjusting() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getValueIsAdjusting()"); }
+  public javax.accessibility.AccessibleContext getAccessibleContext() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getAccessibleContext()"); }
+  public void addNotify() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.addNotify()"); }
+  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.getListeners(java.lang.Class<T>)"); }
+  @JavaProtected
+  void processEvent(java.awt.AWTEvent e) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.awt.Scrollbar.processEvent(java.awt.AWTEvent)"); }
+  < ---- END java signatures ---- >
+}

@@ -1,0 +1,121 @@
+<< lib/java/jdk-28/java.base/java/lang/reflect/AccessFlag.Location.sleela
+   SLeeLa file for the Java type java.lang.reflect.AccessFlag.Location (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/reflect/AccessFlag.Location.html
+   Java kind: enum; extends java.lang.Enum
+   Status: members from the JDK 28 API (exact signatures).
+   Nested Java type: the file keeps the documented name AccessFlag.Location.
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Location {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 5619;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.reflect.AccessFlag.Location";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/reflect/AccessFlag.Location.html";
+  String javaKind = "enum";
+  String javaSuper = "java.lang.Enum";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  << Complete enum: one static final instance per constant (so identity
+     and == hold for values / valueOf / the constants), with the
+     java.lang.Enum behavior. values() and valueOf(name) are static, as
+     in Java: Location.valueOf(...), Location.values(), and the constants are
+     static final fields. >>
+  static final Location CLASS = new Location("CLASS", 0);
+  static final Location FIELD = new Location("FIELD", 1);
+  static final Location METHOD = new Location("METHOD", 2);
+  static final Location INNER_CLASS = new Location("INNER_CLASS", 3);
+  static final Location METHOD_PARAMETER = new Location("METHOD_PARAMETER", 4);
+  static final Location MODULE = new Location("MODULE", 5);
+  static final Location MODULE_REQUIRES = new Location("MODULE_REQUIRES", 6);
+  static final Location MODULE_EXPORTS = new Location("MODULE_EXPORTS", 7);
+  static final Location MODULE_OPENS = new Location("MODULE_OPENS", 8);
+  String enumName;
+  int enumOrdinal;
+  Location(String name, int ordinal) { this.enumName = name; this.enumOrdinal = ordinal; }
+  String name() { return this.enumName; }
+  int ordinal() { return this.enumOrdinal; }
+  String toString() { return this.enumName; }
+  int compareTo(Location o) { return this.enumOrdinal - o.enumOrdinal; }
+  boolean equals(Any other) { return this == other; }
+  int hashCode() { return this.enumOrdinal * 31 + 17; }
+  public static Location[] values() {
+    Location[] v = new Location[9];
+    v[0] = CLASS;
+    v[1] = FIELD;
+    v[2] = METHOD;
+    v[3] = INNER_CLASS;
+    v[4] = METHOD_PARAMETER;
+    v[5] = MODULE;
+    v[6] = MODULE_REQUIRES;
+    v[7] = MODULE_EXPORTS;
+    v[8] = MODULE_OPENS;
+    return v;
+  }
+  public static Location valueOf(String name) {
+    if (name == null) { throw new NullPointerException("Name is null"); }
+    if (name == "CLASS") { return CLASS; }
+    if (name == "FIELD") { return FIELD; }
+    if (name == "METHOD") { return METHOD; }
+    if (name == "INNER_CLASS") { return INNER_CLASS; }
+    if (name == "METHOD_PARAMETER") { return METHOD_PARAMETER; }
+    if (name == "MODULE") { return MODULE; }
+    if (name == "MODULE_REQUIRES") { return MODULE_REQUIRES; }
+    if (name == "MODULE_EXPORTS") { return MODULE_EXPORTS; }
+    if (name == "MODULE_OPENS") { return MODULE_OPENS; }
+    throw new IllegalArgumentException("No enum constant java.lang.reflect.AccessFlag.Location." + name);
+  }
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.util.Set<java.lang.reflect.AccessFlag> flags() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessFlag.Location.flags()"); }
+  public java.util.Set<java.lang.reflect.AccessFlag> flags(java.lang.reflect.ClassFileFormatVersion cffv) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessFlag.Location.flags(java.lang.reflect.ClassFileFormatVersion)"); }
+  public int flagsMask() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessFlag.Location.flagsMask()"); }
+  public int flagsMask(java.lang.reflect.ClassFileFormatVersion cffv) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.reflect.AccessFlag.Location.flagsMask(java.lang.reflect.ClassFileFormatVersion)"); }
+  < ---- END java signatures ---- >
+}

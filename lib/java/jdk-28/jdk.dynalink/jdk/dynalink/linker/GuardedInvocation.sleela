@@ -1,0 +1,88 @@
+<< lib/java/jdk-28/jdk.dynalink/jdk/dynalink/linker/GuardedInvocation.sleela
+   SLeeLa file for the Java type jdk.dynalink.linker.GuardedInvocation (module jdk.dynalink). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/jdk.dynalink/jdk/dynalink/linker/GuardedInvocation.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class GuardedInvocation {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 4249;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "jdk.dynalink.linker.GuardedInvocation";
+  String javaModule = "jdk.dynalink";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/jdk.dynalink/jdk/dynalink/linker/GuardedInvocation.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public GuardedInvocation(java.lang.invoke.MethodHandle invocation, java.lang.invoke.MethodHandle guard, java.lang.invoke.SwitchPoint[] switchPoints, java.lang.Class<? extends java.lang.Throwable> exception) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.<init>(java.lang.invoke.MethodHandle, java.lang.invoke.MethodHandle, java.lang.invoke.SwitchPoint[], java.lang.Class<? extends java.lang.Throwable>)"); }
+  public GuardedInvocation(java.lang.invoke.MethodHandle invocation, java.lang.invoke.MethodHandle guard, java.lang.invoke.SwitchPoint switchPoint, java.lang.Class<? extends java.lang.Throwable> exception) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.<init>(java.lang.invoke.MethodHandle, java.lang.invoke.MethodHandle, java.lang.invoke.SwitchPoint, java.lang.Class<? extends java.lang.Throwable>)"); }
+  public GuardedInvocation(java.lang.invoke.MethodHandle invocation, java.lang.invoke.MethodHandle guard, java.lang.invoke.SwitchPoint switchPoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.<init>(java.lang.invoke.MethodHandle, java.lang.invoke.MethodHandle, java.lang.invoke.SwitchPoint)"); }
+  public GuardedInvocation(java.lang.invoke.MethodHandle invocation) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.<init>(java.lang.invoke.MethodHandle)"); }
+  public GuardedInvocation(java.lang.invoke.MethodHandle invocation, java.lang.invoke.MethodHandle guard) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.<init>(java.lang.invoke.MethodHandle, java.lang.invoke.MethodHandle)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public java.lang.Class<? extends java.lang.Throwable> getException() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.getException()"); }
+  public jdk.dynalink.linker.GuardedInvocation asType(jdk.dynalink.linker.LinkerServices linkerServices, java.lang.invoke.MethodType newType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.asType(jdk.dynalink.linker.LinkerServices, java.lang.invoke.MethodType)"); }
+  public jdk.dynalink.linker.GuardedInvocation asType(java.lang.invoke.MethodType newType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.asType(java.lang.invoke.MethodType)"); }
+  public java.lang.invoke.MethodHandle compose(java.lang.invoke.MethodHandle guardFallback, java.lang.invoke.MethodHandle switchpointFallback, java.lang.invoke.MethodHandle catchFallback) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.compose(java.lang.invoke.MethodHandle, java.lang.invoke.MethodHandle, java.lang.invoke.MethodHandle)"); }
+  public java.lang.invoke.MethodHandle compose(java.lang.invoke.MethodHandle fallback) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.compose(java.lang.invoke.MethodHandle)"); }
+  public jdk.dynalink.linker.GuardedInvocation dropArguments(int pos, java.lang.Class<?>... valueTypes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.dropArguments(int, java.lang.Class<?>...)"); }
+  public jdk.dynalink.linker.GuardedInvocation dropArguments(int pos, java.util.List<java.lang.Class<?>> valueTypes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.dropArguments(int, java.util.List<java.lang.Class<?>>)"); }
+  public jdk.dynalink.linker.GuardedInvocation filterArguments(int pos, java.lang.invoke.MethodHandle... filters) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.filterArguments(int, java.lang.invoke.MethodHandle...)"); }
+  public java.lang.invoke.MethodHandle getGuard() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.getGuard()"); }
+  public boolean hasBeenInvalidated() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.hasBeenInvalidated()"); }
+  public java.lang.invoke.MethodHandle getInvocation() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.getInvocation()"); }
+  public jdk.dynalink.linker.GuardedInvocation replaceMethods(java.lang.invoke.MethodHandle newInvocation, java.lang.invoke.MethodHandle newGuard) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.replaceMethods(java.lang.invoke.MethodHandle, java.lang.invoke.MethodHandle)"); }
+  public java.lang.invoke.SwitchPoint[] getSwitchPoints() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.getSwitchPoints()"); }
+  public jdk.dynalink.linker.GuardedInvocation addSwitchPoint(java.lang.invoke.SwitchPoint newSwitchPoint) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.addSwitchPoint(java.lang.invoke.SwitchPoint)"); }
+  public jdk.dynalink.linker.GuardedInvocation asTypeSafeReturn(jdk.dynalink.linker.LinkerServices linkerServices, java.lang.invoke.MethodType newType) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: jdk.dynalink.linker.GuardedInvocation.asTypeSafeReturn(jdk.dynalink.linker.LinkerServices, java.lang.invoke.MethodType)"); }
+  < ---- END java signatures ---- >
+}

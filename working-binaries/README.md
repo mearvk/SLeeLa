@@ -46,6 +46,9 @@ Built in the Kiro sandbox on 2026-11-12 from this repository's `impl/` tree
 `make build/nordshrift`). VM ABI 1.8, 185 opcodes: this build includes the
 Java UTF-16 String intrinsics (`javaStringFromUtf8`, `javaStringToUtf8`,
 `javaStringFromCodeUnit`, ...), which the previous committed copy predated.
+Rebuilt 2026-11-12 (`sleela` only) for the /lib loader rule that treats
+`lib/java/jdk-28/` as a reference tier (`impl/frontend/driver.cpp`), so its
+files never make a real `lib/java/java/...` class ambiguous.
 Reported versions:
 
 - `sleela` — `SLeeLa™ Language/Runtime 1.3.2-pro` (supported source syntax 1.0 – 3.0)
@@ -54,7 +57,7 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-dda3084f51efd73afb5883150df2704f1dba9f8f7cc4bd616dac81097a355393  sleela
+c8f78d7f6c83ccbc26cb228c920bf53069d8e100f97fbc361758b66b9d8d6b65  sleela
 96d07f0c9ca5278ec8fcccfa033868a87c813d6c80a09b5d085a417cb5b402d2  nordshrift
 ```
 

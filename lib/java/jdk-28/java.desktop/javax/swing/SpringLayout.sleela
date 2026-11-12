@@ -1,0 +1,95 @@
+<< lib/java/jdk-28/java.desktop/javax/swing/SpringLayout.sleela
+   SLeeLa file for the Java type javax.swing.SpringLayout (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/SpringLayout.html
+   Java kind: class; extends java.lang.Object; implements java.awt.LayoutManager2
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class SpringLayout {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8503;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.SpringLayout";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/SpringLayout.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final String NORTH = "North";
+  static final String SOUTH = "South";
+  static final String EAST = "East";
+  static final String WEST = "West";
+  static final String HORIZONTAL_CENTER = "HorizontalCenter";
+  static final String VERTICAL_CENTER = "VerticalCenter";
+  static final String BASELINE = "Baseline";
+  static final String WIDTH = "Width";
+  static final String HEIGHT = "Height";
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public SpringLayout() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.<init>()"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public void putConstraint(java.lang.String e1, java.awt.Component c1, int pad, java.lang.String e2, java.awt.Component c2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.putConstraint(java.lang.String, java.awt.Component, int, java.lang.String, java.awt.Component)"); }
+  public void putConstraint(java.lang.String e1, java.awt.Component c1, javax.swing.Spring s, java.lang.String e2, java.awt.Component c2) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.putConstraint(java.lang.String, java.awt.Component, javax.swing.Spring, java.lang.String, java.awt.Component)"); }
+  public javax.swing.Spring getConstraint(java.lang.String edgeName, java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.getConstraint(java.lang.String, java.awt.Component)"); }
+  public javax.swing.SpringLayout.Constraints getConstraints(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.getConstraints(java.awt.Component)"); }
+  public void removeLayoutComponent(java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.removeLayoutComponent(java.awt.Component)"); }
+  public void addLayoutComponent(java.awt.Component component, java.lang.Object constraints) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.addLayoutComponent(java.awt.Component, java.lang.Object)"); }
+  public void addLayoutComponent(java.lang.String name, java.awt.Component c) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.addLayoutComponent(java.lang.String, java.awt.Component)"); }
+  public void layoutContainer(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.layoutContainer(java.awt.Container)"); }
+  public void invalidateLayout(java.awt.Container p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.invalidateLayout(java.awt.Container)"); }
+  public java.awt.Dimension preferredLayoutSize(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.preferredLayoutSize(java.awt.Container)"); }
+  public java.awt.Dimension minimumLayoutSize(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.minimumLayoutSize(java.awt.Container)"); }
+  public java.awt.Dimension maximumLayoutSize(java.awt.Container parent) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.maximumLayoutSize(java.awt.Container)"); }
+  public float getLayoutAlignmentX(java.awt.Container p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.getLayoutAlignmentX(java.awt.Container)"); }
+  public float getLayoutAlignmentY(java.awt.Container p) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: javax.swing.SpringLayout.getLayoutAlignmentY(java.awt.Container)"); }
+  < ---- END java signatures ---- >
+}

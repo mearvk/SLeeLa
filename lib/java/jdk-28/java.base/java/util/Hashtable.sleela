@@ -1,0 +1,104 @@
+<< lib/java/jdk-28/java.base/java/util/Hashtable.sleela
+   SLeeLa file for the Java type java.util.Hashtable (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Hashtable.html
+   Java kind: class; extends java.util.Dictionary; implements java.util.Map, java.lang.Cloneable, java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Hashtable<K, V> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 4364;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.Hashtable";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Hashtable.html";
+  String javaKind = "class";
+  String javaSuper = "java.util.Dictionary";
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  public Hashtable(java.util.Map<? extends K, ? extends V> t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.<init>(java.util.Map<? extends K, ? extends V>)"); }
+  public Hashtable() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.<init>()"); }
+  public Hashtable(int initialCapacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.<init>(int)"); }
+  public Hashtable(int initialCapacity, float loadFactor) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.<init>(int, float)"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << A body that is not yet SLeeLa logic throws AbstractMethodError for an
+     abstract method, else UnsupportedOperationException naming the Java
+     signature. Produce the SLeeLa logic from the Java Source above. >>
+  public synchronized boolean remove(java.lang.Object key, java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.remove(java.lang.Object, java.lang.Object)"); }
+  public synchronized V remove(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.remove(java.lang.Object)"); }
+  public synchronized int size() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.size()"); }
+  public synchronized V get(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.get(java.lang.Object)"); }
+  public synchronized V put(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.put(K, V)"); }
+  public synchronized boolean equals(java.lang.Object o) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.equals(java.lang.Object)"); }
+  public synchronized java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.toString()"); }
+  public java.util.Collection<V> values() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.values()"); }
+  public synchronized int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.hashCode()"); }
+  public synchronized java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.clone()"); }
+  public synchronized void clear() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.clear()"); }
+  public synchronized boolean isEmpty() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.isEmpty()"); }
+  public synchronized boolean replace(K key, V oldValue, V newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.replace(K, V, V)"); }
+  public synchronized V replace(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.replace(K, V)"); }
+  public synchronized void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
+  public synchronized boolean contains(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.contains(java.lang.Object)"); }
+  public synchronized java.util.Enumeration<V> elements() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.elements()"); }
+  public synchronized V merge(K key, V value, java.util.function.BiFunction<? super V, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.merge(K, V, java.util.function.BiFunction<? super V, ? super V, ? extends V>)"); }
+  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.entrySet()"); }
+  public synchronized void putAll(java.util.Map<? extends K, ? extends V> t) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.putAll(java.util.Map<? extends K, ? extends V>)"); }
+  public synchronized V putIfAbsent(K key, V value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.putIfAbsent(K, V)"); }
+  public synchronized V compute(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.compute(K, java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
+  public synchronized V computeIfAbsent(K key, java.util.function.Function<? super K, ? extends V> mappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.computeIfAbsent(K, java.util.function.Function<? super K, ? extends V>)"); }
+  public synchronized void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.forEach(java.util.function.BiConsumer<? super K, ? super V>)"); }
+  public synchronized java.util.Enumeration<K> keys() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.keys()"); }
+  public java.util.Set<K> keySet() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.keySet()"); }
+  public boolean containsValue(java.lang.Object value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.containsValue(java.lang.Object)"); }
+  public synchronized boolean containsKey(java.lang.Object key) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.containsKey(java.lang.Object)"); }
+  public synchronized V getOrDefault(java.lang.Object key, V defaultValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.getOrDefault(java.lang.Object, V)"); }
+  public synchronized V computeIfPresent(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.computeIfPresent(K, java.util.function.BiFunction<? super K, ? super V, ? extends V>)"); }
+  @JavaProtected
+  void rehash() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Hashtable.rehash()"); }
+  < ---- END java signatures ---- >
+}

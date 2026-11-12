@@ -7,7 +7,7 @@ jobs="${1:-8}"
 bin="${SLEELA_BIN:-working-binaries/sleela}"
 report="${REPORT:-lib/java/jdk-28/CHECK-REPORT.txt}"
 export bin
-find lib/java/jdk-28/docs/api -name '*.sleela' -print0 | sort -z |
+find lib/java/jdk-28 -path lib/java/jdk-28/tools -prune -o -name '*.sleela' -print0 | sort -z |
   xargs -0 -P "$jobs" -I{} sh -c '
     out=$("$bin" check "$1" 2>&1 | grep "error:" | grep -v "no .main. method found" || true)
     if [ -n "$out" ]; then printf "FAIL %s\n%s\n" "$1" "$out"; else printf "OK %s\n" "$1"; fi
