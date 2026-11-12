@@ -207,7 +207,7 @@ accessor-contract constructors, 0 failures.
 
 *Honest scope.* Behavior is 10% of members. Of the 46,389 members not yet
 working, about **12,000** are in `java.desktop` AWT/Swing/print/imageio
-presentation code that needs a window system, and a further ~5,600 are in
+presentation code that needs a window system, and a further ~3,200 are in
 `java.sql`, `java.lang.classfile`, `org.w3c.dom.html` and
 `com.sun.source.*`. A rule of thumb for planning: reaching high behavior
 coverage of `java.base` (17,496 members, 18.3% now) is realistic; reaching it
