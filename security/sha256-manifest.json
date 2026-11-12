@@ -543,7 +543,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "41ff1669eeaaf9eab63300d19cefaf9e13071286ebb313b13948c171a2c8d9d8"
+      "sha256": "b23cc57554b85798d831d34a4be5d0291552adeb482dd9c48a1376b4890c3416"
     },
     {
       "path": "impl/frontend/common_rails_banner.hpp",
@@ -619,7 +619,7 @@
     },
     {
       "path": "impl/frontend/java_references.h",
-      "sha256": "51819d5b621daec2044173798c18158f82f1191b3282ff576e9c4462f3c8e43f"
+      "sha256": "208be2960abef319c2198a2da15b6feeb111db28c42d77f5726001d0d165cd8c"
     },
     {
       "path": "impl/frontend/keyword_supporter.cpp",
@@ -655,7 +655,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "3af3967b1cc575879a6c8979569ce06e6d1a141640ce31fa62fa7d3394280059"
+      "sha256": "66dbbcafd0787c5c0387ecda2fe7b8a4b89496d34beb5182aeb8fe319fabdaf0"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -671,7 +671,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "5decbee12d8445517faf734926fba483050020c15debccf8b38712c7da929c69"
+      "sha256": "7437bd2c233dd7dcb3f232b38dcab9cd07acd8019cca8bda91397c230793446d"
     },
     {
       "path": "impl/frontend/semantic.h",

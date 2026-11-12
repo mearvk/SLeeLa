@@ -3125,7 +3125,7 @@ VM. Status: implemented as the boot sequence in 42.7.
   structure.
 
 
-## 43. Syntax 3.0 — Java support (the `spark` Preonem; interpreter/VM level)
+## 43. Syntax 3.0 — Java support (the `spark` Preonem: Java style declarative; interpreter/VM level)
 
 This section is **normative**. It states how SLeeLa supports Java source style.
 It extends section 38 (the Java signature surface and the Java container) and
@@ -3163,8 +3163,10 @@ does not move any Java definition into this specification (38.4 still holds).
     class Box extends java.lang.Object { ... }
 
 `spark` is a Preonem (document marker, see the Preonem family of sections 18,
-27, 30 and 35). It declares that the document is **SLeeLa constructs carrying
-Java source style**, supported under 43.1. Rules:
+27, 30 and 35). **`spark;` indicates Java style declarative**: the document
+declares that it is SLeeLa constructs written in Java style, supported under
+43.1. The marker is the declaration; it is not an instruction to the compiler.
+Rules:
 
 - A single, modifier-less, type-less word at document scope, **before any
   content** (before the first import, class, struct or `extends to`). A trailing
@@ -3174,7 +3176,7 @@ Java source style**, supported under 43.1. Rules:
 - It is contextual, not a reserved keyword: `spark` stays an ordinary
   identifier everywhere else (a field named `spark`, as in `churn/5`, is
   unaffected).
-- It is **declarative**: it records the document's standing and changes nothing
+- It is **Java style declarative**: it records the document's standing and changes nothing
   about parsing, typing or code generation. A document without it gets the same
   Java support; the marker states the intent and lets tools find such
   documents. It grants no execution authority and claims no external status.

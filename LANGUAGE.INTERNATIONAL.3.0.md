@@ -305,6 +305,7 @@ The documented marker vocabulary includes:
 - `object` — marks object standing in the document catalogue, with its reified standing specified from syntax 2.8;
 - `field` — marks the ground of relation in which objects stand;
 - `pure` and `gasoline` — syntax 3.0 declarative markers concerning the document's stated standing by its own honesty.
+- `spark` — syntax 3.0 marker that indicates Java style declarative: the document declares itself SLeeLa constructs written in Java style, supported at the interpreter/VM level (see `SLEELA.syntax` section 43).
 
 These words are contextual: outside their defined document-marker position they remain ordinary identifiers. Do not treat a marker as authorization to execute a program or as proof of external legal status.
 

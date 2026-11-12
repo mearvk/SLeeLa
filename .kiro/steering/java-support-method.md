@@ -7,9 +7,10 @@ Repo-scoped, always-on. Normative source: `SLEELA.syntax` section 43.
 1. **SLeeLa constructs.** Java source style is written as ordinary SLeeLa
    constructs (classes, `extends`, constructors, overloads, String methods,
    `instanceof`, casts, `try`/`catch`/`throw`, `Sleela.home` lineage).
-2. **`spark` Preonem.** A document of such constructs may carry `spark;` at
-   document scope before any import or class (`#sleela 3.0` required). It is
-   declarative standing only: no parsing/typing/codegen change, not a reserved
+2. **`spark` Preonem = Java style declarative.** `spark;` indicates Java style
+   declarative: a document of such constructs declares itself Java style by
+   carrying `spark;` at document scope before any import or class
+   (`#sleela 3.0` required). It is declarative standing only: no parsing/typing/codegen change, not a reserved
    word (`spark` stays a normal identifier elsewhere). Implemented as
    `Program::sparkMarked`, parsed in `parser.cpp`, version-gated in
    `semantic.cpp`, read via `javaref::sparkDocument`.

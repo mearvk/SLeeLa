@@ -185,7 +185,7 @@ class Analyzer{
   // enacted, legislature-grade artifact graded unto time and space.
   if(p.artifactMarked&&syntax<SyntaxVersion{3,0})
    err("the artifact document marker requires #sleela 3.0");
-  // Spark marker (syntax 3.0, section 43): declarative Java-source-style standing.
+  // Spark marker (syntax 3.0, section 43): indicates Java style declarative.
   if(javaref::sparkDocument(p)&&syntax<SyntaxVersion{3,0})
    err("the spark document marker requires #sleela 3.0");
   // @mix consequent fields (syntax 2.9): a field annotated `@mix` may repeat
