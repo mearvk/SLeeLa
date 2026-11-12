@@ -9278,6 +9278,10 @@
       "sha256": "8c0481b82f678c2c89988f15b01a231fe7503c4bd47085fa571dbf1435cc2a7b"
     },
     {
+      "path": "lib/java/SleelaHome.sleela",
+      "sha256": "d209033bfed6481c885d90ae25bf766efe669c19b81519e59f3c8a20c431f036"
+    },
+    {
       "path": "lib/java/jdk-25/2004/REC-DOM-Level-3-Core-20040407/core.sleela",
       "sha256": "e694a60ef65c36daf30e4f848eb34576a2b9632b0df25d4135e3c26a00a65164"
     },

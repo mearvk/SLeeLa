@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 18094
+library-source-files: 18095
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 18178
+total-symbol-records: 18179
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -2023,6 +2023,7 @@ java	JavaMethod.sleela	lib/java/JavaMethod.sleela	source
 java	JavaObject.sleela	lib/java/JavaObject.sleela	source
 java	JavaType.sleela	lib/java/JavaType.sleela	source
 java	SLPackage.sleela	lib/java/SLPackage.sleela	facade
+java	SleelaHome.sleela	lib/java/SleelaHome.sleela	source
 java	core.sleela	lib/java/jdk-25/2004/REC-DOM-Level-3-Core-20040407/core.sleela	source
 java	AWTEventMonitor.sleela	lib/java/jdk-25/com/sun/java/accessibility/util/AWTEventMonitor.sleela	source
 java	AccessibilityEventMonitor.sleela	lib/java/jdk-25/com/sun/java/accessibility/util/AccessibilityEventMonitor.sleela	source

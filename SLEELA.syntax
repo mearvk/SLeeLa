@@ -3001,13 +3001,17 @@ For `class A extends B`, `class B extends C`, `class C extends D`:
 
 The VM links to the most-derived class and the root links back to the VM, so
 the lineage is a cycle of references: `VM -> A -> B -> C -> D -> VM`, with
-`child` running the opposite way. Walking past the root with more dashes than
-there are ancestors reaches `Sleela.System` (the cycle) and is not an error.
+`child` running the opposite way. `parents(...)` with more dashes than there are ancestors
+clamps to the root: for a three-ancestor lineage `parents("----")` matches
+`parents("---")` and returns `D`. Only the empty string `parents("")` returns
+`Sleela.System`.
 
 ### 42.3a What the VM returns
 
 The VM reference is map-like (a `HashMap` or similar, assumed for now). It
 holds the VM reference itself and the nearest descendant of the asking class
+(its basic holder is the library class `SleelaHome`, `/lib/java/SleelaHome.sleela`,
+with public fields `vm` and `nearestDescendant`)
 (for the `child` of the most-derived class `A`, the VM; for `D` asked from the
 VM side, `A`'s lineage head). Lookup is by name through the map interface. The
 exact key names are not fixed yet.
