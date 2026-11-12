@@ -70,10 +70,10 @@ total.
 |---|---|---|
 | 1 | registry intake | tally: `accepted=5 refused=3 registered=5` |
 | 2 | student input gate | a claim is refused unless its evidence is already registered |
-| 3 | system readiness | a 5-point readiness check, 0–5 passing |
+| 3 | system readiness | 5 checks (memory, storage, display, input, clock) go from "5 check(s) to fix" to "the instructor is ready," distinguishing NOT OBSERVED, BELOW MINIMUM, and IMPLAUSIBLE readings |
 | 4 | agreement | two independently-built registries compared entry by entry |
 | 5 | nested carriers | a carrier chain up to 3 levels deep |
-| 6 | purchase onion | supplier A total 11,650¢ vs. supplier B 12,400¢; a missed discount flips the pick to 12,450¢ |
+| 6 | purchase onion | supplier A total 11,650¢ vs. supplier B 12,400¢; a missed discount flips the student's total to 12,450¢ (off by exactly 800¢); a later tie at 11,650¢/11,650¢ demonstrates the tie norm (the earlier-listed supplier wins) |
 | 7–22 | sixteen trading decisions | lumber, cement, copper, steel, coffee, cotton, solar, lithium, semiconductors, server racks, smartphones, televisions, wheat, fuel, freight, a tie capstone |
 | 23–32 | ten more trading decisions | rice, sugar, aluminum, zinc, nickel, rubber, glass, paper, resin, an eight-way capstone |
 
@@ -140,7 +140,7 @@ teaching rule (status code 10 on the 2,001st action of a day).
 
 | entries | subject | a verified data point |
 |---|---|---|
-| 1–16 | long-side goods: coins, tokens, chips, rounds, medals, blanks, pucks, slugs, washers, foils, tabs, tags, chips, flakes, counters, markers | entry 1 (copper coins): realized gross 60,000¢, net of fees 59,980¢ |
+| 1–16 | long-side goods, one per entry: copper coins, silver tokens, gold chips, brass rounds, bronze medals, nickel blanks, tin pucks, zinc slugs, steel washers, platinum foils, titanium tabs, iron tags, quartz chips, obsidian flakes, granite counters, slate markers | entry 1 (copper coins): realized gross 60,000¢, net of fees 59,980¢ |
 | 17 | the daily cap boundary itself | the 2,000th action is accepted, the 2,001st is refused and changes nothing, the count resets on a new day |
 | 18–20 | short-side goods: coins, tokens, chips | the short-side mirror of entries 1–16, with borrow cost added |
 
@@ -161,9 +161,9 @@ the word "potency" loosely:
 
 | entries | subject | a verified data point |
 |---|---|---|
-| 1 | a long book aging past the threshold | at day 365 a lot is exactly 365 days old and **not** long term (the rule is strictly more than); at day 900, term potency = 10,000 bp, age potency = 7,333 bp |
+| 1 | a long book aging past the threshold | at day 365 a lot is exactly 365 days old and **not** long term (the rule is strictly more than); at day 500, with a 60-unit younger lot added, term potency = 4,000 bp (40 of 100 units); at day 900, term potency = 10,000 bp, age potency = 7,333 bp |
 | 2 | a FIFO sell and potency | selling the entire oldest lot drops term potency on the remainder to 0 bp |
-| 3 | honest empty/invalid answers | an empty book answers -2 (term) / -1 (age); a day before the book's last action answers -1 for both |
+| 3 | honest empty/invalid answers | an empty book answers -2 (term) / -1 (age); a day before the book's last action answers -1 for both; the book's own current day is always valid, even at age 0 |
 | 4 | ten randomly generated portfolios | each cross-checked against an independent Python model |
 | 5 | the short-side mirror | identical readings to entry 1, proving the two overloads agree |
 | 6 | short-side honesty and cover | the short-side counterpart of entries 2 and 3 |
