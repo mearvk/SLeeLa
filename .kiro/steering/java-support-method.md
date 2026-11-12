@@ -35,7 +35,8 @@ Repo-scoped, always-on. Normative source: `SLEELA.syntax` section 43.
   `BASE-COMMIT.txt` and `SHA256SUMS`.
 - Regenerate `security/sha256-manifest.json`, rebuild `impl/build/sleela`, then run:
   `bash impl/tests/java_references/spark/run_spark_tests.sh`,
-  `bash impl/tests/java_references/oop/run_oop_tests.sh`,
+  `bash impl/tests/java_references/oop/run_oop_tests.sh` (sets `SLEELA_LIB`;
+  without it, runs from under `impl/tests` cannot find `/lib`),
   every `examples/java/Java*.sleela` conformance program (`failures=0`),
   `bash impl/tests/lineage/run_lineage_tests.sh`,
   `bash examples/java/differential/run-differential.sh` (needs a JDK), and
@@ -49,10 +50,11 @@ assignment and `implements`; `super(args)` calls the base constructor
 and default constructors for the program's OWN classes only (`/lib` units
 construct themselves; their unimplemented constructors throw); inherited field
 initializers; virtual dispatch lowered to `DUP`/`INSTANCEOF`/`JMPF`/`CALL`;
-`super.m()`; bodiless abstract/interface methods.
+`super.m()`; bodiless abstract/interface methods; enhanced for over arrays and
+`iterator()` objects (`ForEachStmt`); numeric literal suffixes `L`/`d`/`f` and `_`.
 
 ## Still not supported (SLEELA.syntax 43.5)
 
-Enhanced for, `L` literal suffix, `finally`, typed `catch`, `enum`, non-static
+`finally`, typed `catch`, `enum`, non-static
 `protected` methods, runtime `getClass().getName()` (a user Throwable subclass
 prints the library class name). Add these at the interpreter/VM level.

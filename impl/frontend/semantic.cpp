@@ -381,6 +381,7 @@ class Analyzer{
   if(auto i=dynamic_cast<const IfStmt*>(&s)){requireBool(expr(*i->cond),"if condition");stmt(*i->thenS);if(i->elseS)stmt(*i->elseS);return;}
   if(auto w=dynamic_cast<const WhileStmt*>(&s)){checkLoopSpill(w->spill);requireBool(expr(*w->cond),"while condition");stmt(*w->body);return;}
   if(auto f=dynamic_cast<const ForStmt*>(&s)){checkLoopSpill(f->spill);push();if(f->init)stmt(*f->init);if(f->cond)requireBool(expr(*f->cond),"for condition");if(f->threadStable)requireBool(expr(*f->threadStable),"for thread-stability guard");if(f->heapHealthy)requireBool(expr(*f->heapHealthy),"for VM heap-health guard");if(f->update)stmt(*f->update);stmt(*f->body);pop();return;}
+  if(auto fe=dynamic_cast<const ForEachStmt*>(&s)){forEach(*fe);return;}
   if(auto d=dynamic_cast<const DoStmt*>(&s)){checkLoopSpill(d->spill);stmt(*d->body);requireBool(expr(*d->cond),"do-while condition");return;}
   if(dynamic_cast<const BreakStmt*>(&s))return;
   if(dynamic_cast<const ContinueStmt*>(&s))return;
@@ -693,6 +694,36 @@ class Analyzer{
   if(n=="uiWidgetGetValue"){return{Kind::Double,{}};}
   if(n.size()>2 && n[0]=='u' && n[1]=='i' && n[2]>='A' && n[2]<='Z'){return{Kind::Int,{}};}
   return{Kind::Unknown,{}};
+ }
+ // Enhanced for (SLEELA.syntax 43.6).
+ const Method* instanceMethod(const std::string& cls,const std::string& name,size_t argc){
+  auto it=methods.find(cls+"::"+name); if(it==methods.end()) return nullptr;
+  auto ov=overloads.find(it->first);
+  if(ov!=overloads.end()) for(const auto& sig:ov->second) if(sig.m&&!sig.m->isStatic&&sig.m->params.size()==argc) return sig.m;
+  return (it->second.m&&!it->second.m->isStatic&&it->second.m->params.size()==argc)?it->second.m:nullptr;
+ }
+ void forEach(const ForEachStmt& f){
+  if(syntax<SyntaxVersion{3,0}){err("the enhanced for 'for (T v : xs)' requires #sleela 3.0");return;}
+  Type it=expr(*f.iterable); Type want=tn(f.type);
+  if(want.kind==Kind::Error){err("unknown loop variable type '"+f.type+"'");return;}
+  Type elem{Kind::Unknown,{}};
+  if(it.kind==Kind::Array){ elem=typeOf(it.elem); f.overIterable=false; }
+  else if(it.kind==Kind::Struct){
+   const Method* im=instanceMethod(it.name,"iterator",0);
+   if(!im){err("enhanced for over '"+it.name+"' needs an array or an object with iterator()");return;}
+   Type rt=tn(im->retType);
+   if(rt.kind!=Kind::Struct){err("'"+it.name+".iterator()' must return an iterator object, got "+nameOf(rt));return;}
+   const Method* hn=instanceMethod(rt.name,"hasNext",0); const Method* nx=instanceMethod(rt.name,"next",0);
+   if(!hn||!nx){err("iterator type '"+rt.name+"' needs hasNext() and next()");return;}
+   f.overIterable=true; f.iterableType=it.name; f.iteratorType=rt.name; f.iteratorM=im; f.hasNextM=hn; f.nextM=nx;
+   elem=tn(nx->retType);
+  }
+  else if(it.kind!=Kind::Unknown&&it.kind!=Kind::Error){err("enhanced for needs an array or an iterable object, got "+nameOf(it));return;}
+  // Element types Any/Unknown (erased generics) bind without a cast, as Java's
+  // compiler-inserted checkcast does; otherwise the element must be assignable.
+  if(elem.kind!=Kind::Any&&elem.kind!=Kind::Unknown&&!assignable(want,elem))
+   err("enhanced for variable '"+f.name+"' has type "+nameOf(want)+", elements are "+nameOf(elem));
+  push(); declare(f.name,want); stmt(*f.body); pop();
  }
  // super(args) / this(args) constructor invocation (SLEELA.syntax 43.6).
  Type constructorInvocation(const MethodCall&m){

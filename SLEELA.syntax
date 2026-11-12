@@ -3207,6 +3207,8 @@ instance-field layout, the runtime parent link, method inheritance and the
 | `super(args)`, `this(args)`, implicit `super()`, default constructor | parser (`MethodCall` with `superConstructor` / `thisConstructor`); semantic constructor resolution; compiler `OP_CALL` on `this` |
 | Overridden methods (virtual dispatch), `super.m()` | compiler lowering with `OP_DUP` / `OP_INSTANCEOF` / `OP_JMPF` / `OP_CALL` (43.6) |
 | Abstract and interface methods without a body | parser (synthesized default-value body) |
+| Enhanced for `for (T v : xs)` | `ForEachStmt`: parser, semantic (array or `iterator()`), compiler lowering |
+| `L`, `d`, `f` suffixes, `1_000` | lexer |
 | Field inheritance | compiler instance layout, base fields first (section 42.7) |
 | Overloads and constructors | compiler overload resolution (section 40) |
 | `java.lang.String` methods, UTF-16 strings | compiler `javaString*` built-ins → `OP_JSTR_*` opcodes (166 onward) |
@@ -3223,9 +3225,11 @@ instance-field layout, the runtime parent link, method inheritance and the
   to a JVM. Equivalence is checked by output (`run-differential.sh`), not by
   comparing JVM bytecode with VM opcodes.
 - Not yet supported Java style (each fails at check time, not silently):
-  enhanced `for (T v : xs)`, the `L` long-literal suffix, `finally`, typed
-  `catch (SomeException e)` (only `catch (Any e)`), `enum` declarations, and
-  non-static `protected` methods (a SLeeLa rule: protected methods are static).
+  `finally`, typed `catch (SomeException e)` (only `catch (Any e)`), `enum`
+  declarations, and non-static `protected` methods (a SLeeLa rule: protected
+  methods are static).
+- The enhanced for is not supported by the Nordshrift C target or by `@native`
+  methods (both report it); the Sleela and Java targets emit it as written.
 - A user subclass of a `/lib/java` Throwable reports the library class name in
   `toString()` (`java.lang.IllegalStateException: boom`, not `AppError: boom`):
   the name comes from the unit's `javaType` field, and there is no runtime
@@ -3271,3 +3275,15 @@ on (it stays declarative, 43.2). Below 3.0 nothing in this subsection applies.
    `T m(...);` (not `static` or `default`) parse; the method gets a body that
    returns the default value of `T` (`0`, `0.0`, `false` or `null`) and is
    reached only when no override exists.
+9. **Enhanced for.** `for ([final] T v : xs) body`. Over an array it visits the
+   elements in index order (`OP_ARRLEN`, `OP_ARRGET`). Over an object it calls
+   `xs.iterator()`, then `hasNext()` / `next()` on the result, each by virtual
+   dispatch (rule 6), e.g. `for (String s : list)` over `java.util.ArrayList`.
+   An element typed `Any` (an erased generic) binds to `v` without a cast, as
+   Java's inserted checkcast would; any other element type must be assignable
+   to `T`. `break` and `continue` work as in a basic for. Loop annotations
+   (`@loopDelay`, `@loopBudget`, `@spill`) are not accepted on it.
+10. **Numeric literals.** `_` between digits (`1_000_000`), the long suffix
+   `L` / `l` (`3000000000L`, `0xFFL`), and the floating suffixes `d` / `D` /
+   `f` / `F` (`2d`, `1.5f`, a double). SLeeLa `int` is 64-bit, so `L` changes
+   no value.

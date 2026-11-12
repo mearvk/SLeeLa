@@ -1,0 +1,9 @@
+#sleela 3.0
+spark;
+material;
+import java.jdk-25.java.util;
+class P { void main() {
+  ArrayList list = new ArrayList(); list.add("x"); list.add("y"); list.add("z");
+  for (String s : list) { print(s); }
+  int n = 0; for (Object o : list) { n = n + 1; } print(n);
+} }

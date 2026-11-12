@@ -172,6 +172,11 @@ struct LoopSpill{bool hasSpill=false;long spillPauseMs=0;std::string spillJudges
 struct WhileStmt:Stmt{ExprP cond;StmtP body;long loopSleepMs=0;LoopSpill spill;};
 struct ForStmt:Stmt{StmtP init;ExprP cond;StmtP update,body;ExprP threadStable,heapHealthy;long loopSleepMs=0;LoopSpill spill;};
 // --- Java statement forms (surface completeness). --------------------------
+// Enhanced for (SLEELA.syntax 43.6): `for (T v : xs) body`. Over an array it
+// walks the elements by index; over an object it calls xs.iterator(), then
+// hasNext()/next() on the result. Semantic analysis records which, and the
+// resolved methods, in the mutable fields.
+struct ForEachStmt:Stmt{std::string type,name;ExprP iterable;StmtP body;mutable bool overIterable=false;mutable std::string iterableType,iteratorType;mutable const Method* iteratorM=nullptr;mutable const Method* hasNextM=nullptr;mutable const Method* nextM=nullptr;};
 struct DoStmt:Stmt{StmtP body;ExprP cond;long loopSleepMs=0;LoopSpill spill;};
 struct BreakStmt:Stmt{std::string label;};
 struct ContinueStmt:Stmt{std::string label;};

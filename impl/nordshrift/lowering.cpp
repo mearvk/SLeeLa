@@ -60,6 +60,7 @@ struct Lowerer {
         if (auto x=dynamic_cast<const ReturnStmt*>(s)) { out.ops.push_back("stmt.return"); if(x->value) expr(x->value.get()); out.ops.push_back("stmt.return.end"); return; }
         if (auto x=dynamic_cast<const IfStmt*>(s)) { out.ops.push_back("stmt.if"); expr(x->cond.get()); stmt(x->thenS.get()); if(x->elseS) stmt(x->elseS.get()); out.ops.push_back("stmt.if.end"); return; }
         if (auto x=dynamic_cast<const WhileStmt*>(s)) { out.ops.push_back("stmt.while"); expr(x->cond.get()); stmt(x->body.get()); out.ops.push_back("stmt.while.end"); return; }
+        if (auto x=dynamic_cast<const ForEachStmt*>(s)) { out.ops.push_back("stmt.foreach"); expr(x->iterable.get()); stmt(x->body.get()); out.ops.push_back("stmt.foreach.end"); return; }
         if (auto x=dynamic_cast<const ForStmt*>(s)) { out.ops.push_back("stmt.for"); if(x->init) stmt(x->init.get()); if(x->cond) expr(x->cond.get()); if(x->update) stmt(x->update.get()); stmt(x->body.get()); out.ops.push_back("stmt.for.end"); return; }
         fail(std::string("unsupported statement node: ")+typeid(*s).name());
     }

@@ -154,6 +154,7 @@ class MethodBodyEmitter {
             if (i->elseS) { ind(); out << "else\n"; stmt(i->elseS.get()); } return;
         }
         if (auto w=dynamic_cast<const WhileStmt*>(s)) { if(typeOf(w->cond.get())=="String") throw std::runtime_error("String while-condition is not supported"); ind(); out << "while ("; expr(w->cond.get()); out << ")\n"; stmt(w->body.get()); return; }
+        if (dynamic_cast<const ForEachStmt*>(s)) throw std::runtime_error("the enhanced for is not supported by the native method emitter");
         if (auto f=dynamic_cast<const ForStmt*>(s)) {
             ind(); out << "for ("; if (f->init) inlineStmt(f->init.get()); out << "; ";
             if (f->cond && typeOf(f->cond.get())=="String") throw std::runtime_error("String for-condition is not supported");

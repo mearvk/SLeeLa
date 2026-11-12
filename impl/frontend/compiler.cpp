@@ -7,6 +7,7 @@
 #include "java_references.h"
 #include <algorithm>
 #include <tuple>
+#include <optional>
 #include "unsigned_integer.h"
 #include "wide_integer.h"
 
@@ -354,6 +355,7 @@ private:
         else if(auto w=dynamic_cast<const WhileStmt*>(s)) countInStmt(w->body.get(),n);
         else if(auto f=dynamic_cast<const ForStmt*>(s)){if(f->init)countInStmt(f->init.get(),n);countInStmt(f->body.get(),n);}
         else if(auto d=dynamic_cast<const DoStmt*>(s)) countInStmt(d->body.get(),n);
+        else if(auto fe=dynamic_cast<const ForEachStmt*>(s)){ n+=3; /* loop variable, source, index/iterator */ countInStmt(fe->body.get(),n); }
         else if(auto sy=dynamic_cast<const SynchronizedStmt*>(s)) countInBlock(*sy->body,n);
         else if(auto tr=dynamic_cast<const TryStmt*>(s)){countInBlock(*tr->body,n);for(const auto& c:tr->catches){n++;countInBlock(*c.body,n);}if(tr->finallyBlock)countInBlock(*tr->finallyBlock,n);}
         else if(auto sw=dynamic_cast<const SwitchStmt*>(s)){n++;/* selector temp */for(const auto& c:sw->cases)for(const auto& st:c.statements)countInStmt(st.get(),n);}
@@ -426,7 +428,7 @@ private:
         if(auto a=dynamic_cast<const Assign*>(s)){emitAssign(*a);return;} if(auto e=dynamic_cast<const ExprStmt*>(s)){emitExpr(e->expr.get());emit(OP_POP);return;}
         if(auto p=dynamic_cast<const PrintStmt*>(s)){emitExpr(p->expr.get());emit(OP_PRINT);return;} if(auto r=dynamic_cast<const ReturnStmt*>(s)){emitReturn(*r);return;}
         if(auto gh=dynamic_cast<const GcHintStmt*>(s)){emitGcHint(*gh);return;}
-        if(auto i=dynamic_cast<const IfStmt*>(s)){emitIf(*i);return;} if(auto w=dynamic_cast<const WhileStmt*>(s)){emitWhile(*w);return;} if(auto f=dynamic_cast<const ForStmt*>(s)){emitFor(*f);return;}
+        if(auto i=dynamic_cast<const IfStmt*>(s)){emitIf(*i);return;} if(auto w=dynamic_cast<const WhileStmt*>(s)){emitWhile(*w);return;} if(auto f=dynamic_cast<const ForStmt*>(s)){emitFor(*f);return;} if(auto fe=dynamic_cast<const ForEachStmt*>(s)){emitForEach(*fe);return;}
         if(auto fa=dynamic_cast<const FieldAssign*>(s)){emitFieldAssign(*fa);return;}
         if(auto d=dynamic_cast<const DoStmt*>(s)){emitDo(*d);return;}
         if(auto sw=dynamic_cast<const SwitchStmt*>(s)){emitSwitch(*sw);return;}
@@ -516,6 +518,50 @@ private:
     void emitWhile(const WhileStmt& s){emitSpillStart(s.spill);loops_.push_back({{}, {}, tryDepth_});int top=here();emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());for(int c:loops_.back().continues)patch(c,top);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
     void emitDo(const DoStmt& s){emitSpillStart(s.spill);loops_.push_back({{}, {}, tryDepth_});int top=here();emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
     void emitFor(const ForStmt& s){emitSpillStart(s.spill);loops_.push_back({{}, {}, tryDepth_});if(s.init)emitStmt(s.init.get());int top=here();std::vector<int> exits;if(s.cond){emitExpr(s.cond.get());exits.push_back(emit(OP_JMPF,0));}if(s.threadStable){emitExpr(s.threadStable.get());exits.push_back(emit(OP_JMPF,0));}if(s.heapHealthy){emitExpr(s.heapHealthy.get());exits.push_back(emit(OP_JMPF,0));}emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);if(s.update)emitStmt(s.update.get());emit(OP_JMP,top);int end=here();for(int j:exits)patch(j,end);for(int b:loops_.back().breaks)patch(b,end);loops_.pop_back();}
+    // Enhanced for (SLEELA.syntax 43.6). Array: index loop with OP_ARRLEN /
+    // OP_ARRGET. Object: xs.iterator(), then hasNext()/next() (virtual calls).
+    int forEachCounter_=0;
+    void emitForEach(const ForEachStmt& s){
+        if(syntax_<SyntaxVersion{3,0}) throw std::runtime_error("Semantic error: the enhanced for requires #sleela 3.0");
+        const std::string tag=std::to_string(forEachCounter_++);
+        const int vSlot=ctx_->declare(s.name);
+        const int srcSlot=ctx_->declare("__fe_src#"+tag);
+        const int curSlot=ctx_->declare("__fe_cur#"+tag);
+        const auto savedType=varType_.find(s.name)!=varType_.end()?std::optional<std::string>(varType_[s.name]):std::nullopt;
+        varType_[s.name]=s.type;
+        loops_.push_back({{}, {}, tryDepth_});
+        std::vector<int> exits; int top=0;
+        emitExpr(s.iterable.get());
+        const std::vector<ExprP> noArgs;
+        if(!s.overIterable){
+            emit(OP_STOREL,srcSlot);
+            emit(OP_CONST,slvm_add_const_int(vm_,0)); emit(OP_STOREL,curSlot);
+            top=here();
+            emit(OP_LOADL,curSlot); emit(OP_LOADL,srcSlot); emit(OP_ARRLEN); emit(OP_LT); exits.push_back(emit(OP_JMPF,0));
+            emit(OP_LOADL,srcSlot); emit(OP_LOADL,curSlot); emit(OP_ARRGET); coerceToDeclared(s.type); emit(OP_STOREL,vSlot);
+        } else {
+            if(!s.iteratorM||!s.hasNextM||!s.nextM) throw std::runtime_error("Semantic error: enhanced for over '"+s.iterableType+"' was not resolved");
+            emitInstanceCall(s.iterableType,s.iteratorM,methodFuncIndex(s.iterableType,s.iteratorM),noArgs);
+            emit(OP_STOREL,curSlot);
+            top=here();
+            emit(OP_LOADL,curSlot); emitInstanceCall(s.iteratorType,s.hasNextM,methodFuncIndex(s.iteratorType,s.hasNextM),noArgs); exits.push_back(emit(OP_JMPF,0));
+            emit(OP_LOADL,curSlot); emitInstanceCall(s.iteratorType,s.nextM,methodFuncIndex(s.iteratorType,s.nextM),noArgs); coerceToDeclared(s.type); emit(OP_STOREL,vSlot);
+        }
+        emitStmt(s.body.get());
+        const int contTarget=here(); for(int c:loops_.back().continues) patch(c,contTarget);
+        if(!s.overIterable){ emit(OP_LOADL,curSlot); emit(OP_CONST,slvm_add_const_int(vm_,1)); emit(OP_ADD); emit(OP_STOREL,curSlot); }
+        emit(OP_JMP,top);
+        const int end=here(); for(int j:exits) patch(j,end); for(int b:loops_.back().breaks) patch(b,end);
+        loops_.pop_back();
+        if(savedType) varType_[s.name]=*savedType; else varType_.erase(s.name);
+    }
+    // Function index of an instance method resolved by semantic analysis.
+    int methodFuncIndex(const std::string& owner,const Method* m){
+        int fi=resolvedIndex(m);
+        if(fi<0){ auto t=funcIndex_.find(owner+"::"+m->name); if(t!=funcIndex_.end()) fi=t->second; }
+        if(fi<0) throw std::runtime_error("Semantic error: method '"+owner+"::"+m->name+"' is not registered");
+        return fi;
+    }
     void emitSynchronized(const SynchronizedStmt& s){emitExpr(s.monitor.get());emit(OP_POP);emitBlock(*s.body);}
     void emitTry(const TryStmt& s){
         // First source-level exception milestone: one catch-all clause whose

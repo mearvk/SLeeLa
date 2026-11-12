@@ -106,6 +106,7 @@ private:
         if (auto w = dynamic_cast<const WhileStmt*>(s)) { walkExpr(w->cond.get()); walkStmt(w->body.get()); return; }
         if (auto f = dynamic_cast<const ForStmt*>(s)) { walkStmt(f->init.get()); walkExpr(f->cond.get()); walkStmt(f->update.get()); walkStmt(f->body.get()); return; }
         if (auto d = dynamic_cast<const DoStmt*>(s)) { walkStmt(d->body.get()); walkExpr(d->cond.get()); return; }
+        if (auto fe = dynamic_cast<const ForEachStmt*>(s)) { walkExpr(fe->iterable.get()); walkStmt(fe->body.get()); return; }
         if (auto as = dynamic_cast<const AssertStmt*>(s)) { walkExpr(as->cond.get()); walkExpr(as->message.get()); return; }
         if (auto y = dynamic_cast<const YieldStmt*>(s)) { walkExpr(y->value.get()); return; }
         if (auto sw = dynamic_cast<const SwitchStmt*>(s)) {

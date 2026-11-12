@@ -1014,7 +1014,21 @@ std::unique_ptr<Block> Parser::parseBlock(){expect(Tok::LBrace,"'{'");auto b=std
 StmtP Parser::parseIf(){expect(Tok::KwIf,"'if'");expect(Tok::LParen,"'('");auto s=std::make_unique<IfStmt>();s->cond=parseExpr();expect(Tok::RParen,"')'");s->thenS=parseStatement();if(accept(Tok::KwElse))s->elseS=parseStatement();return s;}
 StmtP Parser::parseWhile(){expect(Tok::KwWhile,"'while'");expect(Tok::LParen,"'('");auto s=std::make_unique<WhileStmt>();s->cond=parseExpr();expect(Tok::RParen,"')'");s->body=parseStatement();return s;}
 StmtP Parser::parseDo(){expect(Tok::KwDo,"'do'");auto s=std::make_unique<DoStmt>();s->body=parseStatement();expect(Tok::KwWhile,"'while'");expect(Tok::LParen,"'('");s->cond=parseExpr();expect(Tok::RParen,"')'");expect(Tok::Semicolon,"';'");return s;}
-StmtP Parser::parseFor(){expect(Tok::KwFor,"'for'");expect(Tok::LParen,"'('");auto s=std::make_unique<ForStmt>();if(!check(Tok::Semicolon))s->init=parseSimpleStatement();expect(Tok::Semicolon,"';'");if(!check(Tok::Semicolon))s->cond=parseExpr();expect(Tok::Semicolon,"';'");if(!check(Tok::Semicolon)&&!check(Tok::RParen))s->update=std::make_unique<ExprStmt>(parseExpr());if(accept(Tok::Semicolon)){if(check(Tok::Semicolon)||check(Tok::RParen))error("four-term for loop requires a thread-stability Boolean expression");s->threadStable=parseExpr();if(accept(Tok::Semicolon)){if(check(Tok::RParen))error("five-term for loop requires a VM heap-health Boolean expression");s->heapHealthy=parseExpr();}}expect(Tok::RParen,"')'");s->body=parseStatement();return s;}
+StmtP Parser::parseFor(){expect(Tok::KwFor,"'for'");expect(Tok::LParen,"'('");
+ { // Enhanced for (43.6): `for ([final] T v : expr) body`.
+   const size_t save=i_;
+   if(check(Tok::KwFinal)) ++i_;
+   if(isTypeStart()){
+     bool each=false; std::string t;
+     try{ t=parseType(); each=check(Tok::Ident)&&peek(1).kind==Tok::Colon; }catch(...){ each=false; }
+     if(each){
+       auto e=std::make_unique<ForEachStmt>(); e->type=t; e->name=expect(Tok::Ident,"loop variable name").text; expect(Tok::Colon,"':'");
+       e->iterable=parseExpr(); expect(Tok::RParen,"')'"); e->body=parseStatement(); return e;
+     }
+   }
+   i_=save;
+ }
+ auto s=std::make_unique<ForStmt>();if(!check(Tok::Semicolon))s->init=parseSimpleStatement();expect(Tok::Semicolon,"';'");if(!check(Tok::Semicolon))s->cond=parseExpr();expect(Tok::Semicolon,"';'");if(!check(Tok::Semicolon)&&!check(Tok::RParen))s->update=std::make_unique<ExprStmt>(parseExpr());if(accept(Tok::Semicolon)){if(check(Tok::Semicolon)||check(Tok::RParen))error("four-term for loop requires a thread-stability Boolean expression");s->threadStable=parseExpr();if(accept(Tok::Semicolon)){if(check(Tok::RParen))error("five-term for loop requires a VM heap-health Boolean expression");s->heapHealthy=parseExpr();}}expect(Tok::RParen,"')'");s->body=parseStatement();return s;}
 StmtP Parser::parseSynchronized(){expect(Tok::KwSynchronized,"'synchronized'");expect(Tok::LParen,"'('");auto s=std::make_unique<SynchronizedStmt>();s->monitor=parseExpr();expect(Tok::RParen,"')'");s->body=parseBlock();return s;}
 StmtP Parser::parseTry(){expect(Tok::KwTry,"'try'");auto s=std::make_unique<TryStmt>();s->body=parseBlock();while(accept(Tok::KwCatch)){expect(Tok::LParen,"'('");CatchClause c; c.type=expect(Tok::Ident,"exception type").text;c.variable=expect(Tok::Ident,"exception variable").text;expect(Tok::RParen,"')'");c.body=parseBlock();s->catches.push_back(std::move(c));}if(accept(Tok::KwFinally))s->finallyBlock=parseBlock();if(s->catches.empty()&&!s->finallyBlock)error("try requires catch or finally");return s;}
 StmtP Parser::parseSwitch(){expect(Tok::KwSwitch,"'switch'");expect(Tok::LParen,"'('");auto s=std::make_unique<SwitchStmt>();s->selector=parseExpr();expect(Tok::RParen,"')'");expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){SwitchCase sc;if(accept(Tok::KwDefault)){sc.isDefault=true;expect(Tok::Colon,"':'");}else{expect(Tok::KwCase,"'case'");sc.labels.push_back(parseExpr());while(accept(Tok::Comma))sc.labels.push_back(parseExpr());expect(Tok::Colon,"':'");}while(!check(Tok::KwCase)&&!check(Tok::KwDefault)&&!check(Tok::RBrace)&&!check(Tok::Eof))sc.statements.push_back(parseStatement());s->cases.push_back(std::move(sc));}expect(Tok::RBrace,"'}'");return s;}
@@ -1036,6 +1050,7 @@ StmtP Parser::parseStatement(){
    if(auto w=dynamic_cast<WhileStmt*>(loop.get())){ w->loopSleepMs=ms; w->spill=spill; }
    else if(auto f=dynamic_cast<ForStmt*>(loop.get())){ f->loopSleepMs=ms; f->spill=spill; }
    else if(auto d=dynamic_cast<DoStmt*>(loop.get())){ d->loopSleepMs=ms; d->spill=spill; }
+   else if(dynamic_cast<ForEachStmt*>(loop.get())) error("loop annotations (@loopDelay / @loopBudget / @spill) are not supported on an enhanced for");
    return loop;
  }
  if(check(Tok::LBrace))return parseBlock();

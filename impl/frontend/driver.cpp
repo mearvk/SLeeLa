@@ -2313,6 +2313,7 @@ static std::string nativeUnsupportedReason(const sleela::Stmt* s){
     if(auto r=dynamic_cast<const ReturnStmt*>(s)) return nativeUnsupportedReason(r->value.get());
     if(auto i=dynamic_cast<const IfStmt*>(s)){std::string r=nativeUnsupportedReason(i->cond.get()); if(!r.empty())return r; r=nativeUnsupportedReason(i->thenS.get()); if(!r.empty())return r; return nativeUnsupportedReason(i->elseS.get());}
     if(auto w=dynamic_cast<const WhileStmt*>(s)){if(w->loopSleepMs>0 || w->spill.hasSpill)return "loop timing/spill annotations are not supported by native ABI v1";std::string r=nativeUnsupportedReason(w->cond.get()); if(!r.empty())return r; return nativeUnsupportedReason(w->body.get());}
+    if(dynamic_cast<const ForEachStmt*>(s)) return "the enhanced for is not supported by native ABI v1";
     if(auto f=dynamic_cast<const ForStmt*>(s)){if(f->loopSleepMs>0 || f->spill.hasSpill || f->threadStable || f->heapHealthy)return "loop timing/spill/stability annotations are not supported by native ABI v1";std::string r=nativeUnsupportedReason(f->init.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->cond.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->update.get()); if(!r.empty())return r; return nativeUnsupportedReason(f->body.get());}
     return "a statement form outside the @native subset was used";
 }

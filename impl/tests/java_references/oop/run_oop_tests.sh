@@ -8,6 +8,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
 cd "$ROOT"; BIN="$(cd "$(dirname "$BIN")" && pwd)/$(basename "$BIN")"
 export SLEELA_HOME="${SLEELA_HOME:-$ROOT}"
 export SLEELA_SHA256_MANIFEST="${SLEELA_SHA256_MANIFEST:-$ROOT/security/sha256-manifest.json}"
+export SLEELA_LIB="${SLEELA_LIB:-$ROOT/lib}"
 cd "$ROOT/impl/tests/java_references/oop"
 fail=0
 for f in *.sleela; do

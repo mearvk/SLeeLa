@@ -1,0 +1,11 @@
+#sleela 3.0
+spark;
+material;
+class P { void main() {
+  int[] a = new int[4]; a[0]=1; a[1]=2; a[2]=3; a[3]=4;
+  int s = 0; for (int v : a) { if (v == 2) { continue; } s += v; } print(s);
+  String[] names = new String[2]; names[0] = "ada"; names[1] = "bob";
+  for (final String n : names) { print(n); }
+  int k = 0; for (int v : a) { if (v == 3) { break; } k = k + v; } print(k);
+  int[] empty = new int[0]; for (int v : empty) { print("never"); } print("done");
+} }
