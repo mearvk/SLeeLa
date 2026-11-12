@@ -38119,7 +38119,7 @@
     },
     {
       "path": "lib/java/jdk-25/java/util/StringTokenizer.sleela",
-      "sha256": "4924750272159c4e5bbecdf6ceb3c9d627399526754fea55625bb5e280943805"
+      "sha256": "c33f9a737dc9f06ea47058a35623a22a07b0a167c24302759ba6057ce992161b"
     },
     {
       "path": "lib/java/jdk-25/java/util/TimSort.sleela",

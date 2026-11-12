@@ -61,8 +61,8 @@ Bars are 20 cells wide (each cell = 5%). **Covered** = member present with its J
 |---|---:|---|
 | Types with a SLeeLa file | 4,801 / 4,801 (100.0%) | `████████████████████` |
 | Types with SLeeLa members | 3,390 / 4,801 (70.6%) | `██████████████░░░░░░` |
-| Members covered | 23,427 / 51,554 (45.4%) | `█████████░░░░░░░░░░░` |
-| Members with working behavior | 5,160 / 51,554 (10.0%) | `██░░░░░░░░░░░░░░░░░░` |
+| Members covered | 23,432 / 51,554 (45.5%) | `█████████░░░░░░░░░░░` |
+| Members with working behavior | 5,165 / 51,554 (10.0%) | `██░░░░░░░░░░░░░░░░░░` |
 
 **Twelve largest modules**
 
@@ -305,6 +305,9 @@ python3 tools/generate-sha256-manifest.py --root . --output security/sha256-mani
    `BigDecimal`, `Base64`, `Calendar`, `java.time.format`, `MessageDigest`
    (the MD5 inside `UUID` is the starting point). ~~`UUID`~~ done 2026-11-12
    (15/15 members, side-by-side test `UUIDCore`, 53 lines identical).
+   ~~`StringTokenizer`~~ done 2026-11-12 (all members; replaces the wrong probed
+   accessor stubs; `StringTokenizerCore`, 18 lines identical). `Base64` is blocked
+   on the nested-type loader gap (`Base64.Encoder` / `Base64.Decoder`).
    Add a side-by-side test for each.
 5. ~~**Refresh `working-binaries/`** so the prebuilt toolchain carries the new
    compiler.~~ Done 2026-11-12 (VM ABI 1.8, 185 opcodes).
