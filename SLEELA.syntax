@@ -2964,8 +2964,8 @@ the built-in type, never a library class of that name.
 
 ## 42. Syntax 3.0 — the implied lineage structure (`Sleela.home`, `Sleela.System`)
 
-This section is **normative for the syntax; the compiler and VM do not yet
-implement it** (status: specified). It gives every class an implied static
+This section is **normative and implemented in the source compiler (impl/frontend)**
+(status: implemented; see 42.7 for the exact limits). It gives every class an implied static
 lineage structure, so a translated Java hierarchy needs no declared parent or
 child fields.
 
@@ -3049,10 +3049,36 @@ Until the VM is fully initialized (phase 4) the references that would reach the
 VM (`Sleela.home.child` of the most-derived class, `Sleela.home.parent` of the
 root, `Sleela.home.parents("")`, and the `Sleela.VM` / `Sleela.System` /
 `Sleela.OS` names) point to `Security2`. At phase 4 they are re-pointed to the
-VM. Status: specified; `Security2` exists as a library class, the compiler and
-VM do not yet use it.
+VM. Status: implemented as the boot sequence in 42.7.
 
 `Security2` also returns the date and time (`dateTime()` as JSON, `dateTimeHttp()`,
 `utcMillis()`, from the VM clock) and the specsheet reference
 `International Guidelines 2.0` (`specsheet()`). The specsheet location is
 `none` until a published source is recorded.
+
+### 42.7 Implementation notes (source compiler)
+
+- **Lowering.** `Sleela.home.parent`, `.child`, `.root` and `.security` read the
+  static String fields `__lin_parent`, `__lin_child`, `__lin_root` and
+  `__lin_security`, which the parser adds to any class that uses `Sleela.home`,
+  `Sleela.VM|System|OS` or `super(...)`. They are static, so they use no
+  instance layout slot (the 64-field cap is untouched).
+- **Values are class names.** A lineage reference is the String name of a class
+  (`"B"`) or `"Sleela.System"` for the VM end. Initial values are resolved at
+  compile time from the loaded classes: `parent` is the superclass if it is
+  loaded, `child` is the first loaded class that extends this one, `root` is the
+  backmost loaded ancestor.
+- **`parents("---")`** is resolved at compile time; the argument must be a string
+  literal of dashes. It does not see later `->` changes.
+- **`->`** stores into the link; a bare capitalised name on the left is a class
+  name, anything else is an expression.
+- **`super(...)`** as a statement stores the root class name in `__lin_root`;
+  its arguments are parsed but not evaluated.
+- **Boot.** If the program uses `Sleela`, the loader adds `Security2`, and
+  `__lin_security` is initialized at program start by `new Security2().boot(...)`,
+  which runs boot, init, start, ready. User code starts after phase 4, so
+  user code always sees the VM; the earlier phases are observable only inside
+  `Security2`.
+- **Not done.** `child` has no list of several children; `parent`/`child` do not
+  change `extends` or method dispatch; there is no VM-level (C) lineage
+  structure.

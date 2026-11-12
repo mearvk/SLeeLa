@@ -22,6 +22,7 @@ private:
     // flagged isNested. parseProgram appends these to Program.classes and
     // enforces the per-document cap of 42.
     std::vector<ClassDecl> hoistedNested_;
+    bool usesLineage_=false;  // the class being parsed uses Sleela.home / super(...)
     // Java signature surface (syntax 3.0): the type variables of the enclosing
     // generic class / method declarations, erased to Any in parsed types.
     std::vector<std::vector<std::string>> typeVars_;

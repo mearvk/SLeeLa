@@ -123,6 +123,15 @@ class Security2 {
     }
   }
 
+  < The VM boot sequence: place above the VM, then init, start, ready. Returns this. >
+  Security2 boot(Any vmReference) {
+    onBoot(vmReference);
+    onInit();
+    onStart();
+    onReady();
+    return this;
+  }
+
   boolean isReady() {
     return phase == 4;
   }

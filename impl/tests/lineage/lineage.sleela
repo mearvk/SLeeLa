@@ -1,0 +1,29 @@
+#sleela 3.0
+material;
+class D {
+  void who() { print("D parent:"); print(Sleela.home.parent); print("D child:"); print(Sleela.home.child); }
+}
+class C extends D {
+  void who2() { print("C child:"); print(Sleela.home.child); }
+}
+class B extends C {
+  void who3() { print("B child:"); print(Sleela.home.child); }
+}
+class A extends B {
+  A() { super("constructor"); }
+  void main() {
+    print(Sleela.home.parent);
+    print(Sleela.home.child);
+    print(Sleela.home.parents("-"));
+    print(Sleela.home.parents("--"));
+    print(Sleela.home.parents("---"));
+    print(Sleela.home.parents("----"));
+    print(Sleela.home.parents(""));
+    print(Sleela.home.root);
+    print(Sleela.VM);
+    print(Sleela.OS);
+    D d = new D(); d.who(); C c = new C(); c.who2(); B b = new B(); b.who3();
+    D -> Sleela.home.parent;
+    print(Sleela.home.parent);
+  }
+}

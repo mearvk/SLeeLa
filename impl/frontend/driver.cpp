@@ -2056,6 +2056,8 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
             if(back>0 && scanSource[back-1]=='.') continue;
             if(!name.empty() && std::isupper(static_cast<unsigned char>(name[0]))) names.insert(name);
         }
+        // Sleela.home / Sleela.VM / .System / .OS: the VM boot places Security2 above the VM.
+        if(scanSource.find("Sleela.home")!=std::string::npos||scanSource.find("Sleela.VM")!=std::string::npos||scanSource.find("Sleela.System")!=std::string::npos||scanSource.find("Sleela.OS")!=std::string::npos) names.insert("Security2");
         bool changed=false;
         for(const auto& name:names){
             if(loadedPaths.count(name)) continue;

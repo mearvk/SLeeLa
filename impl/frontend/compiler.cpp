@@ -146,6 +146,7 @@ public:
         // extends chain is resolved base-first; <=1.9 keeps the flat layout.
         std::map<std::string,const ClassDecl*> classByName;
         for(const auto& c:prog_.classes) classByName[c.name]=&c;
+        lineageClasses_=classByName;
         const bool inheritance = !(syntax_<SyntaxVersion{1,10});
         std::map<std::string,std::vector<const Field*>> instanceFieldsOf; // resolved, in layout order
         std::set<std::string> laidOut; std::set<std::string> layoutInProgress;
@@ -271,6 +272,25 @@ private:
     std::map<std::string,int> funcIndex_; std::map<std::string,std::string> methodOwner_; std::map<const Method*,std::string> methodKeyByPtr_; std::map<const Method*,int> funcIndexByPtr_; std::set<std::string> protectedMethods_; std::vector<MethodInfo> methods_;
     std::map<std::string,int> fieldGlobal_; std::map<std::string,std::string> staticFieldType_; std::map<std::string,bool> fieldProtected_; std::map<std::string,std::string> fieldOwner_; std::vector<const Field*> fields_; MethodCtx* ctx_=nullptr;
     std::string currentClass_;
+    // Sleela.home lineage (SLEELA.syntax section 42), resolved against the loaded classes.
+    std::map<std::string,const ClassDecl*> lineageClasses_;
+    std::string lineageParentOf(const std::string& n) const {auto it=lineageClasses_.find(n);if(it==lineageClasses_.end())return "";const std::string& s=it->second->java.superclass;return lineageClasses_.count(s)?s:"";}
+    std::string lineageRootOf(std::string n) const {std::set<std::string> seen;for(;;){seen.insert(n);std::string p=lineageParentOf(n);if(p.empty()||seen.count(p))return n;n=p;}}
+    std::string lineageValue(const LineageExpr& x) const {
+        const std::string vm="Sleela.System";
+        switch(x.kind){
+        case LineageExpr::Vm:return vm;
+        case LineageExpr::InitParent:{std::string p=lineageParentOf(currentClass_);return p.empty()?vm:p;}
+        case LineageExpr::InitChild:{for(const auto& kv:lineageClasses_) if(kv.second->java.superclass==currentClass_&&kv.first!=currentClass_) return kv.first;return vm;}
+        case LineageExpr::InitRoot:return lineageRootOf(currentClass_);
+        case LineageExpr::Parents:{
+            if(x.depth<=0)return vm;
+            std::string n=currentClass_;
+            for(int i=0;i<x.depth;i++){std::string p=lineageParentOf(n);if(p.empty())break;n=p;}   // clamps to the root
+            return n;}
+        }
+        return vm;
+    }
     std::map<std::string,StructLayout> structLayout_;
     // Track the declared type of each in-scope local/global so member access
     // can resolve `x.field` to the right struct layout. Names not present are
@@ -582,6 +602,13 @@ private:
             if(x->op==":::"){emitExpr(x->lhs.get());emitExpr(x->rhs.get());emit(OP_SSEND);return;}
             emitBinary(*x);return;
         } if(auto x=dynamic_cast<const Call*>(e)){emitCall(*x);return;}
+        if(auto x=dynamic_cast<const LineageExpr*>(e); x&&x->kind==LineageExpr::Boot){
+            // VM boot: place Security2 above the VM and walk it boot -> init -> start -> ready.
+            if(!lineageClasses_.count("Security2")){emit(OP_CONST,addNullConst());return;}
+            MethodCall boot(std::make_unique<NewExpr>("Security2"),"boot"); boot.args.push_back(std::make_unique<StrLit>("Sleela.System"));
+            emitExpr(&boot); return;
+        }
+        if(auto x=dynamic_cast<const LineageExpr*>(e)){emit(OP_CONST,slvm_add_const_str(vm_,lineageValue(*x).c_str()));return;}
         if(auto x=dynamic_cast<const NewExpr*>(e)){emitNew(*x);return;} if(auto x=dynamic_cast<const MemberAccess*>(e)){emitMember(*x);return;}
         if(auto x=dynamic_cast<const MethodCall*>(e)){emitMethodCall(*x);return;}
         if(auto x=dynamic_cast<const AssignmentExpr*>(e)){emitAssignmentExpr(*x);return;}

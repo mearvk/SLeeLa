@@ -1,0 +1,14 @@
+#sleela 3.0
+material;
+class P { }
+class Q extends P {
+  void main() {
+    Security2 s = (Security2) Sleela.home.security;
+    print(s.currentPhase());
+    print(s.isReady());
+    print(s.colocated);
+    print(Sleela.home.parent);
+    print(Sleela.System);
+    print(s.specsheet());
+  }
+}

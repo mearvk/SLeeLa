@@ -543,7 +543,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "973afa9faa96c1c762ea841c71e6f96c8548a4c63d766f111adc14d0807bcb05"
+      "sha256": "0996d2ab4c01f09c61c4aed502445613d1c8744cc3b88c447507e3743582274e"
     },
     {
       "path": "impl/frontend/common_rails_banner.hpp",
@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "53f0228b2644ea4be53bf214caefc5a462b41db924b841363ab5ffc080d555cd"
+      "sha256": "dd4e2dd0008300bc2e11bccb226b073855fd599d7e405bcc8fb830f73ac81a87"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -567,7 +567,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "cc83ccf2c7d6309cfb9ac8d89d0ae3a86dbaa262dc5fe0599f5924cd30f4bff5"
+      "sha256": "a1a934f0fe22fd4d23acaef5c1dfc77abeaeb9484e86a59f21fb4aa5e5dc7f6d"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -647,11 +647,11 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "c8bb4cb926e1228ea7e452e5dc1cb405e05bec8356d930f7cee572219546e4fb"
+      "sha256": "7b2423e9237024733e6d725edd48d796f63c33b8ecfbf509deb80678c8ee27ea"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "2505ee1fe8391481bcd7afd3ee65fc6a292f73d9d1c9da03988cbd8dd66f0089"
+      "sha256": "b4664853d5cdc0bb8d2c44c7258d3bace0e7da7ad3f2e441693b52e6b7427c4e"
     },
     {
       "path": "impl/frontend/permissible.cpp",
@@ -663,7 +663,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "b00e71f21b4179fa8f3b9444aa02d5c317db274af46d4a91b2d812dcdfeebb64"
+      "sha256": "e382c25a51e8a5b18e2016720f51f123e1ab7a1753e168186de19166bc8411ca"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -72083,7 +72083,7 @@
     },
     {
       "path": "lib/security/Security2.sleela",
-      "sha256": "f17c2327e93ea5872005dc5706324093de614a2dd29f9252d533573b69c498c9"
+      "sha256": "e468a9543875c92985dc7f0a9da39273b5e1fe594ec08005298ce5f870a59f71"
     },
     {
       "path": "lib/server-edition/SLPackage.sleela",

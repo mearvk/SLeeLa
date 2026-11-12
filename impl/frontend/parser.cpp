@@ -569,6 +569,7 @@ DocumentExtension Parser::parseDocumentExtension(){
     return ext;
 }
 ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Annotation> annotations,int depth){
+    const bool savedLineage=usesLineage_; usesLineage_=false;
     Tok kind=cur().kind; ClassDecl c; c.java.kind=tokenTypeKind(kind); c.java.modifiers=classModifiers; c.java.annotations=std::move(annotations);
     if(kind!=Tok::KwClass&&kind!=Tok::KwInterface&&kind!=Tok::KwEnum&&kind!=Tok::KwRecord) error("expected Java type declaration");
     i_++; if(check(Tok::KwStringT)){ c.name=cur().text; ++i_; } else c.name=expect(Tok::Ident,"type name").text; c.java.qualifiedName=c.name; c.java.typeParameters=parseTypeParameters();
@@ -615,7 +616,14 @@ ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Ann
         if(after==Tok::LParen)c.methods.push_back(parseMethod(stat,prot,mods,std::move(annotations)));
         else c.fields.push_back(parseField(stat,prot,mods,std::move(annotations)));
     }
-    expect(Tok::RBrace,"'}'"); typeVars_.pop_back(); return c;
+    expect(Tok::RBrace,"'}'"); typeVars_.pop_back();
+    if(usesLineage_){
+        // Implied lineage fields (SLEELA.syntax section 42): static, so they add no layout slots.
+        const std::pair<const char*,LineageExpr::Kind> lf[3]={{"__lin_parent",LineageExpr::InitParent},{"__lin_child",LineageExpr::InitChild},{"__lin_root",LineageExpr::InitRoot}};
+        { Field f; f.type="Any"; f.name="__lin_security"; f.isStatic=true; f.init=std::make_unique<LineageExpr>(LineageExpr::Boot); c.fields.push_back(std::move(f)); }
+        for(const auto& p:lf){Field f;f.type="String";f.name=p.first;f.isStatic=true;f.init=std::make_unique<LineageExpr>(p.second);c.fields.push_back(std::move(f));}
+    }
+    usesLineage_=savedLineage; return c;
 }
 Field Parser::parseField(bool isStatic,bool isProtected,unsigned modifiers,std::vector<annotation::Annotation> annotations){Field f;f.isStatic=isStatic;f.isProtected=isProtected;f.java.modifiers=modifiers;f.annotations=std::move(annotations);f.type=parseType(&f.typeAnnotations);f.name=expect(Tok::Ident,"field name").text;if(accept(Tok::Assign))f.init=parseExpr();expect(Tok::Semicolon,"';'");return f;}
 // A type is one of the scalar keywords, or an identifier naming a declared struct.
@@ -730,7 +738,22 @@ StmtP Parser::parseSimpleStatement(){
     if(localDecl){auto d=std::make_unique<VarDecl>();d->type=parseType();d->name=expect(Tok::Ident,"variable name").text;if(accept(Tok::Assign))d->init=parseExpr();return d;}
     // Otherwise parse an expression; if `=` follows, it is an assignment whose
     // target must be an lvalue (a plain name or a struct member access).
+    if(check(Tok::KwSuper)&&peek(1).kind==Tok::LParen){
+        // super("constructor") goes to the backmost class (SLEELA.syntax section 42.5):
+        // it records the root of the lineage in this class's implied root link.
+        i_+=2; if(!check(Tok::RParen)){do{parseExpr();}while(accept(Tok::Comma));} expect(Tok::RParen,"')'");
+        usesLineage_=true; auto a=std::make_unique<Assign>(); a->name="__lin_root"; a->value=std::make_unique<LineageExpr>(LineageExpr::Parents,1000000); return a;
+    }
     ExprP lhs=parseExpr();
+    if(check(Tok::Arrow)){
+        // value -> Sleela.home.parent / child / root : the lineage set operator (left to right).
+        i_++; ExprP target=parseExpr(); auto* tv=dynamic_cast<VarExpr*>(target.get());
+        if(!tv||(tv->name!="__lin_parent"&&tv->name!="__lin_child"&&tv->name!="__lin_root")) error("'->' sets only Sleela.home.parent, Sleela.home.child or Sleela.home.root");
+        auto a=std::make_unique<Assign>(); a->name=tv->name;
+        // A bare capitalised name on the left is a class name: the link holds that name.
+        if(auto lv=dynamic_cast<VarExpr*>(lhs.get()); lv && !lv->name.empty() && std::isupper((unsigned char)lv->name[0])) a->value=std::make_unique<StrLit>(lv->name); else a->value=std::move(lhs);
+        return a;
+    }
     if(check(Tok::Assign)){
         i_++;
         if(auto v=dynamic_cast<VarExpr*>(lhs.get())){auto a=std::make_unique<Assign>();a->name=v->name;a->value=parseExpr();return a;}
@@ -879,6 +902,24 @@ ExprP Parser::parsePrimary(){
             i_+=2;                                  // consume `ran` and `::`
             std::string word=cur().text; i_++;      // consume the system word
             return parsePostfix(std::make_unique<RanRefExpr>(word));
+        }
+        if(t.text=="Sleela" && peek(1).kind==Tok::Dot && peek(2).kind==Tok::Ident){
+            i_+=2; std::string w=cur().text; i_++;
+            usesLineage_=true;
+            if(w=="VM"||w=="System"||w=="OS") return parsePostfix(std::make_unique<LineageExpr>(LineageExpr::Vm));
+            if(w!="home") error("'Sleela."+w+"' is not defined; expected Sleela.home, Sleela.VM, Sleela.System or Sleela.OS");
+            expect(Tok::Dot,"'.' after Sleela.home"); std::string m=expect(Tok::Ident,"parent, child, root or parents after Sleela.home.").text;
+            if(m=="parent") return parsePostfix(std::make_unique<VarExpr>("__lin_parent"));
+            if(m=="child")  return parsePostfix(std::make_unique<VarExpr>("__lin_child"));
+            if(m=="root")   return parsePostfix(std::make_unique<VarExpr>("__lin_root"));
+            if(m=="security") return parsePostfix(std::make_unique<VarExpr>("__lin_security"));
+            if(m=="parents"){
+                expect(Tok::LParen,"'(' after parents"); if(!check(Tok::Str)) error("Sleela.home.parents takes a string of dashes, for example \"---\"");
+                std::string d=cur().text; i_++; expect(Tok::RParen,"')'");
+                for(char ch:d) if(ch!='-') error("Sleela.home.parents takes only dashes; each - is one level up");
+                return parsePostfix(std::make_unique<LineageExpr>(LineageExpr::Parents,(int)d.size()));
+            }
+            error("Sleela.home."+m+" is not defined; expected parent, child, root or parents");
         }
         std::string name=t.text;i_++;
         ExprP base=std::make_unique<VarExpr>(name);

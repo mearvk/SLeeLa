@@ -122,6 +122,11 @@ struct InstanceOfExpr:Expr{ExprP value;std::string typeName;InstanceOfExpr(ExprP
 struct CastExpr:Expr{std::string typeName;ExprP operand;CastExpr(std::string t,ExprP e):typeName(std::move(t)),operand(std::move(e)){}};
 // `super` / `this` primary expressions.
 struct SuperExpr:Expr{};
+// Sleela.home lineage references (SLEELA.syntax section 42). Resolved at compile
+// time against the loaded classes: Parents walks `depth` superclass levels up
+// (clamped to the root; depth 0 is the VM), Vm is Sleela.VM/System/OS, and the
+// Init* kinds give the starting value of the per-class lineage fields.
+struct LineageExpr:Expr{enum Kind{Parents,Vm,InitParent,InitChild,InitRoot,Boot};Kind kind;int depth=0;explicit LineageExpr(Kind k,int d=0):kind(k),depth(d){}};
 struct ThisExpr:Expr{};
 // Array element access `base[index]`.
 struct ArrayAccess:Expr{ExprP base,index;ArrayAccess(ExprP b,ExprP i):base(std::move(b)),index(std::move(i)){}};
