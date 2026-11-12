@@ -145,7 +145,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; advantage</div>
 <h1>Package <code>advantage</code></h1>
-<div class="lead">This package contains <strong>178</strong> source unit(s) defining <strong>178</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>183</strong> source unit(s) defining <strong>183</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="advantage-demo">advantage-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-demo.sleela)</span></h2>
 <div data-u="advantage-demo advantagedemo">
@@ -2137,6 +2137,18 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="sltermpotency">SLTermPotency <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-term-potencies/SLTermPotency.sleela)</span></h2>
+<div data-u="sltermpotency sltermpotency">
+<h3 id="SLTermPotency">SLTermPotency <span class="pill">class</span></h3>
+<p class="desc">Defines &#x27;potency&#x27; precisely as two exact ratios over a long-only book&#x27;s existing age data: term potency (the basis-point share of held units that have crossed the long-term threshold) and age potency (how close the weighted-average age is to the oldest lot&#x27;s age), both in basis points so no cent of precision is rounded away.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>termPotencyBp</code></td><td><span class="sig">int termPotencyBp(SLLongBook book, int today, int threshold)</span></td><td class="desc">Term potency in basis points: long-term units / held units, or -1 when today is invalid for the book (see SLLongBook.validToday) or -2 when the book holds nothing (there is no share of nothing to report).</td></tr>
+<tr><td><code>agePotencyBp</code></td><td><span class="sig">int agePotencyBp(SLLongBook book, int today)</span></td><td class="desc">Age potency in basis points: weightedAgeFloor / oldestAge. Returns -1 for BOTH a flat book and an invalid today, because SLLongBook.oldestAge itself returns -1 for both of those cases and does not distinguish them (see its own comment); this method does not invent a finer distinction than the book it reads from already makes. 10000 exactly when every held unit shares the oldest lot&#x27;s day (oldestAge is then 0, a zero/zero case read as full potency: there is only one age present, so the weighted average IS that age).</td></tr>
+<tr><td><code>atLeastHalfLongTerm</code></td><td><span class="sig">boolean atLeastHalfLongTerm(SLLongBook book, int today, int threshold)</span></td><td class="desc">Convenience: true when term potency is at or above halfBp (so a caller can ask &quot;is at least half the book long term&quot; without re-deriving the threshold on 5000). Returns false on any invalid/empty input, never a crash or a guess.</td></tr>
+</table>
+</div>
 <h2 class="section" data-u="sltrademath">SLTradeMath <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/math/SLTradeMath.sleela)</span></h2>
 <div data-u="sltrademath sltrademath">
 <h3 id="SLTradeMath">SLTradeMath <span class="pill">class</span></h3>
@@ -3005,6 +3017,82 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="tapotency01agesasthebookages">TaPotency01AgesAsTheBookAges <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-term-potencies/01-ages-as-the-book-ages/TaPotency01AgesAsTheBookAges.sleela)</span></h2>
+<div data-u="tapotency01agesasthebookages tapotency01agesasthebookages">
+<h3 id="TaPotency01AgesAsTheBookAges">TaPotency01AgesAsTheBookAges <span class="pill">class</span></h3>
+<p class="desc">Entry 1: term potency and age potency measured at three checkpoints as a two-lot portfolio crosses the long-term threshold.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tapotency02fifosellandpotency">TaPotency02FifoSellAndPotency <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-term-potencies/02-fifo-sell-and-potency/TaPotency02FifoSellAndPotency.sleela)</span></h2>
+<div data-u="tapotency02fifosellandpotency tapotency02fifosellandpotency">
+<h3 id="TaPotency02FifoSellAndPotency">TaPotency02FifoSellAndPotency <span class="pill">class</span></h3>
+<p class="desc">Entry 2: a FIFO sell of an entire lot removes that lot&#x27;s contribution to both term potency and age potency, shown as an exact before/after comparison.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tapotency03honestemptyandinvalid">TaPotency03HonestEmptyAndInvalid <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-term-potencies/03-honest-empty-and-invalid/TaPotency03HonestEmptyAndInvalid.sleela)</span></h2>
+<div data-u="tapotency03honestemptyandinvalid tapotency03honestemptyandinvalid">
+<h3 id="TaPotency03HonestEmptyAndInvalid">TaPotency03HonestEmptyAndInvalid <span class="pill">class</span></h3>
+<p class="desc">Entry 3: term potency and age potency on an empty book and on an invalid (&#x27;before the book day&#x27;) today, each answered honestly rather than guessed.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="tapotency04crosscheckedportfolios">TaPotency04CrossCheckedPortfolios <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/learner-vs-professional/courseware/long-term-potencies/04-cross-checked-portfolios/TaPotency04CrossCheckedPortfolios.sleela)</span></h2>
+<div data-u="tapotency04crosscheckedportfolios tapotency04crosscheckedportfolios">
+<h3 id="TaPotency04CrossCheckedPortfolios">TaPotency04CrossCheckedPortfolios <span class="pill">class</span></h3>
+<p class="desc">Entry 4: ten randomly generated portfolios, each checked against an independent Python model of the same term-potency and age-potency formulas.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>expect</code></td><td><span class="sig">void expect(String label, int got, int want)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expectTrue</code></td><td><span class="sig">void expectTrue(String label, boolean got)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>summary</code></td><td><span class="sig">void summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>act</code></td><td><span class="sig">void act(SLLongBook b, String text, int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="tause01openandadd">TaUse01OpenAndAdd <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/trading-actions-on-verb/01-open-and-add/TaUse01OpenAndAdd.sleela)</span></h2>
 <div data-u="tause01openandadd tause01openandadd">
 <h3 id="TaUse01OpenAndAdd">TaUse01OpenAndAdd <span class="pill">class</span></h3>
@@ -3671,7 +3759,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-12 00:24 UTC.
+<code>/lib</code> tree on 2026-11-12 00:34 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
