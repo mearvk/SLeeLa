@@ -16,4 +16,5 @@ check() {
 }
 check impl/tests/lineage/lineage.sleela $'B\nSleela.System\nB\nC\nD\nD\nSleela.System\nD\nSleela.System\nSleela.System\nD parent:\nSleela.System\nD child:\nC\nC child:\nB\nB child:\nA\nD'
 check impl/tests/lineage/boot.sleela $'4\ntrue\ntrue\nP\nSleela.System\nInternational Guidelines 2.0 (none)'
+check impl/tests/lineage/jdk28_chain.sleela $'QFilterInputStream\nQInputStream\nQInputStream\nSleela.System\nQFilterInputStream\n0'
 printf 'lineage regression: PASS\n'

@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class IndexColorModel {
+class IndexColorModel extends ColorModel {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,19 +77,19 @@ class IndexColorModel {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public IndexColorModel(int bits, int size, byte[] r, byte[] g, byte[] b, byte[] a) { }
+  public IndexColorModel(int bits, int size, byte[] r, byte[] g, byte[] b, byte[] a) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public IndexColorModel(int bits, int size, byte[] cmap, int start, boolean hasalpha) { }
+  public IndexColorModel(int bits, int size, byte[] cmap, int start, boolean hasalpha) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public IndexColorModel(int bits, int size, byte[] cmap, int start, boolean hasalpha, int trans) { }
+  public IndexColorModel(int bits, int size, byte[] cmap, int start, boolean hasalpha, int trans) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public IndexColorModel(int bits, int size, int[] cmap, int start, int transferType, Any validBits) { }
+  public IndexColorModel(int bits, int size, int[] cmap, int start, int transferType, Any validBits) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public IndexColorModel(int bits, int size, byte[] r, byte[] g, byte[] b, int trans) { }
+  public IndexColorModel(int bits, int size, byte[] r, byte[] g, byte[] b, int trans) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public IndexColorModel(int bits, int size, byte[] r, byte[] g, byte[] b) { }
+  public IndexColorModel(int bits, int size, byte[] r, byte[] g, byte[] b) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public IndexColorModel(int bits, int size, int[] cmap, int start, boolean hasalpha, int trans, int transferType) { }
+  public IndexColorModel(int bits, int size, int[] cmap, int start, boolean hasalpha, int trans, int transferType) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class MetalCheckBoxUI {
+class MetalCheckBoxUI extends MetalRadioButtonUI {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,7 +77,7 @@ class MetalCheckBoxUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public MetalCheckBoxUI() { }
+  public MetalCheckBoxUI() { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

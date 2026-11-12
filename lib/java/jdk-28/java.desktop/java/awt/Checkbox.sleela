@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class Checkbox {
+class Checkbox extends Component {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,15 +77,15 @@ class Checkbox {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public Checkbox(String label, boolean state, Any group) { }
+  public Checkbox(String label, boolean state, Any group) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public Checkbox(String label, Any group, boolean state) { }
+  public Checkbox(String label, Any group, boolean state) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public Checkbox(String label) { }
+  public Checkbox(String label) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public Checkbox() { }
+  public Checkbox() { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public Checkbox(String label, boolean state) { }
+  public Checkbox(String label, boolean state) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class InflaterOutputStream {
+class InflaterOutputStream extends FilterOutputStream {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -82,11 +82,11 @@ class InflaterOutputStream {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public InflaterOutputStream(Any out, Any infl) { }
+  public InflaterOutputStream(Any out, Any infl) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public InflaterOutputStream(Any out) { }
+  public InflaterOutputStream(Any out) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public InflaterOutputStream(Any out, Any infl, int bufLen) { }
+  public InflaterOutputStream(Any out, Any infl, int bufLen) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

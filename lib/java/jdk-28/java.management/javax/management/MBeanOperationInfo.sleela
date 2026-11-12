@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class MBeanOperationInfo {
+class MBeanOperationInfo extends MBeanFeatureInfo {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -84,11 +84,11 @@ class MBeanOperationInfo {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public MBeanOperationInfo(String name, String description, Any[] signature, String type, int impact, Any descriptor) { }
+  public MBeanOperationInfo(String name, String description, Any[] signature, String type, int impact, Any descriptor) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public MBeanOperationInfo(String name, String description, Any[] signature, String type, int impact) { }
+  public MBeanOperationInfo(String name, String description, Any[] signature, String type, int impact) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public MBeanOperationInfo(String description, Any method) { }
+  public MBeanOperationInfo(String description, Any method) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

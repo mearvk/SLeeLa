@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class HttpRetryException {
+class HttpRetryException extends IOException {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,9 +77,9 @@ class HttpRetryException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public HttpRetryException(String detail, int code) { }
+  public HttpRetryException(String detail, int code) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public HttpRetryException(String detail, int code, String location) { }
+  public HttpRetryException(String detail, int code, String location) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

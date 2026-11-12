@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class FileSystemAlreadyExistsException {
+class FileSystemAlreadyExistsException extends RuntimeException {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,8 +77,8 @@ class FileSystemAlreadyExistsException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public FileSystemAlreadyExistsException() { }
+  public FileSystemAlreadyExistsException() { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public FileSystemAlreadyExistsException(String msg) { }
+  public FileSystemAlreadyExistsException(String msg) { super("constructor"); }
   < ---- END java constructors ---- >
 }

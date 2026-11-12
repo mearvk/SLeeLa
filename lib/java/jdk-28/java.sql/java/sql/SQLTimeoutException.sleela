@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class SQLTimeoutException {
+class SQLTimeoutException extends SQLTransientException {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,20 +77,20 @@ class SQLTimeoutException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTimeoutException(Any cause) { }
+  public SQLTimeoutException(Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTimeoutException(String reason, Any cause) { }
+  public SQLTimeoutException(String reason, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTimeoutException(String reason, String SQLState, Any cause) { }
+  public SQLTimeoutException(String reason, String SQLState, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTimeoutException(String reason, String SQLState, int vendorCode, Any cause) { }
+  public SQLTimeoutException(String reason, String SQLState, int vendorCode, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTimeoutException() { }
+  public SQLTimeoutException() { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTimeoutException(String reason) { }
+  public SQLTimeoutException(String reason) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTimeoutException(String reason, String SQLState) { }
+  public SQLTimeoutException(String reason, String SQLState) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTimeoutException(String reason, String SQLState, int vendorCode) { }
+  public SQLTimeoutException(String reason, String SQLState, int vendorCode) { super("constructor"); }
   < ---- END java constructors ---- >
 }

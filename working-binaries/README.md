@@ -49,6 +49,9 @@ Java UTF-16 String intrinsics (`javaStringFromUtf8`, `javaStringToUtf8`,
 Rebuilt 2026-11-12 (`sleela` only) for the /lib loader rule that treats
 `lib/java/jdk-28/` as a reference tier (`impl/frontend/driver.cpp`), so its
 files never make a real `lib/java/java/...` class ambiguous.
+Rebuilt 2026-11-12 (`sleela` and `nordshrift`) for the `Sleela.home` lineage
+(SLEELA.syntax section 42: `parent`, `child`, `root`, `parents("---")`, `->`,
+`super("constructor")`, `Sleela.VM|System|OS`, and the `Security2` boot).
 Reported versions:
 
 - `sleela` — `SLeeLa™ Language/Runtime 1.3.2-pro` (supported source syntax 1.0 – 3.0)
@@ -57,8 +60,8 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-c8f78d7f6c83ccbc26cb228c920bf53069d8e100f97fbc361758b66b9d8d6b65  sleela
-96d07f0c9ca5278ec8fcccfa033868a87c813d6c80a09b5d085a417cb5b402d2  nordshrift
+54f1bf1871683df0a06e46ef84170aa9079e2966de1a8c53fe17f99328fb2cab  sleela
+0725ce669763fcd43d6aa51d15a47ae9114d0d289d3ade89f2f0a8e7d0ea060b  nordshrift
 ```
 
 ---

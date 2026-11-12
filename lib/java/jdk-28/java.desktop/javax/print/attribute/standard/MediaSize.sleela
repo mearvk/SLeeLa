@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class MediaSize {
+class MediaSize extends Size2DSyntax {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,13 +77,13 @@ class MediaSize {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public MediaSize(int x, int y, int units, Any media) { }
+  public MediaSize(int x, int y, int units, Any media) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public MediaSize(float x, float y, int units, Any media) { }
+  public MediaSize(float x, float y, int units, Any media) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public MediaSize(int x, int y, int units) { }
+  public MediaSize(int x, int y, int units) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public MediaSize(float x, float y, int units) { }
+  public MediaSize(float x, float y, int units) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class HTMLFrameHyperlinkEvent {
+class HTMLFrameHyperlinkEvent extends HyperlinkEvent {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,15 +77,15 @@ class HTMLFrameHyperlinkEvent {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public HTMLFrameHyperlinkEvent(Any source, Any type, Any targetURL, String desc, Any sourceElement, Any inputEvent, String targetFrame) { }
+  public HTMLFrameHyperlinkEvent(Any source, Any type, Any targetURL, String desc, Any sourceElement, Any inputEvent, String targetFrame) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public HTMLFrameHyperlinkEvent(Any source, Any type, Any targetURL, String desc, Any sourceElement, String targetFrame) { }
+  public HTMLFrameHyperlinkEvent(Any source, Any type, Any targetURL, String desc, Any sourceElement, String targetFrame) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public HTMLFrameHyperlinkEvent(Any source, Any type, Any targetURL, Any sourceElement, String targetFrame) { }
+  public HTMLFrameHyperlinkEvent(Any source, Any type, Any targetURL, Any sourceElement, String targetFrame) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public HTMLFrameHyperlinkEvent(Any source, Any type, Any targetURL, String desc, String targetFrame) { }
+  public HTMLFrameHyperlinkEvent(Any source, Any type, Any targetURL, String desc, String targetFrame) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public HTMLFrameHyperlinkEvent(Any source, Any type, Any targetURL, String targetFrame) { }
+  public HTMLFrameHyperlinkEvent(Any source, Any type, Any targetURL, String targetFrame) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

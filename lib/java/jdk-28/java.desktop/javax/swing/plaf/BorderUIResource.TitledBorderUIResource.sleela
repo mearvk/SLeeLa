@@ -8,7 +8,7 @@
 #sleela 3.0
 material;
 
-class TitledBorderUIResource {
+class TitledBorderUIResource extends TitledBorder {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -78,16 +78,16 @@ class TitledBorderUIResource {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public TitledBorderUIResource(Any border, String title, int titleJustification, int titlePosition, Any titleFont, Any titleColor) { }
+  public TitledBorderUIResource(Any border, String title, int titleJustification, int titlePosition, Any titleFont, Any titleColor) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public TitledBorderUIResource(Any border, String title, int titleJustification, int titlePosition, Any titleFont) { }
+  public TitledBorderUIResource(Any border, String title, int titleJustification, int titlePosition, Any titleFont) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public TitledBorderUIResource(Any border, String title, int titleJustification, int titlePosition) { }
+  public TitledBorderUIResource(Any border, String title, int titleJustification, int titlePosition) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public TitledBorderUIResource(Any border, String title) { }
+  public TitledBorderUIResource(Any border, String title) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public TitledBorderUIResource(Any border) { }
+  public TitledBorderUIResource(Any border) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public TitledBorderUIResource(String title) { }
+  public TitledBorderUIResource(String title) { super("constructor"); }
   < ---- END java constructors ---- >
 }

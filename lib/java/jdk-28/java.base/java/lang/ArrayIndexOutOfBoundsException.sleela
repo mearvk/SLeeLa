@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class ArrayIndexOutOfBoundsException {
+class ArrayIndexOutOfBoundsException extends IndexOutOfBoundsException {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,10 +77,10 @@ class ArrayIndexOutOfBoundsException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ArrayIndexOutOfBoundsException() { }
+  public ArrayIndexOutOfBoundsException() { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public ArrayIndexOutOfBoundsException(String s) { }
+  public ArrayIndexOutOfBoundsException(String s) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public ArrayIndexOutOfBoundsException(int index) { }
+  public ArrayIndexOutOfBoundsException(int index) { super("constructor"); }
   < ---- END java constructors ---- >
 }

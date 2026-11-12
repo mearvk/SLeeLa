@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class WindowEvent {
+class WindowEvent extends ComponentEvent {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -92,13 +92,13 @@ class WindowEvent {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public WindowEvent(Any source, int id) { }
+  public WindowEvent(Any source, int id) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public WindowEvent(Any source, int id, int oldState, int newState) { }
+  public WindowEvent(Any source, int id, int oldState, int newState) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public WindowEvent(Any source, int id, Any opposite) { }
+  public WindowEvent(Any source, int id, Any opposite) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public WindowEvent(Any source, int id, Any opposite, int oldState, int newState) { }
+  public WindowEvent(Any source, int id, Any opposite, int oldState, int newState) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

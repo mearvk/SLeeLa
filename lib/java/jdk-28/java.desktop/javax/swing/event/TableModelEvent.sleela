@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class TableModelEvent {
+class TableModelEvent extends EventObject {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -90,15 +90,15 @@ class TableModelEvent {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public TableModelEvent(Any source, int firstRow, int lastRow, int column, int type) { }
+  public TableModelEvent(Any source, int firstRow, int lastRow, int column, int type) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public TableModelEvent(Any source, int firstRow, int lastRow, int column) { }
+  public TableModelEvent(Any source, int firstRow, int lastRow, int column) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public TableModelEvent(Any source, int firstRow, int lastRow) { }
+  public TableModelEvent(Any source, int firstRow, int lastRow) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public TableModelEvent(Any source, int row) { }
+  public TableModelEvent(Any source, int row) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public TableModelEvent(Any source) { }
+  public TableModelEvent(Any source) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

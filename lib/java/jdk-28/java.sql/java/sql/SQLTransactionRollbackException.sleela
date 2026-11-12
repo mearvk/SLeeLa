@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class SQLTransactionRollbackException {
+class SQLTransactionRollbackException extends SQLTransientException {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,20 +77,20 @@ class SQLTransactionRollbackException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTransactionRollbackException(Any cause) { }
+  public SQLTransactionRollbackException(Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTransactionRollbackException(String reason, Any cause) { }
+  public SQLTransactionRollbackException(String reason, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTransactionRollbackException(String reason, String SQLState, Any cause) { }
+  public SQLTransactionRollbackException(String reason, String SQLState, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTransactionRollbackException(String reason, String SQLState, int vendorCode, Any cause) { }
+  public SQLTransactionRollbackException(String reason, String SQLState, int vendorCode, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTransactionRollbackException() { }
+  public SQLTransactionRollbackException() { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTransactionRollbackException(String reason) { }
+  public SQLTransactionRollbackException(String reason) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTransactionRollbackException(String reason, String SQLState) { }
+  public SQLTransactionRollbackException(String reason, String SQLState) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLTransactionRollbackException(String reason, String SQLState, int vendorCode) { }
+  public SQLTransactionRollbackException(String reason, String SQLState, int vendorCode) { super("constructor"); }
   < ---- END java constructors ---- >
 }

@@ -3023,7 +3023,8 @@ holds the VM reference itself and the nearest descendant of the asking class
 with public fields `vm` and `nearestDescendant`)
 (for the `child` of the most-derived class `A`, the VM; for `D` asked from the
 VM side, `A`'s lineage head). Lookup is by name through the map interface. The
-exact key names are not fixed yet.
+key names are `vm` and `nearestDescendant`, the same as the public fields of
+`SleelaHome`.
 
 ### 42.4 Setting a link
 
@@ -3079,6 +3080,14 @@ VM. Status: implemented as the boot sequence in 42.7.
   which runs boot, init, start, ready. User code starts after phase 4, so
   user code always sees the VM; the earlier phases are observable only inside
   `Security2`.
+- **Reading during load.** The lineage fields are static initializers, so they
+  are set before any user code runs; a class never observes a half-loaded
+  lineage. A read during load sees the compile-time values above.
+- **jdk-28 files.** `tools/jdk28_add_lineage.py` writes `extends <Parent>` and a
+  root-directed `super("constructor");` into every jdk-28 class stub whose JDK
+  superclass also has a jdk-28 file (1,647 files). The jdk-28 tree is a
+  reference tier: when a `lib/java/jdk-25` unit of the same name exists, the
+  loader uses that one.
 - **Not done.** `child` has no list of several children; `parent`/`child` do not
   change `extends` or method dispatch; there is no VM-level (C) lineage
   structure.

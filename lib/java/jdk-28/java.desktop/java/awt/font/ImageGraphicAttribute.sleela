@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class ImageGraphicAttribute {
+class ImageGraphicAttribute extends GraphicAttribute {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,9 +77,9 @@ class ImageGraphicAttribute {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ImageGraphicAttribute(Any image, int alignment) { }
+  public ImageGraphicAttribute(Any image, int alignment) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public ImageGraphicAttribute(Any image, int alignment, float originX, float originY) { }
+  public ImageGraphicAttribute(Any image, int alignment, float originX, float originY) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

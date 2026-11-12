@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class LinkedHashMap {
+class LinkedHashMap extends HashMap {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,15 +77,15 @@ class LinkedHashMap {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public LinkedHashMap(Any m) { }
+  public LinkedHashMap(Any m) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public LinkedHashMap(int initialCapacity) { }
+  public LinkedHashMap(int initialCapacity) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public LinkedHashMap(int initialCapacity, float loadFactor) { }
+  public LinkedHashMap(int initialCapacity, float loadFactor) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder) { }
+  public LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public LinkedHashMap() { }
+  public LinkedHashMap() { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

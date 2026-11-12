@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class JProgressBar {
+class JProgressBar extends JComponent {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -87,15 +87,15 @@ class JProgressBar {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JProgressBar(Any newModel) { }
+  public JProgressBar(Any newModel) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JProgressBar(int orient, int min, int max) { }
+  public JProgressBar(int orient, int min, int max) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JProgressBar(int min, int max) { }
+  public JProgressBar(int min, int max) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JProgressBar(int orient) { }
+  public JProgressBar(int orient) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JProgressBar() { }
+  public JProgressBar() { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

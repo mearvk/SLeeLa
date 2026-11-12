@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class MimeTypeParseException {
+class MimeTypeParseException extends Exception {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,8 +77,8 @@ class MimeTypeParseException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public MimeTypeParseException() { }
+  public MimeTypeParseException() { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public MimeTypeParseException(String s) { }
+  public MimeTypeParseException(String s) { super("constructor"); }
   < ---- END java constructors ---- >
 }

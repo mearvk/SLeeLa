@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class RMIConnectionImpl_Stub {
+class RMIConnectionImpl_Stub extends RemoteStub {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,7 +77,7 @@ class RMIConnectionImpl_Stub {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public RMIConnectionImpl_Stub(Any ref) { }
+  public RMIConnectionImpl_Stub(Any ref) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -87,54 +87,54 @@ class RMIConnectionImpl_Stub {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public boolean isRegistered(Any $param_ObjectName_1, Any $param_Subject_2) { return false; }
+  public boolean isRegistered(Any param_ObjectName_1_, Any param_Subject_2_) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceNotFoundException, javax.management.ReflectionException")
-  public Any getAttributes(Any $param_ObjectName_1, String[] $param_arrayOf_String_2, Any $param_Subject_3) { return null; }
+  public Any getAttributes(Any param_ObjectName_1_, String[] param_arrayOf_String_2_, Any param_Subject_3_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.AttributeNotFoundException, javax.management.InstanceNotFoundException, javax.management.InvalidAttributeValueException, javax.management.MBeanException, javax.management.ReflectionException")
-  public void setAttribute(Any $param_ObjectName_1, Any $param_MarshalledObject_2, Any $param_Subject_3) { }
+  public void setAttribute(Any param_ObjectName_1_, Any param_MarshalledObject_2_, Any param_Subject_3_) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.AttributeNotFoundException, javax.management.InstanceNotFoundException, javax.management.MBeanException, javax.management.ReflectionException")
-  public Any getAttribute(Any $param_ObjectName_1, String $param_String_2, Any $param_Subject_3) { return null; }
+  public Any getAttribute(Any param_ObjectName_1_, String param_String_2_, Any param_Subject_3_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceNotFoundException, javax.management.ReflectionException")
-  public Any setAttributes(Any $param_ObjectName_1, Any $param_MarshalledObject_2, Any $param_Subject_3) { return null; }
+  public Any setAttributes(Any param_ObjectName_1_, Any param_MarshalledObject_2_, Any param_Subject_3_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public String getConnectionId() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceNotFoundException")
-  public Any[] addNotificationListeners(Any[] $param_arrayOf_ObjectName_1, Any[] $param_arrayOf_MarshalledObject_2, Any[] $param_arrayOf_Subject_3) { return null; }
+  public Any[] addNotificationListeners(Any[] param_arrayOf_ObjectName_1_, Any[] param_arrayOf_MarshalledObject_2_, Any[] param_arrayOf_Subject_3_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceNotFoundException, javax.management.ListenerNotFoundException")
-  public void removeNotificationListeners(Any $param_ObjectName_1, Any[] $param_arrayOf_Integer_2, Any $param_Subject_3) { }
+  public void removeNotificationListeners(Any param_ObjectName_1_, Any[] param_arrayOf_Integer_2_, Any param_Subject_3_) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public Any fetchNotifications(long $param_long_1, int $param_int_2, long $param_long_3) { return null; }
+  public Any fetchNotifications(long param_long_1_, int param_int_2_, long param_long_3_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public Any queryNames(Any $param_ObjectName_1, Any $param_MarshalledObject_2, Any $param_Subject_3) { return null; }
+  public Any queryNames(Any param_ObjectName_1_, Any param_MarshalledObject_2_, Any param_Subject_3_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceAlreadyExistsException, javax.management.InstanceNotFoundException, javax.management.MBeanException, javax.management.MBeanRegistrationException, javax.management.NotCompliantMBeanException, javax.management.ReflectionException")
-  public Any createMBean(String $param_String_1, Any $param_ObjectName_2, Any $param_ObjectName_3, Any $param_Subject_4) { return null; }
+  public Any createMBean(String param_String_1_, Any param_ObjectName_2_, Any param_ObjectName_3_, Any param_Subject_4_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceAlreadyExistsException, javax.management.MBeanException, javax.management.MBeanRegistrationException, javax.management.NotCompliantMBeanException, javax.management.ReflectionException")
-  public Any createMBean(String $param_String_1, Any $param_ObjectName_2, Any $param_Subject_3) { return null; }
+  public Any createMBean(String param_String_1_, Any param_ObjectName_2_, Any param_Subject_3_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceAlreadyExistsException, javax.management.MBeanException, javax.management.MBeanRegistrationException, javax.management.NotCompliantMBeanException, javax.management.ReflectionException")
-  public Any createMBean(String $param_String_1, Any $param_ObjectName_2, Any $param_MarshalledObject_3, String[] $param_arrayOf_String_4, Any $param_Subject_5) { return null; }
+  public Any createMBean(String param_String_1_, Any param_ObjectName_2_, Any param_MarshalledObject_3_, String[] param_arrayOf_String_4_, Any param_Subject_5_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceAlreadyExistsException, javax.management.InstanceNotFoundException, javax.management.MBeanException, javax.management.MBeanRegistrationException, javax.management.NotCompliantMBeanException, javax.management.ReflectionException")
-  public Any createMBean(String $param_String_1, Any $param_ObjectName_2, Any $param_ObjectName_3, Any $param_MarshalledObject_4, String[] $param_arrayOf_String_5, Any $param_Subject_6) { return null; }
+  public Any createMBean(String param_String_1_, Any param_ObjectName_2_, Any param_ObjectName_3_, Any param_MarshalledObject_4_, String[] param_arrayOf_String_5_, Any param_Subject_6_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceNotFoundException, javax.management.MBeanRegistrationException")
-  public void unregisterMBean(Any $param_ObjectName_1, Any $param_Subject_2) { }
+  public void unregisterMBean(Any param_ObjectName_1_, Any param_Subject_2_) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceNotFoundException")
-  public Any getObjectInstance(Any $param_ObjectName_1, Any $param_Subject_2) { return null; }
+  public Any getObjectInstance(Any param_ObjectName_1_, Any param_Subject_2_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public Any queryMBeans(Any $param_ObjectName_1, Any $param_MarshalledObject_2, Any $param_Subject_3) { return null; }
+  public Any queryMBeans(Any param_ObjectName_1_, Any param_MarshalledObject_2_, Any param_Subject_3_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public Any getMBeanCount(Any $param_Subject_1) { return null; }
+  public Any getMBeanCount(Any param_Subject_1_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public String getDefaultDomain(Any $param_Subject_1) { return null; }
+  public String getDefaultDomain(Any param_Subject_1_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public String[] getDomains(Any $param_Subject_1) { return null; }
+  public String[] getDomains(Any param_Subject_1_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceNotFoundException")
-  public void addNotificationListener(Any $param_ObjectName_1, Any $param_ObjectName_2, Any $param_MarshalledObject_3, Any $param_MarshalledObject_4, Any $param_Subject_5) { }
+  public void addNotificationListener(Any param_ObjectName_1_, Any param_ObjectName_2_, Any param_MarshalledObject_3_, Any param_MarshalledObject_4_, Any param_Subject_5_) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceNotFoundException, javax.management.ListenerNotFoundException")
-  public void removeNotificationListener(Any $param_ObjectName_1, Any $param_ObjectName_2, Any $param_Subject_3) { }
+  public void removeNotificationListener(Any param_ObjectName_1_, Any param_ObjectName_2_, Any param_Subject_3_) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceNotFoundException, javax.management.ListenerNotFoundException")
-  public void removeNotificationListener(Any $param_ObjectName_1, Any $param_ObjectName_2, Any $param_MarshalledObject_3, Any $param_MarshalledObject_4, Any $param_Subject_5) { }
+  public void removeNotificationListener(Any param_ObjectName_1_, Any param_ObjectName_2_, Any param_MarshalledObject_3_, Any param_MarshalledObject_4_, Any param_Subject_5_) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceNotFoundException, javax.management.IntrospectionException, javax.management.ReflectionException")
-  public Any getMBeanInfo(Any $param_ObjectName_1, Any $param_Subject_2) { return null; }
+  public Any getMBeanInfo(Any param_ObjectName_1_, Any param_Subject_2_) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, javax.management.InstanceNotFoundException")
-  public boolean isInstanceOf(Any $param_ObjectName_1, String $param_String_2, Any $param_Subject_3) { return false; }
+  public boolean isInstanceOf(Any param_ObjectName_1_, String param_String_2_, Any param_Subject_3_) { return false; }
   < ---- END java signatures ---- >
 }

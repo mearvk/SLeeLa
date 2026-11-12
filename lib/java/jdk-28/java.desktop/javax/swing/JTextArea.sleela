@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class JTextArea {
+class JTextArea extends JTextComponent {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,17 +77,17 @@ class JTextArea {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JTextArea(Any doc, String text, int rows, int columns) { }
+  public JTextArea(Any doc, String text, int rows, int columns) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTextArea(Any doc) { }
+  public JTextArea(Any doc) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTextArea(String text, int rows, int columns) { }
+  public JTextArea(String text, int rows, int columns) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTextArea() { }
+  public JTextArea() { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTextArea(String text) { }
+  public JTextArea(String text) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTextArea(int rows, int columns) { }
+  public JTextArea(int rows, int columns) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

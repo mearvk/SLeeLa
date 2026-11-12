@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class WeakHashMap {
+class WeakHashMap extends AbstractMap {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,13 +77,13 @@ class WeakHashMap {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public WeakHashMap(Any m) { }
+  public WeakHashMap(Any m) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public WeakHashMap(int initialCapacity) { }
+  public WeakHashMap(int initialCapacity) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public WeakHashMap(int initialCapacity, float loadFactor) { }
+  public WeakHashMap(int initialCapacity, float loadFactor) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public WeakHashMap() { }
+  public WeakHashMap() { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

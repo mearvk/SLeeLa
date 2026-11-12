@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class ConcurrentHashMap {
+class ConcurrentHashMap extends AbstractMap {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,15 +77,15 @@ class ConcurrentHashMap {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ConcurrentHashMap(int initialCapacity) { }
+  public ConcurrentHashMap(int initialCapacity) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public ConcurrentHashMap(Any m) { }
+  public ConcurrentHashMap(Any m) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public ConcurrentHashMap(int initialCapacity, float loadFactor) { }
+  public ConcurrentHashMap(int initialCapacity, float loadFactor) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public ConcurrentHashMap(int initialCapacity, float loadFactor, int concurrencyLevel) { }
+  public ConcurrentHashMap(int initialCapacity, float loadFactor, int concurrencyLevel) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public ConcurrentHashMap() { }
+  public ConcurrentHashMap() { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

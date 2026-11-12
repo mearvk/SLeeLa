@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class MetalTabbedPaneUI {
+class MetalTabbedPaneUI extends BasicTabbedPaneUI {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -84,7 +84,7 @@ class MetalTabbedPaneUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public MetalTabbedPaneUI() { }
+  public MetalTabbedPaneUI() { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

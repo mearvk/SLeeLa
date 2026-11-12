@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class Scrollbar {
+class Scrollbar extends Component {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -82,11 +82,11 @@ class Scrollbar {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public Scrollbar(int orientation) { }
+  public Scrollbar(int orientation) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public Scrollbar() { }
+  public Scrollbar() { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public Scrollbar(int orientation, int value, int visible, int minimum, int maximum) { }
+  public Scrollbar(int orientation, int value, int visible, int minimum, int maximum) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

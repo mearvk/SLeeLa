@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class RadialGradientPaint {
+class RadialGradientPaint extends MultipleGradientPaint {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,21 +77,21 @@ class RadialGradientPaint {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public RadialGradientPaint(float cx, float cy, float radius, float fx, float fy, float[] fractions, Any[] colors, Any cycleMethod) { }
+  public RadialGradientPaint(float cx, float cy, float radius, float fx, float fy, float[] fractions, Any[] colors, Any cycleMethod) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public RadialGradientPaint(Any center, float radius, Any focus, float[] fractions, Any[] colors, Any cycleMethod) { }
+  public RadialGradientPaint(Any center, float radius, Any focus, float[] fractions, Any[] colors, Any cycleMethod) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public RadialGradientPaint(Any center, float radius, Any focus, float[] fractions, Any[] colors, Any cycleMethod, Any colorSpace, Any gradientTransform) { }
+  public RadialGradientPaint(Any center, float radius, Any focus, float[] fractions, Any[] colors, Any cycleMethod, Any colorSpace, Any gradientTransform) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public RadialGradientPaint(Any gradientBounds, float[] fractions, Any[] colors, Any cycleMethod) { }
+  public RadialGradientPaint(Any gradientBounds, float[] fractions, Any[] colors, Any cycleMethod) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public RadialGradientPaint(float cx, float cy, float radius, float[] fractions, Any[] colors) { }
+  public RadialGradientPaint(float cx, float cy, float radius, float[] fractions, Any[] colors) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public RadialGradientPaint(Any center, float radius, float[] fractions, Any[] colors) { }
+  public RadialGradientPaint(Any center, float radius, float[] fractions, Any[] colors) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public RadialGradientPaint(float cx, float cy, float radius, float[] fractions, Any[] colors, Any cycleMethod) { }
+  public RadialGradientPaint(float cx, float cy, float radius, float[] fractions, Any[] colors, Any cycleMethod) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public RadialGradientPaint(Any center, float radius, float[] fractions, Any[] colors, Any cycleMethod) { }
+  public RadialGradientPaint(Any center, float radius, float[] fractions, Any[] colors, Any cycleMethod) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

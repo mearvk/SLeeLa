@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class ObjectOutputStream {
+class ObjectOutputStream extends OutputStream {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,7 +77,7 @@ class ObjectOutputStream {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public ObjectOutputStream(Any out) { }
+  public ObjectOutputStream(Any out) { super("constructor"); }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   ObjectOutputStream() { }

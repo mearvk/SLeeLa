@@ -39,7 +39,7 @@ Statuses are taken from `JDK28-PROCEDURAL-IMPLEMENTATION.md` (2026-11-10) and
 | 4 | Nested types | `Map.Entry`, `Character.UnicodeBlock` | Files named `Outer.Inner.sleela`; loader resolves by simple name so does not load them yet | Gap | Loader support for dotted nested-type files (item 14). |
 | 5 | Static members | `Math.abs(x)`, `Integer.MAX_VALUE` | `Class.member` / `Class.method(...)` work (syntax §38.2). `Math` is real statics (`Math.abs(x)`, `Math.PI`); `StrictMath` maps each static call to the `Math` function of the same name; other hand-written classes still expose statics as instance methods (`new Integer(0).parseInt("42")`) | Native, partly Rule | A static `Math`/`StrictMath` reference is **mapped, not rewritten**: `Math.sin(x)` stays `Math.sin(x)`, and `StrictMath.sin(x)` is `Math.sin(x)`. Convert the remaining classes to real statics class by class; until then the translator emits the instance form for them. |
 | 6 | Overloading | Resolved by parameter types | Resolved by argument count, assignability and exact-type score; ties go to source order (§40). Hand-written classes still use suffixed names (`absInt`, `toStringRadix`, `nextIntBound`) | Native, partly Rule | Convert suffixed names to true overloads; translator must map a Java overload to the right suffix meanwhile. Ranking differs from Java's most-specific rule in edge cases, so test them. |
-| 7 | Constructors | Many per class; `this(...)`, `super(...)` | Many allowed at 3.0 (§40); below 3.0 only one. `super(...)` is not lowered | Gap | Lower `super(...)` (item 5); translator inlines inherited initialization until then. |
+| 7 | Constructors | Many per class; `this(...)`, `super(...)` | Many allowed at 3.0 (§40). `super("constructor")` is lowered to the root of the lineage (`SLEELA.syntax` §42.5); jdk-28 stubs carry it (`tools/jdk28_add_lineage.py`) | Rule | Java `super(args)` argument passing is still not evaluated; translator inlines inherited initialization. |
 | 8 | Inheritance and virtual dispatch | An override is called through a base-typed reference | An override is not reached through a base-typed receiver or implicit-`this` call | Gap | Real virtual dispatch (item 3). Until then exceptions compose `detailMessage` at construction and collections do not consult user `equals`/`compareTo`. |
 | 9 | Field initializers in base classes | Run for every subclass instance | Do not run for subclass instances | Gap | Initialize inherited state in each generated constructor (item 4), or fix in compiler. |
 | 10 | Subtype assignment | `Throwable t = ioe;` | Not implicit; needs a cast | Gap | Implicit assignability (item 6). Translator inserts explicit upcasts: `(Throwable) ioe`. |
@@ -114,8 +114,9 @@ Statuses are taken from `JDK28-PROCEDURAL-IMPLEMENTATION.md` (2026-11-10) and
 5. **Constructor rule.** `super("constructor")` in `A` is
    `Sleela.home.parents("---")`: it addresses the root `D` directly. `B` and
    `C` are filled in by the language definition, not by translated code.
-6. **Decided answers (normative text: `SLEELA.syntax` section 42, status
-   specified, not yet implemented in the compiler/VM):**
+6. **Decided answers (normative text: `SLEELA.syntax` section 42, implemented
+   in the source compiler and `working-binaries/sleela`; tests in
+   `impl/tests/lineage/`):**
    - `D`'s `Sleela.home.parent` is `Sleela.System`, the VM, so the lineage is
      a cycle of references: `VM -> A -> B -> C -> D -> VM`.
    - `parents("")` is `Sleela.System`. More dashes than ancestors clamp to the

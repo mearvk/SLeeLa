@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class FileHandler {
+class FileHandler extends StreamHandler {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,17 +77,17 @@ class FileHandler {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public FileHandler(String pattern, int limit, int count) { }
+  public FileHandler(String pattern, int limit, int count) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public FileHandler(String pattern, int limit, int count, boolean append) { }
+  public FileHandler(String pattern, int limit, int count, boolean append) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public FileHandler(String pattern) { }
+  public FileHandler(String pattern) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public FileHandler() { }
+  public FileHandler() { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public FileHandler(String pattern, long limit, int count, boolean append) { }
+  public FileHandler(String pattern, long limit, int count, boolean append) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public FileHandler(String pattern, boolean append) { }
+  public FileHandler(String pattern, boolean append) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

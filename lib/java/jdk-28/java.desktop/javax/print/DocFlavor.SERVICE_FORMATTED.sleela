@@ -8,7 +8,7 @@
 #sleela 3.0
 material;
 
-class SERVICE_FORMATTED {
+class SERVICE_FORMATTED extends DocFlavor {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -84,6 +84,6 @@ class SERVICE_FORMATTED {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public SERVICE_FORMATTED(String className) { }
+  public SERVICE_FORMATTED(String className) { super("constructor"); }
   < ---- END java constructors ---- >
 }

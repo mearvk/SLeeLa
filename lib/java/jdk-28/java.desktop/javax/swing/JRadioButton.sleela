@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class JRadioButton {
+class JRadioButton extends JToggleButton {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,19 +77,19 @@ class JRadioButton {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JRadioButton(String text) { }
+  public JRadioButton(String text) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JRadioButton(String text, boolean selected) { }
+  public JRadioButton(String text, boolean selected) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JRadioButton(String text, Any icon) { }
+  public JRadioButton(String text, Any icon) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JRadioButton(String text, Any icon, boolean selected) { }
+  public JRadioButton(String text, Any icon, boolean selected) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JRadioButton() { }
+  public JRadioButton() { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JRadioButton(Any icon) { }
+  public JRadioButton(Any icon) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JRadioButton(Any icon, boolean selected) { }
+  public JRadioButton(Any icon, boolean selected) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

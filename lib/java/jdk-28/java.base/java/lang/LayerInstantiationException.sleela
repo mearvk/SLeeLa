@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class LayerInstantiationException {
+class LayerInstantiationException extends RuntimeException {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,12 +77,12 @@ class LayerInstantiationException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public LayerInstantiationException(String msg, Any cause) { }
+  public LayerInstantiationException(String msg, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public LayerInstantiationException(Any cause) { }
+  public LayerInstantiationException(Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public LayerInstantiationException(String msg) { }
+  public LayerInstantiationException(String msg) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public LayerInstantiationException() { }
+  public LayerInstantiationException() { super("constructor"); }
   < ---- END java constructors ---- >
 }

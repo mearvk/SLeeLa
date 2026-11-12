@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class MenuItem {
+class MenuItem extends MenuComponent {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,11 +77,11 @@ class MenuItem {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public MenuItem(String label, Any s) { }
+  public MenuItem(String label, Any s) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public MenuItem(String label) { }
+  public MenuItem(String label) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public MenuItem() { }
+  public MenuItem() { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

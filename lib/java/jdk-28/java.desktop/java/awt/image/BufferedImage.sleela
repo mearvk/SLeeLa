@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class BufferedImage {
+class BufferedImage extends Image {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -94,11 +94,11 @@ class BufferedImage {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public BufferedImage(int width, int height, int imageType, Any cm) { }
+  public BufferedImage(int width, int height, int imageType, Any cm) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public BufferedImage(int width, int height, int imageType) { }
+  public BufferedImage(int width, int height, int imageType) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public BufferedImage(Any cm, Any raster, boolean isRasterPremultiplied, Any properties) { }
+  public BufferedImage(Any cm, Any raster, boolean isRasterPremultiplied, Any properties) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

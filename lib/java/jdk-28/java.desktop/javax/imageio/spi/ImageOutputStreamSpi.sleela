@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class ImageOutputStreamSpi {
+class ImageOutputStreamSpi extends IIOServiceProvider {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -84,7 +84,7 @@ class ImageOutputStreamSpi {
   @throwable("java.lang.UnsupportedOperationException")
   ImageOutputStreamSpi() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public ImageOutputStreamSpi(String vendorName, String version, Any outputClass) { }
+  public ImageOutputStreamSpi(String vendorName, String version, Any outputClass) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

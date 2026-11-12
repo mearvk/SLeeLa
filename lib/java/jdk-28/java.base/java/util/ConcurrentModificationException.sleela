@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class ConcurrentModificationException {
+class ConcurrentModificationException extends RuntimeException {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,12 +77,12 @@ class ConcurrentModificationException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ConcurrentModificationException(String message, Any cause) { }
+  public ConcurrentModificationException(String message, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public ConcurrentModificationException(Any cause) { }
+  public ConcurrentModificationException(Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public ConcurrentModificationException(String message) { }
+  public ConcurrentModificationException(String message) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public ConcurrentModificationException() { }
+  public ConcurrentModificationException() { super("constructor"); }
   < ---- END java constructors ---- >
 }

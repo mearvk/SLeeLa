@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class LinkedBlockingDeque {
+class LinkedBlockingDeque extends AbstractQueue {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,11 +77,11 @@ class LinkedBlockingDeque {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public LinkedBlockingDeque(Any c) { }
+  public LinkedBlockingDeque(Any c) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public LinkedBlockingDeque(int capacity) { }
+  public LinkedBlockingDeque(int capacity) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public LinkedBlockingDeque() { }
+  public LinkedBlockingDeque() { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

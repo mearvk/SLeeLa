@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class JTable {
+class JTable extends JComponent {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -108,17 +108,17 @@ class JTable {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JTable(Any dm, Any cm, Any sm) { }
+  public JTable(Any dm, Any cm, Any sm) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTable(int numRows, int numColumns) { }
+  public JTable(int numRows, int numColumns) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTable(Any rowData, Any columnNames) { }
+  public JTable(Any rowData, Any columnNames) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTable(Any[][] rowData, Any[] columnNames) { }
+  public JTable(Any[][] rowData, Any[] columnNames) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTable() { }
+  public JTable() { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTable(Any dm) { }
+  public JTable(Any dm) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

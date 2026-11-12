@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class PageRanges {
+class PageRanges extends SetOfIntegerSyntax {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,13 +77,13 @@ class PageRanges {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public PageRanges(int member) { }
+  public PageRanges(int member) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public PageRanges(int lowerBound, int upperBound) { }
+  public PageRanges(int lowerBound, int upperBound) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public PageRanges(int[][] members) { }
+  public PageRanges(int[][] members) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public PageRanges(String members) { }
+  public PageRanges(String members) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

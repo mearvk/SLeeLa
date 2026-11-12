@@ -8,7 +8,7 @@
 #sleela 3.0
 material;
 
-class FieldBorder {
+class FieldBorder extends AbstractBorder {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -85,7 +85,7 @@ class FieldBorder {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public FieldBorder(Any shadow, Any darkShadow, Any highlight, Any lightHighlight) { }
+  public FieldBorder(Any shadow, Any darkShadow, Any highlight, Any lightHighlight) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

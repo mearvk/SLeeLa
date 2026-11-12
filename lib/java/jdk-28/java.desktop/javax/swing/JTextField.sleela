@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class JTextField {
+class JTextField extends JTextComponent {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -81,15 +81,15 @@ class JTextField {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JTextField(Any doc, String text, int columns) { }
+  public JTextField(Any doc, String text, int columns) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTextField(String text, int columns) { }
+  public JTextField(String text, int columns) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTextField(int columns) { }
+  public JTextField(int columns) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTextField(String text) { }
+  public JTextField(String text) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTextField() { }
+  public JTextField() { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

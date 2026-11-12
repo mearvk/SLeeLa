@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class SQLFeatureNotSupportedException {
+class SQLFeatureNotSupportedException extends SQLNonTransientException {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,20 +77,20 @@ class SQLFeatureNotSupportedException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLFeatureNotSupportedException(Any cause) { }
+  public SQLFeatureNotSupportedException(Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLFeatureNotSupportedException(String reason, Any cause) { }
+  public SQLFeatureNotSupportedException(String reason, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLFeatureNotSupportedException(String reason, String SQLState, Any cause) { }
+  public SQLFeatureNotSupportedException(String reason, String SQLState, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLFeatureNotSupportedException(String reason, String SQLState, int vendorCode, Any cause) { }
+  public SQLFeatureNotSupportedException(String reason, String SQLState, int vendorCode, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLFeatureNotSupportedException() { }
+  public SQLFeatureNotSupportedException() { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLFeatureNotSupportedException(String reason) { }
+  public SQLFeatureNotSupportedException(String reason) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLFeatureNotSupportedException(String reason, String SQLState) { }
+  public SQLFeatureNotSupportedException(String reason, String SQLState) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLFeatureNotSupportedException(String reason, String SQLState, int vendorCode) { }
+  public SQLFeatureNotSupportedException(String reason, String SQLState, int vendorCode) { super("constructor"); }
   < ---- END java constructors ---- >
 }

@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class XMLSignatureException {
+class XMLSignatureException extends Exception {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -77,13 +77,13 @@ class XMLSignatureException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public XMLSignatureException(Any cause) { }
+  public XMLSignatureException(Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public XMLSignatureException(String message, Any cause) { }
+  public XMLSignatureException(String message, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public XMLSignatureException(String message) { }
+  public XMLSignatureException(String message) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
-  public XMLSignatureException() { }
+  public XMLSignatureException() { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
