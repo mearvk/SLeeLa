@@ -30,17 +30,23 @@ age of what I hold to the age of my single oldest lot?" — a book with many
 small, much-younger lots alongside one old one has a *low* age potency even
 though its term potency might already be partial.
 
-## A real gap, stated rather than hidden
+## The short-side gap, now closed
 
-`SLLongBook` has `isLongTerm`/`qtyLongTerm`; `SLShortBook` does not — it only
-has the three age queries (`oldestAge`, `weightedAgeFloor`, `qtyOlderThan`)
-that both books share. So `termPotencyBp` only works on a `SLLongBook` today;
-`agePotencyBp` is written to need nothing but the two age queries, so it
-could be extended to `SLShortBook` without changing its formula, but that
-extension is not built yet. This is recorded here rather than silently
-assumed away.
+`SLLongBook` had `isLongTerm`/`qtyLongTerm` from the start; `SLShortBook` did
+not — it only had the three age queries (`oldestAge`, `weightedAgeFloor`,
+`qtyOlderThan`) that both books share, so `termPotencyBp` could not be
+computed for a short position. `SLShortBook.isLongTerm`/`qtyLongTerm` were
+added (mirroring `SLLongBook`'s wording and behavior exactly), and
+`SLTermPotency`'s three methods are each overloaded — one `SLLongBook` form,
+one `SLShortBook` form, resolved by the SLeeLa 3.0 compiler from the argument
+type — so every formula in this folder now works on either side of a book.
 
-## The four entries
+## The six entries
+
+Entries 1–4 use `SLLongBook`; entries 5–6 are the short-side mirror, now that
+`SLShortBook` has `isLongTerm`/`qtyLongTerm` (added for this purpose) and
+`SLTermPotency`'s three methods are each overloaded for both book types
+(SLeeLa 3.0 overload resolution).
 
 | # | folder | what it shows |
 |---|--------|----------------|
@@ -48,6 +54,8 @@ assumed away.
 | 2 | [`02-fifo-sell-and-potency`](./02-fifo-sell-and-potency/TaPotency02FifoSellAndPotency.sleela) | selling exactly the oldest lot removes its whole contribution to both potencies in one exact before/after comparison |
 | 3 | [`03-honest-empty-and-invalid`](./03-honest-empty-and-invalid/TaPotency03HonestEmptyAndInvalid.sleela) | an empty book and a day before the book's own last action day are each answered honestly (-2 or -1), never guessed |
 | 4 | [`04-cross-checked-portfolios`](./04-cross-checked-portfolios/TaPotency04CrossCheckedPortfolios.sleela) | ten randomly generated portfolios checked against an independent Python model of both formulas |
+| 5 | [`05-short-side-mirror`](./05-short-side-mirror/TaPotency05ShortSideMirror.sleela) | the short-side overloads, exercised with entry 1's exact lot structure, confirming identical readings on either book shape |
+| 6 | [`06-short-side-honesty-and-cover`](./06-short-side-honesty-and-cover/TaPotency06ShortSideHonestyAndCover.sleela) | the short-side counterpart of entries 2 and 3: honest answers on an empty/invalid input, then a FIFO cover removing a lot's whole contribution |
 
 ## A worked example, by hand
 
@@ -63,11 +71,14 @@ age potency is weightedAgeFloor(500)/oldestAge(500) = 260/500 = 5,200 bp.
 ## Assurance
 
 Every entry prints `ok`/`FAIL` per check and ends `checks passed=N failed=0`.
-Expected values for all four entries were computed by an independent Python
+Expected values for all six entries were computed by an independent Python
 model of both formulas and compared with what SLeeLa printed; entry 4 does
 this across ten randomly generated portfolios rather than hand-picked ones.
-`test-suites/test-long-term-potencies.sh` runs all four and compares each
-with its `.expected.txt`.
+Entry 5 additionally checks that the short-side readings exactly match the
+long-side readings in entry 1 at the same lot sizes and ages, so the two
+overloads of each method are proven consistent with each other, not just
+each independently correct. `test-suites/test-long-term-potencies.sh` runs
+all six and compares each with its `.expected.txt`.
 
 ```
 bash test-suites/test-long-term-potencies.sh
@@ -78,13 +89,14 @@ change.
 
 ## Honest limits
 
-- `SLTermPotency` is a read-only view; it never mutates the `SLLongBook` it
-  is given.
-- Term potency has no short-side counterpart yet (see above).
+- `SLTermPotency` is a read-only view; it never mutates the book it is given.
 - `agePotencyBp` returns -1 for both a flat book and an invalid "today",
-  because the `SLLongBook.oldestAge` method it reads from does not itself
-  distinguish those two cases — this method does not invent a finer
-  distinction than its source data supports.
+  because the underlying `oldestAge` method it reads from (on either book)
+  does not itself distinguish those two cases — this method does not invent
+  a finer distinction than its source data supports.
+- There is no single, book-agnostic form of any method here: `SLLongBook`
+  and `SLShortBook` share no common supertype in this library, so each
+  method is a genuine overload pair, not one implementation reused.
 - The long-term threshold (365 days in the worked example) is a parameter the
   caller supplies, not a tax or regulatory rule; see the existing term-boundary
   discussion in [`ENGINEERING.md`](../../../trading-actions-on-verb/ENGINEERING.md).

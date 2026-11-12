@@ -305,6 +305,18 @@ class SLShortBook {
     return sum;
   }
 
+  < A lot is long term when it is held for MORE than threshold days. Mirrors >
+  < SLLongBook.isLongTerm exactly: added so a short position has the same >
+  < term vocabulary as a long one, which it previously lacked. >
+  boolean isLongTerm(int i, int today, int threshold) {
+    if (!validToday(today)) { return false; }
+    return today - lotDay[i] > threshold;
+  }
+
+  int qtyLongTerm(int today, int threshold) {
+    return qtyOlderThan(today, threshold);
+  }
+
   < ---- Invariants ---- >
   < 1 every lot has positive quantity and price; 2 lot days never decrease and >
   < never pass the book day; 3 count is within the 16-lot capacity; 4 shares >

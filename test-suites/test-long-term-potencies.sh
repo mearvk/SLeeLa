@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Assurance gate for lib/advantage/learner-vs-professional/courseware/long-term-potencies.
-#   1. four entry folders, each with a class that has main(), the Metadata
+#   1. six entry folders, each with a class that has main(), the Metadata
 #      block and an .expected.txt;
 #   2. each run reproduces its .expected.txt exactly;
 #   3. no run prints a FAIL line and every run ends with "failed=0".
@@ -15,7 +15,7 @@ bad() { echo "FAIL: $*" >&2; fail=1; }
 filter() { grep -v -e '^\[memory' -e '^\[security' -e '^\[defender' -e '^verification'; }
 
 entries=("$DIR"/[0-9][0-9]-*/)
-[ "${#entries[@]}" -eq 4 ] || bad "expected 4 entries, found ${#entries[@]}"
+[ "${#entries[@]}" -eq 6 ] || bad "expected 6 entries, found ${#entries[@]}"
 [ -f "$DIR/SLTermPotency.sleela" ] || bad "missing SLTermPotency.sleela"
 grep -q 'Descriptive metadata (version 1.11 nested-friendly accessors)' "$DIR/SLTermPotency.sleela" || bad "SLTermPotency lacks the Metadata block"
 

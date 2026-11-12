@@ -1,0 +1,22 @@
+== Entry 6: short-side honesty and a FIFO cover ==
+-- an empty (flat) short book has no share of anything, and no age --
+  ok   term potency on an empty short book = -2
+  ok   age potency on an empty short book = -1
+-- short, then ask about a day that has already passed --
+  short 10 @ 100 on day 50 : ok
+  ok   term potency asked for day 10 (before the book day, 50) = -1
+  ok   age potency asked for day 10 = -1
+-- now a FIFO cover test: two shorts, cover exactly the oldest --
+  short 40 @ 5000 on day 0 : ok
+  short 60 @ 5100 on day 400 : ok
+-- before the cover, on day 500 --
+  ok   term potency before = 4000
+  ok   age potency before = 5200
+-- cover exactly the oldest short (40 units) on day 500 --
+  cover 40 @ 4800 on day 500 : ok
+  ok   units still short = 60
+  ok   term potency after (the remaining short is not yet long term) = 0
+  ok   age potency after (one lot left, weighted age equals oldest age) = 10000
+  ok   the FIFO cover removed exactly the oldest short's long-term risk
+  ok   invariants hold on both books
+  checks passed=11 failed=0

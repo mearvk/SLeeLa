@@ -1254,8 +1254,16 @@
       "sha256": "89446257b11c4958d07eae11e7ce2f5afc24dc35f9c2bcb3dc5256000d0db276"
     },
     {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-term-potencies/05-short-side-mirror/TaPotency05ShortSideMirror.sleela",
+      "sha256": "fa3268bc8b28c13ac127e86b6e557ffc6d814b104dae3d973f67e74a8a167605"
+    },
+    {
+      "path": "lib/advantage/learner-vs-professional/courseware/long-term-potencies/06-short-side-honesty-and-cover/TaPotency06ShortSideHonestyAndCover.sleela",
+      "sha256": "2cc67a98a42fe489f60b5592ee2b0bca19097c27792492d88d161a112932f043"
+    },
+    {
       "path": "lib/advantage/learner-vs-professional/courseware/long-term-potencies/SLTermPotency.sleela",
-      "sha256": "888e208f68bdba7d736e214d0716cfe28d2d76972ed4cae400abc308fdcce037"
+      "sha256": "9005d374a63e23317d7bd6a7d5943d7b0be5742f10b54ff5a847d9111777cfee"
     },
     {
       "path": "lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela",
@@ -1603,7 +1611,7 @@
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/SLShortBook.sleela",
-      "sha256": "b8b4026cb4cd8653576c2bd7b41eec88e05448f5c6b1899f89b3f5777a21dc19"
+      "sha256": "3f4dbfba551167a7984ce1a145dadebcca487313197588f0475caccad3341bc7"
     },
     {
       "path": "lib/advantage/trading-actions-on-verb/SLShortMargin.sleela",

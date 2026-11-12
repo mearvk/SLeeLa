@@ -1,6 +1,6 @@
 << lib/advantage/learner-vs-professional/courseware/long-term-potencies/SLTermPotency.sleela
    SLeeLa courseware lesson.
-   Definition: Defines 'potency' precisely as two exact ratios over a long-only book's existing age data: term potency (the basis-point share of held units that have crossed the long-term threshold) and age potency (how close the weighted-average age is to the oldest lot's age), both in basis points so no cent of precision is rounded away. >>
+   Definition: Defines 'potency' precisely as two exact ratios over a book's existing age data, overloaded for both SLLongBook and SLShortBook: term potency (the basis-point share of held/short units that have crossed the long-term threshold) and age potency (how close the weighted-average age is to the oldest lot's age), both in basis points so no cent of precision is rounded away. >>
 #sleela 3.0
 material;
 artifact;
@@ -22,13 +22,19 @@ gasoline;
 <     as old as the oldest lot (one lot, or several lots bought the same >
 <     day); a low value means most units are much younger than the oldest. >
 < >
-< Both are read-only views over an existing SLLongBook; this class never >
-< mutates the book, and never invents a number the book does not already >
-< expose via isLongTerm/qtyLongTerm/oldestAge/weightedAgeFloor/totalQty. >
-< SHORT-SIDE GAP, stated plainly: SLShortBook has oldestAge/weightedAgeFloor/ >
-< qtyOlderThan but NO isLongTerm/qtyLongTerm, so termPotencyBp below has no >
-< short-side counterpart yet; agePotencyBp works for either book shape >
-< because it only needs the two age queries both books already share. >
+< Both are read-only views over an existing book; this class never mutates >
+< the book, and never invents a number the book does not already expose via >
+< isLongTerm/qtyLongTerm/oldestAge/weightedAgeFloor/totalQty (or totalShort >
+< on the short side). Every method is OVERLOADED on book type (SLeeLa 3.0 >
+< overload resolution: see SLEELA.syntax section 40), so termPotencyBp, >
+< agePotencyBp and atLeastHalfLongTerm each have one SLLongBook form and one >
+< SLShortBook form, resolved by the compiler from the argument type. There is >
+< no third, book-agnostic form, because SLLongBook and SLShortBook share no >
+< common supertype in this library to write such a method against. >
+< HISTORY: SLShortBook originally had oldestAge/weightedAgeFloor/qtyOlderThan >
+< but NO isLongTerm/qtyLongTerm, so an earlier version of this class had no >
+< short-side termPotencyBp. SLShortBook.isLongTerm/qtyLongTerm were added >
+< (mirroring SLLongBook exactly) specifically so this gap could be closed. >
 class SLTermPotency {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. A worker-class
@@ -103,6 +109,29 @@ class SLTermPotency {
   < threshold on 5000). Returns false on any invalid/empty input, never a >
   < crash or a guess. >
   boolean atLeastHalfLongTerm(SLLongBook book, int today, int threshold) {
+    int t = termPotencyBp(book, today, threshold);
+    return t >= 5000;
+  }
+
+  < ---- Short-side overloads: identical formulas, read from SLShortBook. ---- >
+
+  int termPotencyBp(SLShortBook book, int today, int threshold) {
+    int held = book.totalShort();
+    if (held == 0) { return 0 - 2; }
+    int longTerm = book.qtyLongTerm(today, threshold);
+    if (longTerm < 0) { return 0 - 1; }
+    return longTerm * 10000 / held;
+  }
+
+  int agePotencyBp(SLShortBook book, int today) {
+    int old = book.oldestAge(today);
+    if (old < 0) { return 0 - 1; }
+    if (old == 0) { return 10000; }
+    int wAge = book.weightedAgeFloor(today);
+    return wAge * 10000 / old;
+  }
+
+  boolean atLeastHalfLongTerm(SLShortBook book, int today, int threshold) {
     int t = termPotencyBp(book, today, threshold);
     return t >= 5000;
   }

@@ -1,0 +1,21 @@
+== Entry 5: short-side term and age potency, mirroring entry 1 ==
+  short 40 @ 5000 on day 0 : ok
+-- day 365, before the second short: the one lot is exactly 365 days old --
+  ok   term potency, threshold 365 = 0
+  ok   age potency (one lot) = 10000
+  ok   not yet long term at exactly 365 days
+-- day 400: add a second, younger short --
+  short 60 @ 5100 on day 400 : ok
+-- day 500 (the day-0 short, 40 units, has crossed 365 days; the day-400 short has not) --
+  ok   term potency, threshold 365 = 4000
+  ok   age potency = 5200
+  ok   still not half (40 of 100 units)
+-- day 900 (both shorts have crossed 365 days: full term potency) --
+  ok   term potency, threshold 365 = 10000
+  ok   age potency = 7333
+  ok   now fully long term
+  ok   invariants hold
+-- both readings exactly match entry 1's long-side readings at the same ages --
+  ok   term potency matches the long-side value at day 500
+  ok   age potency matches the long-side value at day 500
+  checks passed=12 failed=0

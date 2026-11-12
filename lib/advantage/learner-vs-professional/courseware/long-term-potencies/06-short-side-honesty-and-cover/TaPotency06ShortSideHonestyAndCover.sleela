@@ -1,0 +1,97 @@
+<< lib/advantage/learner-vs-professional/courseware/long-term-potencies/06-short-side-honesty-and-cover/TaPotency06ShortSideHonestyAndCover.sleela
+   SLeeLa courseware lesson.
+   Definition: Entry 6: honest -1/-2 answers for an empty short book and an invalid day, then a FIFO cover removing the oldest short's whole contribution to both potencies, mirroring entries 2 and 3 on the short side. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Entry 6 of 6, long-term-potencies. Confirms the short-side overloads are >
+< exactly as honest as the long-side ones (no guessing on an empty book or >
+< an invalid day), then shows a FIFO cover of the entire oldest short lot >
+< removing that lot's contribution to both potencies, the short-side >
+< counterpart of entry 2. >
+class TaPotency06ShortSideHonestyAndCover {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39356;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+  void expect(String label, int got, int want) {
+    if (got == want) { print("  ok   " + label + " = " + got); passed = passed + 1; }
+    else { print("  FAIL " + label + " got " + got + " want " + want); failed = failed + 1; }
+  }
+  void expectTrue(String label, boolean got) {
+    if (got) { print("  ok   " + label); passed = passed + 1; }
+    else { print("  FAIL " + label); failed = failed + 1; }
+  }
+  void summary() { print("  checks passed=" + passed + " failed=" + failed); }
+  void act(SLShortBook b, String text, int code) { print("  " + text + " : " + b.reason(code)); }
+
+  void main() {
+    SLShortBook flat = new SLShortBook();
+    SLTermPotency p = new SLTermPotency();
+    print("== Entry 6: short-side honesty and a FIFO cover ==");
+    print("-- an empty (flat) short book has no share of anything, and no age --");
+    expect("term potency on an empty short book", p.termPotencyBp(flat, 10, 365), 0 - 2);
+    expect("age potency on an empty short book", p.agePotencyBp(flat, 10), 0 - 1);
+    print("-- short, then ask about a day that has already passed --");
+    act(flat, "short 10 @ 100 on day 50", flat.shortSell(50, 10, 100, 0));
+    expect("term potency asked for day 10 (before the book day, 50)", p.termPotencyBp(flat, 10, 365), 0 - 1);
+    expect("age potency asked for day 10", p.agePotencyBp(flat, 10), 0 - 1);
+    print("-- now a FIFO cover test: two shorts, cover exactly the oldest --");
+    SLShortBook book = new SLShortBook();
+    act(book, "short 40 @ 5000 on day 0", book.shortSell(0, 40, 5000, 0));
+    act(book, "short 60 @ 5100 on day 400", book.shortSell(400, 60, 5100, 0));
+    print("-- before the cover, on day 500 --");
+    expect("term potency before", p.termPotencyBp(book, 500, 365), 4000);
+    expect("age potency before", p.agePotencyBp(book, 500), 5200);
+    print("-- cover exactly the oldest short (40 units) on day 500 --");
+    act(book, "cover 40 @ 4800 on day 500", book.cover(500, 40, 4800, 0));
+    expect("units still short", book.totalShort(), 60);
+    expect("term potency after (the remaining short is not yet long term)", p.termPotencyBp(book, 500, 365), 0);
+    expect("age potency after (one lot left, weighted age equals oldest age)", p.agePotencyBp(book, 500), 10000);
+    expectTrue("the FIFO cover removed exactly the oldest short's long-term risk", p.termPotencyBp(book, 500, 365) == 0);
+    expectTrue("invariants hold on both books", flat.invariantsHold() && book.invariantsHold());
+    summary();
+  }
+}
