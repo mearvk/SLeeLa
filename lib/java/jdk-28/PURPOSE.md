@@ -93,14 +93,34 @@ Statuses are taken from `JDK28-PROCEDURAL-IMPLEMENTATION.md` (2026-11-10) and
    the SLeeLa language definition (the chain is walked by the language, not by
    translated code). The translator therefore emits one root-directed `super`
    per constructor and never a hand-written chain.
-3. **Parent and child are a doubly linked list.** Every instance holds a
-   reference to its parent and to its child, so the lineage `A <-> B <-> C <->
-   D` can be walked in both directions from any member. This replaces the
-   ad hoc inherited-state initialization noted in rows 7 and 9.
-4. **Open items for rows 7–9:** where the two links live (VM struct header via
-   `slvm_set_struct_parent`, or two declared fields; the 64-field class cap
-   favors the header), and how a child is attached when `A` is constructed
-   (at `new A`, with `B`/`C` created implicitly, or lazily).
+3. **`Sleela.home` is the implied lineage structure (assumed for now).**
+   SLeeLa provides an implied static structure, `Sleela.home`, on every class.
+   It is the bean setter for the lineage links. The translator never declares
+   parent or child fields; they become available whenever a lineage keyword
+   (`extends`, `super`) is used. The syntax definition creates the structure at
+   the time of the static reference, at compile time and again at run time.
+4. **Reading the links.** For `A extends B extends C extends D`:
+
+   | Expression (in `A`) | Meaning |
+   |---|---|
+   | `Sleela.home.parent` | `B`, the immediate parent |
+   | `Sleela.home.child` | The SLeeLa VM. The VM links to `A` and `A` links back to the VM, so the most-derived class is closed by the VM |
+   | `Sleela.home.parents("-")` | One level up: `B` |
+   | `Sleela.home.parents("--")` | Two levels up: `C` |
+   | `Sleela.home.parents("---")` | Three levels up: `D`, the root. Each `-` is one level |
+
+   From `B`, `Sleela.home.child` is `A`; from `D`, it is `C`. The list is
+   therefore `VM <-> A <-> B <-> C <-> D`, walkable both ways from any member.
+5. **Constructor rule.** `super("constructor")` in `A` is
+   `Sleela.home.parents("---")`: it addresses the root `D` directly. `B` and
+   `C` are filled in by the language definition, not by translated code.
+6. **Open items (not decided; left as Gap in rows 7–9):**
+   - what `D`'s `Sleela.home.parent` is (null, or `java.lang.Object`);
+   - what `parents("")` (zero levels) returns, and what happens when there are
+     more dashes than ancestors (the root, null, or an error);
+   - whether `Sleela` is reserved so a translated Java identifier named `Sleela`
+     or `home` must be renamed (row 27);
+   - how the setter form is written, for example `Sleela.home.parent = x`.
 
 ## 2. Value and library conventions the translator must follow today
 
