@@ -94,11 +94,40 @@ and in the folder's own
 | `SLDailyCapBook` (courseware) | the same as `SLLongBook`, plus a fixed 2,000-actions-per-day teaching rule | a real exchange's or regulator's throughput limit |
 | `SLBatchReturn` | the exact total return over a stated batch of N trades (idealized win-rate/size inputs, or an explicit per-trade list), with no compounding, plus the exact per-trade average a stated total implies | whether any real trader achieves the stated inputs — see §6.1 |
 
-Checked by 26 use cases (`test-suites/test-trading-actions.sh`) plus 17
-courseware entries (`test-suites/test-long-medium-averages.sh`): self-checks,
-an independent Python oracle, differential tests against two independent
-shadow implementations, and deliberately broken copies confirmed to fail the
-gate before being fixed.
+Checked by 27 use cases (`test-suites/test-trading-actions.sh`) plus 20
+courseware entries in `long-medium-averages`
+(`test-suites/test-long-medium-averages.sh`): self-checks, an independent
+Python oracle, differential tests against independent shadow
+implementations, and deliberately broken copies confirmed to fail the gate
+before being fixed. A later general code-quality review (not driven by any
+use case) found and fixed two real overflow bugs in `SLBatchReturn` itself —
+a magnitude-based rejection sentinel that could equal a real, legitimate
+large-batch loss, and a basis-point conversion that still overflowed after
+that fix — both confirmed genuine by reverting them and watching new
+boundary-case regression tests fail with the original symptom; see
+[`ASSURANCE.md`'s second review log](../lib/advantage/trading-actions-on-verb/ASSURANCE.md#review-log-general-code-quality-pass).
+
+### 4.1 Long-term potencies (`lib/advantage/learner-vs-professional/courseware/long-term-potencies/`)
+
+A small courseware-only class, `SLTermPotency`, that **defines** a term not
+used anywhere else in this repository rather than letting it float free of a
+computed meaning. Two basis-point ratios, each read-only over an existing
+`SLLongBook` or `SLShortBook` (overloaded for both, resolved by argument
+type):
+
+| metric | formula | reads |
+|---|---|---|
+| **term potency** | (units held/short that are long term) / (units held/short), in bp | `qtyLongTerm` / `totalQty` or `totalShort` |
+| **age potency** | `weightedAgeFloor` / `oldestAge`, in bp | both age queries, shared by either book |
+
+`SLShortBook.isLongTerm`/`qtyLongTerm` did not exist until this class needed
+them on the short side; they were added mirroring `SLLongBook`'s wording and
+behavior exactly, and checked to produce identical readings to the long side
+at identical lot structure and ages (entry 5 of 6 in that folder) before
+being trusted. Checked by 6 entries
+(`test-suites/test-long-term-potencies.sh`): self-checks, an independent
+Python oracle (including ten randomly generated portfolios in entry 4), and
+the long/short cross-check above.
 
 ## 5. Grading, not payout: `SLSophisticationCircuit` (`lib/advantage/grading/`)
 
@@ -215,8 +244,10 @@ left to extrapolate in the first place.
   [`SUPPORTED.MODELS.md`](./SUPPORTED.MODELS.md).
 - **Want to run something?** `advantage/trading/trading_demo.cpp` (C++),
   `lib/advantage/trading/trading-demo.sleela` (SLeeLa port),
-  `lib/advantage/trading-actions-on-verb/*/*.sleela` (position books and
-  margin, run any of the 26 use cases directly).
+  `lib/advantage/trading-actions-on-verb/*/*.sleela` (position books, margin
+  and batch returns, run any of the 27 use cases directly), or
+  `lib/advantage/learner-vs-professional/courseware/long-term-potencies/*/*.sleela`
+  (term and age potency, 6 entries).
 - **Want the courseware version?**
   [`lib/advantage/learner-vs-professional/README.md`](../lib/advantage/learner-vs-professional/README.md).
 - **Want the honest limits in one place?** §5 of
