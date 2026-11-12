@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 18095
+library-source-files: 18096
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 18179
+total-symbol-records: 18180
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -17712,6 +17712,7 @@ security	SLHash.sleela	lib/security/SLHash.sleela	source
 security	SLPermission.sleela	lib/security/SLPermission.sleela	source
 security	SLRandom.sleela	lib/security/SLRandom.sleela	source
 security	SLSecureBuffer.sleela	lib/security/SLSecureBuffer.sleela	source
+security	Security2.sleela	lib/security/Security2.sleela	source
 server-edition	SLPackage.sleela	lib/server-edition/SLPackage.sleela	facade
 signal-processing	SLSignalComplex.sleela	lib/signal-processing/SLSignalComplex.sleela	source
 signal-processing	SLSignalComplexSample.sleela	lib/signal-processing/SLSignalComplexSample.sleela	source

@@ -72082,6 +72082,10 @@
       "sha256": "5120d658488fcdc8703e1692d896e4146a825a0cdf6bd3c6b563b23f2af8c51f"
     },
     {
+      "path": "lib/security/Security2.sleela",
+      "sha256": "8db7d050535f87a9e0fa148bc3f860764d41e952ed7b89e4178afe9be4b71107"
+    },
+    {
       "path": "lib/server-edition/SLPackage.sleela",
       "sha256": "747dab493f3ce1d8af4e7c6948246168fabb11b516d9457ed8930f8a5e68897b"
     },

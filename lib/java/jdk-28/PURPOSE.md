@@ -130,6 +130,11 @@ Statuses are taken from `JDK28-PROCEDURAL-IMPLEMENTATION.md` (2026-11-10) and
    - `SleelaHome` is included statically in every class, with no import. It is
      inert (`vm` and `nearestDescendant` are null) until the VM loads a file or
      files; loading makes it live. A translator therefore emits no setup code.
+   - During VM boot, init and start the VM-end references (`child` of the
+     most-derived class, `parent` of the root, `parents("")`) point to
+     `lib/security/Security2.sleela`, which sits above the VM in colocated
+     memory; they point to the VM once it is fully initialized
+     (`SLEELA.syntax` section 42.6).
    - A link is set left to right: `B -> Sleela.home.parent`.
 
 ## 2. Value and library conventions the translator must follow today

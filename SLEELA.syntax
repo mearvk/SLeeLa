@@ -3039,3 +3039,15 @@ A link is set left to right, value first:
 `super("constructor")` in a constructor of `A` is `Sleela.home.parents("---")`
 for a three-ancestor lineage: it addresses the backmost (root) class. The
 intermediate classes are initialized by the language, not by source code.
+
+### 42.6 Security2 above the VM during boot
+
+`Security2` (`/lib/security/Security2.sleela`) sits above the VM in colocated
+memory. The VM places it when it boots and it follows the VM through init and
+start, with phases 1 = booting, 2 = initializing, 3 = started, 4 = ready.
+Until the VM is fully initialized (phase 4) the references that would reach the
+VM (`Sleela.home.child` of the most-derived class, `Sleela.home.parent` of the
+root, `Sleela.home.parents("")`, and the `Sleela.VM` / `Sleela.System` /
+`Sleela.OS` names) point to `Security2`. At phase 4 they are re-pointed to the
+VM. Status: specified; `Security2` exists as a library class, the compiler and
+VM do not yet use it.
