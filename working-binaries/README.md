@@ -50,7 +50,7 @@ Rebuilt 2026-11-12 (`sleela` only) for the /lib loader rule that treats
 `lib/java/jdk-28/` as a reference tier (`impl/frontend/driver.cpp`), so its
 files never make a real `lib/java/java/...` class ambiguous.
 Rebuilt 2026-11-12 (`sleela` and `nordshrift`) for the `Sleela.home` lineage
-(SLEELA.syntax section 42: `parent`, `child`, `root`, `parents("---")`, `->`,
+(SLEELA.syntax section 42: `parent`, `child`, `root`, `parents("---")` or `parents("...")`, `->`,
 `super("constructor")`, `Sleela.VM|System|OS`, and the `Security2` boot).
 Reported versions:
 
@@ -60,8 +60,8 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-54f1bf1871683df0a06e46ef84170aa9079e2966de1a8c53fe17f99328fb2cab  sleela
-0725ce669763fcd43d6aa51d15a47ae9114d0d289d3ade89f2f0a8e7d0ea060b  nordshrift
+b9820a36827968450b779507f960b7293619c7ae71a2cd5958a5fe41c75a5d8e  sleela
+2d5bd6f4b5c93621c0d5d9e802a76996aa0d8b6cbfc10389a418550c224c7fb9  nordshrift
 ```
 
 ---

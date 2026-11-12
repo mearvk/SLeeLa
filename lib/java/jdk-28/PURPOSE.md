@@ -108,6 +108,7 @@ Statuses are taken from `JDK28-PROCEDURAL-IMPLEMENTATION.md` (2026-11-10) and
    | `Sleela.home.parents("-")` | One level up: `B` |
    | `Sleela.home.parents("--")` | Two levels up: `C` |
    | `Sleela.home.parents("---")` | Three levels up: `D`, the root. Each `-` is one level |
+   | `Sleela.home.parents("...")` | Same as `"---"`: each `.` is one level, like `-` |
 
    From `B`, `Sleela.home.child` is `A`; from `D`, it is `C`. The list is
    therefore `VM <-> A <-> B <-> C <-> D`, walkable both ways from any member.

@@ -19,6 +19,9 @@ class A extends B {
     print(Sleela.home.parents("---"));
     print(Sleela.home.parents("----"));
     print(Sleela.home.parents(""));
+    print(Sleela.home.parents("."));
+    print(Sleela.home.parents("..."));
+    print(Sleela.home.parents("-."));
     print(Sleela.home.root);
     print(Sleela.VM);
     print(Sleela.OS);

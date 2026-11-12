@@ -14,7 +14,7 @@ check() {
   local actual; actual="$(run "$1")"
   if [[ "$actual" != "$2" ]]; then printf '%s failed\nExpected:\n%s\nActual:\n%s\n' "$1" "$2" "$actual" >&2; exit 1; fi
 }
-check impl/tests/lineage/lineage.sleela $'B\nSleela.System\nB\nC\nD\nD\nSleela.System\nD\nSleela.System\nSleela.System\nD parent:\nSleela.System\nD child:\nC\nC child:\nB\nB child:\nA\nD'
+check impl/tests/lineage/lineage.sleela $'B\nSleela.System\nB\nC\nD\nD\nSleela.System\nB\nD\nC\nD\nSleela.System\nSleela.System\nD parent:\nSleela.System\nD child:\nC\nC child:\nB\nB child:\nA\nD'
 check impl/tests/lineage/boot.sleela $'4\ntrue\ntrue\nP\nSleela.System\nInternational Guidelines 2.0 (none)'
 check impl/tests/lineage/jdk28_chain.sleela $'QFilterInputStream\nQInputStream\nQInputStream\nSleela.System\nQFilterInputStream\n0'
 printf 'lineage regression: PASS\n'

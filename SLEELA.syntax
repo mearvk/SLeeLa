@@ -3007,6 +3007,7 @@ For `class A extends B`, `class B extends C`, `class C extends D`:
 | `Sleela.home.parents("-")` | one level up (`B` from `A`); each `-` is one level |
 | `Sleela.home.parents("---")` in `A` | `D` |
 | `Sleela.home.parents("")` | `Sleela.System` |
+| `Sleela.home.parents("...")` in `A` | `D`; `.` is the same as `-`, one level each, and they may be mixed (`"-."` is two levels) |
 
 The VM links to the most-derived class and the root links back to the VM, so
 the lineage is a cycle of references: `VM -> A -> B -> C -> D -> VM`, with
@@ -3070,7 +3071,7 @@ VM. Status: implemented as the boot sequence in 42.7.
   loaded, `child` is the first loaded class that extends this one, `root` is the
   backmost loaded ancestor.
 - **`parents("---")`** is resolved at compile time; the argument must be a string
-  literal of dashes. It does not see later `->` changes.
+  literal of dashes and/or dots. It does not see later `->` changes.
 - **`->`** stores into the link; a bare capitalised name on the left is a class
   name, anything else is an expression.
 - **`super(...)`** as a statement stores the root class name in `__lin_root`;

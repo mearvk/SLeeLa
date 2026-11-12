@@ -914,9 +914,9 @@ ExprP Parser::parsePrimary(){
             if(m=="root")   return parsePostfix(std::make_unique<VarExpr>("__lin_root"));
             if(m=="security") return parsePostfix(std::make_unique<VarExpr>("__lin_security"));
             if(m=="parents"){
-                expect(Tok::LParen,"'(' after parents"); if(!check(Tok::Str)) error("Sleela.home.parents takes a string of dashes, for example \"---\"");
+                expect(Tok::LParen,"'(' after parents"); if(!check(Tok::Str)) error("Sleela.home.parents takes a string of dashes or dots, for example \"---\" or \"...\"");
                 std::string d=cur().text; i_++; expect(Tok::RParen,"')'");
-                for(char ch:d) if(ch!='-') error("Sleela.home.parents takes only dashes; each - is one level up");
+                for(char ch:d) if(ch!='-'&&ch!='.') error("Sleela.home.parents takes only dashes or dots; each - or . is one level up");
                 return parsePostfix(std::make_unique<LineageExpr>(LineageExpr::Parents,(int)d.size()));
             }
             error("Sleela.home."+m+" is not defined; expected parent, child, root or parents");
