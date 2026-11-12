@@ -145,7 +145,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; java</div>
 <h1>Package <code>java</code></h1>
-<div class="lead">This package contains <strong>14943</strong> source unit(s) defining <strong>14943</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>14946</strong> source unit(s) defining <strong>14946</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="aboutevent">AboutEvent <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/jdk-28/java.desktop/java/awt/desktop/AboutEvent.sleela)</span></h2>
 <div data-u="aboutevent aboutevent">
@@ -240651,6 +240651,43 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="sljavabits">SLJavaBits <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/support/SLJavaBits.sleela)</span></h2>
+<div data-u="sljavabits sljavabits">
+<h3 id="SLJavaBits">SLJavaBits <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>lo</code></td><td><span class="sig">static long lo(long v)</span></td><td class="desc">the unsigned low and high 32-bit halves of a signed long, and the inverse</td></tr>
+<tr><td><code>hi</code></td><td><span class="sig">static long hi(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>make</code></td><td><span class="sig">static long make(long hiUnsigned, long loUnsigned)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bit</code></td><td><span class="sig">static long bit(long a, long b, int op)</span></td><td class="desc">op 0 = and, 1 = or, 2 = xor, on two unsigned 32-bit values</td></tr>
+<tr><td><code>and32</code></td><td><span class="sig">static long and32(long a, long b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>or32</code></td><td><span class="sig">static long or32(long a, long b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>xor32</code></td><td><span class="sig">static long xor32(long a, long b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>not32</code></td><td><span class="sig">static long not32(long a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rotl32</code></td><td><span class="sig">static long rotl32(long x, int n)</span></td><td class="desc">rotate an unsigned 32-bit value left by n bits (0 .. 31)</td></tr>
+<tr><td><code>mod</code></td><td><span class="sig">static long mod(long x, long m)</span></td><td class="desc">x modulo m, always in 0 .. m-1 (Java x % m can be negative)</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sljavahex">SLJavaHex <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/support/SLJavaHex.sleela)</span></h2>
+<div data-u="sljavahex sljavahex">
+<h3 id="SLJavaHex">SLJavaHex <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>hex</code></td><td><span class="sig">static String hex(long u, int width)</span></td><td class="desc">lower-case hex digits of an unsigned value, always exactly width digits</td></tr>
+<tr><td><code>digit</code></td><td><span class="sig">static long digit(int c)</span></td><td class="desc">value of one hex digit character (0-9, a-f, A-F), or -1</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sljavamd5">SLJavaMd5 <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/support/SLJavaMd5.sleela)</span></h2>
+<div data-u="sljavamd5 sljavamd5">
+<h3 id="SLJavaMd5">SLJavaMd5 <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>digest</code></td><td><span class="sig">static int[] digest(byte[] data)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slpackage">SLPackage <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/SLPackage.sleela)</span></h2>
 <div data-u="slpackage slpackage">
 <h3 id="SLPackage">SLPackage <span class="pill">class</span></h3>
@@ -253671,9 +253708,11 @@
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType = &quot;java.util.StringTokenizer&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>heldMoreTokens</code></td><td><span class="sig">boolean heldMoreTokens</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>heldNextToken</code></td><td><span class="sig">String heldNextToken</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>heldMoreElements</code></td><td><span class="sig">boolean heldMoreElements</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>text</code></td><td><span class="sig">String text</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>delimiters</code></td><td><span class="sig">String delimiters</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>currentPosition</code></td><td><span class="sig">int currentPosition</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxPosition</code></td><td><span class="sig">int maxPosition</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>retDelims</code></td><td><span class="sig">boolean retDelims</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -253682,9 +253721,12 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>StringTokenizer</code></td><td><span class="sig">public StringTokenizer(java.lang.String str)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>StringTokenizer</code></td><td><span class="sig">public StringTokenizer(java.lang.String str, java.lang.String delim)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>StringTokenizer</code></td><td><span class="sig">public StringTokenizer(java.lang.String str, java.lang.String delim, boolean returnDelims)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>StringTokenizer</code></td><td><span class="sig">public StringTokenizer(java.lang.String str, java.lang.String delim)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>StringTokenizer</code></td><td><span class="sig">public StringTokenizer(java.lang.String str)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isDelimiter</code></td><td><span class="sig">boolean isDelimiter(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>skipDelimiters</code></td><td><span class="sig">int skipDelimiters(int start)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>scanToken</code></td><td><span class="sig">int scanToken(int start)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="stringutf16">StringUTF16 <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/jdk-25/java/lang/StringUTF16.sleela)</span></h2>
@@ -283692,19 +283734,9 @@
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>UUID</code></td><td><span class="sig">public UUID(long mostSigBits, long leastSigBits)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>slLo</code></td><td><span class="sig">static long slLo(long v)</span></td><td class="desc">the unsigned high and low 32-bit halves of a long, and the inverse</td></tr>
-<tr><td><code>slHi</code></td><td><span class="sig">static long slHi(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>slMake</code></td><td><span class="sig">static long slMake(long hiUnsigned, long loUnsigned)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>slBit</code></td><td><span class="sig">static long slBit(long a, long b, int op)</span></td><td class="desc">32-bit and, or, xor on unsigned values: op 0 = and, 1 = or, 2 = xor</td></tr>
-<tr><td><code>slNot</code></td><td><span class="sig">static long slNot(long a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>slRotl</code></td><td><span class="sig">static long slRotl(long x, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>slHex</code></td><td><span class="sig">static String slHex(long u, int width)</span></td><td class="desc">lower-case hex digits of an unsigned value, always exactly width digits</td></tr>
 <tr><td><code>slSegment</code></td><td><span class="sig">static String slSegment(String s, int begin, int end)</span></td><td class="desc">Long.parseLong(s, begin, end, 16) with its exact exception messages</td></tr>
 <tr><td><code>slBadIndex</code></td><td><span class="sig">static NumberFormatException slBadIndex(String s, int begin, int end, int at)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>slDigit</code></td><td><span class="sig">static long slDigit(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>slParseHex</code></td><td><span class="sig">static long slParseHex(String s, int begin, int end)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>slMod</code></td><td><span class="sig">static long slMod(long x, long m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>slMd5</code></td><td><span class="sig">static int[] slMd5(byte[] data)</span></td><td class="desc">MD5 (RFC 1321) of a byte array: returns the 16 digest bytes as 0..255</td></tr>
 </table>
 </div>
 <h2 class="section" data-u="validator">Validator <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/jdk-28/java.xml/javax/xml/validation/Validator.sleela)</span></h2>
@@ -296743,7 +296775,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-12 15:21 UTC.
+<code>/lib</code> tree on 2026-11-12 15:52 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
