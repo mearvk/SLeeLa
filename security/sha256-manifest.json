@@ -38155,7 +38155,7 @@
     },
     {
       "path": "lib/java/jdk-25/java/util/UUID.sleela",
-      "sha256": "a9669d4528a904f5d9feddf09fc4173b14cef44b7a93b2ee31524a4fdf9c2ad4"
+      "sha256": "9d0d7d1f241f2ee1f367cefee2cae128316b1fc0b7f92c8d390ce1f91fedc5a3"
     },
     {
       "path": "lib/java/jdk-25/java/util/UnknownFormatConversionException.sleela",
@@ -69020,6 +69020,18 @@
     {
       "path": "lib/java/jdk-28/jdk.xml.dom/org/w3c/dom/xpath/XPathResult.sleela",
       "sha256": "7140eb01c2be72c88e05f8f06c4276d2a40e215cc96601b9d1ce9c540de9d997"
+    },
+    {
+      "path": "lib/java/support/SLJavaBits.sleela",
+      "sha256": "cf9578c50b1e1aa22cad060e270d83cbc5cd36f726b3b04ab1523887a6b3acfe"
+    },
+    {
+      "path": "lib/java/support/SLJavaHex.sleela",
+      "sha256": "0f49ef72137b932b5b5c5f6363db53cd797da4e3258a37eb9feadf3df94cb70e"
+    },
+    {
+      "path": "lib/java/support/SLJavaMd5.sleela",
+      "sha256": "3d20363f30eeca492ef6b530e8de449e5032e37613fbec3b76b209d0bff0e98d"
     },
     {
       "path": "lib/java28/SLPackage.sleela",

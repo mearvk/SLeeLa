@@ -292,6 +292,12 @@ python3 tools/generate-sha256-manifest.py --root . --output security/sha256-mani
 
 ---
 
+### 8a. Shared helpers
+
+`lib/java/support/` (`SLJavaBits`, `SLJavaHex`, `SLJavaMd5`) holds code several
+Java types need, so none carries a private copy. `UUID` uses it; `MessageDigest`,
+`Base64`, `HexFormat` and the CRC classes should too. See `support/README.md`.
+
 ## 9. Suggested next steps
 
 1. **Rename the hand-implemented overload suffixes to the Java names** now
