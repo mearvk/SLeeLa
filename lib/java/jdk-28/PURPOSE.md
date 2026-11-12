@@ -114,13 +114,15 @@ Statuses are taken from `JDK28-PROCEDURAL-IMPLEMENTATION.md` (2026-11-10) and
 5. **Constructor rule.** `super("constructor")` in `A` is
    `Sleela.home.parents("---")`: it addresses the root `D` directly. `B` and
    `C` are filled in by the language definition, not by translated code.
-6. **Open items (not decided; left as Gap in rows 7–9):**
-   - what `D`'s `Sleela.home.parent` is (null, or `java.lang.Object`);
-   - what `parents("")` (zero levels) returns, and what happens when there are
-     more dashes than ancestors (the root, null, or an error);
-   - whether `Sleela` is reserved so a translated Java identifier named `Sleela`
-     or `home` must be renamed (row 27);
-   - how the setter form is written, for example `Sleela.home.parent = x`.
+6. **Decided answers (normative text: `SLEELA.syntax` section 42, status
+   specified, not yet implemented in the compiler/VM):**
+   - `D`'s `Sleela.home.parent` is `Sleela.System`, the VM, so the lineage is
+     a cycle of references: `VM -> A -> B -> C -> D -> VM`.
+   - `parents("")` is `Sleela.System`. More dashes than ancestors also reach
+     `Sleela.System` (the cycle); this is inferred from the cycle rule.
+   - `Sleela` is reserved; `Sleela.System` is the VM reference. A translated
+     Java identifier named `Sleela` is renamed (row 27).
+   - A link is set left to right: `B -> Sleela.home.parent`.
 
 ## 2. Value and library conventions the translator must follow today
 

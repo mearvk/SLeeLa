@@ -2960,3 +2960,59 @@ type-checks as `String`, and `x instanceof utf16` is true only for that kind
 (`x instanceof string` only for a plain String). A cast to `String` accepts a
 value of either kind, and `String` in a cast or `instanceof` always denotes
 the built-in type, never a library class of that name.
+
+
+## 42. Syntax 3.0 — the implied lineage structure (`Sleela.home`, `Sleela.System`)
+
+This section is **normative for the syntax; the compiler and VM do not yet
+implement it** (status: specified). It gives every class an implied static
+lineage structure, so a translated Java hierarchy needs no declared parent or
+child fields.
+
+### 42.1 The `Sleela` reference
+
+`Sleela` is a reserved language name. `Sleela.System` is the reference to the
+SLeeLa VM. `Sleela.home` is the implied static lineage structure of the
+enclosing class and is the bean setter for its links. A source identifier named
+`Sleela` is an error; a translator renames it.
+
+### 42.2 Creation
+
+`Sleela.home` exists on every class. It is created when the class is first
+referenced statically, at compile time, and again at run time. It is available
+once a lineage keyword (`extends`, `super`) is used in the class or one of its
+ancestors.
+
+### 42.3 Links
+
+For `class A extends B`, `class B extends C`, `class C extends D`:
+
+| Expression | Value |
+|---|---|
+| `Sleela.home.parent` in `A` | `B` |
+| `Sleela.home.child` in `A` | `Sleela.System` (the VM) |
+| `Sleela.home.child` in `B` | `A` |
+| `Sleela.home.parent` in `D` (the root) | `Sleela.System` |
+| `Sleela.home.parents("-")` | one level up (`B` from `A`); each `-` is one level |
+| `Sleela.home.parents("---")` in `A` | `D` |
+| `Sleela.home.parents("")` | `Sleela.System` |
+
+The VM links to the most-derived class and the root links back to the VM, so
+the lineage is a cycle of references: `VM -> A -> B -> C -> D -> VM`, with
+`child` running the opposite way. Walking past the root with more dashes than
+there are ancestors reaches `Sleela.System` (the cycle) and is not an error.
+
+### 42.4 Setting a link
+
+A link is set left to right, value first:
+
+    B -> Sleela.home.parent
+
+`->` here is the lineage set operator. It is valid only with a
+`Sleela.home.parent` or `Sleela.home.child` target on its right.
+
+### 42.5 Constructors
+
+`super("constructor")` in a constructor of `A` is `Sleela.home.parents("---")`
+for a three-ancestor lineage: it addresses the backmost (root) class. The
+intermediate classes are initialized by the language, not by source code.
