@@ -1,12 +1,14 @@
 << lib/java/implementations/java/lang/JavaText.sleela
-   Text bridge between plain SLeeLa Strings and Java UTF-16 Strings, written
-   in SLeeLa with no VM change. A plain String has no character access, so
-   these helpers convert it to UTF-16 (javaStringFromUtf8), work on the code
-   units, and convert the result back through a table of one-character
-   literals. The way back covers printable ASCII (32..126) plus backspace, tab,
-   newline, form feed and carriage return; any other code unit, NUL
-   included, fails closed with UnsupportedOperationException instead of
-   producing wrong text. Callers reach it as JavaText.name(...). >>
+   Text bridge between plain SLeeLa Strings and Java UTF-16 Strings. A plain
+   String has no character access, so these helpers convert it to UTF-16
+   (javaStringFromUtf8), work on the code units, and convert back with
+   javaStringToUtf8 (VM opcode 183), which carries any Unicode text. A plain
+   String cannot hold NUL, an unpaired surrogate or more than 65536 bytes, so
+   plainOf checks first and throws UnsupportedOperationException for those
+   instead of reaching the fail-closed VM error. Text built one character at a
+   time should be built in UTF-16 (codePointU / unitU, VM opcode 184) and
+   converted once, so a surrogate pair is never split. Callers reach it as
+   JavaText.name(...). >>
 #sleela 3.0
 material;
 
@@ -53,149 +55,72 @@ class JavaText {
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
-  static String[] asciiTable = null;
-
-  < the plain one-character String for an ASCII code unit >
-  static String charString(int c) {
-    if (c < 0 || c > 127) {
-      throw new UnsupportedOperationException("JavaText: code unit " + c + " is outside ASCII; plain SLeeLa Strings can only be rebuilt from ASCII");
-    }
-    if (asciiTable == null) { asciiTable = buildTable(); }
-    String[] t = asciiTable;
-    String one = t[c];
-    if (one == null) {
-      throw new UnsupportedOperationException("JavaText: control code unit " + c + " has no plain SLeeLa String form");
-    }
-    return one;
-  }
-  static String[] buildTable() {
-    String[] t = new String[128];
-    t[8] = "\b";
-    t[9] = "\t";
-    t[10] = "\n";
-    t[12] = "\f";
-    t[13] = "\r";
-    t[32] = " ";
-    t[33] = "!";
-    t[34] = "\"";
-    t[35] = "#";
-    t[36] = "$";
-    t[37] = "%";
-    t[38] = "&";
-    t[39] = "'";
-    t[40] = "(";
-    t[41] = ")";
-    t[42] = "*";
-    t[43] = "+";
-    t[44] = ",";
-    t[45] = "-";
-    t[46] = ".";
-    t[47] = "/";
-    t[48] = "0";
-    t[49] = "1";
-    t[50] = "2";
-    t[51] = "3";
-    t[52] = "4";
-    t[53] = "5";
-    t[54] = "6";
-    t[55] = "7";
-    t[56] = "8";
-    t[57] = "9";
-    t[58] = ":";
-    t[59] = ";";
-    t[60] = "<";
-    t[61] = "=";
-    t[62] = ">";
-    t[63] = "?";
-    t[64] = "@";
-    t[65] = "A";
-    t[66] = "B";
-    t[67] = "C";
-    t[68] = "D";
-    t[69] = "E";
-    t[70] = "F";
-    t[71] = "G";
-    t[72] = "H";
-    t[73] = "I";
-    t[74] = "J";
-    t[75] = "K";
-    t[76] = "L";
-    t[77] = "M";
-    t[78] = "N";
-    t[79] = "O";
-    t[80] = "P";
-    t[81] = "Q";
-    t[82] = "R";
-    t[83] = "S";
-    t[84] = "T";
-    t[85] = "U";
-    t[86] = "V";
-    t[87] = "W";
-    t[88] = "X";
-    t[89] = "Y";
-    t[90] = "Z";
-    t[91] = "[";
-    t[92] = "\\";
-    t[93] = "]";
-    t[94] = "^";
-    t[95] = "_";
-    t[96] = "`";
-    t[97] = "a";
-    t[98] = "b";
-    t[99] = "c";
-    t[100] = "d";
-    t[101] = "e";
-    t[102] = "f";
-    t[103] = "g";
-    t[104] = "h";
-    t[105] = "i";
-    t[106] = "j";
-    t[107] = "k";
-    t[108] = "l";
-    t[109] = "m";
-    t[110] = "n";
-    t[111] = "o";
-    t[112] = "p";
-    t[113] = "q";
-    t[114] = "r";
-    t[115] = "s";
-    t[116] = "t";
-    t[117] = "u";
-    t[118] = "v";
-    t[119] = "w";
-    t[120] = "x";
-    t[121] = "y";
-    t[122] = "z";
-    t[123] = "{";
-    t[124] = "|";
-    t[125] = "}";
-    t[126] = "~";
-    return t;
-  }
-
-  < plain String to Java UTF-16 String, and back >
-  static String utf16(String plain) { return javaStringFromUtf8(plain); }
-  static String plainOf(String u) {
-    String out = "";
+  < the reason a UTF-16 String has no plain form, or "" when it has one: NUL, an unpaired surrogate, or more than 65536 UTF-8 bytes >
+  static String plainBlocker(String u) {
     int n = javaStringLength(u);
-    int i = 0;
-    while (i < n) {
-      out = out + charString(javaStringCharAt(u, i));
-      i = i + 1;
-    }
-    return out;
-  }
-
-  < the plain form of a UTF-16 String when every code unit has one, else the UTF-16 String itself >
-  static String plainIfRepresentable(String u) {
-    int n = javaStringLength(u);
+    int bytes = 0;
     int i = 0;
     while (i < n) {
       int c = javaStringCharAt(u, i);
-      if (!(c == 8 || c == 9 || c == 10 || c == 12 || c == 13 || (c >= 32 && c <= 126))) { return u; }
-      i = i + 1;
+      if (c == 0) { return "the text contains NUL, which a plain SLeeLa String cannot hold"; }
+      if (c >= 55296 && c <= 56319) {
+        if (i + 1 >= n) { return "unpaired surrogate code unit " + c; }
+        int low = javaStringCharAt(u, i + 1);
+        if (low < 56320 || low > 57343) { return "unpaired surrogate code unit " + c; }
+        bytes = bytes + 4;
+        i = i + 2;
+      } else if (c >= 56320 && c <= 57343) {
+        return "unpaired surrogate code unit " + c;
+      } else {
+        if (c < 128) { bytes = bytes + 1; }
+        else if (c < 2048) { bytes = bytes + 2; }
+        else { bytes = bytes + 3; }
+        i = i + 1;
+      }
     }
-    return plainOf(u);
+    if (bytes > 65536) { return "the text is longer than the 65536-byte plain String limit"; }
+    return "";
+  }
+
+  < plain String to Java UTF-16 String, and back (any Unicode text) >
+  static String utf16(String plain) { return javaStringFromUtf8(plain); }
+  static String plainOf(String u) {
+    String why = plainBlocker(u);
+    if (why != "") { throw new UnsupportedOperationException("JavaText: " + why); }
+    return javaStringToUtf8(u);
+  }
+  < the plain form of a UTF-16 String when it has one, else the UTF-16 String itself >
+  static String plainIfRepresentable(String u) {
+    if (plainBlocker(u) != "") { return u; }
+    return javaStringToUtf8(u);
+  }
+
+  < one code unit, or one code point (two units above U+FFFF), as a UTF-16 String >
+  static String unitU(int c) {
+    if (c < 0 || c > 65535) { throw new IllegalArgumentException("JavaText: code unit " + c + " is outside 0..65535"); }
+    return javaStringFromCodeUnit(c);
+  }
+  static String codePointU(int cp) {
+    if (cp < 0 || cp > 1114111) { throw new IllegalArgumentException("Not a valid Unicode code point: 0x" + hexUpper(cp)); }
+    if (cp < 65536) { return javaStringFromCodeUnit(cp); }
+    int v = cp - 65536;
+    return javaStringConcat(javaStringFromCodeUnit(55296 + v / 1024), javaStringFromCodeUnit(56320 + v % 1024));
+  }
+  < the plain one-character String for a code unit (no surrogate halves, no NUL) >
+  static String charString(int c) { return plainOf(unitU(c)); }
+
+  static String hexUpper(int v) {
+    long x = v;
+    if (x < 0) { x = x + 4294967296; }
+    if (x == 0) { return "0"; }
+    String out = "";
+    while (x > 0) {
+      int d = (int) (x % 16);
+      if (d < 10) { out = "" + d + out; }
+      else { out = charString(55 + d) + out; }
+      x = x / 16;
+    }
+    return out;
   }
 
   < character access on a plain String, counted in UTF-16 code units as Java does >

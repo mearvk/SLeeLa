@@ -69,11 +69,11 @@ class File {
   << java.io.File over the os file builtins (osExists, osIsDir, osFileSize,
      osMakeDir, osRemove, osRename, oslsListDirectory). Paths are normalized
      as the JDK does on Unix: repeated slashes collapse and a trailing slash is
-     dropped (except for the root). Path text is read through JavaText, so any
-     member that has to rebuild a path from its characters (normalization,
-     getName, getParent, list) works for ASCII paths and fails closed with
-     UnsupportedOperationException on others; paths that need no rebuilding
-     keep any characters. length() returns 0 for a missing file and mkdir()
+     dropped (except for the root). Path text is read through JavaText and
+     works for any Unicode path; a path holding NUL or an unpaired surrogate,
+     which a plain String cannot hold, fails closed with
+     UnsupportedOperationException. list() decodes the JSON escapes of the
+     listing, \uXXXX included. length() returns 0 for a missing file and mkdir()
      false for an existing directory, as Java does. hashCode (needs XOR),
      canonical forms (need symlink resolution), permissions, timestamps and
      the URI and Path bridges keep their stubs. >>
@@ -202,24 +202,29 @@ class File {
       i = i + 1;
     }
     if (!needed) { return p; }
-    String out = "";
+    String out = javaStringFromCodeUnits();
     boolean prevSlash = false;
     i = 0;
     while (i < n) {
       int c = javaStringCharAt(u, i);
       if (c == 47) {
-        if (!prevSlash) { out = out + "/"; }
+        if (!prevSlash) { out = javaStringConcat(out, javaStringFromCodeUnit(47)); }
         prevSlash = true;
       } else {
-        out = out + JavaText.charString(c);
+        out = javaStringConcat(out, javaStringFromCodeUnit(c));
         prevSlash = false;
       }
       i = i + 1;
     }
-    if (out != "/" && JavaText.length(out) > 1 && JavaText.charAt(out, JavaText.length(out) - 1) == 47) {
-      out = JavaText.substring(out, 0, JavaText.length(out) - 1);
-    }
-    return out;
+    int m = javaStringLength(out);
+    if (m > 1 && javaStringCharAt(out, m - 1) == 47) { out = javaStringSubstring(out, 0, m - 1); }
+    return JavaText.plainOf(out);
+  }
+  int hexValue(int h) {
+    if (h >= 48 && h <= 57) { return h - 48; }
+    if (h >= 97 && h <= 102) { return h - 87; }
+    if (h >= 65 && h <= 70) { return h - 55; }
+    throw new UnsupportedOperationException("java.io.File.list: malformed \\u escape in the directory listing");
   }
   < parse the entries array of an oslsListDirectory JSON reply, without . and .. ; null when the status is not 0 >
   String[] parseEntries(String json) {
@@ -248,7 +253,7 @@ class File {
     i = start;
     while (i < n && javaStringCharAt(u, i) != 93) {
       if (javaStringCharAt(u, i) == 34) {
-        String name = "";
+        String nameU = javaStringFromCodeUnits();
         i = i + 1;
         while (i < n && javaStringCharAt(u, i) != 34) {
           int c = javaStringCharAt(u, i);
@@ -258,12 +263,21 @@ class File {
             if (e == 110) { c = 10; }
             else if (e == 116) { c = 9; }
             else if (e == 114) { c = 13; }
-            else if (e == 117) { throw new UnsupportedOperationException("java.io.File.list: \\u escapes in a directory entry are not supported yet"); }
+            else if (e == 98) { c = 8; }
+            else if (e == 102) { c = 12; }
+            else if (e == 117 && i + 4 < n) {
+              int v = 0;
+              int k2 = 1;
+              while (k2 <= 4) { v = v * 16 + hexValue(javaStringCharAt(u, i + k2)); k2 = k2 + 1; }
+              c = v;
+              i = i + 4;
+            }
             else { c = e; }
           }
-          name = name + JavaText.charString(c);
+          nameU = javaStringConcat(nameU, javaStringFromCodeUnit(c));
           i = i + 1;
         }
+        String name = JavaText.plainOf(nameU);
         if (name != "." && name != "..") {
           if (count >= arrayLength(tmp)) {
             String[] bigger = new String[arrayLength(tmp) * 2];

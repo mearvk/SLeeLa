@@ -311,6 +311,28 @@ a supplementary character, and a non-ASCII BMP character, then exercises
 UTF-16 length and code-point access on the result.
 
 
+### Runtime conversion back to UTF-8, and run-time code units
+
+Two append-only opcodes (VM ABI 1.8) close the bridge in the other direction:
+
+- `javaStringToUtf8(value)` (`OP_JSTR_TO_UTF8`, 183) converts a VM-owned
+  `SL_UTF16` value into an equivalent legacy `SL_STR`, for any Unicode text,
+  supplementary characters included. The conversion is lossless or refused:
+  an unpaired surrogate (no UTF-8 form), an embedded NUL (the legacy String is
+  NUL-terminated) and text longer than `SL_MAX_STRTEXT` bytes fail closed with
+  a VM runtime diagnostic.
+- `javaStringFromCodeUnit(codeUnit)` (`OP_JSTR_FROM_CODE_UNIT`, 184) builds a
+  one-unit `SL_UTF16` value from a run-time code unit 0..65535, the run-time
+  companion of the compile-time `javaStringFromCodeUnits(...)`.
+
+`implementations/java/lang/JavaText.sleela` is the library entry point. Its
+`plainOf` checks for NUL, unpaired surrogates and over-length text first and
+throws a catchable `UnsupportedOperationException` instead of reaching the VM
+diagnostic; `codePointU` and `unitU` build text one character at a time in
+UTF-16, so a surrogate pair is never split. `StringBuilder`, `StringBuffer`,
+the character writers and readers, `File` and `Properties` use them, so those
+classes carry any Unicode text. Both intrinsics require `#sleela 3.0`.
+
 The Java String facade source now delegates its operations to the VM-backed
 intrinsics. Its stored value is initialized as an empty `SL_UTF16` string;
 `bind(moduleHandle, text)` preserves its older signature while converting the

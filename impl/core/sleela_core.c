@@ -1656,6 +1656,41 @@ static void print_java_string(SLVM *vm, SLValue value) {
         (void)fwrite(out, 1, n, stdout);
     }
 }
+/* Encode a Java UTF-16 String as a legacy UTF-8 String for OP_JSTR_TO_UTF8.
+ * Returns a malloc'd NUL-terminated buffer, or NULL with *why set. The
+ * conversion is lossless or refused: an unpaired surrogate (no UTF-8 form), an
+ * embedded NUL (SL_STR storage is NUL-terminated) and text longer than
+ * SL_MAX_STRTEXT bytes all fail closed. The caller roots the value. */
+static char *java_string_to_utf8_alloc(SLVM *vm, SLValue value, const char **why) {
+    SLJavaStringInstance *instance = java_string_get(vm, value);
+    if (!instance) { *why = "javaStringToUtf8 requires a valid Java UTF-16 String"; return NULL; }
+    size_t n = instance->value.length;
+    if (n > SL_MAX_STRTEXT) { *why = "javaStringToUtf8: text exceeds the SL_MAX_STRTEXT String limit"; return NULL; }
+    /* A BMP code unit encodes to at most 3 bytes and a surrogate pair (two
+     * units) to 4, so 3 bytes per unit always suffices. */
+    char *out = (char *)malloc(n * 3u + 1u);
+    if (!out) { *why = "javaStringToUtf8: allocation failure"; return NULL; }
+    size_t k = 0;
+    for (size_t i = 0; i < n; ++i) {
+        uint32_t cp = instance->value.units[i];
+        if (cp == 0u) { free(out); *why = "javaStringToUtf8: the text contains NUL, which a legacy String cannot hold"; return NULL; }
+        if (cp >= 0xd800u && cp <= 0xdbffu) {
+            uint32_t low = (i + 1 < n) ? instance->value.units[i + 1] : 0u;
+            if (low < 0xdc00u || low > 0xdfffu) { free(out); *why = "javaStringToUtf8: unpaired surrogate code unit has no UTF-8 form"; return NULL; }
+            cp = 0x10000u + ((cp - 0xd800u) << 10) + (low - 0xdc00u);
+            ++i;
+        } else if (cp >= 0xdc00u && cp <= 0xdfffu) {
+            free(out); *why = "javaStringToUtf8: unpaired surrogate code unit has no UTF-8 form"; return NULL;
+        }
+        if (cp <= 0x7fu) { out[k++] = (char)cp; }
+        else if (cp <= 0x7ffu) { out[k++] = (char)(0xc0u | (cp >> 6)); out[k++] = (char)(0x80u | (cp & 0x3fu)); }
+        else if (cp <= 0xffffu) { out[k++] = (char)(0xe0u | (cp >> 12)); out[k++] = (char)(0x80u | ((cp >> 6) & 0x3fu)); out[k++] = (char)(0x80u | (cp & 0x3fu)); }
+        else { out[k++] = (char)(0xf0u | (cp >> 18)); out[k++] = (char)(0x80u | ((cp >> 12) & 0x3fu)); out[k++] = (char)(0x80u | ((cp >> 6) & 0x3fu)); out[k++] = (char)(0x80u | (cp & 0x3fu)); }
+    }
+    if (k > SL_MAX_STRTEXT) { free(out); *why = "javaStringToUtf8: text exceeds the SL_MAX_STRTEXT String limit"; return NULL; }
+    out[k] = '\0';
+    return out;
+}
 static void print_value(SLVM* vm, SLValue v) {
     /* A printed String may be a large generated document; size the buffer from
      * SL_MAX_STRTEXT (heap-allocated) so output is not truncated. */
@@ -2876,6 +2911,8 @@ static SLResult run_thread(SLThread* t) {
         case OP_JSTR_HASH_CODE: { SLValue value=POP(); int32_t hash=0; if(value.type!=SL_UTF16 || slvm_java_string_hash_code(vm,value,&hash)!=SL_JAVA_STRING_OK) TERR("String.hashCode requires a valid Java UTF-16 String"); PUSH(slval_int(hash)); } break;
         case OP_JSTR_COMPARE_TO: { SLValue right=POP(),left=POP(); int32_t order=0; if(left.type!=SL_UTF16 || right.type!=SL_UTF16 || slvm_java_string_compare_to(vm,left,right,&order)!=SL_JAVA_STRING_OK) TERR("String.compareTo requires two Java UTF-16 Strings"); PUSH(slval_int(order)); } break;
         case OP_JSTR_FROM_UTF8: { SLValue value=POP(); if(value.type!=SL_STR || value.as.s<0 || value.as.s>=vm->nstr) TERR("javaStringFromUtf8 requires a valid legacy UTF-8 String"); SLValue converted=slvm_java_string_from_utf8(vm,slvm_str(vm,value.as.s)); if(converted.type!=SL_UTF16) TERR("javaStringFromUtf8 rejected malformed UTF-8 or allocation failure"); PUSH(converted); } break;
+        case OP_JSTR_TO_UTF8: { SLValue value=POP(); if(value.type!=SL_UTF16) TERR("javaStringToUtf8 requires a Java UTF-16 String"); if(slvm_java_string_root(vm,value)!=SL_JAVA_STRING_OK) TERR("javaStringToUtf8 could not root its operand"); const char *why="javaStringToUtf8 failed"; char *utf8=java_string_to_utf8_alloc(vm,value,&why); (void)slvm_java_string_unroot(vm,value); if(!utf8) TERR(why); SLValue out; out.type=SL_STR; out.as.s=intern(vm,utf8); free(utf8); PUSH(out); } break;
+        case OP_JSTR_FROM_CODE_UNIT: { SLValue unit=POP(); if(unit.type!=SL_INT) TERR("javaStringFromCodeUnit requires an integer code unit"); if(unit.as.i<0 || unit.as.i>65535) TERR("javaStringFromCodeUnit code unit is outside the UTF-16 range 0..65535"); uint16_t u=(uint16_t)unit.as.i; SLValue made=slvm_java_string_new(vm,&u,1); if(made.type!=SL_UTF16) TERR("javaStringFromCodeUnit allocation failure"); PUSH(made); } break;
         case OP_POP: (void)POP(); break;
         case OP_DUP: { if (t->sp < 1) TERR("stack underflow"); SLValue dupv = t->stack[t->sp-1]; PUSH(dupv); } break;
         case OP_DUP2: { if (t->sp < 2) TERR("stack underflow"); SLValue av = t->stack[t->sp-2], bv = t->stack[t->sp-1]; PUSH(av); PUSH(bv); } break;

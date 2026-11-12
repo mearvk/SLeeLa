@@ -6,7 +6,7 @@
 
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
-#define SLEELA_VM_ABI_MINOR 7u
+#define SLEELA_VM_ABI_MINOR 8u
 #define SLEELA_ARTIFACT_FORMAT_VERSION 4u
 #define SL_NATIVE_METHOD_ABI_VERSION 0x00010000u
 #define SL_NATIVE_METHOD_FLAG_ANNOTATED 0x00000001u
@@ -312,6 +312,16 @@ typedef enum {
      *   LIVE/LIMIT      pop nothing, push int (VM-wide object counts)
      * Appended; never renumber prior opcodes. */
     OP_REF,
+    /* Java UTF-16 String bridges back to legacy UTF-8 Strings. TO_UTF8 pops an
+     * SL_UTF16 value and pushes the equivalent SL_STR; it fails closed on an
+     * unpaired surrogate, an embedded NUL (SL_STR is NUL-terminated) or text
+     * longer than SL_MAX_STRTEXT bytes, so the conversion is never lossy.
+     * FROM_CODE_UNIT pops an integer code unit 0..65535 and pushes a one-unit
+     * SL_UTF16 value, the run-time companion of the compile-time
+     * javaStringFromCodeUnits. Both take no operand. Appended; never renumber
+     * prior opcodes. */
+    OP_JSTR_TO_UTF8,
+    OP_JSTR_FROM_CODE_UNIT,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -364,7 +374,9 @@ static_assert(OP_IPC_OPEN == 179, "OP_IPC_OPEN is append-only opcode 179");
 static_assert(OP_IPC_CALL == 180, "OP_IPC_CALL is append-only opcode 180");
 static_assert(OP_IPC_CLOSE == 181, "OP_IPC_CLOSE is append-only opcode 181");
 static_assert(OP_REF == 182, "OP_REF is append-only opcode 182");
-static_assert(OP__COUNT == 183, "the extended ISA must contain 183 opcodes");
+static_assert(OP_JSTR_TO_UTF8 == 183, "Java String to UTF-8 conversion is append-only 183");
+static_assert(OP_JSTR_FROM_CODE_UNIT == 184, "Java String from a run-time code unit is append-only 184");
+static_assert(OP__COUNT == 185, "the extended ISA must contain 185 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -391,7 +403,9 @@ _Static_assert(OP_IPC_OPEN == 179, "OP_IPC_OPEN is append-only opcode 179");
 _Static_assert(OP_IPC_CALL == 180, "OP_IPC_CALL is append-only opcode 180");
 _Static_assert(OP_IPC_CLOSE == 181, "OP_IPC_CLOSE is append-only opcode 181");
 _Static_assert(OP_REF == 182, "OP_REF is append-only opcode 182");
-_Static_assert(OP__COUNT == 183, "the extended ISA must contain 183 opcodes");
+_Static_assert(OP_JSTR_TO_UTF8 == 183, "Java String to UTF-8 conversion is append-only 183");
+_Static_assert(OP_JSTR_FROM_CODE_UNIT == 184, "Java String from a run-time code unit is append-only 184");
+_Static_assert(OP__COUNT == 185, "the extended ISA must contain 185 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */

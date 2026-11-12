@@ -123,3 +123,12 @@ refuse (do not clamp or wrap) inputs that could push it past. See
 - **Java `byte`/`char`/`short` ride the int slot.** `int` and `long` overloads
   cannot be told apart, so do not implement a Java method whose result depends
   on which one the caller passed (for example `HexFormat.toHexDigits(value)`).
+- **Plain vs Java UTF-16 strings (syntax 3.0).** `javaStringFromUtf8(s)` goes
+  plain -> UTF-16; `javaStringToUtf8(u)` goes back for any Unicode text but is a
+  fatal VM error on NUL, an unpaired surrogate or >65536 bytes, so in library
+  code call `JavaText.plainOf(u)` (checks first, throws a catchable
+  `UnsupportedOperationException`). Build text per character in UTF-16 with
+  `javaStringFromCodeUnit(c)` / `JavaText.codePointU(cp)` and convert once at
+  the end; appending one plain character at a time splits surrogate pairs.
+  A string literal cannot contain a `\uD83D`-style surrogate escape (lexer
+  error); write the character itself in UTF-8.

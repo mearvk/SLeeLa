@@ -490,9 +490,9 @@ class Properties {
      skipped, # and ! comment lines, an odd number of trailing backslashes
      continues the line, the key ends at the first unescaped =, : or blank, and
      escapes are converted (\t \n \r \f, \uXXXX, else the character itself).
-     Keys and values are stored as plain Strings, so a character outside the
-     JavaText range (printable ASCII and the five control characters) fails
-     closed with UnsupportedOperationException. >>
+     Keys and values are stored as plain Strings and may hold any Unicode
+     text; only NUL and an unpaired surrogate, which a plain String cannot
+     hold, fail closed with UnsupportedOperationException. >>
   public synchronized void load(java.io.Reader reader) {
     if (reader == null) { throw new NullPointerException(); }
     int[] u = readAllUnits(reader);
@@ -627,7 +627,7 @@ class Properties {
     put(key, value);
   }
   String loadConvert(int[] lb, int from, int end) {
-    String out = "";
+    String out = javaStringFromCodeUnits();
     int off = from;
     while (off < end) {
       int c = lb[off];
@@ -654,9 +654,9 @@ class Properties {
         else if (c == 110) { c = 10; }
         else if (c == 102) { c = 12; }
       }
-      out = out + JavaText.charString(c);
+      out = javaStringConcat(out, javaStringFromCodeUnit(c));
     }
-    return out;
+    return JavaText.plainOf(out);
   }
   < ---- END java implementation ---- >
 

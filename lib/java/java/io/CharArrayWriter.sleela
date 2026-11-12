@@ -59,8 +59,8 @@ class CharArrayWriter {
   < ---- java.io.CharArrayWriter members (procedural implementation in SLeeLa) ---- >
   << java.io.CharArrayWriter over the declared buf / count fields; a char is
      an int UTF-16 code unit. String and CharSequence arguments are read as
-     UTF-16 code units; toString rebuilds a plain String through JavaText and
-     so covers printable ASCII plus tab, newline and carriage return. writeTo
+     UTF-16 code units; toString returns a plain String whenever the text has
+     one (JavaText.plainIfRepresentable), else the UTF-16 String. writeTo
      keeps its stub. close is a reserved SLeeLa built-in. >>
   public CharArrayWriter() { initBuffer(32); }
   public CharArrayWriter(int initialSize) {
@@ -136,10 +136,10 @@ class CharArrayWriter {
     return this;
   }
   public java.lang.String toString() {
-    String out = "";
+    String out = javaStringFromCodeUnits();
     int i = 0;
-    while (i < this.count) { out = out + JavaText.charString(this.buf[i]); i = i + 1; }
-    return out;
+    while (i < this.count) { out = javaStringConcat(out, javaStringFromCodeUnit(this.buf[i])); i = i + 1; }
+    return JavaText.plainIfRepresentable(out);
   }
 
   int codeUnit(int c) {

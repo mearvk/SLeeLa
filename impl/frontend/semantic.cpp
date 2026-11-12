@@ -71,7 +71,7 @@ static bool assignable(const Type&to,const Type&from){
 }
 static bool builtin(const std::string&n){
  static const std::set<std::string> s={
- "javaStringFromCodeUnits","javaStringFromUtf8","javaStringLength","javaStringCharAt","javaStringCodePointAt","javaStringCodePointCount","javaStringOffsetByCodePoints","javaStringSubstring","javaStringConcat","javaStringHashCode","javaStringCompareTo","spawn","join","lock","unlock","send","recv","structPack","structUnpack","listen","accept","connect","sockread","sockwrite","sockclose",
+ "javaStringFromCodeUnits","javaStringFromUtf8","javaStringToUtf8","javaStringFromCodeUnit","javaStringLength","javaStringCharAt","javaStringCodePointAt","javaStringCodePointCount","javaStringOffsetByCodePoints","javaStringSubstring","javaStringConcat","javaStringHashCode","javaStringCompareTo","spawn","join","lock","unlock","send","recv","structPack","structUnpack","listen","accept","connect","sockread","sockwrite","sockclose",
  "pipe","pipePeer","fifoCreate","npfsCreate","openFile","read","write","close","unlinkFile",
  "timeUtcMillis","timeUtcNanos","timeMonotonicNanos","timePrecisionMillis","timeLocation","timeHttpDate","timeJson","timeNtp","timeSetLocation","sleep",
  "Munction.start","synchroOpen","synchroDispatch","synchroReport","synchroClose","synchroSent","synchroReceived","synchroMean","synchroMin","synchroMax","synchroP95","synchroLoss",
@@ -603,6 +603,18 @@ class Analyzer{
    if(argTypes.size()!=1)err("javaStringFromUtf8(value) takes exactly one argument");
    if(!argTypes.empty() && argTypes[0].kind!=Kind::String && argTypes[0].kind!=Kind::Unknown)
     err("javaStringFromUtf8 requires a legacy UTF-8 String argument");
+   return{Kind::String,{}};
+  }
+  if(n=="javaStringToUtf8"){
+   if(argTypes.size()!=1)err("javaStringToUtf8(value) takes exactly one argument");
+   if(!argTypes.empty() && argTypes[0].kind!=Kind::String && argTypes[0].kind!=Kind::Unknown)
+    err("javaStringToUtf8 requires an SL_UTF16 Java String argument");
+   return{Kind::String,{}};
+  }
+  if(n=="javaStringFromCodeUnit"){
+   if(argTypes.size()!=1)err("javaStringFromCodeUnit(codeUnit) takes exactly one argument");
+   if(!argTypes.empty() && argTypes[0].kind!=Kind::Int && argTypes[0].kind!=Kind::Unsigned && argTypes[0].kind!=Kind::Unknown)
+    err("javaStringFromCodeUnit requires an integer code unit");
    return{Kind::String,{}};
   }
   const std::set<std::string> javaStringUnary={"javaStringLength","javaStringHashCode"};

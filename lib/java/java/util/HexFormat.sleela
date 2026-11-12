@@ -170,7 +170,7 @@ class HexFormat {
     if (ch >= 48 && ch <= 57) { return ch - 48; }
     if (ch >= 65 && ch <= 70) { return ch - 55; }
     if (ch >= 97 && ch <= 102) { return ch - 87; }
-    if (ch >= 32 && ch <= 126) { throw new NumberFormatException("not a hexadecimal digit: \"" + JavaText.charString(ch) + "\" = " + ch); }
+    if (ch > 0 && ch <= 65535 && (ch < 55296 || ch > 57343)) { throw new NumberFormatException("not a hexadecimal digit: \"" + JavaText.charString(ch) + "\" = " + ch); }
     throw new NumberFormatException("not a hexadecimal digit: code " + ch);
   }
 
@@ -266,9 +266,11 @@ class HexFormat {
     int i = 0;
     while (i < n) {
       if (u[base + index + i] != lit[i]) {
-        String found = "";
+        String foundU = javaStringFromCodeUnits();
         int k = 0;
-        while (k < n) { found = found + JavaText.charString(u[base + index + k]); k = k + 1; }
+        while (k < n) { foundU = javaStringConcat(foundU, javaStringFromCodeUnit(u[base + index + k])); k = k + 1; }
+        String found = JavaText.plainIfRepresentable(foundU);
+        if (JavaText.plainBlocker(foundU) != "") { found = "(text with NUL or an unpaired surrogate)"; }
         throw new IllegalArgumentException("found: \"" + found + "\", expected: \"" + litText + "\", index: " + index + " ch: " + u[base + index + i]);
       }
       i = i + 1;

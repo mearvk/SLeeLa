@@ -61,17 +61,16 @@ class StringBuilder {
      through javaStringFromUtf8 and is spliced with javaStringSubstring and
      javaStringConcat, so every index counts UTF-16 code units, as in Java.
      Exceptions carry the JDK 25 messages. String arguments may be plain SLeeLa
-     Strings or Java UTF-16 Strings. toString() returns a plain String when every
-     code unit has a plain form (printable ASCII, tab, newline, carriage
-     return), so the result concatenates and compares like any SLeeLa String,
-     and the UTF-16 String otherwise. CharSequence arguments may be plain
-     Strings, StringBuilder or StringBuffer. The VM has no char primitive, so a
-     char is an int code unit; building text from a run-time code unit covers
-     printable ASCII plus tab, newline and carriage return and throws
-     UnsupportedOperationException otherwise. append(char) cannot be told apart
-     from append(int) and keeps its stub, as do the float and double forms. >>
+     Strings or Java UTF-16 Strings. toString() returns a plain String whenever
+     the text has one (any Unicode text without NUL or an unpaired surrogate,
+     see JavaText.plainOf), so the result concatenates and compares like any
+     SLeeLa String, and the UTF-16 String otherwise. CharSequence arguments may
+     be plain Strings, StringBuilder or StringBuffer. The VM has no char
+     primitive, so a char is an int code unit, built at run time with
+     javaStringFromCodeUnit; code points above U+FFFF become surrogate pairs and
+     reverse() keeps each pair in order, as Java does. append(char) cannot be
+     told apart from append(int); the float and double forms keep their stubs. >>
   String buf = javaStringFromCodeUnits();
-  String asciiTable = javaStringFromUtf8(" !?#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[?]^_`abcdefghijklmnopqrstuvwxyz{|}~");
 
   public StringBuilder() { this.buf = javaStringFromCodeUnits(); }
   public StringBuilder(int capacity) {
@@ -117,7 +116,7 @@ class StringBuilder {
     return appendText("false");
   }
   public StringBuilder appendCodePoint(int codePoint) {
-    this.buf = javaStringConcat(this.buf, codeUnitString(codePoint));
+    this.buf = javaStringConcat(this.buf, JavaText.codePointU(codePoint));
     return this;
   }
 
@@ -174,13 +173,25 @@ class StringBuilder {
     int n = length();
     String out = javaStringFromCodeUnits();
     int i = n - 1;
-    while (i >= 0) { out = javaStringConcat(out, javaStringSubstring(this.buf, i, i + 1)); i = i - 1; }
+    while (i >= 0) {
+      int c = javaStringCharAt(this.buf, i);
+      if (c >= 56320 && c <= 57343 && i > 0) {
+        int hi = javaStringCharAt(this.buf, i - 1);
+        if (hi >= 55296 && hi <= 56319) {
+          out = javaStringConcat(out, javaStringSubstring(this.buf, i - 1, i + 1));
+          i = i - 2;
+          continue;
+        }
+      }
+      out = javaStringConcat(out, javaStringSubstring(this.buf, i, i + 1));
+      i = i - 1;
+    }
     this.buf = out;
     return this;
   }
   public StringBuilder repeat(int codePoint, int count) {
     if (count < 0) { throw new IllegalArgumentException("count is negative: " + count); }
-    String u = codeUnitString(codePoint);
+    String u = JavaText.codePointU(codePoint);
     int k = count;
     while (k > 0) { this.buf = javaStringConcat(this.buf, u); k = k - 1; }
     return this;
@@ -300,16 +311,11 @@ class StringBuilder {
     this.buf = javaStringConcat(javaStringConcat(javaStringSubstring(this.buf, 0, offset), utf16), javaStringSubstring(this.buf, offset, n));
     return this;
   }
-  < one UTF-16 code unit as a String; ASCII 0..126 plus the explicit controls >
+  < one UTF-16 code unit as a String (a char argument is already 0..65535; wider ints keep their low 16 bits, as a cast to char does) >
   java.lang.String codeUnitString(int c) {
-    if (c == 0) { return javaStringFromCodeUnits(0); }
-    if (c == 9) { return javaStringFromCodeUnits(9); }
-    if (c == 10) { return javaStringFromCodeUnits(10); }
-    if (c == 13) { return javaStringFromCodeUnits(13); }
-    if (c == 34) { return javaStringFromCodeUnits(34); }
-    if (c == 92) { return javaStringFromCodeUnits(92); }
-    if (c >= 32 && c <= 126) { return javaStringSubstring(this.asciiTable, c - 32, c - 31); }
-    throw new UnsupportedOperationException("java.lang.StringBuilder: code unit " + c + " is outside the ASCII range the VM can build at run time");
+    int v = c % 65536;
+    if (v < 0) { v = v + 65536; }
+    return javaStringFromCodeUnit(v);
   }
   void checkIndex(int index, int n) {
     if (index < 0 || index >= n) { throw new StringIndexOutOfBoundsException("Index " + index + " out of bounds for length " + n); }

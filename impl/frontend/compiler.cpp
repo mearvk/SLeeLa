@@ -1130,6 +1130,21 @@ private:
             if(c.args.size()!=1)throw std::runtime_error("Semantic error: javaStringFromUtf8(value) takes exactly one argument");
             emitExpr(c.args[0].get()); emit(OP_JSTR_FROM_UTF8); return true;
         }
+        // Convert a VM-owned Java UTF-16 String back to a legacy UTF-8 String.
+        // Lossless or refused at run time: unpaired surrogates, embedded NUL
+        // and text beyond SL_MAX_STRTEXT bytes fail closed.
+        if(n=="javaStringToUtf8"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: javaStringToUtf8 requires #sleela 3.0");
+            if(c.args.size()!=1)throw std::runtime_error("Semantic error: javaStringToUtf8(value) takes exactly one argument");
+            emitExpr(c.args[0].get()); emit(OP_JSTR_TO_UTF8); return true;
+        }
+        // Build a one-unit Java UTF-16 String from a run-time code unit 0..65535
+        // (the run-time companion of the compile-time javaStringFromCodeUnits).
+        if(n=="javaStringFromCodeUnit"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: javaStringFromCodeUnit requires #sleela 3.0");
+            if(c.args.size()!=1)throw std::runtime_error("Semantic error: javaStringFromCodeUnit(codeUnit) takes exactly one argument");
+            emitExpr(c.args[0].get()); emit(OP_JSTR_FROM_CODE_UNIT); return true;
+        }
         // Runtime operations on VM-owned Java UTF-16 String values.
         if(n=="javaStringLength" || n=="javaStringHashCode"){
             if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: Java UTF-16 String operations require #sleela 3.0");

@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "afda33c37627754adf16d7e89d9b2fa35f186ecf996bf6b00020cc6527cd0c20"
+      "sha256": "e95618ece4fd457d460faa354dc2a816f22017d7d9260f077cfcdf0a60dec780"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "afe24a4d7c57f11c2cf614ef4a90d16e6213601169af8f943dccdf520d9d9f28"
+      "sha256": "f8239fbf622433156f018fbe86e76e1ed246f8160996c68262b6d826d9ca93ff"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "59b4f9c8edfe6f5153cdefbaf5dcd83975c4a2b3c9f1bc6f812d6e6eecb0a8b4"
+      "sha256": "806d2a5f88681a44c55e7d6b4abd71f0fda63b81af37e298620a52ff8d3cacf2"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -663,7 +663,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "2327465fe6bf3fedb1bed8f91f61969039ce9dcdd34fb5f12abc21e194025ab2"
+      "sha256": "ce384874917a5cc6bf372a6c1c4121817fbb7b626c80679f779a166b872c681b"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -29743,7 +29743,7 @@
     },
     {
       "path": "lib/java/implementations/java/lang/JavaText.sleela",
-      "sha256": "0036def6b6a2f4d02d449a8efc4ab9f06a9a3653f6c320eeec73ff05cbb03eef"
+      "sha256": "0bfa23dd940cc70b779421b6a16c5c55141d7eddac98ffdb094e644d994828e0"
     },
     {
       "path": "lib/java/java/applet/Applet.sleela",
@@ -31851,7 +31851,7 @@
     },
     {
       "path": "lib/java/java/io/CharArrayWriter.sleela",
-      "sha256": "5da2a7f9f1ef33b907b22d7149203bfbf7352565133906a764474728aeb307ba"
+      "sha256": "97e5b67ff7f73e2969d3a28bfe5f8bf5e095d107e6085ae23c3dc24545d77a80"
     },
     {
       "path": "lib/java/java/io/CharConversionException.sleela",
@@ -31899,7 +31899,7 @@
     },
     {
       "path": "lib/java/java/io/File.sleela",
-      "sha256": "517ca1a63ae9d2cde57afade06eeaea37a250889623fc114ed55e8b642df4c68"
+      "sha256": "27eed23cfeb77ad8974114043c101abd338bebf7827c5158fa1957ec001a73d4"
     },
     {
       "path": "lib/java/java/io/FileCleanable.sleela",
@@ -32687,11 +32687,11 @@
     },
     {
       "path": "lib/java/java/lang/StringBuffer.sleela",
-      "sha256": "5e6b973c47da01a5dbe6031ee3d3713526b0ef17e012b3fece0757a655d441e9"
+      "sha256": "2348879576ee63193882d2a1959ecfd08f1938a87c4429b6b40abace5b94cb0c"
     },
     {
       "path": "lib/java/java/lang/StringBuilder.sleela",
-      "sha256": "bf84622742afdce538a107ff35162e1b854d601b7ac754b27ac2e832ba561b27"
+      "sha256": "8f813efa88ba584b32498c17a9de8d6429db30d4a525927c11caa8c7785472e5"
     },
     {
       "path": "lib/java/java/lang/StringCoding.sleela",
@@ -37715,7 +37715,7 @@
     },
     {
       "path": "lib/java/java/util/HexFormat.sleela",
-      "sha256": "f9c8569c5e513fbf1c1c096a3b5b57d1313d321d88aff71fb97bdf80b21f0412"
+      "sha256": "d4117ec60ccc357c443f5a2811a19e37e96fb9b0255edf8108971b36882e98a6"
     },
     {
       "path": "lib/java/java/util/IdentityHashMap.sleela",
@@ -37927,7 +37927,7 @@
     },
     {
       "path": "lib/java/java/util/Properties.sleela",
-      "sha256": "1d6be5a3b1d38f094cc27c01ec8c8eb9aa589c956c91592134ceab0bf0209c14"
+      "sha256": "aa9a01b7cfd8ee8dbe7696f52eebf87968d71978085471047223eb4f5fa53059"
     },
     {
       "path": "lib/java/java/util/PropertyPermission.sleela",
@@ -54263,7 +54263,7 @@
     },
     {
       "path": "lib/vm/InstructionSet.sleela",
-      "sha256": "e7ea5b4ce509dce7574867a7144d0737dfdc4d951e0db48a48ff325c88c43467"
+      "sha256": "281358adc0e4c1c04729fa470fc9e9ee50fb8f46e81226c77a6fd4fc3fd0a792"
     },
     {
       "path": "lib/vm/SLNativeMemory.sleela",
