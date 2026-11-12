@@ -1,0 +1,6 @@
+#sleela 3.0
+spark;
+material;
+abstract class Op { abstract int apply(int a); int twice(int a) { return apply(apply(a)); } }
+class Inc extends Op { int apply(int a) { return a + 1; } }
+class P { void main() { Op o = new Inc(); print(o.twice(5)); } }

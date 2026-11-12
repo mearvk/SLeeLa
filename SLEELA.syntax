@@ -3069,6 +3069,8 @@ A link is set left to right, value first:
 `super("constructor")` in a constructor of `A` is `Sleela.home.parents("---")`
 for a three-ancestor lineage: it addresses the backmost (root) class. The
 intermediate classes are initialized by the language, not by source code.
+The exact single literal `"constructor"` is lineage-only. From syntax 3.0 any
+other `super(args)` also invokes the base-class constructor (section 43.6).
 
 ### 42.6 Security2 above the VM during boot
 
@@ -3102,8 +3104,10 @@ VM. Status: implemented as the boot sequence in 42.7.
   literal of dashes and/or dots. It does not see later `->` changes.
 - **`->`** stores into the link; a bare capitalised name on the left is a class
   name, anything else is an expression.
-- **`super(...)`** as a statement stores the root class name in `__lin_root`;
-  its arguments are parsed but not evaluated.
+- **`super(...)`** as a statement stores the root class name in `__lin_root`.
+  For `super("constructor")`, and for any `super(...)` below syntax 3.0, its
+  arguments are parsed but not evaluated. From 3.0 any other argument list
+  also calls the base constructor (section 43.6).
 - **Where.** The lineage resolution (`parent`, `root`, `child`, `parents`) is in
   `impl/frontend/java_references.cpp` (`javaref::lineage*`) and follows the same
   `extends` resolution as the rest of the frontend (section 43.3).
@@ -3199,6 +3203,10 @@ instance-field layout, the runtime parent link, method inheritance and the
 | Java source style | Interpreter / VM mechanism |
 |---|---|
 | `extends` (simple or qualified), lineage, `super("constructor")` | `impl/frontend/java_references.cpp` (`javaref::resolveBaseName`, `superclassOf`, `lineage*`); VM parent link `slvm_set_struct_parent` |
+| Subtype assignment (`Animal a = new Dog()`), `implements` | `javaref::isSubtypeOf` in the semantic `assignable` rule |
+| `super(args)`, `this(args)`, implicit `super()`, default constructor | parser (`MethodCall` with `superConstructor` / `thisConstructor`); semantic constructor resolution; compiler `OP_CALL` on `this` |
+| Overridden methods (virtual dispatch), `super.m()` | compiler lowering with `OP_DUP` / `OP_INSTANCEOF` / `OP_JMPF` / `OP_CALL` (43.6) |
+| Abstract and interface methods without a body | parser (synthesized default-value body) |
 | Field inheritance | compiler instance layout, base fields first (section 42.7) |
 | Overloads and constructors | compiler overload resolution (section 40) |
 | `java.lang.String` methods, UTF-16 strings | compiler `javaString*` built-ins → `OP_JSTR_*` opcodes (166 onward) |
@@ -3214,10 +3222,52 @@ instance-field layout, the runtime parent link, method inheritance and the
 - There is no direct Java-bytecode path: `sleela run Foo.java` hands the file
   to a JVM. Equivalence is checked by output (`run-differential.sh`), not by
   comparing JVM bytecode with VM opcodes.
-- `super(message)` in a user subclass does not forward its arguments: under
-  42.7 a `super(...)` statement records the lineage root and its arguments are
-  not evaluated, so `new AppError("boom").getMessage()` is `null` while
-  `new IllegalStateException("boom").getMessage()` is `"boom"`. Java-style
-  argument forwarding to a base constructor is future interpreter work.
+- Not yet supported Java style (each fails at check time, not silently):
+  enhanced `for (T v : xs)`, the `L` long-literal suffix, `finally`, typed
+  `catch (SomeException e)` (only `catch (Any e)`), `enum` declarations, and
+  non-static `protected` methods (a SLeeLa rule: protected methods are static).
+- A user subclass of a `/lib/java` Throwable reports the library class name in
+  `toString()` (`java.lang.IllegalStateException: boom`, not `AppError: boom`):
+  the name comes from the unit's `javaType` field, and there is no runtime
+  `getClass().getName()` yet.
+- `print` of a double prints SLeeLa form (`9`), not Java form (`9.0`).
 - `spark` has no behavioral effect; any future effect must be added here first.
-- Regression test: `bash impl/tests/java_references/spark/run_spark_tests.sh`.
+- Regression tests: `bash impl/tests/java_references/spark/run_spark_tests.sh`
+  and `bash impl/tests/java_references/oop/run_oop_tests.sh`.
+
+### 43.6 Java object behavior (syntax 3.0)
+
+These rules hold in every `#sleela 3.0` document; `spark` does not switch them
+on (it stays declarative, 43.2). Below 3.0 nothing in this subsection applies.
+
+1. **Subtypes.** A class is assignable to any loaded superclass and to any
+   interface it implements, directly or through its superclasses
+   (`Animal a = new Dog();`, `Shape s = new Square(3.0);`).
+2. **`super(args)`.** In a constructor, `super(args)` records the lineage root
+   (42.7) and then calls the base-class constructor whose parameters accept the
+   arguments (best match, as in section 40), on the same object. The single
+   literal `super("constructor")` stays lineage-only (42.5). With arguments
+   and no loaded base class, or no matching base constructor, it is an error.
+3. **`this(args)`.** In a constructor, `this(args)` calls another constructor
+   of the same class on the same object.
+4. **Implicit `super()`.** A constructor of the program's own class that does
+   not start with `super(...)` or `this(...)` first runs the no-arg
+   constructor of the nearest loaded ancestor that declares constructors. A
+   class with no constructor gets the same as its default constructor. `/lib`
+   units are excluded: they construct themselves, and an unimplemented library
+   constructor throws `UnsupportedOperationException`.
+5. **Inherited field initializers.** `new D()` runs the declared initializers
+   of every instance field along the `extends` chain, base first.
+6. **Virtual dispatch.** An instance call `x.m(args)`, or an unqualified
+   `m(args)` inside an instance method, runs the most-derived override of `m`
+   (same name and parameter types) for the object's runtime class. The
+   compiler lowers it to existing opcodes: for each loaded override, deepest
+   first, `DUP`, `INSTANCEOF <class>`, `JMPF`, arguments, `CALL`; the
+   statically resolved method is the fallback. No new opcode or artifact field
+   is involved.
+7. **`super.m(args)`** calls the base-class method on `this` and is never
+   virtual.
+8. **Bodiless methods.** `abstract T m(...);` and an interface method
+   `T m(...);` (not `static` or `default`) parse; the method gets a body that
+   returns the default value of `T` (`0`, `0.0`, `false` or `null`) and is
+   reached only when no override exists.

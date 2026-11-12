@@ -68,8 +68,15 @@ static std::string nameOf(const Type&t){
 }
 static bool same(const Type&a,const Type&b){return a.kind==b.kind&&((a.kind!=Kind::Struct&&a.kind!=Kind::Array&&a.kind!=Kind::Unsigned)||a.name==b.name);}
 static bool numeric(const Type&t){return t.kind==Kind::Int||t.kind==Kind::Double||t.kind==Kind::Unsigned;}
+// Loaded classes for the Java subtype rule (SLEELA.syntax 43.6); set by
+// Analyzer::run for the duration of one analysis (syntax 1.10+), else null.
+static const javaref::ClassIndex* g_javaClasses=nullptr;
 static bool assignable(const Type&to,const Type&from){
  if(to.kind==Kind::Struct&&to.name=="Object") return true;
+ // Java widening reference conversion: a subclass / implementing class is
+ // assignable to its superclass or interface.
+ if(g_javaClasses&&to.kind==Kind::Struct&&from.kind==Kind::Struct&&to.name!=from.name
+    &&javaref::isSubtypeOf(*g_javaClasses,from.name,to.name)) return true;
  return to.kind==Kind::Unknown||from.kind==Kind::Unknown||to.kind==Kind::Any||(to.kind==Kind::Double&&from.kind==Kind::Int)||(from.kind==Kind::Null&&(to.kind==Kind::Any||to.kind==Kind::Struct||to.kind==Kind::String||to.kind==Kind::Array))||same(to,from);
 }
 static bool builtin(const std::string&n){
@@ -499,7 +506,12 @@ class Analyzer{
   if(auto c=dynamic_cast<const ConditionalExpr*>(&e)){requireBool(expr(*c->cond),"conditional '?:' condition");Type a=expr(*c->thenE),b=expr(*c->elseE);if(assignable(a,b))return a;if(assignable(b,a))return b;return{Kind::Unknown,{}};}
   if(auto io=dynamic_cast<const InstanceOfExpr*>(&e)){expr(*io->value);Type target=tn(io->typeName);if(target.kind==Kind::Error)err("instanceof uses unknown type "+io->typeName);if(target.kind==Kind::Any||target.kind==Kind::Void)err("instanceof target must be a concrete runtime type");if(target.kind==Kind::Array)err("instanceof on array types requires runtime array element contracts, which are not yet available");return{Kind::Bool,{}};}
   if(auto ca=dynamic_cast<const CastExpr*>(&e)){expr(*ca->operand);Type target=tn(ca->typeName);if(target.kind==Kind::Error)err("cast uses unknown type "+ca->typeName);if(target.kind==Kind::Array)err("casts to array types require runtime array element contracts, which are not yet available");return target;}
-  if(dynamic_cast<const SuperExpr*>(&e))return{Kind::Unknown,{}};
+  if(dynamic_cast<const SuperExpr*>(&e)){
+   // `super` is `this` viewed as the base class (43.6).
+   auto so=superOf.find(cls);
+   if(cur&&!cur->isStatic&&so!=superOf.end())return{Kind::Struct,so->second,{}};
+   return{Kind::Unknown,{}};
+  }
   if(dynamic_cast<const LineageExpr*>(&e))return{Kind::String,{}};
   if(dynamic_cast<const ThisExpr*>(&e)){if(cls.empty()||!cur||cur->isStatic){err("'this' is only available in an instance method");return{Kind::Error,{}};}return{Kind::Struct,cls,{}};}
   if(auto aa=dynamic_cast<const ArrayAccess*>(&e)){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array)return typeOf(base.elem);if(base.kind==Kind::Unknown)return{Kind::Unknown,{}};err("index access requires an array value, got "+nameOf(base));return{Kind::Error,{}};}
@@ -682,7 +694,35 @@ class Analyzer{
   if(n.size()>2 && n[0]=='u' && n[1]=='i' && n[2]>='A' && n[2]<='Z'){return{Kind::Int,{}};}
   return{Kind::Unknown,{}};
  }
+ // super(args) / this(args) constructor invocation (SLEELA.syntax 43.6).
+ Type constructorInvocation(const MethodCall&m){
+  if(!cur||!cur->java.constructor){err(std::string(m.superConstructor?"super":"this")+"(...) is only allowed in a constructor");return{Kind::Void,{}};}
+  std::vector<Type> at=argTypesOf(m.args);
+  if(syntax<SyntaxVersion{3,0}) return{Kind::Void,{}};   // below 3.0: lineage-only, arguments not used
+  std::string target=cls;
+  if(m.superConstructor){
+   auto so=superOf.find(cls);
+   if(so==superOf.end()){ if(!m.args.empty()) err("super(...) with arguments in '"+cls+"' needs a loaded base class"); return{Kind::Void,{}}; }
+   target=so->second;
+  }
+  const Method* best=nullptr; int bestScore=-1; bool any=false;
+  for(const auto&c:p.classes) if(c.name==target) for(const auto&mm:c.methods){
+   if(!mm.java.constructor) continue; any=true;
+   if(mm.params.size()!=at.size()) continue;
+   if(m.thisConstructor&&&mm==cur) continue;
+   int score=0; bool ok=true;
+   for(size_t i=0;i<at.size();++i){Type w=tn(mm.params[i].type); if(!assignable(w,at[i])){ok=false;break;} if(same(w,at[i])) score+=2; else score+=1;}
+   if(ok&&score>bestScore){best=&mm;bestScore=score;}
+  }
+  if(!best){
+   if(m.args.empty()&&!any) return{Kind::Void,{}};   // implicit default constructor
+   err("no constructor of '"+target+"' takes "+std::to_string(at.size())+" argument(s) of these types");
+   return{Kind::Void,{}};
+  }
+  m.resolved=best; return{Kind::Void,{}};
+ }
  Type fluent(const MethodCall&m){
+  if(m.superConstructor||m.thisConstructor) return constructorInvocation(m);
   if(m.method=="start"){if(auto r=dynamic_cast<const VarExpr*>(m.receiver.get())){if(r->name=="Munction"){if(m.args.size()!=1)err("Munction.start(name) takes one argument");else{Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction.start name must be string");}return{Kind::Unknown,{}};}}}
   // The builtin `Ptr` namespace: Ptr.valid(p), Ptr.id(p), ... operate on an
   // object reference (an int obtained from `obj.ref`). Like `Munction`, it is
@@ -759,6 +799,9 @@ class Analyzer{
 public:
  Analyzer(const Program&x,const SyntaxVersion&s,bool needMain):p(x),syntax(s),requireMain(needMain){}
  SemanticResult run(){
+  javaref::ClassIndex javaClasses; for(const auto&c:p.classes) javaClasses[c.name]=&c;
+  struct ClassesGuard{ ~ClassesGuard(){ g_javaClasses=nullptr; } } classesGuard;
+  if(!(syntax<SyntaxVersion{1,10})) g_javaClasses=&javaClasses;
   collect();
   declarations();
   for(const auto&d:frontend::validateLanguageAnnotations(p.annotations)){

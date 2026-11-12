@@ -17,6 +17,9 @@ compile time through `FE_SRC` in `impl/Makefile`.
 - A qualified name (`java.lang.Throwable`) falls back to its simple name only
   for classes loaded from `/lib` (`fromLibrary`); a local class cannot
   impersonate a JDK class.
+- Java type relations also live here: `javaref::isSubtypeOf` (extends +
+  implements, used by the semantic `assignable` rule and by virtual dispatch)
+  and `javaref::inheritanceDepth` (deepest-first dispatch order).
 - New Java name-reference helpers go in this file, not inline in
   `semantic.cpp` / `compiler.cpp`.
 

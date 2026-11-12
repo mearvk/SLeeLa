@@ -35,6 +35,16 @@ std::string resolveBaseName(const ClassIndex& byName,const std::string& declared
 // Resolved superclass of a class ("" when it has none).
 std::string superclassOf(const ClassIndex& byName,const ClassDecl& cls);
 
+// ---- Java type relations (SLEELA.syntax section 43.6) --------------------
+// "java.util.List<E>" -> "java.util.List" (type arguments dropped).
+std::string stripTypeArguments(const std::string& t);
+// True when class `from` is `to` or reaches it through its extends chain or
+// any implemented interface (transitively). Names resolve as resolveBaseName.
+// Cycle-safe. Unknown names are only equal to themselves.
+bool isSubtypeOf(const ClassIndex& classes,const std::string& from,const std::string& to);
+// Number of loaded superclasses above `n` (0 for a root). Cycle-safe.
+int inheritanceDepth(const ClassIndex& classes,const std::string& n);
+
 // ---- spark Preonem (SLEELA.syntax section 43) ----------------------------
 // True when the document carries the `spark` marker, which indicates Java style
 // declarative: SLeeLa constructs written in Java style, supported at the interpreter/VM level (this module, the

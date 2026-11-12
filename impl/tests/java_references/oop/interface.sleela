@@ -1,0 +1,6 @@
+#sleela 3.0
+spark;
+material;
+interface Shape { double area(); }
+class Sq implements Shape { double s; Sq(double s) { this.s = s; } public double area() { return s * s; } }
+class P { void main() { Shape sh = new Sq(3.0); print(sh.area()); } }

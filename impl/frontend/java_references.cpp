@@ -24,6 +24,41 @@ std::string superclassOf(const ClassIndex& byName,const ClassDecl& cls){
     return resolveBaseName(byName,cls.java.superclass);
 }
 
+std::string stripTypeArguments(const std::string& t){
+    const std::size_t lt=t.find('<');
+    std::string s=lt==std::string::npos?t:t.substr(0,lt);
+    while(!s.empty() && s.back()==' ') s.pop_back();
+    return s;
+}
+bool isSubtypeOf(const ClassIndex& classes,const std::string& from,const std::string& to){
+    if(from==to) return true;
+    std::set<std::string> seen;
+    std::vector<std::string> work{from};
+    while(!work.empty()){
+        const std::string n=work.back(); work.pop_back();
+        if(!seen.insert(n).second) continue;
+        if(n==to) return true;
+        auto it=classes.find(n);
+        if(it==classes.end()||!it->second) continue;
+        const std::string sup=superclassOf(classes,*it->second);
+        if(!sup.empty()) work.push_back(sup);
+        for(const auto& i:it->second->java.interfaces){
+            const std::string r=resolveBaseName(classes,stripTypeArguments(i));
+            if(!r.empty()) work.push_back(r);
+        }
+    }
+    return false;
+}
+int inheritanceDepth(const ClassIndex& classes,const std::string& n){
+    std::set<std::string> seen; std::string cur=n; int d=0;
+    for(;;){
+        seen.insert(cur);
+        const std::string p=lineageParentOf(classes,cur);
+        if(p.empty()||seen.count(p)) return d;
+        ++d; cur=p;
+    }
+}
+
 bool sparkDocument(const Program& p){ return p.sparkMarked; }
 
 std::string lineageParentOf(const ClassIndex& classes,const std::string& n){

@@ -1,0 +1,5 @@
+#sleela 3.0
+spark;
+material;
+class AppError extends java.lang.IllegalStateException { public AppError(String message) { super(message); } }
+class P { void main() { AppError e = new AppError("boom"); print(e.getMessage()); print(e instanceof RuntimeException); } }

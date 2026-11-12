@@ -1,0 +1,6 @@
+#sleela 3.0
+spark;
+material;
+class Base { String name; Base(String n) { name = n; } String who() { return name; } }
+class Kid extends Base { Kid(String n) { super(n); } }
+class P { void main() { Kid k = new Kid("kid"); print(k.who()); } }

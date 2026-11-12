@@ -5,6 +5,8 @@
 #include "semantic.h"
 #include "java_compat.h"
 #include "java_references.h"
+#include <algorithm>
+#include <tuple>
 #include "unsigned_integer.h"
 #include "wide_integer.h"
 
@@ -407,6 +409,13 @@ private:
             }
             currentClass_=savedClass;
         }
+        if(m.java.constructor && !(syntax_<SyntaxVersion{3,0}) && !startsWithConstructorInvocation(m) && !isLibraryClass(currentClass_)){
+            // Java implicit super() (43.6) before the constructor body. Only for
+            // the program's own classes: /lib units construct themselves (their
+            // constructors set inherited state, and unimplemented library
+            // constructors throw UnsupportedOperationException).
+            std::string owner; if(const Method* bc=implicitBaseCtor(currentClass_,owner)){ emitThis(); emit(OP_CALL,ctorFuncIndex(owner,bc)); emit(OP_POP); }
+        }
         emitBlock(*m.body);ctx_=nullptr;emit(OP_CONST,addNullConst());emit(OP_RET);slvm_end_func(vm_);
         varType_=savedTypes; currentRetType_=savedRet;
     }
@@ -609,7 +618,7 @@ private:
              emit(OP_INSTANCEOF,runtimeTypeOperand(x->typeName));
              return;
          }
-        if(dynamic_cast<const SuperExpr*>(e)){emit(OP_CONST,addNullConst());return;}
+        if(dynamic_cast<const SuperExpr*>(e)){ if(ctx_&&ctx_->slotOf("this")>=0) emitThis(); else emit(OP_CONST,addNullConst()); return; }
         if(dynamic_cast<const ThisExpr*>(e)){emitThis();return;}
         if(auto x=dynamic_cast<const ArrayAccess*>(e)){emitExpr(x->base.get());emitExpr(x->index.get());emit(OP_ARRGET);return;}
         if(auto x=dynamic_cast<const MethodReferenceExpr*>(e)){emitExpr(x->base.get());return;}
@@ -717,6 +726,7 @@ private:
             return "";
         }
         if(dynamic_cast<const ThisExpr*>(e))return currentClass_;
+        if(dynamic_cast<const SuperExpr*>(e))return javaref::lineageParentOf(lineageClasses_,currentClass_);
         if(auto m=dynamic_cast<const MemberAccess*>(e)){
             { std::string sc; if(isStaticClassRef(m->base.get(),sc)){ auto ft=staticFieldType_.find(sc+"::"+m->field); if(ft!=staticFieldType_.end()) return structLayout_.count(ft->second)?ft->second:std::string(); } }
             std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
@@ -778,6 +788,85 @@ private:
         if(!match) throw std::runtime_error("Semantic error: no constructor of '"+className+"' takes "+std::to_string(argc)+" argument(s)");
         return match;
     }
+    // ---- Java constructor chaining and virtual dispatch (SLEELA.syntax 43.6) ----
+    // Function index of a constructor declared in `owner`.
+    int ctorFuncIndex(const std::string& owner,const Method* ctor){
+        int fi=resolvedIndex(ctor);
+        if(fi<0){ auto t=funcIndex_.find(owner+"::"+ctor->name); if(t!=funcIndex_.end()) fi=t->second; }
+        if(fi<0) throw std::runtime_error("Semantic error: constructor of '"+owner+"' is not registered");
+        return fi;
+    }
+    bool isLibraryClass(const std::string& n) const { auto it=lineageClasses_.find(n); return it!=lineageClasses_.end()&&it->second->fromLibrary; }
+    // Java's implicit super(): the no-arg constructor of the nearest loaded
+    // ancestor of `cls` that declares any constructor (nullptr when there is
+    // none, or when that ancestor has no no-arg constructor). Sets `owner`.
+    const Method* implicitBaseCtor(const std::string& cls,std::string& owner){
+        std::set<std::string> seen; std::string c=javaref::lineageParentOf(lineageClasses_,cls);
+        while(!c.empty() && seen.insert(c).second){
+            const ClassDecl* d=lineageClasses_.at(c); bool any=false;
+            for(const auto& m:d->methods) if(m.java.constructor){ any=true; if(m.params.empty()){ owner=c; return &m; } }
+            if(any) return nullptr;
+            c=javaref::lineageParentOf(lineageClasses_,c);
+        }
+        return nullptr;
+    }
+    // True when a constructor body starts with an explicit super(...) / this(...)
+    // (including the lineage-only super("constructor") of section 42.5).
+    static bool startsWithConstructorInvocation(const Method& m){
+        if(!m.body||m.body->stmts.empty()) return false;
+        const Stmt* s=m.body->stmts.front().get();
+        if(auto a=dynamic_cast<const Assign*>(s)) return a->name=="__lin_root";
+        if(auto b=dynamic_cast<const Block*>(s)) for(const auto& x:b->stmts) if(auto es=dynamic_cast<const ExprStmt*>(x.get())) if(auto mc=dynamic_cast<const MethodCall*>(es->expr.get())) if(mc->superConstructor) return true;
+        if(auto es=dynamic_cast<const ExprStmt*>(s)) if(auto mc=dynamic_cast<const MethodCall*>(es->expr.get())) return mc->superConstructor||mc->thisConstructor;
+        return false;
+    }
+    // super(args) / this(args): call the resolved constructor on `this`.
+    void emitConstructorInvocation(const MethodCall& mc){
+        if(syntax_<SyntaxVersion{3,0}) return;   // below 3.0 the arguments are not evaluated (42.7)
+        if(!mc.resolved) return;                  // implicit default constructor: nothing to run
+        const std::string owner = mc.superConstructor ? javaref::lineageParentOf(lineageClasses_,currentClass_) : currentClass_;
+        emitThis(); emitArgsCoerced(mc.args,mc.resolved); emit(OP_CALL,ctorFuncIndex(owner,mc.resolved));
+        // leave a value: the ExprStmt pops it
+    }
+    // Overrides of `method` (declared in or inherited by `staticType`) in loaded
+    // subclasses / implementors, deepest first, as (runtime type, function).
+    std::vector<std::pair<int,int>> virtualTargets(const std::string& staticType,const Method* method){
+        std::vector<std::tuple<int,int,int>> found; // depth, typeIndex, funcIndex
+        for(const auto& cls:prog_.classes){
+            if(cls.name==staticType || !javaref::isSubtypeOf(lineageClasses_,cls.name,staticType)) continue;
+            auto lay=structLayout_.find(cls.name); if(lay==structLayout_.end()) continue;
+            for(const auto& dm:cls.methods){
+                if(dm.isStatic||dm.java.constructor||dm.name!=method->name||dm.params.size()!=method->params.size()||&dm==method) continue;
+                bool sameParams=true; for(size_t i=0;i<dm.params.size();++i) if(dm.params[i].type!=method->params[i].type){sameParams=false;break;}
+                if(!sameParams) continue;
+                auto fi=funcIndexByPtr_.find(&dm); if(fi==funcIndexByPtr_.end()) continue;
+                found.emplace_back(javaref::inheritanceDepth(lineageClasses_,cls.name),lay->second.typeIndex,fi->second);
+                break;
+            }
+        }
+        std::stable_sort(found.begin(),found.end(),[](const auto& a,const auto& b){return std::get<0>(a)>std::get<0>(b);});
+        std::vector<std::pair<int,int>> out; for(const auto& f:found) out.emplace_back(std::get<1>(f),std::get<2>(f));
+        return out;
+    }
+    // Receiver is on the stack. Java virtual dispatch (43.6): test it against
+    // each loaded override, deepest first, else call `fidx`.
+    void emitInstanceCall(const std::string& staticType,const Method* method,int fidx,const std::vector<ExprP>& args){
+        if(!(syntax_<SyntaxVersion{3,0})){
+            const auto targets=virtualTargets(staticType,method);
+            if(!targets.empty()){
+                std::vector<int> ends;
+                for(const auto& t:targets){
+                    emit(OP_DUP); emit(OP_INSTANCEOF,t.first); const int skip=emit(OP_JMPF,0);
+                    emitArgsCoerced(args,method); emit(OP_CALL,t.second); ends.push_back(emit(OP_JMP,0));
+                    patch(skip,here());
+                }
+                emitArgsCoerced(args,method); emit(OP_CALL,fidx);
+                for(int e:ends) patch(e,here());
+                return;
+            }
+        }
+        emitArgsCoerced(args,method); emit(OP_CALL,fidx);
+    }
     void emitNew(const NewExpr& n){
         if(n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){if(!n.args.empty())emitExpr(n.args[0].get());else emit(OP_CONST,slvm_add_const_int(vm_,0));emit(OP_NEWARRAY);return;}
         auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown class or struct '"+n.typeName+"'");
@@ -788,7 +877,11 @@ private:
         emit(OP_NEWSTRUCT,it->second.typeIndex);
         // Initialize class fields per instance. A duplicated handle is consumed
         // by SETFIELD while the original stays on the stack as the new value.
-        for(const auto& cls:prog_.classes) if(cls.name==n.typeName){
+        // Initialize instance fields base-first along the extends chain (43.6):
+        // a class's inherited fields get their declared initializers too.
+        std::vector<std::string> chain{n.typeName};
+        if(!(syntax_<SyntaxVersion{3,0})){ std::set<std::string> seen{n.typeName}; std::string c=javaref::lineageParentOf(lineageClasses_,n.typeName); while(!c.empty()&&seen.insert(c).second){ chain.insert(chain.begin(),c); c=javaref::lineageParentOf(lineageClasses_,c); } }
+        for(const auto& chainName:chain) for(const auto& cls:prog_.classes) if(cls.name==chainName){
             for(const auto& f:cls.fields) if(!f.isStatic){
                 auto off=it->second.fieldOffset.find(f.name);if(off==it->second.fieldOffset.end())continue;
                 emit(OP_DUP);
@@ -806,6 +899,10 @@ private:
         // receiver, push the constructor arguments, and call the constructor
         // method; its (null) return value is discarded so the fully initialized
         // instance remains on the stack as the value of `new Type(args)`.
+        if(!ctor && !(syntax_<SyntaxVersion{3,0}) && !isLibraryClass(n.typeName)){
+            // Java default constructor: runs the implicit super() chain.
+            std::string owner; if(const Method* bc=implicitBaseCtor(n.typeName,owner)){ emit(OP_DUP); emit(OP_CALL,ctorFuncIndex(owner,bc)); emit(OP_POP); }
+        }
         if(ctor){
             int fidx=resolvedIndex(ctor);
             if(fidx<0){ auto target=funcIndex_.find(n.typeName+"::"+ctor->name); if(target!=funcIndex_.end()) fidx=target->second; }
@@ -917,6 +1014,7 @@ private:
     // closeWithReceipt/reception push a String. This is the source surface for
     // the reach-composition sentence (syntax 1.3).
     void emitMethodCall(const MethodCall& mc){
+        if(mc.superConstructor||mc.thisConstructor){ emitConstructorInvocation(mc); if(syntax_<SyntaxVersion{3,0}||!mc.resolved) emit(OP_CONST,addNullConst()); return; }
         const std::string& m=mc.method;
         auto oneArgStr=[&](const char* verb){ if(mc.args.size()!=1) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"(...) takes exactly one argument"); };
         auto noArg=[&](const char* verb){ if(!mc.args.empty()) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"() takes no arguments"); };
@@ -985,7 +1083,10 @@ private:
         if(method->isStatic)throw std::runtime_error("Semantic error: static method '"+receiverType+"::"+m+"' must be called through its class");
         if((int)mc.args.size()!=(int)method->params.size())throw std::runtime_error("Semantic error: method '"+receiverType+"::"+m+"' expects "+std::to_string(method->params.size())+" argument(s), got "+std::to_string(mc.args.size()));
         if(method->isProtected&&receiverType!=currentClass_)throw std::runtime_error("protected method access denied");
-        emitExpr(mc.receiver.get());emitArgsCoerced(mc.args,method);emit(OP_CALL,fidx);
+        emitExpr(mc.receiver.get());
+        // `super.m()` is never virtual.
+        if(dynamic_cast<const SuperExpr*>(mc.receiver.get())){ emitArgsCoerced(mc.args,method); emit(OP_CALL,fidx); return; }
+        emitInstanceCall(receiverType,method,fidx,mc.args);
     }
     void emitVar(const VarExpr& v){
         if(v.name=="next"){emit(OP_CONST,slvm_add_const_int(vm_,kNextSystemDegree));return;}
@@ -1551,7 +1652,7 @@ private:
             const Method* target=methods_[fidx].method;
             if((int)c.args.size()!=(int)target->params.size())throw std::runtime_error("Semantic error: method '"+currentClass_+"::"+c.callee+"' expects "+std::to_string(target->params.size())+" argument(s), got "+std::to_string(c.args.size()));
             if(target->isProtected&&methodOwner_[currentClass_+"::"+c.callee]!=currentClass_)throw std::runtime_error("protected method access denied");
-            if(!target->isStatic)emitThis();
+            if(!target->isStatic){ emitThis(); emitInstanceCall(currentClass_,target,fidx,c.args); return; }
             emitArgsCoerced(c.args,target);emit(OP_CALL,fidx);return;
         }
         // Native subject helpers are synthesized as qualified class methods.

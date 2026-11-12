@@ -589,6 +589,7 @@ ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Ann
     if(accept(Tok::KwExtends)) c.java.superclass=parseQualifiedName();
     if(accept(Tok::KwImplements)) c.java.interfaces=parseTypeList(Tok::LBrace);
     expect(Tok::LBrace,"'{'");
+    const bool savedInterface=inInterface_; inInterface_=(kind==Tok::KwInterface);
     while(!check(Tok::RBrace)&&!check(Tok::Eof)){
         auto annotations=parseAnnotations(annotation::UseSite::Declaration);
         unsigned mods=parseJavaModifiers();
@@ -628,7 +629,7 @@ ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Ann
         if(after==Tok::LParen)c.methods.push_back(parseMethod(stat,prot,mods,std::move(annotations)));
         else c.fields.push_back(parseField(stat,prot,mods,std::move(annotations)));
     }
-    expect(Tok::RBrace,"'}'"); typeVars_.pop_back();
+    expect(Tok::RBrace,"'}'"); typeVars_.pop_back(); inInterface_=savedInterface;
     if(usesLineage_){
         // Implied lineage fields (SLEELA.syntax section 42): static, so they add no layout slots.
         const std::pair<const char*,LineageExpr::Kind> lf[3]={{"__lin_parent",LineageExpr::InitParent},{"__lin_child",LineageExpr::InitChild},{"__lin_root",LineageExpr::InitRoot}};
@@ -655,6 +656,23 @@ Method Parser::parseMethod(bool isStatic,bool isProtected,unsigned modifiers,std
     m.retType=parseType(&m.java.typeAnnotations);m.name=expect(Tok::Ident,"method name").text;expect(Tok::LParen,"'('");
     if(!check(Tok::RParen)){do{Param p;p.annotations=parseAnnotations(annotation::UseSite::Parameter);p.type=parseType(&p.typeAnnotations);if(acceptEllipsis())p.type+="[]";p.name=expect(Tok::Ident,"parameter name").text;m.params.push_back(std::move(p));}while(accept(Tok::Comma));}
     expect(Tok::RParen,"')'");parseThrows(m.java.thrownTypes);
+    // Bodiless abstract / interface method (SLEELA.syntax 43.6): `T name(...);`
+    // gets a synthesized body returning T's default value. A call reaches the
+    // concrete override through virtual dispatch.
+    if(check(Tok::Semicolon) && ((modifiers&JavaAbstract)!=0 || (inInterface_ && (modifiers&(JavaStatic|JavaDefault))==0))){
+        ++i_; m.java.modifiers|=JavaAbstract;
+        auto b=std::make_unique<Block>();
+        const std::string& r=m.retType;
+        if(r!="void"){
+            auto ret=std::make_unique<ReturnStmt>();
+            if(r=="int"||r=="long"||r=="short"||r=="byte"||r=="char"||r=="int64") ret->value=std::make_unique<IntLit>(0);
+            else if(r=="double"||r=="float") ret->value=std::make_unique<DoubleLit>(0.0);
+            else if(r=="boolean"||r=="bool") ret->value=std::make_unique<BoolLit>(false);
+            else ret->value=std::make_unique<NullLit>();
+            b->stmts.push_back(std::move(ret));
+        }
+        m.body=std::move(b); typeVars_.pop_back(); return m;
+    }
     m.body=parseBlock();typeVars_.pop_back();return m;
 }
 // Parse one "simple statement" without its trailing ';': a local variable
@@ -753,8 +771,21 @@ StmtP Parser::parseSimpleStatement(){
     if(check(Tok::KwSuper)&&peek(1).kind==Tok::LParen){
         // super("constructor") goes to the backmost class (SLEELA.syntax section 42.5):
         // it records the root of the lineage in this class's implied root link.
-        i_+=2; if(!check(Tok::RParen)){do{parseExpr();}while(accept(Tok::Comma));} expect(Tok::RParen,"')'");
-        usesLineage_=true; auto a=std::make_unique<Assign>(); a->name="__lin_root"; a->value=std::make_unique<LineageExpr>(LineageExpr::Parents,1000000); return a;
+        // Java constructor invocation (SLEELA.syntax 43.6): any other argument list
+        // ALSO invokes the base-class constructor with those arguments; the exact
+        // single literal "constructor" stays lineage-only (42.5).
+        i_+=2; std::vector<ExprP> args; if(!check(Tok::RParen)){do{args.push_back(parseExpr());}while(accept(Tok::Comma));} expect(Tok::RParen,"')'");
+        usesLineage_=true; auto a=std::make_unique<Assign>(); a->name="__lin_root"; a->value=std::make_unique<LineageExpr>(LineageExpr::Parents,1000000);
+        const StrLit* only = args.size()==1 ? dynamic_cast<const StrLit*>(args[0].get()) : nullptr;
+        if(only && only->value=="constructor") return a;
+        auto call=std::make_unique<MethodCall>(std::make_unique<SuperExpr>(),"super"); call->args=std::move(args); call->superConstructor=true;
+        auto b=std::make_unique<Block>(); b->stmts.push_back(std::move(a)); b->stmts.push_back(std::make_unique<ExprStmt>(std::move(call))); return b;
+    }
+    if(check(Tok::KwThis)&&peek(1).kind==Tok::LParen){
+        // this(args): delegate to another constructor of the same class (43.6).
+        i_+=2; std::vector<ExprP> args; if(!check(Tok::RParen)){do{args.push_back(parseExpr());}while(accept(Tok::Comma));} expect(Tok::RParen,"')'");
+        auto call=std::make_unique<MethodCall>(std::make_unique<ThisExpr>(),"this"); call->args=std::move(args); call->thisConstructor=true;
+        return std::make_unique<ExprStmt>(std::move(call));
     }
     ExprP lhs=parseExpr();
     if(check(Tok::Arrow)){
