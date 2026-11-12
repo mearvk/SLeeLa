@@ -5,8 +5,8 @@
    Expected values are the outputs of the Java SE 28 API for the same calls. >>
 #sleela 3.0
 material;
-import java.java.lang;
-import java.java.util;
+import java.jdk-25.java.lang;
+import java.jdk-25.java.util;
 class JavaUtilUtilitiesConformance {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Baseline identity for a worker-class conformance program. >>

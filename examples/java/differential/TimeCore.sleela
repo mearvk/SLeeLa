@@ -5,7 +5,7 @@
    Instant, Year, YearMonth, MonthDay, DayOfWeek, Month). >>
 #sleela 3.0
 material;
-import java.java.time;
+import java.jdk-25.java.time;
 class TimeCore {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Baseline identity for a worker-class differential test. >>

@@ -1,0 +1,64 @@
+<< examples/java/differential/MathStatics.sleela
+   SLeeLa side of the MathStatics differential test.
+   Definition: Prints, line for line, the same results as MathStatics.java for the
+   static members of java.lang.Math and java.lang.StrictMath (StrictMath calls
+   map to the SLeeLa Math functions): rounding, division, exact arithmetic,
+   128-bit high products, unsigned arithmetic, floating-point neighbours and
+   exception kinds. >>
+#sleela 3.0
+import java.jdk-28;
+material;
+class MathStatics {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+  String getDate() { return metaDate; }
+  String getCopyright() { return metaCopyright; }
+  String getTrademark() { return metaTrademark; }
+  String getCorporation() { return metaCorporation; }
+  String getOrigin() { return metaOrigin; }
+  String getBirthDate() { return metaBirthDate; }
+  int getScienceRating() { return metaScienceRating; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+
+  long q(double x) { return Math.round(x * 1000000.0); }
+  String s(long x) { return "" + x; }
+    String kind(Any e) { if (e instanceof ArithmeticException) { return "AE"; } return "IAE"; }
+  String exAdd() { try { Math.addExact(9223372036854775807, 1); return "ok"; } catch (Any ex) { return kind(ex); } }
+  String exPow() { try { Math.powExact(2, 64); return "ok"; } catch (Any ex) { return kind(ex); } }
+  String exNeg() { try { Math.powExact(2, -1); return "ok"; } catch (Any ex) { return kind(ex); } }
+  String exUm() { try { Math.unsignedMultiplyExact(-1, 2); return "ok"; } catch (Any ex) { return kind(ex); } }
+  String exUp() { try { Math.unsignedPowExact(2, 64); return "ok"; } catch (Any ex) { return kind(ex); } }
+
+  void main() {
+    print(s(Math.abs(-7)) + " " + s(Math.abs(-5000000000)) + " " + s(q(Math.abs(-2.5))) + " " + s(q(Math.abs(-0.0))) + " " + s(StrictMath.abs(-9)));
+    print(s(Math.max(3, 9)) + " " + s(Math.min(3, 9)) + " " + s(q(Math.max(2.5, -1.0))) + " " + s(q(Math.min(2.5, -1.0))) + " " + s(StrictMath.max(4, 8)) + " " + s(q(StrictMath.min(4.5, 8.5))));
+    print(s(q(Math.floor(-2.5))) + " " + s(q(Math.ceil(2.1))) + " " + s(q(Math.ceil(-0.5))) + " " + s(q(Math.rint(2.5))) + " " + s(q(Math.rint(3.5))) + " " + s(q(Math.rint(-2.5))) + " " + s(q(StrictMath.floor(7.9))));
+    print(s(Math.round(2.5)) + " " + s(Math.round(-2.5)) + " " + s(Math.round(2.4)) + " " + s(Math.round(-2.6)) + " " + s(StrictMath.round(0.5)));
+    print(s(q(Math.signum(-3.0))) + " " + s(q(Math.signum(0.0))) + " " + s(q(Math.signum(12.5))) + " " + s(q(Math.copySign(3.0, -1.0))) + " " + s(q(Math.copySign(-3.0, 1.0))));
+    print(s(Math.floorDiv(-7, 2)) + " " + s(Math.floorDiv(7, -2)) + " " + s(Math.floorMod(-7, 3)) + " " + s(Math.floorMod(7, -3)) + " " + s(Math.ceilDiv(7, 2)) + " " + s(Math.ceilDiv(-7, 2)) + " " + s(Math.ceilMod(7, 2)) + " " + s(Math.ceilMod(-7, 2)));
+    print(s(Math.clamp(15, 0, 10)) + " " + s(Math.clamp(-5, 0, 10)) + " " + s(Math.clamp(5, 0, 10)) + " " + s(q(Math.clamp(1.5, 0.0, 1.0))));
+    print(s(Math.addExact(2000000000, 2000000000)) + " " + s(Math.subtractExact(5, 9)) + " " + s(Math.multiplyExact(123456, 654321)) + " " + s(Math.negateExact(5)) + " " + s(Math.toIntExact(42)));
+    print(s(Math.multiplyHigh(9223372036854775807, 4)) + " " + s(Math.multiplyHigh(-9223372036854775807, 4)) + " " + s(Math.multiplyFull(2000000000, 3)));
+    print(s(Math.powExact(3, 4)) + " " + s(Math.powExact(2, 62)) + " " + s(Math.powExact(-2, 63)) + " " + s(Math.powExact(7, 0)) + " " + s(StrictMath.powExact(5, 3)));
+    print(s(Math.unsignedMultiplyHigh(-1, -1)) + " " + s(Math.unsignedMultiplyHigh(-1, 2)) + " " + s(Math.unsignedMultiplyHigh(4294967296, 4294967296)) + " " + s(Math.unsignedMultiplyHigh(3, 5)));
+    print(s(Math.unsignedMultiplyExact(-1, 1)) + " " + s(Math.unsignedMultiplyExact(4294967296, 2147483648)) + " " + s(Math.unsignedPowExact(2, 63)) + " " + s(Math.unsignedPowExact(3, 3)));
+    print(s(Math.getExponent(1024.0)) + " " + s(Math.getExponent(0.1)) + " " + s(Math.getExponent(0.0)) + " " + s(q((Math.ulp(1.0) * 4503599627370496.0))) + " " + s(q(((Math.nextUp(1.0) - 1.0) * 4503599627370496.0))) + " " + s(q(((1.0 - Math.nextDown(1.0)) * 9007199254740992.0))) + " " + s(q(((Math.nextAfter(1.0, 2.0) - 1.0) * 4503599627370496.0))) + " " + s(q(Math.scalb(3.0, 4))));
+    print(s(q(Math.toDegrees(Math.PI))) + " " + s(q(Math.toRadians(180.0))) + " " + s(q(Math.E)) + " " + s(q(Math.PI)) + " " + s(q(Math.TAU)) + " " + s(q(Math.hypot(3.0, 4.0))) + " " + s(q(Math.sqrt(144.0))) + " " + s(q(Math.cbrt(-27.0))));
+    print(s(q(Math.pow(2.0, 10.0))) + " " + s(q(Math.pow(2.0, -2.0))) + " " + s(q(Math.pow(9.0, 0.5))) + " " + s(q(Math.exp(1.0))) + " " + s(q(Math.log(Math.E))) + " " + s(q(Math.sin(Math.PI / 2.0))) + " " + s(q(Math.cos(Math.PI))) + " " + s(q(Math.atan(1.0) * 4.0)) + " " + s(q(Math.tanh(0.5))) + " " + s(q(Math.log10(1000.0))));
+    print(exAdd() + " " + exPow() + " " + exNeg() + " " + exUm() + " " + exUp());
+  }
+}

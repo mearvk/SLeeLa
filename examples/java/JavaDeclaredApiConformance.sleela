@@ -8,10 +8,10 @@
    Prints one FAIL line per mismatch, then a summary line. >>
 #sleela 3.0
 material;
-import java.java.time;
-import java.java.math;
-import java.java.util.concurrent;
-import java.java.security;
+import java.jdk-25.java.time;
+import java.jdk-25.java.math;
+import java.jdk-25.java.util.concurrent;
+import java.jdk-25.java.security;
 class JavaDeclaredApiConformance {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Baseline identity for a worker-class conformance program. >>

@@ -6,8 +6,8 @@
    byte arrays and seeded random construction). >>
 #sleela 3.0
 material;
-import java.java.math;
-import java.java.util;
+import java.jdk-25.java.math;
+import java.jdk-25.java.util;
 class MathBigInteger {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Baseline identity for a worker-class differential test. >>

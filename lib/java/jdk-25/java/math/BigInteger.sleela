@@ -6,8 +6,8 @@
    contract; Java behavior is supplied only through the conformance boundary. >>
 #sleela 3.0
 material;
-import java.java.lang;
-import java.java.math;
+import java.jdk-25.java.lang;
+import java.jdk-25.java.math;
 
 class BigInteger extends Number {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

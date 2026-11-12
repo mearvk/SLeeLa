@@ -4,7 +4,7 @@
    Java behavior is supplied through the SLeeLa Java conformance boundary. >>
 #sleela 3.0
 material;
-import java.java.time;
+import java.jdk-25.java.time;
 
 class YearMonth {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >

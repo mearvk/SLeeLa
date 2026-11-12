@@ -133,13 +133,13 @@ class Math {
     if (sign < 0.0) { return 0.0 - m; }
     return m;
   }
-  @throwable("java.lang.IllegalArgumentException")
+  @throwable("java.lang.ArithmeticException")
   public static int clamp(long value, int min, int max) {
     if (value < min) { return min; }
     if (value > max) { return max; }
     return (int) value;
   }
-  @throwable("java.lang.IllegalArgumentException")
+  @throwable("java.lang.ArithmeticException")
   public static double clamp(double value, double min, double max) {
     if (min != min || max != max || min > max) { return slNaN(); }
     if (value != value) { return value; }
@@ -415,21 +415,49 @@ class Math {
   @throwable("java.lang.ArithmeticException")
   public static int divideExact(int x, int y) { return x / y; }
 
-  < exact arithmetic (overflow is checked against the long range) >
+  << exact arithmetic. The VM has one integer kind, so a call cannot tell int from
+  long and overload ties go to source order: the long forms come first and
+  therefore decide every call (64-bit range). The int forms are kept for the
+  Java signature. >>
+  static int128 slLongMin() { int128 m = -9223372036854775807; return m - 1; }
+  static int128 slLongMax() { int128 m = 9223372036854775807; return m; }
+  static long slLongChecked(int128 r) {
+    if (r < slLongMin() || r > slLongMax()) { throw new ArithmeticException("long overflow"); }
+    return (long) r;
+  }
+  static int slIntChecked(long r) {
+    if (r < -2147483648 || r > 2147483647) { throw new ArithmeticException("integer overflow"); }
+    return (int) r;
+  }
   @throwable("java.lang.ArithmeticException")
-  public static int addExact(int x, int y) { return x + y; }
+  public static long addExact(long x, long y) { int128 r = x; r = r + y; return slLongChecked(r); }
   @throwable("java.lang.ArithmeticException")
-  public static int subtractExact(int x, int y) { return x - y; }
+  public static int addExact(int x, int y) { long r = x; r = r + y; return slIntChecked(r); }
   @throwable("java.lang.ArithmeticException")
-  public static int multiplyExact(int x, int y) { return x * y; }
+  public static long subtractExact(long x, long y) { int128 r = x; r = r - y; return slLongChecked(r); }
   @throwable("java.lang.ArithmeticException")
-  public static int negateExact(int a) { return 0 - a; }
+  public static int subtractExact(int x, int y) { long r = x; r = r - y; return slIntChecked(r); }
   @throwable("java.lang.ArithmeticException")
-  public static int incrementExact(int a) { return a + 1; }
+  public static long multiplyExact(long x, long y) { int128 r = x; r = r * y; return slLongChecked(r); }
   @throwable("java.lang.ArithmeticException")
-  public static int decrementExact(int a) { return a - 1; }
+  public static int multiplyExact(int x, int y) { long r = x; r = r * y; return slIntChecked(r); }
   @throwable("java.lang.ArithmeticException")
-  public static int toIntExact(long value) { return (int) value; }
+  public static long negateExact(long a) { int128 r = 0; r = r - a; return slLongChecked(r); }
+  @throwable("java.lang.ArithmeticException")
+  public static int negateExact(int a) { long r = 0; r = r - a; return slIntChecked(r); }
+  @throwable("java.lang.ArithmeticException")
+  public static long incrementExact(long a) { int128 r = a; r = r + 1; return slLongChecked(r); }
+  @throwable("java.lang.ArithmeticException")
+  public static int incrementExact(int a) { long r = a; r = r + 1; return slIntChecked(r); }
+  @throwable("java.lang.ArithmeticException")
+  public static long decrementExact(long a) { int128 r = a; r = r - 1; return slLongChecked(r); }
+  @throwable("java.lang.ArithmeticException")
+  public static int decrementExact(int a) { long r = a; r = r - 1; return slIntChecked(r); }
+  @throwable("java.lang.ArithmeticException")
+  public static int toIntExact(long value) {
+    if (value < -2147483648 || value > 2147483647) { throw new ArithmeticException("integer overflow"); }
+    return (int) value;
+  }
   public static long multiplyFull(int x, int y) { return x * y; }
   public static long multiplyHigh(long x, long y) {
     int128 r = x;
@@ -507,7 +535,7 @@ class Math {
      square-free repeated multiplication, checking the range after every step. >>
   @throwable("java.lang.ArithmeticException")
   public static long powExact(long x, int n) {
-    if (n < 0) { throw new IllegalArgumentException("Negative exponent"); }
+    if (n < 0) { throw new ArithmeticException("negative exponent"); }
     int128 lo = -9223372036854775807;
     lo = lo - 1;
     int128 hi = 9223372036854775807;
@@ -523,7 +551,7 @@ class Math {
   }
   @throwable("java.lang.ArithmeticException")
   public static int powExact(int x, int n) {
-    if (n < 0) { throw new IllegalArgumentException("Negative exponent"); }
+    if (n < 0) { throw new ArithmeticException("negative exponent"); }
     long r = 1;
     int i = 0;
     while (i < n) {
@@ -562,7 +590,7 @@ class Math {
   }
   @throwable("java.lang.ArithmeticException")
   public static long unsignedPowExact(long x, int n) {
-    if (n < 0) { throw new IllegalArgumentException("Negative exponent"); }
+    if (n < 0) { throw new ArithmeticException("negative exponent"); }
     long r = 1;
     int i = 0;
     while (i < n) { r = unsignedMultiplyExact(r, x); i = i + 1; }
@@ -570,7 +598,7 @@ class Math {
   }
   @throwable("java.lang.ArithmeticException")
   public static int unsignedPowExact(int x, int n) {
-    if (n < 0) { throw new IllegalArgumentException("Negative exponent"); }
+    if (n < 0) { throw new ArithmeticException("negative exponent"); }
     int r = 1;
     int i = 0;
     while (i < n) { r = unsignedMultiplyExact(r, x); i = i + 1; }

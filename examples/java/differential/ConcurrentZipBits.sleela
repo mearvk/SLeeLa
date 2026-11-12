@@ -5,7 +5,7 @@
    checksums, java.util.BitSet and java.lang.StackTraceElement. >>
 #sleela 3.0
 material;
-import java.java.util;
+import java.jdk-25.java.util;
 class ConcurrentZipBits {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Baseline identity for a worker-class differential test. >>

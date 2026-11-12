@@ -13,7 +13,7 @@
    Locale forms, streams (chars, codePoints, lines) and the static members of
    java.lang.String are not provided here. >>
 #sleela 3.0
-import java.java.lang;
+import java.jdk-25.java.lang;
 material;
 
 class JavaStringMethods {
