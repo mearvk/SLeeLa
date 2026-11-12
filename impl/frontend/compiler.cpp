@@ -275,23 +275,8 @@ private:
     std::string currentClass_;
     // Sleela.home lineage (SLEELA.syntax section 42), resolved against the loaded classes.
     std::map<std::string,const ClassDecl*> lineageClasses_;
-    std::string lineageParentOf(const std::string& n) const {auto it=lineageClasses_.find(n);if(it==lineageClasses_.end())return "";const std::string s=javaref::superclassOf(lineageClasses_,*it->second);return lineageClasses_.count(s)?s:"";}
-    std::string lineageRootOf(std::string n) const {std::set<std::string> seen;for(;;){seen.insert(n);std::string p=lineageParentOf(n);if(p.empty()||seen.count(p))return n;n=p;}}
-    std::string lineageValue(const LineageExpr& x) const {
-        const std::string vm="Sleela.System";
-        switch(x.kind){
-        case LineageExpr::Vm:return vm;
-        case LineageExpr::InitParent:{std::string p=lineageParentOf(currentClass_);return p.empty()?vm:p;}
-        case LineageExpr::InitChild:{for(const auto& kv:lineageClasses_) if(javaref::superclassOf(lineageClasses_,*kv.second)==currentClass_&&kv.first!=currentClass_) return kv.first;return vm;}
-        case LineageExpr::InitRoot:return lineageRootOf(currentClass_);
-        case LineageExpr::Parents:{
-            if(x.depth<=0)return vm;
-            std::string n=currentClass_;
-            for(int i=0;i<x.depth;i++){std::string p=lineageParentOf(n);if(p.empty())break;n=p;}   // clamps to the root
-            return n;}
-        }
-        return vm;
-    }
+    // The lineage logic lives in java_references.cpp (javaref::lineage*).
+    std::string lineageValue(const LineageExpr& x) const { return javaref::lineageValue(lineageClasses_,currentClass_,x); }
     std::map<std::string,StructLayout> structLayout_;
     // Track the declared type of each in-scope local/global so member access
     // can resolve `x.field` to the right struct layout. Names not present are

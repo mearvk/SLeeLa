@@ -13,6 +13,7 @@
 #define SLEELA_JAVA_REFERENCES_H
 #include "ast.h"
 #include <map>
+#include <set>
 #include <string>
 namespace sleela {
 namespace javaref {
@@ -33,6 +34,17 @@ std::string resolveBaseName(const ClassIndex& byName,const std::string& declared
 
 // Resolved superclass of a class ("" when it has none).
 std::string superclassOf(const ClassIndex& byName,const ClassDecl& cls);
+
+// ---- Sleela.home lineage (SLEELA.syntax section 42) ----------------------
+// Resolved at compile time against the loaded classes; every extends edge goes
+// through resolveBaseName above.
+// Resolved parent of n that is itself a loaded class ("" when none).
+std::string lineageParentOf(const ClassIndex& classes,const std::string& n);
+// Root of n's lineage (n itself when it has no loaded parent; cycle-safe).
+std::string lineageRootOf(const ClassIndex& classes,std::string n);
+// Constant string value of a Sleela.home expression inside currentClass.
+// Sleela.System names the VM and is the value when no class applies.
+std::string lineageValue(const ClassIndex& classes,const std::string& currentClass,const LineageExpr& x);
 }
 }
 #endif

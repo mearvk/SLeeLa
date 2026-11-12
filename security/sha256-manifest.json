@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "c8718229504f8165aeab30e454ba94a36ebb8e9790c090a15e14b7c5fc70e944"
+      "sha256": "d742434e59d5a7633906d50dc19a07b396658064767c4d8216b9dee1984ff98d"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -615,11 +615,11 @@
     },
     {
       "path": "impl/frontend/java_references.cpp",
-      "sha256": "0148073c06fdba4baef2dc69c9568e83cd2cedf92cb58947a7969b07de7ec687"
+      "sha256": "8bb43ddcf795ef94373c258c149b76cf1385e7b7a573fdd51d4d02d9256a7123"
     },
     {
       "path": "impl/frontend/java_references.h",
-      "sha256": "cfe3046bdda86e817489946385b6926a44d791e44d36e6102cd8b885fb695330"
+      "sha256": "a37fe7ce4ad8020e7a256e5820d6ddedc60bc19c858d4d9712fff0711c13cecb"
     },
     {
       "path": "impl/frontend/keyword_supporter.cpp",

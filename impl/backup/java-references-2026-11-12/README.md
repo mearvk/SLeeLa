@@ -10,3 +10,9 @@ resolution was contained in `impl/frontend/java_references.{h,cpp}`.
 Restore: copy the three files back over `impl/`, delete
 `impl/frontend/java_references.*`, then regenerate `security/sha256-manifest.json`.
 (Git history also holds the originals at the commit in BASE-COMMIT.txt.)
+
+## Addendum: Sleela.home lineage
+
+`lineageParentOf` / `lineageRootOf` / `lineageValue` were then moved from
+`compiler.cpp` into `java_references.cpp` (`javaref::lineage*`). The original
+`frontend/compiler.cpp` here already contains the pre-move versions.
