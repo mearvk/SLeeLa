@@ -95,13 +95,17 @@ and in the folder's own
 | `SLDailyCapShortBook` (courseware) | the short-side mirror of `SLDailyCapBook`: `SLShortBook`'s behavior plus the same 2,000-actions-per-day rule | a real exchange's or regulator's throughput limit |
 | `SLBatchReturn` | the exact total return over a stated batch of N trades (idealized win-rate/size inputs, or an explicit per-trade list), with no compounding, plus the exact per-trade average a stated total implies | whether any real trader achieves the stated inputs — see §6.1 below, in this document |
 
-Checked by 27 use cases (`test-suites/test-trading-actions.sh`) plus 20
+`SLLongBook`, `SLShortBook`, `SLShortMargin`, `SLEuclid` and `SLBatchReturn`
+are checked by 27 use cases (`test-suites/test-trading-actions.sh`);
+`SLDailyCapBook` and `SLDailyCapShortBook` are checked separately by 20
 courseware entries in `long-medium-averages`
-(`test-suites/test-long-medium-averages.sh`): self-checks, an independent
-Python oracle, differential tests against independent shadow
-implementations, and deliberately broken copies confirmed to fail the gate
-before being fixed. A later general code-quality review (not driven by any
-use case) found and fixed two real overflow bugs in `SLBatchReturn` itself —
+(`test-suites/test-long-medium-averages.sh`) — the two gates check disjoint
+classes, not the same seven classes twice. Both use the same methodology:
+self-checks, an independent Python oracle, differential tests against
+independent shadow implementations, and deliberately broken copies confirmed
+to fail the gate before being fixed. A later general code-quality review
+(not driven by any use case) found and fixed two real overflow bugs in
+`SLBatchReturn` itself —
 a magnitude-based rejection sentinel that could equal a real, legitimate
 large-batch loss, and a basis-point conversion that still overflowed after
 that fix — both confirmed genuine by reverting them and watching new
@@ -133,10 +137,12 @@ the long/short cross-check above.
 ## 5. Grading, not payout: `SLSophisticationCircuit` (`lib/advantage/grading/`)
 
 Worth naming explicitly because "grades" and "leading technician" appear in
-how this topic has been discussed. `SLGradeBook`, `SLModuleGrade` and
-`SLSophisticationCircuit` grade the **sophistication of a software module**
-(a 1–10 tier and an S/A/B/C/D/F letter, derived from a raw score the caller
-supplies) for use inside this library's own self-grading demos. This is a
+how this topic has been discussed. `SLGradeBook`, `SLModuleGrade`,
+`SLGradeSet` and `SLSophisticationCircuit` grade the **sophistication of a
+software module** (a 1–10 tier and an S/A/B/C/D/F letter, derived from a raw
+score the caller supplies) and can group graded modules into a named,
+aggregately-rated set (`SLGradeSet`: winning, losing, grader or absolute
+modules), for use inside this library's own self-grading demos. This is a
 code-quality rubric, not a trader-skill tier and not a payout schedule. It has
 no relationship to a "Grade 1–5 trading technician" acting on a city's behalf;
 no such construct exists in this codebase.
@@ -246,7 +252,9 @@ left to extrapolate in the first place.
 - **Want to run something?** `advantage/trading/trading_demo.cpp` (C++),
   `lib/advantage/trading/trading-demo.sleela` (SLeeLa port),
   `lib/advantage/trading-actions-on-verb/*/*.sleela` (position books, margin
-  and batch returns, run any of the 27 use cases directly), or
+  and batch returns, run any of the 27 use cases directly),
+  `lib/advantage/learner-vs-professional/courseware/long-medium-averages/*/*.sleela`
+  (the daily-action-cap teaching rule, 20 entries), or
   `lib/advantage/learner-vs-professional/courseware/long-term-potencies/*/*.sleela`
   (term and age potency, 6 entries).
 - **Want the courseware version?**
