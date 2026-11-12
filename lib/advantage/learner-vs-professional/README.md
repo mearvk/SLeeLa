@@ -3,16 +3,25 @@
 Side-by-side comparison of how a **learner** and a **professional** work the
 same Advantage™ problem with the Sequitur onion model.
 
-This folder is a scaffold. The structure below is a proposal and is meant to
-be adjusted.
+> **Looking for the data?** [`INSTRUMENT.md`](./INSTRUMENT.md) is a single,
+> neatly organized index of every dataset, worked example, exercise set, and
+> self-checking entry across this entire folder — the Device Instructor
+> series, the children's/adults' units, the age-sorted reading material, and
+> the `long-medium-averages`/`long-term-potencies` courseware topics.
 
-## Intended layout
+## Current layout
+
+The original `learner/`/`professional/`/`comparison/` scaffold below was a
+proposal that was never built this way; what actually exists is organized
+by topic instead, under `series/` and `courseware/`:
 
 | path | purpose |
 |------|---------|
-| `learner/` | the learner approach: fewer layers, hand-set contributions, no risk pass |
-| `professional/` | the professional approach: full onion traversal, grounded contributions, iteration |
-| `comparison/` | the same scenario run both ways, with the dividend difference explained |
+| `series/` | the Device Instructor series: 32 lessons on registries, agreement, and 26 trading decisions |
+| `courseware/children/`, `courseware/adults/` | 5 units each, paired logic/process lessons for two audiences |
+| `courseware/reading/` | 24 readers sorted by age, 5-7 through 18+ |
+| `courseware/long-medium-averages/` | 20 entries on the daily-trade-count teaching rule |
+| `courseware/long-term-potencies/` | 6 entries defining term potency and age potency |
 
 ## Notes
 
