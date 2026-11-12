@@ -145,7 +145,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; java</div>
 <h1>Package <code>java</code></h1>
-<div class="lead">This package contains <strong>10220</strong> source unit(s) defining <strong>10220</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>10221</strong> source unit(s) defining <strong>10221</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="aboutevent">AboutEvent <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/early_access/jdk28/docs/api/java.desktop/java/awt/desktop/AboutEvent.sleela)</span></h2>
 <div data-u="aboutevent aboutevent">
@@ -93242,6 +93242,70 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="javastringmethods">JavaStringMethods <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/implementations/java/lang/JavaStringMethods.sleela)</span></h2>
+<div data-u="javastringmethods javastringmethods">
+<h3 id="JavaStringMethods">JavaStringMethods <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>jsU</code></td><td><span class="sig">static String jsU(String s)</span></td><td class="desc">---- helpers ---- either String kind as UTF-16; a null receiver is a NullPointerException</td></tr>
+<tr><td><code>seqU</code></td><td><span class="sig">static String seqU(Any cs, String nullMessage)</span></td><td class="desc">a CharSequence argument as UTF-16: a String of either kind, a StringBuilder or a StringBuffer</td></tr>
+<tr><td><code>plain</code></td><td><span class="sig">static String plain(String u)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkIndex</code></td><td><span class="sig">static void checkIndex(int index, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>checkRange</code></td><td><span class="sig">static void checkRange(int begin, int end, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>regionEq</code></td><td><span class="sig">static boolean regionEq(String a, int ai, String b, int bi, int len)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>findU</code></td><td><span class="sig">static int findU(String hay, String needle, int fromIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>findLastU</code></td><td><span class="sig">static int findLastU(String hay, String needle, int fromIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cpU</code></td><td><span class="sig">static String cpU(int ch)</span></td><td class="desc">a code point as UTF-16 text (one unit, or a surrogate pair above U+FFFF)</td></tr>
+<tr><td><code>isWs</code></td><td><span class="sig">static boolean isWs(int cp)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>length</code></td><td><span class="sig">static int length(String self)</span></td><td class="desc">---- length and character access ----</td></tr>
+<tr><td><code>isEmpty</code></td><td><span class="sig">static boolean isEmpty(String self)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>charAt</code></td><td><span class="sig">static char charAt(String self, int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>codePointAt</code></td><td><span class="sig">static int codePointAt(String self, int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>codePointBefore</code></td><td><span class="sig">static int codePointBefore(String self, int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>codePointCount</code></td><td><span class="sig">static int codePointCount(String self, int beginIndex, int endIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toCharArray</code></td><td><span class="sig">static char[] toCharArray(String self)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>substring</code></td><td><span class="sig">static String substring(String self, int beginIndex)</span></td><td class="desc">---- substrings ----</td></tr>
+<tr><td><code>substring</code></td><td><span class="sig">static String substring(String self, int beginIndex, int endIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>subSequence</code></td><td><span class="sig">static String subSequence(String self, int beginIndex, int endIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indexOf</code></td><td><span class="sig">static int indexOf(String self, int ch)</span></td><td class="desc">---- searching ----</td></tr>
+<tr><td><code>indexOf</code></td><td><span class="sig">static int indexOf(String self, int ch, int fromIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indexOf</code></td><td><span class="sig">static int indexOf(String self, String str)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indexOf</code></td><td><span class="sig">static int indexOf(String self, String str, int fromIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastIndexOf</code></td><td><span class="sig">static int lastIndexOf(String self, int ch)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastIndexOf</code></td><td><span class="sig">static int lastIndexOf(String self, int ch, int fromIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastIndexOf</code></td><td><span class="sig">static int lastIndexOf(String self, String str)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastIndexOf</code></td><td><span class="sig">static int lastIndexOf(String self, String str, int fromIndex)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>contains</code></td><td><span class="sig">static boolean contains(String self, Any s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>startsWith</code></td><td><span class="sig">static boolean startsWith(String self, String prefix)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>startsWith</code></td><td><span class="sig">static boolean startsWith(String self, String prefix, int toffset)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>endsWith</code></td><td><span class="sig">static boolean endsWith(String self, String suffix)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>regionMatches</code></td><td><span class="sig">static boolean regionMatches(String self, int toffset, String other, int ooffset, int len)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>regionMatches</code></td><td><span class="sig">static boolean regionMatches(String self, boolean ignoreCase, int toffset, String other, int ooffset, int len)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>equals</code></td><td><span class="sig">static boolean equals(String self, Any anObject)</span></td><td class="desc">---- comparison ----</td></tr>
+<tr><td><code>contentEquals</code></td><td><span class="sig">static boolean contentEquals(String self, Any cs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>equalsIgnoreCase</code></td><td><span class="sig">static boolean equalsIgnoreCase(String self, String anotherString)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareTo</code></td><td><span class="sig">static int compareTo(String self, String anotherString)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>compareToIgnoreCase</code></td><td><span class="sig">static int compareToIgnoreCase(String self, String str)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hashCode</code></td><td><span class="sig">static int hashCode(String self)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>concat</code></td><td><span class="sig">static String concat(String self, String str)</span></td><td class="desc">---- transformation ----</td></tr>
+<tr><td><code>repeat</code></td><td><span class="sig">static String repeat(String self, int count)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>replace</code></td><td><span class="sig">static String replace(String self, char oldChar, char newChar)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>replace</code></td><td><span class="sig">static String replace(String self, Any target, Any replacement)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mapCase</code></td><td><span class="sig">static String mapCase(String self, boolean upper)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toUpperCase</code></td><td><span class="sig">static String toUpperCase(String self)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toLowerCase</code></td><td><span class="sig">static String toLowerCase(String self)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>trim</code></td><td><span class="sig">static String trim(String self)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>leadingWs</code></td><td><span class="sig">static int leadingWs(String u)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>trailingEnd</code></td><td><span class="sig">static int trailingEnd(String u, int floor)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>strip</code></td><td><span class="sig">static String strip(String self)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>stripLeading</code></td><td><span class="sig">static String stripLeading(String self)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>stripTrailing</code></td><td><span class="sig">static String stripTrailing(String self)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isBlank</code></td><td><span class="sig">static boolean isBlank(String self)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>intern</code></td><td><span class="sig">static String intern(String self)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toString</code></td><td><span class="sig">static String toString(String self)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="javastringvalue">JavaStringValue <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/implementations/java/lang/JavaStringValue.sleela)</span></h2>
@@ -203152,7 +203216,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-12 00:49 UTC.
+<code>/lib</code> tree on 2026-11-12 01:05 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
