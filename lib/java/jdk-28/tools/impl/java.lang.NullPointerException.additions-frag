@@ -1,0 +1,9 @@
+  < ---- java.lang.NullPointerException: getMessage and fillInStackTrace ---- >
+  << Written from the JDK 28 API specification. getMessage returns the detail
+     message given to the constructor. When there is none, a JVM may compute a
+     helpful message that names the null expression; the SLeeLa VM does not, so
+     the result is null, as on a JVM run with
+     -XX:-ShowCodeDetailsInExceptionMessages. fillInStackTrace returns this
+     exception, as Throwable does. >>
+  public java.lang.String getMessage() { return this.detailMessage; }
+  public synchronized java.lang.Throwable fillInStackTrace() { return this; }

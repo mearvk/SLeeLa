@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
-class AtomicReferenceArray {
+class AtomicReferenceArray<E> {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 1477;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,78 @@ class AtomicReferenceArray {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.concurrent.atomic.AtomicReferenceArray members (procedural implementation in SLeeLa) ---- >
+  << A Any array whose elements are updated atomically under VM lock 31
+     (reserved for java.util.concurrent.atomic). The constructor takes the
+     length (Java AtomicReferenceArray(int length)); every element starts at null. >>
+  Any[] array;
+  AtomicReferenceArray(int length) {
+    this.array = new Any[length];
+    int i = 0;
+    while (i < length) { this.array[i] = null; i = i + 1; }
+  }
+  void check(int i) {
+    if (i < 0 || i >= arrayLength(this.array)) {
+      throw new ArrayIndexOutOfBoundsException("Index " + i + " out of bounds for length " + arrayLength(this.array));
+    }
+  }
+  int length() { return arrayLength(this.array); }
+  Any get(int i) { check(i); return this.array[i]; }
+  void set(int i, Any newValue) { check(i); lock(31); this.array[i] = newValue; unlock(31); }
+  void lazySet(int i, Any newValue) { set(i, newValue); }
+  Any getPlain(int i) { return get(i); }
+  void setPlain(int i, Any newValue) { set(i, newValue); }
+  Any getOpaque(int i) { return get(i); }
+  void setOpaque(int i, Any newValue) { set(i, newValue); }
+  Any getAcquire(int i) { return get(i); }
+  void setRelease(int i, Any newValue) { set(i, newValue); }
+  Any getAndSet(int i, Any newValue) {
+    check(i);
+    lock(31);
+    Any old = this.array[i];
+    this.array[i] = newValue;
+    unlock(31);
+    return old;
+  }
+  boolean compareAndSet(int i, Any expectedValue, Any newValue) {
+    check(i);
+    lock(31);
+    boolean hit = this.array[i] == expectedValue;
+    if (hit) { this.array[i] = newValue; }
+    unlock(31);
+    return hit;
+  }
+  boolean weakCompareAndSet(int i, Any expectedValue, Any newValue) { return compareAndSet(i, expectedValue, newValue); }
+  boolean weakCompareAndSetPlain(int i, Any expectedValue, Any newValue) { return compareAndSet(i, expectedValue, newValue); }
+  boolean weakCompareAndSetVolatile(int i, Any expectedValue, Any newValue) { return compareAndSet(i, expectedValue, newValue); }
+  boolean weakCompareAndSetAcquire(int i, Any expectedValue, Any newValue) { return compareAndSet(i, expectedValue, newValue); }
+  boolean weakCompareAndSetRelease(int i, Any expectedValue, Any newValue) { return compareAndSet(i, expectedValue, newValue); }
+  Any compareAndExchange(int i, Any expectedValue, Any newValue) {
+    check(i);
+    lock(31);
+    Any witness = this.array[i];
+    if (witness == expectedValue) { this.array[i] = newValue; }
+    unlock(31);
+    return witness;
+  }
+  Any compareAndExchangeAcquire(int i, Any expectedValue, Any newValue) { return compareAndExchange(i, expectedValue, newValue); }
+  Any compareAndExchangeRelease(int i, Any expectedValue, Any newValue) { return compareAndExchange(i, expectedValue, newValue); }
+  String toString() {
+    int n = arrayLength(this.array);
+    if (n == 0) { return "[]"; }
+    String sb = "[";
+    int i = 0;
+    while (i < n) {
+      if (i > 0) { sb = sb + ", "; }
+      sb = sb + textOf(this.array[i]);
+      i = i + 1;
+    }
+    return sb + "]";
+  }
+  String textOf(Any o) { if (o == null) { return "null"; } return "" + o; }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -76,10 +149,6 @@ class AtomicReferenceArray {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public AtomicReferenceArray(int length) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public AtomicReferenceArray(Any[] array) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -89,44 +158,6 @@ class AtomicReferenceArray {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public final Any get(int i) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int length() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void set(int i, Any newValue) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any getOpaque(int i) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void setOpaque(int i, Any newValue) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any getAcquire(int i) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void setRelease(int i, Any newValue) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean compareAndSet(int i, Any expectedValue, Any newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any compareAndExchange(int i, Any expectedValue, Any newValue) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any compareAndExchangeAcquire(int i, Any expectedValue, Any newValue) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any compareAndExchangeRelease(int i, Any expectedValue, Any newValue) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetPlain(int i, Any expectedValue, Any newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSet(int i, Any expectedValue, Any newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetAcquire(int i, Any expectedValue, Any newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetRelease(int i, Any expectedValue, Any newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any getAndSet(int i, Any newValue) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetVolatile(int i, Any expectedValue, Any newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void lazySet(int i, Any newValue) { }
-  @throwable("java.lang.UnsupportedOperationException")
   public final Any getAndUpdate(int i, Any updateFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final Any updateAndGet(int i, Any updateFunction) { return null; }
@@ -134,9 +165,5 @@ class AtomicReferenceArray {
   public final Any getAndAccumulate(int i, Any x, Any accumulatorFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final Any accumulateAndGet(int i, Any x, Any accumulatorFunction) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any getPlain(int i) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void setPlain(int i, Any newValue) { }
   < ---- END java signatures ---- >
 }

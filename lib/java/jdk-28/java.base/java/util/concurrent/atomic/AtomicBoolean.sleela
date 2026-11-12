@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class AtomicBoolean {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 1457;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,58 @@ class AtomicBoolean {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.concurrent.atomic.AtomicBoolean members (procedural implementation in SLeeLa) ---- >
+  << A boolean value updated atomically: every read-modify-write runs under VM
+     lock 31 (reserved for java.util.concurrent.atomic), so updates from
+     spawned threads never interleave. The plain / opaque / acquire / release
+     access modes are all sequentially consistent here, which satisfies each
+     of their Java contracts. compareAndSet compares with == (value equality
+     for numbers, identity for objects). The functional update methods wait
+     for lambda dispatch. >>
+  boolean value;
+  AtomicBoolean(boolean initialValue) { this.value = initialValue; }
+
+  boolean get() { return this.value; }
+  void set(boolean newValue) { lock(31); this.value = newValue; unlock(31); }
+  void lazySet(boolean newValue) { set(newValue); }
+  boolean getPlain() { return this.value; }
+  void setPlain(boolean newValue) { this.value = newValue; }
+  boolean getOpaque() { return get(); }
+  void setOpaque(boolean newValue) { set(newValue); }
+  boolean getAcquire() { return get(); }
+  void setRelease(boolean newValue) { set(newValue); }
+  boolean getAndSet(boolean newValue) {
+    lock(31);
+    boolean old = this.value;
+    this.value = newValue;
+    unlock(31);
+    return old;
+  }
+  boolean compareAndSet(boolean expectedValue, boolean newValue) {
+    lock(31);
+    boolean hit = this.value == expectedValue;
+    if (hit) { this.value = newValue; }
+    unlock(31);
+    return hit;
+  }
+  boolean weakCompareAndSet(boolean expectedValue, boolean newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetPlain(boolean expectedValue, boolean newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetVolatile(boolean expectedValue, boolean newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetAcquire(boolean expectedValue, boolean newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetRelease(boolean expectedValue, boolean newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean compareAndExchange(boolean expectedValue, boolean newValue) {
+    lock(31);
+    boolean witness = this.value;
+    if (witness == expectedValue) { this.value = newValue; }
+    unlock(31);
+    return witness;
+  }
+  boolean compareAndExchangeAcquire(boolean expectedValue, boolean newValue) { return compareAndExchange(expectedValue, newValue); }
+  boolean compareAndExchangeRelease(boolean expectedValue, boolean newValue) { return compareAndExchange(expectedValue, newValue); }
+  String toString() { boolean v = get(); return "" + v; }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -77,8 +130,6 @@ class AtomicBoolean {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public AtomicBoolean(boolean initialValue) { }
-  @throwable("java.lang.UnsupportedOperationException")
   public AtomicBoolean() { }
   < ---- END java constructors ---- >
 
@@ -88,45 +139,5 @@ class AtomicBoolean {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean get() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void set(boolean newValue) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean getOpaque() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void setOpaque(boolean newValue) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean getAcquire() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void setRelease(boolean newValue) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean compareAndSet(boolean expectedValue, boolean newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean compareAndExchange(boolean expectedValue, boolean newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean compareAndExchangeAcquire(boolean expectedValue, boolean newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean compareAndExchangeRelease(boolean expectedValue, boolean newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean weakCompareAndSetPlain(boolean expectedValue, boolean newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean weakCompareAndSet(boolean expectedValue, boolean newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetAcquire(boolean expectedValue, boolean newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetRelease(boolean expectedValue, boolean newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean getAndSet(boolean newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetVolatile(boolean expectedValue, boolean newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void lazySet(boolean newValue) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean getPlain() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void setPlain(boolean newValue) { }
   < ---- END java signatures ---- >
 }

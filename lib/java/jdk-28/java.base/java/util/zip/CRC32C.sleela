@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class CRC32C {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 2019;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,82 @@ class CRC32C {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.zip.CRC32C members (procedural implementation in SLeeLa) ---- >
+  << The CRC-32C (Castagnoli) of RFC 3720. Table driven (reflected polynomial 2197175160), exactly the checksum
+     java.util.zip.CRC32C computes. Bytes are ints (only the low 8 bits are
+     used). update(byte[], off, len) is updateBytes; update(byte[]) is
+     updateAll. >>
+  long crc;
+  long[] table;
+  CRC32C() {
+    initNibbles();
+    this.table = new long[256];
+    int n = 0;
+    while (n < 256) {
+      long c = n;
+      int k = 0;
+      while (k < 8) {
+        if (c % 2 == 1) { c = xor32(2197175160, c / 2); } else { c = c / 2; }
+        k = k + 1;
+      }
+      this.table[n] = c;
+      n = n + 1;
+    }
+    this.crc = 4294967295;
+  }
+  void update(int b) {
+    long byteVal = b % 256;
+    if (byteVal < 0) { byteVal = byteVal + 256; }
+    long idx = xor32(this.crc % 256, byteVal);
+    this.crc = xor32(this.table[(int) idx], this.crc / 256);
+  }
+  void updateBytes(int[] b, int off, int len) {
+    if (off < 0 || len < 0 || off > arrayLength(b) - len) { throw new ArrayIndexOutOfBoundsException(null); }
+    int i = off;
+    while (i < off + len) { update(b[i]); i = i + 1; }
+  }
+  void updateAll(int[] b) { updateBytes(b, 0, arrayLength(b)); }
+  long getValue() { return xor32(this.crc, 4294967295); }
+  void reset() { this.crc = 4294967295; }
+  << Bitwise operations on unsigned 32-bit values through a 4-bit table
+     (the VM has no bitwise operators). >>
+  int[] nib;
+  void initNibbles() {
+    this.nib = new int[256];
+    int a = 0;
+    while (a < 16) {
+      int b = 0;
+      while (b < 16) {
+        int r = 0;
+        int bit = 1;
+        int x = a;
+        int y = b;
+        int k = 0;
+        while (k < 4) {
+          if ((x % 2) != (y % 2)) { r = r + bit; }
+          x = x / 2; y = y / 2; bit = bit * 2; k = k + 1;
+        }
+        this.nib[a * 16 + b] = r;
+        b = b + 1;
+      }
+      a = a + 1;
+    }
+  }
+  long xor32(long a, long b) {
+    long r = 0;
+    long mul = 1;
+    long x = a;
+    long y = b;
+    int k = 0;
+    while (k < 8) {
+      r = r + this.nib[(int) ((x % 16) * 16 + (y % 16))] * mul;
+      x = x / 16; y = y / 16; mul = mul * 16; k = k + 1;
+    }
+    return r;
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -76,8 +153,6 @@ class CRC32C {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public CRC32C() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -87,14 +162,6 @@ class CRC32C {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void reset() { }
-  @throwable("java.lang.UnsupportedOperationException")
   public void update(byte[] b, int off, int len) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void update(int b) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void update(Any buffer) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long getValue() { return 0; }
   < ---- END java signatures ---- >
 }

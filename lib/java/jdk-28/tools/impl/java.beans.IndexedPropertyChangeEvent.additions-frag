@@ -1,0 +1,17 @@
+  < ---- java.beans.IndexedPropertyChangeEvent: toString ---- >
+  << Written from the JDK 28 API specification: as PropertyChangeEvent, with
+     the index after the property name. >>
+  public java.lang.String toString() {
+    return "java.beans.IndexedPropertyChangeEvent[propertyName=" + this.heldPropertyName + "; index=" + this.heldIndex
+      + "; oldValue=" + this.heldOldValue + "; newValue=" + this.heldNewValue + "; propagationId=" + this.heldPropagationId
+      + "; source=" + this.heldSource + "]";
+  }
+  public IndexedPropertyChangeEvent(java.lang.Object source, java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue, int index) {
+    if (source == null) { throw new IllegalArgumentException("null source"); }
+    this.heldSource = source;
+    this.heldPropertyName = propertyName;
+    this.heldOldValue = oldValue;
+    this.heldNewValue = newValue;
+    this.heldPropagationId = null;
+    this.heldIndex = index;
+  }

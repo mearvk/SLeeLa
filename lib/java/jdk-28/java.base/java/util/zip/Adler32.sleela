@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class Adler32 {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 1276;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,29 @@ class Adler32 {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.zip.Adler32 members (procedural implementation in SLeeLa) ---- >
+  << The Adler-32 checksum of RFC 1950, exactly as java.util.zip.Adler32.
+     update(byte[], off, len) is updateBytes; update(byte[]) is updateAll. >>
+  long a;
+  long b;
+  Adler32() { this.a = 1; this.b = 0; }
+  void update(int x) {
+    long v = x % 256;
+    if (v < 0) { v = v + 256; }
+    this.a = (this.a + v) % 65521;
+    this.b = (this.b + this.a) % 65521;
+  }
+  void updateBytes(int[] buf, int off, int len) {
+    if (off < 0 || len < 0 || off > arrayLength(buf) - len) { throw new ArrayIndexOutOfBoundsException(null); }
+    int i = off;
+    while (i < off + len) { update(buf[i]); i = i + 1; }
+  }
+  void updateAll(int[] buf) { updateBytes(buf, 0, arrayLength(buf)); }
+  long getValue() { return this.b * 65536 + this.a; }
+  void reset() { this.a = 1; this.b = 0; }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -76,8 +100,6 @@ class Adler32 {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public Adler32() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -87,14 +109,6 @@ class Adler32 {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void reset() { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void update(int b) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void update(Any buffer) { }
-  @throwable("java.lang.UnsupportedOperationException")
   public void update(byte[] b, int off, int len) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long getValue() { return 0; }
   < ---- END java signatures ---- >
 }

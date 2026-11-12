@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class TimeUnit {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 9131;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -55,6 +56,47 @@ class TimeUnit {
   String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/TimeUnit.html";
   String javaKind = "enum";
   String javaSuper = "java.lang.Enum";
+
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.concurrent.TimeUnit members (procedural implementation in SLeeLa) ---- >
+  << Conversions between the seven units through each unit length in
+     nanoseconds. Converting to a finer unit saturates at Long.MAX_VALUE and
+     Long.MIN_VALUE, and converting to a coarser unit truncates toward zero,
+     exactly as Java does. sleep(timeout) uses the SLeeLa sleep builtin, at
+     millisecond resolution. The Duration, ChronoUnit, timedWait and timedJoin
+     forms keep their stubs. >>
+  long unitNanos() {
+    if (this.enumOrdinal == 0) { return 1; }
+    if (this.enumOrdinal == 1) { return 1000; }
+    if (this.enumOrdinal == 2) { return 1000000; }
+    if (this.enumOrdinal == 3) { return 1000000000; }
+    if (this.enumOrdinal == 4) { return 60000000000; }
+    if (this.enumOrdinal == 5) { return 3600000000000; }
+    return 86400000000000;
+  }
+  long scaleTo(long d, long fromNanos, long toNanos) {
+    if (fromNanos == toNanos) { return d; }
+    if (fromNanos < toNanos) { return d / (toNanos / fromNanos); }
+    long r = fromNanos / toNanos;
+    long max = 9223372036854775807 / r;
+    if (d > max) { return 9223372036854775807; }
+    if (d < 0 - max) { return 0 - 9223372036854775807 - 1; }
+    return d * r;
+  }
+  public long convert(long sourceDuration, TimeUnit sourceUnit) {
+    return scaleTo(sourceDuration, sourceUnit.unitNanos(), unitNanos());
+  }
+  public long toNanos(long duration) { return scaleTo(duration, unitNanos(), 1); }
+  public long toMicros(long duration) { return scaleTo(duration, unitNanos(), 1000); }
+  public long toMillis(long duration) { return scaleTo(duration, unitNanos(), 1000000); }
+  public long toSeconds(long duration) { return scaleTo(duration, unitNanos(), 1000000000); }
+  public long toMinutes(long duration) { return scaleTo(duration, unitNanos(), 60000000000); }
+  public long toHours(long duration) { return scaleTo(duration, unitNanos(), 3600000000000); }
+  public long toDays(long duration) { return scaleTo(duration, unitNanos(), 86400000000000); }
+  public void sleep(long timeout) {
+    if (timeout > 0) { sleep(toMillis(timeout)); }
+  }
+  < ---- END java implementation ---- >
 
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
@@ -129,25 +171,7 @@ class TimeUnit {
   @throwable("java.lang.UnsupportedOperationException")
   public long convert(Any duration) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public long convert(long sourceDuration, Any sourceUnit) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static Any of(Any chronoUnit) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long toNanos(long duration) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long toMillis(long duration) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public void sleep(long timeout) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long toDays(long duration) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long toSeconds(long duration) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long toHours(long duration) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long toMinutes(long duration) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long toMicros(long duration) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
   public void timedWait(Any obj, long timeout) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")

@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
-class Stack extends Vector {
+class Stack<E> extends Vector {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 8513;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,30 @@ class Stack extends Vector {
   String javaKind = "class";
   String javaSuper = "java.util.Vector";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.Stack members (procedural implementation in SLeeLa) ---- >
+  << java.util.Stack: the LIFO view of the Vector it extends. The top of the
+     stack is the last element of the Vector, as in Java. >>
+  Stack() { seqInit(10); }
+
+  Any push(Any item) { insertAt(count, item); return item; }
+  Any pop() {
+    if (count == 0) { throw new EmptyStackException(); }
+    return deleteAt(count - 1);
+  }
+  Any peek() {
+    if (count == 0) { throw new EmptyStackException(); }
+    return at(count - 1);
+  }
+  boolean empty() { return count == 0; }
+  << 1-based distance from the top of the stack, or -1. >>
+  int search(Any o) {
+    int i = lastIndexOf(o);
+    if (i >= 0) { return count - i; }
+    return -1;
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -76,8 +101,6 @@ class Stack extends Vector {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public Stack() { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -86,15 +109,5 @@ class Stack extends Vector {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean empty() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized Any peek() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized int search(Any o) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any push(Any item) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized Any pop() { return null; }
   < ---- END java signatures ---- >
 }

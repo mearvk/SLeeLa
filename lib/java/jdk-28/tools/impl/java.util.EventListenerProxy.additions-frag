@@ -1,0 +1,6 @@
+  < ---- java.util.EventListenerProxy: the wrapped listener ---- >
+  << Written from the JDK 28 API specification: the proxy holds the listener
+     it was created with and returns it from getListener. >>
+  Any heldListener;
+  public EventListenerProxy(java.util.EventListener listener) { this.heldListener = listener; }
+  public java.util.EventListener getListener() { return this.heldListener; }

@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class Arrays {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 1424;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,484 @@ class Arrays {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.Arrays members (procedural implementation in SLeeLa) ---- >
+  << The java.util.Arrays static utilities as instance methods (call as
+     new Arrays().sort(a)). The int[] forms carry the Java names; the
+     double[] and Object[] (Any[]) forms carry a Doubles / Objects suffix
+     because calls resolve by name only. Sorting is a stable merge sort;
+     double ordering follows Double.compare (-0.0 before 0.0, NaN last);
+     Object ordering is natural ordering. asList returns an ArrayList copy. >>
+  Arrays() { gcSlot = 0; utfOps = 0; }
+
+  void rangeCheck(int arrayLength, int fromIndex, int toIndex) {
+    if (fromIndex > toIndex) {
+      throw new IllegalArgumentException("fromIndex(" + fromIndex + ") > toIndex(" + toIndex + ")");
+    }
+    if (fromIndex < 0) { throw new ArrayIndexOutOfBoundsException("Array index out of range: " + fromIndex); }
+    if (toIndex > arrayLength) { throw new ArrayIndexOutOfBoundsException("Array index out of range: " + toIndex); }
+  }
+  << Double.compare-style strict ordering for sorting doubles. >>
+  boolean dLess(double x, double y) {
+    Double D = new Double(0.0);
+    return D.compare(x, y) < 0;
+  }
+  boolean dSame(double x, double y) {
+    Double D = new Double(0.0);
+    return D.doubleToLongBits(x) == D.doubleToLongBits(y);
+  }
+  int dHash(double x) {
+    Double D = new Double(x);
+    return D.hashCode();
+  }
+  String dText(double x) {
+    Double D = new Double(x);
+    return D.toString();
+  }
+  ArrayList asList(Any[] a) {
+    ArrayList l = new ArrayList();
+    int i = 0;
+    while (i < arrayLength(a)) { l.add(a[i]); i = i + 1; }
+    return l;
+  }
+
+  < int[] operations >
+  String toString(int[] a) {
+    if (a == null) { return "null"; }
+    String sb = "[";
+    int i = 0;
+    int n = arrayLength(a);
+    while (i < n) {
+      if (i > 0) { sb = sb + ", "; }
+      sb = sb + ("" + a[i]);
+      i = i + 1;
+    }
+    return sb + "]";
+  }
+  void sort(int[] a) { sortRange(a, 0, arrayLength(a)); }
+  void sortRange(int[] a, int fromIndex, int toIndex) {
+    rangeCheck(arrayLength(a), fromIndex, toIndex);
+    int[] tmp = new int[arrayLength(a)];
+    msort(a, tmp, fromIndex, toIndex);
+  }
+  void msort(int[] a, int[] tmp, int lo, int hi) {
+    if (hi - lo < 2) { return; }
+    int mid = (lo + hi) / 2;
+    msort(a, tmp, lo, mid);
+    msort(a, tmp, mid, hi);
+    int i = lo;
+    int j = mid;
+    int k = lo;
+    while (i < mid && j < hi) {
+      int x = a[i];
+      int y = a[j];
+      if (y < x) { tmp[k] = y; j = j + 1; } else { tmp[k] = x; i = i + 1; }
+      k = k + 1;
+    }
+    while (i < mid) { tmp[k] = a[i]; i = i + 1; k = k + 1; }
+    while (j < hi) { tmp[k] = a[j]; j = j + 1; k = k + 1; }
+    k = lo;
+    while (k < hi) { a[k] = tmp[k]; k = k + 1; }
+  }
+  void fill(int[] a, int val) {
+    int i = 0;
+    while (i < arrayLength(a)) { a[i] = val; i = i + 1; }
+  }
+  void fillRange(int[] a, int fromIndex, int toIndex, int val) {
+    rangeCheck(arrayLength(a), fromIndex, toIndex);
+    int i = fromIndex;
+    while (i < toIndex) { a[i] = val; i = i + 1; }
+  }
+  int[] copyOf(int[] original, int newLength) {
+    if (newLength < 0) { throw new NegativeArraySizeException("" + newLength); }
+    int[] out = new int[newLength];
+    int i = 0;
+    while (i < newLength && i < arrayLength(original)) { out[i] = original[i]; i = i + 1; }
+    while (i < newLength) { out[i] = 0; i = i + 1; }
+    return out;
+  }
+  int[] copyOfRange(int[] original, int from, int to) {
+    if (from > to) { throw new IllegalArgumentException(from + " > " + to); }
+    if (from < 0 || from > arrayLength(original)) { throw new ArrayIndexOutOfBoundsException("Array index out of range: " + from); }
+    int[] out = new int[to - from];
+    int i = from;
+    while (i < to && i < arrayLength(original)) { out[i - from] = original[i]; i = i + 1; }
+    while (i < to) { out[i - from] = 0; i = i + 1; }
+    return out;
+  }
+  boolean equals(int[] a, int[] b) {
+    if (a == null || b == null) { return a == null && b == null; }
+    if (arrayLength(a) != arrayLength(b)) { return false; }
+    int i = 0;
+    while (i < arrayLength(a)) {
+      int x = a[i];
+      int y = b[i];
+      if (!(x == y)) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+  int hashCode(int[] a) {
+    if (a == null) { return 0; }
+    int h = 1;
+    int i = 0;
+    while (i < arrayLength(a)) {
+      int e = a[i];
+      h = wrap32(31 * h + e);
+      i = i + 1;
+    }
+    return h;
+  }
+  << Binary search of a sorted array: the index of key, else -(insertion point) - 1. >>
+  int binarySearch(int[] a, int key) {
+    int lo = 0;
+    int hi = arrayLength(a) - 1;
+    while (lo <= hi) {
+      int mid = (lo + hi) / 2;
+      int m = a[mid];
+      if (m < key) { lo = mid + 1; }
+      else { if (key < m) { hi = mid - 1; } else { return mid; } }
+    }
+    return 0 - (lo + 1);
+  }
+  << Index of the first mismatch of a and b, or -1 when they are equal. >>
+  int mismatch(int[] a, int[] b) {
+    int n = arrayLength(a);
+    if (arrayLength(b) < n) { n = arrayLength(b); }
+    int i = 0;
+    while (i < n) {
+      int x = a[i];
+      int y = b[i];
+      if (!(x == y)) { return i; }
+      i = i + 1;
+    }
+    if (arrayLength(a) == arrayLength(b)) { return -1; }
+    return n;
+  }
+
+  < double[] operations >
+  String toStringDoubles(double[] a) {
+    if (a == null) { return "null"; }
+    String sb = "[";
+    int i = 0;
+    int n = arrayLength(a);
+    while (i < n) {
+      if (i > 0) { sb = sb + ", "; }
+      sb = sb + dText(a[i]);
+      i = i + 1;
+    }
+    return sb + "]";
+  }
+  void sortDoubles(double[] a) { sortRangeDoubles(a, 0, arrayLength(a)); }
+  void sortRangeDoubles(double[] a, int fromIndex, int toIndex) {
+    rangeCheck(arrayLength(a), fromIndex, toIndex);
+    double[] tmp = new double[arrayLength(a)];
+    msortDoubles(a, tmp, fromIndex, toIndex);
+  }
+  void msortDoubles(double[] a, double[] tmp, int lo, int hi) {
+    if (hi - lo < 2) { return; }
+    int mid = (lo + hi) / 2;
+    msortDoubles(a, tmp, lo, mid);
+    msortDoubles(a, tmp, mid, hi);
+    int i = lo;
+    int j = mid;
+    int k = lo;
+    while (i < mid && j < hi) {
+      double x = a[i];
+      double y = a[j];
+      if (dLess(y, x)) { tmp[k] = y; j = j + 1; } else { tmp[k] = x; i = i + 1; }
+      k = k + 1;
+    }
+    while (i < mid) { tmp[k] = a[i]; i = i + 1; k = k + 1; }
+    while (j < hi) { tmp[k] = a[j]; j = j + 1; k = k + 1; }
+    k = lo;
+    while (k < hi) { a[k] = tmp[k]; k = k + 1; }
+  }
+  void fillDoubles(double[] a, double val) {
+    int i = 0;
+    while (i < arrayLength(a)) { a[i] = val; i = i + 1; }
+  }
+  void fillRangeDoubles(double[] a, int fromIndex, int toIndex, double val) {
+    rangeCheck(arrayLength(a), fromIndex, toIndex);
+    int i = fromIndex;
+    while (i < toIndex) { a[i] = val; i = i + 1; }
+  }
+  double[] copyOfDoubles(double[] original, int newLength) {
+    if (newLength < 0) { throw new NegativeArraySizeException("" + newLength); }
+    double[] out = new double[newLength];
+    int i = 0;
+    while (i < newLength && i < arrayLength(original)) { out[i] = original[i]; i = i + 1; }
+    while (i < newLength) { out[i] = 0.0; i = i + 1; }
+    return out;
+  }
+  double[] copyOfRangeDoubles(double[] original, int from, int to) {
+    if (from > to) { throw new IllegalArgumentException(from + " > " + to); }
+    if (from < 0 || from > arrayLength(original)) { throw new ArrayIndexOutOfBoundsException("Array index out of range: " + from); }
+    double[] out = new double[to - from];
+    int i = from;
+    while (i < to && i < arrayLength(original)) { out[i - from] = original[i]; i = i + 1; }
+    while (i < to) { out[i - from] = 0.0; i = i + 1; }
+    return out;
+  }
+  boolean equalsDoubles(double[] a, double[] b) {
+    if (a == null || b == null) { return a == null && b == null; }
+    if (arrayLength(a) != arrayLength(b)) { return false; }
+    int i = 0;
+    while (i < arrayLength(a)) {
+      double x = a[i];
+      double y = b[i];
+      if (!(dSame(x, y))) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+  int hashCodeDoubles(double[] a) {
+    if (a == null) { return 0; }
+    int h = 1;
+    int i = 0;
+    while (i < arrayLength(a)) {
+      double e = a[i];
+      h = wrap32(31 * h + dHash(e));
+      i = i + 1;
+    }
+    return h;
+  }
+  << Binary search of a sorted array: the index of key, else -(insertion point) - 1. >>
+  int binarySearchDoubles(double[] a, double key) {
+    int lo = 0;
+    int hi = arrayLength(a) - 1;
+    while (lo <= hi) {
+      int mid = (lo + hi) / 2;
+      double m = a[mid];
+      if (dLess(m, key)) { lo = mid + 1; }
+      else { if (dLess(key, m)) { hi = mid - 1; } else { return mid; } }
+    }
+    return 0 - (lo + 1);
+  }
+  << Index of the first mismatch of a and b, or -1 when they are equal. >>
+  int mismatchDoubles(double[] a, double[] b) {
+    int n = arrayLength(a);
+    if (arrayLength(b) < n) { n = arrayLength(b); }
+    int i = 0;
+    while (i < n) {
+      double x = a[i];
+      double y = b[i];
+      if (!(dSame(x, y))) { return i; }
+      i = i + 1;
+    }
+    if (arrayLength(a) == arrayLength(b)) { return -1; }
+    return n;
+  }
+
+  < Any[] operations >
+  String toStringObjects(Any[] a) {
+    if (a == null) { return "null"; }
+    String sb = "[";
+    int i = 0;
+    int n = arrayLength(a);
+    while (i < n) {
+      if (i > 0) { sb = sb + ", "; }
+      sb = sb + textOf(a[i]);
+      i = i + 1;
+    }
+    return sb + "]";
+  }
+  void sortObjects(Any[] a) { sortRangeObjects(a, 0, arrayLength(a)); }
+  void sortRangeObjects(Any[] a, int fromIndex, int toIndex) {
+    rangeCheck(arrayLength(a), fromIndex, toIndex);
+    Any[] tmp = new Any[arrayLength(a)];
+    msortObjects(a, tmp, fromIndex, toIndex);
+  }
+  void msortObjects(Any[] a, Any[] tmp, int lo, int hi) {
+    if (hi - lo < 2) { return; }
+    int mid = (lo + hi) / 2;
+    msortObjects(a, tmp, lo, mid);
+    msortObjects(a, tmp, mid, hi);
+    int i = lo;
+    int j = mid;
+    int k = lo;
+    while (i < mid && j < hi) {
+      Any x = a[i];
+      Any y = a[j];
+      if (compareValues(y, x) < 0) { tmp[k] = y; j = j + 1; } else { tmp[k] = x; i = i + 1; }
+      k = k + 1;
+    }
+    while (i < mid) { tmp[k] = a[i]; i = i + 1; k = k + 1; }
+    while (j < hi) { tmp[k] = a[j]; j = j + 1; k = k + 1; }
+    k = lo;
+    while (k < hi) { a[k] = tmp[k]; k = k + 1; }
+  }
+  void fillObjects(Any[] a, Any val) {
+    int i = 0;
+    while (i < arrayLength(a)) { a[i] = val; i = i + 1; }
+  }
+  void fillRangeObjects(Any[] a, int fromIndex, int toIndex, Any val) {
+    rangeCheck(arrayLength(a), fromIndex, toIndex);
+    int i = fromIndex;
+    while (i < toIndex) { a[i] = val; i = i + 1; }
+  }
+  Any[] copyOfObjects(Any[] original, int newLength) {
+    if (newLength < 0) { throw new NegativeArraySizeException("" + newLength); }
+    Any[] out = new Any[newLength];
+    int i = 0;
+    while (i < newLength && i < arrayLength(original)) { out[i] = original[i]; i = i + 1; }
+    while (i < newLength) { out[i] = null; i = i + 1; }
+    return out;
+  }
+  Any[] copyOfRangeObjects(Any[] original, int from, int to) {
+    if (from > to) { throw new IllegalArgumentException(from + " > " + to); }
+    if (from < 0 || from > arrayLength(original)) { throw new ArrayIndexOutOfBoundsException("Array index out of range: " + from); }
+    Any[] out = new Any[to - from];
+    int i = from;
+    while (i < to && i < arrayLength(original)) { out[i - from] = original[i]; i = i + 1; }
+    while (i < to) { out[i - from] = null; i = i + 1; }
+    return out;
+  }
+  boolean equalsObjects(Any[] a, Any[] b) {
+    if (a == null || b == null) { return a == null && b == null; }
+    if (arrayLength(a) != arrayLength(b)) { return false; }
+    int i = 0;
+    while (i < arrayLength(a)) {
+      Any x = a[i];
+      Any y = b[i];
+      if (!(same(x, y))) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+  int hashCodeObjects(Any[] a) {
+    if (a == null) { return 0; }
+    int h = 1;
+    int i = 0;
+    while (i < arrayLength(a)) {
+      Any e = a[i];
+      h = wrap32(31 * h + hashOf(e));
+      i = i + 1;
+    }
+    return h;
+  }
+  << Binary search of a sorted array: the index of key, else -(insertion point) - 1. >>
+  int binarySearchObjects(Any[] a, Any key) {
+    int lo = 0;
+    int hi = arrayLength(a) - 1;
+    while (lo <= hi) {
+      int mid = (lo + hi) / 2;
+      Any m = a[mid];
+      if (compareValues(m, key) < 0) { lo = mid + 1; }
+      else { if (compareValues(key, m) < 0) { hi = mid - 1; } else { return mid; } }
+    }
+    return 0 - (lo + 1);
+  }
+  << Index of the first mismatch of a and b, or -1 when they are equal. >>
+  int mismatchObjects(Any[] a, Any[] b) {
+    int n = arrayLength(a);
+    if (arrayLength(b) < n) { n = arrayLength(b); }
+    int i = 0;
+    while (i < n) {
+      Any x = a[i];
+      Any y = b[i];
+      if (!(same(x, y))) { return i; }
+      i = i + 1;
+    }
+    if (arrayLength(a) == arrayLength(b)) { return -1; }
+    return n;
+  }
+
+  < value semantics shared by the collections (hash, equality, natural order) >
+  int gcSlot;
+  int utfOps;
+  << Periodic short-term GC hint: Java UTF-16 String handles used for hashing
+     and ordering are reclaimed by the collector, not on scope exit. >>
+  void utfTick() {
+    utfOps = utfOps + 1;
+    if (utfOps % 512 == 0) { gcSlot = gc 40; }
+  }
+  << Java hashCode of a value: int and long as Integer/Long.hashCode, boolean
+     as Boolean.hashCode, double as Double.hashCode, everything else as the
+     Java String hash of its SLeeLa text (a String hashes exactly as in Java;
+     an object hashes by its identity text). >>
+  int hashOf(Any o) {
+    if (o == null) { return 0; }
+    if (o instanceof boolean) { if ((boolean) o) { return 1231; } return 1237; }
+    if (o instanceof int) { return wrapHash((long) ((int) o)); }
+    if (o instanceof long) { return wrapHash((long) o); }
+    if (o instanceof double) { Double d = new Double((double) o); return d.hashCode(); }
+    utfTick();
+    return javaStringHashCode(javaStringFromUtf8("" + o));
+  }
+  int wrapHash(long v) {
+    long hi = v / 4294967296;
+    long lo = v % 4294967296;
+    if (lo < 0) { lo = lo + 4294967296; hi = hi - 1; }
+    if (hi < 0) { hi = hi + 4294967296; }
+    long h = lo;
+    if (hi != 0) {
+      long r = 0;
+      long bit = 1;
+      long x = lo;
+      long y = hi;
+      int i = 0;
+      while (i < 32) {
+        if ((x % 2) != (y % 2)) { r = r + bit; }
+        x = x / 2; y = y / 2; bit = bit * 2; i = i + 1;
+      }
+      h = r;
+    }
+    if (h > 2147483647) { h = h - 4294967296; }
+    return (int) h;
+  }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  << Value equality: numbers and strings by value, objects by identity. >>
+  boolean same(Any a, Any b) { return a == b; }
+  << Natural ordering (Comparable): numbers numerically, everything else by
+     Java String.compareTo of the SLeeLa text. >>
+  int compareValues(Any a, Any b) {
+    if (a == null || b == null) { throw new NullPointerException(null); }
+    boolean an = a instanceof int || a instanceof long || a instanceof double;
+    boolean bn = b instanceof int || b instanceof long || b instanceof double;
+    if (an && bn) {
+      double x = (double) a;
+      double y = (double) b;
+      if (x < y) { return -1; }
+      if (x > y) { return 1; }
+      return 0;
+    }
+    if (a instanceof boolean && b instanceof boolean) {
+      boolean p = (boolean) a;
+      boolean q = (boolean) b;
+      if (p == q) { return 0; }
+      if (p) { return 1; }
+      return -1;
+    }
+    utfTick();
+    return javaStringCompareTo(javaStringFromUtf8("" + a), javaStringFromUtf8("" + b));
+  }
+  String textOf(Any o) {
+    if (o == null) { return "null"; }
+    return "" + o;
+  }
+  << Elements of any collection implemented in this package, as an array. >>
+  Any[] elementsOf(Any c) {
+    if (c == null) { throw new NullPointerException(null); }
+    if (c instanceof ArrayList) { ArrayList x1 = (ArrayList) c; return x1.toArray(); }
+    if (c instanceof LinkedList) { LinkedList x2 = (LinkedList) c; return x2.toArray(); }
+    if (c instanceof ArrayDeque) { ArrayDeque x3 = (ArrayDeque) c; return x3.toArray(); }
+    if (c instanceof Vector) { Vector x4 = (Vector) c; return x4.toArray(); }
+    if (c instanceof HashSet) { HashSet x5 = (HashSet) c; return x5.toArray(); }
+    if (c instanceof TreeSet) { TreeSet x6 = (TreeSet) c; return x6.toArray(); }
+    if (c instanceof PriorityQueue) { PriorityQueue x7 = (PriorityQueue) c; return x7.toArray(); }
+    throw new UnsupportedOperationException("not a java.util collection implemented in SLeeLa");
+  }
+  IndexOutOfBoundsException outOfBounds(int index, int length) {
+    return new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + length);
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -82,15 +561,9 @@ class Arrays {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean equals(double[] a, double[] a2) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static boolean equals(boolean[] a, int aFromIndex, int aToIndex, boolean[] b, int bFromIndex, int bToIndex) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean equals(boolean[] a, boolean[] a2) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static boolean equals(byte[] a, int aFromIndex, int aToIndex, byte[] b, int bFromIndex, int bToIndex) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static boolean equals(byte[] a, byte[] a2) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean equals(Any[] a, int aFromIndex, int aToIndex, Any[] b, int bFromIndex, int bToIndex) { return false; }
   @generic("<T>")
@@ -100,11 +573,7 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean equals(Any[] a, int aFromIndex, int aToIndex, Any[] b, int bFromIndex, int bToIndex, Any cmp) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean equals(Any[] a, Any[] a2) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static boolean equals(float[] a, int aFromIndex, int aToIndex, float[] b, int bFromIndex, int bToIndex) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static boolean equals(float[] a, float[] a2) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean equals(double[] a, int aFromIndex, int aToIndex, double[] b, int bFromIndex, int bToIndex) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -114,51 +583,7 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean equals(long[] a, int aFromIndex, int aToIndex, long[] b, int bFromIndex, int bToIndex) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean equals(long[] a, long[] a2) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static boolean equals(short[] a, short[] a2) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static boolean equals(short[] a, int aFromIndex, int aToIndex, short[] b, int bFromIndex, int bToIndex) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static boolean equals(char[] a, char[] a2) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static boolean equals(int[] a, int[] a2) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toString(char[] a) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toString(float[] a) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toString(double[] a) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toString(Any[] a) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toString(byte[] a) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toString(boolean[] a) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toString(long[] a) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toString(int[] a) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String toString(short[] a) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int hashCode(float[] a) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int hashCode(byte[] a) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int hashCode(boolean[] a) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int hashCode(double[] a) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int hashCode(Any[] a) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int hashCode(long[] a) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int hashCode(int[] a) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int hashCode(short[] a) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int hashCode(char[] a) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int compareUnsigned(byte[] a, byte[] b) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -175,36 +600,11 @@ class Arrays {
   public static int compareUnsigned(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int compareUnsigned(int[] a, int[] b) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static double[] copyOf(double[] original, int newLength) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int[] copyOf(int[] original, int newLength) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static byte[] copyOf(byte[] original, int newLength) { return null; }
   @generic("<T, U>")
   @throwable("java.lang.UnsupportedOperationException")
   public static Any[] copyOf(Any[] original, int newLength, Any newType) { return null; }
-  @generic("<T>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any[] copyOf(Any[] original, int newLength) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static boolean[] copyOf(boolean[] original, int newLength) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static float[] copyOf(float[] original, int newLength) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static char[] copyOf(char[] original, int newLength) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long[] copyOf(long[] original, int newLength) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static short[] copyOf(short[] original, int newLength) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void sort(Any[] a) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void sort(long[] a) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void sort(long[] a, int fromIndex, int toIndex) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void sort(short[] a) { }
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
   public static void sort(Any[] a, int fromIndex, int toIndex, Any c) { }
@@ -214,49 +614,20 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static void sort(Any[] a, int fromIndex, int toIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void sort(int[] a) { }
-  @throwable("java.lang.UnsupportedOperationException")
   public static void sort(double[] a, int fromIndex, int toIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void sort(double[] a) { }
-  @throwable("java.lang.UnsupportedOperationException")
   public static void sort(float[] a, int fromIndex, int toIndex) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void sort(float[] a) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void sort(byte[] a, int fromIndex, int toIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void sort(short[] a, int fromIndex, int toIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void sort(char[] a) { }
-  @throwable("java.lang.UnsupportedOperationException")
   public static void sort(char[] a, int fromIndex, int toIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void sort(byte[] a) { }
-  @throwable("java.lang.UnsupportedOperationException")
   public static void sort(int[] a, int fromIndex, int toIndex) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static boolean[] copyOfRange(boolean[] original, int from, int to) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static char[] copyOfRange(char[] original, int from, int to) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static long[] copyOfRange(long[] original, int from, int to) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static float[] copyOfRange(float[] original, int from, int to) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static double[] copyOfRange(double[] original, int from, int to) { return null; }
-  @generic("<T>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any[] copyOfRange(Any[] original, int from, int to) { return null; }
   @generic("<T, U>")
   @throwable("java.lang.UnsupportedOperationException")
   public static Any[] copyOfRange(Any[] original, int from, int to, Any newType) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static byte[] copyOfRange(byte[] original, int from, int to) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static short[] copyOfRange(short[] original, int from, int to) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int[] copyOfRange(int[] original, int from, int to) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int compare(char[] a, int aFromIndex, int aToIndex, char[] b, int bFromIndex, int bToIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -302,13 +673,7 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static int compare(float[] a, float[] b) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int mismatch(long[] a, long[] b) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int mismatch(float[] a, float[] b) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static int mismatch(long[] a, int aFromIndex, int aToIndex, long[] b, int bFromIndex, int bToIndex) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int mismatch(Any[] a, Any[] b) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int mismatch(Any[] a, int aFromIndex, int aToIndex, Any[] b, int bFromIndex, int bToIndex) { return 0; }
   @generic("<T>")
@@ -320,29 +685,17 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static int mismatch(double[] a, int aFromIndex, int aToIndex, double[] b, int bFromIndex, int bToIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int mismatch(double[] a, double[] b) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static int mismatch(float[] a, int aFromIndex, int aToIndex, float[] b, int bFromIndex, int bToIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int mismatch(byte[] a, int aFromIndex, int aToIndex, byte[] b, int bFromIndex, int bToIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int mismatch(char[] a, char[] b) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static int mismatch(char[] a, int aFromIndex, int aToIndex, char[] b, int bFromIndex, int bToIndex) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int mismatch(int[] a, int[] b) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int mismatch(short[] a, int aFromIndex, int aToIndex, short[] b, int bFromIndex, int bToIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int mismatch(short[] a, short[] b) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static int mismatch(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int mismatch(boolean[] a, boolean[] b) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static int mismatch(boolean[] a, int aFromIndex, int aToIndex, boolean[] b, int bFromIndex, int bToIndex) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int mismatch(byte[] a, byte[] b) { return 0; }
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
   public static Any stream(Any[] array) { return null; }
@@ -364,21 +717,9 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static void fill(Any[] a, int fromIndex, int toIndex, Any val) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void fill(long[] a, long val) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void fill(boolean[] a, boolean val) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void fill(short[] a, short val) { }
-  @throwable("java.lang.UnsupportedOperationException")
   public static void fill(int[] a, int fromIndex, int toIndex, int val) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void fill(int[] a, int val) { }
-  @throwable("java.lang.UnsupportedOperationException")
   public static void fill(boolean[] a, int fromIndex, int toIndex, boolean val) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void fill(byte[] a, byte val) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void fill(char[] a, char val) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void fill(short[] a, int fromIndex, int toIndex, short val) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -386,17 +727,11 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static void fill(double[] a, int fromIndex, int toIndex, double val) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void fill(float[] a, float val) { }
-  @throwable("java.lang.UnsupportedOperationException")
   public static void fill(float[] a, int fromIndex, int toIndex, float val) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void fill(Any[] a, Any val) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void fill(char[] a, int fromIndex, int toIndex, char val) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void fill(long[] a, int fromIndex, int toIndex, long val) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void fill(double[] a, double val) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static Any spliterator(int[] array) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -415,9 +750,6 @@ class Arrays {
   public static Any spliterator(long[] array, int startInclusive, int endExclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static Any spliterator(double[] array) { return null; }
-  @generic("<T>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any asList(Any... a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean deepEquals(Any[] a1, Any[] a2) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -485,13 +817,7 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(float[] a, int fromIndex, int toIndex, float key) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int binarySearch(float[] a, float key) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int binarySearch(short[] a, short key) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(short[] a, int fromIndex, int toIndex, short key) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int binarySearch(Any[] a, Any key) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(Any[] a, int fromIndex, int toIndex, Any key) { return 0; }
   @generic("<T>")
@@ -500,23 +826,13 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(double[] a, int fromIndex, int toIndex, double key) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int binarySearch(double[] a, double key) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(byte[] a, int fromIndex, int toIndex, byte key) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int binarySearch(byte[] a, byte key) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(char[] a, int fromIndex, int toIndex, char key) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int binarySearch(char[] a, char key) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(int[] a, int fromIndex, int toIndex, int key) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int binarySearch(long[] a, long key) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(long[] a, int fromIndex, int toIndex, long key) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int binarySearch(int[] a, int key) { return 0; }
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(Any[] a, int fromIndex, int toIndex, Any key, Any c) { return 0; }

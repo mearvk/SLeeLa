@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
-class ConcurrentSkipListMap extends AbstractMap {
+class ConcurrentSkipListMap<K, V> extends AbstractMap {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 2648;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,381 @@ class ConcurrentSkipListMap extends AbstractMap {
   String javaKind = "class";
   String javaSuper = "java.util.AbstractMap";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.concurrent.ConcurrentSkipListMap members (procedural implementation in SLeeLa) ---- >
+  << Thread-safe sorted map: structural changes run under VM lock 30.
+     java.util.concurrent.ConcurrentSkipListMap over Any keys in natural ordering (numbers
+     numerically, other keys by Java String order of their text), stored as
+     sorted arrays with binary search, so iteration is ascending key order.
+     A Comparator is not dispatched yet. Navigation methods return keys;
+     first/last on an empty map throw NoSuchElementException. >>
+  ConcurrentSkipListMap() { sortedInit(); }
+  Any[] keysArray() { return sliceKeys(); }
+  Any[] valuesArray() { return sliceVals(); }
+  Any putEntry(Any key, Any value) {
+    if (key == null) { throw new NullPointerException(null); }
+    int i = search(key);
+    if (i >= 0) { Any old = this.vals[i]; this.vals[i] = value; return old; }
+    insertSorted(0 - i - 1, key, value);
+    return null;
+  }
+  Any valueFor(Any key) {
+    int i = search(key);
+    if (i < 0) { return null; }
+    return this.vals[i];
+  }
+  boolean hasKey(Any key) { return search(key) >= 0; }
+  Any removeEntry(Any key) {
+    int i = search(key);
+    if (i < 0) { return null; }
+    Any old = this.vals[i];
+    deleteSorted(i);
+    return old;
+  }
+  void clearEntries() { sortedInit(); }
+
+  < java.util.NavigableMap / SortedMap >
+  Any firstKey() { if (count == 0) { throw new NoSuchElementException(null); } return this.keys[0]; }
+  Any lastKey() { if (count == 0) { throw new NoSuchElementException(null); } return this.keys[count - 1]; }
+  Any floorKey(Any key) { return keyAtOrNull(floorIndex(key)); }
+  Any lowerKey(Any key) { return keyAtOrNull(lowerIndex(key)); }
+  Any ceilingKey(Any key) { return keyAtOrNull(ceilingIndex(key)); }
+  Any higherKey(Any key) { return keyAtOrNull(higherIndex(key)); }
+  KeyValueHolder firstEntry() { if (count == 0) { return null; } return new KeyValueHolder(this.keys[0], this.vals[0]); }
+  KeyValueHolder lastEntry() { if (count == 0) { return null; } return new KeyValueHolder(this.keys[count - 1], this.vals[count - 1]); }
+  KeyValueHolder pollFirstEntry() {
+    if (count == 0) { return null; }
+    KeyValueHolder e = new KeyValueHolder(this.keys[0], this.vals[0]);
+    deleteSorted(0);
+    return e;
+  }
+  KeyValueHolder pollLastEntry() {
+    if (count == 0) { return null; }
+    KeyValueHolder e = new KeyValueHolder(this.keys[count - 1], this.vals[count - 1]);
+    deleteSorted(count - 1);
+    return e;
+  }
+  << headMap(toKey) is the keys strictly less than toKey; tailMap(fromKey) is
+     the keys greater than or equal to fromKey (Java defaults), as copies. >>
+  ConcurrentSkipListMap headMap(Any toKey) {
+    ConcurrentSkipListMap m = new ConcurrentSkipListMap();
+    int i = 0;
+    while (i < count && compareValues(this.keys[i], toKey) < 0) { m.put(this.keys[i], this.vals[i]); i = i + 1; }
+    return m;
+  }
+  ConcurrentSkipListMap tailMap(Any fromKey) {
+    ConcurrentSkipListMap m = new ConcurrentSkipListMap();
+    int i = 0;
+    while (i < count) { if (compareValues(this.keys[i], fromKey) >= 0) { m.put(this.keys[i], this.vals[i]); } i = i + 1; }
+    return m;
+  }
+  ConcurrentSkipListMap subMap(Any fromKey, Any toKey) {
+    ConcurrentSkipListMap m = new ConcurrentSkipListMap();
+    int i = 0;
+    while (i < count) {
+      if (compareValues(this.keys[i], fromKey) >= 0 && compareValues(this.keys[i], toKey) < 0) { m.put(this.keys[i], this.vals[i]); }
+      i = i + 1;
+    }
+    return m;
+  }
+  ConcurrentSkipListMap descendingMap() {
+    ConcurrentSkipListMap m = new ConcurrentSkipListMap();
+    int i = 0;
+    while (i < count) { m.put(this.keys[i], this.vals[i]); i = i + 1; }
+    return m;
+  }
+
+  < java.util.Map >
+  int size() { return count; }
+  boolean isEmpty() { return count == 0; }
+  Any put(Any key, Any value) { return putEntry(key, value); }
+  Any get(Any key) { return valueFor(key); }
+  Any getOrDefault(Any key, Any defaultValue) {
+    if (containsKey(key)) { return get(key); }
+    return defaultValue;
+  }
+  boolean containsKey(Any key) { return hasKey(key); }
+  boolean containsValue(Any value) {
+    Any[] vs = valuesArray();
+    int i = 0;
+    while (i < arrayLength(vs)) { if (same(vs[i], value)) { return true; } i = i + 1; }
+    return false;
+  }
+  Any remove(Any key) { return removeEntry(key); }
+  void clear() { clearEntries(); }
+  Any putIfAbsent(Any key, Any value) {
+    Any v = get(key);
+    if (v == null) { put(key, value); }
+    return v;
+  }
+  Any replace(Any key, Any value) {
+    if (containsKey(key)) { return put(key, value); }
+    return null;
+  }
+  boolean replaceValue(Any key, Any oldValue, Any newValue) {
+    if (containsKey(key) && same(get(key), oldValue)) { put(key, newValue); return true; }
+    return false;
+  }
+  boolean removeMapping(Any key, Any value) {
+    if (containsKey(key) && same(get(key), value)) { remove(key); return true; }
+    return false;
+  }
+  void putAll(Any m) {
+    if (m instanceof HashMap) { HashMap hm = (HashMap) m; copyPairs(hm.keysArray(), hm.valuesArray()); return; }
+    if (m instanceof TreeMap) { TreeMap tm = (TreeMap) m; copyPairs(tm.keysArray(), tm.valuesArray()); return; }
+    throw new UnsupportedOperationException("not a java.util map implemented in SLeeLa");
+  }
+  void copyPairs(Any[] ks, Any[] vs) {
+    int i = 0;
+    while (i < arrayLength(ks)) { put(ks[i], vs[i]); i = i + 1; }
+  }
+  ConcurrentSkipListSet keySet() {
+    ConcurrentSkipListSet s = new ConcurrentSkipListSet();
+    Any[] ks = keysArray();
+    int i = 0;
+    while (i < arrayLength(ks)) { s.add(ks[i]); i = i + 1; }
+    return s;
+  }
+  ArrayList values() {
+    ArrayList l = new ArrayList();
+    Any[] vs = valuesArray();
+    int i = 0;
+    while (i < arrayLength(vs)) { l.add(vs[i]); i = i + 1; }
+    return l;
+  }
+  << Snapshot of the mappings as KeyValueHolder entries (Map.Entry). >>
+  ArrayList entrySet() {
+    ArrayList l = new ArrayList();
+    Any[] ks = keysArray();
+    Any[] vs = valuesArray();
+    int i = 0;
+    while (i < arrayLength(ks)) { l.add(new KeyValueHolder(ks[i], vs[i])); i = i + 1; }
+    return l;
+  }
+  String toString() {
+    Any[] ks = keysArray();
+    Any[] vs = valuesArray();
+    String sb = "{";
+    int i = 0;
+    while (i < arrayLength(ks)) {
+      if (i > 0) { sb = sb + ", "; }
+      sb = sb + textOf(ks[i]) + "=" + textOf(vs[i]);
+      i = i + 1;
+    }
+    return sb + "}";
+  }
+  << Java Map.hashCode: the sum of key.hashCode() ^ value.hashCode(). >>
+  int hashCode() {
+    Any[] ks = keysArray();
+    Any[] vs = valuesArray();
+    long h = 0;
+    int i = 0;
+    while (i < arrayLength(ks)) {
+            long a = Integer.toUnsignedLong(hashOf(ks[i]));
+      long b = Integer.toUnsignedLong(hashOf(vs[i]));
+      long x = 0;
+      long bit = 1;
+      int k = 0;
+      while (k < 32) {
+        if ((a % 2) != (b % 2)) { x = x + bit; }
+        a = a / 2; b = b / 2; bit = bit * 2; k = k + 1;
+      }
+      h = h + x;
+      i = i + 1;
+    }
+    return wrap32(h);
+  }
+  boolean equals(Any o) {
+    Any[] ks = null;
+    Any[] vs = null;
+    if (o instanceof HashMap) { HashMap hm = (HashMap) o; ks = hm.keysArray(); vs = hm.valuesArray(); }
+    if (o instanceof TreeMap) { TreeMap tm = (TreeMap) o; ks = tm.keysArray(); vs = tm.valuesArray(); }
+    if (ks == null) { return false; }
+    if (arrayLength(ks) != count) { return false; }
+    int i = 0;
+    while (i < arrayLength(ks)) {
+      if (!containsKey(ks[i]) || !same(get(ks[i]), vs[i])) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+
+  < sorted parallel arrays with binary search (natural ordering) >
+  Any[] keys;
+  Any[] vals;
+  int count;
+  int modCount;
+  void sortedInit() {
+    this.keys = new Any[8];
+    this.vals = new Any[8];
+    this.count = 0;
+    this.modCount = 0;
+    this.gcSlot = 0;
+    this.utfOps = 0;
+  }
+  << Index of key if present, else -(insertion point) - 1. >>
+  int search(Any key) {
+    int lo = 0;
+    int hi = count - 1;
+    while (lo <= hi) {
+      int mid = (lo + hi) / 2;
+      int c = compareValues(this.keys[mid], key);
+      if (c < 0) { lo = mid + 1; }
+      else { if (c > 0) { hi = mid - 1; } else { return mid; } }
+    }
+    return 0 - (lo + 1);
+  }
+  void insertSorted(int at, Any key, Any value) { lock(30); insertSortedRaw(at, key, value); unlock(30); }
+  void insertSortedRaw(int at, Any key, Any value) {
+    if (count == arrayLength(this.keys)) {
+      Any[] nk = new Any[count * 2];
+      Any[] nv = new Any[count * 2];
+      int i = 0;
+      while (i < count) { nk[i] = this.keys[i]; nv[i] = this.vals[i]; i = i + 1; }
+      this.keys = nk;
+      this.vals = nv;
+    }
+    int j = count;
+    while (j > at) { this.keys[j] = this.keys[j - 1]; this.vals[j] = this.vals[j - 1]; j = j - 1; }
+    this.keys[at] = key;
+    this.vals[at] = value;
+    count = count + 1;
+    modCount = modCount + 1;
+  }
+  void deleteSorted(int at) { lock(30); deleteSortedRaw(at); unlock(30); }
+  void deleteSortedRaw(int at) {
+    int j = at;
+    while (j < count - 1) { this.keys[j] = this.keys[j + 1]; this.vals[j] = this.vals[j + 1]; j = j + 1; }
+    this.keys[count - 1] = null;
+    this.vals[count - 1] = null;
+    count = count - 1;
+    modCount = modCount + 1;
+  }
+  << Navigation: index of the greatest key <= k (floor), < k (lower), the
+     least key >= k (ceiling), > k (higher); -1 when there is none. >>
+  int floorIndex(Any k) { int i = search(k); if (i >= 0) { return i; } return (0 - i - 1) - 1; }
+  int lowerIndex(Any k) { int i = search(k); if (i >= 0) { return i - 1; } return (0 - i - 1) - 1; }
+  int ceilingIndex(Any k) {
+    int i = search(k);
+    if (i < 0) { i = 0 - i - 1; }
+    if (i >= count) { return -1; }
+    return i;
+  }
+  int higherIndex(Any k) {
+    int i = search(k);
+    if (i >= 0) { i = i + 1; } else { i = 0 - i - 1; }
+    if (i >= count) { return -1; }
+    return i;
+  }
+  Any keyAtOrNull(int i) { if (i < 0) { return null; } return this.keys[i]; }
+  Any[] sliceKeys() {
+    Any[] out = new Any[count];
+    int i = 0;
+    while (i < count) { out[i] = this.keys[i]; i = i + 1; }
+    return out;
+  }
+  Any[] sliceVals() {
+    Any[] out = new Any[count];
+    int i = 0;
+    while (i < count) { out[i] = this.vals[i]; i = i + 1; }
+    return out;
+  }
+
+  < value semantics shared by the collections (hash, equality, natural order) >
+  int gcSlot;
+  int utfOps;
+  << Periodic short-term GC hint: Java UTF-16 String handles used for hashing
+     and ordering are reclaimed by the collector, not on scope exit. >>
+  void utfTick() {
+    utfOps = utfOps + 1;
+    if (utfOps % 512 == 0) { gcSlot = gc 40; }
+  }
+  << Java hashCode of a value: int and long as Integer/Long.hashCode, boolean
+     as Boolean.hashCode, double as Double.hashCode, everything else as the
+     Java String hash of its SLeeLa text (a String hashes exactly as in Java;
+     an object hashes by its identity text). >>
+  int hashOf(Any o) {
+    if (o == null) { return 0; }
+    if (o instanceof boolean) { if ((boolean) o) { return 1231; } return 1237; }
+    if (o instanceof int) { return wrapHash((long) ((int) o)); }
+    if (o instanceof long) { return wrapHash((long) o); }
+    if (o instanceof double) { Double d = new Double((double) o); return d.hashCode(); }
+    utfTick();
+    return javaStringHashCode(javaStringFromUtf8("" + o));
+  }
+  int wrapHash(long v) {
+    long hi = v / 4294967296;
+    long lo = v % 4294967296;
+    if (lo < 0) { lo = lo + 4294967296; hi = hi - 1; }
+    if (hi < 0) { hi = hi + 4294967296; }
+    long h = lo;
+    if (hi != 0) {
+      long r = 0;
+      long bit = 1;
+      long x = lo;
+      long y = hi;
+      int i = 0;
+      while (i < 32) {
+        if ((x % 2) != (y % 2)) { r = r + bit; }
+        x = x / 2; y = y / 2; bit = bit * 2; i = i + 1;
+      }
+      h = r;
+    }
+    if (h > 2147483647) { h = h - 4294967296; }
+    return (int) h;
+  }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  << Value equality: numbers and strings by value, objects by identity. >>
+  boolean same(Any a, Any b) { return a == b; }
+  << Natural ordering (Comparable): numbers numerically, everything else by
+     Java String.compareTo of the SLeeLa text. >>
+  int compareValues(Any a, Any b) {
+    if (a == null || b == null) { throw new NullPointerException(null); }
+    boolean an = a instanceof int || a instanceof long || a instanceof double;
+    boolean bn = b instanceof int || b instanceof long || b instanceof double;
+    if (an && bn) {
+      double x = (double) a;
+      double y = (double) b;
+      if (x < y) { return -1; }
+      if (x > y) { return 1; }
+      return 0;
+    }
+    if (a instanceof boolean && b instanceof boolean) {
+      boolean p = (boolean) a;
+      boolean q = (boolean) b;
+      if (p == q) { return 0; }
+      if (p) { return 1; }
+      return -1;
+    }
+    utfTick();
+    return javaStringCompareTo(javaStringFromUtf8("" + a), javaStringFromUtf8("" + b));
+  }
+  String textOf(Any o) {
+    if (o == null) { return "null"; }
+    return "" + o;
+  }
+  << Elements of any collection implemented in this package, as an array. >>
+  Any[] elementsOf(Any c) {
+    if (c == null) { throw new NullPointerException(null); }
+    if (c instanceof ArrayList) { ArrayList x1 = (ArrayList) c; return x1.toArray(); }
+    if (c instanceof LinkedList) { LinkedList x2 = (LinkedList) c; return x2.toArray(); }
+    if (c instanceof ArrayDeque) { ArrayDeque x3 = (ArrayDeque) c; return x3.toArray(); }
+    if (c instanceof Vector) { Vector x4 = (Vector) c; return x4.toArray(); }
+    if (c instanceof HashSet) { HashSet x5 = (HashSet) c; return x5.toArray(); }
+    if (c instanceof TreeSet) { TreeSet x6 = (TreeSet) c; return x6.toArray(); }
+    if (c instanceof PriorityQueue) { PriorityQueue x7 = (PriorityQueue) c; return x7.toArray(); }
+    throw new UnsupportedOperationException("not a java.util collection implemented in SLeeLa");
+  }
+  IndexOutOfBoundsException outOfBounds(int index, int length) {
+    return new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + length);
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -78,8 +454,6 @@ class ConcurrentSkipListMap extends AbstractMap {
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
   public ConcurrentSkipListMap(Any m) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public ConcurrentSkipListMap() { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -91,35 +465,13 @@ class ConcurrentSkipListMap extends AbstractMap {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean remove(Any key, Any value) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any remove(Any key) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int size() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any get(Any key) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any put(Any key, Any value) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(Any o) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any values() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void clear() { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isEmpty() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public boolean replace(Any key, Any oldValue, Any newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any replace(Any key, Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void replaceAll(Any function) { }
   @throwable("java.lang.UnsupportedOperationException")
   public Any merge(Any key, Any value, Any remappingFunction) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any entrySet() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any putIfAbsent(Any key, Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any compute(Any key, Any remappingFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -127,49 +479,21 @@ class ConcurrentSkipListMap extends AbstractMap {
   @throwable("java.lang.UnsupportedOperationException")
   public void forEach(Any action) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any keySet() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsValue(Any value) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsKey(Any key) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any getOrDefault(Any key, Any defaultValue) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any computeIfPresent(Any key, Any remappingFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any comparator() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any firstKey() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any putFirst(Any k, Any v) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any putLast(Any k, Any v) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any firstEntry() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any lastEntry() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any pollFirstEntry() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any pollLastEntry() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any descendingMap() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any lowerEntry(Any key) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any lowerKey(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any floorEntry(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any floorKey(Any key) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any ceilingEntry(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any ceilingKey(Any key) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any higherEntry(Any key) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any higherKey(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any navigableKeySet() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -177,16 +501,8 @@ class ConcurrentSkipListMap extends AbstractMap {
   @throwable("java.lang.UnsupportedOperationException")
   public Any subMap(Any fromKey, boolean fromInclusive, Any toKey, boolean toInclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any subMap(Any fromKey, Any toKey) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any headMap(Any toKey, boolean inclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any headMap(Any toKey) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any tailMap(Any fromKey, boolean inclusive) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any tailMap(Any fromKey) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any lastKey() { return null; }
   < ---- END java signatures ---- >
 }

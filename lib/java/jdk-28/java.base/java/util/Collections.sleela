@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class Collections {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 2480;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,260 @@ class Collections {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.Collections members (procedural implementation in SLeeLa) ---- >
+  << The java.util.Collections static algorithms as instance methods over the
+     list, set and map classes of this package (ArrayList, LinkedList,
+     Vector, Stack, ArrayDeque, HashSet, TreeSet, PriorityQueue, HashMap,
+     TreeMap). Lists are rewritten in place through their List API. Natural
+     ordering only (Comparator dispatch is a later semantics pass). The
+     unmodifiable / synchronized wrappers return copies (no write guard yet).
+     shuffle uses a java.util.Random with the Java algorithm. >>
+  Collections() { gcSlot = 0; utfOps = 0; }
+
+  int sizeOf(Any list) { return arrayLength(elementsOf(list)); }
+  << Overwrite element i of a list of this package. >>
+  void setAt(Any list, int i, Any v) {
+    if (list instanceof ArrayList) { ArrayList a = (ArrayList) list; a.set(i, v); return; }
+    if (list instanceof LinkedList) { LinkedList b = (LinkedList) list; b.set(i, v); return; }
+    if (list instanceof Vector) { Vector c = (Vector) list; c.set(i, v); return; }
+    throw new UnsupportedOperationException("not a java.util list implemented in SLeeLa");
+  }
+  void writeBack(Any list, Any[] xs) {
+    int i = 0;
+    while (i < arrayLength(xs)) { setAt(list, i, xs[i]); i = i + 1; }
+  }
+  void sort(Any list) {
+    Any[] xs = elementsOf(list);
+    Arrays A = new Arrays();
+    A.sortObjects(xs);
+    writeBack(list, xs);
+  }
+  void reverse(Any list) {
+    Any[] xs = elementsOf(list);
+    int n = arrayLength(xs);
+    Any[] r = new Any[n];
+    int i = 0;
+    while (i < n) { r[i] = xs[n - 1 - i]; i = i + 1; }
+    writeBack(list, r);
+  }
+  void swap(Any list, int i, int j) {
+    Any[] xs = elementsOf(list);
+    Any t = xs[i];
+    setAt(list, i, xs[j]);
+    setAt(list, j, t);
+  }
+  void fill(Any list, Any obj) {
+    int n = sizeOf(list);
+    int i = 0;
+    while (i < n) { setAt(list, i, obj); i = i + 1; }
+  }
+  << Rotate by distance: element i moves to (i + distance) mod size. >>
+  void rotate(Any list, int distance) {
+    Any[] xs = elementsOf(list);
+    int n = arrayLength(xs);
+    if (n == 0) { return; }
+    int d = distance % n;
+    if (d < 0) { d = d + n; }
+    Any[] r = new Any[n];
+    int i = 0;
+    while (i < n) { r[(i + d) % n] = xs[i]; i = i + 1; }
+    writeBack(list, r);
+  }
+  << Fisher-Yates shuffle driven by the given Random (Java algorithm). >>
+  void shuffle(Any list, Random rnd) {
+    Any[] xs = elementsOf(list);
+    int i = arrayLength(xs);
+    while (i > 1) {
+      int j = rnd.nextIntBound(i);
+      Any t = xs[i - 1];
+      xs[i - 1] = xs[j];
+      xs[j] = t;
+      i = i - 1;
+    }
+    writeBack(list, xs);
+  }
+  Any max(Any coll) {
+    Any[] xs = elementsOf(coll);
+    if (arrayLength(xs) == 0) { throw new NoSuchElementException(null); }
+    Any best = xs[0];
+    int i = 1;
+    while (i < arrayLength(xs)) { if (compareValues(xs[i], best) > 0) { best = xs[i]; } i = i + 1; }
+    return best;
+  }
+  Any min(Any coll) {
+    Any[] xs = elementsOf(coll);
+    if (arrayLength(xs) == 0) { throw new NoSuchElementException(null); }
+    Any best = xs[0];
+    int i = 1;
+    while (i < arrayLength(xs)) { if (compareValues(xs[i], best) < 0) { best = xs[i]; } i = i + 1; }
+    return best;
+  }
+  int frequency(Any c, Any o) {
+    Any[] xs = elementsOf(c);
+    int n = 0;
+    int i = 0;
+    while (i < arrayLength(xs)) { if (same(xs[i], o)) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+  boolean disjoint(Any c1, Any c2) {
+    Any[] a = elementsOf(c1);
+    Any[] b = elementsOf(c2);
+    int i = 0;
+    while (i < arrayLength(a)) {
+      int j = 0;
+      while (j < arrayLength(b)) { if (same(a[i], b[j])) { return false; } j = j + 1; }
+      i = i + 1;
+    }
+    return true;
+  }
+  int binarySearch(Any list, Any key) {
+    Arrays A = new Arrays();
+    return A.binarySearchObjects(elementsOf(list), key);
+  }
+  int indexOfSubList(Any source, Any target) {
+    Any[] s = elementsOf(source);
+    Any[] t = elementsOf(target);
+    int n = arrayLength(s);
+    int m = arrayLength(t);
+    int i = 0;
+    while (i + m <= n) {
+      int j = 0;
+      while (j < m && same(s[i + j], t[j])) { j = j + 1; }
+      if (j == m) { return i; }
+      i = i + 1;
+    }
+    return -1;
+  }
+  boolean addAll(Any c, Any[] elements) {
+    boolean changed = false;
+    int i = 0;
+    while (i < arrayLength(elements)) {
+      Any e = elements[i];
+      if (c instanceof ArrayList) { ArrayList a = (ArrayList) c; a.add(e); changed = true; }
+      if (c instanceof LinkedList) { LinkedList b = (LinkedList) c; b.add(e); changed = true; }
+      if (c instanceof Vector) { Vector v = (Vector) c; v.add(e); changed = true; }
+      if (c instanceof HashSet) { HashSet h = (HashSet) c; if (h.add(e)) { changed = true; } }
+      if (c instanceof TreeSet) { TreeSet t = (TreeSet) c; if (t.add(e)) { changed = true; } }
+      i = i + 1;
+    }
+    return changed;
+  }
+  ArrayList nCopies(int n, Any o) {
+    if (n < 0) { throw new IllegalArgumentException("List length = " + n); }
+    ArrayList l = new ArrayList();
+    int i = 0;
+    while (i < n) { l.add(o); i = i + 1; }
+    return l;
+  }
+  ArrayList emptyList() { return new ArrayList(); }
+  HashSet emptySet() { return new HashSet(); }
+  HashMap emptyMap() { return new HashMap(); }
+  ArrayList singletonList(Any o) { ArrayList l = new ArrayList(); l.add(o); return l; }
+  HashSet singleton(Any o) { HashSet s = new HashSet(); s.add(o); return s; }
+  HashMap singletonMap(Any key, Any value) { HashMap m = new HashMap(); m.put(key, value); return m; }
+  ArrayList list(Any c) {
+    ArrayList l = new ArrayList();
+    l.addAll(c);
+    return l;
+  }
+  ArrayList unmodifiableList(Any list) { return list(list); }
+
+  < value semantics shared by the collections (hash, equality, natural order) >
+  int gcSlot;
+  int utfOps;
+  << Periodic short-term GC hint: Java UTF-16 String handles used for hashing
+     and ordering are reclaimed by the collector, not on scope exit. >>
+  void utfTick() {
+    utfOps = utfOps + 1;
+    if (utfOps % 512 == 0) { gcSlot = gc 40; }
+  }
+  << Java hashCode of a value: int and long as Integer/Long.hashCode, boolean
+     as Boolean.hashCode, double as Double.hashCode, everything else as the
+     Java String hash of its SLeeLa text (a String hashes exactly as in Java;
+     an object hashes by its identity text). >>
+  int hashOf(Any o) {
+    if (o == null) { return 0; }
+    if (o instanceof boolean) { if ((boolean) o) { return 1231; } return 1237; }
+    if (o instanceof int) { return wrapHash((long) ((int) o)); }
+    if (o instanceof long) { return wrapHash((long) o); }
+    if (o instanceof double) { Double d = new Double((double) o); return d.hashCode(); }
+    utfTick();
+    return javaStringHashCode(javaStringFromUtf8("" + o));
+  }
+  int wrapHash(long v) {
+    long hi = v / 4294967296;
+    long lo = v % 4294967296;
+    if (lo < 0) { lo = lo + 4294967296; hi = hi - 1; }
+    if (hi < 0) { hi = hi + 4294967296; }
+    long h = lo;
+    if (hi != 0) {
+      long r = 0;
+      long bit = 1;
+      long x = lo;
+      long y = hi;
+      int i = 0;
+      while (i < 32) {
+        if ((x % 2) != (y % 2)) { r = r + bit; }
+        x = x / 2; y = y / 2; bit = bit * 2; i = i + 1;
+      }
+      h = r;
+    }
+    if (h > 2147483647) { h = h - 4294967296; }
+    return (int) h;
+  }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  << Value equality: numbers and strings by value, objects by identity. >>
+  boolean same(Any a, Any b) { return a == b; }
+  << Natural ordering (Comparable): numbers numerically, everything else by
+     Java String.compareTo of the SLeeLa text. >>
+  int compareValues(Any a, Any b) {
+    if (a == null || b == null) { throw new NullPointerException(null); }
+    boolean an = a instanceof int || a instanceof long || a instanceof double;
+    boolean bn = b instanceof int || b instanceof long || b instanceof double;
+    if (an && bn) {
+      double x = (double) a;
+      double y = (double) b;
+      if (x < y) { return -1; }
+      if (x > y) { return 1; }
+      return 0;
+    }
+    if (a instanceof boolean && b instanceof boolean) {
+      boolean p = (boolean) a;
+      boolean q = (boolean) b;
+      if (p == q) { return 0; }
+      if (p) { return 1; }
+      return -1;
+    }
+    utfTick();
+    return javaStringCompareTo(javaStringFromUtf8("" + a), javaStringFromUtf8("" + b));
+  }
+  String textOf(Any o) {
+    if (o == null) { return "null"; }
+    return "" + o;
+  }
+  << Elements of any collection implemented in this package, as an array. >>
+  Any[] elementsOf(Any c) {
+    if (c == null) { throw new NullPointerException(null); }
+    if (c instanceof ArrayList) { ArrayList x1 = (ArrayList) c; return x1.toArray(); }
+    if (c instanceof LinkedList) { LinkedList x2 = (LinkedList) c; return x2.toArray(); }
+    if (c instanceof ArrayDeque) { ArrayDeque x3 = (ArrayDeque) c; return x3.toArray(); }
+    if (c instanceof Vector) { Vector x4 = (Vector) c; return x4.toArray(); }
+    if (c instanceof HashSet) { HashSet x5 = (HashSet) c; return x5.toArray(); }
+    if (c instanceof TreeSet) { TreeSet x6 = (TreeSet) c; return x6.toArray(); }
+    if (c instanceof PriorityQueue) { PriorityQueue x7 = (PriorityQueue) c; return x7.toArray(); }
+    throw new UnsupportedOperationException("not a java.util collection implemented in SLeeLa");
+  }
+  IndexOutOfBoundsException outOfBounds(int index, int length) {
+    return new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + length);
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -90,20 +345,9 @@ class Collections {
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
   public static Any min(Any coll, Any comp) { return null; }
-  @generic("<T extends java.lang.Object & java.lang.Comparable<? super T>>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any min(Any coll) { return null; }
-  @generic("<T extends java.lang.Object & java.lang.Comparable<? super T>>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any max(Any coll) { return null; }
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
   public static Any max(Any coll, Any comp) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void reverse(Any list) { }
-  @generic("<T extends java.lang.Comparable<? super T>>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void sort(Any list) { }
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
   public static void sort(Any list, Any c) { }
@@ -115,22 +359,10 @@ class Collections {
   public static boolean replaceAll(Any list, Any oldVal, Any newVal) { return false; }
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static void fill(Any list, Any obj) { }
-  @generic("<T>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any list(Any e) { return null; }
-  @generic("<T>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static boolean addAll(Any c, Any... elements) { return false; }
-  @generic("<T>")
-  @throwable("java.lang.UnsupportedOperationException")
   public static Any emptyEnumeration() { return null; }
   @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
   public static Any newSetFromMap(Any map) { return null; }
-  @generic("<T>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static final Any emptyList() { return null; }
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
   public static Any unmodifiableSet(Any s) { return null; }
@@ -148,9 +380,6 @@ class Collections {
   public static Any emptyIterator() { return null; }
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static Any nCopies(int n, Any o) { return null; }
-  @generic("<T>")
-  @throwable("java.lang.UnsupportedOperationException")
   public static Any reverseOrder(Any cmp) { return null; }
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
@@ -161,22 +390,11 @@ class Collections {
   @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
   public static Any unmodifiableSortedMap(Any m) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void swap(Any list, int i, int j) { }
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(Any list, Any key, Any c) { return 0; }
-  @generic("<T>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int binarySearch(Any list, Any key) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void shuffle(Any list, Any rnd) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void shuffle(Any list) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void rotate(Any list, int distance) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int indexOfSubList(Any source, Any target) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int lastIndexOfSubList(Any source, Any target) { return 0; }
   @generic("<T>")
@@ -194,9 +412,6 @@ class Collections {
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
   public static Any unmodifiableNavigableSet(Any s) { return null; }
-  @generic("<T>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any unmodifiableList(Any list) { return null; }
   @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
   public static Any unmodifiableSequencedMap(Any m) { return null; }
@@ -251,9 +466,6 @@ class Collections {
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
   public static Any emptyListIterator() { return null; }
-  @generic("<T>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static final Any emptySet() { return null; }
   @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
   public static Any emptySortedSet() { return null; }
@@ -262,26 +474,10 @@ class Collections {
   public static Any emptyNavigableSet() { return null; }
   @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static final Any emptyMap() { return null; }
-  @generic("<K, V>")
-  @throwable("java.lang.UnsupportedOperationException")
   public static final Any emptySortedMap() { return null; }
   @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
   public static final Any emptyNavigableMap() { return null; }
-  @generic("<T>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any singleton(Any o) { return null; }
-  @generic("<T>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any singletonList(Any o) { return null; }
-  @generic("<K, V>")
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any singletonMap(Any key, Any value) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int frequency(Any c, Any o) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static boolean disjoint(Any c1, Any c2) { return false; }
   @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
   public static Any newSequencedSetFromMap(Any map) { return null; }

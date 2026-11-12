@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
-class ConcurrentLinkedQueue extends AbstractQueue {
+class ConcurrentLinkedQueue<E> extends AbstractQueue {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 2640;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,382 @@ class ConcurrentLinkedQueue extends AbstractQueue {
   String javaKind = "class";
   String javaSuper = "java.util.AbstractQueue";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.concurrent.ConcurrentLinkedQueue members (procedural implementation in SLeeLa) ---- >
+  << Thread-safe: structural changes run under VM lock 30; null elements are rejected.
+     java.util.concurrent.ConcurrentLinkedQueue over Any elements (generic erasure). Equality of elements is SLeeLa
+     value equality (numbers and strings by value, objects by identity);
+     natural ordering compares numbers numerically and other values by Java
+     String order of their text. Java overloads are renamed by role:
+     add(int, E) is addAt, remove(Object) is removeObject, addAll(int, c) is
+     addAllAt. iterator() returns a snapshot java.util.Iterator. >>
+  ConcurrentLinkedQueue() { seqInit(10); }
+
+  boolean add(Any e) {
+    if (e == null) { throw new NullPointerException(null); }
+    insertAt(count, e);
+    return true;
+  }
+  boolean addAll(Any c) {
+    Any[] xs = elementsOf(c);
+    int i = 0;
+    while (i < arrayLength(xs)) { add(xs[i]); i = i + 1; }
+    return arrayLength(xs) > 0;
+  }
+  ConcurrentLinkedQueue subList(int fromIndex, int toIndex) {
+    if (fromIndex < 0 || toIndex > count || fromIndex > toIndex) {
+      throw new IndexOutOfBoundsException("fromIndex: " + fromIndex + ", toIndex: " + toIndex + ", size: " + count);
+    }
+    ConcurrentLinkedQueue out = new ConcurrentLinkedQueue();
+    int i = fromIndex;
+    while (i < toIndex) { out.add(at(i)); i = i + 1; }
+    return out;
+  }
+  ConcurrentLinkedQueue reversed() {
+    ConcurrentLinkedQueue out = new ConcurrentLinkedQueue();
+    int i = count - 1;
+    while (i >= 0) { out.add(at(i)); i = i - 1; }
+    return out;
+  }
+  void ensureCapacity(int minCapacity) { grow(minCapacity); }
+  void trimToSize() { }
+
+  < java.util.Queue / java.util.Deque >
+  boolean offer(Any e) { addLast(e); return true; }
+  boolean offerFirst(Any e) { addFirst(e); return true; }
+  boolean offerLast(Any e) { addLast(e); return true; }
+  Any poll() { if (count == 0) { return null; } return deleteAt(0); }
+  Any pollFirst() { if (count == 0) { return null; } return deleteAt(0); }
+  Any pollLast() { if (count == 0) { return null; } return deleteAt(count - 1); }
+  Any peek() { if (count == 0) { return null; } return at(0); }
+  Any peekFirst() { if (count == 0) { return null; } return at(0); }
+  Any peekLast() { if (count == 0) { return null; } return at(count - 1); }
+  Any element() { return getFirst(); }
+  void push(Any e) { addFirst(e); }
+  Any pop() { return removeFirst(); }
+  boolean removeFirstOccurrence(Any o) { return removeObject(o); }
+  boolean removeLastOccurrence(Any o) {
+    int i = lastIndexOf(o);
+    if (i < 0) { return false; }
+    deleteAt(i);
+    return true;
+  }
+  Iterator descendingIterator() {
+    Any[] out = new Any[count];
+    int i = 0;
+    while (i < count) { out[i] = at(count - 1 - i); i = i + 1; }
+    return new Iterator(out);
+  }
+
+  < circular Any[] buffer: element i lives at data[(head + i) % capacity] >
+  Any[] data;
+  int head;
+  int count;
+  int modCount;
+  void seqInit(int capacity) {
+    int c = capacity;
+    if (c < 4) { c = 4; }
+    this.data = new Any[c];
+    this.head = 0;
+    this.count = 0;
+    this.modCount = 0;
+    this.gcSlot = 0;
+    this.utfOps = 0;
+  }
+  int slot(int i) { return (head + i) % arrayLength(this.data); }
+  Any at(int i) { return this.data[slot(i)]; }
+  void putAt(int i, Any e) { this.data[slot(i)] = e; }
+  void grow(int minCapacity) {
+    int cap = arrayLength(this.data);
+    if (minCapacity <= cap) { return; }
+    int nc = cap + cap / 2 + 1;
+    if (nc < minCapacity) { nc = minCapacity; }
+    Any[] nd = new Any[nc];
+    int i = 0;
+    while (i < count) { nd[i] = at(i); i = i + 1; }
+    this.data = nd;
+    head = 0;
+  }
+  void insertAt(int index, Any e) { lock(30); insertAtRaw(index, e); unlock(30); }
+  void insertAtRaw(int index, Any e) {
+    grow(count + 1);
+    if (index == 0) {
+      head = (head - 1 + arrayLength(this.data)) % arrayLength(this.data);
+      this.data[head] = e;
+    } else {
+      int i = count;
+      while (i > index) { putAt(i, at(i - 1)); i = i - 1; }
+      putAt(index, e);
+    }
+    count = count + 1;
+    modCount = modCount + 1;
+  }
+  Any deleteAt(int index) { lock(30); Any r = deleteAtRaw(index); unlock(30); return r; }
+  Any deleteAtRaw(int index) {
+    Any old = at(index);
+    if (index == 0) {
+      this.data[head] = null;
+      head = (head + 1) % arrayLength(this.data);
+    } else {
+      int i = index;
+      while (i < count - 1) { putAt(i, at(i + 1)); i = i + 1; }
+      putAt(count - 1, null);
+    }
+    count = count - 1;
+    modCount = modCount + 1;
+    return old;
+  }
+  void checkElementIndex(int index) {
+    if (index < 0 || index >= count) { throw outOfBounds(index, count); }
+  }
+  void checkPositionIndex(int index) {
+    if (index < 0 || index > count) { throw outOfBounds(index, count); }
+  }
+
+  < java.util.Collection >
+  int size() { return count; }
+  boolean isEmpty() { return count == 0; }
+  boolean contains(Any o) { return indexOf(o) >= 0; }
+  Any[] toArray() {
+    Any[] out = new Any[count];
+    int i = 0;
+    while (i < count) { out[i] = at(i); i = i + 1; }
+    return out;
+  }
+  void clear() {
+    int i = 0;
+    while (i < count) { putAt(i, null); i = i + 1; }
+    count = 0;
+    head = 0;
+    modCount = modCount + 1;
+  }
+  boolean containsAll(Any c) {
+    Any[] xs = elementsOf(c);
+    int i = 0;
+    while (i < arrayLength(xs)) { if (!contains(xs[i])) { return false; } i = i + 1; }
+    return true;
+  }
+  boolean removeObject(Any o) {
+    int i = indexOf(o);
+    if (i < 0) { return false; }
+    deleteAt(i);
+    return true;
+  }
+  boolean removeAll(Any c) {
+    Any[] xs = elementsOf(c);
+    boolean changed = false;
+    int i = count - 1;
+    while (i >= 0) {
+      Any e = at(i);
+      int j = 0;
+      boolean hit = false;
+      while (j < arrayLength(xs)) { if (same(xs[j], e)) { hit = true; } j = j + 1; }
+      if (hit) { deleteAt(i); changed = true; }
+      i = i - 1;
+    }
+    return changed;
+  }
+  boolean retainAll(Any c) {
+    Any[] xs = elementsOf(c);
+    boolean changed = false;
+    int i = count - 1;
+    while (i >= 0) {
+      Any e = at(i);
+      int j = 0;
+      boolean hit = false;
+      while (j < arrayLength(xs)) { if (same(xs[j], e)) { hit = true; } j = j + 1; }
+      if (!hit) { deleteAt(i); changed = true; }
+      i = i - 1;
+    }
+    return changed;
+  }
+  Iterator iterator() { return new Iterator(toArray()); }
+  String toString() {
+    String sb = "[";
+    int i = 0;
+    while (i < count) {
+      if (i > 0) { sb = sb + ", "; }
+      sb = sb + textOf(at(i));
+      i = i + 1;
+    }
+    return sb + "]";
+  }
+  int hashCode() {
+    int h = 1;
+    int i = 0;
+    while (i < count) { h = wrap32(31 * h + hashOf(at(i))); i = i + 1; }
+    return h;
+  }
+  << Java List.equals: same size and pairwise-equal elements in order. >>
+  boolean equals(Any o) {
+    if (o == null) { return false; }
+    Any[] xs = elementsOf(o);
+    if (arrayLength(xs) != count) { return false; }
+    int i = 0;
+    while (i < count) { if (!same(xs[i], at(i))) { return false; } i = i + 1; }
+    return true;
+  }
+
+  < java.util.List >
+  Any get(int index) { checkElementIndex(index); return at(index); }
+  Any set(int index, Any element) {
+    checkElementIndex(index);
+    Any old = at(index);
+    putAt(index, element);
+    return old;
+  }
+  void addAt(int index, Any element) { checkPositionIndex(index); insertAt(index, element); }
+  Any remove(int index) { checkElementIndex(index); return deleteAt(index); }
+  int indexOf(Any o) {
+    int i = 0;
+    while (i < count) { if (same(at(i), o)) { return i; } i = i + 1; }
+    return -1;
+  }
+  int lastIndexOf(Any o) {
+    int i = count - 1;
+    while (i >= 0) { if (same(at(i), o)) { return i; } i = i - 1; }
+    return -1;
+  }
+  boolean addAllAt(int index, Any c) {
+    checkPositionIndex(index);
+    Any[] xs = elementsOf(c);
+    int i = 0;
+    while (i < arrayLength(xs)) { insertAt(index + i, xs[i]); i = i + 1; }
+    return arrayLength(xs) > 0;
+  }
+  << Natural-order sort (stable merge sort). A Comparator argument is not
+     dispatched yet, so a non-null comparator is rejected. >>
+  void sort(Any c) {
+    if (c != null) { throw new UnsupportedOperationException("Comparator dispatch is not yet supported; pass null for natural ordering"); }
+    Any[] a = toArray();
+    Any[] tmp = new Any[count];
+    mergeSort(a, tmp, 0, count);
+    int i = 0;
+    while (i < count) { putAt(i, a[i]); i = i + 1; }
+    modCount = modCount + 1;
+  }
+  void mergeSort(Any[] a, Any[] tmp, int lo, int hi) {
+    if (hi - lo < 2) { return; }
+    int mid = (lo + hi) / 2;
+    mergeSort(a, tmp, lo, mid);
+    mergeSort(a, tmp, mid, hi);
+    int i = lo;
+    int j = mid;
+    int k = lo;
+    while (i < mid && j < hi) {
+      if (compareValues(a[j], a[i]) < 0) { tmp[k] = a[j]; j = j + 1; }
+      else { tmp[k] = a[i]; i = i + 1; }
+      k = k + 1;
+    }
+    while (i < mid) { tmp[k] = a[i]; i = i + 1; k = k + 1; }
+    while (j < hi) { tmp[k] = a[j]; j = j + 1; k = k + 1; }
+    k = lo;
+    while (k < hi) { a[k] = tmp[k]; k = k + 1; }
+  }
+
+  < java.util.SequencedCollection (Java 21+) >
+  Any getFirst() { if (count == 0) { throw new NoSuchElementException(null); } return at(0); }
+  Any getLast() { if (count == 0) { throw new NoSuchElementException(null); } return at(count - 1); }
+  void addFirst(Any e) { insertAt(0, e); }
+  void addLast(Any e) { insertAt(count, e); }
+  Any removeFirst() { if (count == 0) { throw new NoSuchElementException(null); } return deleteAt(0); }
+  Any removeLast() { if (count == 0) { throw new NoSuchElementException(null); } return deleteAt(count - 1); }
+
+  < value semantics shared by the collections (hash, equality, natural order) >
+  int gcSlot;
+  int utfOps;
+  << Periodic short-term GC hint: Java UTF-16 String handles used for hashing
+     and ordering are reclaimed by the collector, not on scope exit. >>
+  void utfTick() {
+    utfOps = utfOps + 1;
+    if (utfOps % 512 == 0) { gcSlot = gc 40; }
+  }
+  << Java hashCode of a value: int and long as Integer/Long.hashCode, boolean
+     as Boolean.hashCode, double as Double.hashCode, everything else as the
+     Java String hash of its SLeeLa text (a String hashes exactly as in Java;
+     an object hashes by its identity text). >>
+  int hashOf(Any o) {
+    if (o == null) { return 0; }
+    if (o instanceof boolean) { if ((boolean) o) { return 1231; } return 1237; }
+    if (o instanceof int) { return wrapHash((long) ((int) o)); }
+    if (o instanceof long) { return wrapHash((long) o); }
+    if (o instanceof double) { Double d = new Double((double) o); return d.hashCode(); }
+    utfTick();
+    return javaStringHashCode(javaStringFromUtf8("" + o));
+  }
+  int wrapHash(long v) {
+    long hi = v / 4294967296;
+    long lo = v % 4294967296;
+    if (lo < 0) { lo = lo + 4294967296; hi = hi - 1; }
+    if (hi < 0) { hi = hi + 4294967296; }
+    long h = lo;
+    if (hi != 0) {
+      long r = 0;
+      long bit = 1;
+      long x = lo;
+      long y = hi;
+      int i = 0;
+      while (i < 32) {
+        if ((x % 2) != (y % 2)) { r = r + bit; }
+        x = x / 2; y = y / 2; bit = bit * 2; i = i + 1;
+      }
+      h = r;
+    }
+    if (h > 2147483647) { h = h - 4294967296; }
+    return (int) h;
+  }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  << Value equality: numbers and strings by value, objects by identity. >>
+  boolean same(Any a, Any b) { return a == b; }
+  << Natural ordering (Comparable): numbers numerically, everything else by
+     Java String.compareTo of the SLeeLa text. >>
+  int compareValues(Any a, Any b) {
+    if (a == null || b == null) { throw new NullPointerException(null); }
+    boolean an = a instanceof int || a instanceof long || a instanceof double;
+    boolean bn = b instanceof int || b instanceof long || b instanceof double;
+    if (an && bn) {
+      double x = (double) a;
+      double y = (double) b;
+      if (x < y) { return -1; }
+      if (x > y) { return 1; }
+      return 0;
+    }
+    if (a instanceof boolean && b instanceof boolean) {
+      boolean p = (boolean) a;
+      boolean q = (boolean) b;
+      if (p == q) { return 0; }
+      if (p) { return 1; }
+      return -1;
+    }
+    utfTick();
+    return javaStringCompareTo(javaStringFromUtf8("" + a), javaStringFromUtf8("" + b));
+  }
+  String textOf(Any o) {
+    if (o == null) { return "null"; }
+    return "" + o;
+  }
+  << Elements of any collection implemented in this package, as an array. >>
+  Any[] elementsOf(Any c) {
+    if (c == null) { throw new NullPointerException(null); }
+    if (c instanceof ArrayList) { ArrayList x1 = (ArrayList) c; return x1.toArray(); }
+    if (c instanceof LinkedList) { LinkedList x2 = (LinkedList) c; return x2.toArray(); }
+    if (c instanceof ArrayDeque) { ArrayDeque x3 = (ArrayDeque) c; return x3.toArray(); }
+    if (c instanceof Vector) { Vector x4 = (Vector) c; return x4.toArray(); }
+    if (c instanceof HashSet) { HashSet x5 = (HashSet) c; return x5.toArray(); }
+    if (c instanceof TreeSet) { TreeSet x6 = (TreeSet) c; return x6.toArray(); }
+    if (c instanceof PriorityQueue) { PriorityQueue x7 = (PriorityQueue) c; return x7.toArray(); }
+    throw new UnsupportedOperationException("not a java.util collection implemented in SLeeLa");
+  }
+  IndexOutOfBoundsException outOfBounds(int index, int length) {
+    return new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + length);
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -77,8 +454,6 @@ class ConcurrentLinkedQueue extends AbstractQueue {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ConcurrentLinkedQueue() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
   public ConcurrentLinkedQueue(Any c) { super("constructor"); }
   < ---- END java constructors ---- >
 
@@ -88,44 +463,14 @@ class ConcurrentLinkedQueue extends AbstractQueue {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean remove(Any o) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int size() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void clear() { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isEmpty() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean add(Any e) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any[] toArray() { return null; }
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
   public Any[] toArray(Any[] a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any iterator() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(Any o) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any spliterator() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean addAll(Any c) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void forEach(Any action) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any peek() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public boolean removeIf(Any filter) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean removeAll(Any c) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean retainAll(Any c) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any poll() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean offer(Any e) { return false; }
   < ---- END java signatures ---- >
 }

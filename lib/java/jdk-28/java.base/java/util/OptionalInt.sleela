@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class OptionalInt {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 6777;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,41 @@ class OptionalInt {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.OptionalInt members (procedural implementation in SLeeLa) ---- >
+  << A container that may hold one int value. Factories are instance methods
+     (new OptionalInt(false, 0).of(5)); the constructor takes presence and value. >>
+  boolean present;
+  int value;
+  OptionalInt(boolean isPresent, int v) { this.present = isPresent; this.value = v; }
+
+  OptionalInt empty() { return new OptionalInt(false, 0); }
+  OptionalInt of(int v) { return new OptionalInt(true, v); }
+  boolean isPresent() { return present; }
+  boolean isEmpty() { return !present; }
+  int getAsInt() {
+    if (!present) { throw new NoSuchElementException("No value present"); }
+    return value;
+  }
+  int orElseThrow() { return getAsInt(); }
+  int orElse(int other) {
+    if (present) { return value; }
+    return other;
+  }
+  String toString() {
+    if (!present) { return "OptionalInt.empty"; }
+    return "OptionalInt[" + value + "]";
+  }
+  boolean equals(Any obj) {
+    if (obj instanceof OptionalInt) {
+      OptionalInt o = (OptionalInt) obj;
+      if (!present && !o.present) { return true; }
+      return present == o.present && value == o.value;
+    }
+    return false;
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -82,35 +118,17 @@ class OptionalInt {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(Any obj) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static Any of(int value) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isEmpty() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any stream() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any empty() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int orElse(int other) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isPresent() { return false; }
   @generic("<X extends java.lang.Throwable>")
   @throwable("java.lang.UnsupportedOperationException, X")
   public int orElseThrow(Any exceptionSupplier) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int orElseThrow() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void ifPresent(Any action) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void ifPresentOrElse(Any action, Any emptyAction) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int orElseGet(Any supplier) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int getAsInt() { return 0; }
   < ---- END java signatures ---- >
 }

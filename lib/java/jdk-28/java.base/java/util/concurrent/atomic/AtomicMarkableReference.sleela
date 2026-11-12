@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
-class AtomicMarkableReference {
+class AtomicMarkableReference<V> {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 1471;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,61 @@ class AtomicMarkableReference {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.concurrent.atomic.AtomicMarkableReference members (procedural implementation in SLeeLa) ---- >
+  << A reference and an boolean mark updated together under VM lock 31 (reserved
+     for java.util.concurrent.atomic), so a spawned thread never sees one
+     without the other. compareAndSet compares the reference with == (value
+     equality for numbers, identity for objects) and the mark by value;
+     weakCompareAndSet is the same operation. >>
+  Any stRef;
+  boolean stMark = false;
+
+  public AtomicMarkableReference(Any initialRef, boolean initialMark) {
+    this.stRef = initialRef;
+    this.stMark = initialMark;
+  }
+  public Any getReference() { return this.stRef; }
+  public boolean isMarked() { return this.stMark; }
+  public Any get(boolean[] markHolder) {
+    lock(31);
+    Any r = this.stRef;
+    markHolder[0] = this.stMark;
+    unlock(31);
+    return r;
+  }
+  public void set(Any newReference, boolean newMark) {
+    lock(31);
+    this.stRef = newReference;
+    this.stMark = newMark;
+    unlock(31);
+  }
+  public boolean compareAndSet(Any expectedReference, Any newReference, boolean expectedMark, boolean newMark) {
+    lock(31);
+    boolean ok = false;
+    if (this.stRef == expectedReference && this.stMark == expectedMark) {
+      this.stRef = newReference;
+      this.stMark = newMark;
+      ok = true;
+    }
+    unlock(31);
+    return ok;
+  }
+  public boolean weakCompareAndSet(Any expectedReference, Any newReference, boolean expectedMark, boolean newMark) {
+    return compareAndSet(expectedReference, newReference, expectedMark, newMark);
+  }
+  public boolean attemptMark(Any expectedReference, boolean newMark) {
+    lock(31);
+    boolean ok = false;
+    if (this.stRef == expectedReference) {
+      this.stMark = newMark;
+      ok = true;
+    }
+    unlock(31);
+    return ok;
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -76,8 +132,6 @@ class AtomicMarkableReference {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public AtomicMarkableReference(Any initialRef, boolean initialMark) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -86,19 +140,5 @@ class AtomicMarkableReference {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any get(boolean[] markHolder) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any getReference() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void set(Any newReference, boolean newMark) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean compareAndSet(Any expectedReference, Any newReference, boolean expectedMark, boolean newMark) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean weakCompareAndSet(Any expectedReference, Any newReference, boolean expectedMark, boolean newMark) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isMarked() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean attemptMark(Any expectedReference, boolean newMark) { return false; }
   < ---- END java signatures ---- >
 }

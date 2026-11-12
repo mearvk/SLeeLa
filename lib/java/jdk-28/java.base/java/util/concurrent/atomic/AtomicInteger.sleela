@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class AtomicInteger extends Number {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 1459;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,91 @@ class AtomicInteger extends Number {
   String javaKind = "class";
   String javaSuper = "java.lang.Number";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.concurrent.atomic.AtomicInteger members (procedural implementation in SLeeLa) ---- >
+  << A int value updated atomically: every read-modify-write runs under VM
+     lock 31 (reserved for java.util.concurrent.atomic), so updates from
+     spawned threads never interleave. The plain / opaque / acquire / release
+     access modes are all sequentially consistent here, which satisfies each
+     of their Java contracts. compareAndSet compares with == (value equality
+     for numbers, identity for objects). The functional update methods wait
+     for lambda dispatch. >>
+  int value;
+  AtomicInteger(int initialValue) { this.value = initialValue; }
+
+  int get() { return this.value; }
+  void set(int newValue) { lock(31); this.value = newValue; unlock(31); }
+  void lazySet(int newValue) { set(newValue); }
+  int getPlain() { return this.value; }
+  void setPlain(int newValue) { this.value = newValue; }
+  int getOpaque() { return get(); }
+  void setOpaque(int newValue) { set(newValue); }
+  int getAcquire() { return get(); }
+  void setRelease(int newValue) { set(newValue); }
+  int getAndSet(int newValue) {
+    lock(31);
+    int old = this.value;
+    this.value = newValue;
+    unlock(31);
+    return old;
+  }
+  boolean compareAndSet(int expectedValue, int newValue) {
+    lock(31);
+    boolean hit = this.value == expectedValue;
+    if (hit) { this.value = newValue; }
+    unlock(31);
+    return hit;
+  }
+  boolean weakCompareAndSet(int expectedValue, int newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetPlain(int expectedValue, int newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetVolatile(int expectedValue, int newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetAcquire(int expectedValue, int newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetRelease(int expectedValue, int newValue) { return compareAndSet(expectedValue, newValue); }
+  int compareAndExchange(int expectedValue, int newValue) {
+    lock(31);
+    int witness = this.value;
+    if (witness == expectedValue) { this.value = newValue; }
+    unlock(31);
+    return witness;
+  }
+  int compareAndExchangeAcquire(int expectedValue, int newValue) { return compareAndExchange(expectedValue, newValue); }
+  int compareAndExchangeRelease(int expectedValue, int newValue) { return compareAndExchange(expectedValue, newValue); }
+
+  int getAndIncrement() { return getAndAdd(1); }
+  int getAndDecrement() { return getAndAdd(-1); }
+  int getAndAdd(int delta) {
+    lock(31);
+    int old = this.value;
+    this.value = wrap32(old + delta);
+    unlock(31);
+    return old;
+  }
+  int incrementAndGet() { return addAndGet(1); }
+  int decrementAndGet() { return addAndGet(-1); }
+  int addAndGet(int delta) {
+    lock(31);
+    this.value = wrap32(this.value + delta);
+    int now = this.value;
+    unlock(31);
+    return now;
+  }
+  String toString() { int v = get(); return "" + v; }
+
+  < java.lang.Number views >
+  int intValue() { return wrap32(get()); }
+  long longValue() { long v = get(); return v; }
+  double doubleValue() { double d = get(); return d; }
+  double floatValue() { Float f = new Float(doubleValue()); return f.doubleValue(); }
+  int byteValue() { return (int) SLJavaBits.wrap(get(), 8); }
+  int shortValue() { return (int) SLJavaBits.wrap(get(), 16); }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -77,8 +163,6 @@ class AtomicInteger extends Number {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public AtomicInteger(int initialValue) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
   public AtomicInteger() { super("constructor"); }
   < ---- END java constructors ---- >
 
@@ -89,62 +173,6 @@ class AtomicInteger extends Number {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public final int get() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int intValue() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long longValue() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public float floatValue() { return 0.0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public double doubleValue() { return 0.0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void set(int newValue) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int getOpaque() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void setOpaque(int newValue) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int getAcquire() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void setRelease(int newValue) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean compareAndSet(int expectedValue, int newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int compareAndExchange(int expectedValue, int newValue) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int compareAndExchangeAcquire(int expectedValue, int newValue) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int compareAndExchangeRelease(int expectedValue, int newValue) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetPlain(int expectedValue, int newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSet(int expectedValue, int newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetAcquire(int expectedValue, int newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetRelease(int expectedValue, int newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int getAndSet(int newValue) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int getAndAdd(int delta) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int incrementAndGet() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetVolatile(int expectedValue, int newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void lazySet(int newValue) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int getAndIncrement() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int getAndDecrement() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int decrementAndGet() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int addAndGet(int delta) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public final int getAndUpdate(Any updateFunction) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int updateAndGet(Any updateFunction) { return 0; }
@@ -152,9 +180,5 @@ class AtomicInteger extends Number {
   public final int getAndAccumulate(int x, Any accumulatorFunction) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int accumulateAndGet(int x, Any accumulatorFunction) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int getPlain() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void setPlain(int newValue) { }
   < ---- END java signatures ---- >
 }

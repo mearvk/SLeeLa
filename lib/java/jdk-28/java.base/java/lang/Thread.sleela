@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class Thread {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 9081;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,83 @@ class Thread {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.lang.Thread members (procedural implementation in SLeeLa) ---- >
+  << java.lang.Thread as a descriptor over the SLeeLa sleep builtin: name,
+     priority, daemon flag, id, interrupt flag, the Runnable target and run(),
+     plus the static sleep. start() keeps its exact-signature stub, because the
+     spawn builtin takes a method symbol of the current class and cannot carry
+     a Runnable target; a thread that was never started is not alive, and
+     join on it returns at once, as Java does. The compiler has no subtype
+     assignment yet, so a user class that implements Runnable cannot be passed
+     to the Runnable constructors; run() calls the target once that works. >>
+  static int threadCounter = 0;
+  static int idCounter = 0;
+  String tName;
+  int tPriority = 5;
+  boolean tDaemon = false;
+  boolean tInterrupted = false;
+  long tId = 0;
+  Runnable tTarget = null;
+
+  public Thread() { initThread(null, null); }
+  public Thread(Runnable task) { initThread(task, null); }
+  public Thread(java.lang.String name) {
+    if (name == null) { throw new NullPointerException("'name' is null"); }
+    initThread(null, name);
+  }
+  public Thread(Runnable task, java.lang.String name) {
+    if (name == null) { throw new NullPointerException("'name' is null"); }
+    initThread(task, name);
+  }
+  void initThread(Runnable task, String name) {
+    this.tTarget = task;
+    idCounter = idCounter + 1;
+    this.tId = idCounter;
+    if (name == null) {
+      this.tName = "Thread-" + threadCounter;
+      threadCounter = threadCounter + 1;
+    } else {
+      this.tName = name;
+    }
+  }
+
+  public final java.lang.String getName() { return this.tName; }
+  public final synchronized void setName(java.lang.String name) {
+    if (name == null) { throw new NullPointerException("'name' is null"); }
+    this.tName = name;
+  }
+  public final int getPriority() { return this.tPriority; }
+  public final void setPriority(int newPriority) {
+    if (newPriority < 1 || newPriority > 10) { throw new IllegalArgumentException(); }
+    this.tPriority = newPriority;
+  }
+  public final boolean isDaemon() { return this.tDaemon; }
+  public final void setDaemon(boolean on) { this.tDaemon = on; }
+  public final boolean isVirtual() { return false; }
+  public long getId() { return this.tId; }
+  public final long threadId() { return this.tId; }
+  public final boolean isAlive() { return false; }
+  public boolean isInterrupted() { return this.tInterrupted; }
+  public void interrupt() { this.tInterrupted = true; }
+  public void run() {
+    if (this.tTarget != null) { this.tTarget.run(); }
+  }
+  public final void join() { }
+  public final void join(long millis) {
+    if (millis < 0) { throw new IllegalArgumentException("timeout value is negative"); }
+  }
+  public final void checkAccess() { }
+  public static void onSpinWait() { }
+  public static void sleep(long millis) {
+    if (millis < 0) { throw new IllegalArgumentException("timeout value is negative"); }
+    sleep(millis);
+  }
+  public java.lang.String toString() {
+    return "Thread[#" + this.tId + "," + this.tName + "," + this.tPriority + ",main]";
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -83,17 +161,7 @@ class Thread {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public Thread(Any group, String name) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Thread(String name) { }
-  @throwable("java.lang.UnsupportedOperationException")
   public Thread(Any group, Any task, String name) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Thread() { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Thread(Any task) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Thread(Any group, Any task) { }
   @throwable("java.lang.UnsupportedOperationException")
   public Thread(Any group, Any task, String name, long stackSize, boolean inheritInheritableThreadLocals) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -107,68 +175,34 @@ class Thread {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public final String getName() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any[] getStackTrace() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void run() { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void interrupt() { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
   Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static native Any currentThread() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void onSpinWait() { }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public final boolean join(Any duration) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
   public final void join(long millis, int nanos) { }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public final void join() { }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public final void join(long millis) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setContextClassLoader(Any cl) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static native boolean holdsLock(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void setPriority(int newPriority) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final void setDaemon(boolean on) { }
-  @throwable("java.lang.UnsupportedOperationException")
   public void start() { }
   @throwable("java.lang.UnsupportedOperationException")
   public final Any getThreadGroup() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int getPriority() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean isDaemon() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any getContextClassLoader() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean interrupted() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean isVirtual() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static int activeCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int enumerate(Any[] tarray) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean isAlive() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final long threadId() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any getUncaughtExceptionHandler() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public static void sleep(long millis) { }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
   public static void sleep(long millis, int nanos) { }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public static void sleep(Any duration) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static Any ofPlatform() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -178,17 +212,9 @@ class Thread {
   @throwable("java.lang.UnsupportedOperationException")
   public final void stop() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isInterrupted() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final synchronized void setName(String name) { }
-  @throwable("java.lang.UnsupportedOperationException")
   public static void dumpStack() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void checkAccess() { }
-  @throwable("java.lang.UnsupportedOperationException")
   public static Any getAllStackTraces() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long getId() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any getState() { return null; }
   @throwable("java.lang.UnsupportedOperationException")

@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 18099
+library-source-files: 18104
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 18183
+total-symbol-records: 18188
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -16957,9 +16957,14 @@ java	XPathExpression.sleela	lib/java/jdk-28/jdk.xml.dom/org/w3c/dom/xpath/XPathE
 java	XPathNSResolver.sleela	lib/java/jdk-28/jdk.xml.dom/org/w3c/dom/xpath/XPathNSResolver.sleela	source
 java	XPathNamespace.sleela	lib/java/jdk-28/jdk.xml.dom/org/w3c/dom/xpath/XPathNamespace.sleela	source
 java	XPathResult.sleela	lib/java/jdk-28/jdk.xml.dom/org/w3c/dom/xpath/XPathResult.sleela	source
+java	SLJavaBeanEvents.sleela	lib/java/support/SLJavaBeanEvents.sleela	source
 java	SLJavaBits.sleela	lib/java/support/SLJavaBits.sleela	source
 java	SLJavaHex.sleela	lib/java/support/SLJavaHex.sleela	source
+java	SLJavaLambda.sleela	lib/java/support/SLJavaLambda.sleela	source
+java	SLJavaLambdaTable.sleela	lib/java/support/SLJavaLambdaTable.sleela	source
 java	SLJavaMd5.sleela	lib/java/support/SLJavaMd5.sleela	source
+java	SLJavaProperty.sleela	lib/java/support/SLJavaProperty.sleela	source
+java	SLJavaPropertyModel.sleela	lib/java/support/SLJavaPropertyModel.sleela	source
 java28	SLPackage.sleela	lib/java28/SLPackage.sleela	facade
 journey	SLPackage.sleela	lib/journey/SLPackage.sleela	facade
 languages	SLLanguage.sleela	lib/languages/SLLanguage.sleela	source

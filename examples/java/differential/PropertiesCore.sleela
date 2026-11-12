@@ -1,0 +1,127 @@
+<< examples/java/differential/PropertiesCore.sleela
+   SLeeLa side of the PropertiesCore differential test.
+   Definition: Prints, line for line, the same results as PropertiesCore.java
+   for java.util.Properties on the JDK 28 tier: setProperty and getProperty
+   with a defaults table, size, containsKey, stringPropertyNames and
+   propertyNames, store to a StringWriter (characters) and to a
+   ByteArrayOutputStream (ISO 8859-1 bytes with backslash-u escapes), load
+   from a StringReader (comments, separators, continuation lines, escapes),
+   clone, the conditional remove and replace, and the System property table
+   (getProperty, setProperty, clearProperty, getProperties and the null and
+   empty key exceptions). The date comment that store writes differs per run
+   and prints as #DATE on both sides. >>
+#sleela 3.0
+material;
+import java.jdk-28;
+class PropertiesCore {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  void names(Properties p) {
+    TreeSet s = new TreeSet();
+    Enumeration e = p.propertyNames();
+    while (e.hasMoreElements()) { s.add(e.nextElement()); }
+    Any[] all = s.toArray();
+    int i = 0;
+    while (i < arrayLength(all)) { print("name " + all[i]); i = i + 1; }
+  }
+  << Prints text line by line; line number dateLine (the date comment, which
+     differs per run) prints as #DATE. >>
+  void dump(String text, int dateLine) {
+    int line = 0;
+    int from = 0;
+    int nl = text.indexOf("\n", from);
+    while (nl >= 0) {
+      if (line == dateLine) { print("#DATE"); }
+      else { print(text.substring(from, nl)); }
+      line = line + 1;
+      from = nl + 1;
+      nl = text.indexOf("\n", from);
+    }
+  }
+  void main() {
+    Properties d = new Properties();
+    d.setProperty("zeta", "from defaults");
+    d.setProperty("shared", "default value");
+    Properties p = new Properties(d);
+    print(p.setProperty("shared", "own value"));
+    print(p.setProperty("shared", "own value 2"));
+    p.setProperty("b key", " lead=x:y#z!");
+    p.setProperty("a", "1\\2");
+    p.setProperty("tab", "t\tend");
+    p.setProperty("nl", "line1\nline2\rline3\f.");
+    p.setProperty("latin", "caf\u00e9");
+    p.setProperty("euro", "\u20ac5");
+    print(p.getProperty("zeta"));
+    print(p.getProperty("shared"));
+    print(p.getProperty("missing", "fallback"));
+    print(p.getProperty("missing"));
+    print("" + p.size() + " " + d.size());
+    print("" + p.containsKey("zeta") + " " + p.containsKey("a"));
+    print(p.stringPropertyNames().size());
+    names(p);
+
+    StringWriter sw = new StringWriter();
+    p.store(sw, "hello\nworld\n!bang\r\n#hash");
+    dump(sw.toString(), 4);
+
+    ByteArrayOutputStream bo = new ByteArrayOutputStream();
+    p.store(bo, null);
+    byte[] b = bo.toByteArray();
+    String bytes = "";
+    int high = 0;
+    int i = 0;
+    while (i < arrayLength(b)) {
+      int v = b[i];
+      if (v < 0) { v = v + 256; }
+      if (v > 126 || (v < 32 && v != 10)) { high = high + 1; }
+      bytes = bytes + JavaText.charString(v);
+      i = i + 1;
+    }
+    print("bytes " + arrayLength(b) + " outside ASCII " + high);
+    dump(bytes, 0);
+
+    Properties r = new Properties();
+    r.load(new StringReader("# comment\n! bang comment\n  key1 = value1\nkey2:value2\nkey3 value3\n"
+      + "multi = one \\\n    two \\\n    three\nesc\\ aped = \\u0041\\t\\n.\nempty\n"));
+    names(r);
+    print("[" + r.getProperty("key1") + "][" + r.getProperty("key2") + "][" + r.getProperty("key3") + "]");
+    print("[" + r.getProperty("multi") + "]");
+    print("[" + r.getProperty("esc aped") + "] [" + r.getProperty("empty") + "]");
+
+    Properties c = (Properties) p.clone();
+    print(c.getProperty("zeta") + " " + c.size());
+    print("" + c.remove("a", "nope") + " " + c.remove("a", "1\\2") + " " + c.containsKey("a") + " " + p.containsKey("a"));
+    print("" + c.replace("tab", "wrong", "x") + " " + c.replace("tab", "t\tend", "replaced") + " " + c.getProperty("tab"));
+    print(c.remove("nl") != null);
+    print(c.size());
+
+    print(System.getProperty("sleela.test.key"));
+    print(System.setProperty("sleela.test.key", "v1"));
+    print(System.setProperty("sleela.test.key", "v2"));
+    print(System.getProperty("sleela.test.key"));
+    print(System.getProperties().getProperty("sleela.test.key"));
+    print(System.getProperty("sleela.test.missing", "dflt"));
+    print(System.clearProperty("sleela.test.key"));
+    print(System.getProperty("sleela.test.key"));
+    print(System.getProperty("file.separator") + " " + System.getProperty("path.separator"));
+    try { System.getProperty(""); }
+    catch (Any e) { IllegalArgumentException x = (IllegalArgumentException) e; print("IAE " + x.getMessage()); }
+    try { System.getProperty(null); }
+    catch (Any e2) { NullPointerException y = (NullPointerException) e2; print("NPE " + y.getMessage()); }
+  }
+}

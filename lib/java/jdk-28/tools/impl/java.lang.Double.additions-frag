@@ -1,0 +1,9 @@
+  < ---- java.lang.Double: the static toString ---- >
+  << Written from the JDK 28 API specification: Double.toString(d) is the same
+     text as new Double(d).toString(), the shortest decimal that reads back to
+     the same double, with the Java rules for NaN, Infinity, -0.0 and the
+     computerized scientific notation outside 10^-3 .. 10^7. >>
+  public static java.lang.String toString(double d) {
+    Double box = new Double(d);
+    return box.toString();
+  }

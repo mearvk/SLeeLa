@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class AccountException extends LoginException {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 1232;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -55,6 +56,14 @@ class AccountException extends LoginException {
   String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/javax/security/auth/login/AccountException.html";
   String javaKind = "class";
   String javaSuper = "javax.security.auth.login.LoginException";
+
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+
+  << Constructor javax.security.auth.login.AccountException(String); the
+     inherited Throwable state is initialized first (see the java.* ancestors). >>
+  << The Java constructors of the Throwable pattern, with their exact
+     signatures (constructor overload resolution, syntax 3.0). >>
+  < ---- END java implementation ---- >
 
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and

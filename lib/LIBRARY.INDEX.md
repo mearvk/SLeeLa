@@ -2,6 +2,8 @@
 
 > Revision 1.04 moves the `lib/java/jdk-28/` module folders up from `docs/api/` to `lib/java/jdk-28/<module>/<package>/<Type>.sleela` and adds the 16 JDK 28 modules that export no packages (`java.se`, `jdk.jlink`, `jdk.zipfs`, ...) as folders holding a `module-summary.md`: 58 module folders and 386 folders in all. The /lib loader (`impl/frontend/driver.cpp`) now treats `java/jdk-28/` as a reference tier like `docs/api/`, so a real `lib/java/java/...` unit always wins; `working-binaries/sleela` was rebuilt with that rule. No source or symbol count change (moves only).
 >
+> Revision 1.07 adds five Java-container support units to `lib/java/support/`: `SLJavaLambda` and `SLJavaLambdaTable` (lowered lambdas), `SLJavaBeanEvents` (java.beans event delivery), and `SLJavaProperty` and `SLJavaPropertyModel` (the general Java property model). Five new source units (counts: 18099 to **18104** sources; 18183 to **18188** total records; 121 packages).
+>
 > Revision 1.06 adds `lib/java/support/` (`SLJavaBits`, `SLJavaHex`, `SLJavaMd5`), the shared helper classes of the Java container. Three new source units (counts: 18096 to **18099** sources; 18180 to **18183** total records; 121 packages).
 > Revision 1.05 adds `lib/security/Security2.sleela`, the class that sits above the VM in colocated memory during boot, init and start (SLEELA.syntax section 42.6). One new source unit (counts: 18095 to **18096** sources; 18179 to **18180** total records; 121 packages).
 
@@ -86,9 +88,9 @@
 
 **Revision:** 0.82  
 **Packages:** 121  
-**SLeeLa source units:** 18099  
+**SLeeLa source units:** 18104  
 **Module-facade symbols:** 84  
-**Total symbol records:** 18183  
+**Total symbol records:** 18188  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

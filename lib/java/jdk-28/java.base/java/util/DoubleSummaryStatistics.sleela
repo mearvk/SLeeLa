@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class DoubleSummaryStatistics {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 3373;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,84 @@ class DoubleSummaryStatistics {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.DoubleSummaryStatistics members (procedural implementation in SLeeLa) ---- >
+  << count, sum, min, max and average of the accepted doubles. The sum uses
+     the same Kahan compensated summation as Java (plus the simple sum for the
+     infinite/NaN case), so getSum and getAverage match Java bit for bit. >>
+  long count;
+  double sum;
+  double sumCompensation;
+  double simpleSum;
+  double min;
+  double max;
+  DoubleSummaryStatistics() {
+    Double D = new Double(0.0);
+    this.count = 0;
+    this.sum = 0.0;
+    this.sumCompensation = 0.0;
+    this.simpleSum = 0.0;
+    this.min = D.positiveInfinity();
+    this.max = D.negativeInfinity();
+  }
+  void sumWithCompensation(double value) {
+    double tmp = value - this.sumCompensation;
+    double velvel = this.sum + tmp;
+    this.sumCompensation = (velvel - this.sum) - tmp;
+    this.sum = velvel;
+  }
+  void accept(double value) {
+        this.count = this.count + 1;
+    this.simpleSum = this.simpleSum + value;
+    sumWithCompensation(value);
+    this.min = Math.min(this.min, value);
+    this.max = Math.max(this.max, value);
+  }
+  void combine(DoubleSummaryStatistics other) {
+        this.count = this.count + other.count;
+    this.simpleSum = this.simpleSum + other.simpleSum;
+    sumWithCompensation(other.sum);
+    sumWithCompensation(0.0 - other.sumCompensation);
+    this.min = Math.min(this.min, other.min);
+    this.max = Math.max(this.max, other.max);
+  }
+  long getCount() { return this.count; }
+  double getSum() {
+    Double D = new Double(0.0);
+    double tmp = this.sum - this.sumCompensation;
+    if (tmp != tmp && D.isInfinite(this.simpleSum)) { return this.simpleSum; }
+    return tmp;
+  }
+  double getMin() { return this.min; }
+  double getMax() { return this.max; }
+  double getAverage() {
+    if (this.count == 0) { return 0.0; }
+    double c = this.count;
+    return getSum() / c;
+  }
+  String toString() {
+    return "DoubleSummaryStatistics{count=" + this.count + ", sum=" + fixed6(getSum()) + ", min=" + fixed6(this.min) + ", average=" + fixed6(getAverage()) + ", max=" + fixed6(this.max) + "}";
+  }
+  << Java %f: fixed notation with six decimals, rounded half-up on the
+     exact binary value (via the Double decimal machinery). >>
+  String fixed6(double d) {
+    Double D = new Double(0.0);
+    if (d != d) { return "NaN"; }
+    if (D.isInfinite(d)) { if (d > 0.0) { return "Infinity"; } return "-Infinity"; }
+    String sign = "";
+    double a = d;
+    if (a < 0.0 || D.isNegativeZero(a)) { sign = "-"; a = 0.0 - a; }
+    if (a >= 1.0e12) { return sign + D.toStringOf(a); }
+    long m = D.scaledRound(a, 6);
+    long ip = m / 1000000;
+    long fp = m % 1000000;
+    String fs = "" + fp;
+    while (fs != "" && lengthOf(fs) < 6) { fs = "0" + fs; }
+    return sign + ip + "." + fs;
+  }
+  int lengthOf(String s) { return javaStringLength(javaStringFromUtf8(s)); }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -76,8 +155,6 @@ class DoubleSummaryStatistics {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public DoubleSummaryStatistics() { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
   public DoubleSummaryStatistics(long count, double min, double max, double sum) { }
   < ---- END java constructors ---- >
@@ -88,21 +165,5 @@ class DoubleSummaryStatistics {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void accept(double value) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final long getCount() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void combine(Any other) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final double getSum() { return 0.0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final double getMin() { return 0.0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final double getAverage() { return 0.0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final double getMax() { return 0.0; }
   < ---- END java signatures ---- >
 }

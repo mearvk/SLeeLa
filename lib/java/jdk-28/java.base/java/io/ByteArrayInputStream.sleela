@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class ByteArrayInputStream extends InputStream {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 1989;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,88 @@ class ByteArrayInputStream extends InputStream {
   String javaKind = "class";
   String javaSuper = "java.io.InputStream";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.io.ByteArrayInputStream members (procedural implementation in SLeeLa) ---- >
+  << java.io.ByteArrayInputStream over the declared buf / pos / mark / count
+     fields. read() returns the next byte as 0..255, or -1 at the end. Three
+     Java members are not written: mark(int) shares its name with the Java
+     field mark, available() with the envelope helper of the same name, and
+     close is a reserved SLeeLa built-in (a no-op on this stream in Java).
+     transferTo needs a base-typed OutputStream receiver and keeps its stub. >>
+  public ByteArrayInputStream(byte[] buf) {
+    this.buf = buf;
+    this.pos = 0;
+    this.mark = 0;
+    this.count = arrayLength(buf);
+  }
+  public ByteArrayInputStream(byte[] buf, int offset, int length) {
+    this.buf = buf;
+    this.pos = offset;
+    this.mark = offset;
+    int n = arrayLength(buf);
+    int end = offset + length;
+    if (end > n) { end = n; }
+    this.count = end;
+  }
+  public synchronized int read() {
+    if (this.pos >= this.count) { return 0 - 1; }
+    int b = this.buf[this.pos];
+    this.pos = this.pos + 1;
+    return unsignedByte(b);
+  }
+  public synchronized int read(byte[] b, int off, int len) {
+    checkFromIndexSize(off, len, arrayLength(b));
+    if (this.pos >= this.count) { return 0 - 1; }
+    int avail = this.count - this.pos;
+    int k = len;
+    if (k > avail) { k = avail; }
+    if (k <= 0) { return 0; }
+    int i = 0;
+    while (i < k) { b[off + i] = this.buf[this.pos + i]; i = i + 1; }
+    this.pos = this.pos + k;
+    return k;
+  }
+  public int readNBytes(byte[] b, int off, int len) {
+    int n = this.read(b, off, len);
+    if (n == 0 - 1) { return 0; }
+    return n;
+  }
+  public synchronized byte[] readAllBytes() {
+    int n = this.count - this.pos;
+    if (n < 0) { n = 0; }
+    byte[] out = new byte[n];
+    int i = 0;
+    while (i < n) { out[i] = this.buf[this.pos + i]; i = i + 1; }
+    this.pos = this.count;
+    return out;
+  }
+  public synchronized long skip(long n) {
+    long k = this.count - this.pos;
+    if (n < k) { k = n; }
+    if (k < 0) { k = 0; }
+    this.pos = this.pos + (int) k;
+    return k;
+  }
+  public boolean markSupported() { return true; }
+  public synchronized void reset() { this.pos = this.mark; }
+
+  int unsignedByte(int b) {
+    int v = b % 256;
+    if (v < 0) { v = v + 256; }
+    return v;
+  }
+  void checkFromIndexSize(int off, int len, int n) {
+    if (off < 0 || len < 0 || off > n || len > n - off) {
+      throw new IndexOutOfBoundsException("Range [" + off + ", " + off + " + " + len + ") out of bounds for length " + n);
+    }
+  }
+  < Java protected fields, declared here with their Java array types >
+  byte[] buf;
+  int pos;
+  int mark;
+  int count;
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -76,17 +159,9 @@ class ByteArrayInputStream extends InputStream {
 
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
-  int[] buf;
-  int pos;
-  int mark;
-  int count;
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public ByteArrayInputStream(byte[] buf) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public ByteArrayInputStream(byte[] buf, int offset, int length) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -95,21 +170,7 @@ class ByteArrayInputStream extends InputStream {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void reset() { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized byte[] readAllBytes() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized int read(byte[] b, int off, int len) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized int read() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int readNBytes(byte[] b, int off, int len) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public synchronized long transferTo(Any out) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized long skip(long n) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean markSupported() { return false; }
   < ---- END java signatures ---- >
 }

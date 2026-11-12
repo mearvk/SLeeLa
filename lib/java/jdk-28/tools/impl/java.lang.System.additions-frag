@@ -1,0 +1,52 @@
+  < ---- java.lang.System: getProperties and setProperties ---- >
+  << Written from the JDK 28 API specification of java.lang.System. The
+     result and parameter are typed Properties (Java: java.util.Properties),
+     so a caller reads the table without a cast.
+     getProperties returns a java.util.Properties that holds the system
+     properties known here: the built-in defaults (os.name, user.name,
+     user.dir, java.io.tmpdir, file.separator, path.separator, line.separator)
+     and every property set with setProperty, which shadows a default.
+     Difference from Java: the result is a snapshot, so a change made to it
+     later is not seen by getProperty; set a property with setProperty, or
+     pass the changed table back through setProperties. setProperties(props)
+     makes the String entries of props (and of its defaults chain) the set
+     properties; setProperties(null) drops them all, so only the built-in
+     defaults remain, as Java recreates its defaults. >>
+  public static Properties getProperties() {
+    Properties p = new Properties();
+    String[] builtin = new String[7];
+    builtin[0] = "os.name";
+    builtin[1] = "user.name";
+    builtin[2] = "user.dir";
+    builtin[3] = "java.io.tmpdir";
+    builtin[4] = "file.separator";
+    builtin[5] = "path.separator";
+    builtin[6] = "line.separator";
+    int i = 0;
+    while (i < 7) {
+      String v = getProperty(builtin[i]);
+      if (v != null) { p.setProperty(builtin[i], v); }
+      i = i + 1;
+    }
+    i = 0;
+    while (i < propCount) {
+      if (propVals[i] != null) { p.setProperty(propKeys[i], propVals[i]); }
+      i = i + 1;
+    }
+    return p;
+  }
+  public static void setProperties(Properties props) {
+    int i = 0;
+    while (i < propCount) { propKeys[i] = null; propVals[i] = null; i = i + 1; }
+    propCount = 0;
+    if (props == null) { return; }
+    Properties p = props;
+    HashSet names = p.stringPropertyNames();
+    Any[] ks = names.toArray();
+    i = 0;
+    while (i < arrayLength(ks)) {
+      String k = "" + ks[i];
+      setProperty(k, p.getProperty(k));
+      i = i + 1;
+    }
+  }

@@ -1,0 +1,8 @@
+  < ---- java.util.EventObject: toString ---- >
+  << Written from the JDK 28 API specification: the class name, then
+     [source=<source>]. >>
+  public java.lang.String toString() { return "java.util.EventObject[source=" + this.heldSource + "]"; }
+  public EventObject(java.lang.Object source) {
+    if (source == null) { throw new IllegalArgumentException("null source"); }
+    this.heldSource = source;
+  }

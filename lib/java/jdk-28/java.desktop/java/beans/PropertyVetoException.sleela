@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class PropertyVetoException extends Exception {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 7276;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,22 @@ class PropertyVetoException extends Exception {
   String javaKind = "class";
   String javaSuper = "java.lang.Exception";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+
+  < ---- END java implementation ---- >
+
+  < ---- BEGIN java implementation (JDK 28 additions, SLeeLa logic) ---- >
+  < ---- java.beans.PropertyVetoException: message and event ---- >
+  << Written from the JDK 28 API specification: the detail message and the
+     PropertyChangeEvent that describes the vetoed change. >>
+  Any heldEvent;
+  public PropertyVetoException(java.lang.String mess, java.beans.PropertyChangeEvent evt) {
+    super(mess);
+    this.heldEvent = evt;
+  }
+  public PropertyChangeEvent getPropertyChangeEvent() { return (PropertyChangeEvent) this.heldEvent; }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -76,8 +93,6 @@ class PropertyVetoException extends Exception {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public PropertyVetoException(String mess, Any evt) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -86,7 +101,5 @@ class PropertyVetoException extends Exception {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any getPropertyChangeEvent() { return null; }
   < ---- END java signatures ---- >
 }

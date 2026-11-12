@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class GregorianCalendar extends Calendar {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 4230;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,219 @@ class GregorianCalendar extends Calendar {
   String javaKind = "class";
   String javaSuper = "java.util.Calendar";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.GregorianCalendar members (procedural implementation in SLeeLa) ---- >
+  << java.util.GregorianCalendar over a millisecond count since the epoch, in
+     UTC (what Java reports when the default zone is UTC), with the US week
+     rules (Sunday first, minimal days in first week 1) and lenient fields.
+     Field numbers are the java.util.Calendar constants, written as integers
+     because a class cannot read another class static constants here: 0 ERA,
+     1 YEAR, 2 MONTH, 3 WEEK_OF_YEAR, 4 WEEK_OF_MONTH, 5 DAY_OF_MONTH,
+     6 DAY_OF_YEAR, 7 DAY_OF_WEEK, 8 DAY_OF_WEEK_IN_MONTH, 9 AM_PM, 10 HOUR,
+     11 HOUR_OF_DAY, 12 MINUTE, 13 SECOND, 14 MILLISECOND, 15 ZONE_OFFSET,
+     16 DST_OFFSET. Dates use proleptic Gregorian rules, so results before the
+     1582 Julian cutover differ from Java. Time zones, locales, roll, week
+     dates, clone, hashCode and the Date / ZonedDateTime bridges keep their
+     exact-signature stubs. >>
+  long gcTime = 0;
+
+  public GregorianCalendar() { this.gcTime = timeUtcMillis(); }
+  public GregorianCalendar(int year, int month, int dayOfMonth) { compose(year, month, dayOfMonth, 0, 0, 0, 0); }
+  public GregorianCalendar(int year, int month, int dayOfMonth, int hourOfDay, int minute) { compose(year, month, dayOfMonth, hourOfDay, minute, 0, 0); }
+  public GregorianCalendar(int year, int month, int dayOfMonth, int hourOfDay, int minute, int second) { compose(year, month, dayOfMonth, hourOfDay, minute, second, 0); }
+
+  public long getTimeInMillis() { return this.gcTime; }
+  public void setTimeInMillis(long millis) { this.gcTime = millis; }
+  public boolean before(GregorianCalendar when) { return this.gcTime < when.gcTime; }
+  public boolean after(GregorianCalendar when) { return this.gcTime > when.gcTime; }
+  public int compareTo(GregorianCalendar anotherCalendar) {
+    if (this.gcTime < anotherCalendar.gcTime) { return 0 - 1; }
+    if (this.gcTime > anotherCalendar.gcTime) { return 1; }
+    return 0;
+  }
+  public boolean equals(java.lang.Object obj) {
+    if (obj == null) { return false; }
+    GregorianCalendar other = (GregorianCalendar) obj;
+    return this.gcTime == other.gcTime;
+  }
+  public boolean isLeapYear(int year) { return leap(year); }
+
+  public int get(int field) {
+    long days = gfdiv(this.gcTime, 86400000);
+    long ms = gfmod(this.gcTime, 86400000);
+    int y = gYear(days);
+    int mo = gMonth(days);
+    int d = gDay(days);
+    if (field == 0) { if (y >= 1) { return 1; } return 0; }
+    if (field == 1) { if (y >= 1) { return y; } return 1 - y; }
+    if (field == 2) { return mo - 1; }
+    if (field == 5) { return d; }
+    if (field == 6) { return (int) (days - gDays(y, 1, 1)) + 1; }
+    if (field == 7) { return (int) gfmod(days + 4, 7) + 1; }
+    if (field == 8) { return (d - 1) / 7 + 1; }
+    if (field == 3) {
+      long jan1 = gDays(y, 1, 1);
+      long start = days - gfmod(days + 4, 7);
+      long jan1Start = jan1 - gfmod(jan1 + 4, 7);
+      long nextJan1 = gDays(y + 1, 1, 1);
+      if (start + 6 >= nextJan1) { return 1; }
+      return (int) ((start - jan1Start) / 7) + 1;
+    }
+    if (field == 4) {
+      long first = gDays(y, mo, 1);
+      long start = days - gfmod(days + 4, 7);
+      long firstStart = first - gfmod(first + 4, 7);
+      return (int) ((start - firstStart) / 7) + 1;
+    }
+    if (field == 9) { if (ms >= 43200000) { return 1; } return 0; }
+    if (field == 10) { return (int) ((ms / 3600000) % 12); }
+    if (field == 11) { return (int) (ms / 3600000); }
+    if (field == 12) { return (int) ((ms / 60000) % 60); }
+    if (field == 13) { return (int) ((ms / 1000) % 60); }
+    if (field == 14) { return (int) (ms % 1000); }
+    if (field == 15 || field == 16) { return 0; }
+    throw new ArrayIndexOutOfBoundsException("Index " + field + " out of bounds for length 17");
+  }
+
+  public void set(int field, int value) {
+    long days = gfdiv(this.gcTime, 86400000);
+    long ms = gfmod(this.gcTime, 86400000);
+    int y = gYear(days);
+    int mo = gMonth(days) - 1;
+    int d = gDay(days);
+    int h = (int) (ms / 3600000);
+    int mi = (int) ((ms / 60000) % 60);
+    int s = (int) ((ms / 1000) % 60);
+    int msec = (int) (ms % 1000);
+    if (field == 1) { y = value; }
+    else if (field == 2) { mo = value; }
+    else if (field == 5) { d = value; }
+    else if (field == 6) { mo = 0; d = value; }
+    else if (field == 7) { d = d + (value - ((int) gfmod(days + 4, 7) + 1)); }
+    else if (field == 11) { h = value; }
+    else if (field == 10) { h = (h / 12) * 12 + value; }
+    else if (field == 9) { h = value * 12 + (h % 12); }
+    else if (field == 12) { mi = value; }
+    else if (field == 13) { s = value; }
+    else if (field == 14) { msec = value; }
+    else if (field == 0 || field == 3 || field == 4 || field == 8 || field == 15 || field == 16) {
+      throw new UnsupportedOperationException("java.util.GregorianCalendar.set: field " + field + " is not supported yet");
+    }
+    else { throw new ArrayIndexOutOfBoundsException("Index " + field + " out of bounds for length 17"); }
+    compose(y, mo, d, h, mi, s, msec);
+  }
+  public void set(int year, int month, int date) {
+    long ms = gfmod(this.gcTime, 86400000);
+    long days = gDays(year + gfdiv(month, 12), gfmod(month, 12) + 1, 1) + (date - 1);
+    this.gcTime = days * 86400000 + ms;
+  }
+
+  public void add(int field, int amount) {
+    if (field == 1 || field == 2) {
+      long days = gfdiv(this.gcTime, 86400000);
+      long ms = gfmod(this.gcTime, 86400000);
+      long y = gYear(days);
+      long mo = gMonth(days) - 1;
+      int d = gDay(days);
+      if (field == 1) { y = y + amount; } else { mo = mo + amount; }
+      long yy = y + gfdiv(mo, 12);
+      long mm = gfmod(mo, 12) + 1;
+      int len = monthLength((int) yy, (int) mm);
+      if (d > len) { d = len; }
+      this.gcTime = (gDays(yy, mm, 1) + (d - 1)) * 86400000 + ms;
+    }
+    else if (field == 3 || field == 4 || field == 8) { this.gcTime = this.gcTime + amount * 7 * 86400000; }
+    else if (field == 5 || field == 6 || field == 7) { this.gcTime = this.gcTime + amount * 86400000; }
+    else if (field == 9) { this.gcTime = this.gcTime + amount * 43200000; }
+    else if (field == 10 || field == 11) { this.gcTime = this.gcTime + amount * 3600000; }
+    else if (field == 12) { this.gcTime = this.gcTime + amount * 60000; }
+    else if (field == 13) { this.gcTime = this.gcTime + amount * 1000; }
+    else if (field == 14) { this.gcTime = this.gcTime + amount; }
+    else if (field == 0 || field == 15 || field == 16) {
+      throw new IllegalArgumentException();
+    }
+    else { throw new ArrayIndexOutOfBoundsException("Index " + field + " out of bounds for length 17"); }
+  }
+
+  public int getActualMaximum(int field) {
+    if (field == 5) {
+      long days = gfdiv(this.gcTime, 86400000);
+      return monthLength(gYear(days), gMonth(days));
+    }
+    if (field == 6) {
+      long days = gfdiv(this.gcTime, 86400000);
+      if (leap(gYear(days))) { return 366; }
+      return 365;
+    }
+    if (field == 2) { return 11; }
+    if (field == 7) { return 7; }
+    if (field == 9) { return 1; }
+    if (field == 10) { return 11; }
+    if (field == 11) { return 23; }
+    if (field == 12 || field == 13) { return 59; }
+    if (field == 14) { return 999; }
+    throw new UnsupportedOperationException("java.util.GregorianCalendar.getActualMaximum: field " + field + " is not supported yet");
+  }
+
+  < ---- helpers: lenient composition and the Hinnant civil calendar ---- >
+  void compose(long year, long month0, long day, long hour, long minute, long second, long milli) {
+    long y = year + gfdiv(month0, 12);
+    long m = gfmod(month0, 12) + 1;
+    long days = gDays(y, m, 1) + (day - 1);
+    this.gcTime = days * 86400000 + hour * 3600000 + minute * 60000 + second * 1000 + milli;
+  }
+  static boolean leap(long y) { return (gfmod(y, 4) == 0) && ((gfmod(y, 100) != 0) || (gfmod(y, 400) == 0)); }
+  static int monthLength(int y, int m) {
+    if (m == 2) { if (leap(y)) { return 29; } return 28; }
+    if (m == 4 || m == 6 || m == 9 || m == 11) { return 30; }
+    return 31;
+  }
+  static long gfdiv(long a, long b) {
+    long q = a / b;
+    if ((a % b != 0) && ((a < 0) != (b < 0))) { q = q - 1; }
+    return q;
+  }
+  static long gfmod(long a, long b) { return a - gfdiv(a, b) * b; }
+  static long gDays(long yIn, long m, long d) {
+    long y = yIn;
+    if (m <= 2) { y = y - 1; }
+    long era = gfdiv(y, 400);
+    long yoe = y - era * 400;
+    long mp = m - 3;
+    if (m <= 2) { mp = m + 9; }
+    long doy = (153 * mp + 2) / 5 + d - 1;
+    long doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+    return era * 146097 + doe - 719468;
+  }
+  static long gDoy(long days) {
+    long z = days + 719468;
+    long era = gfdiv(z, 146097);
+    long doe = z - era * 146097;
+    long yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+    return doe - (365 * yoe + yoe / 4 - yoe / 100);
+  }
+  static int gYear(long days) {
+    long z = days + 719468;
+    long era = gfdiv(z, 146097);
+    long doe = z - era * 146097;
+    long yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+    long y = yoe + era * 400;
+    long mp = (5 * gDoy(days) + 2) / 153;
+    if (mp >= 10) { y = y + 1; }
+    return (int) y;
+  }
+  static int gMonth(long days) {
+    long mp = (5 * gDoy(days) + 2) / 153;
+    if (mp < 10) { return (int) (mp + 3); }
+    return (int) (mp - 9);
+  }
+  static int gDay(long days) {
+    long doy = gDoy(days);
+    long mp = (5 * doy + 2) / 153;
+    return (int) (doy - (153 * mp + 2) / 5 + 1);
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -82,14 +296,6 @@ class GregorianCalendar extends Calendar {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public GregorianCalendar(int year, int month, int dayOfMonth) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public GregorianCalendar(int year, int month, int dayOfMonth, int hourOfDay, int minute) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public GregorianCalendar(int year, int month, int dayOfMonth, int hourOfDay, int minute, int second) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public GregorianCalendar() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
   public GregorianCalendar(Any zone) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
   public GregorianCalendar(Any zone, Any aLocale) { super("constructor"); }
@@ -102,13 +308,9 @@ class GregorianCalendar extends Calendar {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(Any obj) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any clone() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void add(int field, int amount) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static Any from(Any zdt) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -123,8 +325,6 @@ class GregorianCalendar extends Calendar {
   public int getMaximum(int field) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getLeastMaximum(int field) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isLeapYear(int year) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public String getCalendarType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -147,8 +347,6 @@ class GregorianCalendar extends Calendar {
   public int getWeeksInWeekYear() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getActualMinimum(int field) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int getActualMaximum(int field) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setGregorianChange(Any date) { }
   @throwable("java.lang.UnsupportedOperationException")

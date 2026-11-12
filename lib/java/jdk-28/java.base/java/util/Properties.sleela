@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class Properties extends Hashtable {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 7254;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,819 @@ class Properties extends Hashtable {
   String javaKind = "class";
   String javaSuper = "java.util.Hashtable";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.Properties members (procedural implementation in SLeeLa, reused from java.util.Hashtable) ---- >
+  << The java.util.Hashtable implementation, reused (synchronized under VM
+     lock 30 and null-hostile, as Properties is), plus the property methods:
+     getProperty reads a String value and falls back to the defaults table,
+     setProperty stores a String. load, store, list and the XML forms need
+     streams and character access to Strings and keep their stubs. >>
+  Properties propDefaults = null;
+  public Properties() { hashInit(8); }
+  public Properties(int initialCapacity) {
+    if (initialCapacity < 0) { throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity); }
+    hashInit(8);
+  }
+  public Properties(Properties defaults) {
+    hashInit(8);
+    this.propDefaults = defaults;
+  }
+  public java.lang.String getProperty(java.lang.String key) {
+    Any oval = get(key);
+    if (oval instanceof string) { String sval = "" + oval; return sval; }
+    if (this.propDefaults != null) { return this.propDefaults.getProperty(key); }
+    return null;
+  }
+  public java.lang.String getProperty(java.lang.String key, java.lang.String defaultValue) {
+    String v = getProperty(key);
+    if (v == null) { return defaultValue; }
+    return v;
+  }
+  public synchronized java.lang.Object setProperty(java.lang.String key, java.lang.String value) { return put(key, value); }
+  Any[] keysArray() { return liveKeys(); }
+  Any[] valuesArray() { return liveValues(); }
+
+  < java.util.Map >
+  int size() { return count; }
+  boolean isEmpty() { return count == 0; }
+  Any getOrDefault(Any key, Any defaultValue) {
+    if (containsKey(key)) { return get(key); }
+    return defaultValue;
+  }
+  boolean containsValue(Any value) {
+    Any[] vs = valuesArray();
+    int i = 0;
+    while (i < arrayLength(vs)) { if (same(vs[i], value)) { return true; } i = i + 1; }
+    return false;
+  }
+  Any remove(Any key) { return removeEntry(key); }
+  void clear() { clearEntries(); }
+  Any putIfAbsent(Any key, Any value) {
+    Any v = get(key);
+    if (v == null) { put(key, value); }
+    return v;
+  }
+  Any replace(Any key, Any value) {
+    if (containsKey(key)) { return put(key, value); }
+    return null;
+  }
+  boolean replaceValue(Any key, Any oldValue, Any newValue) {
+    if (containsKey(key) && same(get(key), oldValue)) { put(key, newValue); return true; }
+    return false;
+  }
+  boolean removeMapping(Any key, Any value) {
+    if (containsKey(key) && same(get(key), value)) { remove(key); return true; }
+    return false;
+  }
+  void putAll(Any m) {
+    if (m instanceof HashMap) { HashMap hm = (HashMap) m; copyPairs(hm.keysArray(), hm.valuesArray()); return; }
+    if (m instanceof Properties) { Properties sm = (Properties) m; copyPairs(sm.keysArray(), sm.valuesArray()); return; }
+    if (m instanceof TreeMap) { TreeMap tm = (TreeMap) m; copyPairs(tm.keysArray(), tm.valuesArray()); return; }
+    throw new UnsupportedOperationException("not a java.util map implemented in SLeeLa");
+  }
+  void copyPairs(Any[] ks, Any[] vs) {
+    int i = 0;
+    while (i < arrayLength(ks)) { put(ks[i], vs[i]); i = i + 1; }
+  }
+  HashSet keySet() {
+    HashSet s = new HashSet();
+    Any[] ks = keysArray();
+    int i = 0;
+    while (i < arrayLength(ks)) { s.add(ks[i]); i = i + 1; }
+    return s;
+  }
+  ArrayList values() {
+    ArrayList l = new ArrayList();
+    Any[] vs = valuesArray();
+    int i = 0;
+    while (i < arrayLength(vs)) { l.add(vs[i]); i = i + 1; }
+    return l;
+  }
+  << Snapshot of the mappings as KeyValueHolder entries (Map.Entry). >>
+  ArrayList entrySet() {
+    ArrayList l = new ArrayList();
+    Any[] ks = keysArray();
+    Any[] vs = valuesArray();
+    int i = 0;
+    while (i < arrayLength(ks)) { l.add(new KeyValueHolder(ks[i], vs[i])); i = i + 1; }
+    return l;
+  }
+  String toString() {
+    Any[] ks = keysArray();
+    Any[] vs = valuesArray();
+    String sb = "{";
+    int i = 0;
+    while (i < arrayLength(ks)) {
+      if (i > 0) { sb = sb + ", "; }
+      sb = sb + textOf(ks[i]) + "=" + textOf(vs[i]);
+      i = i + 1;
+    }
+    return sb + "}";
+  }
+  << Java Map.hashCode: the sum of key.hashCode() ^ value.hashCode(). >>
+  int hashCode() {
+    Any[] ks = keysArray();
+    Any[] vs = valuesArray();
+    long h = 0;
+    int i = 0;
+    while (i < arrayLength(ks)) {
+            long a = Integer.toUnsignedLong(hashOf(ks[i]));
+      long b = Integer.toUnsignedLong(hashOf(vs[i]));
+      long x = 0;
+      long bit = 1;
+      int k = 0;
+      while (k < 32) {
+        if ((a % 2) != (b % 2)) { x = x + bit; }
+        a = a / 2; b = b / 2; bit = bit * 2; k = k + 1;
+      }
+      h = h + x;
+      i = i + 1;
+    }
+    return wrap32(h);
+  }
+  boolean equals(Any o) {
+    Any[] ks = null;
+    Any[] vs = null;
+    if (o instanceof HashMap) { HashMap hm = (HashMap) o; ks = hm.keysArray(); vs = hm.valuesArray(); }
+    if (o instanceof Properties) { Properties sm = (Properties) o; ks = sm.keysArray(); vs = sm.valuesArray(); }
+    if (o instanceof TreeMap) { TreeMap tm = (TreeMap) o; ks = tm.keysArray(); vs = tm.valuesArray(); }
+    if (ks == null) { return false; }
+    if (arrayLength(ks) != count) { return false; }
+    int i = 0;
+    while (i < arrayLength(ks)) {
+      if (!containsKey(ks[i]) || !same(get(ks[i]), vs[i])) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+
+  << insertion-ordered hash table: entries are appended to keys/vals/hashes;
+     table[] holds entry index + 1 (0 = empty, -1 = deleted) with linear probing >>
+  Any[] keys;
+  Any[] vals;
+  int[] hashes;
+  boolean[] live;
+  int[] table;
+  int used;
+  int count;
+  int modCount;
+  << New arrays hold null until written, so int/boolean tables are cleared
+     explicitly to the Java defaults. >>
+  int[] zeros(int n) {
+    int[] a = new int[n];
+    int i = 0;
+    while (i < n) { a[i] = 0; i = i + 1; }
+    return a;
+  }
+  boolean[] falses(int n) {
+    boolean[] a = new boolean[n];
+    int i = 0;
+    while (i < n) { a[i] = false; i = i + 1; }
+    return a;
+  }
+  void hashInit(int capacity) {
+    int c = 16;
+    while (c < capacity * 2) { c = c * 2; }
+    this.keys = new Any[c / 2];
+    this.vals = new Any[c / 2];
+    this.hashes = zeros(c / 2);
+    this.live = falses(c / 2);
+    this.table = zeros(c);
+    this.used = 0;
+    this.count = 0;
+    this.modCount = 0;
+    this.gcSlot = 0;
+    this.utfOps = 0;
+  }
+  int spread(int h) {
+    long v = h;
+    if (v < 0) { v = v + 4294967296; }
+    return (int) (v % 2147483647);
+  }
+  << Entry index of key, or -1. >>
+  int findEntry(Any key, int h) {
+    int cap = arrayLength(this.table);
+    int i = spread(h) % cap;
+    int probes = 0;
+    while (probes < cap) {
+      int t = this.table[i];
+      if (t == 0) { return -1; }
+      if (t > 0) {
+        int e = t - 1;
+        if (this.hashes[e] == h && same(this.keys[e], key)) { return e; }
+      }
+      i = (i + 1) % cap;
+      probes = probes + 1;
+    }
+    return -1;
+  }
+  void rehash(int newCap) {
+    Any[] ok = this.keys;
+    Any[] ov = this.vals;
+    int[] oh = this.hashes;
+    boolean[] ol = this.live;
+    int ou = used;
+    this.keys = new Any[newCap / 2];
+    this.vals = new Any[newCap / 2];
+    this.hashes = zeros(newCap / 2);
+    this.live = falses(newCap / 2);
+    this.table = zeros(newCap);
+    used = 0;
+    int j = 0;
+    while (j < ou) {
+      if (ol[j]) { appendEntry(ok[j], ov[j], oh[j]); }
+      j = j + 1;
+    }
+  }
+  void appendEntry(Any key, Any value, int h) {
+    int e = used;
+    this.keys[e] = key;
+    this.vals[e] = value;
+    this.hashes[e] = h;
+    this.live[e] = true;
+    used = used + 1;
+    int cap = arrayLength(this.table);
+    int i = spread(h) % cap;
+    while (this.table[i] > 0) { i = (i + 1) % cap; }
+    this.table[i] = e + 1;
+  }
+  << Insert or replace; returns the previous value (null when absent). >>
+  Any putEntry(Any key, Any value) { lock(30); Any r = putEntryRaw(key, value); unlock(30); return r; }
+  Any putEntryRaw(Any key, Any value) {
+    int h = hashOf(key);
+    int e = findEntry(key, h);
+    if (e >= 0) {
+      Any old = this.vals[e];
+      this.vals[e] = value;
+      return old;
+    }
+    if (used + 1 > arrayLength(this.keys)) {
+      int cap = arrayLength(this.table);
+      if (count * 2 >= arrayLength(this.keys)) { cap = cap * 2; }
+      rehash(cap);
+    }
+    appendEntry(key, value, h);
+    count = count + 1;
+    modCount = modCount + 1;
+    return null;
+  }
+  Any removeEntry(Any key) { lock(30); Any r = removeEntryRaw(key); unlock(30); return r; }
+  Any removeEntryRaw(Any key) {
+    int h = hashOf(key);
+    int cap = arrayLength(this.table);
+    int i = spread(h) % cap;
+    int probes = 0;
+    while (probes < cap) {
+      int t = this.table[i];
+      if (t == 0) { return null; }
+      if (t > 0) {
+        int e = t - 1;
+        if (this.hashes[e] == h && same(this.keys[e], key)) {
+          Any old = this.vals[e];
+          this.table[i] = -1;
+          this.live[e] = false;
+          this.keys[e] = null;
+          this.vals[e] = null;
+          count = count - 1;
+          modCount = modCount + 1;
+          return old;
+        }
+      }
+      i = (i + 1) % cap;
+      probes = probes + 1;
+    }
+    return null;
+  }
+  boolean hasKey(Any key) { return findEntry(key, hashOf(key)) >= 0; }
+  Any valueFor(Any key) {
+    int e = findEntry(key, hashOf(key));
+    if (e < 0) { return null; }
+    return this.vals[e];
+  }
+  void clearEntries() { hashInit(8); }
+  Any[] liveKeys() {
+    Any[] out = new Any[count];
+    int k = 0;
+    int j = 0;
+    while (j < used) { if (this.live[j]) { out[k] = this.keys[j]; k = k + 1; } j = j + 1; }
+    return out;
+  }
+  Any[] liveValues() {
+    Any[] out = new Any[count];
+    int k = 0;
+    int j = 0;
+    while (j < used) { if (this.live[j]) { out[k] = this.vals[j]; k = k + 1; } j = j + 1; }
+    return out;
+  }
+
+  < value semantics shared by the collections (hash, equality, natural order) >
+  int gcSlot;
+  int utfOps;
+  << Periodic short-term GC hint: Java UTF-16 String handles used for hashing
+     and ordering are reclaimed by the collector, not on scope exit. >>
+  void utfTick() {
+    utfOps = utfOps + 1;
+    if (utfOps % 512 == 0) { gcSlot = gc 40; }
+  }
+  << Java hashCode of a value: int and long as Integer/Long.hashCode, boolean
+     as Boolean.hashCode, double as Double.hashCode, everything else as the
+     Java String hash of its SLeeLa text (a String hashes exactly as in Java;
+     an object hashes by its identity text). >>
+  int hashOf(Any o) {
+    if (o == null) { return 0; }
+    if (o instanceof boolean) { if ((boolean) o) { return 1231; } return 1237; }
+    if (o instanceof int) { return wrapHash((long) ((int) o)); }
+    if (o instanceof long) { return wrapHash((long) o); }
+    if (o instanceof double) { Double d = new Double((double) o); return d.hashCode(); }
+    utfTick();
+    return javaStringHashCode(javaStringFromUtf8("" + o));
+  }
+  int wrapHash(long v) {
+    long hi = v / 4294967296;
+    long lo = v % 4294967296;
+    if (lo < 0) { lo = lo + 4294967296; hi = hi - 1; }
+    if (hi < 0) { hi = hi + 4294967296; }
+    long h = lo;
+    if (hi != 0) {
+      long r = 0;
+      long bit = 1;
+      long x = lo;
+      long y = hi;
+      int i = 0;
+      while (i < 32) {
+        if ((x % 2) != (y % 2)) { r = r + bit; }
+        x = x / 2; y = y / 2; bit = bit * 2; i = i + 1;
+      }
+      h = r;
+    }
+    if (h > 2147483647) { h = h - 4294967296; }
+    return (int) h;
+  }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  << Value equality: numbers and strings by value, objects by identity. >>
+  boolean same(Any a, Any b) { return a == b; }
+  << Natural ordering (Comparable): numbers numerically, everything else by
+     Java String.compareTo of the SLeeLa text. >>
+  int compareValues(Any a, Any b) {
+    if (a == null || b == null) { throw new NullPointerException(null); }
+    boolean an = a instanceof int || a instanceof long || a instanceof double;
+    boolean bn = b instanceof int || b instanceof long || b instanceof double;
+    if (an && bn) {
+      double x = (double) a;
+      double y = (double) b;
+      if (x < y) { return -1; }
+      if (x > y) { return 1; }
+      return 0;
+    }
+    if (a instanceof boolean && b instanceof boolean) {
+      boolean p = (boolean) a;
+      boolean q = (boolean) b;
+      if (p == q) { return 0; }
+      if (p) { return 1; }
+      return -1;
+    }
+    utfTick();
+    return javaStringCompareTo(javaStringFromUtf8("" + a), javaStringFromUtf8("" + b));
+  }
+  String textOf(Any o) {
+    if (o == null) { return "null"; }
+    return "" + o;
+  }
+  << Elements of any collection implemented in this package, as an array. >>
+  Any[] elementsOf(Any c) {
+    if (c == null) { throw new NullPointerException(null); }
+    if (c instanceof ArrayList) { ArrayList x1 = (ArrayList) c; return x1.toArray(); }
+    if (c instanceof LinkedList) { LinkedList x2 = (LinkedList) c; return x2.toArray(); }
+    if (c instanceof ArrayDeque) { ArrayDeque x3 = (ArrayDeque) c; return x3.toArray(); }
+    if (c instanceof Vector) { Vector x4 = (Vector) c; return x4.toArray(); }
+    if (c instanceof HashSet) { HashSet x5 = (HashSet) c; return x5.toArray(); }
+    if (c instanceof TreeSet) { TreeSet x6 = (TreeSet) c; return x6.toArray(); }
+    if (c instanceof PriorityQueue) { PriorityQueue x7 = (PriorityQueue) c; return x7.toArray(); }
+    throw new UnsupportedOperationException("not a java.util collection implemented in SLeeLa");
+  }
+  IndexOutOfBoundsException outOfBounds(int index, int length) {
+    return new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + length);
+  }
+
+  < null-hostile Map entry points (Java NullPointerException) >
+  Any put(Any key, Any value) {
+    if (key == null || value == null) { throw new NullPointerException(null); }
+    return putEntry(key, value);
+  }
+  Any get(Any key) {
+    if (key == null) { throw new NullPointerException(null); }
+    return valueFor(key);
+  }
+  boolean containsKey(Any key) {
+    if (key == null) { throw new NullPointerException(null); }
+    return hasKey(key);
+  }
+
+  < legacy enumeration views and contains(value) >
+  boolean contains(Any value) {
+    if (value == null) { throw new NullPointerException(null); }
+    return containsValue(value);
+  }
+  Enumeration keys() { return new Enumeration(keysArray()); }
+  Enumeration elements() { return new Enumeration(valuesArray()); }
+
+  < ---- Properties.load: the JDK line reader and key / value splitter ---- >
+  << load accepts a java.io.StringReader or CharArrayReader (characters) or a
+     java.io.ByteArrayInputStream (bytes read as ISO 8859-1, as
+     load(InputStream) does); Reader and InputStream erase to one SLeeLa
+     signature, so both arrive here. It follows the JDK rules: leading blanks
+     skipped, # and ! comment lines, an odd number of trailing backslashes
+     continues the line, the key ends at the first unescaped =, : or blank, and
+     escapes are converted (\t \n \r \f, \uXXXX, else the character itself).
+     Keys and values are stored as plain Strings and may hold any Unicode
+     text; only NUL and an unpaired surrogate, which a plain String cannot
+     hold, fail closed with UnsupportedOperationException. >>
+  public synchronized void load(java.io.Reader reader) {
+    if (reader == null) { throw new NullPointerException(); }
+    int[] u = readAllUnits(reader);
+    parseProperties(u, unitsCount);
+  }
+  < stringPropertyNames is declared as the concrete HashSet (Java: Set<String>, which erases to Any here and could not be called through); the set is mutable, where the JDK returns an unmodifiable one >
+  public HashSet stringPropertyNames() {
+    HashSet out = new HashSet();
+    collectStringNames(out);
+    return out;
+  }
+  void collectStringNames(HashSet out) {
+    if (this.propDefaults != null) { this.propDefaults.collectStringNames(out); }
+    Any[] ks = liveKeys();
+    int i = 0;
+    while (i < arrayLength(ks)) {
+      Any k = ks[i];
+      if (k instanceof string) {
+        Any v = get(k);
+        if (v instanceof string) { out.add(k); }
+      }
+      i = i + 1;
+    }
+  }
+
+  int unitsCount = 0;
+  int[] readAllUnits(Any src) {
+    int[] buf = new int[64];
+    int n = 0;
+    int c = 0 - 1;
+    if (src instanceof StringReader) {
+      StringReader r = (StringReader) src;
+      c = r.read();
+      while (c >= 0) { buf = pushUnit(buf, n, c); n = n + 1; c = r.read(); }
+    } else if (src instanceof CharArrayReader) {
+      CharArrayReader r2 = (CharArrayReader) src;
+      c = r2.read();
+      while (c >= 0) { buf = pushUnit(buf, n, c); n = n + 1; c = r2.read(); }
+    } else if (src instanceof ByteArrayInputStream) {
+      ByteArrayInputStream r3 = (ByteArrayInputStream) src;
+      c = r3.read();
+      while (c >= 0) { buf = pushUnit(buf, n, c); n = n + 1; c = r3.read(); }
+    } else {
+      throw new UnsupportedOperationException("java.util.Properties.load: pass a StringReader, CharArrayReader or ByteArrayInputStream");
+    }
+    this.unitsCount = n;
+    return buf;
+  }
+  int[] pushUnit(int[] buf, int n, int c) {
+    int[] b = buf;
+    if (n >= arrayLength(b)) {
+      int[] nb = new int[arrayLength(b) * 2];
+      int i = 0;
+      while (i < n) { nb[i] = b[i]; i = i + 1; }
+      b = nb;
+    }
+    b[n] = c;
+    return b;
+  }
+  boolean isBlank(int c) { return c == 32 || c == 9 || c == 12; }
+
+  void parseProperties(int[] u, int n) {
+    int[] line = new int[64];
+    int i = 0;
+    while (i < n) {
+      while (i < n && isBlank(u[i])) { i = i + 1; }
+      if (i >= n) { return; }
+      int c = u[i];
+      if (c == 10 || c == 13) { i = i + 1; continue; }
+      if (c == 35 || c == 33) {
+        while (i < n && u[i] != 10 && u[i] != 13) { i = i + 1; }
+        continue;
+      }
+      int len = 0;
+      boolean ended = false;
+      while (i < n && !ended) {
+        c = u[i];
+        if (c == 10 || c == 13) {
+          if (trailingBackslashes(line, len) % 2 == 1) {
+            len = len - 1;
+            if (c == 13 && i + 1 < n && u[i + 1] == 10) { i = i + 2; } else { i = i + 1; }
+            while (i < n && isBlank(u[i])) { i = i + 1; }
+          } else {
+            ended = true;
+          }
+        } else {
+          line = pushUnit(line, len, c);
+          len = len + 1;
+          i = i + 1;
+        }
+      }
+      if (!ended && trailingBackslashes(line, len) % 2 == 1) { len = len - 1; }
+      splitAndPut(line, len);
+    }
+  }
+  int trailingBackslashes(int[] line, int len) {
+    int k = len - 1;
+    int count = 0;
+    while (k >= 0 && line[k] == 92) { count = count + 1; k = k - 1; }
+    return count;
+  }
+  void splitAndPut(int[] lb, int limit) {
+    int keyLen = 0;
+    int valueStart = limit;
+    boolean hasSep = false;
+    boolean precedingBackslash = false;
+    boolean found = false;
+    while (keyLen < limit && !found) {
+      int c = lb[keyLen];
+      if ((c == 61 || c == 58) && !precedingBackslash) {
+        valueStart = keyLen + 1;
+        hasSep = true;
+        found = true;
+      } else if (isBlank(c) && !precedingBackslash) {
+        valueStart = keyLen + 1;
+        found = true;
+      } else {
+        if (c == 92) { precedingBackslash = !precedingBackslash; } else { precedingBackslash = false; }
+        keyLen = keyLen + 1;
+      }
+    }
+    boolean stop = false;
+    while (valueStart < limit && !stop) {
+      int c2 = lb[valueStart];
+      if (!isBlank(c2)) {
+        if (!hasSep && (c2 == 61 || c2 == 58)) { hasSep = true; } else { stop = true; }
+      }
+      if (!stop) { valueStart = valueStart + 1; }
+    }
+    String key = loadConvert(lb, 0, keyLen);
+    String value = loadConvert(lb, valueStart, limit);
+    put(key, value);
+  }
+  String loadConvert(int[] lb, int from, int end) {
+    String out = javaStringFromCodeUnits();
+    int off = from;
+    while (off < end) {
+      int c = lb[off];
+      off = off + 1;
+      if (c == 92 && off < end) {
+        c = lb[off];
+        off = off + 1;
+        if (c == 117) {
+          if (off > end - 4) { throw new IllegalArgumentException("Malformed \\uxxxx encoding."); }
+          int v = 0;
+          int k = 0;
+          while (k < 4) {
+            int h = lb[off];
+            off = off + 1;
+            if (h >= 48 && h <= 57) { v = v * 16 + (h - 48); }
+            else if (h >= 97 && h <= 102) { v = v * 16 + (h - 87); }
+            else if (h >= 65 && h <= 70) { v = v * 16 + (h - 55); }
+            else { throw new IllegalArgumentException("Malformed \\uxxxx encoding."); }
+            k = k + 1;
+          }
+          c = v;
+        } else if (c == 116) { c = 9; }
+        else if (c == 114) { c = 13; }
+        else if (c == 110) { c = 10; }
+        else if (c == 102) { c = 12; }
+      }
+      out = javaStringConcat(out, javaStringFromCodeUnit(c));
+    }
+    return JavaText.plainOf(out);
+  }
+  < ---- END java implementation ---- >
+
+  < ---- BEGIN java implementation (JDK 28 additions, SLeeLa logic) ---- >
+  < ---- java.util.Properties: store, save, propertyNames, clone, conditional remove and replace ---- >
+  << Written from the JDK 28 API specification of java.util.Properties.
+     store writes the comments (when not null), then a date comment, then every
+     entry of this table (never the defaults) as key=value, one entry per line,
+     in the natural order of the keys. The date comment is the current Date.
+     Java uses the java.properties.date system property instead when it is
+     given at JVM startup (-D); a SLeeLa program has no startup properties, and
+     Java also ignores a later System.setProperty of it, so it is never
+     consulted here. A key escapes every blank, a value only a
+     leading blank; both escape tab, newline, return, form feed, backslash and
+     the characters = : # and !. store(OutputStream) also writes each character
+     below U+0020 or above U+007E as a backslash-u escape with four upper-case
+     hex digits, and then writes the text as ISO 8859-1 bytes. In the comments a
+     line break starts a new comment line, which gets a # unless the comment
+     text already continues with # or !, and a character above U+00FF is
+     written as a backslash-u escape. Writer and OutputStream erase to one
+     signature here; the target decides which of the two Java methods runs: a
+     java.io.ByteArrayOutputStream takes the byte form, a java.io.StringWriter
+     the character form. Any other target fails closed with
+     UnsupportedOperationException. A key or value that is not a String throws
+     ClassCastException, as in Java. >>
+  int[] storeUnits = new int[0];
+  int storeCount = 0;
+
+  public void store(java.io.Writer writer, java.lang.String comments) {
+    if (writer == null) { throw new NullPointerException(); }
+    boolean bytes = false;
+    if (writer instanceof ByteArrayOutputStream) { bytes = true; }
+    else if (writer instanceof StringWriter) { bytes = false; }
+    else { throw new UnsupportedOperationException("java.util.Properties.store: pass a java.io.StringWriter or a java.io.ByteArrayOutputStream"); }
+    this.storeUnits = new int[64];
+    this.storeCount = 0;
+    if (comments != null) { storeComments(comments); }
+    Date now = new Date();
+    storeComments(now.toString());
+    Any[] ks = liveKeys();
+    int n = arrayLength(ks);
+    String[] names = new String[n];
+    int i = 0;
+    while (i < n) {
+      Any k = ks[i];
+      if (!(k instanceof string)) { throw new ClassCastException("java.util.Properties.store: key is not a java.lang.String"); }
+      Any v = get(k);
+      if (!(v instanceof string)) { throw new ClassCastException("java.util.Properties.store: value is not a java.lang.String"); }
+      names[i] = "" + k;
+      i = i + 1;
+    }
+    sortNames(names, n);
+    i = 0;
+    while (i < n) {
+      String key = names[i];
+      String value = "" + get(key);
+      storeEscaped(unitsOf(key), true, bytes);
+      storeUnit(61);
+      storeEscaped(unitsOf(value), false, bytes);
+      storeUnit(10);
+      i = i + 1;
+    }
+    int j = 0;
+    if (bytes) {
+      ByteArrayOutputStream bo = (ByteArrayOutputStream) writer;
+      while (j < this.storeCount) { bo.write(this.storeUnits[j]); j = j + 1; }
+    } else {
+      StringWriter sw = (StringWriter) writer;
+      while (j < this.storeCount) { sw.write(this.storeUnits[j]); j = j + 1; }
+    }
+    this.storeUnits = new int[0];
+    this.storeCount = 0;
+  }
+
+  public void save(java.io.OutputStream out, java.lang.String comments) {
+    store(out, comments);
+  }
+
+  << propertyNames: every key of this table and of the defaults chain, each
+     once. The order is unspecified in Java (a hash order); here it is the
+     defaults first, then this table, each in insertion order. A key that is
+     not a String throws ClassCastException, as in Java. >>
+  public Enumeration propertyNames() {
+    Any[] acc = new Any[8];
+    int[] count = new int[1];
+    count[0] = 0;
+    acc = collectAllNames(acc, count);
+    Any[] out = new Any[count[0]];
+    int i = 0;
+    while (i < count[0]) { out[i] = acc[i]; i = i + 1; }
+    return new Enumeration(out);
+  }
+  Any[] collectAllNames(Any[] acc, int[] count) {
+    Any[] a = acc;
+    if (this.propDefaults != null) { a = this.propDefaults.collectAllNames(a, count); }
+    Any[] ks = liveKeys();
+    int i = 0;
+    while (i < arrayLength(ks)) {
+      Any k = ks[i];
+      if (!(k instanceof string)) { throw new ClassCastException("java.util.Properties.propertyNames: key is not a java.lang.String"); }
+      boolean seen = false;
+      int j = 0;
+      while (j < count[0]) { if (a[j] == k) { seen = true; } j = j + 1; }
+      if (!seen) {
+        if (count[0] >= arrayLength(a)) {
+          Any[] g = new Any[arrayLength(a) * 2];
+          int m = 0;
+          while (m < count[0]) { g[m] = a[m]; m = m + 1; }
+          a = g;
+        }
+        a[count[0]] = k;
+        count[0] = count[0] + 1;
+      }
+      i = i + 1;
+    }
+    return a;
+  }
+
+  << clone: a shallow copy with the same entries and the same defaults table. >>
+  public synchronized java.lang.Object clone() {
+    Properties c = new Properties();
+    c.propDefaults = this.propDefaults;
+    c.copyPairs(liveKeys(), liveValues());
+    return c;
+  }
+  public synchronized boolean remove(java.lang.Object key, java.lang.Object value) { return removeMapping(key, value); }
+  public synchronized boolean replace(java.lang.Object key, java.lang.Object oldValue, java.lang.Object newValue) { return replaceValue(key, oldValue, newValue); }
+
+  < store helpers: the output is collected as UTF-16 code units, then written once >
+  void storeUnit(int c) {
+    this.storeUnits = pushUnit(this.storeUnits, this.storeCount, c);
+    this.storeCount = this.storeCount + 1;
+  }
+  void storeHex4(int c) {
+    storeUnit(92);
+    storeUnit(117);
+    int shift = 4096;
+    while (shift >= 1) {
+      int d = (c / shift) % 16;
+      if (d < 10) { storeUnit(48 + d); } else { storeUnit(55 + d); }
+      shift = shift / 16;
+    }
+  }
+  int[] unitsOf(String s) {
+    String u = javaStringFromUtf8(s);
+    int n = javaStringLength(u);
+    int[] out = new int[n];
+    int i = 0;
+    while (i < n) { out[i] = javaStringCharAt(u, i); i = i + 1; }
+    utfTick();
+    return out;
+  }
+  void storeEscaped(int[] u, boolean isKey, boolean escUnicode) {
+    int n = arrayLength(u);
+    int i = 0;
+    while (i < n) {
+      int c = u[i];
+      if (c > 61 && c < 127) {
+        if (c == 92) { storeUnit(92); storeUnit(92); } else { storeUnit(c); }
+      } else if (c == 32) {
+        if (i == 0 || isKey) { storeUnit(92); }
+        storeUnit(32);
+      } else if (c == 9) { storeUnit(92); storeUnit(116); }
+      else if (c == 10) { storeUnit(92); storeUnit(110); }
+      else if (c == 13) { storeUnit(92); storeUnit(114); }
+      else if (c == 12) { storeUnit(92); storeUnit(102); }
+      else if (c == 61 || c == 58 || c == 35 || c == 33) { storeUnit(92); storeUnit(c); }
+      else if ((c < 32 || c > 126) && escUnicode) { storeHex4(c); }
+      else { storeUnit(c); }
+      i = i + 1;
+    }
+  }
+  void storeComments(String comments) {
+    int[] u = unitsOf(comments);
+    int n = arrayLength(u);
+    storeUnit(35);
+    int i = 0;
+    while (i < n) {
+      int c = u[i];
+      if (c > 255) { storeHex4(c); }
+      else if (c == 10 || c == 13) {
+        if (c == 13 && i != n - 1 && u[i + 1] == 10) { i = i + 1; }
+        storeUnit(10);
+        if (i == n - 1 || (u[i + 1] != 35 && u[i + 1] != 33)) { storeUnit(35); }
+      } else { storeUnit(c); }
+      i = i + 1;
+    }
+    storeUnit(10);
+  }
+  << natural String order (UTF-16 code units, as String.compareTo); insertion sort >>
+  void sortNames(String[] names, int n) {
+    int i = 1;
+    while (i < n) {
+      String x = names[i];
+      int[] xu = unitsOf(x);
+      int j = i - 1;
+      boolean moving = true;
+      while (j >= 0 && moving) {
+        if (compareUnits(unitsOf(names[j]), xu) > 0) { names[j + 1] = names[j]; j = j - 1; }
+        else { moving = false; }
+      }
+      names[j + 1] = x;
+      i = i + 1;
+    }
+  }
+  int compareUnits(int[] a, int[] b) {
+    int na = arrayLength(a);
+    int nb = arrayLength(b);
+    int k = 0;
+    while (k < na && k < nb) {
+      if (a[k] != b[k]) { return a[k] - b[k]; }
+      k = k + 1;
+    }
+    return na - nb;
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -80,12 +894,6 @@ class Properties extends Hashtable {
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public Properties(Any defaults) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Properties(int initialCapacity) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Properties() { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -95,61 +903,13 @@ class Properties extends Hashtable {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized Any remove(Any key) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized boolean remove(Any key, Any value) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int size() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any get(Any key) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized Any put(Any key, Any value) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getProperty(String key) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getProperty(String key, String defaultValue) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized boolean equals(Any o) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized String toString() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any values() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized int hashCode() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized Any clone() { return null; }
-  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public synchronized void load(Any reader) { }
-  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void store(Any out, String comments) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void clear() { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isEmpty() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized Any replace(Any key, Any value) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized boolean replace(Any key, Any oldValue, Any newValue) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public synchronized void replaceAll(Any function) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(Any value) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void list(Any out) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any elements() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public synchronized Any merge(Any key, Any value, Any remappingFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any entrySet() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void putAll(Any t) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized Any putIfAbsent(Any key, Any value) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public synchronized Any compute(Any key, Any remappingFunction) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized Any setProperty(String key, String value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized Any computeIfAbsent(Any key, Any mappingFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -161,25 +921,9 @@ class Properties extends Hashtable {
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public void storeToXML(Any os, String comment, Any charset) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any keys() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any keySet() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsValue(Any value) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsKey(Any key) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any getOrDefault(Any key, Any defaultValue) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public synchronized Any computeIfPresent(Any key, Any remappingFunction) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void save(Any out, String comments) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, java.util.InvalidPropertiesFormatException")
   public synchronized void loadFromXML(Any in) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any propertyNames() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any stringPropertyNames() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void rehash() { }

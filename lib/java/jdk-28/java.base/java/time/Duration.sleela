@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class Duration {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 3459;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,369 @@ class Duration {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.time.Duration members (procedural implementation in SLeeLa) ---- >
+  << A time-based amount: seconds plus a nano adjustment in 0 .. 999999999.
+     The constructor is Duration.ofSeconds(seconds, nanoAdjustment) with
+     normalization; ofSeconds(long) is ofSeconds, ofSeconds(long, long) is
+     ofSecondsAdjusted. multipliedBy / dividedBy use 128-bit arithmetic, as
+     Java does with BigDecimal. >>
+  long seconds;
+  int nanos;
+  Duration(long seconds, long nanoAdjustment) {
+    this.seconds = seconds + floorDiv(nanoAdjustment, 1000000000);
+    this.nanos = (int) floorMod(nanoAdjustment, 1000000000);
+  }
+  Duration ofSecondsAdjusted(long s, long nanoAdjustment) { return new Duration(s, nanoAdjustment); }
+  Duration ofSeconds(long s) { return new Duration(s, 0); }
+  Duration ofDays(long days) { return new Duration(Math.multiplyExact(days, 86400), 0); }
+  Duration ofHours(long hours) { return new Duration(Math.multiplyExact(hours, 3600), 0); }
+  Duration ofMinutes(long minutes) { return new Duration(Math.multiplyExact(minutes, 60), 0); }
+  Duration ofMillis(long millis) { return new Duration(floorDiv(millis, 1000), floorMod(millis, 1000) * 1000000); }
+  Duration ofNanos(long nanos) { return new Duration(0, nanos); }
+  << Duration.between for LocalTime, LocalDateTime and Instant arguments. >>
+  Duration between(Any startInclusive, Any endExclusive) {
+    if (startInclusive instanceof Instant && endExclusive instanceof Instant) {
+      Instant a = (Instant) startInclusive;
+      Instant b = (Instant) endExclusive;
+      return new Duration(b.getEpochSecond() - a.getEpochSecond(), b.getNano() - a.getNano());
+    }
+    if (startInclusive instanceof LocalTime && endExclusive instanceof LocalTime) {
+      LocalTime c = (LocalTime) startInclusive;
+      LocalTime d = (LocalTime) endExclusive;
+      return new Duration(0, d.toNanoOfDay() - c.toNanoOfDay());
+    }
+    if (startInclusive instanceof LocalDateTime && endExclusive instanceof LocalDateTime) {
+      LocalDateTime e = (LocalDateTime) startInclusive;
+      LocalDateTime f = (LocalDateTime) endExclusive;
+      long secs = f.toEpochSecond(0) - e.toEpochSecond(0);
+      return new Duration(secs, f.getNano() - e.getNano());
+    }
+    throw new DateTimeException("Unsupported temporal pair for Duration.between");
+  }
+  Duration parse(String text) {
+    parseBegin(text);
+    boolean negate = false;
+    if (peekUnit() == 45) { negate = true; this.parsePos = this.parsePos + 1; }
+    else { if (peekUnit() == 43) { this.parsePos = this.parsePos + 1; } }
+    int p = peekUnit();
+    if (p != 80 && p != 112) { throw parseError(); }
+    this.parsePos = this.parsePos + 1;
+    int128 total = 0;
+    boolean any = false;
+    if (peekUnit() != 84 && peekUnit() != 116) {
+      long dd = signedNumber();
+      int u = peekUnit();
+      if (u != 68 && u != 100) { throw parseError(); }
+      this.parsePos = this.parsePos + 1;
+      total = total + dd * 86400000000000;
+      any = true;
+    }
+    if (peekUnit() == 84 || peekUnit() == 116) {
+      this.parsePos = this.parsePos + 1;
+      boolean part = false;
+      while (this.parsePos < this.parseLen) {
+        boolean neg = false;
+        if (peekUnit() == 45) { neg = true; this.parsePos = this.parsePos + 1; }
+        else { if (peekUnit() == 43) { this.parsePos = this.parsePos + 1; } }
+        long v = digits(1, 18);
+        long frac = 0;
+        int fracDigits = 0;
+        if (peekUnit() == 46 || peekUnit() == 44) {
+          this.parsePos = this.parsePos + 1;
+          int start = this.parsePos;
+          frac = digits(1, 9);
+          fracDigits = this.parsePos - start;
+        }
+        int u = peekUnit();
+        this.parsePos = this.parsePos + 1;
+        int128 amount = 0;
+        if ((u == 72 || u == 104) && fracDigits == 0) { amount = v; amount = amount * 3600000000000; }
+        else {
+          if ((u == 77 || u == 109) && fracDigits == 0) { amount = v; amount = amount * 60000000000; }
+          else {
+            if (u == 83 || u == 115) {
+              while (fracDigits < 9) { frac = frac * 10; fracDigits = fracDigits + 1; }
+              amount = v;
+              amount = amount * 1000000000 + frac;
+            } else { throw parseError(); }
+          }
+        }
+        if (neg) { amount = 0 - amount; }
+        total = total + amount;
+        part = true;
+      }
+      if (!part) { throw parseError(); }
+      any = true;
+    }
+    if (!any) { throw parseError(); }
+    parseEnd();
+    if (negate) { total = 0 - total; }
+    return fromNanos128(total);
+  }
+  long signedNumber() {
+    boolean neg = false;
+    if (peekUnit() == 45) { neg = true; this.parsePos = this.parsePos + 1; }
+    else { if (peekUnit() == 43) { this.parsePos = this.parsePos + 1; } }
+    long v = digits(1, 18);
+    if (neg) { return 0 - v; }
+    return v;
+  }
+  Duration fromNanos128(int128 total) {
+    int128 q = total / 1000000000;
+    int128 r = total % 1000000000;
+    if (r < 0) { r = r + 1000000000; q = q - 1; }
+    if (q > 9223372036854775807 || q < -9223372036854775807 - 1) { throw new ArithmeticException("Exceeds capacity of Duration: " + q); }
+    return new Duration((long) q, (long) r);
+  }
+  int128 totalNanos128() {
+    int128 t = this.seconds;
+    t = t * 1000000000 + this.nanos;
+    return t;
+  }
+
+  long getSeconds() { return this.seconds; }
+  int getNano() { return this.nanos; }
+  boolean isZero() { return this.seconds == 0 && this.nanos == 0; }
+  boolean isNegative() { return this.seconds < 0; }
+  boolean isPositive() { return this.seconds > 0 || (this.seconds == 0 && this.nanos > 0); }
+  Duration withSeconds(long s) { return new Duration(s, this.nanos); }
+  Duration withNanos(int nanoOfSecond) {
+    checkField("NanoOfSecond", nanoOfSecond, 0, 999999999);
+    return new Duration(this.seconds, nanoOfSecond);
+  }
+  Duration plus(Duration d) { return plusParts(d.getSeconds(), d.getNano()); }
+  Duration minus(Duration d) { return fromNanos128(totalNanos128() - d.totalNanos128()); }
+  Duration plusParts(long secondsToAdd, long nanosToAdd) {
+    if (secondsToAdd == 0 && nanosToAdd == 0) { return this; }
+    int128 t = totalNanos128();
+    int128 s = secondsToAdd;
+    t = t + s * 1000000000 + nanosToAdd;
+    return fromNanos128(t);
+  }
+  Duration plusDays(long n) { return plusParts(Math.multiplyExact(n, 86400), 0); }
+  Duration plusHours(long n) { return plusParts(Math.multiplyExact(n, 3600), 0); }
+  Duration plusMinutes(long n) { return plusParts(Math.multiplyExact(n, 60), 0); }
+  Duration plusSeconds(long n) { return plusParts(n, 0); }
+  Duration plusMillis(long n) { return plusParts(n / 1000, (n % 1000) * 1000000); }
+  Duration plusNanos(long n) { return plusParts(0, n); }
+  Duration minusDays(long n) { return plusDays(0 - n); }
+  Duration minusHours(long n) { return plusHours(0 - n); }
+  Duration minusMinutes(long n) { return plusMinutes(0 - n); }
+  Duration minusSeconds(long n) { return plusSeconds(0 - n); }
+  Duration minusMillis(long n) { return plusMillis(0 - n); }
+  Duration minusNanos(long n) { return plusNanos(0 - n); }
+  Duration multipliedBy(long multiplicand) {
+    if (multiplicand == 0) { return new Duration(0, 0); }
+    if (multiplicand == 1) { return this; }
+    return fromNanos128(totalNanos128() * multiplicand);
+  }
+  Duration dividedBy(long divisor) {
+    if (divisor == 0) { throw new ArithmeticException("Cannot divide by zero"); }
+    if (divisor == 1) { return this; }
+    return fromNanos128(totalNanos128() / divisor);
+  }
+  Duration negated() { return multipliedBy(-1); }
+  Duration abs() { if (isNegative()) { return negated(); } return this; }
+  long toDays() { return this.seconds / 86400; }
+  long toHours() { return this.seconds / 3600; }
+  long toMinutes() { return this.seconds / 60; }
+  long toSeconds() { return this.seconds; }
+  long toMillis() {
+    long s = this.seconds;
+    long n = this.nanos;
+    if (s < 0) { s = s + 1; n = n - 1000000000; }
+        long millis = Math.multiplyExact(s, 1000);
+    return Math.addExact(millis, n / 1000000);
+  }
+  long toNanos() {
+    long s = this.seconds;
+    long n = this.nanos;
+    if (s < 0) { s = s + 1; n = n - 1000000000; }
+        long total = Math.multiplyExact(s, 1000000000);
+    return Math.addExact(total, n);
+  }
+  long toDaysPart() { return this.seconds / 86400; }
+  int toHoursPart() { return (int) (toHours() % 24); }
+  int toMinutesPart() { return (int) (toMinutes() % 60); }
+  int toSecondsPart() { return (int) (this.seconds % 60); }
+  int toMillisPart() { return this.nanos / 1000000; }
+  int toNanosPart() { return this.nanos; }
+  int compareTo(Duration other) {
+    if (this.seconds < other.getSeconds()) { return -1; }
+    if (this.seconds > other.getSeconds()) { return 1; }
+    return this.nanos - other.getNano();
+  }
+  boolean equals(Any obj) {
+    if (obj instanceof Duration) { Duration o = (Duration) obj; return this.seconds == o.getSeconds() && this.nanos == o.getNano(); }
+    return false;
+  }
+  int hashCode() { return wrap32(Long.hashCode(this.seconds) + 51 * this.nanos); }
+  String toString() {
+    if (isZero()) { return "PT0S"; }
+    long effectiveTotalSecs = this.seconds;
+    if (this.seconds < 0 && this.nanos > 0) { effectiveTotalSecs = effectiveTotalSecs + 1; }
+    long hours = effectiveTotalSecs / 3600;
+    long minutes = (effectiveTotalSecs % 3600) / 60;
+    long secs = effectiveTotalSecs % 60;
+    String buf = "PT";
+    if (hours != 0) { buf = buf + hours + "H"; }
+    if (minutes != 0) { buf = buf + minutes + "M"; }
+    if (secs == 0 && this.nanos == 0 && buf != "PT") { return buf; }
+    if (this.seconds < 0 && this.nanos > 0) {
+      if (secs == 0) { buf = buf + "-0"; } else { buf = buf + secs; }
+    } else { buf = buf + secs; }
+    if (this.nanos > 0) {
+      long f = this.nanos;
+      if (this.seconds < 0) { f = 1000000000 - this.nanos; }
+      int width = 9;
+      while (f % 10 == 0) { f = f / 10; width = width - 1; }
+      buf = buf + "." + pad(f, width);
+    }
+    return buf + "S";
+  }
+
+  < shared java.time helpers >
+  long floorDiv(long x, long y) {
+    long q = x / y;
+    if ((x % y != 0) && ((x < 0) != (y < 0))) { q = q - 1; }
+    return q;
+  }
+  long floorMod(long x, long y) { return x - floorDiv(x, y) * y; }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  << Bitwise xor of two 32-bit two-complement ints. >>
+  int xorInt(int a, int b) {
+    long x = a;
+    long y = b;
+    if (x < 0) { x = x + 4294967296; }
+    if (y < 0) { y = y + 4294967296; }
+    long r = 0;
+    long bit = 1;
+    int k = 0;
+    while (k < 32) {
+      if ((x % 2) != (y % 2)) { r = r + bit; }
+      x = x / 2; y = y / 2; bit = bit * 2; k = k + 1;
+    }
+    return wrap32(r);
+  }
+  String pad(long v, int width) {
+    String s = "" + v;
+    int n = javaStringLength(javaStringFromUtf8(s));
+    while (n < width) { s = "0" + s; n = n + 1; }
+    return s;
+  }
+  boolean leap(long y) { return (y % 4 == 0) && ((y % 100 != 0) || (y % 400 == 0)); }
+  int monthLength(int m, boolean isLeap) {
+    if (m == 2) { if (isLeap) { return 29; } return 28; }
+    if (m == 4 || m == 6 || m == 9 || m == 11) { return 30; }
+    return 31;
+  }
+  void checkField(String field, long value, long lo, long hi) {
+    if (value < lo || value > hi) {
+      throw new DateTimeException("Invalid value for " + field + " (valid values " + lo + " - " + hi + "): " + value);
+    }
+  }
+  String monthName(int m) {
+    if (m == 1) { return "JANUARY"; } if (m == 2) { return "FEBRUARY"; } if (m == 3) { return "MARCH"; }
+    if (m == 4) { return "APRIL"; } if (m == 5) { return "MAY"; } if (m == 6) { return "JUNE"; }
+    if (m == 7) { return "JULY"; } if (m == 8) { return "AUGUST"; } if (m == 9) { return "SEPTEMBER"; }
+    if (m == 10) { return "OCTOBER"; } if (m == 11) { return "NOVEMBER"; }
+    return "DECEMBER";
+  }
+  << Year rendering of ISO-8601 local dates: four digits zero padded, a sign
+     for negative years, and a leading + beyond 9999. >>
+  String yearText(long y) {
+    long a = y;
+    if (a < 0) { a = 0 - a; }
+    if (a < 1000) {
+      if (y < 0) { return "-" + pad(a, 4); }
+      return pad(a, 4);
+    }
+    if (y > 9999) { return "+" + y; }
+    return "" + y;
+  }
+  << Nano-of-second suffix in the Java style: 3, 6 or 9 digits, as needed. >>
+  String nanoText(long nano) {
+    if (nano % 1000000 == 0) { return "." + pad(nano / 1000000, 3); }
+    if (nano % 1000 == 0) { return "." + pad(nano / 1000, 6); }
+    return "." + pad(nano, 9);
+  }
+  < parse helpers over a Java UTF-16 copy of the text >
+  String parseText;
+  String parseUnits;
+  int parsePos;
+  int parseLen;
+  void parseBegin(String text) {
+    if (text == null) { throw new NullPointerException("text"); }
+    this.parseText = text;
+    this.parseUnits = javaStringFromUtf8(text);
+    this.parsePos = 0;
+    this.parseLen = javaStringLength(this.parseUnits);
+  }
+  DateTimeParseException parseError() {
+    return new DateTimeParseException("Text '" + this.parseText + "' could not be parsed at index " + this.parsePos, this.parseText, this.parsePos);
+  }
+  int peekUnit() {
+    if (this.parsePos >= this.parseLen) { return -1; }
+    return javaStringCharAt(this.parseUnits, this.parsePos);
+  }
+  void expectUnit(int c) {
+    if (peekUnit() != c) { throw parseError(); }
+    this.parsePos = this.parsePos + 1;
+  }
+  long digits(int minCount, int maxCount) {
+    long v = 0;
+    int n = 0;
+    while (n < maxCount && peekUnit() >= 48 && peekUnit() <= 57) {
+      v = v * 10 + (peekUnit() - 48);
+      this.parsePos = this.parsePos + 1;
+      n = n + 1;
+    }
+    if (n < minCount) { throw parseError(); }
+    return v;
+  }
+  void parseEnd() { if (this.parsePos != this.parseLen) { throw parseError(); } }
+  long parseYear() {
+    int c = peekUnit();
+    if (c == 43 || c == 45) {
+      this.parsePos = this.parsePos + 1;
+      long y = digits(4, 10);
+      if (c == 45) { return 0 - y; }
+      return y;
+    }
+    return digits(4, 4);
+  }
+  << time part HH:mm[:ss[.fraction]] as nano-of-day >>
+  long parseTimeNanos() {
+    long h = digits(2, 2);
+    expectUnit(58);
+    long mi = digits(2, 2);
+    long s = 0;
+    long nano = 0;
+    if (peekUnit() == 58) {
+      this.parsePos = this.parsePos + 1;
+      s = digits(2, 2);
+      if (peekUnit() == 46) {
+        this.parsePos = this.parsePos + 1;
+        int start = this.parsePos;
+        long f = digits(1, 9);
+        int n = this.parsePos - start;
+        while (n < 9) { f = f * 10; n = n + 1; }
+        nano = f;
+      }
+    }
+    checkField("HourOfDay", h, 0, 23);
+    checkField("MinuteOfHour", mi, 0, 59);
+    checkField("SecondOfMinute", s, 0, 59);
+    return ((h * 60 + mi) * 60 + s) * 1000000000 + nano;
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -88,121 +452,21 @@ class Duration {
   @throwable("java.lang.UnsupportedOperationException")
   public long get(Any unit) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(Any other) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int hashCode() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any abs() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(Any otherDuration) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static Any of(long amount, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static Any from(Any amount) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public long toNanos() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long toMillis() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any parse(Any text) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any between(Any startInclusive, Any endExclusive) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isZero() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int getNano() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long toDays() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long toSeconds() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isNegative() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any minus(long amountToSubtract, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any minus(Any duration) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isPositive() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any plus(long amountToAdd, Any unit) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any plus(Any duration) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any getUnits() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static Any ofSeconds(long seconds, long nanoAdjustment) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static Any ofSeconds(long seconds) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any negated() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any ofNanos(long nanos) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long getSeconds() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any plusNanos(long nanosToAdd) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any plusSeconds(long secondsToAdd) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any plusMillis(long millisToAdd) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any multipliedBy(long multiplicand) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any plusDays(long daysToAdd) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any plusHours(long hoursToAdd) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any plusMinutes(long minutesToAdd) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long toHours() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long toMinutes() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any ofDays(long days) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any ofHours(long hours) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any ofMinutes(long minutes) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any ofMillis(long millis) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any withSeconds(long seconds) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any withNanos(int nanoOfSecond) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any minusDays(long daysToSubtract) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any minusHours(long hoursToSubtract) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any minusMinutes(long minutesToSubtract) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any minusSeconds(long secondsToSubtract) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any minusMillis(long millisToSubtract) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any minusNanos(long nanosToSubtract) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any dividedBy(long divisor) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long dividedBy(Any divisor) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any addTo(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any subtractFrom(Any temporal) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long toDaysPart() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int toHoursPart() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int toMinutesPart() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int toSecondsPart() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int toMillisPart() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int toNanosPart() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any truncatedTo(Any unit) { return null; }
   < ---- END java signatures ---- >

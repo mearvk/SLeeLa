@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class StringWriter extends Writer {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 8678;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,52 @@ class StringWriter extends Writer {
   String javaKind = "class";
   String javaSuper = "java.io.Writer";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.io.StringWriter members (procedural implementation in SLeeLa) ---- >
+  << java.io.StringWriter over a java.lang.StringBuffer, as in the JDK, so
+     getBuffer() returns the live buffer. Text and CharSequence arguments take
+     the StringBuffer rules (plain or UTF-16 Strings, StringBuilder,
+     StringBuffer). write(int) writes the low 16 bits as one code unit; building
+     text from a code unit covers printable ASCII plus tab, newline and
+     carriage return. append(char) cannot be told apart from write(int) by the
+     VM and keeps its stub. close is a reserved SLeeLa built-in. >>
+  StringBuffer swBuf = null;
+
+  public StringWriter() { this.swBuf = new StringBuffer(); }
+  public StringWriter(int initialSize) {
+    if (initialSize < 0) { throw new IllegalArgumentException("Negative buffer size"); }
+    this.swBuf = new StringBuffer();
+  }
+  public void write(int c) {
+    int v = c % 65536;
+    if (v < 0) { v = v + 65536; }
+    this.swBuf.appendCodePoint(v);
+  }
+  public void write(char[] cbuf, int off, int len) {
+    int n = arrayLength(cbuf);
+    if (off < 0 || len < 0 || off > n - len) { throw new IndexOutOfBoundsException("Range [" + off + ", " + (off + len) + ") out of bounds for length " + n); }
+    this.swBuf.append(cbuf, off, len);
+  }
+  public void write(java.lang.String str) { this.swBuf.append(str); }
+  public void write(java.lang.String str, int off, int len) {
+    int n = javaStringLength(this.swBuf.toU(str));
+    if (off < 0 || len < 0 || off > n - len) { throw new IndexOutOfBoundsException("Range [" + off + ", " + (off + len) + ") out of bounds for length " + n); }
+    this.swBuf.append(str, off, off + len);
+  }
+  public StringWriter append(java.lang.CharSequence csq) {
+    if (csq == null) { this.swBuf.append("null"); return this; }
+    this.swBuf.append(csq);
+    return this;
+  }
+  public StringWriter append(java.lang.CharSequence csq, int start, int end) {
+    this.swBuf.append(csq, start, end);
+    return this;
+  }
+  public java.lang.String toString() { return this.swBuf.toString(); }
+  public StringBuffer getBuffer() { return this.swBuf; }
+  public void flush() { }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -76,10 +123,6 @@ class StringWriter extends Writer {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public StringWriter() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public StringWriter(int initialSize) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -88,25 +131,5 @@ class StringWriter extends Writer {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any append(Any csq, int start, int end) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any append(char c) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any append(Any csq) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void flush() { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void write(char[] cbuf, int off, int len) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void write(String str, int off, int len) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void write(String str) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void write(int c) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any getBuffer() { return null; }
   < ---- END java signatures ---- >
 }

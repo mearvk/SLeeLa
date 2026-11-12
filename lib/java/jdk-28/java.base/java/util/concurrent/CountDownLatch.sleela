@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class CountDownLatch {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 2813;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,38 @@ class CountDownLatch {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.concurrent.CountDownLatch members (procedural implementation in SLeeLa) ---- >
+  << A count guarded by VM lock 30 (reserved for java.util.concurrent
+     synchronizers), so countDown from spawned threads never loses a step.
+     await waits by polling the count once a millisecond; the timed form
+     returns false when the time runs out. toString keeps its stub, because
+     Java prints an identity hash that SLeeLa has no equivalent for. >>
+  long cdlCount = 0;
+
+  public CountDownLatch(int count) {
+    if (count < 0) { throw new IllegalArgumentException("count < 0"); }
+    this.cdlCount = count;
+  }
+  public long getCount() { return this.cdlCount; }
+  public void countDown() {
+    lock(30);
+    if (this.cdlCount > 0) { this.cdlCount = this.cdlCount - 1; }
+    unlock(30);
+  }
+  public void await() {
+    while (this.cdlCount > 0) { sleep(1); }
+  }
+  public boolean await(long timeout, TimeUnit unit) {
+    long deadline = timeMonotonicNanos() + unit.toNanos(timeout);
+    while (this.cdlCount > 0) {
+      if (timeMonotonicNanos() >= deadline) { return false; }
+      sleep(1);
+    }
+    return true;
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -76,8 +109,6 @@ class CountDownLatch {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public CountDownLatch(int count) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -88,13 +119,5 @@ class CountDownLatch {
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
   public String toString() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long getCount() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void countDown() { }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public void await() { }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public boolean await(long timeout, Any unit) { return false; }
   < ---- END java signatures ---- >
 }

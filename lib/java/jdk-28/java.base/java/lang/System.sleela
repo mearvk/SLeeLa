@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class System {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 8900;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,141 @@ class System {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.lang.System members (procedural implementation in SLeeLa) ---- >
+  << Clocks, environment, line separator and the system property table, over
+     the SLeeLa time and os builtins. getenv returns null for an unset or empty
+     variable (the os builtin cannot tell the two apart). Properties set with
+     setProperty live in a small key/value table that shadows the built-in
+     defaults (os.name, user.name, user.dir, line.separator, file.separator,
+     path.separator). exit, arraycopy, identityHashCode, the stream setters and
+     the security manager keep their exact-signature stubs until the VM offers
+     those operations. >>
+  static String[] propKeys = new String[64];
+  static String[] propVals = new String[64];
+  static int propCount = 0;
+
+  public static long currentTimeMillis() { return timeUtcMillis(); }
+  public static long nanoTime() { return timeMonotonicNanos(); }
+  public static java.lang.String lineSeparator() { return javaStringFromCodeUnits(10); }
+  public static java.lang.String getenv(java.lang.String name) {
+    if (name == null) { throw new NullPointerException(); }
+    String v = osGetEnv(name);
+    if (v == "") { return null; }
+    return v;
+  }
+  public static java.lang.String getProperty(java.lang.String key) {
+    if (key == null) { throw new NullPointerException("key can't be null"); }
+    if (key == "") { throw new IllegalArgumentException("key can't be empty"); }
+    int i = 0;
+    while (i < propCount) {
+      if (propKeys[i] == key) { return propVals[i]; }
+      i = i + 1;
+    }
+    if (key == "os.name") { return osPlatform(); }
+    if (key == "user.name") { return osUserName(); }
+    if (key == "user.dir") { return osCurrentDir(); }
+    if (key == "java.io.tmpdir") { return osTempDir(); }
+    if (key == "file.separator") { return "/"; }
+    if (key == "path.separator") { return ":"; }
+    if (key == "line.separator") { return lineSeparator(); }
+    return null;
+  }
+  public static java.lang.String getProperty(java.lang.String key, java.lang.String def) {
+    String v = getProperty(key);
+    if (v == null) { return def; }
+    return v;
+  }
+  public static java.lang.String setProperty(java.lang.String key, java.lang.String value) {
+    if (key == null) { throw new NullPointerException("key can't be null"); }
+    if (key == "") { throw new IllegalArgumentException("key can't be empty"); }
+    String old = getProperty(key);
+    int i = 0;
+    while (i < propCount) {
+      if (propKeys[i] == key) { propVals[i] = value; return old; }
+      i = i + 1;
+    }
+    if (propCount >= 64) { throw new IllegalStateException("System property table is full"); }
+    propKeys[propCount] = key;
+    propVals[propCount] = value;
+    propCount = propCount + 1;
+    return old;
+  }
+  public static java.lang.String clearProperty(java.lang.String key) {
+    if (key == null) { throw new NullPointerException("key can't be null"); }
+    if (key == "") { throw new IllegalArgumentException("key can't be empty"); }
+    String old = getProperty(key);
+    int i = 0;
+    while (i < propCount) {
+      if (propKeys[i] == key) {
+        propCount = propCount - 1;
+        propKeys[i] = propKeys[propCount];
+        propVals[i] = propVals[propCount];
+        propKeys[propCount] = null;
+        propVals[propCount] = null;
+        return old;
+      }
+      i = i + 1;
+    }
+    return old;
+  }
+  < ---- END java implementation ---- >
+
+  < ---- BEGIN java implementation (JDK 28 additions, SLeeLa logic) ---- >
+  < ---- java.lang.System: getProperties and setProperties ---- >
+  << Written from the JDK 28 API specification of java.lang.System. The
+     result and parameter are typed Properties (Java: java.util.Properties),
+     so a caller reads the table without a cast.
+     getProperties returns a java.util.Properties that holds the system
+     properties known here: the built-in defaults (os.name, user.name,
+     user.dir, java.io.tmpdir, file.separator, path.separator, line.separator)
+     and every property set with setProperty, which shadows a default.
+     Difference from Java: the result is a snapshot, so a change made to it
+     later is not seen by getProperty; set a property with setProperty, or
+     pass the changed table back through setProperties. setProperties(props)
+     makes the String entries of props (and of its defaults chain) the set
+     properties; setProperties(null) drops them all, so only the built-in
+     defaults remain, as Java recreates its defaults. >>
+  public static Properties getProperties() {
+    Properties p = new Properties();
+    String[] builtin = new String[7];
+    builtin[0] = "os.name";
+    builtin[1] = "user.name";
+    builtin[2] = "user.dir";
+    builtin[3] = "java.io.tmpdir";
+    builtin[4] = "file.separator";
+    builtin[5] = "path.separator";
+    builtin[6] = "line.separator";
+    int i = 0;
+    while (i < 7) {
+      String v = getProperty(builtin[i]);
+      if (v != null) { p.setProperty(builtin[i], v); }
+      i = i + 1;
+    }
+    i = 0;
+    while (i < propCount) {
+      if (propVals[i] != null) { p.setProperty(propKeys[i], propVals[i]); }
+      i = i + 1;
+    }
+    return p;
+  }
+  public static void setProperties(Properties props) {
+    int i = 0;
+    while (i < propCount) { propKeys[i] = null; propVals[i] = null; i = i + 1; }
+    propCount = 0;
+    if (props == null) { return; }
+    Properties p = props;
+    HashSet names = p.stringPropertyNames();
+    Any[] ks = names.toArray();
+    i = 0;
+    while (i < arrayLength(ks)) {
+      String k = "" + ks[i];
+      setProperty(k, p.getProperty(k));
+      i = i + 1;
+    }
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -92,15 +228,7 @@ class System {
   @throwable("java.lang.UnsupportedOperationException")
   public static void runFinalization() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static String getProperty(String key) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String getProperty(String key, String def) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static native int identityHashCode(Any x) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static native long currentTimeMillis() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static native long nanoTime() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static native void arraycopy(Any src, int srcPos, Any dest, int destPos, int length) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -111,12 +239,6 @@ class System {
   public static Any console() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public static Any inheritedChannel() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String lineSeparator() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String setProperty(String key, String value) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String getenv(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static Any getenv() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -133,12 +255,6 @@ class System {
   public static void setSecurityManager(Any sm) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static Any getSecurityManager() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any getProperties() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static void setProperties(Any props) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static String clearProperty(String key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static native String mapLibraryName(String libname) { return null; }
   < ---- END java signatures ---- >

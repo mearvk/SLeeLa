@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class Float extends Number {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 4020;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,497 @@ class Float extends Number {
   String javaKind = "class";
   String javaSuper = "java.lang.Number";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.lang.Float members (procedural implementation in SLeeLa) ---- >
+  << The boxed float plus the java.lang.Float static API as instance methods.
+     The VM has no binary32 primitive, so a float is carried as a double that
+     has been rounded to binary32 (fround: 24-bit significand, round half even,
+     overflow to infinity, gradual underflow), which makes every value, bit
+     view (floatToIntBits / intBitsToFloat) and toString exactly the Java
+     float result. >>
+  static final double MAX_VALUE = 3.4028234663852886E38;
+  static final double MIN_NORMAL = 1.1754943508222875E-38;
+  static final double MIN_VALUE = 1.401298464324817E-45;
+  static final int MAX_EXPONENT = 127;
+  static final int MIN_EXPONENT = -126;
+  static final int SIZE = 32;
+  static final int PRECISION = 24;
+  static final int BYTES = 4;
+
+  double value;
+  Float(double v) { digitsOut = ""; digitsLong = 0; digitsCount = 0; exp10Out = 0; ddH = 0.0; ddL = 0.0; ddE = 0; value = fround(v); }
+
+  double maxValue() { return MAX_VALUE; }
+  double minNormal() { return MIN_NORMAL; }
+  double minValue() { return MIN_VALUE; }
+
+  << Round a double to the nearest binary32 value (Java (float) conversion). >>
+  double fround(double d) {
+    if (d != d || isInfinite(d) || d == 0.0) { return d; }
+    double a = d;
+    boolean neg = a < 0.0;
+    if (neg) { a = 0.0 - a; }
+    int e = binaryExponent(a);
+    int q = e - 23;
+    if (q < -149) { q = -149; }
+    double r = rintD(a * pow2(0 - q)) * pow2(q);
+    if (r >= 3.4028235677973366E38) { r = posInf(); }
+    if (neg) { return 0.0 - r; }
+    return r;
+  }
+
+  int byteValue() { Double dd = new Double(value); return dd.byteValue(); }
+  int shortValue() { Double dd = new Double(value); return dd.shortValue(); }
+  int intValue() { Double dd = new Double(value); return dd.intValue(); }
+  long longValue() { Double dd = new Double(value); return dd.longValue(); }
+  double doubleValue() { return value; }
+  double floatValue() { return value; }
+
+  int floatToRawIntBits(double value) {
+    double f = fround(value);
+    if (f != f) { return 2143289344; }
+    long sign = 0;
+    double a = f;
+    if (a < 0.0 || isNegativeZero(a)) { sign = 1; a = 0.0 - a; }
+    long bits = 0;
+    if (a != 0.0) {
+      if (isInfinite(a)) { bits = 2139095040; }
+      else {
+        int e = binaryExponent(a);
+        if (e < -126) { bits = (long) (a * pow2(149)); }
+        else {
+          long mant = (long) ((a * pow2(0 - e) - 1.0) * 8388608.0);
+          bits = (e + 127) * 8388608 + mant;
+        }
+      }
+    }
+    if (sign == 1) { bits = bits - 2147483648; }
+    return (int) bits;
+  }
+  int floatToIntBits(double value) {
+    if (value != value) { return 2143289344; }
+    return floatToRawIntBits(value);
+  }
+  double intBitsToFloat(int bits) {
+    long b = bits;
+    boolean neg = b < 0;
+    if (neg) { b = b + 2147483648; }
+    long be = b / 8388608;
+    long mant = b % 8388608;
+    double r = 0.0;
+    if (be == 255) {
+      if (mant == 0) { r = posInf(); } else { return nan(); }
+    } else {
+      double m = mant;
+      if (be == 0) { r = m * pow2(-149); }
+      else { r = (1.0 + m / 8388608.0) * pow2((int) be - 127); }
+    }
+    if (neg) { if (r == 0.0) { return -1.0 / posInf(); } return 0.0 - r; }
+    return r;
+  }
+
+  String toString() { return render(value); }
+  String toStringOf(double f) { return render(fround(f)); }
+  int hashCode() { return floatToIntBits(value); }
+  int hashCodeOf(double f) { return floatToIntBits(f); }
+  boolean equals(Any obj) {
+    if (obj instanceof Float) {
+      Float o = (Float) obj;
+      return floatToIntBits(o.value) == floatToIntBits(value);
+    }
+    return false;
+  }
+  int compareTo(Float another) { return compareD(value, another.value); }
+  int compare(double f1, double f2) { return compareD(fround(f1), fround(f2)); }
+  double parseFloat(String s) { return fround(parseDecimal(s)); }
+  Float valueOf(double f) { return new Float(f); }
+  Float valueOfString(String s) { return new Float(parseDecimal(s)); }
+  double sum(double a, double b) { return fround(a + b); }
+  double max(double a, double b) { Double dd = new Double(0.0); return dd.max(a, b); }
+  double min(double a, double b) { Double dd = new Double(0.0); return dd.min(a, b); }
+
+  < IEEE 754 helpers >
+  double posInf() { double z = 0.0; return 1.0 / z; }
+  double negInf() { double z = 0.0; return -1.0 / z; }
+  double nan() { double z = 0.0; return z / z; }
+  boolean isNaN(double v) { return v != v; }
+  boolean isInfinite(double v) { return v == posInf() || v == negInf(); }
+  boolean isFinite(double d) { return d == d && !isInfinite(d); }
+  << True for negative zero: 1/-0.0 is negative infinity. >>
+  boolean isNegativeZero(double d) { return d == 0.0 && 1.0 / d < 0.0; }
+  double pow2(int e) {
+    double r = 1.0;
+    int k = e;
+    while (k > 0) { r = r * 2.0; k = k - 1; }
+    while (k < 0) { r = r * 0.5; k = k + 1; }
+    return r;
+  }
+  << Unbiased binary exponent of a finite non-zero |d| (normal or subnormal),
+     so that 2^e <= |d| < 2^(e+1). >>
+  int binaryExponent(double d) {
+    double a = d;
+    if (a < 0.0) { a = 0.0 - a; }
+    int e = 0;
+    while (a >= 2.0) { a = a * 0.5; e = e + 1; }
+    while (a < 1.0) { a = a * 2.0; e = e - 1; }
+    return e;
+  }
+  double pow10(int e) {
+    double r = 1.0;
+    int k = e;
+    if (k > 0) { while (k > 0) { r = r * 10.0; k = k - 1; } return r; }
+    while (k < 0) { r = r * 10.0; k = k + 1; }
+    return 1.0 / r;
+  }
+  << Round half-even to the nearest integer-valued double. >>
+  double rintD(double a) {
+    if (a != a || isInfinite(a)) { return a; }
+    if (a >= 4503599627370496.0 || a <= -4503599627370496.0) { return a; }
+    long n = (long) a;
+    double f = n;
+    if (f > a) { f = f - 1.0; }
+    double diff = a - f;
+    if (diff < 0.5) { return f; }
+    if (diff > 0.5) { return f + 1.0; }
+    double half = f / 2.0;
+    long hn = (long) half;
+    double hf = hn;
+    if (hf == half) { return f; }
+    return f + 1.0;
+  }
+
+  < IEEE 754 bit views, computed arithmetically (exact) >
+  long doubleToRawLongBits(double value) {
+    if (value != value) { return 9221120237041090560; }
+    long sign = 0;
+    double a = value;
+    if (a < 0.0 || isNegativeZero(a)) { sign = 1; a = 0.0 - a; }
+    long bits = 0;
+    if (a == 0.0) { bits = 0; }
+    else {
+      if (isInfinite(a)) { bits = 9218868437227405312; }
+      else {
+        int e = binaryExponent(a);
+        if (e < -1022) {
+          double m = a * pow2(1022) * pow2(52);
+          bits = (long) m;
+        } else {
+          double frac = a * pow2(0 - e) - 1.0;
+          long mant = (long) (frac * 4503599627370496.0);
+          long be = e + 1023;
+          bits = be * 4503599627370496 + mant;
+        }
+      }
+    }
+    if (sign == 1) { return bits + (-9223372036854775807 - 1); }
+    return bits;
+  }
+  long doubleToLongBits(double value) {
+    if (value != value) { return 9221120237041090560; }
+    return doubleToRawLongBits(value);
+  }
+  double longBitsToDouble(long bits) {
+    long b = bits;
+    boolean neg = b < 0;
+    if (neg) { b = b - (-9223372036854775807 - 1); }
+    long be = b / 4503599627370496;
+    long mant = b % 4503599627370496;
+    double r = 0.0;
+    if (be == 2047) {
+      if (mant == 0) { r = posInf(); } else { return nan(); }
+    } else {
+      double m = mant;
+      if (be == 0) { r = m * pow2(-1074); }
+      else { r = (1.0 + m / 4503599627370496.0) * pow2((int) be - 1023); }
+    }
+    if (neg) { if (r == 0.0) { return -1.0 / posInf(); } return 0.0 - r; }
+    return r;
+  }
+
+  < decimal parsing (Double.parseDouble grammar: sign, digits, point, exponent, NaN, Infinity) >
+  double parseDecimal(String s) {
+    if (s == null) { throw new NullPointerException(null); }
+    String u = javaStringFromUtf8(s);
+    int n = javaStringLength(u);
+    int i = 0;
+    while (i < n && javaStringCharAt(u, i) <= 32) { i = i + 1; }
+    while (n > i && javaStringCharAt(u, n - 1) <= 32) { n = n - 1; }
+    if (i >= n) { throw new NumberFormatException("empty String"); }
+    boolean neg = false;
+    int c = javaStringCharAt(u, i);
+    if (c == 45 || c == 43) { neg = c == 45; i = i + 1; }
+    if (n - i == 3 && javaStringCharAt(u, i) == 78 && javaStringCharAt(u, i + 1) == 97 && javaStringCharAt(u, i + 2) == 78) { return nan(); }
+    if (n - i == 8 && javaStringCharAt(u, i) == 73 && javaStringCharAt(u, i + 7) == 121) {
+      if (neg) { return negInf(); }
+      return posInf();
+    }
+    long mant = 0;
+    int digits = 0;
+    int exp10 = 0;
+    boolean any = false;
+    boolean seenPoint = false;
+    while (i < n) {
+      c = javaStringCharAt(u, i);
+      if (c >= 48 && c <= 57) {
+        any = true;
+        if (digits < 18) {
+          if (mant != 0 || c != 48) { mant = mant * 10 + (c - 48); digits = digits + 1; }
+          if (seenPoint) { exp10 = exp10 - 1; }
+        } else {
+          if (!seenPoint) { exp10 = exp10 + 1; }
+        }
+        i = i + 1;
+      } else {
+        if (c == 46 && !seenPoint) { seenPoint = true; i = i + 1; }
+        else { break; }
+      }
+    }
+    if (!any) { throw new NumberFormatException("For input string: \"" + s + "\""); }
+    if (i < n) {
+      c = javaStringCharAt(u, i);
+      if (c == 101 || c == 69) {
+        i = i + 1;
+        boolean eneg = false;
+        if (i < n && (javaStringCharAt(u, i) == 45 || javaStringCharAt(u, i) == 43)) { eneg = javaStringCharAt(u, i) == 45; i = i + 1; }
+        if (i >= n) { throw new NumberFormatException("For input string: \"" + s + "\""); }
+        int ev = 0;
+        while (i < n) {
+          c = javaStringCharAt(u, i);
+          if (c < 48 || c > 57) { throw new NumberFormatException("For input string: \"" + s + "\""); }
+          if (ev < 100000) { ev = ev * 10 + (c - 48); }
+          i = i + 1;
+        }
+        if (eneg) { exp10 = exp10 - ev; } else { exp10 = exp10 + ev; }
+      }
+    }
+    if (i < n) {
+      c = javaStringCharAt(u, i);
+      if (!((c == 100 || c == 68 || c == 102 || c == 70) && i == n - 1)) { throw new NumberFormatException("For input string: \"" + s + "\""); }
+    }
+    double r = 0.0;
+    if (mant != 0) { r = decimalToDouble(mant, exp10); }
+    if (neg) { return 0.0 - r; }
+    return r;
+  }
+
+  < decimal rendering (Java Double.toString / Float.toString layout) >
+  << double-double arithmetic: a value is ddH + ddL with |ddL| <= ulp(ddH)/2,
+     giving about 106 significant bits; scaled values also carry a binary
+     exponent so 10^k never overflows or underflows while being formed. >>
+  double ddH = 0.0;
+  double ddL = 0.0;
+  int ddE = 0;
+  double splitHi(double a) { double c = 134217729.0 * a; return c - (c - a); }
+  << ddH:ddL = a*b exactly (Dekker two-product without fused multiply-add). >>
+  void twoProd(double a, double b) {
+    double p = a * b;
+    double ah = splitHi(a);
+    double al = a - ah;
+    double bh = splitHi(b);
+    double bl = b - bh;
+    double err = ((ah * bh - p) + ah * bl + al * bh) + al * bl;
+    ddH = p;
+    ddL = err;
+  }
+  void quickTwoSum(double a, double b) {
+    double sm = a + b;
+    ddL = b - (sm - a);
+    ddH = sm;
+  }
+  << (ah:al) * (bh:bl) into ddH:ddL. >>
+  void ddMul(double ah, double al, double bh, double bl) {
+    twoProd(ah, bh);
+    double p = ddH;
+    double e = ddL + (ah * bl + al * bh);
+    quickTwoSum(p, e);
+  }
+  << Rescale ddH:ddL by powers of two (exact) so that 1 <= ddH < 2. >>
+  void ddNormalize() {
+    if (ddH == 0.0) { return; }
+    while (ddH >= 2.0 || ddH <= -2.0) { ddH = ddH * 0.5; ddL = ddL * 0.5; ddE = ddE + 1; }
+    while (ddH < 1.0 && ddH > -1.0) { ddH = ddH * 2.0; ddL = ddL * 2.0; ddE = ddE - 1; }
+  }
+  << 10^k as (ddH + ddL) * 2^ddE. >>
+  void pow10Scaled(int k) {
+    double rh = 1.0;
+    double rl = 0.0;
+    int re = 0;
+    double bh = 1.25;
+    double bl = 0.0;
+    int be = 3;
+    if (k < 0) {
+      double q1 = 1.0 / 10.0;
+      twoProd(10.0, q1);
+      double rem = (1.0 - ddH) - ddL;
+      double q2 = rem / 10.0;
+      ddH = q1; ddL = q2; ddE = 0;
+      quickTwoSum(q1, q2);
+      ddE = 0;
+      ddNormalize();
+      bh = ddH; bl = ddL; be = ddE;
+    }
+    int n = k;
+    if (n < 0) { n = 0 - n; }
+    while (n > 0) {
+      if (n % 2 == 1) {
+        ddMul(rh, rl, bh, bl);
+        ddE = re + be;
+        ddNormalize();
+        rh = ddH; rl = ddL; re = ddE;
+      }
+      n = n / 2;
+      if (n > 0) {
+        ddMul(bh, bl, bh, bl);
+        ddE = be + be;
+        ddNormalize();
+        bh = ddH; bl = ddL; be = ddE;
+      }
+    }
+    ddH = rh; ddL = rl; ddE = re;
+  }
+  << m * 10^k rounded to the nearest double (m >= 0, at most 18 digits). >>
+  double decimalToDouble(long m, int k) {
+    if (m == 0) { return 0.0; }
+    if (k > 330) { return posInf(); }
+    if (k < -360) { return 0.0; }
+    pow10Scaled(k);
+    double ph = ddH;
+    double pl = ddL;
+    int pe = ddE;
+    double mh = m;
+    long mr = m - (long) mh;
+    double ml = mr;
+    ddH = mh; ddL = ml; ddE = 0;
+    ddNormalize();
+    double nh = ddH;
+    double nl = ddL;
+    int ne = ddE;
+    ddMul(nh, nl, ph, pl);
+    ddE = ne + pe;
+    ddNormalize();
+    int e = ddE;
+    if (e > 1023) { return posInf(); }
+    if (e >= -1022) { return (ddH + ddL) * pow2(e); }
+    int sh = e + 1074;
+    if (sh < -1) { return 0.0; }
+    double x = ddH * pow2(sh) + ddL * pow2(sh);
+    return rintD(x) * pow2(-1074);
+  }
+  << The integer nearest a * 10^shift for finite a > 0 (shift may be large). >>
+  long scaledRound(double a, int shift) {
+    pow10Scaled(shift);
+    double ph = ddH;
+    double pl = ddL;
+    int pe = ddE;
+    ddH = a; ddL = 0.0; ddE = 0;
+    ddNormalize();
+    double ah = ddH;
+    int ae = ddE;
+    ddMul(ah, 0.0, ph, pl);
+    ddE = ae + pe;
+    ddNormalize();
+    double h = ddH * pow2(ddE);
+    double l = ddL * pow2(ddE);
+    double hi = rintD(h);
+    double rem = (h - hi) + l;
+    double adj = rintD(rem);
+    long r = (long) hi + (long) adj;
+    return r;
+  }
+  << Shortest decimal digits (2..17, the Java minimum of one digit on each
+     side of the point) nearest to a that read back as a under fround, left in
+     digitsOut (no trailing zeros) and exp10Out (decimal exponent of the first
+     digit). >>
+  String digitsOut = "";
+  long digitsLong = 0;
+  int digitsCount = 0;
+  int exp10Out = 0;
+  void shortestDigits(double a) {
+    int e10 = 0;
+    double t = a;
+    while (t >= 10.0) { t = t / 10.0; e10 = e10 + 1; }
+    while (t < 1.0) { t = t * 10.0; e10 = e10 - 1; }
+    int p = 2;
+    while (p <= 17) {
+      long m = scaledRound(a, p - 1 - e10);
+      int guard = 0;
+      while (guard < 3 && (m >= powTenLong(p) || m < powTenLong(p - 1))) {
+        if (m >= powTenLong(p)) { e10 = e10 + 1; } else { e10 = e10 - 1; }
+        m = scaledRound(a, p - 1 - e10);
+        guard = guard + 1;
+      }
+      if (fround(decimalToDouble(m, e10 - p + 1)) == a || p == 17) {
+        while (p > 1 && m % 10 == 0) { m = m / 10; p = p - 1; }
+        digitsOut = "" + m;
+        digitsLong = m;
+        digitsCount = p;
+        exp10Out = e10;
+        return;
+      }
+      p = p + 1;
+    }
+  }
+  long powTenLong(int p) {
+    long r = 1;
+    int i = 0;
+    while (i < p) { r = r * 10; i = i + 1; }
+    return r;
+  }
+  String render(double d) {
+    if (d != d) { return "NaN"; }
+    if (d == posInf()) { return "Infinity"; }
+    if (d == negInf()) { return "-Infinity"; }
+    if (d == 0.0) { if (isNegativeZero(d)) { return "-0.0"; } return "0.0"; }
+    String sign = "";
+    double a = d;
+    if (a < 0.0) { sign = "-"; a = 0.0 - a; }
+    shortestDigits(a);
+    String ds = digitsOut;
+    int e = exp10Out;
+    int nd = digitsCount;
+    if (a >= 0.001 && a < 10000000.0) {
+      if (e >= 0) {
+        String ip = "";
+        String fp = "";
+        int i = 0;
+        while (i < nd) {
+          if (i <= e) { ip = ip + digitAt(ds, i); } else { fp = fp + digitAt(ds, i); }
+          i = i + 1;
+        }
+        while (i <= e) { ip = ip + "0"; i = i + 1; }
+        if (fp == "") { fp = "0"; }
+        return sign + ip + "." + fp;
+      }
+      String zeros = "";
+      int z = 1;
+      while (z < 0 - e) { zeros = zeros + "0"; z = z + 1; }
+      return sign + "0." + zeros + ds;
+    }
+    String mant = digitAt(ds, 0) + ".";
+    if (nd == 1) { mant = mant + "0"; }
+    int j = 1;
+    while (j < nd) { mant = mant + digitAt(ds, j); j = j + 1; }
+    return sign + mant + "E" + e;
+  }
+  int lengthOfDigits(String ds) { return javaStringLength(javaStringFromUtf8(ds)); }
+  << Digit i (0 = most significant) of the shortest digit string. >>
+  String digitAt(String ds, int i) {
+    long v = digitsLong;
+    int k = digitsCount - 1 - i;
+    while (k > 0) { v = v / 10; k = k - 1; }
+    return "" + (v % 10);
+  }
+  int compareD(double d1, double d2) {
+    if (d1 < d2) { return -1; }
+    if (d1 > d2) { return 1; }
+    long b1 = doubleToLongBits(d1);
+    long b2 = doubleToLongBits(d2);
+    if (b1 == b2) { return 0; }
+    if (b1 < b2) { return -1; }
+    return 1;
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -79,24 +571,10 @@ class Float extends Number {
   static double POSITIVE_INFINITY = 0.0;
   static double NEGATIVE_INFINITY = 0.0;
   static double NaN = 0.0;
-  static final double MAX_VALUE = 3.4028235E38;
-  static final double MIN_NORMAL = 1.1754944E-38;
-  static final double MIN_VALUE = 1.4E-45;
-  static final int SIZE = 32;
-  static final int PRECISION = 24;
-  static final int MAX_EXPONENT = 127;
-  static final int MIN_EXPONENT = -126;
-  static final int BYTES = 4;
   static Any TYPE = null;
   < ---- END java declarations ---- >
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public Float(String s) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Float(double value) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Float(float value) { super("constructor"); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -106,55 +584,15 @@ class Float extends Number {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(Any obj) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static String toString(float f) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int hashCode(float value) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int hashCode() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static float min(float a, float b) { return 0.0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static float max(float a, float b) { return 0.0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isInfinite(float v) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public boolean isInfinite() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isFinite(float f) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static native int floatToRawIntBits(float value) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int floatToIntBits(float value) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static native float intBitsToFloat(int bits) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static float float16ToFloat(short floatBinary16) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static short floatToFloat16(float f) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(Any anotherFloat) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static int compare(float f1, float f2) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public byte byteValue() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public short shortValue() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int intValue() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public long longValue() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public float floatValue() { return 0.0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public double doubleValue() { return 0.0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any valueOf(float f) { return null; }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static Any valueOf(String s) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static String toHexString(float f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -162,12 +600,6 @@ class Float extends Number {
   @throwable("java.lang.UnsupportedOperationException")
   public Any describeConstable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isNaN(float v) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public boolean isNaN() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static float sum(float a, float b) { return 0.0; }
-  @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static float parseFloat(String s) { return 0.0; }
   < ---- END java signatures ---- >
 }

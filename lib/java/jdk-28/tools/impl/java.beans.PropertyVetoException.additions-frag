@@ -1,0 +1,9 @@
+  < ---- java.beans.PropertyVetoException: message and event ---- >
+  << Written from the JDK 28 API specification: the detail message and the
+     PropertyChangeEvent that describes the vetoed change. >>
+  Any heldEvent;
+  public PropertyVetoException(java.lang.String mess, java.beans.PropertyChangeEvent evt) {
+    super(mess);
+    this.heldEvent = evt;
+  }
+  public PropertyChangeEvent getPropertyChangeEvent() { return (PropertyChangeEvent) this.heldEvent; }

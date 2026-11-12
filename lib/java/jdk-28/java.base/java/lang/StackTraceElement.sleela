@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class StackTraceElement {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 8531;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,73 @@ class StackTraceElement {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.lang.StackTraceElement members (procedural implementation in SLeeLa) ---- >
+  << One frame of a stack trace with the Java accessors, toString layout and
+     hashCode formula. The constructor is the Java 4-argument form
+     (declaringClass, methodName, fileName, lineNumber); a line number of -2
+     marks a native method. Module and class-loader names are null. >>
+  String declaringClass;
+  String methodName;
+  String fileName;
+  int lineNumber;
+  StackTraceElement(String declaringClass, String methodName, String fileName, int lineNumber) {
+    if (declaringClass == null) { throw new NullPointerException("Declaring class is null"); }
+    if (methodName == null) { throw new NullPointerException("Method name is null"); }
+    this.declaringClass = declaringClass;
+    this.methodName = methodName;
+    this.fileName = fileName;
+    this.lineNumber = lineNumber;
+  }
+  String getClassName() { return this.declaringClass; }
+  String getMethodName() { return this.methodName; }
+  String getFileName() { return this.fileName; }
+  int getLineNumber() { return this.lineNumber; }
+  String getModuleName() { return null; }
+  String getModuleVersion() { return null; }
+  String getClassLoaderName() { return null; }
+  boolean isNativeMethod() { return this.lineNumber == -2; }
+  String toString() {
+    String where = "";
+    if (isNativeMethod()) { where = "Native Method"; }
+    else {
+      if (this.fileName == null) { where = "Unknown Source"; }
+      else {
+        if (this.lineNumber >= 0) { where = this.fileName + ":" + this.lineNumber; }
+        else { where = this.fileName; }
+      }
+    }
+    return this.declaringClass + "." + this.methodName + "(" + where + ")";
+  }
+  boolean equals(Any obj) {
+    if (obj instanceof StackTraceElement) {
+      StackTraceElement e = (StackTraceElement) obj;
+      return e.getClassName() == this.declaringClass && e.getMethodName() == this.methodName && e.getFileName() == this.fileName && e.getLineNumber() == this.lineNumber;
+    }
+    return false;
+  }
+  int strHash(String s) {
+    if (s == null) { return 0; }
+    return javaStringHashCode(javaStringFromUtf8(s));
+  }
+  int hashCode() {
+    long r = 31 * strHash(this.declaringClass) + strHash(this.methodName);
+    r = wrap32(r);
+    r = wrap32(31 * r);
+    r = wrap32(31 * r);
+    r = wrap32(31 * r);
+    r = wrap32(31 * r + strHash(this.fileName));
+    r = wrap32(31 * r + this.lineNumber);
+    return (int) r;
+  }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -78,8 +146,6 @@ class StackTraceElement {
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
   public StackTraceElement(String classLoaderName, String moduleName, String moduleVersion, String declaringClass, String methodName, String fileName, int lineNumber) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public StackTraceElement(String declaringClass, String methodName, String fileName, int lineNumber) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -88,27 +154,5 @@ class StackTraceElement {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(Any obj) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int hashCode() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getClassName() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isNativeMethod() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getFileName() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int getLineNumber() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getModuleName() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getModuleVersion() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getClassLoaderName() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getMethodName() { return null; }
   < ---- END java signatures ---- >
 }

@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class HttpRetryException extends IOException {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 4422;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,15 @@ class HttpRetryException extends IOException {
   String javaKind = "class";
   String javaSuper = "java.io.IOException";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+
+  int responseCode;
+  String location = null;
+  int responseCode() { return responseCode; }
+  String getReason() { return detailMessage; }
+  String getLocation() { return location; }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -88,11 +98,5 @@ class HttpRetryException extends IOException {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getLocation() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getReason() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int responseCode() { return 0; }
   < ---- END java signatures ---- >
 }

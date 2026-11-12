@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class SQLException extends Exception {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 7898;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,27 @@ class SQLException extends Exception {
   String javaKind = "class";
   String javaSuper = "java.lang.Exception";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+
+  << SQLState, vendor error code, and the chained next exception. >>
+  String SQLState = null;
+  int vendorCode;
+  SQLException nextException = null;
+  String getSQLState() { return SQLState; }
+  int getErrorCode() { return vendorCode; }
+  void setSQLState(String s) { SQLState = s; }
+  void setErrorCode(int c) { vendorCode = c; }
+  SQLException getNextException() { return this.nextException; }
+  void setNextException(SQLException ex) {
+    if (this.nextException == null) { this.nextException = ex; return; }
+    SQLException cur = this.nextException;
+    while (cur.getNextException() != null) { cur = cur.getNextException(); }
+    cur.setNextException(ex);
+  }
+  << The Java constructors of the Throwable pattern, with their exact
+     signatures (constructor overload resolution, syntax 3.0). >>
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -98,13 +120,5 @@ class SQLException extends Exception {
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
   public Any iterator() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int getErrorCode() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getSQLState() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any getNextException() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void setNextException(Any ex) { }
   < ---- END java signatures ---- >
 }

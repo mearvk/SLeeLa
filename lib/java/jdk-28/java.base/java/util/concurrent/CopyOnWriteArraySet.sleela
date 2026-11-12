@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
-class CopyOnWriteArraySet extends AbstractSet {
+class CopyOnWriteArraySet<E> extends AbstractSet {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 2808;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,344 @@ class CopyOnWriteArraySet extends AbstractSet {
   String javaKind = "class";
   String javaSuper = "java.util.AbstractSet";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.concurrent.CopyOnWriteArraySet members (procedural implementation in SLeeLa) ---- >
+  << Thread-safe (VM lock 30), insertion ordered, snapshot iterators.
+     java.util.concurrent.CopyOnWriteArraySet over Any elements: an insertion-ordered hash table of keys (a
+     valid HashSet order, and exactly the LinkedHashSet contract). Elements
+     match by SLeeLa value equality. iterator() is a snapshot. >>
+  CopyOnWriteArraySet() { hashInit(8); }
+
+  int size() { return count; }
+  boolean isEmpty() { return count == 0; }
+  boolean add(Any e) {
+    if (hasKey(e)) { return false; }
+    putEntry(e, true);
+    return true;
+  }
+  boolean contains(Any o) { return hasKey(o); }
+  boolean remove(Any o) {
+    if (!hasKey(o)) { return false; }
+    removeEntry(o);
+    return true;
+  }
+  void clear() { clearEntries(); }
+  Any[] toArray() { return liveKeys(); }
+  Iterator iterator() { return new Iterator(liveKeys()); }
+  boolean addAll(Any c) {
+    Any[] xs = elementsOf(c);
+    boolean changed = false;
+    int i = 0;
+    while (i < arrayLength(xs)) { if (add(xs[i])) { changed = true; } i = i + 1; }
+    return changed;
+  }
+  boolean containsAll(Any c) {
+    Any[] xs = elementsOf(c);
+    int i = 0;
+    while (i < arrayLength(xs)) { if (!contains(xs[i])) { return false; } i = i + 1; }
+    return true;
+  }
+  boolean removeAll(Any c) {
+    Any[] xs = elementsOf(c);
+    boolean changed = false;
+    int i = 0;
+    while (i < arrayLength(xs)) { if (remove(xs[i])) { changed = true; } i = i + 1; }
+    return changed;
+  }
+  boolean retainAll(Any c) {
+    Any[] xs = elementsOf(c);
+    Any[] mine = liveKeys();
+    boolean changed = false;
+    int i = 0;
+    while (i < arrayLength(mine)) {
+      boolean hit = false;
+      int j = 0;
+      while (j < arrayLength(xs)) { if (same(xs[j], mine[i])) { hit = true; } j = j + 1; }
+      if (!hit) { remove(mine[i]); changed = true; }
+      i = i + 1;
+    }
+    return changed;
+  }
+  String toString() {
+    Any[] ks = liveKeys();
+    String sb = "[";
+    int i = 0;
+    while (i < arrayLength(ks)) {
+      if (i > 0) { sb = sb + ", "; }
+      sb = sb + textOf(ks[i]);
+      i = i + 1;
+    }
+    return sb + "]";
+  }
+  << Java Set.hashCode: the sum of the element hash codes. >>
+  int hashCode() {
+    Any[] ks = liveKeys();
+    long h = 0;
+    int i = 0;
+    while (i < arrayLength(ks)) { h = h + hashOf(ks[i]); i = i + 1; }
+    return wrap32(h);
+  }
+  boolean equals(Any o) {
+    if (!(o instanceof HashSet) && !(o instanceof TreeSet)) { return false; }
+    Any[] xs = elementsOf(o);
+    if (arrayLength(xs) != count) { return false; }
+    return containsAll(o);
+  }
+
+  << insertion-ordered hash table: entries are appended to keys/vals/hashes;
+     table[] holds entry index + 1 (0 = empty, -1 = deleted) with linear probing >>
+  Any[] keys;
+  Any[] vals;
+  int[] hashes;
+  boolean[] live;
+  int[] table;
+  int used;
+  int count;
+  int modCount;
+  << New arrays hold null until written, so int/boolean tables are cleared
+     explicitly to the Java defaults. >>
+  int[] zeros(int n) {
+    int[] a = new int[n];
+    int i = 0;
+    while (i < n) { a[i] = 0; i = i + 1; }
+    return a;
+  }
+  boolean[] falses(int n) {
+    boolean[] a = new boolean[n];
+    int i = 0;
+    while (i < n) { a[i] = false; i = i + 1; }
+    return a;
+  }
+  void hashInit(int capacity) {
+    int c = 16;
+    while (c < capacity * 2) { c = c * 2; }
+    this.keys = new Any[c / 2];
+    this.vals = new Any[c / 2];
+    this.hashes = zeros(c / 2);
+    this.live = falses(c / 2);
+    this.table = zeros(c);
+    this.used = 0;
+    this.count = 0;
+    this.modCount = 0;
+    this.gcSlot = 0;
+    this.utfOps = 0;
+  }
+  int spread(int h) {
+    long v = h;
+    if (v < 0) { v = v + 4294967296; }
+    return (int) (v % 2147483647);
+  }
+  << Entry index of key, or -1. >>
+  int findEntry(Any key, int h) {
+    int cap = arrayLength(this.table);
+    int i = spread(h) % cap;
+    int probes = 0;
+    while (probes < cap) {
+      int t = this.table[i];
+      if (t == 0) { return -1; }
+      if (t > 0) {
+        int e = t - 1;
+        if (this.hashes[e] == h && same(this.keys[e], key)) { return e; }
+      }
+      i = (i + 1) % cap;
+      probes = probes + 1;
+    }
+    return -1;
+  }
+  void rehash(int newCap) {
+    Any[] ok = this.keys;
+    Any[] ov = this.vals;
+    int[] oh = this.hashes;
+    boolean[] ol = this.live;
+    int ou = used;
+    this.keys = new Any[newCap / 2];
+    this.vals = new Any[newCap / 2];
+    this.hashes = zeros(newCap / 2);
+    this.live = falses(newCap / 2);
+    this.table = zeros(newCap);
+    used = 0;
+    int j = 0;
+    while (j < ou) {
+      if (ol[j]) { appendEntry(ok[j], ov[j], oh[j]); }
+      j = j + 1;
+    }
+  }
+  void appendEntry(Any key, Any value, int h) {
+    int e = used;
+    this.keys[e] = key;
+    this.vals[e] = value;
+    this.hashes[e] = h;
+    this.live[e] = true;
+    used = used + 1;
+    int cap = arrayLength(this.table);
+    int i = spread(h) % cap;
+    while (this.table[i] > 0) { i = (i + 1) % cap; }
+    this.table[i] = e + 1;
+  }
+  << Insert or replace; returns the previous value (null when absent). >>
+  Any putEntry(Any key, Any value) { lock(30); Any r = putEntryRaw(key, value); unlock(30); return r; }
+  Any putEntryRaw(Any key, Any value) {
+    int h = hashOf(key);
+    int e = findEntry(key, h);
+    if (e >= 0) {
+      Any old = this.vals[e];
+      this.vals[e] = value;
+      return old;
+    }
+    if (used + 1 > arrayLength(this.keys)) {
+      int cap = arrayLength(this.table);
+      if (count * 2 >= arrayLength(this.keys)) { cap = cap * 2; }
+      rehash(cap);
+    }
+    appendEntry(key, value, h);
+    count = count + 1;
+    modCount = modCount + 1;
+    return null;
+  }
+  Any removeEntry(Any key) { lock(30); Any r = removeEntryRaw(key); unlock(30); return r; }
+  Any removeEntryRaw(Any key) {
+    int h = hashOf(key);
+    int cap = arrayLength(this.table);
+    int i = spread(h) % cap;
+    int probes = 0;
+    while (probes < cap) {
+      int t = this.table[i];
+      if (t == 0) { return null; }
+      if (t > 0) {
+        int e = t - 1;
+        if (this.hashes[e] == h && same(this.keys[e], key)) {
+          Any old = this.vals[e];
+          this.table[i] = -1;
+          this.live[e] = false;
+          this.keys[e] = null;
+          this.vals[e] = null;
+          count = count - 1;
+          modCount = modCount + 1;
+          return old;
+        }
+      }
+      i = (i + 1) % cap;
+      probes = probes + 1;
+    }
+    return null;
+  }
+  boolean hasKey(Any key) { return findEntry(key, hashOf(key)) >= 0; }
+  Any valueFor(Any key) {
+    int e = findEntry(key, hashOf(key));
+    if (e < 0) { return null; }
+    return this.vals[e];
+  }
+  void clearEntries() { hashInit(8); }
+  Any[] liveKeys() {
+    Any[] out = new Any[count];
+    int k = 0;
+    int j = 0;
+    while (j < used) { if (this.live[j]) { out[k] = this.keys[j]; k = k + 1; } j = j + 1; }
+    return out;
+  }
+  Any[] liveValues() {
+    Any[] out = new Any[count];
+    int k = 0;
+    int j = 0;
+    while (j < used) { if (this.live[j]) { out[k] = this.vals[j]; k = k + 1; } j = j + 1; }
+    return out;
+  }
+
+  < value semantics shared by the collections (hash, equality, natural order) >
+  int gcSlot;
+  int utfOps;
+  << Periodic short-term GC hint: Java UTF-16 String handles used for hashing
+     and ordering are reclaimed by the collector, not on scope exit. >>
+  void utfTick() {
+    utfOps = utfOps + 1;
+    if (utfOps % 512 == 0) { gcSlot = gc 40; }
+  }
+  << Java hashCode of a value: int and long as Integer/Long.hashCode, boolean
+     as Boolean.hashCode, double as Double.hashCode, everything else as the
+     Java String hash of its SLeeLa text (a String hashes exactly as in Java;
+     an object hashes by its identity text). >>
+  int hashOf(Any o) {
+    if (o == null) { return 0; }
+    if (o instanceof boolean) { if ((boolean) o) { return 1231; } return 1237; }
+    if (o instanceof int) { return wrapHash((long) ((int) o)); }
+    if (o instanceof long) { return wrapHash((long) o); }
+    if (o instanceof double) { Double d = new Double((double) o); return d.hashCode(); }
+    utfTick();
+    return javaStringHashCode(javaStringFromUtf8("" + o));
+  }
+  int wrapHash(long v) {
+    long hi = v / 4294967296;
+    long lo = v % 4294967296;
+    if (lo < 0) { lo = lo + 4294967296; hi = hi - 1; }
+    if (hi < 0) { hi = hi + 4294967296; }
+    long h = lo;
+    if (hi != 0) {
+      long r = 0;
+      long bit = 1;
+      long x = lo;
+      long y = hi;
+      int i = 0;
+      while (i < 32) {
+        if ((x % 2) != (y % 2)) { r = r + bit; }
+        x = x / 2; y = y / 2; bit = bit * 2; i = i + 1;
+      }
+      h = r;
+    }
+    if (h > 2147483647) { h = h - 4294967296; }
+    return (int) h;
+  }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  << Value equality: numbers and strings by value, objects by identity. >>
+  boolean same(Any a, Any b) { return a == b; }
+  << Natural ordering (Comparable): numbers numerically, everything else by
+     Java String.compareTo of the SLeeLa text. >>
+  int compareValues(Any a, Any b) {
+    if (a == null || b == null) { throw new NullPointerException(null); }
+    boolean an = a instanceof int || a instanceof long || a instanceof double;
+    boolean bn = b instanceof int || b instanceof long || b instanceof double;
+    if (an && bn) {
+      double x = (double) a;
+      double y = (double) b;
+      if (x < y) { return -1; }
+      if (x > y) { return 1; }
+      return 0;
+    }
+    if (a instanceof boolean && b instanceof boolean) {
+      boolean p = (boolean) a;
+      boolean q = (boolean) b;
+      if (p == q) { return 0; }
+      if (p) { return 1; }
+      return -1;
+    }
+    utfTick();
+    return javaStringCompareTo(javaStringFromUtf8("" + a), javaStringFromUtf8("" + b));
+  }
+  String textOf(Any o) {
+    if (o == null) { return "null"; }
+    return "" + o;
+  }
+  << Elements of any collection implemented in this package, as an array. >>
+  Any[] elementsOf(Any c) {
+    if (c == null) { throw new NullPointerException(null); }
+    if (c instanceof ArrayList) { ArrayList x1 = (ArrayList) c; return x1.toArray(); }
+    if (c instanceof LinkedList) { LinkedList x2 = (LinkedList) c; return x2.toArray(); }
+    if (c instanceof ArrayDeque) { ArrayDeque x3 = (ArrayDeque) c; return x3.toArray(); }
+    if (c instanceof Vector) { Vector x4 = (Vector) c; return x4.toArray(); }
+    if (c instanceof HashSet) { HashSet x5 = (HashSet) c; return x5.toArray(); }
+    if (c instanceof TreeSet) { TreeSet x6 = (TreeSet) c; return x6.toArray(); }
+    if (c instanceof PriorityQueue) { PriorityQueue x7 = (PriorityQueue) c; return x7.toArray(); }
+    throw new UnsupportedOperationException("not a java.util collection implemented in SLeeLa");
+  }
+  IndexOutOfBoundsException outOfBounds(int index, int length) {
+    return new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + length);
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -77,8 +416,6 @@ class CopyOnWriteArraySet extends AbstractSet {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public CopyOnWriteArraySet() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
   public CopyOnWriteArraySet(Any c) { super("constructor"); }
   < ---- END java constructors ---- >
 
@@ -88,40 +425,14 @@ class CopyOnWriteArraySet extends AbstractSet {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean remove(Any o) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int size() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(Any o) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void clear() { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isEmpty() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean add(Any e) { return false; }
   @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
   public Any[] toArray(Any[] a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any[] toArray() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any iterator() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(Any o) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any spliterator() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean addAll(Any c) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void forEach(Any action) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean removeIf(Any filter) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean removeAll(Any c) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean retainAll(Any c) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsAll(Any c) { return false; }
   < ---- END java signatures ---- >
 }

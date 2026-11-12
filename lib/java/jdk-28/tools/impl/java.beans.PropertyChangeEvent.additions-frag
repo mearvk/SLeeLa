@@ -1,0 +1,22 @@
+  < ---- java.beans.PropertyChangeEvent: propagation id and toString ---- >
+  << Written from the JDK 28 API specification. The propagation id is reserved
+     by Java for future use; it is kept as given. toString is the class name,
+     then [propertyName=..; oldValue=..; newValue=..; propagationId=..;
+     source=..]. >>
+  Any heldPropagationId;
+  public java.lang.Object getPropagationId() { return this.heldPropagationId; }
+  public void setPropagationId(java.lang.Object propagationId) { this.heldPropagationId = propagationId; }
+  public java.lang.String toString() {
+    return "java.beans.PropertyChangeEvent[propertyName=" + this.heldPropertyName + "; oldValue=" + this.heldOldValue
+      + "; newValue=" + this.heldNewValue + "; propagationId=" + this.heldPropagationId + "; source=" + this.heldSource + "]";
+  }
+  << The constructor sets the source as EventObject does (a null source throws
+     IllegalArgumentException) and records the property name and both values. >>
+  public PropertyChangeEvent(java.lang.Object source, java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) {
+    if (source == null) { throw new IllegalArgumentException("null source"); }
+    this.heldSource = source;
+    this.heldPropertyName = propertyName;
+    this.heldOldValue = oldValue;
+    this.heldNewValue = newValue;
+    this.heldPropagationId = null;
+  }

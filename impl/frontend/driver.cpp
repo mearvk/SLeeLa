@@ -2159,12 +2159,74 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
             const bool jdk28Selected=std::find(preferredRoots.begin(),preferredRoots.end(),std::string("java/jdk-28"))!=preferredRoots.end();
             const bool onlyJdk28=jdk28Selected && hasJdk28Match;
             if(onlyJdk28) hasNonDocumentationMatch=false;
+            // JDK 28 simple-name clashes (java.util.Vector vs
+            // jdk.incubator.vector.Vector, java.util.List vs java.awt.List, ...
+            // 102 names in all) are resolved by a fixed rank instead of being
+            // reported as ambiguous, the way a Java source file that imports
+            // java.util.* means java.util.List (SLEELA.syntax 43, Java container
+            // rule; lib/java/jdk-28/README.md "Name clashes"):
+            //   1. the longest matching import root wins, so
+            //      `import java.jdk-28.java.desktop;` selects java.awt.List;
+            //   2. module: java.base, then other java.* modules, then jdk.*;
+            //   3. package: java.lang, java.util, java.io, java.nio, java.net,
+            //      java.time, java.math, java.text, then the rest;
+            //   4. fewer path segments, then the path in byte order.
+            std::vector<const sleela::library::Symbol*> jdk28Candidates;
             for(const auto& symbol:index.symbols()){
                 if(symbol.name!=name) continue;
                 if(onlyJdk28 && !isJdk28Reference(symbol)) continue;
                 if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
                 if(hasNonDocumentationMatch && isReferenceUnit(symbol)) continue;
                 if(!hasNonDocumentationMatch && hasJdk28Match && !isJdk28Reference(symbol)) continue;
+                if(isJdk28Reference(symbol)) jdk28Candidates.push_back(&symbol);
+            }
+            const sleela::library::Symbol* jdk28Choice=nullptr;
+            if(jdk28Candidates.size()>1){
+                auto rootLen=[&](const sleela::library::Symbol& s){
+                    size_t best=0;
+                    for(const auto& root:preferredRoots)
+                        if(s.path.rfind(root + "/",0)==0) best=std::max(best,root.size());
+                    return best;
+                };
+                auto moduleTier=[](const std::string& path){
+                    const std::string rest=path.substr(std::string("java/jdk-28/").size());
+                    if(rest.rfind("java.base/",0)==0) return 0;
+                    if(rest.rfind("java.",0)==0) return 1;
+                    return 2;
+                };
+                auto packageRank=[](const std::string& path){
+                    static const char* order[]={"/java/lang/","/java/util/","/java/io/","/java/nio/","/java/net/","/java/time/","/java/math/","/java/text/"};
+                    const std::string rest=path.substr(std::string("java/jdk-28/").size());
+                    const size_t slash=rest.find('/');
+                    const std::string pkg=slash==std::string::npos?rest:rest.substr(slash);
+                    for(int i=0;i<8;++i){
+                        const std::string o=order[i];
+                        if(pkg.rfind(o,0)==0 && pkg.find('/',o.size())==std::string::npos) return i;
+                    }
+                    return 8;
+                };
+                auto depth=[](const std::string& path){ return (int)std::count(path.begin(),path.end(),'/'); };
+                auto better=[&](const sleela::library::Symbol* a,const sleela::library::Symbol* b){
+                    const size_t ra=rootLen(*a), rb=rootLen(*b);
+                    if(ra!=rb) return ra>rb;
+                    const int ma=moduleTier(a->path), mb=moduleTier(b->path);
+                    if(ma!=mb) return ma<mb;
+                    const int pa=packageRank(a->path), pb=packageRank(b->path);
+                    if(pa!=pb) return pa<pb;
+                    const int da=depth(a->path), db=depth(b->path);
+                    if(da!=db) return da<db;
+                    return a->path<b->path;
+                };
+                jdk28Choice=jdk28Candidates[0];
+                for(const auto* c:jdk28Candidates) if(better(c,jdk28Choice)) jdk28Choice=c;
+            }
+            for(const auto& symbol:index.symbols()){
+                if(symbol.name!=name) continue;
+                if(onlyJdk28 && !isJdk28Reference(symbol)) continue;
+                if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
+                if(hasNonDocumentationMatch && isReferenceUnit(symbol)) continue;
+                if(!hasNonDocumentationMatch && hasJdk28Match && !isJdk28Reference(symbol)) continue;
+                if(jdk28Choice && isJdk28Reference(symbol) && &symbol!=jdk28Choice) continue;
                 if(match && match->path!=symbol.path){
                     // Tie-break: a unit directly inside a preferred root (import
                     // java.jdk-25.java.util;) beats one in a sub-package of it

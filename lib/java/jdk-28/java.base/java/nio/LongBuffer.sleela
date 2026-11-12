@@ -6,13 +6,14 @@
    The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
 #sleela 3.0
 material;
+import java.jdk-28;
 
 class LongBuffer extends Buffer {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
      and the OpenJDK community. >>
-  String metaVersion = "1.0.0";
+  String metaVersion = "1.1.0";
   int metaId = 5666;
   String metaAuthor = "Oracle / OpenJDK";
   String metaDate = "2026-11-12";
@@ -56,6 +57,265 @@ class LongBuffer extends Buffer {
   String javaKind = "class";
   String javaSuper = "java.nio.Buffer";
 
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.nio.LongBuffer members (procedural implementation in SLeeLa) ---- >
+  << java.nio.LongBuffer as a heap buffer over a long[] with position, limit,
+     capacity, mark, an array offset (for slices) and a read-only flag. The
+     members that Java inherits from java.nio.Buffer (position(), limit(),
+     capacity(), remaining(), hasRemaining(), isReadOnly()) are written here
+     too, because the compiler has no base-typed dispatch yet. Messages match
+     the JDK. hashCode, order(), the view and byte-order forms and the
+     ByteBuffer-backed buffers keep their exact-signature stubs. >>
+  long[] hb = null;
+  int bpos = 0;
+  int blim = 0;
+  int bcap = 0;
+  int bmark = 0 - 1;
+  int boff = 0;
+  boolean bro = false;
+
+  public static LongBuffer allocate(int capacity) {
+    if (capacity < 0) { throw new IllegalArgumentException("capacity < 0: (" + capacity + " < 0)"); }
+    LongBuffer b = new LongBuffer();
+    b.hb = new long[capacity];
+    b.bcap = capacity;
+    b.blim = capacity;
+    return b;
+  }
+  public static LongBuffer wrap(long[] array) {
+    LongBuffer b = new LongBuffer();
+    b.hb = array;
+    b.bcap = arrayLength(array);
+    b.blim = b.bcap;
+    return b;
+  }
+  public static LongBuffer wrap(long[] array, int offset, int length) {
+    int n = arrayLength(array);
+    if (offset < 0 || length < 0 || offset > n || length > n - offset) {
+      throw new IndexOutOfBoundsException("Range [" + offset + ", " + offset + " + " + length + ") out of bounds for length " + n);
+    }
+    LongBuffer b = new LongBuffer();
+    b.hb = array;
+    b.bcap = n;
+    b.bpos = offset;
+    b.blim = offset + length;
+    return b;
+  }
+
+  public final int position() { return this.bpos; }
+  public final int limit() { return this.blim; }
+  public final int capacity() { return this.bcap; }
+  public final int remaining() {
+    int r = this.blim - this.bpos;
+    if (r < 0) { return 0; }
+    return r;
+  }
+  public final boolean hasRemaining() { return this.bpos < this.blim; }
+  public boolean isReadOnly() { return this.bro; }
+  public boolean isDirect() { return false; }
+  public final boolean hasArray() { return !this.bro; }
+  public final int arrayOffset() {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    return this.boff;
+  }
+  public final long[] array() {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    return this.hb;
+  }
+
+  public final LongBuffer position(int newPosition) {
+    if (newPosition > this.blim || newPosition < 0) {
+      if (newPosition < 0) { throw new IllegalArgumentException("newPosition < 0: (" + newPosition + " < 0)"); }
+      throw new IllegalArgumentException("newPosition > limit: (" + newPosition + " > " + this.blim + ")");
+    }
+    if (this.bmark > newPosition) { this.bmark = 0 - 1; }
+    this.bpos = newPosition;
+    return this;
+  }
+  public final LongBuffer limit(int newLimit) {
+    if (newLimit > this.bcap || newLimit < 0) {
+      if (newLimit < 0) { throw new IllegalArgumentException("newLimit < 0: (" + newLimit + " < 0)"); }
+      throw new IllegalArgumentException("newLimit > capacity: (" + newLimit + " > " + this.bcap + ")");
+    }
+    this.blim = newLimit;
+    if (this.bpos > newLimit) { this.bpos = newLimit; }
+    if (this.bmark > newLimit) { this.bmark = 0 - 1; }
+    return this;
+  }
+  public final LongBuffer mark() {
+    this.bmark = this.bpos;
+    return this;
+  }
+  public final LongBuffer reset() {
+    if (this.bmark < 0) { throw new InvalidMarkException(); }
+    this.bpos = this.bmark;
+    return this;
+  }
+  public final LongBuffer clear() {
+    this.bpos = 0;
+    this.blim = this.bcap;
+    this.bmark = 0 - 1;
+    return this;
+  }
+  public final LongBuffer flip() {
+    this.blim = this.bpos;
+    this.bpos = 0;
+    this.bmark = 0 - 1;
+    return this;
+  }
+  public final LongBuffer rewind() {
+    this.bpos = 0;
+    this.bmark = 0 - 1;
+    return this;
+  }
+
+  public long get() {
+    if (this.bpos >= this.blim) { throw new BufferUnderflowException(); }
+    long v = this.hb[this.boff + this.bpos];
+    this.bpos = this.bpos + 1;
+    return v;
+  }
+  public long get(int index) {
+    checkIdx(index);
+    return this.hb[this.boff + index];
+  }
+  public LongBuffer put(long x) {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    if (this.bpos >= this.blim) { throw new BufferOverflowException(); }
+    this.hb[this.boff + this.bpos] = x;
+    this.bpos = this.bpos + 1;
+    return this;
+  }
+  public LongBuffer put(int index, long x) {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    checkIdx(index);
+    this.hb[this.boff + index] = x;
+    return this;
+  }
+  public LongBuffer get(long[] dst, int offset, int length) {
+    int n = arrayLength(dst);
+    if (offset < 0 || length < 0 || offset > n || length > n - offset) {
+      throw new IndexOutOfBoundsException("Range [" + offset + ", " + offset + " + " + length + ") out of bounds for length " + n);
+    }
+    if (length > remaining()) { throw new BufferUnderflowException(); }
+    int i = 0;
+    while (i < length) { dst[offset + i] = this.hb[this.boff + this.bpos + i]; i = i + 1; }
+    this.bpos = this.bpos + length;
+    return this;
+  }
+  public LongBuffer get(long[] dst) { return get(dst, 0, arrayLength(dst)); }
+  public LongBuffer put(long[] src, int offset, int length) {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    int n = arrayLength(src);
+    if (offset < 0 || length < 0 || offset > n || length > n - offset) {
+      throw new IndexOutOfBoundsException("Range [" + offset + ", " + offset + " + " + length + ") out of bounds for length " + n);
+    }
+    if (length > remaining()) { throw new BufferOverflowException(); }
+    int i = 0;
+    while (i < length) { this.hb[this.boff + this.bpos + i] = src[offset + i]; i = i + 1; }
+    this.bpos = this.bpos + length;
+    return this;
+  }
+  public final LongBuffer put(long[] src) { return put(src, 0, arrayLength(src)); }
+  public LongBuffer put(LongBuffer src) {
+    if (src == this) { throw new IllegalArgumentException("The source buffer is this buffer"); }
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    int n = src.remaining();
+    if (n > remaining()) { throw new BufferOverflowException(); }
+    int i = 0;
+    while (i < n) { this.hb[this.boff + this.bpos + i] = src.hb[src.boff + src.bpos + i]; i = i + 1; }
+    this.bpos = this.bpos + n;
+    src.bpos = src.bpos + n;
+    return this;
+  }
+
+  public LongBuffer compact() {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    int n = remaining();
+    int i = 0;
+    while (i < n) { this.hb[this.boff + i] = this.hb[this.boff + this.bpos + i]; i = i + 1; }
+    this.bpos = n;
+    this.blim = this.bcap;
+    this.bmark = 0 - 1;
+    return this;
+  }
+  public LongBuffer slice() {
+    LongBuffer b = new LongBuffer();
+    b.hb = this.hb;
+    b.boff = this.boff + this.bpos;
+    b.bcap = remaining();
+    b.blim = b.bcap;
+    b.bro = this.bro;
+    return b;
+  }
+  public LongBuffer duplicate() {
+    LongBuffer b = new LongBuffer();
+    b.hb = this.hb;
+    b.boff = this.boff;
+    b.bcap = this.bcap;
+    b.blim = this.blim;
+    b.bpos = this.bpos;
+    b.bmark = this.bmark;
+    b.bro = this.bro;
+    return b;
+  }
+  public LongBuffer asReadOnlyBuffer() {
+    LongBuffer b = duplicate();
+    b.bro = true;
+    return b;
+  }
+
+  public boolean equals(java.lang.Object ob) {
+    if (ob == null) { return false; }
+    LongBuffer that = (LongBuffer) ob;
+    if (that == this) { return true; }
+    int n = remaining();
+    if (n != that.remaining()) { return false; }
+    int i = 0;
+    while (i < n) {
+      if (this.hb[this.boff + this.bpos + i] != that.hb[that.boff + that.bpos + i]) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+  public int compareTo(LongBuffer that) {
+    int n = remaining();
+    int m = that.remaining();
+    int k = n;
+    if (m < k) { k = m; }
+    int i = 0;
+    while (i < k) {
+      long a = this.hb[this.boff + this.bpos + i];
+      long b = that.hb[that.boff + that.bpos + i];
+      if (a < b) { return 0 - 1; }
+      if (a > b) { return 1; }
+      i = i + 1;
+    }
+    return n - m;
+  }
+  public int mismatch(LongBuffer that) {
+    int n = remaining();
+    int m = that.remaining();
+    int k = n;
+    if (m < k) { k = m; }
+    int i = 0;
+    while (i < k) {
+      if (this.hb[this.boff + this.bpos + i] != that.hb[that.boff + that.bpos + i]) { return i; }
+      i = i + 1;
+    }
+    if (n == m) { return 0 - 1; }
+    return k;
+  }
+  public java.lang.String toString() {
+    String cls = "java.nio.HeapLongBuffer";
+    if (this.bro) { cls = cls + "R"; }
+    return cls + "[pos=" + this.bpos + " lim=" + this.blim + " cap=" + this.bcap + "]";
+  }
+  void checkIdx(int index) {
+    if (index < 0 || index >= this.blim) { throw new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + this.blim); }
+  }
+  < ---- END java implementation ---- >
+
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -82,81 +342,17 @@ class LongBuffer extends Buffer {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public final Any reset() { return null; }
-  @throwable("java.lang.AbstractMethodError")
-  public long get() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any get(int index, long[] dst) { return null; }
-  @throwable("java.lang.AbstractMethodError")
-  public long get(int index) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any get(long[] dst, int offset, int length) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any get(long[] dst) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any get(int index, long[] dst, int offset, int length) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any put(Any src) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any put(long[] src, int offset, int length) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any put(long[] src) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any put(int index, Any src, int offset, int length) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any put(int index, long[] src) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any put(int index, long[] src, int offset, int length) { return null; }
-  @throwable("java.lang.AbstractMethodError")
-  public Any put(int index, long l) { return null; }
-  @throwable("java.lang.AbstractMethodError")
-  public Any put(long l) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(Any ob) { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(Any that) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any clear() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any wrap(long[] array) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any wrap(long[] array, int offset, int length) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any position(int newPosition) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int mismatch(Any that) { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any limit(int newLimit) { return null; }
-  @throwable("java.lang.AbstractMethodError")
-  public boolean isDirect() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final boolean hasArray() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final long[] array() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final int arrayOffset() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any mark() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any flip() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final Any rewind() { return null; }
-  @throwable("java.lang.AbstractMethodError")
-  public Any slice() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public Any slice(int index, int length) { return null; }
-  @throwable("java.lang.AbstractMethodError")
-  public Any duplicate() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public static Any allocate(int capacity) { return null; }
-  @throwable("java.lang.AbstractMethodError")
-  public Any asReadOnlyBuffer() { return null; }
-  @throwable("java.lang.AbstractMethodError")
-  public Any compact() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public Any order() { return null; }
   < ---- END java signatures ---- >
