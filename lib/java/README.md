@@ -13,7 +13,7 @@ The `/lib/java` library family defines the SLeeLa boundary for Java interoperabi
 
 ## Native Library Inventory
 
-The current repository inventory contains **10,254 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
+The current repository inventory contains **10,255 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
 
 The collection is a native SLeeLa source surface for Java-facing language and framework concepts. It is intended to give the SLeeLa Compiler, Loader, SST, and Nordshrift a stable source-level vocabulary for Java packages, classes, procedures, interfaces, runtime concepts, and interoperability boundaries.
 
@@ -32,7 +32,7 @@ python3 lib/java/validate.py
 The validator checks:
 
 - the `/lib/java` directory exists;
-- the Git-indexed file count matches the recorded **10,254-file** baseline;
+- the Git-indexed file count matches the recorded **10,255-file** baseline;
 - manifest schema and root metadata are present;
 - the expected Java interoperability boundary is documented;
 - required source-role metadata is present; and
@@ -88,7 +88,7 @@ A Java-facing source unit should identify, where applicable:
 5. **Loader visibility** — how the Compiler and Loader discover the symbol.
 6. **Compatibility surface** — the Java/JDK version or API family represented.
 
-This makes the Java relationship traceable instead of leaving the 10,254-file collection as an opaque directory.
+This makes the Java relationship traceable instead of leaving the 10,255-file collection as an opaque directory.
 
 ## JDK 28 Framework Bindings
 
@@ -310,6 +310,25 @@ version. The source smoke program now checks conversion of an ASCII character,
 a supplementary character, and a non-ASCII BMP character, then exercises
 UTF-16 length and code-point access on the result.
 
+
+### java.lang.String instance methods (SLEELA.syntax section 41)
+
+A method called on a String value, `s.length()` or `"x".equals(y)`, binds to
+the static method of the same name in
+`implementations/java/lang/JavaStringMethods.sleela`, the receiver passed as
+the first argument. The class is loaded only when a program calls a method on
+a String. It covers the core `java.lang.String` instance surface: `length`,
+`isEmpty`, `charAt`, `codePointAt`, `codePointBefore`, `codePointCount`,
+`toCharArray`, `substring`, `subSequence`, every `indexOf` / `lastIndexOf`
+form, `contains`, `startsWith`, `endsWith`, `regionMatches`, `equals`,
+`contentEquals`, `equalsIgnoreCase`, `compareTo`, `compareToIgnoreCase`,
+`hashCode`, `concat`, `repeat`, both `replace` forms, `toUpperCase`,
+`toLowerCase`, `trim`, `strip`, `stripLeading`, `stripTrailing`, `isBlank`,
+`intern` and `toString`. Exceptions carry the JDK 25 messages. Not yet
+provided: the regex members (`matches`, `split`, `replaceAll`,
+`replaceFirst`), the Locale forms, streams (`chars`, `codePoints`, `lines`),
+the final-sigma and Turkish dotted-i case rules, and the static members of
+`java.lang.String` (`valueOf`, `join`, `format`).
 
 ### Runtime conversion back to UTF-8, and run-time code units
 

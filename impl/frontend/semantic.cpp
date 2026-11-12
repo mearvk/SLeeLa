@@ -57,6 +57,8 @@ static Type typeOf(const std::string& n){
  if(n=="float"){return{Kind::Double,{},{}};}
  if(n=="bool"||n=="boolean"){return{Kind::Bool,{},{}};}
  if(n=="string"||n=="String"){return{Kind::String,{},{}};}
+ // The Java UTF-16 String kind, a String at type-check time (instanceof utf16).
+ if(n=="utf16"){return{Kind::String,{},{}};}
   if(n=="Any"){return{Kind::Any,"Any",{}};}
  return{Kind::Struct,n,{}};
 }
@@ -120,6 +122,7 @@ class Analyzer{
    return known(t.substr(0,generic));
   }
   if(t=="char"||t=="byte"||t=="short"||t=="float") return true;
+  if(t=="utf16") return true;
   return t=="void"||t=="int"||t=="long"||t=="int64"||t=="int128"||unsignedTypeName(t)||signedWideTypeName(t)||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||t=="Any"||structs.count(t)||classNames.count(t);
  }
  Type tn(const std::string&t)const{return known(t)?typeOf(t):Type{Kind::Error,t};}
@@ -729,6 +732,26 @@ class Analyzer{
   Type rcv=expr(*m.receiver);
   static const std::set<std::string> v={"connect","enable","send","thatch","consume","latch","closeWithReceipt","close","reception"};
   if(v.count(m.method)){if(m.method=="consume"||m.method=="latch"||m.method=="close"||m.method=="reception"||m.method=="closeWithReceipt"){if(!m.args.empty())err("Munction "+m.method+"() takes no arguments");}else{if(m.args.size()!=1)err("Munction "+m.method+"() takes exactly one argument");if(!m.args.empty()){Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction "+m.method+" argument must be string");}}return m.method=="closeWithReceipt"?Type{Kind::String,{}}:rcv;}
+  // Java String instance methods (syntax 3.0): `s.length()`, `"x".equals(y)`.
+  // The call binds to the static JavaStringMethods.<method>(String self, ...)
+  // in /lib, overloads resolved with the receiver as the first argument.
+  if(rcv.kind==Kind::String && !(syntax<SyntaxVersion{3,0})){
+   if(!classNames.count("JavaStringMethods")){
+    r.needsStringMethods=true;
+    err("method '"+m.method+"' on a String needs the java.lang.String method library (JavaStringMethods), which is not loaded");
+    return{Kind::Error,{}};
+   }
+   auto sm=methods.find("JavaStringMethods::"+m.method);
+   if(sm==methods.end()){err("String has no method '"+m.method+"'");return{Kind::Error,{}};}
+   std::vector<Type> at=argTypesOf(m.args);
+   at.insert(at.begin(),Type{Kind::String,{},{}});
+   const MethodSig* pk=pickOverload(sm->first,at); m.resolved=pk->m; m.stringReceiver=true;
+   const Method& target=*pk->m;
+   if(!target.isStatic){err("String method '"+m.method+"' must be a static JavaStringMethods method");return{Kind::Error,{}};}
+   if(at.size()!=target.params.size())err("String method '"+m.method+"' expects "+std::to_string(target.params.size()>0?target.params.size()-1:0)+" argument(s), got "+std::to_string(m.args.size()));
+   for(size_t i=1;i<at.size()&&i<target.params.size();++i){Type g=at[i],w=tn(target.params[i].type);if(!assignable(w,g))err("argument to String method '"+m.method+"' has type "+nameOf(g)+", expected "+nameOf(w));}
+   return tn(target.retType);
+  }
   if(rcv.kind!=Kind::Struct){err("method '"+m.method+"' requires a class or struct receiver");return{Kind::Error,{}};}
   auto it=methods.find(rcv.name+"::"+m.method);if(it==methods.end()){err("class '"+rcv.name+"' has no method '"+m.method+"'");return{Kind::Error,{}};}
   std::vector<Type> at=argTypesOf(m.args);

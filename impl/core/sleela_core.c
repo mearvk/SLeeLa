@@ -3748,9 +3748,14 @@ static SLResult run_thread(SLThread* t) {
                 if(!matches) TERR("checked cast failed: runtime class/struct type does not match target");
             } else {
                 int targetTag=-in.a-1;
-                if(targetTag<SL_NULL || targetTag>SL_INT128)
+                if(targetTag<SL_NULL || targetTag>SL_UTF16)
                     TERR("invalid checked-cast type descriptor");
-                if(value.type==SL_NULL && (targetTag==SL_STR || targetTag==SL_ARRAY)) {
+                if(value.type==SL_NULL && (targetTag==SL_STR || targetTag==SL_ARRAY || targetTag==SL_UTF16)) {
+                    PUSH(value); break;
+                }
+                /* A Java UTF-16 String is a String: a cast to the String type
+                 * accepts either runtime kind (legacy SL_STR or SL_UTF16). */
+                if(targetTag==SL_STR && value.type==SL_UTF16) {
                     PUSH(value); break;
                 }
                 /* int128 casts widen an integer to the 128-bit representation
@@ -3804,7 +3809,7 @@ static SLResult run_thread(SLThread* t) {
                 }
             } else {
                 int targetTag=-in.a-1;
-                if(targetTag<SL_NULL || targetTag>SL_INT128)
+                if(targetTag<SL_NULL || targetTag>SL_UTF16)
                     TERR("invalid instanceof type descriptor");
                 matches=((int)value.type==targetTag);
             }

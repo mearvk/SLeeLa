@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 1.02 adds `lib/java/implementations/java/lang/JavaStringMethods.sleela`, the `java.lang.String` instance methods for built-in Strings (SLEELA.syntax section 41; sources 13373, symbols 13457).
+>
 > Revision 1.01 closes the short-side gap left by revision 1.00: `SLShortBook.isLongTerm`/`qtyLongTerm` (`lib/advantage/trading-actions-on-verb/SLShortBook.sleela`) mirror `SLLongBook`'s wording and behavior exactly, and `SLTermPotency`'s three methods (`termPotencyBp`, `agePotencyBp`, `atLeastHalfLongTerm`) are each overloaded for both book types (SLeeLa 3.0 overload resolution by argument type). Two new courseware entries (5-6) exercise the short-side overloads, including a direct check that the short-side readings exactly match the long-side readings at identical lot structure and ages -- the two overloads of each method are proven consistent with each other, not just independently correct -- plus the short-side counterpart of the empty-book/invalid-day and FIFO-cover entries. Gate `test-suites/test-long-term-potencies.sh` now covers 6 entries. Two new source units (counts: 13370 to **13372** sources; 13454 to **13456** total records; 121 packages).
 
 > Revision 1.00 adds `long-term-potencies/` to the advantage courseware (`lib/advantage/learner-vs-professional/courseware/long-term-potencies/`): `SLTermPotency` defines, precisely, two basis-point ratios over an existing `SLLongBook` -- term potency (the share of held units that have crossed the long-term threshold) and age potency (how close the weighted-average age is to the oldest lot's age) -- read-only, inventing no new fact the book does not already expose via `isLongTerm`/`qtyLongTerm`/`oldestAge`/`weightedAgeFloor`. States plainly that `SLShortBook` has no `isLongTerm`/`qtyLongTerm` yet, so term potency has no short-side counterpart. Four entries: a book aging past the threshold (with the buy/check order deliberately interleaved so no query is asked about a day before the book's own last action day, a real ordering bug caught while authoring entry 1), a FIFO sell removing a lot's whole contribution to both potencies, honest -1/-2 answers for an empty book and an invalid day, and ten randomly generated portfolios cross-checked against an independent Python model. Gate: `test-suites/test-long-term-potencies.sh` (4 entries). Five new source units (counts: 13365 to **13370** sources; 13449 to **13454** total records; 121 packages).
@@ -75,9 +77,9 @@
 
 **Revision:** 0.82  
 **Packages:** 121  
-**SLeeLa source units:** 13372  
+**SLeeLa source units:** 13373  
 **Module-facade symbols:** 84  
-**Total symbol records:** 13456  
+**Total symbol records:** 13457  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

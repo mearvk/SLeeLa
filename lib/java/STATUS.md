@@ -189,7 +189,7 @@ never taken for a constant.
 | No virtual dispatch through a base-typed receiver | Overrides are not reached through a supertype; exceptions compose messages at construction | Compiler/VM: virtual dispatch |
 | Base-class field initializers don't run for subclasses; `super(...)` not lowered | Generated constructors initialize inherited state explicitly | Compiler |
 | Only `catch (Any e)`; no `finally` | Callers test with `instanceof` | VM exception milestone |
-| ~~String bridge missing~~ **done** (`javaStringToUtf8`, `javaStringFromCodeUnit`, opcodes 183-184, ABI 1.8) | Text classes carry any Unicode text; only NUL and unpaired surrogates cannot become a plain String (catchable `UnsupportedOperationException`); `java.lang.String` itself still waits for instance-method syntax on built-in strings | Rewrite `java.lang.String` on the bridge |
+| ~~String bridge missing~~ **done** (`javaStringToUtf8`, `javaStringFromCodeUnit`, opcodes 183-184, ABI 1.8) | Text classes carry any Unicode text; only NUL and unpaired surrogates cannot become a plain String (catchable `UnsupportedOperationException`); `java.lang.String` instance methods work on built-in strings (`JavaStringMethods`, SLEELA.syntax section 41) | Regex members and the static `String.valueOf`/`join`/`format` |
 | No lambdas or functional interfaces | No `Comparator` sorting, `compute`/`merge`, streams | Compiler |
 | No bitwise operators or `L`/`f` literal suffixes | Bit operations done arithmetically | Compiler |
 | Nested types (`Map.Entry`) live in `Outer.Inner.sleela` files the loader does not resolve | Not reachable by name | Loader |

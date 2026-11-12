@@ -2929,3 +2929,34 @@ Each overload compiles to its own function. A call resolved by name alone,
 outside semantic analysis, binds to the last declaration of that name, which
 is the behavior before this section. Below syntax 3.0, a class that declares
 more than one constructor is rejected, as before.
+
+## 41. Syntax 3.0 — method calls on String values
+
+This section is **normative**. A method may be called on any expression of
+type `String` (a variable, a field, a literal, a call result, or a chain):
+`s.length()`, `"x".equals(y)`, `name.trim().toLowerCase()`.
+
+1. **Binding.** The call binds to the static method of the same name in the
+   library class `JavaStringMethods` (`/lib/java/implementations/java/lang/`),
+   with the receiver passed as the first argument (`self`). Overloads are
+   resolved by section 40, the receiver counting as the first argument, so
+   `s.indexOf(111)` and `s.indexOf("o")` select different declarations.
+2. **Precedence.** The Munction fluent verbs (`connect`, `enable`, `send`,
+   `thatch`, `consume`, `latch`, `closeWithReceipt`, `close`, `reception`)
+   keep their meaning on every receiver and are not String methods.
+3. **Loading.** `JavaStringMethods` is loaded only when a program calls a
+   method on a String; semantic analysis detects it and the library loader
+   adds the class. A name the class does not declare is the error
+   `String has no method '<name>'`.
+4. **Both String kinds.** A method accepts either runtime kind (a legacy plain
+   String or a VM-owned Java UTF-16 String). Indexes count UTF-16 code units,
+   and a String result is a plain String whenever the text has one (no NUL,
+   no unpaired surrogate).
+5. **Below syntax 3.0** a method call on a String remains the error
+   `method '<name>' requires a class or struct receiver`.
+
+The type name `utf16` denotes the VM-owned Java UTF-16 String kind: it
+type-checks as `String`, and `x instanceof utf16` is true only for that kind
+(`x instanceof string` only for a plain String). A cast to `String` accepts a
+value of either kind, and `String` in a cast or `instanceof` always denotes
+the built-in type, never a library class of that name.

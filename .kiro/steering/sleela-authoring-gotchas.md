@@ -70,10 +70,14 @@ syntax 1.0 – 3.0**. Keep new/edited `.sleela` code within these rules.
 4. **int / int is integer division.** `held / total` of two `int`s truncates;
    write `(held * 1.0) / total` when a fraction is intended.
 
-5. **`String` has no methods.** The built-in `String` exposes only `+`
-   concatenation and `==` / `!=`: no `length`, `charAt`, `substring`, `trim`.
-   Text that needs parsing (for example rate-limit header values) must be
-   parsed by the caller or the C layer, and passed in as numbers.
+5. **`String` methods need `#sleela 3.0`.** At syntax 3.0 a String has the
+   `java.lang.String` instance methods (`s.length()`, `s.substring(1)`,
+   `s.trim()`, `s.indexOf("x")`, ...; SLEELA.syntax section 41), bound to
+   `/lib/java/implementations/java/lang/JavaStringMethods.sleela` and loaded
+   on demand. Below 3.0 the built-in `String` exposes only `+` concatenation
+   and `==` / `!=`, so text that needs parsing must be parsed by the caller or
+   the C layer and passed in as numbers. Regex members (`split`, `matches`,
+   `replaceAll`) are not provided yet.
 
 ## Comment placement (reminder)
 

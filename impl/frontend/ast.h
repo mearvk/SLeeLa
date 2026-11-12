@@ -102,7 +102,7 @@ struct Method;
 // `resolved` is the overload chosen by semantic analysis (syntax 3.0 overload
 // resolution); the compiler binds the call to exactly that declaration.
 struct Call:Expr{std::string callee;std::vector<ExprP> args;mutable const Method* resolved=nullptr;explicit Call(std::string c):callee(std::move(c)){}};
-struct MethodCall:Expr{ExprP receiver;std::string method;std::vector<ExprP> args;mutable const Method* resolved=nullptr;MethodCall(ExprP r,std::string m):receiver(std::move(r)),method(std::move(m)){}};
+struct MethodCall:Expr{ExprP receiver;std::string method;std::vector<ExprP> args;mutable const Method* resolved=nullptr;/* set by semantic analysis when the receiver is a String: the call is the static JavaStringMethods.<method>(receiver, args...) recorded in resolved */mutable bool stringReceiver=false;MethodCall(ExprP r,std::string m):receiver(std::move(r)),method(std::move(m)){}};
 struct NewExpr:Expr{std::string typeName;std::vector<ExprP> args;mutable const Method* resolved=nullptr;explicit NewExpr(std::string t):typeName(std::move(t)){}};
 // `ran::<word>` -- the System / already-Ran-in-RAM reference. The `ran::`
 // qualifier names a system meaning explicitly, so ordinary words (mem, gc, ...)

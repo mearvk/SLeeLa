@@ -1719,12 +1719,12 @@ static void runKeywordSupporterPass(const std::string& path, sleela::Program& pr
     sleela::frontend::materializeSupporterFolders(records, docsRoot); // best-effort
 }
 static bool parseSource(const std::string&path,std::string&src,sleela::Program&prog,sleela::VersionResolution&version){if(!readFile(path,src)){std::cerr<<"sleelvac: cannot open '"<<path<<"'\n";return false;}if(!checkSyntaxVersion(path,src))return false;version=sleela::resolveSyntaxVersion(src);try{sleela::Lexer lexer(src);auto tokens=lexer.tokenize();sleela::Parser parser(std::move(tokens));prog=parser.parseProgram();sleela::Program validation;validation.imports=prog.imports;validation.imports.erase(std::remove_if(validation.imports.begin(),validation.imports.end(),[](const std::string& module){return !sleela::native::isModuleAvailable(module);}),validation.imports.end());sleela::native::validateImports(validation);runKeywordSupporterPass(path,prog);return true;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return false;}}
-static bool loadReferencedLibraryUnits(const std::string& source, sleela::Program& program);
+static bool loadReferencedLibraryUnits(const std::string& source, sleela::Program& program, const sleela::SyntaxVersion& syntax);
 static int checkFile(const std::string&path){
     if(verifyBeforeExecution(fs::current_path()))return 1;
     std::string src;sleela::Program prog;sleela::VersionResolution v;
     if(!parseSource(path,src,prog,v))return 1;
-    if(!loadReferencedLibraryUnits(src,prog))return 1;
+    if(!loadReferencedLibraryUnits(src,prog,v.declared))return 1;
     try{
         sleela::SemanticResult sem=sleela::analyzeSemantics(prog,v.declared);
         for(const auto&w:sem.warnings) std::cerr<<"sleelvac: "<<path<<": warning: "<<w<<"\n";
@@ -1733,7 +1733,7 @@ static int checkFile(const std::string&path){
     }catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return 1;}
     std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;
 }
-static int compileFile(const std::string&sourcePath,const std::string&outputPath){sleela::rails::brandSleelvac(std::cout,1);if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";if(railsBannersEnabled())sleela::rails::complete(std::cerr,"compiled "+sourcePath+" -> "+outputPath);
+static int compileFile(const std::string&sourcePath,const std::string&outputPath){sleela::rails::brandSleelvac(std::cout,1);if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog,syntax.declared))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";if(railsBannersEnabled())sleela::rails::complete(std::cerr,"compiled "+sourcePath+" -> "+outputPath);
     // Author-marked documents (syntax 2.4) get a second, originated source
     // document alongside the artifact: every member located, originated, and
     // branded with a therefore-brander. Clean and united.
@@ -1957,14 +1957,14 @@ static int runJavaClass(const std::string&classpath,const std::string&mainClass,
     args.insert(args.end(),programArgs.begin(),programArgs.end());
     return runJavaApplication(args,"class "+mainClass+" (classpath "+(classpath.empty()?".":classpath)+")");
 }
-static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
+static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog,syntax.declared))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
 // Combine several parsed Programs into one compilation unit by concatenating
 // their classes/structs/imports (and merging document annotations). This lets a
 // user split a program across multiple .sleela files passed at run/compile time;
 // downstream stages already treat the whole Program as one unit and will report
 // any duplicate struct/class/method across files.
 static void mergeProgram(sleela::Program& into,sleela::Program&& from);
-static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::Program& program){
+static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::Program& program,const sleela::SyntaxVersion& syntax){
     // Source libraries are compiled into the same Program/artifact as the client.
     // This deliberately resolves only class-like unit names referenced by source,
     // rather than blindly parsing every file under /lib (which can introduce
@@ -2037,8 +2037,13 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
         return output;
     };
     // Resolve in passes so a loaded unit can pull in its own referenced units.
+    // Names the loader must resolve even though no source text mentions them:
+    // a method called on a String binds to class JavaStringMethods (syntax 3.0),
+    // which only type analysis can detect. Each seed is tried once.
+    std::set<std::string> seeds;
+    bool stringMethodsProbed=false;
     for(size_t pass=0;pass<64;++pass){
-        std::set<std::string> names;
+        std::set<std::string> names(seeds.begin(),seeds.end());
         const std::string scanSource = dependencyScanText(source);
         for(std::sregex_iterator it(scanSource.begin(),scanSource.end(),identifier),end;it!=end;++it){
             const std::string name=it->str();
@@ -2132,7 +2137,19 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
                 return false;
             }
         }
-        if(!changed) return true;
+        if(!changed){
+            // Converged. A program that calls methods on Strings needs the
+            // java.lang.String method library; ask the analyzer once.
+            bool haveStringMethods=false;
+            for(const auto& cls:program.classes) if(cls.name=="JavaStringMethods") { haveStringMethods=true; break; }
+            if(!stringMethodsProbed && !haveStringMethods && !(syntax<sleela::SyntaxVersion{3,0})){
+                stringMethodsProbed=true;
+                bool needed=false;
+                try{ needed=sleela::analyzeSemantics(program,syntax,false).needsStringMethods; }catch(const std::exception&){ needed=false; }
+                if(needed){ seeds.insert("JavaStringMethods"); continue; }
+            }
+            return true;
+        }
     }
     std::cerr<<"sleelvac: library dependency expansion exceeded 64 passes; possible dependency cycle.\n";
     return false;
@@ -2155,7 +2172,7 @@ static int runSourceMulti(const std::vector<std::string>& paths){
     for(const auto& path:paths){
         std::string src; sleela::Program prog; sleela::VersionResolution syntax;
         if(!parseSource(path,src,prog,syntax))return 1;
-        if(!loadReferencedLibraryUnits(src,prog))return 1;
+        if(!loadReferencedLibraryUnits(src,prog,syntax.declared))return 1;
         if(!haveSyntax){firstSyntax=syntax;haveSyntax=true;}
         mergeProgram(merged,std::move(prog));
     }
@@ -2171,7 +2188,7 @@ static int compileFilesMulti(const std::vector<std::string>& paths,const std::st
     for(const auto& path:paths){
         std::string src; sleela::Program prog; sleela::VersionResolution syntax;
         if(!parseSource(path,src,prog,syntax))return 1;
-        if(!loadReferencedLibraryUnits(src,prog))return 1;
+        if(!loadReferencedLibraryUnits(src,prog,syntax.declared))return 1;
         if(!haveSyntax){firstSyntax=syntax;haveSyntax=true;}
         mergeProgram(merged,std::move(prog));
     }
@@ -2316,7 +2333,7 @@ static int aotCmd(int argc,char**argv){
     // library units). Keep this before subset reporting/emission so invalid
     // source can never be advertised as eligible or translated.
     try{
-        if(!loadReferencedLibraryUnits(src,prog))return 1;
+        if(!loadReferencedLibraryUnits(src,prog,ver.declared))return 1;
         sleela::SemanticResult sem=sleela::analyzeSemantics(prog,ver.declared,false);
         for(const auto&w:sem.warnings)
             std::cerr<<"sleela aot: "<<file<<": warning: "<<w<<"\n";

@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 13372
+library-source-files: 13373
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 13456
+total-symbol-records: 13457
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -7145,6 +7145,7 @@ java	jvms-6.sleela	lib/java/early_access/jdk28/docs/specs/jvms/jvms-6.sleela	sou
 java	output.sleela	lib/java/early_access/jdk28/docs/specs/serialization/output.sleela	source
 java	value-objects-jvms.sleela	lib/java/early_access/jdk28/docs/specs/value-objects-jvms.sleela	source
 java	JavaObjectIdentity.sleela	lib/java/implementations/java/lang/JavaObjectIdentity.sleela	source
+java	JavaStringMethods.sleela	lib/java/implementations/java/lang/JavaStringMethods.sleela	source
 java	JavaStringValue.sleela	lib/java/implementations/java/lang/JavaStringValue.sleela	source
 java	JavaText.sleela	lib/java/implementations/java/lang/JavaText.sleela	source
 java	Applet.sleela	lib/java/java/applet/Applet.sleela	source

@@ -900,10 +900,9 @@ ExprP Parser::parsePrimary(){
             std::string member=expect(Tok::Ident,"method name after '::'").text;
             base=std::make_unique<MethodReferenceExpr>(std::move(base),member);
         }
-        if(accept(Tok::Dot)&&check(Tok::Ident)&&peek(1).kind==Tok::Ident&&peek(2).kind==Tok::Dot){
-            // reserved for future qualified class literals; do not consume ambiguous forms.
-            i_--;
-        }
+        // A call result may be followed by member access or a method call
+        // (`word().trim()`); parsePostfix consumes the rest. (A former lookahead
+        // here used accept(), which ate the '.' whenever its condition failed.)
         return parsePostfix(std::move(base));
     }
     default:error(std::string("unexpected token '")+(t.text.empty()?tokName(t.kind):t.text)+"' in expression");

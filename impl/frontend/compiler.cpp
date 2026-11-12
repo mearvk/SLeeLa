@@ -280,6 +280,12 @@ private:
     int fieldSlot(const std::string& name) const { auto it=fieldGlobal_.find(currentClass_+"::"+name); if(it!=fieldGlobal_.end())return it->second;it=fieldGlobal_.find(name);return it==fieldGlobal_.end()?-1:it->second; }
     int instanceFieldOffset(const std::string& name) const { auto it=structLayout_.find(currentClass_);if(it==structLayout_.end())return -1;auto f=it->second.fieldOffset.find(name);return f==it->second.fieldOffset.end()?-1:f->second; }
     int runtimeTypeOperand(const std::string& name) const {
+        // String is always the built-in type, as in the type checker (typeOf):
+        // the generated /lib/java envelope class java.lang.String must not
+        // turn a (String) cast or instanceof into a class check. utf16 names the
+        // VM-owned Java UTF-16 String kind (syntax 3.0, `x instanceof utf16`).
+        if(name=="String" || name=="string") return -(SL_STR+1);
+        if(name=="utf16") return -(SL_UTF16+1);
         auto st=structLayout_.find(name);
         if(st!=structLayout_.end()) return st->second.typeIndex;
         // The base-2 signed series int32..int16777216 (syntax 2.7) rides the
@@ -300,7 +306,6 @@ private:
         if(name=="double" || name=="float") return -(SL_DOUBLE+1);
         if(name=="char" || name=="byte" || name=="short") return -(SL_INT+1);
         if(name=="bool" || name=="boolean") return -(SL_BOOL+1);
-        if(name=="String" || name=="string") return -(SL_STR+1);
         if(name.size()>=2 && name.compare(name.size()-2,2,"[]")==0) return -(SL_ARRAY+1);
         throw std::runtime_error("Semantic error: no runtime type descriptor for '"+name+"'");
     }
@@ -714,6 +719,8 @@ private:
         // method's return type when it names a known struct/class. Empty when
         // the return type is scalar or the method cannot be resolved.
         if(auto mc=dynamic_cast<const MethodCall*>(e)){
+            // A String-receiver call returns its JavaStringMethods method's type.
+            if(mc->stringReceiver && mc->resolved){ const std::string& ret=mc->resolved->retType; return structLayout_.count(ret)?ret:std::string(); }
             std::string rt;
             bool viaClassName=false;
             { std::string sc; if(isStaticClassRef(mc->receiver.get(),sc)){ rt=sc; viaClassName=true; } }
@@ -943,6 +950,19 @@ private:
                 emitArgsCoerced(mc.args,sm);emit(OP_CALL,fi);return;
                 }
             } } }
+        // Java String instance method (semantic analysis bound it to the static
+        // JavaStringMethods.<m>(String self, ...)): push the receiver as the
+        // first argument, then the arguments, and call the resolved function.
+        if(mc.stringReceiver){
+            int fi=resolvedIndex(mc.resolved);
+            if(fi<0)throw std::runtime_error("Semantic error: String method '"+m+"' did not resolve to a JavaStringMethods function");
+            const Method* sm=methods_[fi].method;
+            if((int)mc.args.size()+1!=(int)sm->params.size())throw std::runtime_error("Semantic error: String method '"+m+"' expects "+std::to_string(sm->params.size()>0?sm->params.size()-1:0)+" argument(s), got "+std::to_string(mc.args.size()));
+            emitExpr(mc.receiver.get());
+            for(size_t i=0;i<mc.args.size();++i){ emitExpr(mc.args[i].get()); coerceToDeclared(sm->params[i+1].type); }
+            emit(OP_CALL,fi);
+            return;
+        }
         const std::string receiverType=exprStructType(mc.receiver.get());
         auto target=funcIndex_.find(receiverType+"::"+m);
         int fidx = target==funcIndex_.end() ? -1 : target->second;

@@ -263,7 +263,7 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "e95618ece4fd457d460faa354dc2a816f22017d7d9260f077cfcdf0a60dec780"
+      "sha256": "ad73393e952c89bab77b2bd3b365fafbe5f8ecdcfb2a7d58c8fc1873baf85645"
     },
     {
       "path": "impl/core/sleela_core.h",
@@ -543,7 +543,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "e489d5ecfb31554d6d94b5291ac13f66ff5eb38dfb28720cf7d89e890651ace5"
+      "sha256": "973afa9faa96c1c762ea841c71e6f96c8548a4c63d766f111adc14d0807bcb05"
     },
     {
       "path": "impl/frontend/common_rails_banner.hpp",
@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "806d2a5f88681a44c55e7d6b4abd71f0fda63b81af37e298620a52ff8d3cacf2"
+      "sha256": "53f0228b2644ea4be53bf214caefc5a462b41db924b841363ab5ffc080d555cd"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -567,7 +567,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "6e3e7eced387d72f404c3f7e06baf2dec97b39b9a77df3d47bb6f538e4b6624c"
+      "sha256": "35be555f2031720872aea273278ed049226bbd36b598d4a75e2f6d801d916f9e"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -647,7 +647,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "a7e99165ab5fbdcf1f5eb74992ae2dfd84fe72c71b73a921a878dab413e1891c"
+      "sha256": "c8bb4cb926e1228ea7e452e5dc1cb405e05bec8356d930f7cee572219546e4fb"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -663,11 +663,11 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "ce384874917a5cc6bf372a6c1c4121817fbb7b626c80679f779a166b872c681b"
+      "sha256": "b00e71f21b4179fa8f3b9444aa02d5c317db274af46d4a91b2d812dcdfeebb64"
     },
     {
       "path": "impl/frontend/semantic.h",
-      "sha256": "58e8be6b084f0dc6506f041f41ee8c4bfafeefed682d74ef2bb3834bd230cbcc"
+      "sha256": "ec332cfe3029761cfc4406dbfb06a1e7192d55f2906f029ea0cea7cc99728185"
     },
     {
       "path": "impl/frontend/unsigned_integer.h",
@@ -29764,6 +29764,10 @@
     {
       "path": "lib/java/implementations/java/lang/JavaObjectIdentity.sleela",
       "sha256": "dc3854daa33ccc1b041e76d6cf0d84060f969b327817ffcb5e0aa844787383c9"
+    },
+    {
+      "path": "lib/java/implementations/java/lang/JavaStringMethods.sleela",
+      "sha256": "ae0d6d7b04cafa523fcbe59d62eb0c2f431aaf93dc4d0c0450876588bb1e5cc9"
     },
     {
       "path": "lib/java/implementations/java/lang/JavaStringValue.sleela",
