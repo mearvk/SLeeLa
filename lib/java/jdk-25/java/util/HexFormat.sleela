@@ -1,0 +1,362 @@
+<< lib/java/java/util/HexFormat.sleela
+   SLeeLa Java 28 source envelope.
+   Definition: SLeeLa source declaration for the Java type java.util.HexFormat.
+   Java behavior is supplied through the SLeeLa Java conformance boundary. >>
+#sleela 3.0
+material;
+
+class HexFormat {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 4371;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-29";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "OpenJDK (JDK 28 API)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  String javaType = "java.util.HexFormat";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.HexFormat members (procedural implementation in SLeeLa) ---- >
+  << java.util.HexFormat as an immutable value: case, delimiter, prefix and
+     suffix, each with-method returning a new HexFormat. Output Strings are
+     plain SLeeLa Strings built by concatenation. The long, int, short, byte
+     and char forms of toHexDigits(value) cannot be told apart by the VM, so
+     only toHexDigits(value, digits) is implemented; the one-argument form
+     throws and says why.  The
+     parse side reads its text as UTF-16 code units (through javaStringFromUtf8)
+     and follows the JDK algorithm: no-delimiter strings must have an even
+     length, delimited strings must match the prefix, digits, suffix and
+     delimiter stride exactly, and digit values wrap to 32 or 64 bits as Java
+     does. Error messages quote the offending text for ASCII characters (via
+     JavaText). The Appendable forms of formatHex and hashCode keep their
+     stubs. >>
+  boolean upper = false;
+  String delim = "";
+  String pfx = "";
+  String sfx = "";
+
+  public static HexFormat of() { return new HexFormat(); }
+  public static HexFormat ofDelimiter(java.lang.String delimiter) {
+    if (delimiter == null) { throw new NullPointerException(); }
+    HexFormat f = new HexFormat();
+    f.delim = delimiter;
+    return f;
+  }
+  HexFormat copyOf() {
+    HexFormat f = new HexFormat();
+    f.upper = this.upper;
+    f.delim = this.delim;
+    f.pfx = this.pfx;
+    f.sfx = this.sfx;
+    return f;
+  }
+  public HexFormat withDelimiter(java.lang.String delimiter) {
+    if (delimiter == null) { throw new NullPointerException(); }
+    HexFormat f = copyOf();
+    f.delim = delimiter;
+    return f;
+  }
+  public HexFormat withPrefix(java.lang.String prefix) {
+    if (prefix == null) { throw new NullPointerException(); }
+    HexFormat f = copyOf();
+    f.pfx = prefix;
+    return f;
+  }
+  public HexFormat withSuffix(java.lang.String suffix) {
+    if (suffix == null) { throw new NullPointerException(); }
+    HexFormat f = copyOf();
+    f.sfx = suffix;
+    return f;
+  }
+  public HexFormat withUpperCase() {
+    HexFormat f = copyOf();
+    f.upper = true;
+    return f;
+  }
+  public HexFormat withLowerCase() {
+    HexFormat f = copyOf();
+    f.upper = false;
+    return f;
+  }
+  public java.lang.String delimiter() { return this.delim; }
+  public java.lang.String prefix() { return this.pfx; }
+  public java.lang.String suffix() { return this.sfx; }
+  public boolean isUpperCase() { return this.upper; }
+  public boolean equals(java.lang.Object o) {
+    if (o == null) { return false; }
+    HexFormat other = (HexFormat) o;
+    return other.upper == this.upper && other.delim == this.delim && other.pfx == this.pfx && other.sfx == this.sfx;
+  }
+
+  public java.lang.String formatHex(byte[] bytes) { return formatHex(bytes, 0, arrayLength(bytes)); }
+  public java.lang.String formatHex(byte[] bytes, int fromIndex, int toIndex) {
+    int n = arrayLength(bytes);
+    if (fromIndex < 0 || fromIndex > toIndex || toIndex > n) {
+      throw new IndexOutOfBoundsException("Range [" + fromIndex + ", " + toIndex + ") out of bounds for length " + n);
+    }
+    String out = "";
+    int i = fromIndex;
+    while (i < toIndex) {
+      if (i > fromIndex) { out = out + this.delim; }
+      out = out + this.pfx + byteDigits(bytes[i]) + this.sfx;
+      i = i + 1;
+    }
+    return out;
+  }
+  public java.lang.String toHexDigits(long value) {
+    throw new UnsupportedOperationException("java.util.HexFormat.toHexDigits(value): the VM cannot tell long, int, short, byte and char apart, so the digit count is unknown; use toHexDigits(value, digits)");
+  }
+  public java.lang.String toHexDigits(long value, int digits) {
+    if (digits < 0 || digits > 16) { throw new IllegalArgumentException("number of digits: " + digits); }
+    String out = "";
+    int i = digits - 1;
+    while (i >= 0) {
+      long p = 1;
+      int k = 0;
+      while (k < i) { p = p * 16; k = k + 1; }
+      long nib = hfmod(hfdiv(value, p), 16);
+      out = out + hexDigit((int) nib);
+      i = i - 1;
+    }
+    return out;
+  }
+  public char toHighHexDigit(int value) { return hexCode(hfmod(value, 256) / 16); }
+  public char toLowHexDigit(int value) { return hexCode(hfmod(value, 256) % 16); }
+
+  public static boolean isHexDigit(int ch) {
+    return (ch >= 48 && ch <= 57) || (ch >= 65 && ch <= 70) || (ch >= 97 && ch <= 102);
+  }
+  public static int fromHexDigit(int ch) {
+    if (ch >= 48 && ch <= 57) { return ch - 48; }
+    if (ch >= 65 && ch <= 70) { return ch - 55; }
+    if (ch >= 97 && ch <= 102) { return ch - 87; }
+    if (ch > 0 && ch <= 65535 && (ch < 55296 || ch > 57343)) { throw new NumberFormatException("not a hexadecimal digit: \"" + JavaText.charString(ch) + "\" = " + ch); }
+    throw new NumberFormatException("not a hexadecimal digit: code " + ch);
+  }
+
+
+  < ---- parse side ---- >
+  public byte[] parseHex(java.lang.CharSequence string) {
+    int[] u = unitsOf(string);
+    return parseUnits(u, 0, arrayLength(u));
+  }
+  public byte[] parseHex(java.lang.CharSequence string, int fromIndex, int toIndex) {
+    int[] u = unitsOf(string);
+    checkFromTo(fromIndex, toIndex, arrayLength(u));
+    return parseUnits(u, fromIndex, toIndex);
+  }
+  public byte[] parseHex(char[] chars, int fromIndex, int toIndex) {
+    checkFromTo(fromIndex, toIndex, arrayLength(chars));
+    int[] u = new int[arrayLength(chars)];
+    int i = 0;
+    while (i < arrayLength(chars)) { u[i] = chars[i]; i = i + 1; }
+    return parseUnits(u, fromIndex, toIndex);
+  }
+  public static int fromHexDigits(java.lang.CharSequence string) {
+    int[] u = unitsOf(string);
+    return fromHexDigitsRange(u, 0, arrayLength(u));
+  }
+  public static int fromHexDigits(java.lang.CharSequence string, int fromIndex, int toIndex) {
+    int[] u = unitsOf(string);
+    checkFromTo(fromIndex, toIndex, arrayLength(u));
+    return fromHexDigitsRange(u, fromIndex, toIndex);
+  }
+  public static long fromHexDigitsToLong(java.lang.CharSequence string) {
+    int[] u = unitsOf(string);
+    return fromHexDigitsToLongRange(u, 0, arrayLength(u));
+  }
+  public static long fromHexDigitsToLong(java.lang.CharSequence string, int fromIndex, int toIndex) {
+    int[] u = unitsOf(string);
+    checkFromTo(fromIndex, toIndex, arrayLength(u));
+    return fromHexDigitsToLongRange(u, fromIndex, toIndex);
+  }
+
+  < parse helpers, over UTF-16 code units >
+  static int[] unitsOf(Any text) {
+    if (text == null) { throw new NullPointerException(); }
+    String u = javaStringFromUtf8("" + text);
+    int n = javaStringLength(u);
+    int[] out = new int[n];
+    int i = 0;
+    while (i < n) { out[i] = javaStringCharAt(u, i); i = i + 1; }
+    return out;
+  }
+  static void checkFromTo(int fromIndex, int toIndex, int n) {
+    if (fromIndex < 0 || fromIndex > toIndex || toIndex > n) {
+      throw new IndexOutOfBoundsException("Range [" + fromIndex + ", " + toIndex + ") out of bounds for length " + n);
+    }
+  }
+  static int fromHexDigitsRange(int[] u, int from, int to) {
+    int len = to - from;
+    if (len > 8) { throw new IllegalArgumentException("string length greater than 8: " + len); }
+    long v = 0;
+    int i = from;
+    while (i < to) { v = v * 16 + fromHexDigit(u[i]); i = i + 1; }
+    if (v >= 2147483648) { v = v - 4294967296; }
+    return (int) v;
+  }
+  static long fromHexDigitsToLongRange(int[] u, int from, int to) {
+    int len = to - from;
+    if (len > 16) { throw new IllegalArgumentException("string length greater than 16: " + len); }
+    long v = 0;
+    int i = from;
+    while (i < to) {
+      int d = fromHexDigit(u[i]);
+      if (v >= 576460752303423488) { v = v - 1152921504606846976; }
+      v = v * 16 + d;
+      i = i + 1;
+    }
+    return v;
+  }
+  static int pairByte(int[] u, int at) {
+    int v = fromHexDigit(u[at]) * 16 + fromHexDigit(u[at + 1]);
+    if (v > 127) { v = v - 256; }
+    return v;
+  }
+  int[] literalUnits(String s) {
+    String u = javaStringFromUtf8(s);
+    int n = javaStringLength(u);
+    int[] out = new int[n];
+    int i = 0;
+    while (i < n) { out[i] = javaStringCharAt(u, i); i = i + 1; }
+    return out;
+  }
+  void checkLiteral(int[] u, int base, int index, int[] lit, String litText) {
+    int n = arrayLength(lit);
+    int i = 0;
+    while (i < n) {
+      if (u[base + index + i] != lit[i]) {
+        String foundU = javaStringFromCodeUnits();
+        int k = 0;
+        while (k < n) { foundU = javaStringConcat(foundU, javaStringFromCodeUnit(u[base + index + k])); k = k + 1; }
+        String found = JavaText.plainIfRepresentable(foundU);
+        if (JavaText.plainBlocker(foundU) != "") { found = "(text with NUL or an unpaired surrogate)"; }
+        throw new IllegalArgumentException("found: \"" + found + "\", expected: \"" + litText + "\", index: " + index + " ch: " + u[base + index + i]);
+      }
+      i = i + 1;
+    }
+  }
+  byte[] parseUnits(int[] u, int from, int to) {
+    int len = to - from;
+    if (len == 0) { return new byte[0]; }
+    if (this.delim == "" && this.pfx == "" && this.sfx == "") {
+      if (len % 2 != 0) { throw new IllegalArgumentException("string length not even: " + len); }
+      byte[] out = new byte[len / 2];
+      int i = 0;
+      while (i < len / 2) { out[i] = pairByte(u, from + 2 * i); i = i + 1; }
+      return out;
+    }
+    int[] p = literalUnits(this.pfx);
+    int[] s = literalUnits(this.sfx);
+    int[] dl = literalUnits(this.delim);
+    int valueChars = arrayLength(p) + 2 + arrayLength(s);
+    int stride = valueChars + arrayLength(dl);
+    if (len < valueChars || (len - valueChars) % stride != 0) {
+      throw new IllegalArgumentException("extra or missing delimiters or values consisting of prefix, two hexadecimal digits, and suffix");
+    }
+    checkLiteral(u, from, 0, p, this.pfx);
+    checkLiteral(u, from, len - arrayLength(s), s, this.sfx);
+    String betweenText = this.sfx + this.delim + this.pfx;
+    int[] between = literalUnits(betweenText);
+    int count = (len - valueChars) / stride + 1;
+    byte[] out = new byte[count];
+    int i = 0;
+    int offset = arrayLength(p);
+    while (i < count - 1) {
+      out[i] = pairByte(u, from + offset);
+      checkLiteral(u, from, offset + 2, between, betweenText);
+      i = i + 1;
+      offset = offset + 2 + arrayLength(between);
+    }
+    out[i] = pairByte(u, from + offset);
+    return out;
+  }
+
+  < ---- helpers ---- >
+  String byteDigits(int b) {
+    long v = hfmod(b, 256);
+    return hexDigit((int) (v / 16)) + hexDigit((int) (v % 16));
+  }
+  String hexDigit(int v) {
+    if (v < 10) { return "" + v; }
+    String s = "a";
+    if (v == 10) { s = "a"; }
+    if (v == 11) { s = "b"; }
+    if (v == 12) { s = "c"; }
+    if (v == 13) { s = "d"; }
+    if (v == 14) { s = "e"; }
+    if (v == 15) { s = "f"; }
+    if (this.upper) {
+      if (v == 10) { s = "A"; }
+      if (v == 11) { s = "B"; }
+      if (v == 12) { s = "C"; }
+      if (v == 13) { s = "D"; }
+      if (v == 14) { s = "E"; }
+      if (v == 15) { s = "F"; }
+    }
+    return s;
+  }
+  int hexCode(long v) {
+    if (v < 10) { return (int) v + 48; }
+    if (this.upper) { return (int) v + 55; }
+    return (int) v + 87;
+  }
+  static long hfdiv(long a, long b) {
+    long q = a / b;
+    if ((a % b != 0) && ((a < 0) != (b < 0))) { q = q - 1; }
+    return q;
+  }
+  static long hfmod(long a, long b) { return a - hfdiv(a, b) * b; }
+  < ---- END java implementation ---- >
+
+  < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
+  << Exact Java signatures (from the JDK). A method body that is not yet
+     SLeeLa logic throws: AbstractMethodError for an abstract method, else
+     UnsupportedOperationException naming the Java signature. >>
+  public java.lang.String toString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toString()"); }
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.hashCode()"); }
+  public <A extends java.lang.Appendable> A toHexDigits(A out, byte value) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.toHexDigits(A, byte)"); }
+  public <A extends java.lang.Appendable> A formatHex(A out, byte[] bytes) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.formatHex(A, byte[])"); }
+  public <A extends java.lang.Appendable> A formatHex(A out, byte[] bytes, int fromIndex, int toIndex) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.HexFormat.formatHex(A, byte[], int, int)"); }
+  < ---- END java signatures ---- >
+}

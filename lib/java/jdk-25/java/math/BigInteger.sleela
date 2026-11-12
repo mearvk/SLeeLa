@@ -1,0 +1,853 @@
+<< lib/java/java/math/BigInteger.sleela
+   SLeeLa Java SE/JDK 28 source implementation.
+   Definition: Native SLeeLa source declaration for the Java type java.math.BigInteger.
+   
+   The Java class name is retained exactly. The SLeeLa declaration is the source
+   contract; Java behavior is supplied only through the conformance boundary. >>
+#sleela 3.0
+material;
+import java.java.lang;
+import java.java.math;
+
+class BigInteger extends Number {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.1.0";
+  int metaId = 1832;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-29";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "OpenJDK (JDK 28 API)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  String javaType = "java.math.BigInteger";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.math.BigInteger members (procedural implementation in SLeeLa) ---- >
+  << Immutable arbitrary-precision integers. The value is signum plus a
+     magnitude of little-endian base-1e9 limbs (trimmed; zero is signum 0
+     with one zero limb), so add/subtract/multiply/divide/sqrt run on the
+     native VM big-integer opcodes. Bitwise operations, shifts, hashCode,
+     toByteArray and doubleValue use the two-complement 32-bit word view of
+     the Java specification. The constructor is BigInteger(String) (decimal);
+     the other Java constructors are newRadix(String, int),
+     newFromBytes(byte[]), newSignMagnitude(int, byte[]) and
+     newRandomBits(int, Random). Static factories are instance methods. >>
+  int signum;
+  int[] mag;
+  BigInteger(String val) {
+    this.signum = 0;
+    this.mag = limbs(1);
+    this.nib = null;
+    this.quoOut = null;
+    this.remOut = null;
+    parseInto(val, 10);
+  }
+
+  < limb utilities >
+  int[] limbs(int n) {
+    int[] a = new int[n];
+    int i = 0;
+    while (i < n) { a[i] = 0; i = i + 1; }
+    return a;
+  }
+  int[] trimmed(int[] a, int n) {
+    int k = n;
+    if (k > arrayLength(a)) { k = arrayLength(a); }
+    while (k > 1 && a[k - 1] == 0) { k = k - 1; }
+    if (k < 1) { k = 1; }
+    if (k == arrayLength(a)) { return a; }
+    int[] r = limbs(k);
+    int i = 0;
+    while (i < k) { r[i] = a[i]; i = i + 1; }
+    return r;
+  }
+  boolean magZero(int[] a) { return arrayLength(a) == 1 && a[0] == 0; }
+  int cmpMag(int[] a, int[] b) {
+    int la = arrayLength(a);
+    int lb = arrayLength(b);
+    if (la != lb) { if (la < lb) { return -1; } return 1; }
+    int i = la - 1;
+    while (i >= 0) {
+      if (a[i] != b[i]) { if (a[i] < b[i]) { return -1; } return 1; }
+      i = i - 1;
+    }
+    return 0;
+  }
+  int[] addMag(int[] a, int[] b) {
+    int n = arrayLength(a);
+    if (arrayLength(b) > n) { n = arrayLength(b); }
+    int[] r = limbs(n + 1);
+    int k = bigadd(a, b, r);
+    return trimmed(r, k);
+  }
+  << a - b for |a| >= |b|. >>
+  int[] subMag(int[] a, int[] b) {
+    int[] r = limbs(arrayLength(a));
+    int k = bigsub(a, b, r);
+    return trimmed(r, k);
+  }
+  int[] mulMag(int[] a, int[] b) {
+    if (magZero(a) || magZero(b)) { return limbs(1); }
+    int[] r = limbs(arrayLength(a) + arrayLength(b));
+    int k = bigmul(a, b, r);
+    return trimmed(r, k);
+  }
+  int[] quoOut;
+  int[] remOut;
+  void divMag(int[] a, int[] b) {
+    if (cmpMag(a, b) < 0) { this.quoOut = limbs(1); this.remOut = a; return; }
+    int[] q = limbs(arrayLength(a));
+    int[] r = limbs(arrayLength(b));
+    bigdiv(a, b, q, r);
+    this.quoOut = trimmed(q, arrayLength(q));
+    this.remOut = trimmed(r, arrayLength(r));
+  }
+  << magnitude * small + add (small, add below 2^31), for radix parsing. >>
+  int[] mulAddSmall(int[] a, long small, long add) {
+    int n = arrayLength(a);
+    int[] r = limbs(n + 2);
+    long carry = add;
+    int i = 0;
+    while (i < n) {
+      long v = a[i];
+      v = v * small + carry;
+      r[i] = (int) (v % 1000000000);
+      carry = v / 1000000000;
+      i = i + 1;
+    }
+    while (carry > 0) { r[i] = (int) (carry % 1000000000); carry = carry / 1000000000; i = i + 1; }
+    return trimmed(r, n + 2);
+  }
+  BigInteger make(int sig, int[] m) {
+    BigInteger r = new BigInteger("0");
+    if (magZero(m)) { r.signum = 0; } else { r.signum = sig; }
+    r.mag = m;
+    return r;
+  }
+
+  < parsing >
+  void parseInto(String val, int radix) {
+    if (val == null) { throw new NullPointerException(null); }
+    if (radix < 2 || radix > 36) { throw new NumberFormatException("Radix out of range"); }
+    String u = javaStringFromUtf8(val);
+    int n = javaStringLength(u);
+    if (n == 0) { throw new NumberFormatException("Zero length BigInteger"); }
+    int i = 0;
+    int sig = 1;
+    int c0 = javaStringCharAt(u, 0);
+    if (c0 == 45 || c0 == 43) {
+      if (c0 == 45) { sig = -1; }
+      i = 1;
+      if (n == 1) { throw new NumberFormatException("Zero length BigInteger"); }
+    }
+    int j = i;
+    while (j < n) {
+      int cs = javaStringCharAt(u, j);
+      if (cs == 45 || cs == 43) { throw new NumberFormatException("Illegal embedded sign character"); }
+      j = j + 1;
+    }
+    while (i < n - 1 && javaStringCharAt(u, i) == 48) { i = i + 1; }
+    int z = i;
+    int[] m = limbs(1);
+    while (i < n) {
+      int c = javaStringCharAt(u, i);
+      int d = -1;
+      if (c >= 48 && c <= 57) { d = c - 48; }
+      if (c >= 97 && c <= 122) { d = c - 87; }
+      if (c >= 65 && c <= 90) { d = c - 55; }
+      if (d < 0 || d >= radix) { throw groupError(u, z, n, i, radix); }
+      m = mulAddSmall(m, radix, d);
+      i = i + 1;
+    }
+    this.mag = m;
+    if (magZero(m)) { this.signum = 0; } else { this.signum = sig; }
+  }
+
+  << Java parses the digits in groups of digitsPerInt(radix) characters with
+     Integer.parseInt, so a bad digit reports the group that holds it. >>
+  NumberFormatException groupError(String u, int z, int n, int bad, int radix) {
+    int dpi = digitsPerInt(radix);
+    int first = (n - z) % dpi;
+    if (first == 0) { first = dpi; }
+    int gs = z;
+    int ge = z + first;
+    if (bad >= ge) {
+      gs = ge + ((bad - ge) / dpi) * dpi;
+      ge = gs + dpi;
+    }
+    Character C = new Character(0);
+    String g = "";
+    int k = gs;
+    while (k < ge && k < n) {
+      String one = C.toStringOf(javaStringCharAt(u, k));
+      if (one == null) { one = "?"; }
+      g = g + one;
+      k = k + 1;
+    }
+    if (radix == 10) { return new NumberFormatException("For input string: \"" + g + "\""); }
+    return new NumberFormatException("For input string: \"" + g + "\" under radix " + radix);
+  }
+  int digitsPerInt(int radix) {
+    if (radix == 2) { return 30; }
+    if (radix == 3) { return 19; }
+    if (radix == 4) { return 15; }
+    if (radix == 5) { return 13; }
+    if (radix <= 7) { return 11; }
+    if (radix == 8) { return 10; }
+    if (radix <= 10) { return 9; }
+    if (radix <= 14) { return 8; }
+    if (radix <= 21) { return 7; }
+    if (radix <= 35) { return 6; }
+    return 5;
+  }
+
+  < static factories and constants (call on any BigInteger) >
+  BigInteger ZERO() { return make(0, limbs(1)); }
+  BigInteger ONE() { return valueOf(1); }
+  BigInteger TWO() { return valueOf(2); }
+  BigInteger TEN() { return valueOf(10); }
+  BigInteger valueOf(long val) {
+    if (val == 0) { return make(0, limbs(1)); }
+    int sig = 1;
+    if (val < 0) { sig = -1; }
+    int[] m = limbs(3);
+    if (val == -9223372036854775807 - 1) {
+      m[0] = 854775808; m[1] = 223372036; m[2] = 9;
+      return make(-1, m);
+    }
+    long v = val;
+    if (v < 0) { v = 0 - v; }
+    m[0] = (int) (v % 1000000000);
+    m[1] = (int) ((v / 1000000000) % 1000000000);
+    m[2] = (int) (v / 1000000000000000000);
+    return make(sig, trimmed(m, 3));
+  }
+  BigInteger newRadix(String val, int radix) {
+    BigInteger r = new BigInteger("0");
+    r.parseInto(val, radix);
+    return r;
+  }
+
+  < arithmetic >
+  int signum() { return this.signum; }
+  BigInteger negate() { return make(0 - this.signum, this.mag); }
+  BigInteger abs() { if (this.signum < 0) { return negate(); } return this; }
+  BigInteger add(BigInteger val) {
+    if (val.signum == 0) { return this; }
+    if (this.signum == 0) { return val; }
+    if (val.signum == this.signum) { return make(this.signum, addMag(this.mag, val.mag)); }
+    int c = cmpMag(this.mag, val.mag);
+    if (c == 0) { return make(0, limbs(1)); }
+    if (c > 0) { return make(this.signum, subMag(this.mag, val.mag)); }
+    return make(val.signum, subMag(val.mag, this.mag));
+  }
+  BigInteger subtract(BigInteger val) { return add(val.negate()); }
+  BigInteger multiply(BigInteger val) {
+    if (this.signum == 0 || val.signum == 0) { return make(0, limbs(1)); }
+    return make(this.signum * val.signum, mulMag(this.mag, val.mag));
+  }
+  void checkDivisor(BigInteger val) {
+    if (val.signum == 0) { throw new ArithmeticException("BigInteger divide by zero"); }
+  }
+  BigInteger divide(BigInteger val) {
+    checkDivisor(val);
+    divMag(this.mag, val.mag);
+    return make(this.signum * val.signum, this.quoOut);
+  }
+  BigInteger remainder(BigInteger val) {
+    checkDivisor(val);
+    divMag(this.mag, val.mag);
+    return make(this.signum, this.remOut);
+  }
+  BigInteger[] divideAndRemainder(BigInteger val) {
+    checkDivisor(val);
+    divMag(this.mag, val.mag);
+    BigInteger[] r = new BigInteger[2];
+    r[0] = make(this.signum * val.signum, this.quoOut);
+    r[1] = make(this.signum, this.remOut);
+    return r;
+  }
+  BigInteger mod(BigInteger m) {
+    if (m.signum <= 0) { throw new ArithmeticException("BigInteger: modulus not positive"); }
+    BigInteger r = remainder(m);
+    if (r.signum < 0) { return r.add(m); }
+    return r;
+  }
+  BigInteger pow(int exponent) {
+    if (exponent < 0) { throw new ArithmeticException("Negative exponent"); }
+    BigInteger result = valueOf(1);
+    BigInteger base = this;
+    int e = exponent;
+    while (e > 0) {
+      if (e % 2 == 1) { result = result.multiply(base); }
+      e = e / 2;
+      if (e > 0) { base = base.multiply(base); }
+    }
+    return result;
+  }
+  BigInteger gcd(BigInteger val) {
+    int[] a = this.mag;
+    int[] b = val.mag;
+    while (!magZero(b)) {
+      divMag(a, b);
+      a = b;
+      b = this.remOut;
+    }
+    return make(1, a);
+  }
+  BigInteger sqrt() {
+    if (this.signum < 0) { throw new ArithmeticException("Negative BigInteger"); }
+    if (this.signum == 0) { return this; }
+    int[] r = limbs((arrayLength(this.mag) + 1) / 2 + 1);
+    int k = bigisqrt(this.mag, r);
+    return make(1, trimmed(r, k));
+  }
+  BigInteger[] sqrtAndRemainder() {
+    BigInteger s = sqrt();
+    BigInteger[] r = new BigInteger[2];
+    r[0] = s;
+    r[1] = subtract(s.multiply(s));
+    return r;
+  }
+  BigInteger modPow(BigInteger exponent, BigInteger m) {
+    if (m.signum <= 0) { throw new ArithmeticException("BigInteger: modulus not positive"); }
+    if (exponent.signum < 0) { return this.modInverse(m).modPow(exponent.negate(), m); }
+    if (m.equals(valueOf(1))) { return make(0, limbs(1)); }
+    BigInteger result = valueOf(1);
+    BigInteger base = mod(m);
+    long[] w = words32(exponent.mag);
+    int wi = 0;
+    while (wi < arrayLength(w)) {
+      long word = w[wi];
+      long bit = 2147483648;
+      while (bit > 0) {
+        result = result.multiply(result).mod(m);
+        if ((word / bit) % 2 == 1) { result = result.multiply(base).mod(m); }
+        bit = bit / 2;
+      }
+      wi = wi + 1;
+    }
+    return result;
+  }
+  BigInteger modInverse(BigInteger m) {
+    if (m.signum <= 0) { throw new ArithmeticException("BigInteger: modulus not positive"); }
+    if (m.equals(valueOf(1))) { return make(0, limbs(1)); }
+    BigInteger a = mod(m);
+    BigInteger b = m;
+    BigInteger x0 = valueOf(1);
+    BigInteger x1 = make(0, limbs(1));
+    while (b.signum != 0) {
+      BigInteger[] qr = a.divideAndRemainder(b);
+      BigInteger q = qr[0];
+      BigInteger rr = qr[1];
+      a = b;
+      b = rr;
+      BigInteger t = x0.subtract(q.multiply(x1));
+      x0 = x1;
+      x1 = t;
+    }
+    if (!a.equals(valueOf(1))) { throw new ArithmeticException("BigInteger not invertible."); }
+    return x0.mod(m);
+  }
+  << Miller-Rabin with the first thirteen prime bases (deterministic below
+     3.3e24; for larger values the error bound is far below Java's
+     2^-certainty). >>
+  boolean isProbablePrime(int certainty) {
+    if (certainty <= 0) { return true; }
+    BigInteger w = abs();
+    BigInteger two = valueOf(2);
+    if (w.compareTo(two) < 0) { return false; }
+    int[] small = new int[13];
+    small[0] = 2; small[1] = 3; small[2] = 5; small[3] = 7; small[4] = 11; small[5] = 13; small[6] = 17;
+    small[7] = 19; small[8] = 23; small[9] = 29; small[10] = 31; small[11] = 37; small[12] = 41;
+    int i = 0;
+    while (i < 13) {
+      BigInteger p = valueOf(small[i]);
+      if (w.equals(p)) { return true; }
+      if (w.mod(p).signum == 0) { return false; }
+      i = i + 1;
+    }
+    BigInteger wm1 = w.subtract(valueOf(1));
+    int s = wm1.getLowestSetBit();
+    BigInteger d = wm1.shiftRight(s);
+    i = 0;
+    while (i < 13) {
+      BigInteger x = this.valueOf(small[i]).modPow(d, w);
+      boolean ok = x.equals(valueOf(1)) || x.equals(wm1);
+      int r = 1;
+      while (!ok && r < s) {
+        x = x.multiply(x).mod(w);
+        if (x.equals(wm1)) { ok = true; }
+        r = r + 1;
+      }
+      if (!ok) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+  BigInteger nextProbablePrime() {
+    if (this.signum < 0) { throw new ArithmeticException("start < 0: " + toString()); }
+    BigInteger c = add(valueOf(1));
+    if (c.compareTo(valueOf(2)) <= 0) { return valueOf(2); }
+    if (!c.testBit(0)) { c = c.add(valueOf(1)); }
+    while (!c.isProbablePrime(100)) { c = c.add(valueOf(2)); }
+    return c;
+  }
+
+  < comparison >
+  int compareTo(BigInteger val) {
+    if (this.signum != val.signum) { if (this.signum < val.signum) { return -1; } return 1; }
+    if (this.signum == 0) { return 0; }
+    int c = cmpMag(this.mag, val.mag);
+    if (this.signum < 0) { return 0 - c; }
+    return c;
+  }
+  boolean equals(Any x) {
+    if (x instanceof BigInteger) { BigInteger o = (BigInteger) x; return compareTo(o) == 0; }
+    return false;
+  }
+  BigInteger min(BigInteger val) { if (compareTo(val) < 0) { return this; } return val; }
+  BigInteger max(BigInteger val) { if (compareTo(val) > 0) { return this; } return val; }
+
+  < 32-bit word view (big-endian unsigned words of the magnitude) >
+  long[] words32(int[] m) {
+    int[] cur = m;
+    long[] tmp = new long[arrayLength(m) * 2 + 2];
+    int n = 0;
+    while (!magZero(cur)) {
+      int[] q1 = limbs(arrayLength(cur));
+      int lo = bigdivmod(cur, 65536, q1);
+      int[] q2 = limbs(arrayLength(cur));
+      int hi = bigdivmod(trimmed(q1, arrayLength(q1)), 65536, q2);
+      long w = hi;
+      w = w * 65536 + lo;
+      tmp[n] = w;
+      n = n + 1;
+      cur = trimmed(q2, arrayLength(q2));
+    }
+    long[] r = new long[n];
+    int i = 0;
+    while (i < n) { r[i] = tmp[n - 1 - i]; i = i + 1; }
+    return r;
+  }
+  int[] fromWords32(long[] w) {
+    int[] m = limbs(1);
+    int i = 0;
+    while (i < arrayLength(w)) {
+      m = mulAddSmall(m, 65536, w[i] / 65536);
+      m = mulAddSmall(m, 65536, w[i] % 65536);
+      i = i + 1;
+    }
+    return m;
+  }
+  << Two-complement little-endian 32-bit words, sign-extended to n words. >>
+  long[] twos(int n) {
+    long[] r = new long[n];
+    int i = 0;
+    while (i < n) { r[i] = 0; i = i + 1; }
+    long[] w = words32(this.mag);
+    int k = 0;
+    while (k < arrayLength(w) && k < n) { r[k] = w[arrayLength(w) - 1 - k]; k = k + 1; }
+    if (this.signum < 0) {
+      long carry = 1;
+      i = 0;
+      while (i < n) {
+        long v = 4294967295 - r[i] + carry;
+        r[i] = v % 4294967296;
+        carry = v / 4294967296;
+        i = i + 1;
+      }
+    }
+    return r;
+  }
+  BigInteger fromTwos(long[] r) {
+    int n = arrayLength(r);
+    boolean neg = n > 0 && r[n - 1] >= 2147483648;
+    long[] m = new long[n];
+    int i = 0;
+    while (i < n) { m[i] = r[i]; i = i + 1; }
+    if (neg) {
+      long carry = 1;
+      i = 0;
+      while (i < n) {
+        long v = 4294967295 - m[i] + carry;
+        m[i] = v % 4294967296;
+        carry = v / 4294967296;
+        i = i + 1;
+      }
+    }
+    long[] be = new long[n];
+    i = 0;
+    while (i < n) { be[i] = m[n - 1 - i]; i = i + 1; }
+    int sig = 1;
+    if (neg) { sig = -1; }
+    return make(sig, fromWords32(be));
+  }
+  int wordsFor(BigInteger o) {
+    int a = bitLength() / 32 + 2;
+    int b = o.bitLength() / 32 + 2;
+    if (b > a) { return b; }
+    return a;
+  }
+  int[] nib;
+  long bitop(long a, long b, int op) {
+    if (this.nib == null) {
+      this.nib = new int[768];
+      int x = 0;
+      while (x < 16) {
+        int y = 0;
+        while (y < 16) {
+          int ra = 0;
+          int ro = 0;
+          int rx = 0;
+          int bit = 1;
+          int p = x;
+          int q = y;
+          int k = 0;
+          while (k < 4) {
+            int pa = p % 2;
+            int qb = q % 2;
+            if (pa == 1 && qb == 1) { ra = ra + bit; }
+            if (pa == 1 || qb == 1) { ro = ro + bit; }
+            if (pa != qb) { rx = rx + bit; }
+            p = p / 2; q = q / 2; bit = bit * 2; k = k + 1;
+          }
+          this.nib[x * 16 + y] = ra;
+          this.nib[256 + x * 16 + y] = ro;
+          this.nib[512 + x * 16 + y] = rx;
+          y = y + 1;
+        }
+        x = x + 1;
+      }
+    }
+    long r = 0;
+    long mul = 1;
+    long p = a;
+    long q = b;
+    int k = 0;
+    while (k < 8) {
+      r = r + this.nib[op * 256 + (int) ((p % 16) * 16 + (q % 16))] * mul;
+      p = p / 16; q = q / 16; mul = mul * 16; k = k + 1;
+    }
+    return r;
+  }
+  BigInteger bitwise(BigInteger val, int op) {
+    int n = wordsFor(val);
+    long[] a = twos(n);
+    long[] b = val.twos(n);
+    long[] r = new long[n];
+    int i = 0;
+    while (i < n) { r[i] = bitop(a[i], b[i], op); i = i + 1; }
+    return fromTwos(r);
+  }
+  BigInteger and(BigInteger val) { return bitwise(val, 0); }
+  BigInteger or(BigInteger val) { return bitwise(val, 1); }
+  BigInteger xor(BigInteger val) { return bitwise(val, 2); }
+  BigInteger not() { return this.negate().subtract(valueOf(1)); }
+  BigInteger andNot(BigInteger val) { return and(val.not()); }
+  BigInteger shiftLeft(int n) {
+    if (n < 0) { return shiftRight(0 - n); }
+    if (this.signum == 0 || n == 0) { return this; }
+    return multiply(this.valueOf(2).pow(n));
+  }
+  << Arithmetic shift: floor(this / 2^n). >>
+  BigInteger shiftRight(int n) {
+    if (n < 0) { return shiftLeft(0 - n); }
+    if (this.signum == 0 || n == 0) { return this; }
+    BigInteger d = this.valueOf(2).pow(n);
+    BigInteger[] qr = divideAndRemainder(d);
+    BigInteger quo = qr[0];
+    BigInteger rem = qr[1];
+    if (this.signum < 0 && rem.signum != 0) { return quo.subtract(valueOf(1)); }
+    return quo;
+  }
+  boolean testBit(int n) {
+    if (n < 0) { throw new ArithmeticException("Negative bit address"); }
+    long[] w = twos(n / 32 + 2);
+    long word = w[n / 32];
+    int k = n % 32;
+    while (k > 0) { word = word / 2; k = k - 1; }
+    return word % 2 == 1;
+  }
+  BigInteger setBit(int n) { if (testBit(n)) { return this; } return flipBit(n); }
+  BigInteger clearBit(int n) { if (!testBit(n)) { return this; } return flipBit(n); }
+  BigInteger flipBit(int n) {
+    if (n < 0) { throw new ArithmeticException("Negative bit address"); }
+    BigInteger p = this.valueOf(2).pow(n);
+    if (testBit(n)) { return subtract(p); }
+    return add(p);
+  }
+  int getLowestSetBit() {
+    if (this.signum == 0) { return -1; }
+    int i = 0;
+    BigInteger x = abs();
+    while (!x.testBit(i)) { i = i + 1; }
+    return i;
+  }
+  int bitsOfMag(int[] m) {
+    long[] w = words32(m);
+    if (arrayLength(w) == 0) { return 0; }
+    long top = w[0];
+    int b = 0;
+    while (top > 0) { top = top / 2; b = b + 1; }
+    return (arrayLength(w) - 1) * 32 + b;
+  }
+  << Bits in the minimal two-complement representation, excluding the sign bit. >>
+  int bitLength() {
+    if (this.signum == 0) { return 0; }
+    if (this.signum > 0) { return bitsOfMag(this.mag); }
+    return bitsOfMag(subMag(this.mag, this.valueOf(1).mag));
+  }
+  int popMag(int[] m) {
+    long[] w = words32(m);
+    int n = 0;
+    int i = 0;
+    while (i < arrayLength(w)) {
+      long v = w[i];
+      while (v > 0) { n = n + (int) (v % 2); v = v / 2; }
+      i = i + 1;
+    }
+    return n;
+  }
+  int bitCount() {
+    if (this.signum >= 0) { return popMag(this.mag); }
+    return popMag(subMag(this.mag, this.valueOf(1).mag));
+  }
+
+  < conversions >
+  long longValue() {
+    long[] w = twos(2);
+    long lo = w[0];
+    long hi = w[1];
+    if (hi >= 2147483648) { hi = hi - 4294967296; }
+    return hi * 4294967296 + lo;
+  }
+  int intValue() {
+    long[] w = twos(1);
+    long v = w[0];
+    if (v >= 2147483648) { v = v - 4294967296; }
+    return (int) v;
+  }
+  int byteValue() { long v = intValue(); long m = v % 256; if (m < 0) { m = m + 256; } if (m > 127) { m = m - 256; } return (int) m; }
+  int shortValue() { long v = intValue(); long m = v % 65536; if (m < 0) { m = m + 65536; } if (m > 32767) { m = m - 65536; } return (int) m; }
+  long longValueExact() {
+    if (bitLength() <= 63) { return longValue(); }
+    throw new ArithmeticException("BigInteger out of long range");
+  }
+  int intValueExact() {
+    if (bitLength() <= 31) { return intValue(); }
+    throw new ArithmeticException("BigInteger out of int range");
+  }
+  int shortValueExact() {
+    if (bitLength() <= 15) { return intValue(); }
+    throw new ArithmeticException("BigInteger out of short range");
+  }
+  int byteValueExact() {
+    if (bitLength() <= 7) { return intValue(); }
+    throw new ArithmeticException("BigInteger out of byte range");
+  }
+  << Correctly rounded (half-even) conversion: the top 54 bits plus a sticky
+     bit decide the rounding; overflow gives infinity. >>
+  double doubleValue() {
+    if (this.signum == 0) { return 0.0; }
+    int bl = bitsOfMag(this.mag);
+    Double D = new Double(0.0);
+    double r = 0.0;
+    if (bl <= 62) {
+      long v = magLong(this.mag);
+      r = v;
+    } else {
+      int shift = bl - 54;
+      int[] q = this.mag;
+      int[] pow = this.valueOf(2).pow(shift).mag;
+      divMag(q, pow);
+      long top = magLong(this.quoOut);
+      boolean sticky = !magZero(this.remOut);
+      long half = top % 2;
+      long m = top / 2;
+      if (half == 1 && (sticky || m % 2 == 1)) { m = m + 1; }
+      double dm = m;
+      if (shift + 1 > 1100) { r = D.positiveInfinity(); }
+      else { r = dm * D.pow2(shift + 1); }
+    }
+    if (this.signum < 0) { return 0.0 - r; }
+    return r;
+  }
+  double floatValue() { Float f = new Float(doubleValue()); return f.doubleValue(); }
+  long magLong(int[] m) {
+    long v = 0;
+    int i = arrayLength(m) - 1;
+    while (i >= 0) { v = v * 1000000000 + m[i]; i = i - 1; }
+    return v;
+  }
+  << Java hashCode: 31 * h + word over the big-endian magnitude words, times signum. >>
+  int hashCode() {
+    long[] w = words32(this.mag);
+    long h = 0;
+    int i = 0;
+    while (i < arrayLength(w)) {
+      h = (31 * h + w[i]) % 4294967296;
+      i = i + 1;
+    }
+    long r = (h * (this.signum + 4294967296)) % 4294967296;
+    if (r > 2147483647) { r = r - 4294967296; }
+    return (int) r;
+  }
+  String toString() {
+    if (this.signum == 0) { return "0"; }
+    int n = arrayLength(this.mag);
+    String s = "" + this.mag[n - 1];
+    int i = n - 2;
+    while (i >= 0) {
+      String part = "" + this.mag[i];
+      int len = javaStringLength(javaStringFromUtf8(part));
+      while (len < 9) { part = "0" + part; len = len + 1; }
+      s = s + part;
+      i = i - 1;
+    }
+    if (this.signum < 0) { return "-" + s; }
+    return s;
+  }
+  String toStringRadix(int radix) {
+    if (radix < 2 || radix > 36 || radix == 10) { return toString(); }
+    if (this.signum == 0) { return "0"; }
+    Integer I = new Integer(0);
+    String s = "";
+    int[] cur = this.mag;
+    while (!magZero(cur)) {
+      int[] q = limbs(arrayLength(cur));
+      int d = bigdivmod(cur, radix, q);
+      s = I.digitChar(d) + s;
+      cur = trimmed(q, arrayLength(q));
+    }
+    if (this.signum < 0) { return "-" + s; }
+    return s;
+  }
+  << Two-complement big-endian bytes (ints in -128..127), minimal length. >>
+  int[] toByteArray() {
+    int byteLen = bitLength() / 8 + 1;
+    long[] w = twos((byteLen + 3) / 4);
+    int[] out = new int[byteLen];
+    int i = 0;
+    while (i < byteLen) {
+      long word = w[i / 4];
+      int k = i % 4;
+      while (k > 0) { word = word / 256; k = k - 1; }
+      int b = (int) (word % 256);
+      if (b > 127) { b = b - 256; }
+      out[byteLen - 1 - i] = b;
+      i = i + 1;
+    }
+    return out;
+  }
+  BigInteger newFromBytes(int[] val) {
+    int n = arrayLength(val);
+    if (n == 0) { throw new NumberFormatException("Zero length BigInteger"); }
+    int words = (n + 3) / 4;
+    long[] r = new long[words];
+    int i = 0;
+    while (i < words) { r[i] = 0; i = i + 1; }
+    boolean neg = val[0] < 0;
+    i = 0;
+    while (i < words * 4) {
+      long b = 0;
+      if (i < n) { b = val[n - 1 - i]; if (b < 0) { b = b + 256; } }
+      else { if (neg) { b = 255; } }
+      long p = 1;
+      int k = i % 4;
+      while (k > 0) { p = p * 256; k = k - 1; }
+      r[i / 4] = r[i / 4] + b * p;
+      i = i + 1;
+    }
+    return fromTwos(r);
+  }
+  BigInteger newSignMagnitude(int sig, int[] magnitude) {
+    if (sig < -1 || sig > 1) { throw new NumberFormatException("Invalid signum value"); }
+    int[] m = limbs(1);
+    int i = 0;
+    while (i < arrayLength(magnitude)) {
+      long b = magnitude[i];
+      if (b < 0) { b = b + 256; }
+      m = mulAddSmall(m, 256, b);
+      i = i + 1;
+    }
+    if (sig == 0 && !magZero(m)) { throw new NumberFormatException("signum-magnitude mismatch"); }
+    return make(sig, m);
+  }
+  << Java BigInteger(numBits, rnd): nextBytes over ceil(numBits/8) bytes, the
+     excess high bits masked off, read big-endian as a non-negative value. >>
+  BigInteger newRandomBits(int numBits, Random rnd) {
+    if (numBits < 0) { throw new IllegalArgumentException("numBits must be non-negative"); }
+    if (numBits == 0) { return make(0, limbs(1)); }
+    int numBytes = (numBits + 7) / 8;
+    int[] bytes = new int[numBytes];
+    rnd.nextBytes(bytes);
+    int excess = 8 * numBytes - numBits;
+    long b0 = bytes[0];
+    if (b0 < 0) { b0 = b0 + 256; }
+    long keep = 1;
+    int k = 0;
+    while (k < 8 - excess) { keep = keep * 2; k = k + 1; }
+    bytes[0] = (int) (b0 % keep);
+    return newSignMagnitude(1, bytes);
+  }
+  < ---- END java implementation ---- >
+
+  < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
+  << Exact Java signatures (from the JDK). A method body that is not yet
+     SLeeLa logic throws: AbstractMethodError for an abstract method, else
+     UnsupportedOperationException naming the Java signature. >>
+  public java.lang.String toString(int radix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigInteger.toString(int)"); }
+  public static java.math.BigInteger probablePrime(int bitLength, java.util.Random rnd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigInteger.probablePrime(int, java.util.Random)"); }
+  public java.math.BigInteger parallelMultiply(java.math.BigInteger val) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigInteger.parallelMultiply(java.math.BigInteger)"); }
+  < ---- END java signatures ---- >
+
+  < ---- BEGIN java constructors (generated by tools/jdk_api_signatures.py) ---- >
+  << Exact Java constructor signatures (from the JDK). Overload resolution binds a
+     call by arity, then best type match. Each body throws
+     UnsupportedOperationException until its SLeeLa logic is written. >>
+  public BigInteger(int bitLength, int certainty, java.util.Random rnd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigInteger.<init>(int, int, java.util.Random)"); }
+  public BigInteger(int numBits, java.util.Random rnd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigInteger.<init>(int, java.util.Random)"); }
+  public BigInteger(int signum, byte[] magnitude, int off, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigInteger.<init>(int, byte[], int, int)"); }
+  public BigInteger(byte[] val, int off, int len) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigInteger.<init>(byte[], int, int)"); }
+  public BigInteger(java.lang.String val, int radix) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigInteger.<init>(java.lang.String, int)"); }
+  public BigInteger(int signum, byte[] magnitude) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.math.BigInteger.<init>(int, byte[])"); }
+  < ---- END java constructors ---- >
+}

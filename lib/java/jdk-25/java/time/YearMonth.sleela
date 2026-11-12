@@ -1,0 +1,280 @@
+<< lib/java/java/time/YearMonth.sleela
+   SLeeLa Java 28 source envelope.
+   Definition: SLeeLa source declaration for the Java type java.time.YearMonth.
+   Java behavior is supplied through the SLeeLa Java conformance boundary. >>
+#sleela 3.0
+material;
+import java.java.time;
+
+class YearMonth {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.1.0";
+  int metaId = 9944;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-29";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "OpenJDK (JDK 28 API)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  String javaType = "java.time.YearMonth";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.time.YearMonth members (procedural implementation in SLeeLa) ---- >
+  << A year and month in the ISO calendar. The constructor is
+     YearMonth.of(year, month). >>
+  int year;
+  int month;
+  YearMonth(int year, int month) {
+    checkField("Year", year, -999999999, 999999999);
+    checkField("MonthOfYear", month, 1, 12);
+    this.year = year;
+    this.month = month;
+  }
+  YearMonth of(int year, int month) { return new YearMonth(year, month); }
+  YearMonth parse(String text) {
+    parseBegin(text);
+    long y = parseYear();
+    expectUnit(45);
+    long m = digits(2, 2);
+    parseEnd();
+    return new YearMonth((int) y, (int) m);
+  }
+  int getYear() { return this.year; }
+  int getMonthValue() { return this.month; }
+  Month getMonth() { return Month.of(this.month); }
+  boolean isLeapYear() { return leap(this.year); }
+  boolean isValidDay(int dayOfMonth) { return dayOfMonth >= 1 && dayOfMonth <= lengthOfMonth(); }
+  int lengthOfMonth() { return monthLength(this.month, isLeapYear()); }
+  int lengthOfYear() { if (isLeapYear()) { return 366; } return 365; }
+  LocalDate atDay(int dayOfMonth) { return new LocalDate(this.year, this.month, dayOfMonth); }
+  LocalDate atEndOfMonth() { return new LocalDate(this.year, this.month, lengthOfMonth()); }
+  long getProlepticMonth() { long y = this.year; return y * 12 + this.month - 1; }
+  YearMonth plusMonths(long monthsToAdd) {
+    if (monthsToAdd == 0) { return this; }
+    long calcMonths = getProlepticMonth() + monthsToAdd;
+    return new YearMonth((int) floorDiv(calcMonths, 12), (int) floorMod(calcMonths, 12) + 1);
+  }
+  YearMonth plusYears(long n) { if (n == 0) { return this; } return new YearMonth((int) (this.year + n), this.month); }
+  YearMonth minusMonths(long n) { return plusMonths(0 - n); }
+  YearMonth minusYears(long n) { return plusYears(0 - n); }
+  YearMonth withYear(int y) { return new YearMonth(y, this.month); }
+  YearMonth withMonth(int m) { return new YearMonth(this.year, m); }
+  int compareTo(YearMonth other) {
+    int c = this.year - other.getYear();
+    if (c == 0) { c = this.month - other.getMonthValue(); }
+    return c;
+  }
+  boolean isAfter(YearMonth other) { return compareTo(other) > 0; }
+  boolean isBefore(YearMonth other) { return compareTo(other) < 0; }
+  boolean equals(Any obj) {
+    if (obj instanceof YearMonth) { YearMonth o = (YearMonth) obj; return compareTo(o) == 0; }
+    return false;
+  }
+  << Java: year xor (month shl 27). >>
+  int hashCode() { return xorInt(this.year, wrap32(this.month * 134217728)); }
+  String toString() { return yearText(this.year) + "-" + pad(this.month, 2); }
+
+  < shared java.time helpers >
+  long floorDiv(long x, long y) {
+    long q = x / y;
+    if ((x % y != 0) && ((x < 0) != (y < 0))) { q = q - 1; }
+    return q;
+  }
+  long floorMod(long x, long y) { return x - floorDiv(x, y) * y; }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  << Bitwise xor of two 32-bit two-complement ints. >>
+  int xorInt(int a, int b) {
+    long x = a;
+    long y = b;
+    if (x < 0) { x = x + 4294967296; }
+    if (y < 0) { y = y + 4294967296; }
+    long r = 0;
+    long bit = 1;
+    int k = 0;
+    while (k < 32) {
+      if ((x % 2) != (y % 2)) { r = r + bit; }
+      x = x / 2; y = y / 2; bit = bit * 2; k = k + 1;
+    }
+    return wrap32(r);
+  }
+  String pad(long v, int width) {
+    String s = "" + v;
+    int n = javaStringLength(javaStringFromUtf8(s));
+    while (n < width) { s = "0" + s; n = n + 1; }
+    return s;
+  }
+  boolean leap(long y) { return (y % 4 == 0) && ((y % 100 != 0) || (y % 400 == 0)); }
+  int monthLength(int m, boolean isLeap) {
+    if (m == 2) { if (isLeap) { return 29; } return 28; }
+    if (m == 4 || m == 6 || m == 9 || m == 11) { return 30; }
+    return 31;
+  }
+  void checkField(String field, long value, long lo, long hi) {
+    if (value < lo || value > hi) {
+      throw new DateTimeException("Invalid value for " + field + " (valid values " + lo + " - " + hi + "): " + value);
+    }
+  }
+  String monthName(int m) {
+    if (m == 1) { return "JANUARY"; } if (m == 2) { return "FEBRUARY"; } if (m == 3) { return "MARCH"; }
+    if (m == 4) { return "APRIL"; } if (m == 5) { return "MAY"; } if (m == 6) { return "JUNE"; }
+    if (m == 7) { return "JULY"; } if (m == 8) { return "AUGUST"; } if (m == 9) { return "SEPTEMBER"; }
+    if (m == 10) { return "OCTOBER"; } if (m == 11) { return "NOVEMBER"; }
+    return "DECEMBER";
+  }
+  << Year rendering of ISO-8601 local dates: four digits zero padded, a sign
+     for negative years, and a leading + beyond 9999. >>
+  String yearText(long y) {
+    long a = y;
+    if (a < 0) { a = 0 - a; }
+    if (a < 1000) {
+      if (y < 0) { return "-" + pad(a, 4); }
+      return pad(a, 4);
+    }
+    if (y > 9999) { return "+" + y; }
+    return "" + y;
+  }
+  << Nano-of-second suffix in the Java style: 3, 6 or 9 digits, as needed. >>
+  String nanoText(long nano) {
+    if (nano % 1000000 == 0) { return "." + pad(nano / 1000000, 3); }
+    if (nano % 1000 == 0) { return "." + pad(nano / 1000, 6); }
+    return "." + pad(nano, 9);
+  }
+  < parse helpers over a Java UTF-16 copy of the text >
+  String parseText;
+  String parseUnits;
+  int parsePos;
+  int parseLen;
+  void parseBegin(String text) {
+    if (text == null) { throw new NullPointerException("text"); }
+    this.parseText = text;
+    this.parseUnits = javaStringFromUtf8(text);
+    this.parsePos = 0;
+    this.parseLen = javaStringLength(this.parseUnits);
+  }
+  DateTimeParseException parseError() {
+    return new DateTimeParseException("Text '" + this.parseText + "' could not be parsed at index " + this.parsePos, this.parseText, this.parsePos);
+  }
+  int peekUnit() {
+    if (this.parsePos >= this.parseLen) { return -1; }
+    return javaStringCharAt(this.parseUnits, this.parsePos);
+  }
+  void expectUnit(int c) {
+    if (peekUnit() != c) { throw parseError(); }
+    this.parsePos = this.parsePos + 1;
+  }
+  long digits(int minCount, int maxCount) {
+    long v = 0;
+    int n = 0;
+    while (n < maxCount && peekUnit() >= 48 && peekUnit() <= 57) {
+      v = v * 10 + (peekUnit() - 48);
+      this.parsePos = this.parsePos + 1;
+      n = n + 1;
+    }
+    if (n < minCount) { throw parseError(); }
+    return v;
+  }
+  void parseEnd() { if (this.parsePos != this.parseLen) { throw parseError(); } }
+  long parseYear() {
+    int c = peekUnit();
+    if (c == 43 || c == 45) {
+      this.parsePos = this.parsePos + 1;
+      long y = digits(4, 10);
+      if (c == 45) { return 0 - y; }
+      return y;
+    }
+    return digits(4, 4);
+  }
+  << time part HH:mm[:ss[.fraction]] as nano-of-day >>
+  long parseTimeNanos() {
+    long h = digits(2, 2);
+    expectUnit(58);
+    long mi = digits(2, 2);
+    long s = 0;
+    long nano = 0;
+    if (peekUnit() == 58) {
+      this.parsePos = this.parsePos + 1;
+      s = digits(2, 2);
+      if (peekUnit() == 46) {
+        this.parsePos = this.parsePos + 1;
+        int start = this.parsePos;
+        long f = digits(1, 9);
+        int n = this.parsePos - start;
+        while (n < 9) { f = f * 10; n = n + 1; }
+        nano = f;
+      }
+    }
+    checkField("HourOfDay", h, 0, 23);
+    checkField("MinuteOfHour", mi, 0, 59);
+    checkField("SecondOfMinute", s, 0, 59);
+    return ((h * 60 + mi) * 60 + s) * 1000000000 + nano;
+  }
+  < ---- END java implementation ---- >
+
+  < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
+  << Exact Java signatures (from the JDK). A method body that is not yet
+     SLeeLa logic throws: AbstractMethodError for an abstract method, else
+     UnsupportedOperationException naming the Java signature. >>
+  public int get(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.get(java.time.temporal.TemporalField)"); }
+  public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.getLong(java.time.temporal.TemporalField)"); }
+  public static java.time.YearMonth of(int year, java.time.Month month) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.of(int, java.time.Month)"); }
+  public java.lang.String format(java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.format(java.time.format.DateTimeFormatter)"); }
+  public static java.time.YearMonth from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.from(java.time.temporal.TemporalAccessor)"); }
+  public boolean isSupported(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.isSupported(java.time.temporal.TemporalUnit)"); }
+  public static java.time.YearMonth parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.parse(java.lang.CharSequence)"); }
+  public static java.time.YearMonth parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.parse(java.lang.CharSequence, java.time.format.DateTimeFormatter)"); }
+  public java.time.YearMonth with(java.time.temporal.TemporalField field, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.with(java.time.temporal.TemporalField, long)"); }
+  public java.time.YearMonth with(java.time.temporal.TemporalAdjuster adjuster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.with(java.time.temporal.TemporalAdjuster)"); }
+  public <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.query(java.time.temporal.TemporalQuery<R>)"); }
+  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.range(java.time.temporal.TemporalField)"); }
+  public static java.time.YearMonth now() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.now()"); }
+  public static java.time.YearMonth now(java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.now(java.time.ZoneId)"); }
+  public java.time.YearMonth minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.minus(long, java.time.temporal.TemporalUnit)"); }
+  public java.time.YearMonth minus(java.time.temporal.TemporalAmount amountToSubtract) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.minus(java.time.temporal.TemporalAmount)"); }
+  public java.time.YearMonth plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.plus(long, java.time.temporal.TemporalUnit)"); }
+  public java.time.YearMonth plus(java.time.temporal.TemporalAmount amountToAdd) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.plus(java.time.temporal.TemporalAmount)"); }
+  public long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.until(java.time.temporal.Temporal, java.time.temporal.TemporalUnit)"); }
+  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.YearMonth.adjustInto(java.time.temporal.Temporal)"); }
+  < ---- END java signatures ---- >
+}

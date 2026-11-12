@@ -1,0 +1,319 @@
+<< lib/java/java/time/Instant.sleela
+   SLeeLa Java SE/JDK 28 source implementation.
+   Definition: Native SLeeLa source declaration for the Java type java.time.Instant.
+   
+   The Java class name is retained exactly. The SLeeLa declaration is the source
+   contract; Java behavior is supplied only through the conformance boundary. >>
+#sleela 3.0
+material;
+import java.java.time;
+
+class Instant {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.1.0";
+  int metaId = 4751;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-29";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "OpenJDK (JDK 28 API)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  String javaType = "java.time.Instant";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.time.Instant members (procedural implementation in SLeeLa) ---- >
+  << An instantaneous point on the UTC time-line: epoch seconds plus a nano
+     adjustment. The constructor is Instant.ofEpochSecond(epochSecond,
+     nanoAdjustment); now() reads the VM UTC clock (timeUtcNanos).
+     ofEpochSecond(long, long) is ofEpochSecondAdjusted. >>
+  long seconds;
+  int nanos;
+  Instant(long epochSecond, long nanoAdjustment) {
+    long s = epochSecond + floorDiv(nanoAdjustment, 1000000000);
+    checkInstant(s);
+    this.seconds = s;
+    this.nanos = (int) floorMod(nanoAdjustment, 1000000000);
+  }
+  void checkInstant(long s) {
+    if (s < -31557014167219200 || s > 31556889864403199) { throw new DateTimeException("Instant exceeds minimum or maximum instant"); }
+  }
+  Instant ofEpochSecond(long epochSecond) { return new Instant(epochSecond, 0); }
+  Instant ofEpochSecondAdjusted(long epochSecond, long nanoAdjustment) { return new Instant(epochSecond, nanoAdjustment); }
+  Instant ofEpochMilli(long epochMilli) { return new Instant(floorDiv(epochMilli, 1000), floorMod(epochMilli, 1000) * 1000000); }
+  Instant now() { long n = timeUtcNanos(); return new Instant(floorDiv(n, 1000000000), floorMod(n, 1000000000)); }
+  Instant parse(String text) {
+    parseBegin(text);
+    long y = parseYear();
+    expectUnit(45);
+    long m = digits(2, 2);
+    expectUnit(45);
+    long d = digits(2, 2);
+    expectUnit(84);
+    long nod = parseTimeNanos();
+    expectUnit(90);
+    parseEnd();
+    LocalDate date = new LocalDate((int) y, (int) m, (int) d);
+    long secs = date.toEpochDay() * 86400 + nod / 1000000000;
+    return new Instant(secs, nod % 1000000000);
+  }
+  long getEpochSecond() { return this.seconds; }
+  int getNano() { return this.nanos; }
+  long toEpochMilli() {
+    Math M = new Math();
+    if (this.seconds < 0 && this.nanos > 0) {
+      long millis = M.multiplyExactLong(this.seconds + 1, 1000);
+      long adjustment = this.nanos / 1000000 - 1000;
+      return M.addExactLong(millis, adjustment);
+    }
+    long millis2 = M.multiplyExactLong(this.seconds, 1000);
+    return M.addExactLong(millis2, this.nanos / 1000000);
+  }
+  Instant plusParts(long secondsToAdd, long nanosToAdd) {
+    if (secondsToAdd == 0 && nanosToAdd == 0) { return this; }
+    Math M = new Math();
+    long epochSec = M.addExactLong(this.seconds, secondsToAdd);
+    epochSec = M.addExactLong(epochSec, nanosToAdd / 1000000000);
+    long nanoAdjustment = this.nanos + nanosToAdd % 1000000000;
+    return new Instant(epochSec, nanoAdjustment);
+  }
+  Instant plusSeconds(long n) { return plusParts(n, 0); }
+  Instant plusMillis(long n) { return plusParts(n / 1000, (n % 1000) * 1000000); }
+  Instant plusNanos(long n) { return plusParts(0, n); }
+  Instant plus(Duration d) { return plusParts(d.getSeconds(), d.getNano()); }
+  Instant minusSeconds(long n) { return plusSeconds(0 - n); }
+  Instant minusMillis(long n) { return plusMillis(0 - n); }
+  Instant minusNanos(long n) { return plusNanos(0 - n); }
+  Instant minus(Duration d) { return plusParts(0 - d.getSeconds(), 0 - d.getNano()); }
+  int compareTo(Instant other) {
+    if (this.seconds < other.getEpochSecond()) { return -1; }
+    if (this.seconds > other.getEpochSecond()) { return 1; }
+    return this.nanos - other.getNano();
+  }
+  boolean isAfter(Instant other) { return compareTo(other) > 0; }
+  boolean isBefore(Instant other) { return compareTo(other) < 0; }
+  boolean equals(Any obj) {
+    if (obj instanceof Instant) { Instant o = (Instant) obj; return this.seconds == o.getEpochSecond() && this.nanos == o.getNano(); }
+    return false;
+  }
+  int hashCode() { Long l = new Long(this.seconds); return wrap32(l.hashCode() + 51 * this.nanos); }
+  << ISO-8601 in UTC (DateTimeFormatter.ISO_INSTANT): seconds always shown,
+     the fraction in groups of three digits. >>
+  String toString() {
+    LocalDate h = new LocalDate(1970, 1, 1);
+    LocalDate date = h.ofEpochDay(floorDiv(this.seconds, 86400));
+    long sod = floorMod(this.seconds, 86400);
+    String t = pad(sod / 3600, 2) + ":" + pad((sod / 60) % 60, 2) + ":" + pad(sod % 60, 2);
+    if (this.nanos > 0) { t = t + nanoText(this.nanos); }
+    return date.toString() + "T" + t + "Z";
+  }
+
+  < shared java.time helpers >
+  long floorDiv(long x, long y) {
+    long q = x / y;
+    if ((x % y != 0) && ((x < 0) != (y < 0))) { q = q - 1; }
+    return q;
+  }
+  long floorMod(long x, long y) { return x - floorDiv(x, y) * y; }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  << Bitwise xor of two 32-bit two-complement ints. >>
+  int xorInt(int a, int b) {
+    long x = a;
+    long y = b;
+    if (x < 0) { x = x + 4294967296; }
+    if (y < 0) { y = y + 4294967296; }
+    long r = 0;
+    long bit = 1;
+    int k = 0;
+    while (k < 32) {
+      if ((x % 2) != (y % 2)) { r = r + bit; }
+      x = x / 2; y = y / 2; bit = bit * 2; k = k + 1;
+    }
+    return wrap32(r);
+  }
+  String pad(long v, int width) {
+    String s = "" + v;
+    int n = javaStringLength(javaStringFromUtf8(s));
+    while (n < width) { s = "0" + s; n = n + 1; }
+    return s;
+  }
+  boolean leap(long y) { return (y % 4 == 0) && ((y % 100 != 0) || (y % 400 == 0)); }
+  int monthLength(int m, boolean isLeap) {
+    if (m == 2) { if (isLeap) { return 29; } return 28; }
+    if (m == 4 || m == 6 || m == 9 || m == 11) { return 30; }
+    return 31;
+  }
+  void checkField(String field, long value, long lo, long hi) {
+    if (value < lo || value > hi) {
+      throw new DateTimeException("Invalid value for " + field + " (valid values " + lo + " - " + hi + "): " + value);
+    }
+  }
+  String monthName(int m) {
+    if (m == 1) { return "JANUARY"; } if (m == 2) { return "FEBRUARY"; } if (m == 3) { return "MARCH"; }
+    if (m == 4) { return "APRIL"; } if (m == 5) { return "MAY"; } if (m == 6) { return "JUNE"; }
+    if (m == 7) { return "JULY"; } if (m == 8) { return "AUGUST"; } if (m == 9) { return "SEPTEMBER"; }
+    if (m == 10) { return "OCTOBER"; } if (m == 11) { return "NOVEMBER"; }
+    return "DECEMBER";
+  }
+  << Year rendering of ISO-8601 local dates: four digits zero padded, a sign
+     for negative years, and a leading + beyond 9999. >>
+  String yearText(long y) {
+    long a = y;
+    if (a < 0) { a = 0 - a; }
+    if (a < 1000) {
+      if (y < 0) { return "-" + pad(a, 4); }
+      return pad(a, 4);
+    }
+    if (y > 9999) { return "+" + y; }
+    return "" + y;
+  }
+  << Nano-of-second suffix in the Java style: 3, 6 or 9 digits, as needed. >>
+  String nanoText(long nano) {
+    if (nano % 1000000 == 0) { return "." + pad(nano / 1000000, 3); }
+    if (nano % 1000 == 0) { return "." + pad(nano / 1000, 6); }
+    return "." + pad(nano, 9);
+  }
+  < parse helpers over a Java UTF-16 copy of the text >
+  String parseText;
+  String parseUnits;
+  int parsePos;
+  int parseLen;
+  void parseBegin(String text) {
+    if (text == null) { throw new NullPointerException("text"); }
+    this.parseText = text;
+    this.parseUnits = javaStringFromUtf8(text);
+    this.parsePos = 0;
+    this.parseLen = javaStringLength(this.parseUnits);
+  }
+  DateTimeParseException parseError() {
+    return new DateTimeParseException("Text '" + this.parseText + "' could not be parsed at index " + this.parsePos, this.parseText, this.parsePos);
+  }
+  int peekUnit() {
+    if (this.parsePos >= this.parseLen) { return -1; }
+    return javaStringCharAt(this.parseUnits, this.parsePos);
+  }
+  void expectUnit(int c) {
+    if (peekUnit() != c) { throw parseError(); }
+    this.parsePos = this.parsePos + 1;
+  }
+  long digits(int minCount, int maxCount) {
+    long v = 0;
+    int n = 0;
+    while (n < maxCount && peekUnit() >= 48 && peekUnit() <= 57) {
+      v = v * 10 + (peekUnit() - 48);
+      this.parsePos = this.parsePos + 1;
+      n = n + 1;
+    }
+    if (n < minCount) { throw parseError(); }
+    return v;
+  }
+  void parseEnd() { if (this.parsePos != this.parseLen) { throw parseError(); } }
+  long parseYear() {
+    int c = peekUnit();
+    if (c == 43 || c == 45) {
+      this.parsePos = this.parsePos + 1;
+      long y = digits(4, 10);
+      if (c == 45) { return 0 - y; }
+      return y;
+    }
+    return digits(4, 4);
+  }
+  << time part HH:mm[:ss[.fraction]] as nano-of-day >>
+  long parseTimeNanos() {
+    long h = digits(2, 2);
+    expectUnit(58);
+    long mi = digits(2, 2);
+    long s = 0;
+    long nano = 0;
+    if (peekUnit() == 58) {
+      this.parsePos = this.parsePos + 1;
+      s = digits(2, 2);
+      if (peekUnit() == 46) {
+        this.parsePos = this.parsePos + 1;
+        int start = this.parsePos;
+        long f = digits(1, 9);
+        int n = this.parsePos - start;
+        while (n < 9) { f = f * 10; n = n + 1; }
+        nano = f;
+      }
+    }
+    checkField("HourOfDay", h, 0, 23);
+    checkField("MinuteOfHour", mi, 0, 59);
+    checkField("SecondOfMinute", s, 0, 59);
+    return ((h * 60 + mi) * 60 + s) * 1000000000 + nano;
+  }
+  < ---- END java implementation ---- >
+
+  < ---- BEGIN java declarations (generated by tools/jdk_api_declare.py) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static Any EPOCH = null;
+  static Any MIN = null;
+  static Any MAX = null;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
+  << Exact Java signatures (from the JDK). A method body that is not yet
+     SLeeLa logic throws: AbstractMethodError for an abstract method, else
+     UnsupportedOperationException naming the Java signature. >>
+  public int get(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.get(java.time.temporal.TemporalField)"); }
+  public long getLong(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.getLong(java.time.temporal.TemporalField)"); }
+  public static java.time.Instant from(java.time.temporal.TemporalAccessor temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.from(java.time.temporal.TemporalAccessor)"); }
+  public boolean isSupported(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.isSupported(java.time.temporal.TemporalUnit)"); }
+  public static java.time.Instant parse(java.lang.CharSequence text) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.parse(java.lang.CharSequence)"); }
+  public java.time.Instant with(java.time.temporal.TemporalField field, long newValue) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.with(java.time.temporal.TemporalField, long)"); }
+  public java.time.Instant with(java.time.temporal.TemporalAdjuster adjuster) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.with(java.time.temporal.TemporalAdjuster)"); }
+  public <R> R query(java.time.temporal.TemporalQuery<R> query) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.query(java.time.temporal.TemporalQuery<R>)"); }
+  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.range(java.time.temporal.TemporalField)"); }
+  public static java.time.Instant now(java.time.Clock clock) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.now(java.time.Clock)"); }
+  public static java.time.Instant ofEpochSecond(long epochSecond, long nanoAdjustment) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.ofEpochSecond(long, long)"); }
+  public java.time.Instant minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.minus(long, java.time.temporal.TemporalUnit)"); }
+  public java.time.Instant plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.plus(long, java.time.temporal.TemporalUnit)"); }
+  public long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.until(java.time.temporal.Temporal, java.time.temporal.TemporalUnit)"); }
+  public java.time.Duration until(java.time.Instant endExclusive) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.until(java.time.Instant)"); }
+  public java.time.Instant truncatedTo(java.time.temporal.TemporalUnit unit) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.truncatedTo(java.time.temporal.TemporalUnit)"); }
+  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.adjustInto(java.time.temporal.Temporal)"); }
+  public java.time.OffsetDateTime atOffset(java.time.ZoneOffset offset) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.atOffset(java.time.ZoneOffset)"); }
+  public java.time.ZonedDateTime atZone(java.time.ZoneId zone) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.time.Instant.atZone(java.time.ZoneId)"); }
+  < ---- END java signatures ---- >
+}

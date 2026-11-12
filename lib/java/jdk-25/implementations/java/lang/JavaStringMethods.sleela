@@ -1,0 +1,399 @@
+<< lib/java/implementations/java/lang/JavaStringMethods.sleela
+   The java.lang.String instance methods for built-in SLeeLa Strings.
+   When a method is called on a String value (s.length(), "x".equals(y)),
+   semantic analysis binds the call to the static method of the same name here
+   and passes the receiver as the first argument, self. Either runtime String
+   kind is accepted (a plain legacy String or a VM-owned Java UTF-16 String),
+   indexes count UTF-16 code units as in Java, and String results are plain
+   whenever the text has a plain form (JavaText.plainIfRepresentable).
+   Exceptions carry the JDK 25 messages. Case mapping uses the per-code-point
+   tables of java.lang.Character plus the German sharp s (toUpperCase gives
+   SS); the final-sigma and Turkish dotted-i special cases of the JDK are not
+   applied. Regex members (matches, split, replaceAll, replaceFirst), the
+   Locale forms, streams (chars, codePoints, lines) and the static members of
+   java.lang.String are not provided here. >>
+#sleela 3.0
+import java.java.lang;
+material;
+
+class JavaStringMethods {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "SLeeLa /lib/java";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "none";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "OpenJDK (JDK 28 API)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- helpers ---- >
+  < either String kind as UTF-16; a null receiver is a NullPointerException >
+  static String jsU(String s) {
+    if (s == null) { throw new NullPointerException(); }
+    if (s instanceof string) { return javaStringFromUtf8(s); }
+    return s;
+  }
+  < a CharSequence argument as UTF-16: a String of either kind, a StringBuilder or a StringBuffer >
+  static String seqU(Any cs, String nullMessage) {
+    if (cs == null) { throw new NullPointerException(nullMessage); }
+    if (cs instanceof string) { return javaStringFromUtf8("" + cs); }
+    if (cs instanceof utf16) { String t = (String) cs; return t; }
+    if (cs instanceof StringBuilder) { StringBuilder b = (StringBuilder) cs; return b.buf; }
+    if (cs instanceof StringBuffer) { StringBuffer f = (StringBuffer) cs; return f.buf; }
+    throw new UnsupportedOperationException("java.lang.String: this CharSequence kind is not supported yet; pass a String, StringBuilder or StringBuffer");
+  }
+  static String plain(String u) { return JavaText.plainIfRepresentable(u); }
+  static void checkIndex(int index, int n) {
+    if (index < 0 || index >= n) { throw new StringIndexOutOfBoundsException("Index " + index + " out of bounds for length " + n); }
+  }
+  static void checkRange(int begin, int end, int n) {
+    if (begin < 0 || begin > end || end > n) { throw new StringIndexOutOfBoundsException("Range [" + begin + ", " + end + ") out of bounds for length " + n); }
+  }
+  static boolean regionEq(String a, int ai, String b, int bi, int len) {
+    int k = 0;
+    while (k < len) {
+      if (javaStringCharAt(a, ai + k) != javaStringCharAt(b, bi + k)) { return false; }
+      k = k + 1;
+    }
+    return true;
+  }
+  static int findU(String hay, String needle, int fromIndex) {
+    int n = javaStringLength(hay);
+    int m = javaStringLength(needle);
+    int i = fromIndex;
+    if (i < 0) { i = 0; }
+    if (i > n) { i = n; }
+    while (i + m <= n) {
+      if (regionEq(hay, i, needle, 0, m)) { return i; }
+      i = i + 1;
+    }
+    return 0 - 1;
+  }
+  static int findLastU(String hay, String needle, int fromIndex) {
+    int n = javaStringLength(hay);
+    int m = javaStringLength(needle);
+    int i = fromIndex;
+    if (i > n - m) { i = n - m; }
+    while (i >= 0) {
+      if (regionEq(hay, i, needle, 0, m)) { return i; }
+      i = i - 1;
+    }
+    return 0 - 1;
+  }
+  < a code point as UTF-16 text (one unit, or a surrogate pair above U+FFFF) >
+  static String cpU(int ch) { return JavaText.codePointU(ch); }
+  static boolean isWs(int cp) {
+    Character c = new Character(0);
+    return c.isWhitespace(cp);
+  }
+
+  < ---- length and character access ---- >
+  static int length(String self) { return javaStringLength(jsU(self)); }
+  static boolean isEmpty(String self) { return javaStringLength(jsU(self)) == 0; }
+  static char charAt(String self, int index) {
+    String u = jsU(self);
+    checkIndex(index, javaStringLength(u));
+    return javaStringCharAt(u, index);
+  }
+  static int codePointAt(String self, int index) {
+    String u = jsU(self);
+    checkIndex(index, javaStringLength(u));
+    return javaStringCodePointAt(u, index);
+  }
+  static int codePointBefore(String self, int index) {
+    String u = jsU(self);
+    int n = javaStringLength(u);
+    checkIndex(index - 1, n);
+    int low = javaStringCharAt(u, index - 1);
+    if (low >= 56320 && low <= 57343 && index - 2 >= 0) {
+      int high = javaStringCharAt(u, index - 2);
+      if (high >= 55296 && high <= 56319) { return 65536 + (high - 55296) * 1024 + (low - 56320); }
+    }
+    return low;
+  }
+  static int codePointCount(String self, int beginIndex, int endIndex) {
+    String u = jsU(self);
+    int n = javaStringLength(u);
+    if (beginIndex < 0 || beginIndex > endIndex || endIndex > n) { throw new IndexOutOfBoundsException("Range [" + beginIndex + ", " + endIndex + ") out of bounds for length " + n); }
+    return javaStringCodePointCount(u, beginIndex, endIndex);
+  }
+  static char[] toCharArray(String self) {
+    String u = jsU(self);
+    int n = javaStringLength(u);
+    char[] out = new char[n];
+    int i = 0;
+    while (i < n) { out[i] = javaStringCharAt(u, i); i = i + 1; }
+    return out;
+  }
+
+  < ---- substrings ---- >
+  static String substring(String self, int beginIndex) {
+    String u = jsU(self);
+    int n = javaStringLength(u);
+    checkRange(beginIndex, n, n);
+    return plain(javaStringSubstring(u, beginIndex, n));
+  }
+  static String substring(String self, int beginIndex, int endIndex) {
+    String u = jsU(self);
+    checkRange(beginIndex, endIndex, javaStringLength(u));
+    return plain(javaStringSubstring(u, beginIndex, endIndex));
+  }
+  static String subSequence(String self, int beginIndex, int endIndex) { return substring(self, beginIndex, endIndex); }
+
+  < ---- searching ---- >
+  static int indexOf(String self, int ch) { return indexOf(self, ch, 0); }
+  static int indexOf(String self, int ch, int fromIndex) { return findU(jsU(self), cpU(ch), fromIndex); }
+  static int indexOf(String self, String str) { return indexOf(self, str, 0); }
+  static int indexOf(String self, String str, int fromIndex) {
+    if (str == null) { throw new NullPointerException("Cannot invoke \"String.coder()\" because \"str\" is null"); }
+    return findU(jsU(self), jsU(str), fromIndex);
+  }
+  static int lastIndexOf(String self, int ch) { return lastIndexOf(self, ch, javaStringLength(jsU(self)) - 1); }
+  static int lastIndexOf(String self, int ch, int fromIndex) { return findLastU(jsU(self), cpU(ch), fromIndex); }
+  static int lastIndexOf(String self, String str) { return lastIndexOf(self, str, javaStringLength(jsU(self))); }
+  static int lastIndexOf(String self, String str, int fromIndex) {
+    if (str == null) { throw new NullPointerException("Cannot invoke \"String.coder()\" because \"str\" is null"); }
+    return findLastU(jsU(self), jsU(str), fromIndex);
+  }
+  static boolean contains(String self, Any s) {
+    return findU(jsU(self), seqU(s, "Cannot invoke \"java.lang.CharSequence.toString()\" because \"s\" is null"), 0) >= 0;
+  }
+  static boolean startsWith(String self, String prefix) { return startsWith(self, prefix, 0); }
+  static boolean startsWith(String self, String prefix, int toffset) {
+    if (prefix == null) { throw new NullPointerException("Cannot invoke \"String.length()\" because \"prefix\" is null"); }
+    String u = jsU(self);
+    String p = jsU(prefix);
+    int m = javaStringLength(p);
+    if (toffset < 0 || toffset > javaStringLength(u) - m) { return false; }
+    return regionEq(u, toffset, p, 0, m);
+  }
+  static boolean endsWith(String self, String suffix) {
+    if (suffix == null) { throw new NullPointerException("Cannot invoke \"String.length()\" because \"suffix\" is null"); }
+    return startsWith(self, suffix, javaStringLength(jsU(self)) - javaStringLength(jsU(suffix)));
+  }
+  static boolean regionMatches(String self, int toffset, String other, int ooffset, int len) {
+    return regionMatches(self, false, toffset, other, ooffset, len);
+  }
+  static boolean regionMatches(String self, boolean ignoreCase, int toffset, String other, int ooffset, int len) {
+    String a = jsU(self);
+    String b = jsU(other);
+    if (ooffset < 0 || toffset < 0 || toffset > javaStringLength(a) - len || ooffset > javaStringLength(b) - len) { return false; }
+    if (!ignoreCase) { return regionEq(a, toffset, b, ooffset, len); }
+    Character c = new Character(0);
+    int k = 0;
+    while (k < len) {
+      int x = javaStringCharAt(a, toffset + k);
+      int y = javaStringCharAt(b, ooffset + k);
+      if (x != y) {
+        int ux = c.toUpperCase(x);
+        int uy = c.toUpperCase(y);
+        if (ux != uy && c.toLowerCase(ux) != c.toLowerCase(uy)) { return false; }
+      }
+      k = k + 1;
+    }
+    return true;
+  }
+
+  < ---- comparison ---- >
+  static boolean equals(String self, Any anObject) {
+    String u = jsU(self);
+    if (anObject == null) { return false; }
+    String o = javaStringFromCodeUnits();
+    if (anObject instanceof string) { o = javaStringFromUtf8("" + anObject); }
+    else if (anObject instanceof utf16) { o = (String) anObject; }
+    else { return false; }
+    int n = javaStringLength(u);
+    return n == javaStringLength(o) && regionEq(u, 0, o, 0, n);
+  }
+  static boolean contentEquals(String self, Any cs) {
+    String u = jsU(self);
+    String o = seqU(cs, "Cannot invoke \"java.lang.CharSequence.length()\" because \"cs\" is null");
+    int n = javaStringLength(u);
+    return n == javaStringLength(o) && regionEq(u, 0, o, 0, n);
+  }
+  static boolean equalsIgnoreCase(String self, String anotherString) {
+    if (anotherString == null) { return false; }
+    String u = jsU(self);
+    String o = jsU(anotherString);
+    int n = javaStringLength(u);
+    if (n != javaStringLength(o)) { return false; }
+    return regionMatches(self, true, 0, anotherString, 0, n);
+  }
+  static int compareTo(String self, String anotherString) {
+    if (anotherString == null) { throw new NullPointerException("Cannot read field \"value\" because \"anotherString\" is null"); }
+    return javaStringCompareTo(jsU(self), jsU(anotherString));
+  }
+  static int compareToIgnoreCase(String self, String str) {
+    String a = jsU(self);
+    String b = jsU(str);
+    int n1 = javaStringLength(a);
+    int n2 = javaStringLength(b);
+    int lim = n1;
+    if (n2 < lim) { lim = n2; }
+    Character c = new Character(0);
+    int k = 0;
+    while (k < lim) {
+      int x = javaStringCharAt(a, k);
+      int y = javaStringCharAt(b, k);
+      if (x != y) {
+        x = c.toLowerCase(c.toUpperCase(x));
+        y = c.toLowerCase(c.toUpperCase(y));
+        if (x != y) { return x - y; }
+      }
+      k = k + 1;
+    }
+    return n1 - n2;
+  }
+  static int hashCode(String self) { return javaStringHashCode(jsU(self)); }
+
+  < ---- transformation ---- >
+  static String concat(String self, String str) {
+    if (str == null) { throw new NullPointerException("Cannot invoke \"String.isEmpty()\" because \"str\" is null"); }
+    return plain(javaStringConcat(jsU(self), jsU(str)));
+  }
+  static String repeat(String self, int count) {
+    if (count < 0) { throw new IllegalArgumentException("count is negative: " + count); }
+    String u = jsU(self);
+    String out = javaStringFromCodeUnits();
+    int k = count;
+    while (k > 0) { out = javaStringConcat(out, u); k = k - 1; }
+    return plain(out);
+  }
+  static String replace(String self, char oldChar, char newChar) {
+    String u = jsU(self);
+    int n = javaStringLength(u);
+    String nu = javaStringFromCodeUnit(newChar);
+    String out = javaStringFromCodeUnits();
+    int i = 0;
+    while (i < n) {
+      int c = javaStringCharAt(u, i);
+      if (c == oldChar) { out = javaStringConcat(out, nu); }
+      else { out = javaStringConcat(out, javaStringSubstring(u, i, i + 1)); }
+      i = i + 1;
+    }
+    return plain(out);
+  }
+  static String replace(String self, Any target, Any replacement) {
+    String t = seqU(target, "Cannot invoke \"java.lang.CharSequence.toString()\" because \"target\" is null");
+    String r = seqU(replacement, "Cannot invoke \"java.lang.CharSequence.toString()\" because \"replacement\" is null");
+    String u = jsU(self);
+    int n = javaStringLength(u);
+    int m = javaStringLength(t);
+    String out = javaStringFromCodeUnits();
+    if (m == 0) {
+      int i = 0;
+      while (i < n) {
+        out = javaStringConcat(javaStringConcat(out, r), javaStringSubstring(u, i, i + 1));
+        i = i + 1;
+      }
+      return plain(javaStringConcat(out, r));
+    }
+    int from = 0;
+    int at = findU(u, t, 0);
+    while (at >= 0) {
+      out = javaStringConcat(javaStringConcat(out, javaStringSubstring(u, from, at)), r);
+      from = at + m;
+      at = findU(u, t, from);
+    }
+    return plain(javaStringConcat(out, javaStringSubstring(u, from, n)));
+  }
+  static String mapCase(String self, boolean upper) {
+    String u = jsU(self);
+    int n = javaStringLength(u);
+    Character c = new Character(0);
+    String out = javaStringFromCodeUnits();
+    int i = 0;
+    while (i < n) {
+      int cp = javaStringCodePointAt(u, i);
+      int width = 1;
+      if (cp >= 65536) { width = 2; }
+      if (upper && cp == 223) { out = javaStringConcat(out, javaStringFromUtf8("SS")); }
+      else if (upper) { out = javaStringConcat(out, cpU(c.toUpperCase(cp))); }
+      else { out = javaStringConcat(out, cpU(c.toLowerCase(cp))); }
+      i = i + width;
+    }
+    return plain(out);
+  }
+  static String toUpperCase(String self) { return mapCase(self, true); }
+  static String toLowerCase(String self) { return mapCase(self, false); }
+  static String trim(String self) {
+    String u = jsU(self);
+    int n = javaStringLength(u);
+    int b = 0;
+    while (b < n && javaStringCharAt(u, b) <= 32) { b = b + 1; }
+    int e = n;
+    while (e > b && javaStringCharAt(u, e - 1) <= 32) { e = e - 1; }
+    return plain(javaStringSubstring(u, b, e));
+  }
+  static int leadingWs(String u) {
+    int n = javaStringLength(u);
+    int b = 0;
+    while (b < n) {
+      int cp = javaStringCodePointAt(u, b);
+      if (!isWs(cp)) { return b; }
+      if (cp >= 65536) { b = b + 2; } else { b = b + 1; }
+    }
+    return n;
+  }
+  static int trailingEnd(String u, int floor) {
+    int e = javaStringLength(u);
+    while (e > floor) {
+      int c = javaStringCharAt(u, e - 1);
+      if (!isWs(c)) { return e; }
+      e = e - 1;
+    }
+    return floor;
+  }
+  static String strip(String self) {
+    String u = jsU(self);
+    int b = leadingWs(u);
+    return plain(javaStringSubstring(u, b, trailingEnd(u, b)));
+  }
+  static String stripLeading(String self) {
+    String u = jsU(self);
+    return plain(javaStringSubstring(u, leadingWs(u), javaStringLength(u)));
+  }
+  static String stripTrailing(String self) {
+    String u = jsU(self);
+    return plain(javaStringSubstring(u, 0, trailingEnd(u, 0)));
+  }
+  static boolean isBlank(String self) {
+    String u = jsU(self);
+    return leadingWs(u) == javaStringLength(u);
+  }
+  static String intern(String self) { return plain(jsU(self)); }
+  static String toString(String self) { return plain(jsU(self)); }
+}
