@@ -25,7 +25,7 @@ import jdk_api_declare as dec  # noqa: E402
 import jdk_api_accessors as acc  # noqa: E402
 import jdk_api_signatures as sg  # noqa: E402
 
-REPO = dec.ROOT.parents[1]
+REPO = dec.ROOT.parents[2]   # lib/java/jdk-25 -> repo root
 
 
 def value(sl_t: str, i: int) -> str:
@@ -91,7 +91,7 @@ def main() -> int:
     failed = total = 0
     for pkg, blocks in sorted(by_pkg.items()):
         name = "Acc" + re.sub(r"\W", "", pkg.title())
-        src = (f"#sleela 3.0\nmaterial;\nimport java.{pkg};\nclass {name} {{\n  int bad = 0;\n  void main() {{\n"
+        src = (f"#sleela 3.0\nmaterial;\nimport java.jdk-25.{pkg};\nclass {name} {{\n  int bad = 0;\n  void main() {{\n"
                + "\n".join(blocks) + f'\n    print("{pkg} failures=" + bad);\n  }}\n}}\n')
         f = tmp / f"{name}.sleela"
         f.write_text(src)

@@ -85,7 +85,7 @@ the Java Source specifies.
 | Files with members pending | 65 |
 | Constructors with exact signatures | 4,496 |
 | Methods with exact signatures | 36,536 |
-| Members with working SLeeLa logic | 0 (enum and record bodies aside); this is the next step |
+| Members with working SLeeLa logic | 4,123 in 849 hand-implemented types (measured 2026-11-12 by `jdk-25/tools/jdk_api_coverage.py --tier jdk-28`; 8.0% of the 51,554 API members; report in [`../COVERAGE-JDK28.md`](../COVERAGE-JDK28.md)) |
 
 ### Largest modules
 

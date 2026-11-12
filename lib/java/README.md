@@ -13,7 +13,7 @@ The `/lib/java` library family defines the SLeeLa boundary for Java interoperabi
 
 ## Native Library Inventory
 
-The current repository inventory contains **15,004 files under `/lib/java`** (10,255 before `jdk-28/`, which added one SLeeLa file per JDK 28 type plus its index, README and tools). This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
+The repository inventory on 2026-11-12 contains **15,048 Git-indexed files under `/lib/java`**: 10,243 in `jdk-25/` (10,212 SLeeLa files plus the API dump and tools), 4,774 in `jdk-28/` (4,721 SLeeLa files plus its index, notes and a `module-summary.md` per module), and 31 top-level classes, documents and validators. The recorded baseline of 15,004 files is a floor, not the current count. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
 
 The collection is a native SLeeLa source surface for Java-facing language and framework concepts. It is intended to give the SLeeLa Compiler, Loader, SST, and Nordshrift a stable source-level vocabulary for Java packages, classes, procedures, interfaces, runtime concepts, and interoperability boundaries.
 
@@ -47,7 +47,7 @@ python3 lib/java/validate.py
 The validator checks:
 
 - the `/lib/java` directory exists;
-- the Git-indexed file count matches the recorded **15,004-file** baseline;
+- the Git-indexed file count is at least the recorded **15,004-file** baseline;
 - manifest schema and root metadata are present;
 - the expected Java interoperability boundary is documented;
 - required source-role metadata is present; and
@@ -61,22 +61,29 @@ When files are intentionally added or removed, the baseline and manifest must be
 their JDK 28 fields, constructors, methods, return values and imports
 written in SLeeLa, running on the SLeeLa VM.
 
-As of 2026-11-10, **322 types are implemented** (about 1,560 constructors and
-methods):
+As of 2026-11-12, **920 types have hand-written behavior in the `jdk-25/` tree and
+849 in the `jdk-28/` tree** (section 1 of [STATUS.md](STATUS.md)). The first 322 types
+(about 1,560 constructors and methods) were:
 
 - the whole `java.*` Throwable hierarchy (290 types, with the real `extends` chain);
 - `java.lang`: `Math`, `StrictMath`, `Integer`, `Long`, `Short`, `Byte`, `Double`, `Float`, `Character`, `Boolean`;
 - `java.util` collections and utilities: `ArrayList`, `LinkedList`, `ArrayDeque`, `Vector`, `Stack`, `HashMap`, `LinkedHashMap`, `HashSet`, `LinkedHashSet`, `TreeMap`, `TreeSet`, `PriorityQueue`, `Iterator`, `Arrays`, `Collections`, `Objects`, `Optional*`, `Random`.
 
-In addition, every one of the **4,801 public JDK types** now has a file. Each
-carries its API-declared part, generated from the reflected JDK API:
-constants with their real values, fields, abstract methods, and complete
-enums and records. Together that covers **44.5% of the 51,554 public members**
-(8.9% is working behavior, including 330 probed accessor contracts; see [STATUS.md](STATUS.md)), measured in [COVERAGE.md](COVERAGE.md). The files that hold working members are listed, largest first and by package, in [IMPLEMENTED.md](IMPLEMENTED.md).
+The library has two trees (see [STATUS.md](STATUS.md) section 0). Measured on
+2026-11-12 against the reflected API of OpenJDK 25.0.2 (4,801 public types,
+51,554 public members):
 
-Every remaining public method carries its **exact Java signature**: 33,978
-methods, including generics, varargs, static, abstract and throws. Abstract
-methods throw `AbstractMethodError`, as the JVM does. The others throw
+| | `jdk-25/` tree | `jdk-28/` tree (`import java.jdk-28;`) |
+|---|---:|---:|
+| Types with a file | 4,801 (100%) | 4,656 (97.0%) |
+| Members covered | 23,432 (45.5%) | 12,591 (24.4%) |
+| Members with working behavior | 5,165 (10.0%) | 4,123 (8.0%) |
+| Exact-signature methods awaiting logic | 24,101 | 33,021 |
+
+Reports: [COVERAGE.md](COVERAGE.md) (`jdk-25/`) and [COVERAGE-JDK28.md](COVERAGE-JDK28.md)
+(`jdk-28/`). The files that hold working members are listed in
+[IMPLEMENTED.md](IMPLEMENTED.md). In the `jdk-25/` tree, 9,675 abstract methods
+throw `AbstractMethodError`, as the JVM does, and the other signatures throw
 `UnsupportedOperationException` naming the signature until their logic is
 written. Static members are reached through the class name:
 `DayOfWeek.MONDAY`, `Integer.MAX_VALUE`.
@@ -103,7 +110,7 @@ A Java-facing source unit should identify, where applicable:
 5. **Loader visibility** — how the Compiler and Loader discover the symbol.
 6. **Compatibility surface** — the Java/JDK version or API family represented.
 
-This makes the Java relationship traceable instead of leaving the 15,004-file collection as an opaque directory.
+This makes the Java relationship traceable instead of leaving the `/lib/java` collection as an opaque directory.
 
 ## JDK 28 Framework Bindings
 
