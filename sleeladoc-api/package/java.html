@@ -145,7 +145,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; java</div>
 <h1>Package <code>java</code></h1>
-<div class="lead">This package contains <strong>14951</strong> source unit(s) defining <strong>14951</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>14952</strong> source unit(s) defining <strong>14952</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="aboutevent">AboutEvent <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/jdk-28/java.desktop/java/awt/desktop/AboutEvent.sleela)</span></h2>
 <div data-u="aboutevent aboutevent">
@@ -138102,6 +138102,38 @@
 <tr><td><code>supportsWaitNotify</code></td><td><span class="sig">boolean supportsWaitNotify()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>supportsClone</code></td><td><span class="sig">boolean supportsClone()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>supportsDefaultToString</code></td><td><span class="sig">boolean supportsDefaultToString()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="javaoperands">JavaOperands <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/JavaOperands.sleela)</span></h2>
+<div data-u="javaoperands javaoperands">
+<h3 id="JavaOperands">JavaOperands <span class="pill">class</span></h3>
+<p class="desc">The Java operators and conversions whose results depend on the fixed width of Java primitives: 32-bit int arithmetic and shifts, byte, short and char narrowing, the long division corner, and the floating point to integer conversions of JLS 5.1.3. SLeeLa int is a 64-bit slot, so these methods give a Java int result without changing what int means for the rest of the library. Inputs to the int methods are expected to already be in the Java int range. Verified line for line against a real JDK by examples/java/differential/OperandSemantics.java and .sleela.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>toInt</code></td><td><span class="sig">static int toInt(long x)</span></td><td class="desc">---- Narrowing conversions (JLS 5.1.3): wrap to the target width ---- Stores into int32, short, byte and char wrap, so the store is the conversion.</td></tr>
+<tr><td><code>toShort</code></td><td><span class="sig">static int toShort(long x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toByte</code></td><td><span class="sig">static int toByte(long x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toChar</code></td><td><span class="sig">static int toChar(long x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addInt</code></td><td><span class="sig">static int addInt(int x, int y)</span></td><td class="desc">---- 32-bit int arithmetic (JLS 15.17, 15.18) ----</td></tr>
+<tr><td><code>subInt</code></td><td><span class="sig">static int subInt(int x, int y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mulInt</code></td><td><span class="sig">static int mulInt(int x, int y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>negInt</code></td><td><span class="sig">static int negInt(int x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>divInt</code></td><td><span class="sig">static int divInt(int x, int y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remInt</code></td><td><span class="sig">static int remInt(int x, int y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>divLong</code></td><td><span class="sig">static long divLong(long x, long y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>remLong</code></td><td><span class="sig">static long remLong(long x, long y)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shlInt</code></td><td><span class="sig">static int shlInt(int x, int n)</span></td><td class="desc">---- Shifts (JLS 15.19): int masks the count to 5 bits, long to 6 bits ----</td></tr>
+<tr><td><code>shrInt</code></td><td><span class="sig">static int shrInt(int x, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ushrInt</code></td><td><span class="sig">static int ushrInt(int x, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shlLong</code></td><td><span class="sig">static long shlLong(long x, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shrLong</code></td><td><span class="sig">static long shrLong(long x, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ushrLong</code></td><td><span class="sig">static long ushrLong(long x, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>d2i</code></td><td><span class="sig">static int d2i(double d)</span></td><td class="desc">---- Floating point to integer (JLS 5.1.3): NaN is 0, out of range saturates ----</td></tr>
+<tr><td><code>d2l</code></td><td><span class="sig">static long d2l(double d)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>d2b</code></td><td><span class="sig">static int d2b(double d)</span></td><td class="desc">d2b, d2s, d2c go through int first, exactly as the JLS narrows them</td></tr>
+<tr><td><code>d2s</code></td><td><span class="sig">static int d2s(double d)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>d2c</code></td><td><span class="sig">static int d2c(double d)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="javashelltoolbuilder">JavaShellToolBuilder <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/jdk-28/jdk.jshell/jdk/jshell/tool/JavaShellToolBuilder.sleela)</span></h2>
@@ -301033,7 +301065,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-12 21:20 UTC.
+<code>/lib</code> tree on 2026-11-12 22:17 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
