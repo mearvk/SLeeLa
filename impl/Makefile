@@ -781,12 +781,12 @@ test-java-string: $(JAVA_STRING_SMOKE)
 $(JAVA_STRING_CODEC_OBJ): core/sleela_java_string_codec.c core/sleela_java_string_codec.h core/sleela_java_string.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
 $(JAVA_STRING_VM_SMOKE): core/sleela_java_string_vm_smoke.c $(SLCORE_LIB) $(JAVA_STRING_CODEC_OBJ) | $(BUILD)
-	$(CXX) $(CXXFLAGS) -Icore $< $(JAVA_STRING_CODEC_OBJ) $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(JAVA_STRING_CODEC_OBJ) $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 test-java-string-vm: $(JAVA_STRING_VM_SMOKE)
 	@$(JAVA_STRING_VM_SMOKE)
 # test-exceptions is deliberately opt-in while the exception VM milestone is reviewed.
 $(EXCEPTION_VM_SMOKE): tests/exceptions/exception_vm_smoke.c $(SLCORE_LIB) | $(BUILD)
-	$(CXX) $(CXXFLAGS) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 test-exceptions: $(EXCEPTION_VM_SMOKE)
 	@$(EXCEPTION_VM_SMOKE)
 

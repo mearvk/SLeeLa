@@ -4,8 +4,8 @@ Prebuilt native SLeeLa toolchain binaries, kept here for quick access.
 
 | Binary | What it is | Size |
 |--------|------------|------|
-| `sleela` | `SLeeLa™ Language/Runtime 1.3.2-pro` — the authoritative SLeeLa compiler/runner. **Supported source syntax 1.0 – 3.0**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~2.6 MB |
-| `nordshrift` | `Nordshrift 2.7.1-dev` — the SLeeLa `.sst` transpiler driver (NS-SST-0001 spec 2.2); drives SLeeLa source syntax up to 3.0. Subcommands: `check`, `build`, `objects`, `relevance --target=java\|sleela\|c`, `version`. (The SLeeLa → Nordshrift → back round-trip is `sleela nordshrift`, inside the `sleela` binary.) | ~2.3 MB |
+| `sleela` | `SLeeLa™ Language/Runtime 1.3.2-pro` — the authoritative SLeeLa compiler/runner. **Supported source syntax 1.0 – 3.0**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~2.8 MB |
+| `nordshrift` | `Nordshrift 2.7.1-dev` — the SLeeLa `.sst` transpiler driver (NS-SST-0001 spec 2.2); drives SLeeLa source syntax up to 3.0. Subcommands: `check`, `build`, `objects`, `relevance --target=java\|sleela\|c`, `version`. (The SLeeLa → Nordshrift → back round-trip is `sleela nordshrift`, inside the `sleela` binary.) | ~2.5 MB |
 
 ## Important caveats
 
@@ -41,8 +41,11 @@ SLEELA_BIN=working-binaries/sleela tools/idea-check.sh
 
 ## Provenance
 
-Built in the Kiro sandbox from this repository's `impl/` tree
-(`g++ -std=c++17 -O2`, pthread; `make build/sleela` and `make build/nordshrift`).
+Built in the Kiro sandbox on 2026-11-12 from this repository's `impl/` tree
+(`g++ -std=c++17 -O2`, pthread, `-fopenmp`; `make build/sleela` and
+`make build/nordshrift`). VM ABI 1.8, 185 opcodes: this build includes the
+Java UTF-16 String intrinsics (`javaStringFromUtf8`, `javaStringToUtf8`,
+`javaStringFromCodeUnit`, ...), which the previous committed copy predated.
 Reported versions:
 
 - `sleela` — `SLeeLa™ Language/Runtime 1.3.2-pro` (supported source syntax 1.0 – 3.0)
@@ -51,8 +54,8 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-0653c9f90dec0f9e3e22ac929c36ce09acf40bb464c61e49176e565dff07fc48  sleela
-587ad3f4be7936fe4a07ba1bd6567fa0d0569611f88509f123a17a7ce873cbf8  nordshrift
+dda3084f51efd73afb5883150df2704f1dba9f8f7cc4bd616dac81097a355393  sleela
+96d07f0c9ca5278ec8fcccfa033868a87c813d6c80a09b5d085a417cb5b402d2  nordshrift
 ```
 
 ---

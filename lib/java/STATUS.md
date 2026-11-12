@@ -194,7 +194,7 @@ never taken for a constant.
 | No bitwise operators or `L`/`f` literal suffixes | Bit operations done arithmetically | Compiler |
 | Nested types (`Map.Entry`) live in `Outer.Inner.sleela` files the loader does not resolve | Not reachable by name | Loader |
 | Protected instance members | Carry `@JavaProtected`, because SLeeLa reserves `protected` for static members | Language decision |
-| Prebuilt `working-binaries/sleela` predates these compiler changes | Use `impl/build/sleela` | Refresh the binaries |
+| ~~Prebuilt `working-binaries/sleela` predates these compiler changes~~ **done** (refreshed 2026-11-12, ABI 1.8) | Either binary works | — |
 
 ---
 
@@ -260,5 +260,5 @@ python3 tools/generate-sha256-manifest.py --root . --output security/sha256-mani
 4. **Keep converting stubs to logic** in `java.base`, highest use first:
    `BigDecimal`, `UUID`, `Base64`, `HexFormat`, `StringJoiner`,
    `Calendar`/`Date`, `java.time.format`. Add a side-by-side test for each.
-5. **Refresh `working-binaries/`** so the prebuilt toolchain carries the new
-   compiler.
+5. ~~**Refresh `working-binaries/`** so the prebuilt toolchain carries the new
+   compiler.~~ Done 2026-11-12 (VM ABI 1.8, 185 opcodes).
