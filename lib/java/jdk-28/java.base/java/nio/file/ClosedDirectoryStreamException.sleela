@@ -76,7 +76,6 @@ class ClosedDirectoryStreamException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public ClosedDirectoryStreamException() { super("constructor"); }
+  public ClosedDirectoryStreamException() { super(); }
   < ---- END java constructors ---- >
 }

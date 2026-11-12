@@ -76,7 +76,6 @@ class ZipError extends InternalError {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public ZipError(String s) { super("constructor"); }
+  public ZipError(java.lang.String s) { super(s); }
   < ---- END java constructors ---- >
 }

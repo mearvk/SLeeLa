@@ -76,9 +76,7 @@ class IllegalAccessException extends ReflectiveOperationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public IllegalAccessException() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public IllegalAccessException(String s) { super("constructor"); }
+  public IllegalAccessException() { super(); }
+  public IllegalAccessException(java.lang.String s) { super(s); }
   < ---- END java constructors ---- >
 }

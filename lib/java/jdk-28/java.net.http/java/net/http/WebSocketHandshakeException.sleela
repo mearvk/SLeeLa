@@ -87,8 +87,6 @@ class WebSocketHandshakeException extends IOException {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public Any initCause(Any cause) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any getResponse() { return null; }
   < ---- END java signatures ---- >
 }

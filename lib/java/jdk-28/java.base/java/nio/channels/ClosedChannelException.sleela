@@ -76,7 +76,6 @@ class ClosedChannelException extends IOException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public ClosedChannelException() { super("constructor"); }
+  public ClosedChannelException() { super(); }
   < ---- END java constructors ---- >
 }

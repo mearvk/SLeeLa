@@ -76,7 +76,6 @@ class ReadOnlyBufferException extends UnsupportedOperationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public ReadOnlyBufferException() { super("constructor"); }
+  public ReadOnlyBufferException() { super(); }
   < ---- END java constructors ---- >
 }

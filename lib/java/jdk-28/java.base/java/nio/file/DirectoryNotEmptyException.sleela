@@ -76,7 +76,6 @@ class DirectoryNotEmptyException extends FileSystemException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public DirectoryNotEmptyException(String dir) { super("constructor"); }
+  public DirectoryNotEmptyException(java.lang.String dir) { super(dir); }
   < ---- END java constructors ---- >
 }

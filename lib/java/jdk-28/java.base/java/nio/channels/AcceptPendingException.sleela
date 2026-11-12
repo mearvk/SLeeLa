@@ -76,7 +76,6 @@ class AcceptPendingException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public AcceptPendingException() { super("constructor"); }
+  public AcceptPendingException() { super(); }
   < ---- END java constructors ---- >
 }

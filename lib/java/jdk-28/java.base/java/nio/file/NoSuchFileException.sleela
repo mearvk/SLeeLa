@@ -76,8 +76,7 @@ class NoSuchFileException extends FileSystemException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public NoSuchFileException(String file) { super("constructor"); }
+  public NoSuchFileException(java.lang.String file) { super(file); }
   @throwable("java.lang.UnsupportedOperationException")
   public NoSuchFileException(String file, String other, String reason) { super("constructor"); }
   < ---- END java constructors ---- >

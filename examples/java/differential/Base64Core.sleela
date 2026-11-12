@@ -1,0 +1,140 @@
+<< examples/java/differential/Base64Core.sleela
+   SLeeLa side of the Base64Core differential test.
+   Definition: Prints, line for line, the same results as Base64Core.java for
+   java.util.Base64 and its nested types Base64.Encoder and Base64.Decoder of
+   the JDK 28 tier (import java.jdk-28): basic, URL-safe and MIME encoding,
+   padding, decoder error messages, and round trips. >>
+#sleela 3.0
+import java.jdk-28;
+material;
+
+< Java container: the names used here are housed in /lib/java (selected by the import above) and are not part of the SLeeLa specification, see SLEELA.syntax 38.4. >
+class Base64Core {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  byte[] pattern(int n, int seed) {
+    byte[] b = new byte[n];
+    int i = 0;
+    while (i < n) {
+      int v = (i * 37 + seed) % 256;
+      if (v > 127) { v = v - 256; }
+      b[i] = v;
+      i = i + 1;
+    }
+    return b;
+  }
+  String ints(byte[] b) {
+    String s = "[";
+    int i = 0;
+    while (i < arrayLength(b)) {
+      if (i > 0) { s = s + ","; }
+      s = s + b[i];
+      i = i + 1;
+    }
+    return s + "]";
+  }
+  byte[] ascii(String s) {
+    String u = javaStringFromUtf8(s);
+    int n = javaStringLength(u);
+    byte[] b = new byte[n];
+    int i = 0;
+    while (i < n) { b[i] = javaStringCharAt(u, i); i = i + 1; }
+    return b;
+  }
+  byte[] bytes(int a, int b, int c, int d, int e, int f) {
+    byte[] out = new byte[6];
+    out[0] = a; out[1] = b; out[2] = c; out[3] = d; out[4] = e; out[5] = f;
+    return out;
+  }
+  byte[] one(int a) { byte[] out = new byte[1]; out[0] = a; return out; }
+  String vis(String s) {
+    String out = "";
+    String u = javaStringFromUtf8(s);
+    int i = 0;
+    while (i < javaStringLength(u)) {
+      int c = javaStringCharAt(u, i);
+      if (c == 13) { out = out + "<CR>"; } else if (c == 10) { out = out + "<LF>"; } else { out = out + javaStringToUtf8(javaStringFromCodeUnit(c)); }
+      i = i + 1;
+    }
+    return out;
+  }
+  String tryDecode(Base64.Decoder d, String s) {
+    try { return ints(d.decode(s)); } catch (IllegalArgumentException e) { return "IAE:" + e.getMessage(); }
+  }
+  boolean same(byte[] a, byte[] b) {
+    if (arrayLength(a) != arrayLength(b)) { return false; }
+    int i = 0;
+    while (i < arrayLength(a)) { if (a[i] != b[i]) { return false; } i = i + 1; }
+    return true;
+  }
+
+  void main() {
+    Base64.Encoder enc = Base64.getEncoder();
+    int n = 0;
+    while (n <= 7) {
+      print(n + " " + enc.encodeToString(pattern(n, 5)) + " " + enc.withoutPadding().encodeToString(pattern(n, 5)));
+      n = n + 1;
+    }
+    print(enc.encodeToString(ascii("Hello, World!")) + " " + enc.encodeToString(ascii("Man")) + " " + enc.encodeToString(ascii("Ma")) + " " + enc.encodeToString(ascii("M")));
+    byte[] edge = bytes(251, 255, 191, 254, 63, 62);
+    byte[] e2 = bytes(251, 255, 191, 254, 63, 62);
+    e2[0] = -5; e2[1] = -1; e2[2] = -65; e2[3] = -2;
+    print(enc.encodeToString(e2) + " " + Base64.getUrlEncoder().encodeToString(e2) + " " + Base64.getUrlEncoder().withoutPadding().encodeToString(pattern(4, 250)));
+    print(ints(enc.encode(ascii("abc"))) + " " + arrayLength(enc.encode(new byte[0])));
+    byte[] big = pattern(100, 9);
+    print(vis(Base64.getMimeEncoder().encodeToString(big)));
+    print(Base64.getMimeEncoder(8, one(124)).encodeToString(pattern(20, 1)));
+    print(vis(Base64.getMimeEncoder(10, one(10)).encodeToString(pattern(15, 2))) + " " + vis(Base64.getMimeEncoder(3, one(10)).encodeToString(pattern(5, 2))));
+    print(javaStringLength(javaStringFromUtf8(Base64.getMimeEncoder(76, new byte[0]).encodeToString(pattern(60, 3)))));
+    try { Base64.getMimeEncoder(8, one(65)); } catch (IllegalArgumentException e) { print(e.getMessage()); }
+    try { Base64.getMimeEncoder(8, one(61)); } catch (IllegalArgumentException e) { print(e.getMessage()); }
+    byte[] dst = new byte[12];
+    print(enc.encode(ascii("Hello"), dst) + " " + ints(dst));
+    try { enc.encode(ascii("Hello"), new byte[4]); } catch (IllegalArgumentException e) { print(e.getMessage()); }
+
+    Base64.Decoder dec = Base64.getDecoder();
+    String[] ok = new String[7];
+    ok[0] = ""; ok[1] = "TWFu"; ok[2] = "TWE="; ok[3] = "TQ=="; ok[4] = "SGVsbG8sIFdvcmxkIQ=="; ok[5] = "AQID"; ok[6] = "+/8=";
+    int i = 0;
+    while (i < 7) { print("[" + ok[i] + "] " + tryDecode(dec, ok[i])); i = i + 1; }
+    print(tryDecode(dec, "TQ") + " " + tryDecode(dec, "TWE"));
+    String[] bad = new String[11];
+    bad[0] = "T"; bad[1] = "TWFu!"; bad[2] = "TW Fu"; bad[3] = "=TWF"; bad[4] = "TWFuTQ==x"; bad[5] = "TWFuT"; bad[6] = "TQ="; bad[7] = "TQ=x"; bad[8] = "T==="; bad[9] = "TWF=Q"; bad[10] = "-_8=";
+    i = 0;
+    while (i < 11) { print("[" + bad[i] + "] " + tryDecode(dec, bad[i])); i = i + 1; }
+    Base64.Decoder url = Base64.getUrlDecoder();
+    print(tryDecode(url, "-_8=") + " " + tryDecode(url, "+/8=") + " " + tryDecode(url, "-_8"));
+    Base64.Decoder mime = Base64.getMimeDecoder();
+    print(tryDecode(mime, "TWFu\r\nTWFu") + " " + tryDecode(mime, "T W F u") + " " + tryDecode(mime, "TW!!Fu##") + " " + tryDecode(mime, "TQ==\r\n") + " " + tryDecode(mime, "!") + " " + tryDecode(mime, "T"));
+    byte[] outd = new byte[3];
+    print(dec.decode(ascii("TWFu"), outd) + " " + ints(outd));
+    try { dec.decode(ascii("TWFuTWFu"), new byte[3]); } catch (IllegalArgumentException e) { print(e.getMessage()); }
+    int mismatches = 0;
+    int k = 0;
+    while (k <= 40) {
+      byte[] src = pattern(k, k * 3);
+      if (!same(src, dec.decode(enc.encodeToString(src)))) { mismatches = mismatches + 1; }
+      if (!same(src, dec.decode(enc.withoutPadding().encodeToString(src)))) { mismatches = mismatches + 1; }
+      if (!same(src, url.decode(Base64.getUrlEncoder().encodeToString(src)))) { mismatches = mismatches + 1; }
+      if (!same(src, mime.decode(Base64.getMimeEncoder().encodeToString(src)))) { mismatches = mismatches + 1; }
+      k = k + 1;
+    }
+    print("roundtrip mismatches=" + mismatches);
+    print(javaStringLength(javaStringFromUtf8(Base64.getMimeEncoder().encodeToString(pattern(57, 4)))) + " " + javaStringLength(javaStringFromUtf8(Base64.getMimeEncoder().encodeToString(pattern(58, 4)))) + " " + javaStringLength(javaStringFromUtf8(Base64.getMimeEncoder().encodeToString(pattern(114, 4)))));
+  }
+}

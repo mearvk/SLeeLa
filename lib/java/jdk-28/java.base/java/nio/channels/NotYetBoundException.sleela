@@ -76,7 +76,6 @@ class NotYetBoundException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public NotYetBoundException() { super("constructor"); }
+  public NotYetBoundException() { super(); }
   < ---- END java constructors ---- >
 }

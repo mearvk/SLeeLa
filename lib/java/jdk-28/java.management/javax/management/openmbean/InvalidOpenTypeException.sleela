@@ -76,9 +76,7 @@ class InvalidOpenTypeException extends IllegalArgumentException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public InvalidOpenTypeException() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public InvalidOpenTypeException(String msg) { super("constructor"); }
+  public InvalidOpenTypeException() { super(); }
+  public InvalidOpenTypeException(java.lang.String msg) { super(msg); }
   < ---- END java constructors ---- >
 }

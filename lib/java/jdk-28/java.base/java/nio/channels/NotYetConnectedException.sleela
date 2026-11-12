@@ -76,7 +76,6 @@ class NotYetConnectedException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public NotYetConnectedException() { super("constructor"); }
+  public NotYetConnectedException() { super(); }
   < ---- END java constructors ---- >
 }

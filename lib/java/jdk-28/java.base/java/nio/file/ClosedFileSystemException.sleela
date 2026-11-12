@@ -76,7 +76,6 @@ class ClosedFileSystemException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public ClosedFileSystemException() { super("constructor"); }
+  public ClosedFileSystemException() { super(); }
   < ---- END java constructors ---- >
 }

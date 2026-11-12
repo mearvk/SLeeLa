@@ -76,9 +76,7 @@ class InvalidAttributeIdentifierException extends NamingException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public InvalidAttributeIdentifierException(String explanation) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public InvalidAttributeIdentifierException() { super("constructor"); }
+  public InvalidAttributeIdentifierException(java.lang.String explanation) { super(explanation); }
+  public InvalidAttributeIdentifierException() { super(); }
   < ---- END java constructors ---- >
 }

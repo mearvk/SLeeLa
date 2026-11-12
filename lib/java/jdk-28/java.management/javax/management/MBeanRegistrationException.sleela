@@ -76,8 +76,7 @@ class MBeanRegistrationException extends MBeanException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public MBeanRegistrationException(Any e) { super("constructor"); }
+  public MBeanRegistrationException(java.lang.Throwable e) { super(e); }
   @throwable("java.lang.UnsupportedOperationException")
   public MBeanRegistrationException(Any e, String message) { super("constructor"); }
   < ---- END java constructors ---- >

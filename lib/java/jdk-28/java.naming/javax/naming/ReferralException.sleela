@@ -77,11 +77,9 @@ class ReferralException extends NamingException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  @throwable("java.lang.UnsupportedOperationException")
-  ReferralException(String explanation) { }
+  ReferralException(java.lang.String explanation) { super(explanation); }
   @JavaProtected
-  @throwable("java.lang.UnsupportedOperationException")
-  ReferralException() { }
+  ReferralException() { super(); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

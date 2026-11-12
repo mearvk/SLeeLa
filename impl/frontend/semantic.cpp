@@ -343,6 +343,15 @@ class Analyzer{
   for(const auto&c:p.classes){for(const auto&f:c.fields){if(f.isProtected&&!f.isStatic)err("protected field '"+f.name+"' must also be static");}
    for(const auto&m:c.methods){std::set<std::string> seen;for(const auto&x:m.params){if(!known(x.type))err("unknown parameter type '"+x.type+"'");if(x.type=="void")err("parameter '"+x.name+"' cannot be void");if(!seen.insert(x.name).second)err("duplicate parameter '"+x.name+"' in method '"+m.name+"'");}}}
  }
+ // A field initializer that constructs an object (`static Flag YES = new Flag(true);`)
+ // is analyzed so constructor overload resolution picks the same constructor it
+ // would in a method body; without this the compiler fell back to the first
+ // constructor of matching arity.
+ void fieldInit(const ClassDecl&owner,const Field&f){
+  auto ne=dynamic_cast<const NewExpr*>(f.init.get());
+  if(!ne||ne->args.empty()||(ne->typeName.size()>=2&&ne->typeName.compare(ne->typeName.size()-2,2,"[]")==0))return;
+  cur=nullptr;cls=owner.name;scopes.clear();push();expr(*f.init);pop();
+ }
  void method(const ClassDecl&owner,const Method&m){cur=&m;cls=owner.name;scopes.clear();push();if(!m.isStatic)declare("this",Type{Kind::Struct,owner.name,{}});for(const auto&x:m.params)declare(x.name,tn(x.type));block(*m.body);if(m.name=="main"&&m.retType!="void")err("main must return void");pop();}
  void block(const Block&b){for(const auto&s:b.stmts)stmt(*s);}
  void stmt(const Stmt&s){
@@ -500,7 +509,7 @@ class Analyzer{
    checkConstructorArgs(*n);
    return{Kind::Struct,n->typeName};}
   if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};return member(*m->base,m->field);}
-  if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="++"||u->op=="--"||u->op=="post++"||u->op=="post--"){if(syntax<SyntaxVersion{3,0})err("'"+u->op.substr(u->op.size()-2)+"' requires #sleela 3.0");else if(!numeric(t)&&t.kind!=Kind::Unknown)err("'"+u->op.substr(u->op.size()-2)+"' requires a numeric variable, got "+nameOf(t));else if(!dynamic_cast<const VarExpr*>(u->operand.get())&&!dynamic_cast<const MemberAccess*>(u->operand.get())&&!dynamic_cast<const ArrayAccess*>(u->operand.get()))err("'"+u->op.substr(u->op.size()-2)+"' needs a variable, field or array element");return t;}if(u->op=="-"&&(!numeric(t)||t.kind==Kind::Unsigned)&&t.kind!=Kind::Unknown)err("unary '-' requires signed numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}
+  if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="++"||u->op=="--"||u->op=="post++"||u->op=="post--"){if(syntax<SyntaxVersion{3,0})err("'"+u->op.substr(u->op.size()-2)+"' requires #sleela 3.0");else if(!numeric(t)&&t.kind!=Kind::Unknown)err("'"+u->op.substr(u->op.size()-2)+"' requires a numeric variable, got "+nameOf(t));else if(!dynamic_cast<const VarExpr*>(u->operand.get())&&!dynamic_cast<const MemberAccess*>(u->operand.get())&&!dynamic_cast<const ArrayAccess*>(u->operand.get()))err("'"+u->op.substr(u->op.size()-2)+"' needs a variable, field or array element");return t;}if(u->op=="-"&&(!numeric(t)||t.kind==Kind::Unsigned)&&t.kind!=Kind::Unknown)err("unary '-' requires signed numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));if(u->op=="~"){if(t.kind!=Kind::Int&&t.kind!=Kind::Unknown)err("unary '~' requires an integer operand, got "+nameOf(t));return{Kind::Int,{}};}return t;}
   if(auto b=dynamic_cast<const Binary*>(&e)){return binary(*b);}
   if(auto c=dynamic_cast<const Call*>(&e)){return call(*c);}
   if(auto m=dynamic_cast<const MethodCall*>(&e)){return fluent(*m);}
@@ -559,6 +568,15 @@ class Analyzer{
    if(!numeric(l)&&l.kind!=Kind::Unknown){err("operator '"+b.op+"' requires numeric operands");}
    if(!numeric(r)&&r.kind!=Kind::Unknown){err("operator '"+b.op+"' requires numeric operands");}
    return{(l.kind==Kind::Double||r.kind==Kind::Double)?Kind::Double:Kind::Int,{}};}
+  if(b.op=="&"||b.op=="|"||b.op=="^"){
+   const bool lk=(l.kind==Kind::Int||l.kind==Kind::Bool),rk=(r.kind==Kind::Int||r.kind==Kind::Bool);
+   const bool lu=(l.kind==Kind::Unknown),ru=(r.kind==Kind::Unknown);
+   if((!lk&&!lu)||(!rk&&!ru)||(lk&&rk&&(l.kind==Kind::Bool)!=(r.kind==Kind::Bool)))
+    err("operator '"+b.op+"' requires two integer operands or two bool operands, got "+nameOf(l)+" and "+nameOf(r));
+   return{(l.kind==Kind::Bool||r.kind==Kind::Bool)?Kind::Bool:Kind::Int,{}};}
+  if(b.op=="<<"||b.op==">>"||b.op==">>>"){
+   if((l.kind!=Kind::Int&&l.kind!=Kind::Unknown)||(r.kind!=Kind::Int&&r.kind!=Kind::Unknown))err("shift operator '"+b.op+"' requires integer operands, got "+nameOf(l)+" and "+nameOf(r));
+   return{Kind::Int,{}};}
   if(b.op=="<"||b.op=="<="||b.op==">"||b.op==">="){if(l.kind==Kind::Unsigned||r.kind==Kind::Unsigned){if(l.kind!=Kind::Unsigned||r.kind!=Kind::Unsigned||l.name!=r.name)err("comparison '"+b.op+"' requires unsigned operands of the same width");}else if((!numeric(l)||!numeric(r))&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("comparison '"+b.op+"' requires numeric operands");return{Kind::Bool,{}};}
   if(b.op=="=="||b.op=="!="){if(!assignable(l,r)&&!assignable(r,l)&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("equality operands have incompatible types "+nameOf(l)+" and "+nameOf(r));return{Kind::Bool,{}};}
   // ::: structural-offload send: the left operand is the String data source;
@@ -846,6 +864,7 @@ public:
     if(d.severity==frontend::AnnotationDiagnostic::Severity::Error) err(d.message);
     else r.warnings.push_back("Semantic warning: "+d.message);
   }
+  for(const auto&c:p.classes)for(const auto&f:c.fields)fieldInit(c,f);
   for(const auto&c:p.classes)for(const auto&m:c.methods)method(c,m);
   return r;
 }

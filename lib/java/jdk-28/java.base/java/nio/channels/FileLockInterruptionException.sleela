@@ -76,7 +76,6 @@ class FileLockInterruptionException extends IOException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public FileLockInterruptionException() { super("constructor"); }
+  public FileLockInterruptionException() { super(); }
   < ---- END java constructors ---- >
 }

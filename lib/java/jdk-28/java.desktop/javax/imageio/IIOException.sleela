@@ -76,9 +76,7 @@ class IIOException extends IOException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public IIOException(String message) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public IIOException(String message, Any cause) { super("constructor"); }
+  public IIOException(java.lang.String message) { super(message); }
+  public IIOException(java.lang.String message, java.lang.Throwable cause) { super(message, cause); }
   < ---- END java constructors ---- >
 }

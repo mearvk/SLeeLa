@@ -76,7 +76,6 @@ class AlreadyConnectedException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public AlreadyConnectedException() { super("constructor"); }
+  public AlreadyConnectedException() { super(); }
   < ---- END java constructors ---- >
 }

@@ -76,8 +76,7 @@ class FileSystemException extends IOException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public FileSystemException(String file) { super("constructor"); }
+  public FileSystemException(java.lang.String file) { super(file); }
   @throwable("java.lang.UnsupportedOperationException")
   public FileSystemException(String file, String other, String reason) { super("constructor"); }
   < ---- END java constructors ---- >
@@ -88,8 +87,6 @@ class FileSystemException extends IOException {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getMessage() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public String getFile() { return null; }
   @throwable("java.lang.UnsupportedOperationException")

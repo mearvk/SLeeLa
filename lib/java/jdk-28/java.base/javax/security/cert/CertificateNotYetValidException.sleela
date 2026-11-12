@@ -76,9 +76,7 @@ class CertificateNotYetValidException extends CertificateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public CertificateNotYetValidException() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public CertificateNotYetValidException(String message) { super("constructor"); }
+  public CertificateNotYetValidException() { super(); }
+  public CertificateNotYetValidException(java.lang.String message) { super(message); }
   < ---- END java constructors ---- >
 }

@@ -76,7 +76,6 @@ class ShutdownChannelGroupException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public ShutdownChannelGroupException() { super("constructor"); }
+  public ShutdownChannelGroupException() { super(); }
   < ---- END java constructors ---- >
 }

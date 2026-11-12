@@ -808,7 +808,7 @@ StmtP Parser::parseSimpleStatement(){
 ExprP Parser::parseExpr(){return parseAssignment();}
 ExprP Parser::parseAssignment(){
     ExprP e=parseGuideChain();
-    if(check(Tok::Assign)||check(Tok::PlusAssign)||check(Tok::MinusAssign)||check(Tok::StarAssign)||check(Tok::SlashAssign)||check(Tok::PercentAssign)){
+    if(check(Tok::Assign)||check(Tok::PlusAssign)||check(Tok::MinusAssign)||check(Tok::StarAssign)||check(Tok::SlashAssign)||check(Tok::PercentAssign)||check(Tok::AndAssign)||check(Tok::OrAssign)||check(Tok::XorAssign)||check(Tok::ShlAssign)||check(Tok::ShrAssign)||check(Tok::UshrAssign)){
         std::string op=cur().text; i_++; return std::make_unique<AssignmentExpr>(op,std::move(e),parseAssignment());
     }
     return e;

@@ -76,9 +76,7 @@ class UTFDataFormatException extends IOException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public UTFDataFormatException() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public UTFDataFormatException(String s) { super("constructor"); }
+  public UTFDataFormatException() { super(); }
+  public UTFDataFormatException(java.lang.String s) { super(s); }
   < ---- END java constructors ---- >
 }

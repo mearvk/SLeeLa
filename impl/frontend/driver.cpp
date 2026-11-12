@@ -2036,6 +2036,36 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
         }
         return output;
     };
+    // A nested Java type lives in a file named Outer.Inner.sleela that declares
+    // a top-level `class Inner`. The parser spells nested types Outer__Inner
+    // (syntax 1.11), so rewrite the declared name and every unqualified use of it
+    // inside the unit to the mangled name. Identifiers after '.', and everything
+    // inside comments and string literals, are left alone.
+    auto renameNestedUnit = [&](const std::string& unitText, const std::string& stem) {
+        const std::size_t lastDot = stem.rfind('.');
+        if(lastDot == std::string::npos || lastDot == 0 || lastDot + 1 >= stem.size()) return unitText;
+        if(!std::isupper(static_cast<unsigned char>(stem[0]))) return unitText;
+        const std::string inner = stem.substr(lastDot + 1);
+        std::string mangled;
+        for(char ch : stem) { if(ch == '.') mangled += "__"; else mangled.push_back(ch); }
+        const std::string masked = dependencyScanText(unitText);
+        std::vector<std::size_t> hits;
+        std::size_t at = 0;
+        while((at = masked.find(inner, at)) != std::string::npos) {
+            const std::size_t end = at + inner.size();
+            auto wordChar = [](char c){ return std::isalnum(static_cast<unsigned char>(c)) || c == '_'; };
+            bool boundaryBefore = (at == 0) || !wordChar(masked[at - 1]);
+            bool boundaryAfter  = (end >= masked.size()) || !wordChar(masked[end]);
+            std::size_t back = at;
+            while(back > 0 && (masked[back - 1] == ' ' || masked[back - 1] == '\t')) --back;
+            const bool afterDot = back > 0 && masked[back - 1] == '.';
+            if(boundaryBefore && boundaryAfter && !afterDot) hits.push_back(at);
+            at = end;
+        }
+        std::string out = unitText;
+        for(std::size_t i = hits.size(); i-- > 0;) out.replace(hits[i], inner.size(), mangled);
+        return out;
+    };
     // Resolve in passes so a loaded unit can pull in its own referenced units.
     // Names the loader must resolve even though no source text mentions them:
     // a method called on a String binds to class JavaStringMethods (syntax 3.0),
@@ -2053,6 +2083,18 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
             const auto pos=static_cast<std::size_t>(it->position());
             std::size_t back=pos;
             while(back>0 && (scanSource[back-1]==' '||scanSource[back-1]=='\t')) --back;
+            if(!name.empty() && std::isupper(static_cast<unsigned char>(name[0])) && back>0 && scanSource[back-1]=='.'){
+                // Nested Java types (Map.Entry, Base64.Encoder) live in files
+                // named Outer.Inner.sleela. A capitalized name after `Outer.` is
+                // the tail of a nested-type reference: seed the dotted unit name
+                // so the loader finds the nested file. Unknown seeds are ignored.
+                std::size_t q=back-1;
+                while(q>0 && (scanSource[q-1]==' '||scanSource[q-1]=='\t')) --q;
+                const std::size_t e=q;
+                while(q>0 && (std::isalnum(static_cast<unsigned char>(scanSource[q-1]))||scanSource[q-1]=='_')) --q;
+                if(q<e && std::isupper(static_cast<unsigned char>(scanSource[q])))
+                    names.insert(scanSource.substr(q,e-q)+"."+name);
+            }
             if(back>0 && scanSource[back-1]=='.') continue;
             if(!name.empty() && std::isupper(static_cast<unsigned char>(name[0]))) names.insert(name);
         }
@@ -2124,6 +2166,17 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
                 if(hasNonDocumentationMatch && isReferenceUnit(symbol)) continue;
                 if(!hasNonDocumentationMatch && hasJdk28Match && !isJdk28Reference(symbol)) continue;
                 if(match && match->path!=symbol.path){
+                    // Tie-break: a unit directly inside a preferred root (import
+                    // java.jdk-25.java.util;) beats one in a sub-package of it
+                    // (java/util/prefs/Base64 vs java/util/Base64).
+                    auto directlyUnder=[&](const sleela::library::Symbol& sy){
+                        const std::string dir=fs::path(sy.path).parent_path().generic_string();
+                        for(const auto& root:preferredRoots) if(dir==root) return true;
+                        return false;
+                    };
+                    const bool dm=directlyUnder(*match), ds=directlyUnder(symbol);
+                    if(ds && !dm){ match=&symbol; continue; }
+                    if(dm && !ds) continue;
                     std::cerr<<"sleelvac: ambiguous library symbol '"<<name<<"' in /lib ("
                              <<match->path<<" and "<<symbol.path<<"); add a versioned import such as 'import gui.version-military;' to select the intended library line.\n";
                     return false;
@@ -2138,6 +2191,7 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
                 return false;
             }
             try{
+                unitSource=renameNestedUnit(unitSource,match->name);
                 sleela::Lexer lexer(unitSource);
                 sleela::Parser parser(lexer.tokenize());
                 sleela::Program unit=parser.parseProgram();

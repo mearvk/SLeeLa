@@ -76,9 +76,7 @@ class NoPermissionException extends NamingSecurityException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public NoPermissionException(String explanation) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public NoPermissionException() { super("constructor"); }
+  public NoPermissionException(java.lang.String explanation) { super(explanation); }
+  public NoPermissionException() { super(); }
   < ---- END java constructors ---- >
 }

@@ -86,7 +86,5 @@ class JMXServerErrorException extends IOException {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any getCause() { return null; }
   < ---- END java signatures ---- >
 }

@@ -76,7 +76,6 @@ class HttpTimeoutException extends IOException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public HttpTimeoutException(String message) { super("constructor"); }
+  public HttpTimeoutException(java.lang.String message) { super(message); }
   < ---- END java constructors ---- >
 }

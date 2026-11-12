@@ -76,9 +76,7 @@ class InconsistentDebugInfoException extends RuntimeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public InconsistentDebugInfoException() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public InconsistentDebugInfoException(String s) { super("constructor"); }
+  public InconsistentDebugInfoException() { super(); }
+  public InconsistentDebugInfoException(java.lang.String s) { super(s); }
   < ---- END java constructors ---- >
 }

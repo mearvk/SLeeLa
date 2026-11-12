@@ -76,7 +76,6 @@ class AWTException extends Exception {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public AWTException(String msg) { super("constructor"); }
+  public AWTException(java.lang.String msg) { super(msg); }
   < ---- END java constructors ---- >
 }

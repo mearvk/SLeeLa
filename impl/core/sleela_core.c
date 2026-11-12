@@ -2508,6 +2508,11 @@ void slvm_joinall(SLVM* vm) {
     pthread_mutex_lock(&vm->thr_mtx); vm->nthreads = 0; pthread_mutex_unlock(&vm->thr_mtx);
 }
 
+/* A Java String lives in a bounded handle table that the collector frees. A loop
+ * that builds text one piece at a time can fill the table between safepoints,
+ * so a creator that fails runs one complete root-aware collection and retries
+ * once (the same discipline OP_NEWARRAY uses) before the failure is reported. */
+#define JSTR_RETRY(expr) __extension__ ({ SLValue jr_=(expr); if(jr_.type!=SL_UTF16){ SLGCRootContext jroots_={ vm, t, vm->native_callback_caller }; gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &jroots_, 0); jr_=(expr); } jr_; })
 #define TERR(msg) do { strncpy(t->err, (msg), sizeof(t->err)-1); t->err[sizeof(t->err)-1]=0; set_err(vm,(msg)); return SLR_ERROR; } while (0)
 #define PUSH(v) do { if (t->sp >= STACK_MAX) TERR("stack overflow"); t->stack[t->sp++] = (v); } while (0)
 /* POP() fails closed on underflow. The front-end bytecode compiler is supposed
@@ -2906,13 +2911,35 @@ static SLResult run_thread(SLThread* t) {
         case OP_JSTR_CODE_POINT_AT: { SLValue index=POP(),value=POP(); int32_t cp=0; if(value.type!=SL_UTF16 || slvm_java_string_code_point_at(vm,value,(int32_t)as_num(index),&cp)!=SL_JAVA_STRING_OK) TERR("String.codePointAt index out of range or invalid String"); PUSH(slval_int(cp)); } break;
         case OP_JSTR_CODE_POINT_COUNT: { SLValue end=POP(),begin=POP(),value=POP(); int32_t n=0; if(value.type!=SL_UTF16 || slvm_java_string_code_point_count(vm,value,(int32_t)as_num(begin),(int32_t)as_num(end),&n)!=SL_JAVA_STRING_OK) TERR("String.codePointCount range invalid"); PUSH(slval_int(n)); } break;
         case OP_JSTR_OFFSET_BY_CODE_POINTS: { SLValue offset=POP(),index=POP(),value=POP(); int32_t result=0; if(value.type!=SL_UTF16 || slvm_java_string_offset_by_code_points(vm,value,(int32_t)as_num(index),(int32_t)as_num(offset),&result)!=SL_JAVA_STRING_OK) TERR("String.offsetByCodePoints range invalid"); PUSH(slval_int(result)); } break;
-        case OP_JSTR_SUBSTRING: { SLValue end=POP(),begin=POP(),value=POP(); if(value.type!=SL_UTF16 || slvm_java_string_root(vm,value)!=SL_JAVA_STRING_OK) TERR("String.substring requires a rooted Java UTF-16 String"); SLValue result=slvm_java_string_substring(vm,value,(int32_t)as_num(begin),(int32_t)as_num(end)); (void)slvm_java_string_unroot(vm,value); if(result.type!=SL_UTF16) TERR("String.substring range invalid"); PUSH(result); } break;
-        case OP_JSTR_CONCAT: { SLValue right=POP(),left=POP(); if(left.type!=SL_UTF16 || right.type!=SL_UTF16) TERR("String.concat requires two Java UTF-16 Strings"); if(slvm_java_string_root(vm,left)!=SL_JAVA_STRING_OK) TERR("String.concat could not root left operand"); if(slvm_java_string_root(vm,right)!=SL_JAVA_STRING_OK) { (void)slvm_java_string_unroot(vm,left); TERR("String.concat could not root right operand"); } SLValue result=slvm_java_string_concat(vm,left,right); (void)slvm_java_string_unroot(vm,right); (void)slvm_java_string_unroot(vm,left); if(result.type!=SL_UTF16) TERR("String.concat failed"); PUSH(result); } break;
+        case OP_JSTR_SUBSTRING: { SLValue end=POP(),begin=POP(),value=POP(); if(value.type!=SL_UTF16 || slvm_java_string_root(vm,value)!=SL_JAVA_STRING_OK) TERR("String.substring requires a rooted Java UTF-16 String"); SLValue result=JSTR_RETRY(slvm_java_string_substring(vm,value,(int32_t)as_num(begin),(int32_t)as_num(end))); (void)slvm_java_string_unroot(vm,value); if(result.type!=SL_UTF16) TERR("String.substring range invalid"); PUSH(result); } break;
+        case OP_JSTR_CONCAT: { SLValue right=POP(),left=POP(); if(left.type!=SL_UTF16 || right.type!=SL_UTF16) TERR("String.concat requires two Java UTF-16 Strings"); if(slvm_java_string_root(vm,left)!=SL_JAVA_STRING_OK) TERR("String.concat could not root left operand"); if(slvm_java_string_root(vm,right)!=SL_JAVA_STRING_OK) { (void)slvm_java_string_unroot(vm,left); TERR("String.concat could not root right operand"); } SLValue result=JSTR_RETRY(slvm_java_string_concat(vm,left,right)); (void)slvm_java_string_unroot(vm,right); (void)slvm_java_string_unroot(vm,left); if(result.type!=SL_UTF16) TERR("String.concat failed"); PUSH(result); } break;
         case OP_JSTR_HASH_CODE: { SLValue value=POP(); int32_t hash=0; if(value.type!=SL_UTF16 || slvm_java_string_hash_code(vm,value,&hash)!=SL_JAVA_STRING_OK) TERR("String.hashCode requires a valid Java UTF-16 String"); PUSH(slval_int(hash)); } break;
         case OP_JSTR_COMPARE_TO: { SLValue right=POP(),left=POP(); int32_t order=0; if(left.type!=SL_UTF16 || right.type!=SL_UTF16 || slvm_java_string_compare_to(vm,left,right,&order)!=SL_JAVA_STRING_OK) TERR("String.compareTo requires two Java UTF-16 Strings"); PUSH(slval_int(order)); } break;
-        case OP_JSTR_FROM_UTF8: { SLValue value=POP(); if(value.type!=SL_STR || value.as.s<0 || value.as.s>=vm->nstr) TERR("javaStringFromUtf8 requires a valid legacy UTF-8 String"); SLValue converted=slvm_java_string_from_utf8(vm,slvm_str(vm,value.as.s)); if(converted.type!=SL_UTF16) TERR("javaStringFromUtf8 rejected malformed UTF-8 or allocation failure"); PUSH(converted); } break;
+        case OP_JSTR_FROM_UTF8: { SLValue value=POP(); if(value.type!=SL_STR || value.as.s<0 || value.as.s>=vm->nstr) TERR("javaStringFromUtf8 requires a valid legacy UTF-8 String"); SLValue converted=JSTR_RETRY(slvm_java_string_from_utf8(vm,slvm_str(vm,value.as.s))); if(converted.type!=SL_UTF16) TERR("javaStringFromUtf8 rejected malformed UTF-8 or allocation failure"); PUSH(converted); } break;
         case OP_JSTR_TO_UTF8: { SLValue value=POP(); if(value.type!=SL_UTF16) TERR("javaStringToUtf8 requires a Java UTF-16 String"); if(slvm_java_string_root(vm,value)!=SL_JAVA_STRING_OK) TERR("javaStringToUtf8 could not root its operand"); const char *why="javaStringToUtf8 failed"; char *utf8=java_string_to_utf8_alloc(vm,value,&why); (void)slvm_java_string_unroot(vm,value); if(!utf8) TERR(why); SLValue out; out.type=SL_STR; out.as.s=intern(vm,utf8); free(utf8); PUSH(out); } break;
-        case OP_JSTR_FROM_CODE_UNIT: { SLValue unit=POP(); if(unit.type!=SL_INT) TERR("javaStringFromCodeUnit requires an integer code unit"); if(unit.as.i<0 || unit.as.i>65535) TERR("javaStringFromCodeUnit code unit is outside the UTF-16 range 0..65535"); uint16_t u=(uint16_t)unit.as.i; SLValue made=slvm_java_string_new(vm,&u,1); if(made.type!=SL_UTF16) TERR("javaStringFromCodeUnit allocation failure"); PUSH(made); } break;
+        case OP_BAND: case OP_BOR: case OP_BXOR: {
+            SLValue b=POP(),a=POP();
+            if(a.type==SL_BOOL && b.type==SL_BOOL){
+                int r=(in.op==OP_BAND)?(a.as.b&&b.as.b):(in.op==OP_BOR)?(a.as.b||b.as.b):((a.as.b!=0)!=(b.as.b!=0));
+                PUSH(slval_bool(r));
+            } else if(both_int(a,b)){
+                int64_t r=(in.op==OP_BAND)?(a.as.i&b.as.i):(in.op==OP_BOR)?(a.as.i|b.as.i):(a.as.i^b.as.i);
+                PUSH(slval_int(r));
+            } else TERR("bitwise & | ^ require two integers or two booleans");
+        } break;
+        case OP_BSHL: case OP_BSHR: case OP_BUSHR: {
+            SLValue b=POP(),a=POP();
+            if(!both_int(a,b)) TERR("shift operators require integer operands");
+            unsigned n=(unsigned)(b.as.i&63);
+            uint64_t u=(uint64_t)a.as.i;
+            int64_t r;
+            if(in.op==OP_BSHL) r=(int64_t)(u<<n);
+            else if(in.op==OP_BUSHR) r=(int64_t)(u>>n);
+            else r=(a.as.i<0)?(int64_t)~((~u)>>n):(int64_t)(u>>n);
+            PUSH(slval_int(r));
+        } break;
+        case OP_BNOT: { SLValue a=POP(); if(a.type!=SL_INT) TERR("bitwise ~ requires an integer"); PUSH(slval_int(~a.as.i)); } break;
+        case OP_JSTR_FROM_CODE_UNIT: { SLValue unit=POP(); if(unit.type!=SL_INT) TERR("javaStringFromCodeUnit requires an integer code unit"); if(unit.as.i<0 || unit.as.i>65535) TERR("javaStringFromCodeUnit code unit is outside the UTF-16 range 0..65535"); uint16_t u=(uint16_t)unit.as.i; SLValue made=JSTR_RETRY(slvm_java_string_new(vm,&u,1)); if(made.type!=SL_UTF16) TERR("javaStringFromCodeUnit allocation failure"); PUSH(made); } break;
         case OP_POP: (void)POP(); break;
         case OP_DUP: { if (t->sp < 1) TERR("stack underflow"); SLValue dupv = t->stack[t->sp-1]; PUSH(dupv); } break;
         case OP_DUP2: { if (t->sp < 2) TERR("stack underflow"); SLValue av = t->stack[t->sp-2], bv = t->stack[t->sp-1]; PUSH(av); PUSH(bv); } break;
@@ -3900,6 +3927,14 @@ static SLResult run_thread(SLThread* t) {
                 h=array_alloc(vm,(int)nv.as.i);
             }
             if(h<0) TERR("array allocation failed (negative/too-large size or store exhausted)");
+            /* Typed zero-fill (ABI 1.9): operand a selects the element default,
+             * 0 null (unchanged), 1 integer 0, 2 double 0.0, 3 boolean false, so
+             * `new int[n]` reads as Java does. The handle is not yet visible to
+             * any other thread, so the fill needs no lock. */
+            if(in.a>=1 && in.a<=3){
+                SLValue fillv = (in.a==1) ? slval_int(0) : (in.a==2) ? slval_double(0.0) : slval_bool(0);
+                for(int j=0;j<vm->arrays[h].len;j++) vm->arrays[h].elems[j]=fillv;
+            }
             PUSH(slval_array(h));
         } break;
         case OP_ARRGET: {

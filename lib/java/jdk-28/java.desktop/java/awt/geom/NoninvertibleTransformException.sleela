@@ -76,7 +76,6 @@ class NoninvertibleTransformException extends Exception {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public NoninvertibleTransformException(String s) { super("constructor"); }
+  public NoninvertibleTransformException(java.lang.String s) { super(s); }
   < ---- END java constructors ---- >
 }

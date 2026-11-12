@@ -77,16 +77,12 @@ class ObjectStreamException extends IOException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  @throwable("java.lang.UnsupportedOperationException")
-  ObjectStreamException(Any cause) { }
+  ObjectStreamException(java.lang.Throwable cause) { super(cause); }
   @JavaProtected
-  @throwable("java.lang.UnsupportedOperationException")
-  ObjectStreamException() { }
+  ObjectStreamException() { super(); }
   @JavaProtected
-  @throwable("java.lang.UnsupportedOperationException")
-  ObjectStreamException(String message, Any cause) { }
+  ObjectStreamException(java.lang.String message, java.lang.Throwable cause) { super(message, cause); }
   @JavaProtected
-  @throwable("java.lang.UnsupportedOperationException")
-  ObjectStreamException(String message) { }
+  ObjectStreamException(java.lang.String message) { super(message); }
   < ---- END java constructors ---- >
 }

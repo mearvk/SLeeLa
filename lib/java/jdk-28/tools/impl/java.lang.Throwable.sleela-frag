@@ -1,0 +1,99 @@
+  << java.lang.Throwable in SLeeLa, written from the JDK 28 API specification
+     (Java Source above). Java names and signatures are kept. A null detail
+     message means no message. The cause is unset until a constructor with a
+     cause or initCause supplies it. Suppressed exceptions are recorded in
+     order. The SLeeLa VM captures no stack frames, so getStackTrace returns
+     whatever setStackTrace stored (empty by default). printStackTrace writes
+     the Java-shaped report (the throwable, its suppressed list, then the
+     cause chain) to standard output. Subclasses chain with super(...). >>
+  String detailMessage = null;
+  Throwable cause = null;
+  boolean causeInitialized = false;
+  Any[] suppressedList = new Any[4];
+  int suppressedCount = 0;
+  Any[] stackTrace = new Any[0];
+
+  public Throwable() { }
+  public Throwable(java.lang.String message) { this.detailMessage = message; }
+  public Throwable(java.lang.String message, java.lang.Throwable cause) {
+    this.detailMessage = message;
+    this.cause = (Throwable) cause;
+    this.causeInitialized = true;
+  }
+  public Throwable(java.lang.Throwable cause) {
+    if (cause != null) { Throwable c0 = (Throwable) cause; this.detailMessage = c0.toString(); }
+    this.cause = (Throwable) cause;
+    this.causeInitialized = true;
+  }
+  @JavaProtected
+  Throwable(java.lang.String message, java.lang.Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    this.detailMessage = message;
+    this.cause = (Throwable) cause;
+    this.causeInitialized = true;
+  }
+
+  public java.lang.String getMessage() { return detailMessage; }
+  public java.lang.String getLocalizedMessage() { return getMessage(); }
+  public synchronized Throwable getCause() { return this.cause; }
+  public synchronized Throwable initCause(java.lang.Throwable cause) {
+    if (causeInitialized) {
+      String what = "a null";
+      if (cause != null) { Throwable c0 = (Throwable) cause; what = c0.toString(); }
+      throw new IllegalStateException("Can't overwrite cause with " + what, this);
+    }
+    if (cause == this) {
+      throw new IllegalArgumentException("Self-causation not permitted", this);
+    }
+    this.cause = (Throwable) cause;
+    this.causeInitialized = true;
+    return this;
+  }
+  public java.lang.String toString() {
+    String m = getLocalizedMessage();
+    if (m == null) { return javaType; }
+    return javaType + ": " + m;
+  }
+  public synchronized Throwable fillInStackTrace() { return this; }
+  public Any[] getStackTrace() { return this.stackTrace; }
+  public void setStackTrace(Any[] stackTrace) {
+    if (stackTrace == null) { throw new NullPointerException("stackTrace == null"); }
+    this.stackTrace = stackTrace;
+  }
+  public final synchronized void addSuppressed(java.lang.Throwable exception) {
+    if (exception == this) {
+      throw new IllegalArgumentException("Self-suppression not permitted", exception);
+    }
+    if (exception == null) {
+      throw new NullPointerException("Cannot suppress a null exception.");
+    }
+    if (suppressedCount == arrayLength(this.suppressedList)) {
+      Any[] grown = new Any[suppressedCount * 2];
+      int i = 0;
+      while (i < suppressedCount) { grown[i] = this.suppressedList[i]; i = i + 1; }
+      this.suppressedList = grown;
+    }
+    this.suppressedList[suppressedCount] = exception;
+    suppressedCount = suppressedCount + 1;
+  }
+  public final synchronized Throwable[] getSuppressed() {
+    Throwable[] out = new Throwable[suppressedCount];
+    int i = 0;
+    while (i < suppressedCount) { out[i] = (Throwable) this.suppressedList[i]; i = i + 1; }
+    return out;
+  }
+  public void printStackTrace() {
+    print(toString());
+    int i = 0;
+    while (i < suppressedCount) {
+      Throwable s = (Throwable) this.suppressedList[i];
+      print("\tSuppressed: " + s.toString());
+      i = i + 1;
+    }
+    Throwable c = this.cause;
+    int depth = 0;
+    while (c != null && depth < 1024) {
+      print("Caused by: " + c.toString());
+      c = c.getCause();
+      depth = depth + 1;
+    }
+  }

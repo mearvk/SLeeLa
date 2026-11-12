@@ -76,8 +76,7 @@ class UnsupportedCharsetException extends IllegalArgumentException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public UnsupportedCharsetException(String charsetName) { super("constructor"); }
+  public UnsupportedCharsetException(java.lang.String charsetName) { super(charsetName); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >

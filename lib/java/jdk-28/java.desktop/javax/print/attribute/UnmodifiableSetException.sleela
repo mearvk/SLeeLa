@@ -76,9 +76,7 @@ class UnmodifiableSetException extends RuntimeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public UnmodifiableSetException() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public UnmodifiableSetException(String message) { super("constructor"); }
+  public UnmodifiableSetException() { super(); }
+  public UnmodifiableSetException(java.lang.String message) { super(message); }
   < ---- END java constructors ---- >
 }

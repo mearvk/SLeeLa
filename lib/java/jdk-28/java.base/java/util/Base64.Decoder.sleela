@@ -57,6 +57,155 @@ class Decoder {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (JDK 28, SLeeLa logic) ---- >
+  << java.util.Base64.Decoder in SLeeLa, written from the JDK 28 API
+     specification. The basic and URL-safe decoders reject any character
+     outside their alphabet; the MIME decoder skips such characters. A =
+     ends the data; a dangling single character, a missing second =, or
+     anything but MIME separators after the data is an
+     IllegalArgumentException, with the same messages as the JDK. The
+     ByteBuffer and InputStream forms stay as stubs. >>
+  boolean isURL;
+  boolean isMIME;
+
+  Decoder(boolean isURL, boolean isMIME) {
+    this.isURL = isURL;
+    this.isMIME = isMIME;
+  }
+
+  int slDecodedOutLength(byte[] src) {
+    int sp = 0;
+    int sl = arrayLength(src);
+    int paddings = 0;
+    int len = sl;
+    if (len == 0) { return 0; }
+    if (len < 2) {
+      if (isMIME && Base64.slFromBase64(0, isURL) == -1) { return 0; }
+      throw new IllegalArgumentException("Input byte[] should at least have 2 bytes for base64 bytes");
+    }
+    if (isMIME) {
+      int n = 0;
+      while (sp < sl) {
+        int b = src[sp] & 255;
+        sp = sp + 1;
+        if (b == 61) {
+          len = len - (sl - sp + 1);
+          break;
+        }
+        if (Base64.slFromBase64(b, isURL) == -1) { n = n + 1; }
+      }
+      len = len - n;
+    } else {
+      if (src[sl - 1] == 61) {
+        paddings = paddings + 1;
+        if (src[sl - 2] == 61) { paddings = paddings + 1; }
+      }
+    }
+    if (paddings == 0 && (len & 3) != 0) { paddings = 4 - (len & 3); }
+    return 3 * ((len + 3) / 4) - paddings;
+  }
+
+  int slDecode0(byte[] src, byte[] dst) {
+    int sl = arrayLength(src);
+    int sp = 0;
+    int dp = 0;
+    int bits = 0;
+    int shiftto = 18;
+    while (sp < sl) {
+      int b = src[sp] & 255;
+      sp = sp + 1;
+      b = Base64.slFromBase64(b, isURL);
+      if (b < 0) {
+        if (b == -2) {
+          if (shiftto == 6) {
+            if (sp == sl) { throw new IllegalArgumentException("Input byte array has wrong 4-byte ending unit"); }
+            int nx = src[sp];
+            sp = sp + 1;
+            if (nx != 61) { throw new IllegalArgumentException("Input byte array has wrong 4-byte ending unit"); }
+          }
+          if (shiftto == 18) { throw new IllegalArgumentException("Input byte array has wrong 4-byte ending unit"); }
+          break;
+        }
+        if (isMIME) { continue; }
+        throw new IllegalArgumentException("Illegal base64 character " + Integer.toString(src[sp - 1], 16));
+      }
+      bits = bits | (b << shiftto);
+      shiftto = shiftto - 6;
+      if (shiftto < 0) {
+        dst[dp] = slByte(bits >> 16);
+        dst[dp + 1] = slByte(bits >> 8);
+        dst[dp + 2] = slByte(bits);
+        dp = dp + 3;
+        shiftto = 18;
+        bits = 0;
+      }
+    }
+    if (shiftto == 6) {
+      dst[dp] = slByte(bits >> 16);
+      dp = dp + 1;
+    } else if (shiftto == 0) {
+      dst[dp] = slByte(bits >> 16);
+      dst[dp + 1] = slByte(bits >> 8);
+      dp = dp + 2;
+    } else if (shiftto == 12) {
+      throw new IllegalArgumentException("Last unit does not have enough valid bits");
+    }
+    while (sp < sl) {
+      if (isMIME) {
+        int c = src[sp] & 255;
+        sp = sp + 1;
+        if (Base64.slFromBase64(c, isURL) < 0) { continue; }
+      }
+      throw new IllegalArgumentException("Input byte array has incorrect ending byte at " + sp);
+    }
+    return dp;
+  }
+  static int slByte(int v) {
+    int m = v & 255;
+    if (m > 127) { return m - 256; }
+    return m;
+  }
+  byte[] slBytesOf(java.lang.String s) {
+    String u = javaStringFromUtf8(s);
+    int n = javaStringLength(u);
+    byte[] out = new byte[n];
+    int i = 0;
+    while (i < n) {
+      int c = javaStringCharAt(u, i);
+      if (c > 255) { c = 63; }
+      out[i] = slByte(c);
+      i = i + 1;
+    }
+    return out;
+  }
+
+  public byte[] decode(byte[] src) {
+    if (src == null) { throw new NullPointerException(); }
+    int len = slDecodedOutLength(src);
+    byte[] scratch = new byte[len + 3];
+    int ret = slDecode0(src, scratch);
+    byte[] dst = new byte[ret];
+    int i = 0;
+    while (i < ret) { dst[i] = scratch[i]; i = i + 1; }
+    return dst;
+  }
+  public byte[] decode(java.lang.String src) {
+    if (src == null) { throw new NullPointerException(); }
+    return decode(slBytesOf(src));
+  }
+  public int decode(byte[] src, byte[] dst) {
+    if (src == null || dst == null) { throw new NullPointerException(); }
+    int len = slDecodedOutLength(src);
+    if (arrayLength(dst) < len || len == -1) {
+      throw new IllegalArgumentException("Output byte array is too small for decoding all input bytes");
+    }
+    byte[] scratch = new byte[len + 3];
+    int ret = slDecode0(src, scratch);
+    int i = 0;
+    while (i < ret) { dst[i] = scratch[i]; i = i + 1; }
+    return ret;
+  }
+  < ---- END java implementation ---- >
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -83,13 +232,7 @@ class Decoder {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public byte[] decode(String src) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public byte[] decode(byte[] src) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any decode(Any buffer) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public int decode(byte[] src, byte[] dst) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any wrap(Any is) { return null; }
   < ---- END java signatures ---- >

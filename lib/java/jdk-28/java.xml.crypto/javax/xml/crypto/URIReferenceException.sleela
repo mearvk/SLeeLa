@@ -76,16 +76,12 @@ class URIReferenceException extends Exception {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public URIReferenceException(Any cause) { super("constructor"); }
+  public URIReferenceException(java.lang.Throwable cause) { super(cause); }
   @throwable("java.lang.UnsupportedOperationException")
   public URIReferenceException(String message, Any cause, Any uriReference) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public URIReferenceException(String message, Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public URIReferenceException(String message) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public URIReferenceException() { super("constructor"); }
+  public URIReferenceException(java.lang.String message, java.lang.Throwable cause) { super(message, cause); }
+  public URIReferenceException(java.lang.String message) { super(message); }
+  public URIReferenceException() { super(); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -95,11 +91,7 @@ class URIReferenceException extends Exception {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void printStackTrace() { }
-  @throwable("java.lang.UnsupportedOperationException")
   public void printStackTrace(Any s) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any getCause() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any getURIReference() { return null; }
   < ---- END java signatures ---- >

@@ -76,7 +76,6 @@ class CMMException extends RuntimeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public CMMException(String message) { super("constructor"); }
+  public CMMException(java.lang.String message) { super(message); }
   < ---- END java constructors ---- >
 }

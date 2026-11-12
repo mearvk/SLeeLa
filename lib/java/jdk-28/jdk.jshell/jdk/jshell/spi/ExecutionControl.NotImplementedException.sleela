@@ -77,7 +77,6 @@ class NotImplementedException extends InternalException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public NotImplementedException(String message) { super("constructor"); }
+  public NotImplementedException(java.lang.String message) { super(message); }
   < ---- END java constructors ---- >
 }

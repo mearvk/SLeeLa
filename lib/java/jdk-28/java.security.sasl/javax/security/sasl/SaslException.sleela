@@ -76,12 +76,9 @@ class SaslException extends IOException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public SaslException(String detail, Any ex) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SaslException(String detail) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SaslException() { super("constructor"); }
+  public SaslException(java.lang.String detail, java.lang.Throwable ex) { super(detail, ex); }
+  public SaslException(java.lang.String detail) { super(detail); }
+  public SaslException() { super(); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -90,11 +87,5 @@ class SaslException extends IOException {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any getCause() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any initCause(Any cause) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
   < ---- END java signatures ---- >
 }

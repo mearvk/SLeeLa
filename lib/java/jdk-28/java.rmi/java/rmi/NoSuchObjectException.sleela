@@ -76,7 +76,6 @@ class NoSuchObjectException extends RemoteException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public NoSuchObjectException(String s) { super("constructor"); }
+  public NoSuchObjectException(java.lang.String s) { super(s); }
   < ---- END java constructors ---- >
 }

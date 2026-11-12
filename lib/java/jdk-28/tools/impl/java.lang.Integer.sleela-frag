@@ -2,10 +2,9 @@
      (Java Source above). Java names, static modifiers and return types are kept.
      The VM integer slot is 64 bits wide, so every result that Java computes in
      32-bit two's complement is wrapped back into the int range (slWrap).
-     Bit operations are done arithmetically (the VM has no bitwise operators):
-     a value is viewed as its unsigned 32-bit pattern u in [0, 2^32). Where Java
-     throws (NumberFormatException), the method carries @throwable; until
-     exceptions land a malformed input yields 0. >>
+     Bit operations are done arithmetically: a value is viewed as its unsigned
+     32-bit pattern u in [0, 2^32). Where Java throws (NumberFormatException,
+     ArithmeticException) the method carries @throwable and throws. >>
   int value;
 
   public Integer(int value) { this.value = value; }
@@ -84,51 +83,63 @@
   public static java.lang.String toBinaryString(int i) { return slUnsignedText(slU(i), 2); }
 
   < parsing >
-  @throwable("java.lang.NumberFormatException")
-  public static int parseInt(java.lang.String s, int radix) {
-    if (s == null || radix < 2 || radix > 36) { return 0; }
+  << A malformed number throws NumberFormatException with the JDK message:
+     For input string: "x" (plus " under radix N" when the radix is not 10),
+     Cannot parse null string: null, the radix range messages, and the
+     unsigned forms. The digits are accumulated in an int128 so the range test
+     is exact before the result is narrowed to 32 bits. >>
+  static String slNfeText(java.lang.String s, int radix) {
+    String m = "For input string: \"" + s + "\"";
+    if (radix != 10) { m = m + " under radix " + radix; }
+    return m;
+  }
+  static int128 slParseMagnitude(java.lang.String s, int radix, boolean unsigned) {
+    if (s == null) { throw new NumberFormatException("Cannot parse null string"); }
+    if (radix < 2) { throw new NumberFormatException("radix " + radix + " less than Character.MIN_RADIX"); }
+    if (radix > 36) { throw new NumberFormatException("radix " + radix + " greater than Character.MAX_RADIX"); }
     String u = javaStringFromUtf8(s);
     int n = javaStringLength(u);
-    if (n == 0) { return 0; }
+    if (n == 0) { throw new NumberFormatException(slNfeText(s, radix)); }
     int i = 0;
-    boolean neg = false;
     int first = javaStringCharAt(u, 0);
     if (first == 45 || first == 43) {
-      neg = first == 45;
+      if (first == 45 && unsigned) { throw new NumberFormatException("Illegal leading minus sign on unsigned string " + s + "."); }
       i = 1;
-      if (n == 1) { return 0; }
+      if (n == 1) { throw new NumberFormatException(slNfeText(s, radix)); }
     }
-    long result = 0;
+    int128 result = 0;
+    int128 maxLong = 9223372036854775807;
+    int128 cap = maxLong + 1;
     while (i < n) {
       int d = slDigitOf(javaStringCharAt(u, i), radix);
-      if (d < 0) { return 0; }
+      if (d < 0) { throw new NumberFormatException(slNfeText(s, radix)); }
       result = result * radix + d;
-      if (result > 2147483648) { return 0; }
+      if (result > cap) {
+        if (unsigned) { throw new NumberFormatException("String value " + s + " exceeds range of unsigned int."); }
+        throw new NumberFormatException(slNfeText(s, radix));
+      }
       i = i + 1;
     }
-    if (neg) { return 0 - result; }
-    if (result > 2147483647) { return 0; }
     return result;
+  }
+  @throwable("java.lang.NumberFormatException")
+  public static int parseInt(java.lang.String s, int radix) {
+    int128 mag = slParseMagnitude(s, radix, false);
+    boolean neg = javaStringCharAt(javaStringFromUtf8(s), 0) == 45;
+    if (neg) {
+      if (mag > 2147483648) { throw new NumberFormatException(slNfeText(s, radix)); }
+      return (int) (0 - mag);
+    }
+    if (mag > 2147483647) { throw new NumberFormatException(slNfeText(s, radix)); }
+    return (int) mag;
   }
   @throwable("java.lang.NumberFormatException")
   public static int parseInt(java.lang.String s) { return parseInt(s, 10); }
   @throwable("java.lang.NumberFormatException")
   public static int parseUnsignedInt(java.lang.String s, int radix) {
-    if (s == null || radix < 2 || radix > 36) { return 0; }
-    String u = javaStringFromUtf8(s);
-    int n = javaStringLength(u);
-    if (n == 0) { return 0; }
-    int i = 0;
-    if (javaStringCharAt(u, 0) == 43) { i = 1; if (n == 1) { return 0; } }
-    long result = 0;
-    while (i < n) {
-      int d = slDigitOf(javaStringCharAt(u, i), radix);
-      if (d < 0) { return 0; }
-      result = result * radix + d;
-      if (result > 4294967295) { return 0; }
-      i = i + 1;
-    }
-    return slWrap(result);
+    int128 mag = slParseMagnitude(s, radix, true);
+    if (mag > 4294967295) { throw new NumberFormatException("String value " + s + " exceeds range of unsigned int."); }
+    return slWrap((long) mag);
   }
   @throwable("java.lang.NumberFormatException")
   public static int parseUnsignedInt(java.lang.String s) { return parseUnsignedInt(s, 10); }
@@ -139,10 +150,10 @@
   public static java.lang.Integer valueOf(int i) { return new Integer(i); }
   @throwable("java.lang.NumberFormatException")
   public static java.lang.Integer decode(java.lang.String nm) {
-    if (nm == null) { return new Integer(0); }
+    if (nm == null) { throw new NullPointerException(); }
+    if (javaStringLength(javaStringFromUtf8(nm)) == 0) { throw new NumberFormatException("Zero length string"); }
     String u = javaStringFromUtf8(nm);
     int n = javaStringLength(u);
-    if (n == 0) { return new Integer(0); }
     int i = 0;
     boolean neg = false;
     int c0 = javaStringCharAt(u, 0);
@@ -151,15 +162,12 @@
     if (i + 1 < n && javaStringCharAt(u, i) == 48 && (javaStringCharAt(u, i + 1) == 120 || javaStringCharAt(u, i + 1) == 88)) { radix = 16; i = i + 2; }
     else { if (i < n && javaStringCharAt(u, i) == 35) { radix = 16; i = i + 1; }
     else { if (i + 1 < n && javaStringCharAt(u, i) == 48) { radix = 8; i = i + 1; } } }
-    long mag = 0;
-    while (i < n) {
-      int d = slDigitOf(javaStringCharAt(u, i), radix);
-      if (d < 0) { return new Integer(0); }
-      mag = mag * radix + d;
-      i = i + 1;
-    }
-    if (neg) { return new Integer(slWrap(0 - mag)); }
-    return new Integer(slWrap(mag));
+    if (i < n && (javaStringCharAt(u, i) == 45 || javaStringCharAt(u, i) == 43)) { throw new NumberFormatException("Sign character in wrong position"); }
+    String digits = "";
+    int j = i;
+    while (j < n) { digits = digits + javaStringToUtf8(javaStringFromCodeUnit(javaStringCharAt(u, j))); j = j + 1; }
+    if (neg) { digits = "-" + digits; }
+    return new Integer(parseInt(digits, radix));
   }
   public static java.lang.Integer getInteger(java.lang.String nm) { return null; }
   public static java.lang.Integer getInteger(java.lang.String nm, int val) { return new Integer(val); }

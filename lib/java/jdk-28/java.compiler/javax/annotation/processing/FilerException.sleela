@@ -76,7 +76,6 @@ class FilerException extends IOException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public FilerException(String s) { super("constructor"); }
+  public FilerException(java.lang.String s) { super(s); }
   < ---- END java constructors ---- >
 }

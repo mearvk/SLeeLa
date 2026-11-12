@@ -87,8 +87,6 @@ class MissingFormatWidthException extends IllegalFormatException {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public String getMessage() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public String getFormatSpecifier() { return null; }
   < ---- END java signatures ---- >
 }

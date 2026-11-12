@@ -77,15 +77,10 @@ class RuntimeException extends Exception {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  @throwable("java.lang.UnsupportedOperationException")
-  RuntimeException(String message, Any cause, boolean enableSuppression, boolean writableStackTrace) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public RuntimeException(Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public RuntimeException(String message, Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public RuntimeException(String message) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public RuntimeException() { super("constructor"); }
+  RuntimeException(java.lang.String message, java.lang.Throwable cause, boolean enableSuppression, boolean writableStackTrace) { super(message, cause, enableSuppression, writableStackTrace); }
+  public RuntimeException(java.lang.Throwable cause) { super(cause); }
+  public RuntimeException(java.lang.String message, java.lang.Throwable cause) { super(message, cause); }
+  public RuntimeException(java.lang.String message) { super(message); }
+  public RuntimeException() { super(); }
   < ---- END java constructors ---- >
 }

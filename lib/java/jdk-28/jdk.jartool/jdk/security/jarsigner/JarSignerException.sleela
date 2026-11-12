@@ -76,7 +76,6 @@ class JarSignerException extends RuntimeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public JarSignerException(String message, Any cause) { super("constructor"); }
+  public JarSignerException(java.lang.String message, java.lang.Throwable cause) { super(message, cause); }
   < ---- END java constructors ---- >
 }

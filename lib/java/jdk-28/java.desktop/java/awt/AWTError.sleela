@@ -76,7 +76,6 @@ class AWTError extends Error {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public AWTError(String msg) { super("constructor"); }
+  public AWTError(java.lang.String msg) { super(msg); }
   < ---- END java constructors ---- >
 }

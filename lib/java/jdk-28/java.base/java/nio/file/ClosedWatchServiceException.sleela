@@ -76,7 +76,6 @@ class ClosedWatchServiceException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public ClosedWatchServiceException() { super("constructor"); }
+  public ClosedWatchServiceException() { super(); }
   < ---- END java constructors ---- >
 }

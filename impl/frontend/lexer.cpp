@@ -52,7 +52,7 @@ const char* tokName(Tok t) {
         case Tok::LParen:return "("; case Tok::RParen:return ")"; case Tok::LBrace:return "{"; case Tok::RBrace:return "}";
         case Tok::LBracket:return "["; case Tok::RBracket:return "]"; case Tok::Semicolon:return ";"; case Tok::Comma:return ","; case Tok::Dot:return ".";
         case Tok::Assign:return "="; case Tok::Plus:return "+"; case Tok::Minus:return "-"; case Tok::Star:return "*"; case Tok::Slash:return "/";
-        case Tok::Percent:return "%"; case Tok::PlusAssign:return "+="; case Tok::MinusAssign:return "-="; case Tok::StarAssign:return "*="; case Tok::SlashAssign:return "/="; case Tok::PercentAssign:return "%=";
+        case Tok::Percent:return "%"; case Tok::PlusAssign:return "+="; case Tok::MinusAssign:return "-="; case Tok::StarAssign:return "*="; case Tok::SlashAssign:return "/="; case Tok::PercentAssign:return "%="; case Tok::AndAssign:return "&="; case Tok::OrAssign:return "|="; case Tok::XorAssign:return "^="; case Tok::ShlAssign:return "<<="; case Tok::ShrAssign:return ">>="; case Tok::UshrAssign:return ">>>=";
         case Tok::Increment:return "++"; case Tok::Decrement:return "--"; case Tok::ShiftLeft:return "<<"; case Tok::ShiftRight:return ">>"; case Tok::UnsignedShiftRight:return ">>>";
         case Tok::EqEq:return "=="; case Tok::NotEq:return "!="; case Tok::Lt:return "<"; case Tok::Le:return "<=";
         case Tok::Gt:return ">"; case Tok::Ge:return ">="; case Tok::AndAnd:return "&&"; case Tok::OrOr:return "||"; case Tok::BitAnd:return "&"; case Tok::BitOr:return "|"; case Tok::BitXor:return "^"; case Tok::BitNot:return "~";
@@ -173,13 +173,13 @@ std::vector<Token> Lexer::tokenize(){
             case'!':emit(match('=')?Tok::NotEq:Tok::Not,"!");break;
             case'+':if(match('+'))emit(Tok::Increment,"++");else if(match('='))emit(Tok::PlusAssign,"+=");else emit(Tok::Plus,"+");break;
             case'-':if(match('-'))emit(Tok::Decrement,"--");else if(match('='))emit(Tok::MinusAssign,"-=");else if(match('>'))emit(Tok::Arrow,"->");else emit(Tok::Minus,"-");break;
-            case'*':emit(match('=')?Tok::StarAssign:Tok::Star,"*");break;case'/':emit(match('=')?Tok::SlashAssign:Tok::Slash,"/");break;
-            case'%':emit(match('=')?Tok::PercentAssign:Tok::Percent,"%");break;
-            case'<':if(match('<'))emit(Tok::ShiftLeft,"<<");else emit(match('=')?Tok::Le:Tok::Lt,"<");break;
-            case'>':if(match('>')){if(match('>'))emit(Tok::UnsignedShiftRight,">>>");else emit(Tok::ShiftRight,">>");}else emit(match('=')?Tok::Ge:Tok::Gt,">");break;
-            case'&':if(match('&'))emit(Tok::AndAnd,"&&");else emit(Tok::BitAnd,"&");break;
-            case'|':if(match('|'))emit(Tok::OrOr,"||");else emit(Tok::BitOr,"|");break;
-            case'^':emit(Tok::BitXor,"^");break;case'~':emit(Tok::BitNot,"~");break;
+            case'*':if(match('='))emit(Tok::StarAssign,"*=");else emit(Tok::Star,"*");break;case'/':if(match('='))emit(Tok::SlashAssign,"/=");else emit(Tok::Slash,"/");break;
+            case'%':if(match('='))emit(Tok::PercentAssign,"%=");else emit(Tok::Percent,"%");break;
+            case'<':if(match('<')){if(match('='))emit(Tok::ShlAssign,"<<=");else emit(Tok::ShiftLeft,"<<");}else emit(match('=')?Tok::Le:Tok::Lt,"<");break;
+            case'>':if(match('>')){if(match('>')){if(match('='))emit(Tok::UshrAssign,">>>=");else emit(Tok::UnsignedShiftRight,">>>");}else if(match('='))emit(Tok::ShrAssign,">>=");else emit(Tok::ShiftRight,">>");}else emit(match('=')?Tok::Ge:Tok::Gt,">");break;
+            case'&':if(match('&'))emit(Tok::AndAnd,"&&");else if(match('='))emit(Tok::AndAssign,"&=");else emit(Tok::BitAnd,"&");break;
+            case'|':if(match('|'))emit(Tok::OrOr,"||");else if(match('='))emit(Tok::OrAssign,"|=");else emit(Tok::BitOr,"|");break;
+            case'^':if(match('='))emit(Tok::XorAssign,"^=");else emit(Tok::BitXor,"^");break;case'~':emit(Tok::BitNot,"~");break;
             case'?':emit(Tok::Question,"?");break;case':':if(match(':')){if(match(':'))emit(Tok::TripleColon,":::");else emit(Tok::DoubleColon,"::");}else emit(Tok::Colon,":");break;
             default:error(std::string("unexpected character '")+c+"'");
         }

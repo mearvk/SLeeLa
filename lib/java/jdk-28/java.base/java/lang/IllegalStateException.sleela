@@ -76,13 +76,9 @@ class IllegalStateException extends RuntimeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public IllegalStateException(Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public IllegalStateException(String message, Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public IllegalStateException(String s) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public IllegalStateException() { super("constructor"); }
+  public IllegalStateException(java.lang.Throwable cause) { super(cause); }
+  public IllegalStateException(java.lang.String message, java.lang.Throwable cause) { super(message, cause); }
+  public IllegalStateException(java.lang.String s) { super(s); }
+  public IllegalStateException() { super(); }
   < ---- END java constructors ---- >
 }

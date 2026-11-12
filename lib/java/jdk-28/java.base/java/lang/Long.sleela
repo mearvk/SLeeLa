@@ -215,7 +215,8 @@ class Long extends Number {
   public static Any valueOf(long l) { return new Long(l); }
   @throwable("java.lang.NumberFormatException")
   public static Any decode(String nm) {
-    if (nm == null || javaStringLength(javaStringFromUtf8(nm)) == 0) { throw new NumberFormatException("Zero length string"); }
+    if (nm == null) { throw new NullPointerException(); }
+    if (javaStringLength(javaStringFromUtf8(nm)) == 0) { throw new NumberFormatException("Zero length string"); }
     String u = javaStringFromUtf8(nm);
     int n = javaStringLength(u);
     int i = 0;

@@ -76,13 +76,9 @@ class KeyManagementException extends KeyException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public KeyManagementException(Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public KeyManagementException(String message, Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public KeyManagementException(String msg) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public KeyManagementException() { super("constructor"); }
+  public KeyManagementException(java.lang.Throwable cause) { super(cause); }
+  public KeyManagementException(java.lang.String message, java.lang.Throwable cause) { super(message, cause); }
+  public KeyManagementException(java.lang.String msg) { super(msg); }
+  public KeyManagementException() { super(); }
   < ---- END java constructors ---- >
 }

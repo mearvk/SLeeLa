@@ -76,9 +76,7 @@ class ExportException extends RemoteException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public ExportException(String s) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public ExportException(String s, Any ex) { super("constructor"); }
+  public ExportException(java.lang.String s) { super(s); }
+  public ExportException(java.lang.String s, java.lang.Throwable ex) { super(s, ex); }
   < ---- END java constructors ---- >
 }

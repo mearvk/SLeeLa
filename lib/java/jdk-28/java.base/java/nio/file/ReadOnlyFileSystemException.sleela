@@ -76,7 +76,6 @@ class ReadOnlyFileSystemException extends UnsupportedOperationException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public ReadOnlyFileSystemException() { super("constructor"); }
+  public ReadOnlyFileSystemException() { super(); }
   < ---- END java constructors ---- >
 }

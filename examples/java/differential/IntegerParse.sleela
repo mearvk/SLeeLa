@@ -1,0 +1,67 @@
+<< examples/java/differential/IntegerParse.sleela
+   SLeeLa side of the IntegerParse differential test.
+   Definition: Prints, line for line, the same results as IntegerParse.java for
+   Integer.parseInt, parseUnsignedInt, decode and valueOf of the JDK 28 tier,
+   including every NumberFormatException message. >>
+#sleela 3.0
+import java.jdk-28;
+material;
+
+< Java container: the names used here are housed in /lib/java (selected by the import above) and are not part of the SLeeLa specification, see SLEELA.syntax 38.4. >
+class IntegerParse {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  String p(String s, int radix) {
+    try { return "" + Integer.parseInt(s, radix); } catch (NumberFormatException e) { return "NFE:" + e.getMessage(); }
+  }
+  String u(String s, int radix) {
+    try { return "" + Integer.parseUnsignedInt(s, radix); } catch (NumberFormatException e) { return "NFE:" + e.getMessage(); }
+  }
+  String d(String s) {
+    try { Integer v = (Integer) Integer.decode(s); return v.toString(); } catch (NumberFormatException e) { return "NFE:" + e.getMessage(); }
+  }
+
+  void main() {
+    String[] good = new String[8];
+    good[0] = "0"; good[1] = "7"; good[2] = "-7"; good[3] = "+7"; good[4] = "2147483647"; good[5] = "-2147483648"; good[6] = "00012"; good[7] = "-0";
+    int i = 0;
+    while (i < 8) { print(good[i] + " -> " + p(good[i], 10)); i = i + 1; }
+    String[] bad = new String[11];
+    bad[0] = ""; bad[1] = "-"; bad[2] = "+"; bad[3] = "abc"; bad[4] = "12x"; bad[5] = "2147483648"; bad[6] = "-2147483649"; bad[7] = "99999999999999999999"; bad[8] = " 1"; bad[9] = "1 "; bad[10] = "--1";
+    i = 0;
+    while (i < 11) { print("[" + bad[i] + "] -> " + p(bad[i], 10)); i = i + 1; }
+    print(p("ff", 16) + " " + p("-FF", 16) + " " + p("zz", 36) + " " + p("102", 2) + " " + p("80000000", 16) + " " + p("-80000000", 16));
+    print(p("1", 1) + " " + p("1", 37));
+    try { Integer.parseInt(null); } catch (NumberFormatException e) { print(e.getMessage()); }
+    print(u("4294967295", 10) + " " + u("0", 10) + " " + u("+7", 10) + " " + u("ffffffff", 16));
+    print(u("-5", 10) + " " + u("4294967296", 10) + " " + u("x", 10) + " " + u("", 10) + " " + u("99999999999999999999", 10));
+    String[] dec = new String[21];
+    dec[0] = "42"; dec[1] = "-42"; dec[2] = "+42"; dec[3] = "0x1F"; dec[4] = "-0x1f"; dec[5] = "#FF"; dec[6] = "010"; dec[7] = "-010"; dec[8] = "0"; dec[9] = "-0"; dec[10] = "0x";
+    dec[11] = ""; dec[12] = "-"; dec[13] = "0xZZ"; dec[14] = "0x-5"; dec[15] = "2147483647"; dec[16] = "-2147483648"; dec[17] = "2147483648"; dec[18] = "0xFFFFFFFFF"; dec[19] = "08"; dec[20] = "1_0";
+    i = 0;
+    while (i < 21) { print("decode [" + dec[i] + "] -> " + d(dec[i])); i = i + 1; }
+    try { Integer.decode(null); print("no throw"); } catch (NumberFormatException e) { print("NFE:" + e.getMessage()); } catch (NullPointerException e) { print("NPE"); }
+    Integer v12 = (Integer) Integer.valueOf("12");
+    Integer vff = (Integer) Integer.valueOf("ff", 16);
+    Integer n77 = new Integer("77");
+    Integer n5 = new Integer(5);
+    print(v12.toString() + " " + vff.toString() + " " + n77.toString() + " " + n5.toString());
+    try { Integer.valueOf("q"); } catch (NumberFormatException e) { print(e.getMessage()); }
+    try { new Integer("q"); } catch (NumberFormatException e) { print(e.getMessage()); }
+  }
+}

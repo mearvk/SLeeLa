@@ -76,9 +76,7 @@ class AttributeNotFoundException extends OperationsException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public AttributeNotFoundException() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public AttributeNotFoundException(String message) { super("constructor"); }
+  public AttributeNotFoundException() { super(); }
+  public AttributeNotFoundException(java.lang.String message) { super(message); }
   < ---- END java constructors ---- >
 }

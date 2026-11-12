@@ -76,18 +76,14 @@ class SQLTransientException extends SQLException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLTransientException(Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLTransientException(String reason, Any cause) { super("constructor"); }
+  public SQLTransientException(java.lang.Throwable cause) { super(cause); }
+  public SQLTransientException(java.lang.String reason, java.lang.Throwable cause) { super(reason, cause); }
   @throwable("java.lang.UnsupportedOperationException")
   public SQLTransientException(String reason, String SQLState, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
   public SQLTransientException(String reason, String SQLState, int vendorCode, Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLTransientException() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLTransientException(String reason) { super("constructor"); }
+  public SQLTransientException() { super(); }
+  public SQLTransientException(java.lang.String reason) { super(reason); }
   @throwable("java.lang.UnsupportedOperationException")
   public SQLTransientException(String reason, String SQLState) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")

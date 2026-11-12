@@ -18,7 +18,7 @@ enum class Tok {
     KwVoid, KwIntT, KwLongT, KwInt64T, KwInt128T, KwDoubleT, KwBoolT, KwStringT, KwTrue, KwFalse, KwPrint, KwNull,
     KwPackage, KwRequire, KwImport, KwStruct, KwNew,
     LParen, RParen, LBrace, RBrace, LBracket, RBracket, Semicolon, Comma, Dot,
-    Assign, Plus, Minus, Star, Slash, Percent, PlusAssign, MinusAssign, StarAssign, SlashAssign, PercentAssign,
+    Assign, Plus, Minus, Star, Slash, Percent, PlusAssign, MinusAssign, StarAssign, SlashAssign, PercentAssign, AndAssign, OrAssign, XorAssign, ShlAssign, ShrAssign, UshrAssign,
     Increment, Decrement, ShiftLeft, ShiftRight, UnsignedShiftRight,
     EqEq, NotEq, Lt, Le, Gt, Ge, AndAnd, OrOr, BitAnd, BitOr, BitXor, Not, BitNot,
     Question, Colon, DoubleColon, TripleColon, Arrow,

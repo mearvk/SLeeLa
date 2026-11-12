@@ -76,7 +76,6 @@ class NonWritableChannelException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public NonWritableChannelException() { super("constructor"); }
+  public NonWritableChannelException() { super(); }
   < ---- END java constructors ---- >
 }

@@ -756,7 +756,7 @@ private:
     // Lower a (possibly compound) assignment expression. The result value is
     // left on the stack. Compound ops expand to `target = target <op> value`.
     void emitAssignmentExpr(const AssignmentExpr& a){
-        emitAssignTo(a.target.get(), a.op.size()==2 ? std::string(1,a.op[0]) : std::string(), [&]{ emitExpr(a.value.get()); });
+        emitAssignTo(a.target.get(), a.op=="=" ? std::string() : a.op.substr(0,a.op.size()-1), [&]{ emitExpr(a.value.get()); });
     }
     // Assign to `target` (local, field, static, member, array element), with an
     // optional compound operator `bin`; leaves the assigned value on the stack.
@@ -831,7 +831,7 @@ private:
         throw std::runtime_error("Semantic error: assignment target must be a variable, struct field, or array element");
     }
     void emitConditional(const ConditionalExpr& c){emitExpr(c.cond.get());int jf=emit(OP_JMPF,0);emitExpr(c.thenE.get());int jend=emit(OP_JMP,0);patch(jf,here());emitExpr(c.elseE.get());patch(jend,here());}
-    void emitBinOp(const std::string& o){if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else throw std::runtime_error("Semantic error: unsupported compound assignment operator '"+o+"='");}
+    void emitBinOp(const std::string& o){if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="&")emit(OP_BAND);else if(o=="|")emit(OP_BOR);else if(o=="^")emit(OP_BXOR);else if(o=="<<")emit(OP_BSHL);else if(o==">>")emit(OP_BSHR);else if(o==">>>")emit(OP_BUSHR);else throw std::runtime_error("Semantic error: unsupported compound assignment operator '"+o+"='");}
     // Determine the struct type name an expression evaluates to, or "" if it is
     // not statically known to be a struct. Used to resolve field offsets.
     std::string exprStructType(const Expr* e){
@@ -999,8 +999,16 @@ private:
         }
         emitArgsCoerced(args,method); emit(OP_CALL,fidx);
     }
+    // Element default for `new T[n]`: Java numeric and boolean arrays start at
+    // zero/false, not null (see OP_NEWARRAY operand a).
+    static int arrayFillKind(const std::string& elem){
+        if(elem=="int"||elem=="long"||elem=="short"||elem=="byte"||elem=="char"||elem=="int64") return 1;
+        if(elem=="double"||elem=="float") return 2;
+        if(elem=="bool"||elem=="boolean") return 3;
+        return 0;
+    }
     void emitNew(const NewExpr& n){
-        if(n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){if(!n.args.empty())emitExpr(n.args[0].get());else emit(OP_CONST,slvm_add_const_int(vm_,0));emit(OP_NEWARRAY);return;}
+        if(n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){if(!n.args.empty())emitExpr(n.args[0].get());else emit(OP_CONST,slvm_add_const_int(vm_,0));emit(OP_NEWARRAY,arrayFillKind(n.typeName.substr(0,n.typeName.size()-2)));return;}
         auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown class or struct '"+n.typeName+"'");
         // Resolve a matching constructor before allocating so an arity/overload
         // error is reported without leaving a half-built instance plan.
@@ -1236,7 +1244,7 @@ private:
             if(post){ emit(OP_CONST,slvm_add_const_int(vm_,1)); emit(inc?OP_SUB:OP_ADD); }
             return;
         }
-        emitExpr(u.operand.get());if(u.op=="-")emit(OP_NEG);else if(u.op=="!")emit(OP_NOT);else throw std::runtime_error("Semantic error: unknown unary operator '"+u.op+"'");}
+        emitExpr(u.operand.get());if(u.op=="-")emit(OP_NEG);else if(u.op=="!")emit(OP_NOT);else if(u.op=="~")emit(OP_BNOT);else throw std::runtime_error("Semantic error: unknown unary operator '"+u.op+"'");}
     void emitBinary(const Binary& b){
         const std::string&o=b.op;
         // Short-circuit boolean operators: the right side must NOT be evaluated
@@ -1266,7 +1274,7 @@ private:
             return;
         }
         emitExpr(b.lhs.get());emitExpr(b.rhs.get());
-        if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
+        if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="&")emit(OP_BAND);else if(o=="|")emit(OP_BOR);else if(o=="^")emit(OP_BXOR);else if(o=="<<")emit(OP_BSHL);else if(o==">>")emit(OP_BSHR);else if(o==">>>")emit(OP_BUSHR);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
 
     // SleelaUI (ui*) built-ins: map the SLeeLa-facing name to its bridge id,
     // arity-check, emit the args, then OP_UI_CALL<id>. Returns true if handled.

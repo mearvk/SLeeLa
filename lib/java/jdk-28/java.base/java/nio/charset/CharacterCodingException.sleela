@@ -76,7 +76,6 @@ class CharacterCodingException extends IOException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public CharacterCodingException() { super("constructor"); }
+  public CharacterCodingException() { super(); }
   < ---- END java constructors ---- >
 }

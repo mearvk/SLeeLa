@@ -76,7 +76,6 @@ class IntrospectionException extends Exception {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public IntrospectionException(String mess) { super("constructor"); }
+  public IntrospectionException(java.lang.String mess) { super(mess); }
   < ---- END java constructors ---- >
 }

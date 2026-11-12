@@ -76,7 +76,6 @@ class TypeNotPresentException extends RuntimeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public TypeNotPresentException(String typeName, Any cause) { super("constructor"); }
+  public TypeNotPresentException(java.lang.String typeName, java.lang.Throwable cause) { super(typeName, cause); }
   < ---- END java constructors ---- >
 }

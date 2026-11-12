@@ -76,18 +76,14 @@ class SQLRecoverableException extends SQLException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLRecoverableException(Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLRecoverableException(String reason, Any cause) { super("constructor"); }
+  public SQLRecoverableException(java.lang.Throwable cause) { super(cause); }
+  public SQLRecoverableException(java.lang.String reason, java.lang.Throwable cause) { super(reason, cause); }
   @throwable("java.lang.UnsupportedOperationException")
   public SQLRecoverableException(String reason, String SQLState, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
   public SQLRecoverableException(String reason, String SQLState, int vendorCode, Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLRecoverableException() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLRecoverableException(String reason) { super("constructor"); }
+  public SQLRecoverableException() { super(); }
+  public SQLRecoverableException(java.lang.String reason) { super(reason); }
   @throwable("java.lang.UnsupportedOperationException")
   public SQLRecoverableException(String reason, String SQLState) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")

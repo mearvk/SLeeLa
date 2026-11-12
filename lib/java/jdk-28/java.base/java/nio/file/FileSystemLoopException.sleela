@@ -76,7 +76,6 @@ class FileSystemLoopException extends FileSystemException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public FileSystemLoopException(String file) { super("constructor"); }
+  public FileSystemLoopException(java.lang.String file) { super(file); }
   < ---- END java constructors ---- >
 }

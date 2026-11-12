@@ -76,13 +76,9 @@ class InvalidAlgorithmParameterException extends GeneralSecurityException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public InvalidAlgorithmParameterException(Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public InvalidAlgorithmParameterException(String message, Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public InvalidAlgorithmParameterException(String msg) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public InvalidAlgorithmParameterException() { super("constructor"); }
+  public InvalidAlgorithmParameterException(java.lang.Throwable cause) { super(cause); }
+  public InvalidAlgorithmParameterException(java.lang.String message, java.lang.Throwable cause) { super(message, cause); }
+  public InvalidAlgorithmParameterException(java.lang.String msg) { super(msg); }
+  public InvalidAlgorithmParameterException() { super(); }
   < ---- END java constructors ---- >
 }

@@ -76,7 +76,6 @@ class AlreadyBoundException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public AlreadyBoundException() { super("constructor"); }
+  public AlreadyBoundException() { super(); }
   < ---- END java constructors ---- >
 }

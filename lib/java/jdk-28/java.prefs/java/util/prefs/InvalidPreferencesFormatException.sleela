@@ -76,11 +76,8 @@ class InvalidPreferencesFormatException extends Exception {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public InvalidPreferencesFormatException(Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public InvalidPreferencesFormatException(String message) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public InvalidPreferencesFormatException(String message, Any cause) { super("constructor"); }
+  public InvalidPreferencesFormatException(java.lang.Throwable cause) { super(cause); }
+  public InvalidPreferencesFormatException(java.lang.String message) { super(message); }
+  public InvalidPreferencesFormatException(java.lang.String message, java.lang.Throwable cause) { super(message, cause); }
   < ---- END java constructors ---- >
 }

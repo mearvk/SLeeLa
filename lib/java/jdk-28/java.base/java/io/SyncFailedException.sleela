@@ -76,7 +76,6 @@ class SyncFailedException extends IOException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public SyncFailedException(String desc) { super("constructor"); }
+  public SyncFailedException(java.lang.String desc) { super(desc); }
   < ---- END java constructors ---- >
 }

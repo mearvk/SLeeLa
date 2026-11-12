@@ -76,7 +76,6 @@ class RasterFormatException extends RuntimeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public RasterFormatException(String s) { super("constructor"); }
+  public RasterFormatException(java.lang.String s) { super(s); }
   < ---- END java constructors ---- >
 }

@@ -76,7 +76,6 @@ class ConnectionPendingException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public ConnectionPendingException() { super("constructor"); }
+  public ConnectionPendingException() { super(); }
   < ---- END java constructors ---- >
 }

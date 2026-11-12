@@ -76,7 +76,6 @@ class CoderMalfunctionError extends Error {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public CoderMalfunctionError(Any cause) { super("constructor"); }
+  public CoderMalfunctionError(java.lang.Throwable cause) { super(cause); }
   < ---- END java constructors ---- >
 }

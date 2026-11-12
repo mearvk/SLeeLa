@@ -76,7 +76,6 @@ class UnsupportedLookAndFeelException extends Exception {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public UnsupportedLookAndFeelException(String s) { super("constructor"); }
+  public UnsupportedLookAndFeelException(java.lang.String s) { super(s); }
   < ---- END java constructors ---- >
 }

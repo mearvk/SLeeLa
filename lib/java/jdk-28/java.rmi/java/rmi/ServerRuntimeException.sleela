@@ -76,7 +76,6 @@ class ServerRuntimeException extends RemoteException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public ServerRuntimeException(String s, Any ex) { super("constructor"); }
+  public ServerRuntimeException(java.lang.String s, java.lang.Throwable ex) { super(s, ex); }
   < ---- END java constructors ---- >
 }

@@ -76,7 +76,6 @@ class IllegalBlockingModeException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public IllegalBlockingModeException() { super("constructor"); }
+  public IllegalBlockingModeException() { super(); }
   < ---- END java constructors ---- >
 }

@@ -76,7 +76,6 @@ class InterruptedByTimeoutException extends IOException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public InterruptedByTimeoutException() { super("constructor"); }
+  public InterruptedByTimeoutException() { super(); }
   < ---- END java constructors ---- >
 }

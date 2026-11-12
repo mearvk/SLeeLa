@@ -76,7 +76,6 @@ class FontFormatException extends Exception {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public FontFormatException(String reason) { super("constructor"); }
+  public FontFormatException(java.lang.String reason) { super(reason); }
   < ---- END java constructors ---- >
 }

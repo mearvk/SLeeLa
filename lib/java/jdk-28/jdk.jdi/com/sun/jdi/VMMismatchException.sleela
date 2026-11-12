@@ -76,9 +76,7 @@ class VMMismatchException extends RuntimeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public VMMismatchException() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public VMMismatchException(String s) { super("constructor"); }
+  public VMMismatchException() { super(); }
+  public VMMismatchException(java.lang.String s) { super(s); }
   < ---- END java constructors ---- >
 }

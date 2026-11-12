@@ -1,0 +1,58 @@
+  << java.util.Base64 in SLeeLa, written from the JDK 28 API specification
+     (Java Source above). The RFC 4648 basic and URL-safe alphabets and the
+     RFC 2045 MIME form are provided by Base64.Encoder and Base64.Decoder (one
+     file each, nested types). Every factory returns a new encoder or decoder
+     value, so two calls are equal in behavior but not the same object as in
+     Java. A Java byte is an int held in -128..127 inside a byte[]. The
+     slFromBase64 / slToBase64 / slChar helpers are shared by both nested
+     types. Bit operations use the VM bitwise operators (64-bit slot, every
+     value here stays below 2^24). >>
+  static int slFromBase64(int b, boolean url) {
+    if (b >= 65 && b <= 90) { return b - 65; }
+    if (b >= 97 && b <= 122) { return b - 71; }
+    if (b >= 48 && b <= 57) { return b + 4; }
+    if (url) {
+      if (b == 45) { return 62; }
+      if (b == 95) { return 63; }
+    } else {
+      if (b == 43) { return 62; }
+      if (b == 47) { return 63; }
+    }
+    if (b == 61) { return -2; }
+    return -1;
+  }
+  static int slToBase64(int v, boolean url) {
+    if (v < 26) { return 65 + v; }
+    if (v < 52) { return 71 + v; }
+    if (v < 62) { return v - 4; }
+    if (v == 62) { if (url) { return 45; } return 43; }
+    if (url) { return 95; }
+    return 47;
+  }
+  static String slChar(int c) { return javaStringToUtf8(javaStringFromCodeUnit(c)); }
+
+  public static Base64.Encoder getEncoder() { return new Base64.Encoder(false, null, -1, true); }
+  public static Base64.Encoder getUrlEncoder() { return new Base64.Encoder(true, null, -1, true); }
+  public static Base64.Encoder getMimeEncoder() {
+    byte[] crlf = new byte[2];
+    crlf[0] = 13;
+    crlf[1] = 10;
+    return new Base64.Encoder(false, crlf, 76, true);
+  }
+  public static Base64.Encoder getMimeEncoder(int lineLength, byte[] lineSeparator) {
+    if (lineSeparator == null) { throw new NullPointerException(); }
+    int i = 0;
+    while (i < arrayLength(lineSeparator)) {
+      int b = lineSeparator[i];
+      if (slFromBase64(b & 255, false) != -1) {
+        throw new IllegalArgumentException("Illegal base64 line separator character 0x" + Integer.toString(b, 16));
+      }
+      i = i + 1;
+    }
+    int rounded = lineLength - (lineLength & 3);
+    if (rounded <= 0) { return getEncoder(); }
+    return new Base64.Encoder(false, lineSeparator, rounded, true);
+  }
+  public static Base64.Decoder getDecoder() { return new Base64.Decoder(false, false); }
+  public static Base64.Decoder getUrlDecoder() { return new Base64.Decoder(true, false); }
+  public static Base64.Decoder getMimeDecoder() { return new Base64.Decoder(false, true); }

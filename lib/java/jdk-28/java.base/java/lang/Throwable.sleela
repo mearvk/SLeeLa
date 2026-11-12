@@ -56,6 +56,107 @@ class Throwable {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- BEGIN java implementation (JDK 28, SLeeLa logic) ---- >
+  << java.lang.Throwable in SLeeLa, written from the JDK 28 API specification
+     (Java Source above). Java names and signatures are kept. A null detail
+     message means no message. The cause is unset until a constructor with a
+     cause or initCause supplies it. Suppressed exceptions are recorded in
+     order. The SLeeLa VM captures no stack frames, so getStackTrace returns
+     whatever setStackTrace stored (empty by default). printStackTrace writes
+     the Java-shaped report (the throwable, its suppressed list, then the
+     cause chain) to standard output. Subclasses chain with super(...). >>
+  String detailMessage = null;
+  Throwable cause = null;
+  boolean causeInitialized = false;
+  Any[] suppressedList = new Any[4];
+  int suppressedCount = 0;
+  Any[] stackTrace = new Any[0];
+
+  public Throwable() { }
+  public Throwable(java.lang.String message) { this.detailMessage = message; }
+  public Throwable(java.lang.String message, java.lang.Throwable cause) {
+    this.detailMessage = message;
+    this.cause = (Throwable) cause;
+    this.causeInitialized = true;
+  }
+  public Throwable(java.lang.Throwable cause) {
+    if (cause != null) { Throwable c0 = (Throwable) cause; this.detailMessage = c0.toString(); }
+    this.cause = (Throwable) cause;
+    this.causeInitialized = true;
+  }
+  @JavaProtected
+  Throwable(java.lang.String message, java.lang.Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    this.detailMessage = message;
+    this.cause = (Throwable) cause;
+    this.causeInitialized = true;
+  }
+
+  public java.lang.String getMessage() { return detailMessage; }
+  public java.lang.String getLocalizedMessage() { return getMessage(); }
+  public synchronized Throwable getCause() { return this.cause; }
+  public synchronized Throwable initCause(java.lang.Throwable cause) {
+    if (causeInitialized) {
+      String what = "a null";
+      if (cause != null) { Throwable c0 = (Throwable) cause; what = c0.toString(); }
+      throw new IllegalStateException("Can't overwrite cause with " + what, this);
+    }
+    if (cause == this) {
+      throw new IllegalArgumentException("Self-causation not permitted", this);
+    }
+    this.cause = (Throwable) cause;
+    this.causeInitialized = true;
+    return this;
+  }
+  public java.lang.String toString() {
+    String m = getLocalizedMessage();
+    if (m == null) { return javaType; }
+    return javaType + ": " + m;
+  }
+  public synchronized Throwable fillInStackTrace() { return this; }
+  public Any[] getStackTrace() { return this.stackTrace; }
+  public void setStackTrace(Any[] stackTrace) {
+    if (stackTrace == null) { throw new NullPointerException("stackTrace == null"); }
+    this.stackTrace = stackTrace;
+  }
+  public final synchronized void addSuppressed(java.lang.Throwable exception) {
+    if (exception == this) {
+      throw new IllegalArgumentException("Self-suppression not permitted", exception);
+    }
+    if (exception == null) {
+      throw new NullPointerException("Cannot suppress a null exception.");
+    }
+    if (suppressedCount == arrayLength(this.suppressedList)) {
+      Any[] grown = new Any[suppressedCount * 2];
+      int i = 0;
+      while (i < suppressedCount) { grown[i] = this.suppressedList[i]; i = i + 1; }
+      this.suppressedList = grown;
+    }
+    this.suppressedList[suppressedCount] = exception;
+    suppressedCount = suppressedCount + 1;
+  }
+  public final synchronized Throwable[] getSuppressed() {
+    Throwable[] out = new Throwable[suppressedCount];
+    int i = 0;
+    while (i < suppressedCount) { out[i] = (Throwable) this.suppressedList[i]; i = i + 1; }
+    return out;
+  }
+  public void printStackTrace() {
+    print(toString());
+    int i = 0;
+    while (i < suppressedCount) {
+      Throwable s = (Throwable) this.suppressedList[i];
+      print("\tSuppressed: " + s.toString());
+      i = i + 1;
+    }
+    Throwable c = this.cause;
+    int depth = 0;
+    while (c != null && depth < 1024) {
+      print("Caused by: " + c.toString());
+      c = c.getCause();
+      depth = depth + 1;
+    }
+  }
+  < ---- END java implementation ---- >
   < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
   << The class is written without Java type parameters: every type variable and
      every parameterized or package-qualified reference type erases to Any, and
@@ -76,17 +177,6 @@ class Throwable {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @JavaProtected
-  @throwable("java.lang.UnsupportedOperationException")
-  Throwable(String message, Any cause, boolean enableSuppression, boolean writableStackTrace) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Throwable(Any cause) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Throwable(String message, Any cause) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Throwable(String message) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Throwable() { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -96,28 +186,6 @@ class Throwable {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void printStackTrace() { }
-  @throwable("java.lang.UnsupportedOperationException")
   public void printStackTrace(Any s) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any[] getStackTrace() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized Any fillInStackTrace() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized Any getCause() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public synchronized Any initCause(Any cause) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getMessage() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final synchronized Any[] getSuppressed() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getLocalizedMessage() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public void setStackTrace(Any[] stackTrace) { }
-  @throwable("java.lang.UnsupportedOperationException")
-  public final synchronized void addSuppressed(Any exception) { }
   < ---- END java signatures ---- >
 }

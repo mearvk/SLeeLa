@@ -76,7 +76,6 @@ class OverlappingFileLockException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public OverlappingFileLockException() { super("constructor"); }
+  public OverlappingFileLockException() { super(); }
   < ---- END java constructors ---- >
 }

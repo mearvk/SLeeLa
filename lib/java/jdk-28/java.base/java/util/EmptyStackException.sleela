@@ -76,7 +76,6 @@ class EmptyStackException extends RuntimeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public EmptyStackException() { super("constructor"); }
+  public EmptyStackException() { super(); }
   < ---- END java constructors ---- >
 }

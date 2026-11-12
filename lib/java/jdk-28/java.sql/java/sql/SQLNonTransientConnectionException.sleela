@@ -76,18 +76,14 @@ class SQLNonTransientConnectionException extends SQLNonTransientException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLNonTransientConnectionException(Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLNonTransientConnectionException(String reason, Any cause) { super("constructor"); }
+  public SQLNonTransientConnectionException(java.lang.Throwable cause) { super(cause); }
+  public SQLNonTransientConnectionException(java.lang.String reason, java.lang.Throwable cause) { super(reason, cause); }
   @throwable("java.lang.UnsupportedOperationException")
   public SQLNonTransientConnectionException(String reason, String SQLState, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
   public SQLNonTransientConnectionException(String reason, String SQLState, int vendorCode, Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLNonTransientConnectionException() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLNonTransientConnectionException(String reason) { super("constructor"); }
+  public SQLNonTransientConnectionException() { super(); }
+  public SQLNonTransientConnectionException(java.lang.String reason) { super(reason); }
   @throwable("java.lang.UnsupportedOperationException")
   public SQLNonTransientConnectionException(String reason, String SQLState) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")

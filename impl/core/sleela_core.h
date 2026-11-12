@@ -6,7 +6,7 @@
 
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
-#define SLEELA_VM_ABI_MINOR 8u
+#define SLEELA_VM_ABI_MINOR 9u
 #define SLEELA_ARTIFACT_FORMAT_VERSION 4u
 #define SL_NATIVE_METHOD_ABI_VERSION 0x00010000u
 #define SL_NATIVE_METHOD_FLAG_ANNOTATED 0x00000001u
@@ -102,7 +102,7 @@ typedef enum {
      * SLValues. An array value carries a VM-local handle into a bounded array
      * store, the same handle discipline as structs. Appended at the end of the
      * opcode enum so existing serialized-artifact opcode numbers are unchanged. */
-    OP_NEWARRAY,   /* pops int size; pushes a fresh array handle with `size` null elements */
+    OP_NEWARRAY,   /* pops int size; pushes a fresh array handle; operand a = element default: 0 null, 1 int 0, 2 double 0.0, 3 bool false */
     OP_ARRGET,     /* pops index then array; pushes element (TERR on out-of-range)              */
     OP_ARRSET,     /* pops value then index then array; writes element; pushes value            */
     OP_ARRLEN,     /* pops array; pushes int length                                             */
@@ -322,6 +322,21 @@ typedef enum {
      * prior opcodes. */
     OP_JSTR_TO_UTF8,
     OP_JSTR_FROM_CODE_UNIT,
+    /* Bitwise operators (ABI 1.9). Binary ops pop b then a and push a OP b; the
+     * VM integer slot is 64 bits, so integer operands use 64-bit two's
+     * complement exactly as Java long does. BAND/BOR/BXOR also accept two bool
+     * operands (Java non-short-circuit logical form) and push a bool. Shift
+     * counts are masked to 0..63 as in Java long; SHR is arithmetic (sign
+     * extending) and USHR is logical (zero filling). BNOT pops one integer and
+     * pushes its bitwise complement. Operands of any other type fail closed.
+     * Appended; never renumber prior opcodes. */
+    OP_BAND,
+    OP_BOR,
+    OP_BXOR,
+    OP_BSHL,
+    OP_BSHR,
+    OP_BUSHR,
+    OP_BNOT,
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -376,7 +391,9 @@ static_assert(OP_IPC_CLOSE == 181, "OP_IPC_CLOSE is append-only opcode 181");
 static_assert(OP_REF == 182, "OP_REF is append-only opcode 182");
 static_assert(OP_JSTR_TO_UTF8 == 183, "Java String to UTF-8 conversion is append-only 183");
 static_assert(OP_JSTR_FROM_CODE_UNIT == 184, "Java String from a run-time code unit is append-only 184");
-static_assert(OP__COUNT == 185, "the extended ISA must contain 185 opcodes");
+static_assert(OP_BAND == 185, "bitwise AND is append-only opcode 185");
+static_assert(OP_BNOT == 191, "bitwise NOT is append-only opcode 191");
+static_assert(OP__COUNT == 192, "the extended ISA must contain 192 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -405,7 +422,9 @@ _Static_assert(OP_IPC_CLOSE == 181, "OP_IPC_CLOSE is append-only opcode 181");
 _Static_assert(OP_REF == 182, "OP_REF is append-only opcode 182");
 _Static_assert(OP_JSTR_TO_UTF8 == 183, "Java String to UTF-8 conversion is append-only 183");
 _Static_assert(OP_JSTR_FROM_CODE_UNIT == 184, "Java String from a run-time code unit is append-only 184");
-_Static_assert(OP__COUNT == 185, "the extended ISA must contain 185 opcodes");
+_Static_assert(OP_BAND == 185, "bitwise AND is append-only opcode 185");
+_Static_assert(OP_BNOT == 191, "bitwise NOT is append-only opcode 191");
+_Static_assert(OP__COUNT == 192, "the extended ISA must contain 192 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */

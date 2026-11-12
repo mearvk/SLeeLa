@@ -76,18 +76,14 @@ class SQLFeatureNotSupportedException extends SQLNonTransientException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLFeatureNotSupportedException(Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLFeatureNotSupportedException(String reason, Any cause) { super("constructor"); }
+  public SQLFeatureNotSupportedException(java.lang.Throwable cause) { super(cause); }
+  public SQLFeatureNotSupportedException(java.lang.String reason, java.lang.Throwable cause) { super(reason, cause); }
   @throwable("java.lang.UnsupportedOperationException")
   public SQLFeatureNotSupportedException(String reason, String SQLState, Any cause) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
   public SQLFeatureNotSupportedException(String reason, String SQLState, int vendorCode, Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLFeatureNotSupportedException() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public SQLFeatureNotSupportedException(String reason) { super("constructor"); }
+  public SQLFeatureNotSupportedException() { super(); }
+  public SQLFeatureNotSupportedException(java.lang.String reason) { super(reason); }
   @throwable("java.lang.UnsupportedOperationException")
   public SQLFeatureNotSupportedException(String reason, String SQLState) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")

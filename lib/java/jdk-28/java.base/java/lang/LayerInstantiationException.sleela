@@ -76,13 +76,9 @@ class LayerInstantiationException extends RuntimeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public LayerInstantiationException(String msg, Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public LayerInstantiationException(Any cause) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public LayerInstantiationException(String msg) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public LayerInstantiationException() { super("constructor"); }
+  public LayerInstantiationException(java.lang.String msg, java.lang.Throwable cause) { super(msg, cause); }
+  public LayerInstantiationException(java.lang.Throwable cause) { super(cause); }
+  public LayerInstantiationException(java.lang.String msg) { super(msg); }
+  public LayerInstantiationException() { super(); }
   < ---- END java constructors ---- >
 }

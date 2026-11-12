@@ -76,9 +76,7 @@ class IllegalPathStateException extends RuntimeException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public IllegalPathStateException() { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public IllegalPathStateException(String s) { super("constructor"); }
+  public IllegalPathStateException() { super(); }
+  public IllegalPathStateException(java.lang.String s) { super(s); }
   < ---- END java constructors ---- >
 }

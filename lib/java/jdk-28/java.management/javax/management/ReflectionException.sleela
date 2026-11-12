@@ -89,8 +89,6 @@ class ReflectionException extends JMException {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public Any getCause() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any getTargetException() { return null; }
   < ---- END java signatures ---- >
 }

@@ -76,7 +76,6 @@ class FormatterClosedException extends IllegalStateException {
 
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
-  @throwable("java.lang.UnsupportedOperationException")
-  public FormatterClosedException() { super("constructor"); }
+  public FormatterClosedException() { super(); }
   < ---- END java constructors ---- >
 }

@@ -77,7 +77,6 @@ class UnknownEntityException extends RuntimeException {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
-  @throwable("java.lang.UnsupportedOperationException")
-  UnknownEntityException(String message) { }
+  UnknownEntityException(java.lang.String message) { super(message); }
   < ---- END java constructors ---- >
 }

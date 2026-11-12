@@ -80,10 +80,8 @@ class InternalException extends RuntimeException {
   public InternalException(String s, int errorCode) { super("constructor"); }
   @throwable("java.lang.UnsupportedOperationException")
   public InternalException(int errorCode) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public InternalException(String s) { super("constructor"); }
-  @throwable("java.lang.UnsupportedOperationException")
-  public InternalException() { super("constructor"); }
+  public InternalException(java.lang.String s) { super(s); }
+  public InternalException() { super(); }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
