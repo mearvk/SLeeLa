@@ -227,7 +227,7 @@ never taken for a constant.
 | Gap | Effect | Planned fix |
 |---|---|---|
 | ~~No overload resolution~~ **done** (section 40) | Hand-implemented classes still use the earlier suffixes (`absInt`, `addAt`, `toStringRadix`); stub types write no constructors yet | Rename to the Java names class by class; write constructors where their behavior is known |
-| Hand-implemented classes expose statics as instance methods | `new Math().abs(x)` instead of `Math.abs(x)` | Convert class by class now that static access works |
+| Hand-implemented classes expose statics as instance methods | `new Integer(0).parseInt("42")` instead of `Integer.parseInt("42")`. `Math` is converted (`Math.abs(x)`), and every `StrictMath` static maps to the `Math` function of the same name | Convert the remaining classes class by class now that static access works |
 | No virtual dispatch through a base-typed receiver | Overrides are not reached through a supertype; exceptions compose messages at construction | Compiler/VM: virtual dispatch |
 | Base-class field initializers don't run for subclasses; `super(...)` not lowered | Generated constructors initialize inherited state explicitly | Compiler |
 | Only `catch (Any e)`; no `finally` | Callers test with `instanceof` | VM exception milestone |
